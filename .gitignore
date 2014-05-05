@@ -10,3 +10,19 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+*~
+
+# eclipse ignore
+*.settings/*
+/.project
+/.classpath
+/.tomcatplugin
+
+# maven ignore
+target/*
+
+# other ignore
+*.log
+*.tmp
+Thumbs.db
