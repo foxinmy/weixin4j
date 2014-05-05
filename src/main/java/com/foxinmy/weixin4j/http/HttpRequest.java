@@ -99,7 +99,7 @@ public class HttpRequest {
 			method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
 			int status = client.executeMethod(method);
 			if (status != HttpStatus.SC_OK) {
-				throw new WeixinException(status, getCause(method.getStatusCode()));
+				throw new WeixinException(status, "request fail");
 			}
 			// HttpClient对于要求接受后继服务的请求，象POST和PUT等不能自动处理转发
 			// 301或者302
@@ -125,9 +125,5 @@ public class HttpRequest {
 		} finally {
 			method.releaseConnection();
 		}
-	}
-
-	private String getCause(int statusCode) {
-		return "error---------------" + statusCode;
 	}
 }
