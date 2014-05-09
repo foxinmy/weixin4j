@@ -202,6 +202,8 @@ public class WeixinProxy {
 		Calendar ca = Calendar.getInstance();
 		long now_time = ca.getTimeInMillis();
 		try {
+			token_path = WeixinConfig.getValue("api_token_uri");
+			Response response = null;
 			if (token_file.exists()) {
 				token = (Token) xstream.fromXML(token_file);
 
@@ -210,15 +212,16 @@ public class WeixinProxy {
 				if (expise_time > now_time) {
 					return token;
 				}
+				response = request.get(token_path);
 			} else {
+				response = request.get(token_path);
 				try {
 					token_file.createNewFile();
 				} catch (IOException e) {
 					token_file.getParentFile().mkdirs();
 				}
 			}
-			token_path = WeixinConfig.getValue("api_token_uri");
-			Response response = request.get(token_path);
+			
 			token = response.getAsObject(Token.class);
 			token.setTime(now_time);
 			token.setOpenid(appOpenId);
@@ -893,7 +896,8 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3#.E5.88.A0.E9.99.A4.E7.BE.A4.E5.8F.91">删除群发</a>
 	 * @see {@link com.foxinmy.weixin4j.WeixinProxy#massNewsByGroup(List, String)}
-	 * @see {@link com.foxinmy.weixin4j.WeixinProxy#massNewsByOpenIds(List, String...)
+	 * @see {@link com.foxinmy.weixin4j.WeixinProxy#massNewsByOpenIds(List, String...)
+
 	 */
 	public void deleteMassNews(String msgid) throws WeixinException {
 		JSONObject obj = new JSONObject();
