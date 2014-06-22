@@ -16,6 +16,8 @@ tencent weixin platform java sdk 微信公众平台接口开发工具包
 
 注意事项
 --------
-> 为了避免引入到工程造成config.properties配置文件的冲突,暂且把其放在WeixinProxy类同一目录下
-> package时会一起打入jar包,如果不想使用这种方式可以修改src/main/java/com/foxinmy/weixin4j/util/WeixinConfig.java
-> 相关代码以便正确加载配置文件.
+> 为了避免引入到工程造成config.properties配置文件的冲突
+
+> 暂且把其放在WeixinProxy类同一目录下 package时会一起打入jar包
+
+> 如果不想使用这种方式可以修改src/main/java/com/foxinmy/weixin4j/util/WeixinConfig类相关代码以便正确加载配置文件.
