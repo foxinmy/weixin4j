@@ -28,6 +28,15 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>logback.xml</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<finalName>weixin4j-sdk</finalName>
 	</build>
 	<dependencies>
 		<dependency>
@@ -72,12 +81,6 @@
 			<version>${dom4j.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-			<version>${jaxen.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 			<version>${logback.version}</version>
@@ -116,7 +119,6 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
 	<properties>
 		<junit.version>4.8.2</junit.version>
 		<dom4j.version>1.6.1</dom4j.version>
@@ -127,7 +129,6 @@
 		<commons.httpclient.version>3.1</commons.httpclient.version>
 		<commons.codec.version>1.9</commons.codec.version>
 		<fastjson.version>1.1.9</fastjson.version>
-		<jaxen.version>1.1.4</jaxen.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<profiles>
