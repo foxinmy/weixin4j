@@ -6,6 +6,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.foxinmy.weixin4j.WeixinProxy;
+
 public class WeixinConfig {
 	public WeixinConfig() {
 	}
@@ -13,7 +15,8 @@ public class WeixinConfig {
 	private static Properties props = new Properties();
 	static {
 		try {
-			props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties"));
+			props.load(WeixinProxy.class
+					.getResourceAsStream("config.properties"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -29,7 +32,8 @@ public class WeixinConfig {
 		String sub = null;
 		while (m.find()) {
 			sub = m.group();
-			m.appendReplacement(sb, getValue(sub.substring(1, sub.length() - 1)));
+			m.appendReplacement(sb,
+					getValue(sub.substring(1, sub.length() - 1)));
 		}
 		m.appendTail(sb);
 		return sb.toString();

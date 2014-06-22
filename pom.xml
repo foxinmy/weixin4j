@@ -35,6 +35,13 @@
 					<exclude>logback.xml</exclude>
 				</excludes>
 			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/config.properties</include>
+					<include>**/error.xml</include>
+				</includes>
+			</resource>
 		</resources>
 		<finalName>weixin4j-sdk</finalName>
 	</build>

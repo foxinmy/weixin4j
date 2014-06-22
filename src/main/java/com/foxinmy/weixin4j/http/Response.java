@@ -10,6 +10,7 @@ import org.dom4j.io.SAXReader;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.foxinmy.weixin4j.WeixinProxy;
 import com.foxinmy.weixin4j.msg.ErrorMessage;
 import com.thoughtworks.xstream.XStream;
 
@@ -59,12 +60,17 @@ public class Response {
 		JSONObject jsonObj = getAsJson();
 		if (jsonObj.containsKey(ERROR_CODE_KEY)) {
 			SAXReader reader = new SAXReader();
-			Document doc = reader.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("error_code.xml"));
-			Node node = doc.getRootElement().selectSingleNode(String.format("error[@code='%d']", jsonObj.getInteger(ERROR_CODE_KEY)));
+			Document doc = reader.read(WeixinProxy.class
+					.getResourceAsStream("error.xml"));
+			Node node = doc.getRootElement().selectSingleNode(
+					String.format("error[@code='%d']",
+							jsonObj.getInteger(ERROR_CODE_KEY)));
 			if (node != null) {
-				return new ErrorMessage(jsonObj.getInteger(ERROR_CODE_KEY), jsonObj.getString(ERROR_MSG_KEY), node.getStringValue());
+				return new ErrorMessage(jsonObj.getInteger(ERROR_CODE_KEY),
+						jsonObj.getString(ERROR_MSG_KEY), node.getStringValue());
 			}
-			return new ErrorMessage(jsonObj.getInteger(ERROR_CODE_KEY), "unknown error", "未知错误");
+			return new ErrorMessage(jsonObj.getInteger(ERROR_CODE_KEY),
+					"unknown error", "未知错误");
 		}
 
 		return new ErrorMessage(0, "request success", "");
