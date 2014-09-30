@@ -6,13 +6,13 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 链接消息
+ * 
  * @className LinkMessage
  * @author jy.hu
  * @date 2014年4月6日
  * @since JDK 1.7
- * @see <a href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#.E9.93.BE.E6.8E.A5.E6.B6.88.E6.81.AF">链接消息</a>
- * @see com.foxinmy.weixin4j.msg.BaseMessage
- * @see com.foxinmy.weixin4j.msg.BaseMessage#toXml()
+ * @see <a
+ *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#.E9.93.BE.E6.8E.A5.E6.B6.88.E6.81.AF">链接消息</a>
  */
 public class LinkMessage extends BaseMessage {
 
@@ -21,7 +21,7 @@ public class LinkMessage extends BaseMessage {
 	public LinkMessage() {
 		super(MessageType.link);
 	}
-	
+
 	@XStreamAlias("Title")
 	private String title; // 消息标题
 	@XStreamAlias("Description")
@@ -33,24 +33,12 @@ public class LinkMessage extends BaseMessage {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public String getUrl() {
 		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	@Override

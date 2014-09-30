@@ -6,13 +6,13 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 图片消息
+ * 
  * @className ImageMessage
  * @author jy.hu
  * @date 2014年4月6日
  * @since JDK 1.7
- * @see <a href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#.E5.9B.BE.E7.89.87.E6.B6.88.E6.81.AF">图片消息</a>
- * @see com.foxinmy.weixin4j.msg.BaseMessage
- * @see com.foxinmy.weixin4j.msg.BaseMessage#toXml()
+ * @see <a
+ *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#.E5.9B.BE.E7.89.87.E6.B6.88.E6.81.AF">图片消息</a>
  */
 public class ImageMessage extends BaseMessage {
 
@@ -21,7 +21,7 @@ public class ImageMessage extends BaseMessage {
 	public ImageMessage() {
 		super(MessageType.image);
 	}
-	
+
 	@XStreamAlias("PicUrl")
 	private String picUrl; // 图片链接
 	@XStreamAlias("MediaId")
@@ -31,16 +31,8 @@ public class ImageMessage extends BaseMessage {
 		return picUrl;
 	}
 
-	public void setPicUrl(String picUrl) {
-		this.picUrl = picUrl;
-	}
-
 	public String getMediaId() {
 		return mediaId;
-	}
-
-	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
 	}
 
 	@Override

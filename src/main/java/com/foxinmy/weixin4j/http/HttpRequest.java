@@ -1,53 +1,76 @@
 package com.foxinmy.weixin4j.http;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.cookie.CookiePolicy;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.RequestEntity;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.params.HttpClientParams;
-import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
-import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.http.Consts;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.client.params.CookiePolicy;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.FileEntity;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.util.EntityUtils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.msg.BaseResult;
 
+/**
+ * 调用微信相关接口的HttpRequest,对于其他请求可能并不试用
+ * 
+ * @className HttpRequest
+ * @author jy
+ * @date 2014年8月21日
+ * @since JDK 1.7
+ * @see
+ */
 public class HttpRequest {
-	private final String CONTENT_CHARSET = "UTF-8";
-	private final String ERROR_CODE_KEY = "errcode";
-	private final String ERROR_MSG_KEY = "errmsg";
-	private HttpClient client;
+	private AbstractHttpClient client;
 
 	public HttpRequest() {
-		this(150, 30000, 30000, 1024 * 1024);
+		this(150, 100, 10000, 10000);
 	}
 
-	public HttpRequest(int maxConPerHost, int conTimeOutMs, int soTimeOutMs, int maxSize) {
-		MultiThreadedHttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
-		connectionManager = new MultiThreadedHttpConnectionManager();
-		HttpConnectionManagerParams params = connectionManager.getParams();
-		params.setDefaultMaxConnectionsPerHost(maxConPerHost);
-		params.setConnectionTimeout(conTimeOutMs);
-		params.setSoTimeout(soTimeOutMs);
+	public HttpRequest(int maxConPerRoute, int maxTotal, int socketTimeout, int connectionTimeout) {
+		PoolingClientConnectionManager connectionManager = new PoolingClientConnectionManager();
+		// 指定IP并发最大数
+		connectionManager.setDefaultMaxPerRoute(maxConPerRoute);
+		// socket最大创建数
+		connectionManager.setMaxTotal(maxTotal);
 
-		HttpClientParams clientParams = new HttpClientParams();
-		clientParams.setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
-		client = new HttpClient(clientParams, connectionManager);
-		client.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, CONTENT_CHARSET);
+		client = new DefaultHttpClient(connectionManager);
+		client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+		client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectionTimeout);
+		client.getParams().setBooleanParameter(CoreConnectionPNames.TCP_NODELAY, false);
+		client.getParams().setParameter(CoreConnectionPNames.SOCKET_BUFFER_SIZE, 1024 * 1024);
+		client.getParams().setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.IGNORE_COOKIES);
+		client.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, Consts.UTF_8);
+		client.getParams().setParameter(HttpHeaders.CONTENT_ENCODING, Consts.UTF_8);
+		client.getParams().setParameter(HttpHeaders.ACCEPT_CHARSET, Consts.UTF_8);
 	}
 
 	public Response get(String url) throws WeixinException {
-		Parameter[] empty = null;
-		return get(url, empty);
+		return get(url, (Parameter[]) null);
 	}
 
 	public Response get(String url, Parameter... parameters) throws WeixinException {
@@ -60,70 +83,87 @@ public class HttpRequest {
 				sb.append(parameters[i].toGetPara());
 			}
 		}
-		return doRequest(new GetMethod(sb.toString()));
+		return doRequest(new HttpGet(sb.toString()));
 	}
 
 	public Response post(String url) throws WeixinException {
-		Parameter[] empty = null;
-		return post(url, empty);
+		return post(url, (Parameter[]) null);
 	}
 
 	public Response post(String url, Parameter... parameters) throws WeixinException {
-		PostMethod method = new PostMethod(url);
+		HttpPost method = new HttpPost(url);
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		for (Parameter parameter : parameters) {
-			method.addParameter(parameter.toPostPara());
+			params.add(parameter.toPostPara());
 		}
+		method.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
+		return doRequest(method);
+	}
+
+	public Response post(String url, String body) throws WeixinException {
+		HttpPost method = new HttpPost(url);
+		method.setEntity(new StringEntity(body, ContentType.create(ContentType.APPLICATION_JSON.getMimeType(), Consts.UTF_8)));
+		return doRequest(method);
+	}
+
+	public Response post(String url, byte[] bytes) throws WeixinException {
+		HttpPost method = new HttpPost(url);
+		method.setEntity(new ByteArrayEntity(bytes, ContentType.create(ContentType.MULTIPART_FORM_DATA.getMimeType(), Consts.UTF_8)));
+		return doRequest(method);
+	}
+
+	public Response post(String url, File file) throws WeixinException {
+		HttpPost method = new HttpPost(url);
+		method.setEntity(new FileEntity(file, ContentType.create(ContentType.APPLICATION_OCTET_STREAM.getMimeType(), Consts.UTF_8)));
+		return doRequest(method);
+	}
+
+	public Response post(String url, PartParameter... paramters) throws WeixinException {
+		HttpPost method = new HttpPost(url);
+		MultipartEntity entity = new MultipartEntity();
+		for (PartParameter paramter : paramters) {
+			entity.addPart(paramter.getName(), paramter.getContentBody());
+		}
+		method.setEntity(entity);
 
 		return doRequest(method);
 	}
 
-	public Response post(String url, RequestEntity entity) throws WeixinException {
-		PostMethod method = new PostMethod(url);
-		method.setRequestEntity(entity);
-		return doRequest(method);
-	}
-
-	public Response post(String url, Part... parts) throws WeixinException {
-		PostMethod method = new PostMethod(url);
-		method.getParams().setContentCharset(CONTENT_CHARSET);
-		MultipartRequestEntity entity = new MultipartRequestEntity(parts, method.getParams());
-		method.setRequestEntity(entity);
-		return doRequest(method);
-	}
-
-	protected Response doRequest(HttpMethod method) throws WeixinException {
-
+	protected Response doRequest(HttpRequestBase request) throws WeixinException {
 		try {
+			HttpResponse httpResponse = client.execute(request);
+			StatusLine statusLine = httpResponse.getStatusLine();
+			HttpEntity httpEntity = httpResponse.getEntity();
 
-			method.getParams().setContentCharset(CONTENT_CHARSET);
-			method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
-			int status = client.executeMethod(method);
+			int status = statusLine.getStatusCode();
 			if (status != HttpStatus.SC_OK) {
 				throw new WeixinException(status, "request fail");
 			}
-			// HttpClient对于要求接受后继服务的请求，象POST和PUT等不能自动处理转发
 			// 301或者302
 			if (status == HttpStatus.SC_MOVED_PERMANENTLY || status == HttpStatus.SC_MOVED_TEMPORARILY) {
-				throw new WeixinException(status, String.format("the page was redirected to %s", method.getResponseHeader("location")));
+				throw new WeixinException(status, String.format("the page was redirected to %s", httpResponse.getFirstHeader("location")));
 			}
-			Response response = new Response(method.getResponseBodyAsString());
-			response.setBody(method.getResponseBody());
+			byte[] data = EntityUtils.toByteArray(httpEntity);
+			Response response = new Response();
+			response.setBody(data);
 			response.setStatusCode(status);
-			response.setStatusText(method.getStatusText());
-			response.setStream(method.getResponseBodyAsStream());
+			response.setStatusText(statusLine.getReasonPhrase());
+			response.setStream(new ByteArrayInputStream(data));
+			response.setText(StringUtils.newStringUtf8(data));
 
-			Header contentType = method.getResponseHeader("Content-Type");
-			if (contentType.getValue().indexOf("application/json") >= 0 || contentType.getValue().indexOf("text/plain") >= 0) {
-				JSONObject jsonObj = response.getAsJson();
-				if (jsonObj.containsKey(ERROR_CODE_KEY) && jsonObj.getIntValue(ERROR_CODE_KEY) != 0) {
-					throw new WeixinException(jsonObj.getIntValue(ERROR_CODE_KEY), jsonObj.getString(ERROR_MSG_KEY));
+			Header contentType = httpResponse.getFirstHeader(HttpHeaders.CONTENT_TYPE);
+			if (contentType.getValue().contains(ContentType.APPLICATION_JSON.getMimeType())) {
+				BaseResult result = response.getAsResult();
+				if (result.getErrcode() != 0) {
+					throw new WeixinException(result.getErrcode(), result.getErrmsg());
 				}
 			}
+			EntityUtils.consume(httpEntity);
 			return response;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new WeixinException(e.getMessage());
 		} finally {
-			method.releaseConnection();
+			request.releaseConnection();
 		}
 	}
 }

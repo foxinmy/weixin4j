@@ -3,16 +3,15 @@ package com.foxinmy.weixin4j.msg.event;
 import com.foxinmy.weixin4j.type.EventType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-
 /**
  * 上报地理位置事件
+ * 
  * @className LocationEventMessage
  * @author jy.hu
  * @date 2014年4月6日
  * @since JDK 1.7
- * @see <a href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6%E6%8E%A8%E9%80%81#.E4.B8.8A.E6.8A.A5.E5.9C.B0.E7.90.86.E4.BD.8D.E7.BD.AE.E4.BA.8B.E4.BB.B6">上报地理位置事件</a>
- * @see com.foxinmy.weixin4j.msg.BaseMessage
- * @see com.foxinmy.weixin4j.msg.BaseMessage#toXml()
+ * @see <a
+ *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6%E6%8E%A8%E9%80%81#.E4.B8.8A.E6.8A.A5.E5.9C.B0.E7.90.86.E4.BD.8D.E7.BD.AE.E4.BA.8B.E4.BB.B6">上报地理位置事件</a>
  */
 public class LocationEventMessage extends EventMessage {
 
@@ -21,7 +20,7 @@ public class LocationEventMessage extends EventMessage {
 	public LocationEventMessage() {
 		super(EventType.location);
 	}
-	
+
 	@XStreamAlias("Latitude")
 	private String latitude;// 地理位置纬度
 	@XStreamAlias("Longitude")
@@ -33,30 +32,19 @@ public class LocationEventMessage extends EventMessage {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
-
 	public String getLongitude() {
 		return longitude;
-	}
-
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
 	}
 
 	public String getPrecision() {
 		return precision;
 	}
 
-	public void setPrecision(String precision) {
-		this.precision = precision;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("[LocationEventMessage ,toUserName=").append(super.getToUserName());
+		sb.append("[LocationEventMessage ,toUserName=").append(
+				super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
 		sb.append(" ,msgType=").append(super.getMsgType().name());
 		sb.append(" ,eventType=").append(super.getEventType().name());

@@ -1,134 +1,19 @@
 package com.foxinmy.weixin4j.test;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import com.foxinmy.weixin4j.WeixinProxy;
+import com.foxinmy.weixin4j.util.MessageUtil;
 
 /**
- * 接收消息格式测试
+ * 接受一般消息格式测试
+ * 
  * @author jy.hu
  * @date 2014年3月24日
  * @since JDK 1.7
  */
 public class MessageInTest {
+
 	private StringBuilder xmlSb = new StringBuilder();
-	private WeixinProxy weixinProxy;
-	
-	@Before
-	public void init(){
-		weixinProxy = new WeixinProxy();
-	}
-
-	/***************** event message *********************/
-	@Test
-	public void scribe() {
-		try {
-			xmlSb.delete(0, xmlSb.length());
-			xmlSb.append("<xml>");
-			xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
-			xmlSb.append("<FromUserName><![CDATA[FromUser]]></FromUserName>");
-			xmlSb.append("<CreateTime>123456789</CreateTime>");
-			xmlSb.append("<MsgType><![CDATA[event]]></MsgType>");
-			xmlSb.append("<Event><![CDATA[subscribe]]></Event>");
-			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void scan() {
-		try {
-			xmlSb.delete(0, xmlSb.length());
-			xmlSb.append("<xml>");
-			xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
-			xmlSb.append("<FromUserName><![CDATA[FromUser]]></FromUserName>");
-			xmlSb.append("<CreateTime>123456789</CreateTime>");
-			xmlSb.append("<MsgType><![CDATA[event]]></MsgType>");
-			xmlSb.append("<Event><![CDATA[SCAN]]></Event>");
-			xmlSb.append("<EventKey><![CDATA[SCENE_VALUE]]></EventKey>");
-			xmlSb.append("<Ticket><![CDATA[TICKET]]></Ticket>");
-			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	@Test
-	public void scan_scribe() {
-		try {
-			xmlSb.delete(0, xmlSb.length());
-			xmlSb.append("<xml><ToUserName><![CDATA[toUser]]></ToUserName>");
-			xmlSb.append("<FromUserName><![CDATA[FromUser]]></FromUserName>");
-			xmlSb.append("<CreateTime>123456789</CreateTime>");
-			xmlSb.append("<MsgType><![CDATA[event]]></MsgType>");
-			xmlSb.append("<Event><![CDATA[subscribe]]></Event>");
-			xmlSb.append("<EventKey><![CDATA[qrscene_123123]]></EventKey>");
-			xmlSb.append("<Ticket><![CDATA[TICKET]]></Ticket>");
-			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void location1() {
-		try {
-			xmlSb.delete(0, xmlSb.length());
-			xmlSb.append("<xml>");
-			xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
-			xmlSb.append("<FromUserName><![CDATA[fromUser]]></FromUserName>");
-			xmlSb.append("<CreateTime>123456789</CreateTime>");
-			xmlSb.append("<MsgType><![CDATA[event]]></MsgType>");
-			xmlSb.append("<Event><![CDATA[LOCATION]]></Event>");
-			xmlSb.append("<Latitude>23.137466</Latitude>");
-			xmlSb.append("<Longitude>113.352425</Longitude>");
-			xmlSb.append("<Precision>119.385040</Precision>");
-			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void menu_click() {
-		try {
-			xmlSb.delete(0, xmlSb.length());
-			xmlSb.append("<xml>");
-			xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
-			xmlSb.append("<FromUserName><![CDATA[FromUser]]></FromUserName>");
-			xmlSb.append("<CreateTime>123456789</CreateTime>");
-			xmlSb.append("<MsgType><![CDATA[event]]></MsgType>");
-			xmlSb.append("<Event><![CDATA[CLICK]]></Event>");
-			xmlSb.append("<EventKey><![CDATA[EVENTKEY]]></EventKey>");
-			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void menu_link() {
-		try {
-			xmlSb.delete(0, xmlSb.length());
-			xmlSb.append("<xml>");
-			xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
-			xmlSb.append("<FromUserName><![CDATA[FromUser]]></FromUserName>");
-			xmlSb.append("<CreateTime>123456789</CreateTime>");
-			xmlSb.append("<MsgType><![CDATA[event]]></MsgType>");
-			xmlSb.append("<Event><![CDATA[VIEW]]></Event>");
-			xmlSb.append("<EventKey><![CDATA[www.qq.com]]></EventKey>");
-			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/***************** common message *********************/
 
@@ -144,7 +29,7 @@ public class MessageInTest {
 			xmlSb.append("<Content><![CDATA[this is a test]]></Content>");
 			xmlSb.append("<MsgId>1234567890123456</MsgId>");
 			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
+			System.out.println(MessageUtil.xml2msg(xmlSb.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -163,7 +48,7 @@ public class MessageInTest {
 			xmlSb.append("<MediaId><![CDATA[media_id]]></MediaId>");
 			xmlSb.append("<MsgId>1234567890123456</MsgId>");
 			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
+			System.out.println(MessageUtil.xml2msg(xmlSb.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -182,7 +67,7 @@ public class MessageInTest {
 			xmlSb.append("<Format><![CDATA[Format]]></Format>");
 			xmlSb.append("<MsgId>1234567890123456</MsgId>");
 			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
+			System.out.println(MessageUtil.xml2msg(xmlSb.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -202,7 +87,7 @@ public class MessageInTest {
 			xmlSb.append("<Recognition><![CDATA[腾讯微信团队]]></Recognition>");
 			xmlSb.append("<MsgId>1234567890123456</MsgId>");
 			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
+			System.out.println(MessageUtil.xml2msg(xmlSb.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -221,7 +106,7 @@ public class MessageInTest {
 			xmlSb.append("<ThumbMediaId><![CDATA[thumb_media_id]]></ThumbMediaId>");
 			xmlSb.append("<MsgId>1234567890123456</MsgId>");
 			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
+			System.out.println(MessageUtil.xml2msg(xmlSb.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -242,7 +127,7 @@ public class MessageInTest {
 			xmlSb.append("<Label><![CDATA[位置信息]]></Label>");
 			xmlSb.append("<MsgId>1234567890123456</MsgId>");
 			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
+			System.out.println(MessageUtil.xml2msg(xmlSb.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -262,7 +147,7 @@ public class MessageInTest {
 			xmlSb.append("<Url><![CDATA[url]]></Url>");
 			xmlSb.append("<MsgId>1234567890123456</MsgId>");
 			xmlSb.append("</xml>");
-			System.out.println(weixinProxy.xml2msg(xmlSb.toString()));
+			System.out.println(MessageUtil.xml2msg(xmlSb.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

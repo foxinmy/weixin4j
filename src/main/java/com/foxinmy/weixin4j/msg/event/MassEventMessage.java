@@ -18,7 +18,7 @@ public class MassEventMessage extends EventMessage {
 	private static final long serialVersionUID = -1660543255873723895L;
 
 	public MassEventMessage() {
-		super(EventType.MASSSENDJOBFINISH);
+		super(EventType.massendjobfinish);
 	}
 
 	@XStreamAlias("Status")
@@ -35,38 +35,28 @@ public class MassEventMessage extends EventMessage {
 	public String getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
+
 	public int getTotalCount() {
 		return totalCount;
 	}
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-	}
+
 	public int getFilterCount() {
 		return filterCount;
 	}
-	public void setFilterCount(int filterCount) {
-		this.filterCount = filterCount;
-	}
+
 	public int getSentCount() {
 		return sentCount;
 	}
-	public void setSentCount(int sentCount) {
-		this.sentCount = sentCount;
-	}
+
 	public int getErrorCount() {
 		return errorCount;
 	}
-	public void setErrorCount(int errorCount) {
-		this.errorCount = errorCount;
-	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("[MassEventMessage ,toUserName=").append(super.getToUserName());
+		sb.append("[MassEventMessage ,toUserName=").append(
+				super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
 		sb.append(" ,msgType=").append(super.getMsgType().name());
 		sb.append(" ,eventType=").append(super.getEventType().name());

@@ -9,8 +9,6 @@ package com.foxinmy.weixin4j.msg.event;
  * @date 2014年4月6日
  * @since JDK 1.7
  * @see <a href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6%E6%8E%A8%E9%80%81#.E5.85.B3.E6.B3.A8.2F.E5.8F.96.E6.B6.88.E5.85.B3.E6.B3.A8.E4.BA.8B.E4.BB.B6">关注/取消关注事件</a>
- * @see com.foxinmy.weixin4j.msg.BaseMessage
- * @see com.foxinmy.weixin4j.msg.BaseMessage#toXml()
  */
 public class ScribeEventMessage extends ScanEventMessage {
 

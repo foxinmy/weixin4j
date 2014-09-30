@@ -72,7 +72,6 @@ public class CustomRecord implements Serializable {
 			this.code = code;
 			this.desc = desc;
 		}
-
 		public int getCode() {
 			return code;
 		}

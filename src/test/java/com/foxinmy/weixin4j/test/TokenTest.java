@@ -3,7 +3,8 @@ package com.foxinmy.weixin4j.test;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.foxinmy.weixin4j.WeixinProxy;
+import com.foxinmy.weixin4j.api.token.FileTokenApi;
+import com.foxinmy.weixin4j.api.token.TokenApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
 
 /**
@@ -14,17 +15,17 @@ import com.foxinmy.weixin4j.exception.WeixinException;
  * @since JDK 1.7
  */
 public class TokenTest {
-	private WeixinProxy weixinProxy;
+	private TokenApi tokenApi;
 
 	@Before
 	public void init() {
-		weixinProxy = new WeixinProxy();
+		tokenApi = new FileTokenApi();
 	}
 
 	@Test
 	public void getToken() {
 		try {
-			System.out.println(weixinProxy.getToken());
+			System.out.println(tokenApi.getToken());
 		} catch (WeixinException e) {
 			e.printStackTrace();
 		}

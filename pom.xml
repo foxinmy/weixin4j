@@ -5,8 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.foxinmy.weixin</groupId>
 	<version>0.0.1-SNAPSHOT</version>
-	<artifactId>weixin4j-sdk</artifactId>
-	<name>weixin4j-sdk</name>
+	<artifactId>weixin4j</artifactId>
+	<name>weixin4j</name>
 
 	<build>
 		<plugins>
@@ -32,7 +32,7 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<excludes>
-					<exclude>logback.xml</exclude>
+					<exclude>*.*</exclude>
 				</excludes>
 			</resource>
 			<resource>
@@ -43,7 +43,7 @@
 				</includes>
 			</resource>
 		</resources>
-		<finalName>weixin4j-sdk</finalName>
+		<finalName>weixin4j</finalName>
 	</build>
 	<dependencies>
 		<dependency>
@@ -58,14 +58,9 @@
 			<version>${xstream.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>${commons.codec.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-			<version>${commons.httpclient.version}</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpclient.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-logging</artifactId>
@@ -76,6 +71,16 @@
 					<artifactId>commons-codec</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons.codec.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -125,7 +130,23 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>${jsoup.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>${jaxen.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>${jedis.version}</version>
+		</dependency>
 	</dependencies>
+
 	<properties>
 		<junit.version>4.8.2</junit.version>
 		<dom4j.version>1.6.1</dom4j.version>
@@ -133,9 +154,12 @@
 		<jcl.over.version>1.7.6</jcl.over.version>
 		<log4j.over.version>1.7.6</log4j.over.version>
 		<xstream.version>1.4.7</xstream.version>
-		<commons.httpclient.version>3.1</commons.httpclient.version>
+		<httpclient.version>4.2.5</httpclient.version>
 		<commons.codec.version>1.9</commons.codec.version>
 		<fastjson.version>1.1.9</fastjson.version>
+		<jsoup.version>1.7.3</jsoup.version>
+		<jaxen.version>1.1.6</jaxen.version>
+		<jedis.version>2.6.0</jedis.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<profiles>

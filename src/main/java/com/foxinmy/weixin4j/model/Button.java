@@ -5,24 +5,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
  * 菜单按钮
- * <p>目前自定义菜单最多包括3个一级菜单,每个一级菜单最多包含5个二级菜单,一级菜单最多4个汉字,二级菜单最多7个汉字,多出来的部分将会以"..."代替
- * 请注意,创建自定义菜单后,由于微信客户端缓存,需要24小时微信客户端才会展现出来,建议测试时可以尝试取消关注公众账号后再次关注,则可以看到创建后的效果</p>
+ * <p>
+ * 目前自定义菜单最多包括3个一级菜单,每个一级菜单最多包含5个二级菜单,一级菜单最多4个汉字,二级菜单最多7个汉字,多出来的部分将会以"..."代替
+ * 请注意,创建自定义菜单后,由于微信客户端缓存,需要24小时微信客户端才会展现出来,建议测试时可以尝试取消关注公众账号后再次关注,则可以看到创建后的效果
+ * </p>
+ * 
  * @className Button
  * @author jy.hu
  * @date 2014年4月5日
  * @since JDK 1.7
+ * @see com.foxinmy.weixin4j.type.ButtonType
  */
 public class Button implements Serializable {
 
 	private static final long serialVersionUID = -6422234732203854866L;
 
 	private String name;
-	private BtnType type;
-	private String key;
-	private String url;
+	private ButtonType type; // 菜单的响应动作类型
+	private String key; // click等点击类型必须
+	private String url; // view类型必须
 
 	@JSONField(name = "sub_button")
 	private List<Button> subs;
@@ -37,7 +42,7 @@ public class Button implements Serializable {
 	public Button(String name, String url) {
 		this.name = name;
 		this.url = url;
-		this.type = BtnType.view;
+		this.type = ButtonType.view;
 	}
 
 	public String getName() {
@@ -48,11 +53,11 @@ public class Button implements Serializable {
 		this.name = name;
 	}
 
-	public BtnType getType() {
+	public ButtonType getType() {
 		return type;
 	}
 
-	public void setType(BtnType type) {
+	public void setType(ButtonType type) {
 		this.type = type;
 	}
 
@@ -80,26 +85,12 @@ public class Button implements Serializable {
 		this.subs = subs;
 	}
 
-	public void pushSub(Button btn) {
+	public Button pushSub(Button btn) {
 		if (this.subs == null) {
 			this.subs = new ArrayList<Button>();
 		}
 		this.subs.add(btn);
-	}
-
-	/**
-	 * 按钮类型
-	 * <p>click：
-	 * 用户点击click类型按钮后，微信服务器会通过消息接口推送消息类型为event	的结构给开发者(参考消息接口指南),并且带上按钮中开发者填写的key值,开发者可以通过自定义的key值与用户进行交互；</p>
-	 * <p>view：
-	 * 用户点击view类型按钮后,微信客户端将会打开开发者在按钮中填写的url值(即网页链接),达到打开网页的目的,建议与网页授权获取用户基本信息接口结合,获得用户的登入个人信息</p>
-	 * @className BtnType
-	 * @author jy.hu
-	 * @date 2014年4月8日
-	 * @since JDK 1.7
-	 */
-	public enum BtnType {
-		click, view
+		return this;
 	}
 
 	@Override
@@ -119,5 +110,4 @@ public class Button implements Serializable {
 		sb.append("]");
 		return sb.toString();
 	}
-
 }

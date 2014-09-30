@@ -31,7 +31,7 @@ public class MediaTest {
 		File file = new File("D:\\test.jpg");
 		try {
 			System.out.println(weixinProxy.uploadMedia(file, MediaType.image));
-			//usAxLEJxFXAjXVlLu_BSw0GvS2YEEoGeelRBybNZBGvMsdxiIcD1F9yBWYd9jVZx
+			//vvU_AUtovWyfAxQ8J1DsCoNMtK6U_bUmTpe6lpINUOVRLvt_7rtO4zxzBpPgkmay
 		} catch (WeixinException e) {
 			System.out.println(e.getErrorMsg());
 		}
@@ -40,7 +40,7 @@ public class MediaTest {
 	@Test
 	public void download() {
 		try {
-			System.out.println(weixinProxy.downloadMedia("usAxLEJxFXAjXVlLu_BSw0GvS2YEEoGeelRBybNZBGvMsdxiIcD1F9yBWYd9jVZx", MediaType.image));
+			System.out.println(weixinProxy.downloadMedia("vvU_AUtovWyfAxQ8J1DsCoNMtK6U_bUmTpe6lpINUOVRLvt_7rtO4zxzBpPgkmay", MediaType.image));
 		} catch (WeixinException e) {
 			System.out.println(e.getErrorMsg());
 		}

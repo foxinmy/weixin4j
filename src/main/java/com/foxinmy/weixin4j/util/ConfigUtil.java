@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 
 import com.foxinmy.weixin4j.WeixinProxy;
 
-public class WeixinConfig {
-	public WeixinConfig() {
+public class ConfigUtil {
+	public ConfigUtil() {
 	}
 
 	private static Properties props = new Properties();
@@ -38,7 +38,6 @@ public class WeixinConfig {
 		m.appendTail(sb);
 		return sb.toString();
 	}
-
 	public static void main(String[] args) {
 		System.out.println(getValue("api_token_uri"));
 	}

@@ -2,15 +2,19 @@ package com.foxinmy.weixin4j.model;
 
 import java.io.Serializable;
 
-import com.foxinmy.weixin4j.util.WeixinUtil;
+import org.jsoup.helper.StringUtil;
 
 /**
  * 用户对象
- * <p>当用户与公众号有交互时,可通过openid获取信息</p>
+ * <p>
+ * 当用户与公众号有交互时,可通过openid获取信息
+ * </p>
+ * 
  * @author jy.hu
  * @date 2014年4月8日
  * @since JDK 1.7
- * @see <a href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF">获取用户基本资料</a>
+ * @see <a
+ *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF">获取用户基本资料</a>
  */
 public class User implements Serializable {
 
@@ -27,6 +31,7 @@ public class User implements Serializable {
 	private int subscribe; // 是否关注
 	private long subscribe_time; // 关注时间
 	private Lang language; // 使用语言
+	private String unionid; // 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段
 
 	// 国家地区语言版本
 	public enum Lang {
@@ -92,14 +97,14 @@ public class User implements Serializable {
 		return sex;
 	}
 
-	public Gender getGender(){
-		if(sex == 1){
+	public Gender getGender() {
+		if (sex == 1) {
 			return Gender.male;
-		}else if(sex == 2){
+		} else if (sex == 2) {
 			return Gender.female;
-		}else{
+		} else {
 			return Gender.unknown;
-	}
+		}
 	}
 
 	public void setSex(int sex) {
@@ -135,9 +140,10 @@ public class User implements Serializable {
 	}
 
 	public String getHeadimgurl(Size size) {
-		if (!WeixinUtil.isBlank(headimgurl)) {
+		if (!StringUtil.isBlank(headimgurl)) {
 			StringBuilder sb = new StringBuilder(headimgurl);
-			return sb.replace(0, (headimgurl.length() - 1), size.getInt() + "").toString();
+			return sb.replace(0, (headimgurl.length() - 1), size.getInt() + "")
+					.toString();
 		}
 		return "";
 	}
@@ -178,6 +184,14 @@ public class User implements Serializable {
 		this.subscribe_time = subscribe_time;
 	}
 
+	public String getUnionid() {
+		return unionid;
+	}
+
+	public void setUnionid(String unionid) {
+		this.unionid = unionid;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof User) {
@@ -199,6 +213,7 @@ public class User implements Serializable {
 		sb.append(", privilege=").append(privilege);
 		sb.append(", language=").append(language);
 		sb.append(", subscribe_time=").append(subscribe_time);
+		sb.append(", unionid=").append(unionid);
 		sb.append(", subscribe=").append(subscribe).append("]");
 		return sb.toString();
 	}

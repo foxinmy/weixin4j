@@ -50,7 +50,7 @@ public class GroupTest {
 	@Test
 	public void getid() {
 		try {
-			System.out.println(weixinProxy.findGroupByOpenId("owGBft_vbBbOaQOmpEUE4xDLeRSU"));
+			System.out.println(weixinProxy.getGroupByOpenId("owGBft_vbBbOaQOmpEUE4xDLeRSU"));
 		} catch (WeixinException e) {
 			System.out.println(e.getErrorCode());
 			System.out.println(e.getErrorMsg());

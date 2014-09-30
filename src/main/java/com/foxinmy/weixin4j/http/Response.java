@@ -11,13 +11,10 @@ import org.dom4j.io.SAXReader;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.WeixinProxy;
-import com.foxinmy.weixin4j.msg.ErrorMessage;
+import com.foxinmy.weixin4j.msg.BaseResult;
 import com.thoughtworks.xstream.XStream;
 
 public class Response {
-
-	private final String ERROR_CODE_KEY = "errcode";
-	private final String ERROR_MSG_KEY = "errmsg";
 
 	private String text;
 	private int statusCode;
@@ -25,12 +22,19 @@ public class Response {
 	private byte[] body;
 	private InputStream stream;
 
+	public Response() {
+	}
+
 	public Response(String text) {
 		this.text = text;
 	}
 
 	public String getAsString() {
 		return text;
+	}
+
+	public BaseResult getAsResult() {
+		return JSON.parseObject(text, BaseResult.class);
 	}
 
 	public JSONObject getAsJson() {
@@ -56,24 +60,17 @@ public class Response {
 	 * @return
 	 * @throws DocumentException
 	 */
-	public ErrorMessage getErrorMsg() throws DocumentException {
-		JSONObject jsonObj = getAsJson();
-		if (jsonObj.containsKey(ERROR_CODE_KEY)) {
+	public BaseResult getBaseError() throws DocumentException {
+		BaseResult result = getAsResult();
+		if (result.getErrcode() != 0) {
 			SAXReader reader = new SAXReader();
-			Document doc = reader.read(WeixinProxy.class
-					.getResourceAsStream("error.xml"));
-			Node node = doc.getRootElement().selectSingleNode(
-					String.format("error[@code='%d']",
-							jsonObj.getInteger(ERROR_CODE_KEY)));
+			Document doc = reader.read(WeixinProxy.class.getResourceAsStream("error.xml"));
+			Node node = doc.getRootElement().selectSingleNode(String.format("error[@code='%d']", result.getErrcode()));
 			if (node != null) {
-				return new ErrorMessage(jsonObj.getInteger(ERROR_CODE_KEY),
-						jsonObj.getString(ERROR_MSG_KEY), node.getStringValue());
+				result.setText(node.getStringValue());
 			}
-			return new ErrorMessage(jsonObj.getInteger(ERROR_CODE_KEY),
-					"unknown error", "未知错误");
 		}
-
-		return new ErrorMessage(0, "request success", "");
+		return result;
 	}
 
 	public String getText() {
@@ -124,5 +121,4 @@ public class Response {
 		sb.append(", statusText=").append(statusText).append("]");
 		return sb.toString();
 	}
-
 }

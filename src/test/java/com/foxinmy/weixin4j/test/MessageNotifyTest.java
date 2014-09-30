@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.WeixinProxy;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.msg.model.Music;
 import com.foxinmy.weixin4j.msg.notify.ArticleNotify;
 import com.foxinmy.weixin4j.msg.notify.BaseNotify;
 import com.foxinmy.weixin4j.msg.notify.ImageNotify;
@@ -41,27 +42,29 @@ public class MessageNotifyTest {
 
 	@Test
 	public void image() {
-		ImageNotify notify = new ImageNotify("123", "to");
+		ImageNotify notify = new ImageNotify("to");
+		notify.pushMediaId("123");
 		System.out.println(notify.toJson());
 	}
 
 	@Test
 	public void voice() {
-		VoiceNotify notify = new VoiceNotify("123", "to");
+		VoiceNotify notify = new VoiceNotify("to");
+		notify.pushMediaId("123");
 		System.out.println(notify.toJson());
 	}
 
 	@Test
 	public void video() {
 		VideoNotify notify = new VideoNotify("to");
-		notify.pushVideo("123", "title", "desc");
+		notify.pushVideo("123","m123");
 		System.out.println(notify.toJson());
 	}
 
 	@Test
 	public void music() {
 		MusicNotify notify = new MusicNotify("to");
-		notify.pushMusic("title", "desc", "url", "hqUrl", "mediaId");
+		notify.pushMusic("url", "hqUrl", "mediaId");
 		System.out.println(notify.toJson());
 	}
 
@@ -74,13 +77,24 @@ public class MessageNotifyTest {
 	}
 
 	@Test
-	public void send() {
-		BaseNotify t = new TextNotify("哈哈哈哈", "owGBft_vbBbOaQOmpEUE4xDLeRSU");
+	public void send1() {
+		BaseNotify notify = new TextNotify("哈哈哈哈", "owGBft_vbBbOaQOmpEUE4xDLeRSU");
 		try {
-			weixinProxy.sendNotify(t);
+			weixinProxy.sendNotify(notify);
 			String mediaId = weixinProxy.uploadMedia(new File("D:\\test.jpg"), MediaType.image);
-			t = new ImageNotify(mediaId, "owGBft_vbBbOaQOmpEUE4xDLeRSU");
+			ImageNotify t = new ImageNotify("owGBft_vbBbOaQOmpEUE4xDLeRSU");
+			t.pushMediaId(mediaId);
 			weixinProxy.sendNotify(t);
+		} catch (WeixinException e) {
+			System.out.println(e.getErrorCode());
+			System.out.println(e.getErrorMsg());
+		}
+	}
+	
+	@Test
+	public void send2() {
+		try {
+			weixinProxy.sendNotify("to",new Music("thumbMediaId"));
 		} catch (WeixinException e) {
 			System.out.println(e.getErrorCode());
 			System.out.println(e.getErrorMsg());

@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.WeixinProxy;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Button;
-import com.foxinmy.weixin4j.model.Button.BtnType;
+import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
  * 自定义菜单测试
@@ -31,7 +31,7 @@ public class ButtonTest {
 		List<Button> btnList = new ArrayList<Button>();
 
 		Button b = new Button("test");
-		b.setType(BtnType.click);
+		b.setType(ButtonType.click);
 		b.setKey("123");
 		btnList.add(b);
 		

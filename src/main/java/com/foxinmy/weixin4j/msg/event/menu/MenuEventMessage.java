@@ -1,17 +1,18 @@
-package com.foxinmy.weixin4j.msg.event;
+package com.foxinmy.weixin4j.msg.event.menu;
 
+import com.foxinmy.weixin4j.msg.event.EventMessage;
 import com.foxinmy.weixin4j.type.EventType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * 自定义菜单事件
+ * 自定义菜单事件(view|click)
+ * 
  * @className MenuEventMessage
  * @author jy.hu
  * @date 2014年4月6日
  * @since JDK 1.7
- * @see <a href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6%E6%8E%A8%E9%80%81#.E8.87.AA.E5.AE.9A.E4.B9.89.E8.8F.9C.E5.8D.95.E4.BA.8B.E4.BB.B6">自定义菜单事件</a>
- * @see com.foxinmy.weixin4j.msg.BaseMessage
- * @see com.foxinmy.weixin4j.msg.BaseMessage#toXml()
+ * @see <a
+ *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E4%BA%8B%E4%BB%B6%E6%8E%A8%E9%80%81#.E7.82.B9.E5.87.BB.E8.8F.9C.E5.8D.95.E6.8B.89.E5.8F.96.E6.B6.88.E6.81.AF.E6.97.B6.E7.9A.84.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81">菜单事件</a>
  */
 public class MenuEventMessage extends EventMessage {
 
@@ -28,14 +29,11 @@ public class MenuEventMessage extends EventMessage {
 		return eventKey;
 	}
 
-	public void setEventKey(String eventKey) {
-		this.eventKey = eventKey;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("[MenuEventMessage ,toUserName=").append(super.getToUserName());
+		sb.append("[MenuEventMessage ,toUserName=").append(
+				super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
 		sb.append(" ,msgType=").append(super.getMsgType().name());
 		sb.append(" ,eventType=").append(super.getEventType().name());

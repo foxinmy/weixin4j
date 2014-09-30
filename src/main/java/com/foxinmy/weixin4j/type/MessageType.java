@@ -10,6 +10,7 @@ import com.foxinmy.weixin4j.msg.in.VideoMessage;
 import com.foxinmy.weixin4j.msg.in.VoiceMessage;
 import com.foxinmy.weixin4j.msg.out.ArticleMessage;
 import com.foxinmy.weixin4j.msg.out.MusicMessage;
+import com.foxinmy.weixin4j.msg.out.TransferMessage;
 
 /**
  * 
@@ -20,9 +21,13 @@ import com.foxinmy.weixin4j.msg.out.MusicMessage;
  */
 public enum MessageType {
 	// 接收到的消息类型
-	text(TextMessage.class), image(ImageMessage.class), voice(VoiceMessage.class), video(VideoMessage.class), location(LocationMessage.class), link(LinkMessage.class), event(EventMessage.class),
+	text(TextMessage.class), image(ImageMessage.class), voice(
+			VoiceMessage.class), video(VideoMessage.class), location(
+			LocationMessage.class), link(LinkMessage.class), event(
+			EventMessage.class),
 	// 发送的消息类型
-	music(MusicMessage.class), news(ArticleMessage.class);
+	music(MusicMessage.class), news(ArticleMessage.class), transfer_customer_service(
+			TransferMessage.class);
 	private Class<? extends BaseMessage> messageClass;
 
 	MessageType(Class<? extends BaseMessage> messageClass) {

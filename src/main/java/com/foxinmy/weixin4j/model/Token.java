@@ -2,10 +2,12 @@ package com.foxinmy.weixin4j.model;
 
 import java.io.Serializable;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * access_token是公众号的全局唯一票据,公众号调用各接口时都需使用access_token,正常情况下access_token有效期为7200秒,重复获取将导致上次获取的access_token失效
+ * access_token是公众号的全局唯一票据,公众号调用各接口时都需使用access_token,正常情况下access_token有效期为7200秒,
+ * 重复获取将导致上次获取的access_token失效
  * 
  * @className Token
  * @author jy.hu
@@ -18,25 +20,27 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class Token implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private String access_token;
-	private int expires_in;
+	@JSONField(name = "access_token")
+	private String accessToken;
+	@JSONField(name = "expires_in")
+	private int expiresIn;
 	private String openid;
 	private long time;
 
-	public String getAccess_token() {
-		return access_token;
+	public String getAccessToken() {
+		return accessToken;
 	}
 
-	public void setAccess_token(String access_token) {
-		this.access_token = access_token;
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 
-	public int getExpires_in() {
-		return expires_in;
+	public int getExpiresIn() {
+		return expiresIn;
 	}
 
-	public void setExpires_in(int expires_in) {
-		this.expires_in = expires_in;
+	public void setExpiresIn(int expiresIn) {
+		this.expiresIn = expiresIn;
 	}
 
 	public String getOpenid() {
@@ -58,18 +62,13 @@ public class Token implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Token) {
-			return access_token.equals(((Token) obj).getAccess_token());
+			return accessToken.equals(((Token) obj).getAccessToken());
 		}
 		return false;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[Token access_token=").append(access_token);
-		sb.append(", expires_in=").append(expires_in);
-		sb.append(", openid=").append(openid);
-		sb.append(", time=").append(time).append("]");
-		return sb.toString();
+		return "Token [accessToken=" + accessToken + ", expiresIn=" + expiresIn + ", openid=" + openid + ", time=" + time + "]";
 	}
 }

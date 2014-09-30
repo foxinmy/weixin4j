@@ -1,7 +1,9 @@
 package com.foxinmy.weixin4j.test;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import com.foxinmy.weixin4j.msg.BaseMessage;
 import com.foxinmy.weixin4j.msg.TextMessage;
 import com.foxinmy.weixin4j.msg.out.ArticleMessage;
 import com.foxinmy.weixin4j.msg.out.ImageMessage;
@@ -17,56 +19,52 @@ import com.foxinmy.weixin4j.msg.out.VoiceMessage;
  * @since JDK 1.7
  */
 public class MessageOutTest {
+	private BaseMessage inMessage;
+
+	@Before
+	public void init() {
+		this.inMessage = new TextMessage();
+		this.inMessage.setFromUserName("fromusername");
+		this.inMessage.setToUserName("tousername");
+	}
+
 	@Test
 	public void text() {
-		TextMessage message = new TextMessage();
-		message.setFromUserName("fromUser");
-		message.setToUserName("toUser");
-		message.setContent("text message");
+		TextMessage message = new TextMessage("text", inMessage);
 		System.out.println(message.toXml());
 	}
 
 	@Test
 	public void image() {
-		ImageMessage message = new ImageMessage();
-		message.setFromUserName("fromUser");
-		message.setToUserName("toUser");
+		ImageMessage message = new ImageMessage(inMessage);
 		message.pushMediaId("mediaId");
 		System.out.println(message.toXml());
 	}
 
 	@Test
 	public void voice() {
-		VoiceMessage message = new VoiceMessage();
-		message.setFromUserName("fromUser");
-		message.setToUserName("toUser");
+		VoiceMessage message = new VoiceMessage(inMessage);
 		message.pushMediaId("mediaId");
 		System.out.println(message.toXml());
 	}
-	
+
 	@Test
 	public void video() {
-		VideoMessage message = new VideoMessage();
-		message.setFromUserName("fromUser");
-		message.setToUserName("toUser");
-		message.pushVideo("mediaId", "title", "title");
+		VideoMessage message = new VideoMessage(inMessage);
+		message.pushVideo("mediaId");
 		System.out.println(message.toXml());
 	}
-	
+
 	@Test
 	public void music() {
-		MusicMessage message = new MusicMessage();
-		message.setFromUserName("fromUser");
-		message.setToUserName("toUser");
-		message.pushMusic("title", "desc", "url", "hqurl", "mediaId");
+		MusicMessage message = new MusicMessage(inMessage);
+		message.pushMusic("mediaId");
 		System.out.println(message.toXml());
 	}
-	
+
 	@Test
 	public void article() {
-		ArticleMessage message = new ArticleMessage();
-		message.setFromUserName("fromUser");
-		message.setToUserName("toUser");
+		ArticleMessage message = new ArticleMessage(inMessage);
 		message.pushArticle("title1", "desc1", "picUrl1", "url1");
 		message.pushArticle("title2", "desc2", "picUrl2", "url2");
 		System.out.println(message.toXml());

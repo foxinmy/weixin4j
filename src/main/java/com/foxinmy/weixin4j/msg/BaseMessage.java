@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.io.Writer;
 
 import com.foxinmy.weixin4j.type.MessageType;
-import com.foxinmy.weixin4j.util.WeixinConfig;
-import com.foxinmy.weixin4j.util.WeixinUtil;
 import com.foxinmy.weixin4j.xml.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -14,8 +12,11 @@ import com.thoughtworks.xstream.io.json.JsonWriter;
 
 /**
  * 普通消息基类
- * <p><font color="red">回复图片等多媒体消息时需要预先上传多媒体文件到微信服务器,
- * 假如服务器无法保证在五秒内处理并回复，可以直接回复空串，微信服务器不会对此作任何处理，并且不会发起重试</font></p>
+ * <p>
+ * <font color="red">回复图片等多媒体消息时需要预先上传多媒体文件到微信服务器,
+ * 假如服务器无法保证在五秒内处理并回复，可以直接回复空串，微信服务器不会对此作任何处理，并且不会发起重试</font>
+ * </p>
+ * 
  * @className BaseMessage
  * @author jy.hu
  * @date 2014年4月6日
@@ -24,7 +25,8 @@ import com.thoughtworks.xstream.io.json.JsonWriter;
 public class BaseMessage implements Serializable {
 
 	private static final long serialVersionUID = 7761192742840031607L;
-
+	private static XStream xstream;
+	
 	@XStreamAlias("ToUserName")
 	private String toUserName; // 开发者微信号
 	@XStreamAlias("FromUserName")
@@ -36,8 +38,23 @@ public class BaseMessage implements Serializable {
 	@XStreamAlias("MsgId")
 	private long msgId; // 消息ID
 
+	static{
+		xstream = new XStream();
+	}
+	
 	public BaseMessage(MessageType msgType) {
 		this.msgType = msgType;
+	}
+
+	public BaseMessage(MessageType msgType, BaseMessage inMessage) {
+		this(msgType, inMessage.getFromUserName(), inMessage.getToUserName());
+	}
+
+	public BaseMessage(MessageType msgType, String toUserName,
+			String fromUserName) {
+		this.msgType = msgType;
+		this.toUserName = toUserName;
+		this.fromUserName = fromUserName;
 	}
 
 	public String getToUserName() {
@@ -87,25 +104,35 @@ public class BaseMessage implements Serializable {
 		}
 		return false;
 	}
-	
+
+	protected XStream getXStream() {
+		Class<? extends BaseMessage> targetClass = getMsgType()
+				.getMessageClass();
+		xstream.alias("xml", targetClass);
+		xstream.autodetectAnnotations(true);
+		xstream.processAnnotations(targetClass);
+		xstream.omitField(BaseMessage.class, "msgId");
+		return xstream;
+	}
+
 	/**
 	 * 消息对象转换为微信服务器接受的xml格式消息
+	 * 
 	 * @return xml字符串
 	 */
 	public String toXml() {
-		XStream xstream = new XStream();
-		xstream.alias("xml", getMsgType().getMessageClass());
+		Class<? extends BaseMessage> targetClass = getMsgType()
+				.getMessageClass();
+		xstream.alias("xml", targetClass);
 		xstream.autodetectAnnotations(true);
-		xstream.processAnnotations(getMsgType().getMessageClass());
+		xstream.processAnnotations(targetClass);
 		xstream.omitField(BaseMessage.class, "msgId");
-		if (WeixinUtil.isBlank(fromUserName)) {
-			setFromUserName(WeixinConfig.getValue("app_openId"));
-		}
 		return xstream.toXML(this);
 	}
 
 	/**
 	 * 消息对象转换为微信服务器接受的json格式字符串
+	 * 
 	 * @return json字符串
 	 */
 	public String toJson() {
@@ -118,9 +145,6 @@ public class BaseMessage implements Serializable {
 		xstream.autodetectAnnotations(true);
 		xstream.processAnnotations(getMsgType().getMessageClass());
 		xstream.omitField(BaseMessage.class, "msgId");
-		if (WeixinUtil.isBlank(fromUserName)) {
-			setFromUserName(WeixinConfig.getValue("app_openId"));
-		}
 		return xstream.toXML(this);
 	}
 }

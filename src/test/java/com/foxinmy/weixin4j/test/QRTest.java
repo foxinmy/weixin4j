@@ -25,10 +25,10 @@ public class QRTest {
 
 	@Test
 	public void temp_qr() {
-		QRParameter qr = new QRParameter(1200, QRType.QR_SCENE, 1);
+		QRParameter qr = new QRParameter(1200, QRType.TEMPORARY, 2);
 		try {
 			System.out.println(qr.toJson());
-			weixinProxy.getQR(qr);
+			System.out.println(weixinProxy.getQR(qr));
 		} catch (WeixinException e) {
 			System.out.println(e.getErrorCode());
 			System.out.println(e.getErrorMsg());
@@ -37,10 +37,10 @@ public class QRTest {
 
 	@Test
 	public void forever_qr() {
-		QRParameter qr = new QRParameter(QRType.QR_LIMIT_SCENE, 1);
+		QRParameter qr = new QRParameter(QRType.PERMANENCE, 1);
 		try {
 			System.out.println(qr.toJson());
-			weixinProxy.getQR(qr);
+			System.out.println(weixinProxy.getQR(qr));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

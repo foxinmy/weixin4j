@@ -1,7 +1,10 @@
 package com.foxinmy.weixin4j.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 用户token 一般通过授权页面获得
+ * 
  * @className UserToken
  * @author jy.hu
  * @date 2014年4月6日
@@ -13,16 +16,17 @@ public class UserToken extends Token {
 
 	private static final long serialVersionUID = 1L;
 
-	private String refresh_token;
+	@JSONField(name = "refresh_token")
+	private String refreshToken;
 
 	private String scope;
 
-	public String getRefresh_token() {
-		return refresh_token;
+	public String getRefreshToken() {
+		return refreshToken;
 	}
 
-	public void setRefresh_token(String refresh_token) {
-		this.refresh_token = refresh_token;
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 
 	public String getScope() {
@@ -35,13 +39,6 @@ public class UserToken extends Token {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[UserToken access_token=").append(super.getAccess_token());
-		sb.append(", expires_in=").append(super.getExpires_in());
-		sb.append(", openid=").append(super.getOpenid());
-		sb.append(", refresh_token=").append(refresh_token);
-		sb.append(", scope=").append(scope);
-		sb.append(", time=").append(super.getTime()).append("]");
-		return sb.toString();
+		return "UserToken [refreshToken=" + refreshToken + ", scope=" + scope + ", getAccessToken()=" + getAccessToken() + ", getExpiresIn()=" + getExpiresIn() + ", getOpenid()=" + getOpenid() + ", getTime()=" + getTime() + "]";
 	}
 }
