@@ -6,7 +6,7 @@ tencent weixin platform java sdk 微信公众平台接口开发工具包
 如何使用
 --------
 
-1.进入src/main/java/com/foxinmy/weixin4j目录编辑config.properties文件,把你的app信息填入,当然也可以通过构造函数的方式传入</br>
+1.编辑config.properties文件,填入appid/appsecret信息,当然也可以通过构造函数的方式传入.
 
 2.实例化一个WeixinProxy对象,默认appid/appsecret采用config.properties文件中填入的值,也可外部传入.
 
