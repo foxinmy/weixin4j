@@ -6,7 +6,7 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
 如何使用
 --------
 
-1.编辑config.properties文件,填入appid/appsecret信息,当然也可以通过构造函数的方式传入.
+1.编辑config.properties文件,填入appid/appsecret信息,当然也可通过构造函数传入.
 
 2.实例化一个WeixinProxy对象,如无特别指明appid/appsecret则使用config.properties中的值.
 
@@ -19,6 +19,8 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
     WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenApi());
     // weixinProxy = new WeixinProxy(new RedisTokenApi(appid,appsecret));
 
+4.mvn package.
+
 注意事项
 --------
 > 为了避免引入到工程造成config.properties配置文件的冲突
@@ -28,3 +30,9 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
 > 如果不想使用这种方式可以去掉pom.xml的resources节点最后一个子节点
 
 > 并修改src/main/java/com/foxinmy/weixin4j/util/WeixinConfig类相关代码以便正确获取api的uri.
+
+接下来
+------
+> netty服务.
+
+> 消息分发.
