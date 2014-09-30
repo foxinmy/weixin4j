@@ -27,3 +27,4 @@ target/*
 *.tmp
 Thumbs.db
 /target/
+.DS_Store
