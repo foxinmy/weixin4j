@@ -17,11 +17,11 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  * @since JDK 1.7
  * @see
  */
-public class TemplApi extends BaseApi {
+public class TmplApi extends BaseApi {
 
 	private final TokenApi tokenApi;
 
-	public TemplApi(TokenApi tokenApi) {
+	public TmplApi(TokenApi tokenApi) {
 		this.tokenApi = tokenApi;
 	}
 

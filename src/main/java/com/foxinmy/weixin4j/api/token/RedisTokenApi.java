@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token">获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class RedisTokenApi implements TokenApi {
+public class RedisTokenApi extends AbstractTokenApi {
 
 	private final HttpRequest request = new HttpRequest();
 
@@ -31,7 +31,8 @@ public class RedisTokenApi implements TokenApi {
 	private JedisPool jedisPool;
 
 	public RedisTokenApi() {
-		this(ConfigUtil.getValue("app_id"), ConfigUtil.getValue("app_secret"));
+		this.appid = getAppid();
+		this.appsecret = getAppsecret();
 	}
 
 	public RedisTokenApi(String appid, String appsecret) {
@@ -53,7 +54,8 @@ public class RedisTokenApi implements TokenApi {
 	@Override
 	public Token getToken() throws WeixinException {
 		if (StringUtil.isBlank(appid) || StringUtil.isBlank(appsecret)) {
-			throw new IllegalArgumentException("appid or appsecret not be null!");
+			throw new IllegalArgumentException(
+					"appid or appsecret not be null!");
 		}
 		Token token = null;
 		Jedis jedis = null;
@@ -62,9 +64,11 @@ public class RedisTokenApi implements TokenApi {
 			String key = String.format("token:%s", appid);
 			String accessToken = jedis.get(key);
 			if (StringUtil.isBlank(accessToken)) {
-				String api_token_uri = String.format(ConfigUtil.getValue("api_token_uri"), appid, appsecret);
+				String api_token_uri = String.format(
+						ConfigUtil.getValue("api_token_uri"), appid, appsecret);
 				token = request.get(api_token_uri).getAsObject(Token.class);
-				jedis.setex(key, token.getExpiresIn() - 3, token.getAccessToken());
+				jedis.setex(key, token.getExpiresIn() - 3,
+						token.getAccessToken());
 			} else {
 				token = new Token();
 				token.setAccessToken(accessToken);

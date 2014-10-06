@@ -25,21 +25,23 @@ import com.foxinmy.weixin4j.xml.XStream;
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token">获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class FileTokenApi implements TokenApi {
+public class FileTokenApi extends AbstractTokenApi {
 
 	private final HttpRequest request = new HttpRequest();
 
 	private final String appid;
 	private final String appsecret;
+
 	public FileTokenApi() {
-		this(ConfigUtil.getValue("app_id"), ConfigUtil.getValue("app_secret"));
+		this.appid = getAppid();
+		this.appsecret = getAppsecret();
 	}
 
 	public FileTokenApi(String appid, String appsecret) {
 		this.appid = appid;
 		this.appsecret = appsecret;
 	}
-	
+
 	/**
 	 * 获取token
 	 * <p>
@@ -55,22 +57,26 @@ public class FileTokenApi implements TokenApi {
 	@Override
 	public Token getToken() throws WeixinException {
 		if (StringUtil.isBlank(appid) || StringUtil.isBlank(appsecret)) {
-			throw new IllegalArgumentException("appid or appsecret not be null!");
+			throw new IllegalArgumentException(
+					"appid or appsecret not be null!");
 		}
 		XStream xstream = new XStream();
 		xstream.autodetectAnnotations(true);
 		xstream.processAnnotations(Token.class);
-		File token_file = new File(String.format("%s/token_%s.xml", ConfigUtil.getValue("token_path"), appid));
+		File token_file = new File(String.format("%s/token_%s.xml",
+				ConfigUtil.getValue("token_path"), appid));
 		Token token = null;
 		Calendar ca = Calendar.getInstance();
 		long now_time = ca.getTimeInMillis();
 		try {
-			String api_token_uri = String.format(ConfigUtil.getValue("api_token_uri"), appid, appsecret);
+			String api_token_uri = String.format(
+					ConfigUtil.getValue("api_token_uri"), appid, appsecret);
 			Response response = null;
 			if (token_file.exists()) {
 				token = (Token) xstream.fromXML(token_file);
 
-				long expise_time = token.getTime() + (token.getExpiresIn() * 1000) - 3;
+				long expise_time = token.getTime()
+						+ (token.getExpiresIn() * 1000) - 3;
 				if (expise_time > now_time) {
 					return token;
 				}

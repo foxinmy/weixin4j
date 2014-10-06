@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.api.MediaApi;
 import com.foxinmy.weixin4j.api.MenuApi;
 import com.foxinmy.weixin4j.api.NotifyApi;
 import com.foxinmy.weixin4j.api.QrApi;
-import com.foxinmy.weixin4j.api.TemplApi;
+import com.foxinmy.weixin4j.api.TmplApi;
 import com.foxinmy.weixin4j.api.UserApi;
 import com.foxinmy.weixin4j.api.token.FileTokenApi;
 import com.foxinmy.weixin4j.api.token.TokenApi;
@@ -47,7 +47,7 @@ public class WeixinProxy {
 	private final GroupApi groupApi;
 	private final MenuApi menuApi;
 	private final QrApi qrApi;
-	private final TemplApi templApi;
+	private final TmplApi templApi;
 
 	/**
 	 * 默认采用文件存放Token跟配置文件中的appi信息
@@ -74,7 +74,7 @@ public class WeixinProxy {
 		this.groupApi = new GroupApi(tokenApi);
 		this.menuApi = new MenuApi(tokenApi);
 		this.qrApi = new QrApi(tokenApi);
-		this.templApi = new TemplApi(tokenApi);
+		this.templApi = new TmplApi(tokenApi);
 	}
 
 	/**
