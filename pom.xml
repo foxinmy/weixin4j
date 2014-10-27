@@ -1,13 +1,35 @@
-<?xml version="1.0"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.foxinmy.weixin</groupId>
-	<version>0.0.1-SNAPSHOT</version>
+	<groupId>com.foxinmy.weixin4j</groupId>
 	<artifactId>weixin4j</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>weixin4j</name>
-
+	<modules>
+		<module>weixin4j-base</module>
+		<module>weixin4j-mp</module>
+		<module>weixin4j-qy</module>
+	</modules>
+	<properties>
+		<weixin4j.version>0.0.1-SNAPSHOT</weixin4j.version>
+		<junit.version>4.8.2</junit.version>
+		<dom4j.version>1.6.1</dom4j.version>
+		<logback.version>1.0.9</logback.version>
+		<jcl.over.version>1.7.6</jcl.over.version>
+		<log4j.over.version>1.7.6</log4j.over.version>
+		<xstream.version>1.4.7</xstream.version>
+		<httpclient.version>4.2.5</httpclient.version>
+		<commons.codec.version>1.9</commons.codec.version>
+		<fastjson.version>1.1.9</fastjson.version>
+		<jsoup.version>1.7.3</jsoup.version>
+		<jaxen.version>1.1.6</jaxen.version>
+		<jedis.version>2.6.0</jedis.version>
+		<netty.version>4.0.23.Final</netty.version>
+		<commons.lang.version>3.3.2</commons.lang.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -27,27 +49,7 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2.1</version>
-				<configuration>
-					<descriptors>
-						<descriptor>src/main/assembly.xml</descriptor>
-					</descriptors>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
-		<finalName>weixin4j</finalName>
 	</build>
 	<dependencies>
 		<dependency>
@@ -56,122 +58,7 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>${xstream.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>${httpclient.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-				<exclusion>
-					<groupId>commons-codec</groupId>
-					<artifactId>commons-codec</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-			<version>${httpclient.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>${commons.codec.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>${fastjson.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>${dom4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>logback-core</artifactId>
-					<groupId>ch.qos.logback</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${jcl.over.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>log4j-over-slf4j</artifactId>
-			<version>${log4j.over.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>${jsoup.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-			<version>${jaxen.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>${jedis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>${netty.version}</version>
-		</dependency>
 	</dependencies>
-
-	<properties>
-		<junit.version>4.8.2</junit.version>
-		<dom4j.version>1.6.1</dom4j.version>
-		<logback.version>1.0.9</logback.version>
-		<jcl.over.version>1.7.6</jcl.over.version>
-		<log4j.over.version>1.7.6</log4j.over.version>
-		<xstream.version>1.4.7</xstream.version>
-		<httpclient.version>4.2.5</httpclient.version>
-		<commons.codec.version>1.9</commons.codec.version>
-		<fastjson.version>1.1.9</fastjson.version>
-		<jsoup.version>1.7.3</jsoup.version>
-		<jaxen.version>1.1.6</jaxen.version>
-		<jedis.version>2.6.0</jedis.version>
-		<netty.version>4.0.23.Final</netty.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<profiles>
 		<profile>
 			<id>default</id>

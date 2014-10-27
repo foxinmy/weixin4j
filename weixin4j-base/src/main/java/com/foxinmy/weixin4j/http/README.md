@@ -1,0 +1,1 @@
+基于HttpClient封装的针对微信公众平台、微信企业号API的HttpRequest
