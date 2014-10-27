@@ -36,7 +36,7 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
 2014-10-27
  1).用netty构建http服务器并支持消息分发
  
- 接下来
- -----
- maven多模块分离
- 微信支付模块引入
+接下来
+------
+maven多模块分离
+微信支付模块引入
