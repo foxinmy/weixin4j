@@ -3,12 +3,38 @@ weixin4j
 
 tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.weixin.qq.com/wiki
 
+功能列表
+-------
+
+* TokenApi token实现API
+
+* MediaApi 上传/下载媒体文件API
+
+* NotifyApi 客服消息API
+
+* MassApi 群发消息API
+
+* UserApi 用户管理API
+
+* GroupApi 分组管理API
+
+* MenuApi 底部菜单API
+
+* QrApi 二维码API
+
+* TmplApi 模板消息API
+
+* HelperApi 辅助API
+
+* netty服务器 & 消息分发
+
+
 如何使用
 --------
 
-1.编辑config.properties文件,填入appid/appsecret信息,当然也可通过构造函数传入.
+1.编辑weixin.properties文件,填入appid/appsecret信息,当然也可通过构造函数传入.
 
-2.实例化一个WeixinProxy对象,如无特别指明appid/appsecret则使用config.properties中的值.
+2.实例化一个WeixinProxy对象,如无特别指明appid/appsecret则使用weixin.properties中的值.
 
     WeixinProxy weixinProxy = new WeixinProxy();
     // weixinProxy = new WeixinProxy(appid,appsecret);
@@ -19,18 +45,13 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
     WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenApi());
     // weixinProxy = new WeixinProxy(new RedisTokenApi(appid,appsecret));
 
-4.mvn package.
+4.mvn package,得到一个zip的压缩包,解压到启动目录(见src/main/startup.sh/APP_HOME)
 
-注意事项
---------
-> 为了避免引入到工程造成config.properties配置文件的冲突
+5.启动netty服务
 
-> 暂且把其放在WeixinProxy类同一目录下,package时会一起打入jar包
-
-> 如果不想使用这种方式可以去掉pom.xml的resources节点最后一个子节点
-
-> 并修改src/main/java/com/foxinmy/weixin4j/util/ConfigUtil类相关代码以便正确获取api的uri.
-
+    com.foxinmy.weixin4j.server.WeixinServiceBootstrap
+    sh startup.sh start
+	
 更新LOG
 -------
 2014-10-27

@@ -10,7 +10,6 @@ import org.dom4j.io.SAXReader;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.foxinmy.weixin4j.WeixinProxy;
 import com.thoughtworks.xstream.XStream;
 
 public class Response {
@@ -63,8 +62,10 @@ public class Response {
 		BaseResult result = getAsResult();
 		if (result.getErrcode() != 0) {
 			SAXReader reader = new SAXReader();
-			Document doc = reader.read(WeixinProxy.class.getResourceAsStream("error.xml"));
-			Node node = doc.getRootElement().selectSingleNode(String.format("error[@code='%d']", result.getErrcode()));
+			Document doc = reader.read(Thread.currentThread()
+					.getContextClassLoader().getResourceAsStream("error.xml"));
+			Node node = doc.getRootElement().selectSingleNode(
+					String.format("error[@code='%d']", result.getErrcode()));
 			if (node != null) {
 				result.setText(node.getStringValue());
 			}

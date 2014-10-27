@@ -47,22 +47,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>logback.xml</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.properties</include>
-					<include>**/error.xml</include>
-					<include>**/README.md</include>
-				</includes>
-			</resource>
-		</resources>
 		<finalName>weixin4j</finalName>
 	</build>
 	<dependencies>

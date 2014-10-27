@@ -6,8 +6,6 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.foxinmy.weixin4j.WeixinProxy;
-
 public class ConfigUtil {
 	public ConfigUtil() {
 	}
@@ -15,8 +13,8 @@ public class ConfigUtil {
 	private static Properties props = new Properties();
 	static {
 		try {
-			props.load(WeixinProxy.class
-					.getResourceAsStream("config.properties"));
+			props.load(Thread.currentThread().getContextClassLoader()
+					.getResourceAsStream("weixin.properties"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -38,6 +36,7 @@ public class ConfigUtil {
 		m.appendTail(sb);
 		return sb.toString();
 	}
+
 	public static void main(String[] args) {
 		System.out.println(getValue("api_token_uri"));
 	}

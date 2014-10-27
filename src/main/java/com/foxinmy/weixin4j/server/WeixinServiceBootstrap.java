@@ -24,8 +24,7 @@ public final class WeixinServiceBootstrap {
 	private final static int port;
 	private final static int workerThreads;
 	static {
-		ResourceBundle config = ResourceBundle
-				.getBundle("com.foxinmy.weixin4j.server.netty");
+		ResourceBundle config = ResourceBundle.getBundle("netty");
 		port = Integer.parseInt(config.getString("port"));
 		workerThreads = Integer.parseInt(config.getString("workerThreads"));
 	}
