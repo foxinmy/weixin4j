@@ -11,11 +11,11 @@ weixin4j
 	
 更新LOG
 -------
-2014-10-27
+* 2014-10-27
  
-1).maven多模块分离
+   1).maven多模块分离
  
-2).weixin4j-mp:用netty构建http服务器并支持消息分发
+   2).weixin4j-mp:用netty构建http服务器并支持消息分发
  
 接下来
 ------
