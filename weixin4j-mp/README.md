@@ -54,6 +54,6 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
 	
 更新LOG
 -------
-2014-10-27
+* 2014-10-27
 
- 1).用netty构建http服务器并支持消息分发
+   1).用netty构建http服务器并支持消息分发
