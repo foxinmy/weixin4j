@@ -7,12 +7,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.api.token.TokenApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Following;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.User;
 import com.foxinmy.weixin4j.model.UserToken;
-import com.foxinmy.weixin4j.msg.BaseResult;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
@@ -166,7 +166,7 @@ public class UserApi extends BaseApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E5%A4%87%E6%B3%A8%E5%90%8D%E6%8E%A5%E5%8F%A3">设置用户备注名</a>
 	 */
-	public BaseResult updateUserRemark(String openId, String remark)
+	public BaseResult remarkUserName(String openId, String remark)
 			throws WeixinException {
 		String updateremark_uri = ConfigUtil.getValue("updateremark_uri");
 		Token token = tokenApi.getToken();

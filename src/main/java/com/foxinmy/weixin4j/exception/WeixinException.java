@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.exception;
 
 /**
  * 调用微信接口抛出的异常
+ * 
  * @className WeixinException
  * @author jy.hu
  * @date 2014年4月10日
@@ -29,10 +30,15 @@ public class WeixinException extends Exception {
 	}
 
 	public int getErrorCode() {
-		return this.errorCode;
+		return errorCode;
 	}
 
 	public String getErrorMsg() {
-		return this.errorMsg;
+		return errorMsg;
+	}
+
+	@Override
+	public String getMessage() {
+		return this.errorCode + "," + this.errorMsg;
 	}
 }

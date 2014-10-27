@@ -27,7 +27,9 @@ public enum MessageType {
 			EventMessage.class),
 	// 发送的消息类型
 	music(MusicMessage.class), news(ArticleMessage.class), transfer_customer_service(
-			TransferMessage.class);
+			TransferMessage.class),
+	// 微信消息认证
+	signature(null);
 	private Class<? extends BaseMessage> messageClass;
 
 	MessageType(Class<? extends BaseMessage> messageClass) {

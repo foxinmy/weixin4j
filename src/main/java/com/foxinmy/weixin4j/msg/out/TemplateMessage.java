@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * 模板消息
@@ -13,7 +14,7 @@ import com.alibaba.fastjson.JSON;
  * @author jy
  * @date 2014年9月29日
  * @since JDK 1.7
- * @see
+ * @see <a href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3">模板消息</a>
  */
 public class TemplateMessage implements Serializable {
 
@@ -29,11 +30,13 @@ public class TemplateMessage implements Serializable {
 		this.data.put(key, new Item(value));
 	}
 
-	public TemplateMessage(String touser, String template_id, String url) {
+	public TemplateMessage(String touser, String template_id, String title,
+			String url) {
 		this.touser = touser;
 		this.template_id = template_id;
 		this.url = url;
 		this.data = new HashMap<String, Item>();
+		pushData("first", title);
 	}
 
 	private static class Item implements Serializable {
@@ -111,6 +114,7 @@ public class TemplateMessage implements Serializable {
 				+ ", data=" + data + "]";
 	}
 
+	@JSONField(serialize = false)
 	public String toJson() {
 		return JSON.toJSONString(this);
 	}

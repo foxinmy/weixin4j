@@ -1,13 +1,16 @@
-package com.foxinmy.weixin4j.test;
+package com.foxinmy.weixin4j.test.msg;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.foxinmy.weixin4j.WeixinProxy;
+import com.foxinmy.weixin4j.api.MediaApi;
+import com.foxinmy.weixin4j.api.NotifyApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.msg.model.Music;
+import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.msg.notify.ArticleNotify;
 import com.foxinmy.weixin4j.msg.notify.BaseNotify;
 import com.foxinmy.weixin4j.msg.notify.ImageNotify;
@@ -15,23 +18,27 @@ import com.foxinmy.weixin4j.msg.notify.MusicNotify;
 import com.foxinmy.weixin4j.msg.notify.TextNotify;
 import com.foxinmy.weixin4j.msg.notify.VideoNotify;
 import com.foxinmy.weixin4j.msg.notify.VoiceNotify;
+import com.foxinmy.weixin4j.test.TokenTest;
 import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 客服消息测试
+ * 
  * @className MessageNotifyTest
  * @author jy.hu
  * @date 2014年4月10日
  * @since JDK 1.7
  * @see
  */
-public class MessageNotifyTest {
+public class NotifyMsgTest extends TokenTest {
 
-	private WeixinProxy weixinProxy;
+	private NotifyApi notifyApi;
+	private MediaApi mediaApi;
 
 	@Before
 	public void init() {
-		weixinProxy = new WeixinProxy();
+		notifyApi = new NotifyApi(tokenApi);
+		mediaApi = new MediaApi(tokenApi);
 	}
 
 	@Test
@@ -57,7 +64,7 @@ public class MessageNotifyTest {
 	@Test
 	public void video() {
 		VideoNotify notify = new VideoNotify("to");
-		notify.pushVideo("123","m123");
+		notify.pushVideo("123", "m123");
 		System.out.println(notify.toJson());
 	}
 
@@ -77,27 +84,21 @@ public class MessageNotifyTest {
 	}
 
 	@Test
-	public void send1() {
-		BaseNotify notify = new TextNotify("哈哈哈哈", "owGBft_vbBbOaQOmpEUE4xDLeRSU");
-		try {
-			weixinProxy.sendNotify(notify);
-			String mediaId = weixinProxy.uploadMedia(new File("D:\\test.jpg"), MediaType.image);
-			ImageNotify t = new ImageNotify("owGBft_vbBbOaQOmpEUE4xDLeRSU");
-			t.pushMediaId(mediaId);
-			weixinProxy.sendNotify(t);
-		} catch (WeixinException e) {
-			System.out.println(e.getErrorCode());
-			System.out.println(e.getErrorMsg());
-		}
+	public void send1() throws IOException, WeixinException {
+		BaseNotify notify = new TextNotify("this is a notify message!",
+				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
+		BaseResult result = notifyApi.sendNotify(notify);
+		Assert.assertEquals(0, result.getErrcode());
 	}
-	
+
 	@Test
-	public void send2() {
-		try {
-			weixinProxy.sendNotify("to",new Music("thumbMediaId"));
-		} catch (WeixinException e) {
-			System.out.println(e.getErrorCode());
-			System.out.println(e.getErrorMsg());
-		}
+	public void send2() throws WeixinException, IOException {
+		String mediaId = mediaApi.uploadMedia(new File(
+				"/tmp/test.jpg"), MediaType.image);
+		ImageNotify imageNotify = new ImageNotify(
+				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
+		imageNotify.pushMediaId(mediaId);
+		BaseResult result = notifyApi.sendNotify(imageNotify);
+		Assert.assertEquals(0, result.getErrcode());
 	}
 }

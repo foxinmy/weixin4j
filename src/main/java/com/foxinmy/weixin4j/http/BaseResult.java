@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.msg;
+package com.foxinmy.weixin4j.http;
 
 import java.io.Serializable;
 

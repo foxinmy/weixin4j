@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
@@ -15,6 +16,7 @@ import com.foxinmy.weixin4j.api.UserApi;
 import com.foxinmy.weixin4j.api.token.FileTokenApi;
 import com.foxinmy.weixin4j.api.token.TokenApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.CustomRecord;
 import com.foxinmy.weixin4j.model.Following;
@@ -23,7 +25,6 @@ import com.foxinmy.weixin4j.model.MpArticle;
 import com.foxinmy.weixin4j.model.QRParameter;
 import com.foxinmy.weixin4j.model.User;
 import com.foxinmy.weixin4j.model.UserToken;
-import com.foxinmy.weixin4j.msg.BaseResult;
 import com.foxinmy.weixin4j.msg.model.Article;
 import com.foxinmy.weixin4j.msg.model.BaseMsg;
 import com.foxinmy.weixin4j.msg.notify.BaseNotify;
@@ -47,7 +48,7 @@ public class WeixinProxy {
 	private final GroupApi groupApi;
 	private final MenuApi menuApi;
 	private final QrApi qrApi;
-	private final TmplApi templApi;
+	private final TmplApi tmplApi;
 
 	/**
 	 * 默认采用文件存放Token跟配置文件中的appi信息
@@ -74,7 +75,7 @@ public class WeixinProxy {
 		this.groupApi = new GroupApi(tokenApi);
 		this.menuApi = new MenuApi(tokenApi);
 		this.qrApi = new QrApi(tokenApi);
-		this.templApi = new TmplApi(tokenApi);
+		this.tmplApi = new TmplApi(tokenApi);
 	}
 
 	/**
@@ -90,12 +91,13 @@ public class WeixinProxy {
 	 *            媒体类型
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @throws WeixinException
+	 * @throws IOException 
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 */
 	public String uploadMedia(File file, MediaType mediaType)
-			throws WeixinException {
+			throws WeixinException, IOException {
 		return mediaApi.uploadMedia(file, mediaType);
 	}
 
@@ -127,12 +129,13 @@ public class WeixinProxy {
 	 *            媒体类型
 	 * @return 写入硬盘后的文件对象
 	 * @throws WeixinException
+	 * @throws IOException 
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 */
 	public File downloadMedia(String mediaId, MediaType mediaType)
-			throws WeixinException {
+			throws WeixinException, IOException {
 		return mediaApi.downloadMedia(mediaId, mediaType);
 	}
 
@@ -464,9 +467,9 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E5%A4%87%E6%B3%A8%E5%90%8D%E6%8E%A5%E5%8F%A3">设置用户备注名</a>
 	 */
-	public BaseResult updateUserRemark(String openId, String remark)
+	public BaseResult remarkUserName(String openId, String remark)
 			throws WeixinException {
-		return userApi.updateUserRemark(openId, remark);
+		return userApi.remarkUserName(openId, remark);
 	}
 
 	/**
@@ -625,11 +628,12 @@ public class WeixinProxy {
 	 *            二维码参数
 	 * @return 硬盘存储的文件对象
 	 * @throws WeixinException
+	 * @throws IOException 
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E7%94%9F%E6%88%90%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81">二维码</a>
 	 * @see com.foxinmy.weixin4j.model.QRParameter
 	 */
-	public File getQR(QRParameter parameter) throws WeixinException {
+	public File getQR(QRParameter parameter) throws WeixinException, IOException {
 		return qrApi.getQR(parameter);
 	}
 
@@ -644,8 +648,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.msg.out.TemplateMessage
 	 * @seee com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 */
-	public BaseResult sendTplMessage(TemplateMessage tplMessage)
+	public BaseResult sendTmplMessage(TemplateMessage tplMessage)
 			throws WeixinException {
-		return templApi.sendTplMessage(tplMessage);
+		return tmplApi.sendTmplMessage(tplMessage);
 	}
 }

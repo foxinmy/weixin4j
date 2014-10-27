@@ -1,8 +1,9 @@
-package com.foxinmy.weixin4j;
+package com.foxinmy.weixin4j.spider;
 
 import java.io.Serializable;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +38,16 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.util.IOUtil;
+import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
- * 用于微信公众号绑定(模拟登录|启用开发者模式|修改服务器配置|修改回调地址|创建自定义菜单)
+ * 模拟微信WEB登陆
  * 
- * @className WeixinBind
+ * <p>
+ * (模拟登录|启用开发者模式|修改服务器配置|修改回调地址|创建自定义菜单....more)
+ * </p>
+ * 
+ * @className WeixinExecutor
  * @author jy
  * @date 2014年8月15日
  * @since JDK 1.7
@@ -53,7 +59,8 @@ public class WeixinExecutor implements Serializable {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final static Charset charset = Charset.forName("utf-8");
+	private final static Charset charset = StandardCharsets.UTF_8;
+
 	private final static Map<String, String> accountMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 1L;
 
@@ -65,6 +72,7 @@ public class WeixinExecutor implements Serializable {
 			put("微信号", "weixinNo");
 			put("类型", "accountType");
 			put("认证情况", "weixinVerify");
+			put("主体信息", "bodyInfo");
 			put("介绍", "introduce");
 			put("所在地址", "address");
 			put("二维码", "qrcodeUrl");
@@ -91,7 +99,8 @@ public class WeixinExecutor implements Serializable {
 	// 当要求输入验证码时,cookie需带上
 	private String sig;
 
-	public WeixinExecutor(String backurl, String pushurl, String token, String uname, String pwd, String imgcode, String sig) {
+	public WeixinExecutor(String backurl, String pushurl, String token,
+			String uname, String pwd, String imgcode, String sig) {
 		this.backurl = backurl;
 		this.pushurl = pushurl;
 		this.token = token;
@@ -105,19 +114,31 @@ public class WeixinExecutor implements Serializable {
 		weixin.put("host", "mp.weixin.qq.com");
 		weixin.put("base", "https://mp.weixin.qq.com");
 		weixin.put("auth", "https://mp.weixin.qq.com/cgi-bin/login?lang=zh_CN");
-		weixin.put("call", "https://mp.weixin.qq.com/advanced/callbackprofile?t=ajax-response&token=%s&lang=zh_CN");
-		weixin.put("start", "https://mp.weixin.qq.com/misc/skeyform?form=advancedswitchform");
-		weixin.put("back", "https://mp.weixin.qq.com/merchant/myservice?action=set_oauth_domain&f=json");
-		weixin.put("verifycode", "https://mp.weixin.qq.com/cgi-bin/verifycode?username=" + uname + "&r=%s");
+		weixin.put(
+				"call",
+				"https://mp.weixin.qq.com/advanced/callbackprofile?t=ajax-response&token=%s&lang=zh_CN");
+		weixin.put("start",
+				"https://mp.weixin.qq.com/misc/skeyform?form=advancedswitchform");
+		weixin.put("back",
+				"https://mp.weixin.qq.com/merchant/myservice?action=set_oauth_domain&f=json");
+		weixin.put("verifycode",
+				"https://mp.weixin.qq.com/cgi-bin/verifycode?username=" + uname
+						+ "&r=%s");
+		weixin.put("bedeveloper",
+				"https://mp.weixin.qq.com/advanced/advanced?action=agreement");
 
 		List<BasicHeader> headers = new ArrayList<BasicHeader>();
 		headers.add(new BasicHeader("Origin", weixin.getString("base")));
 		headers.add(new BasicHeader("Connection", "keep-alive"));
-		headers.add(new BasicHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.143 Safari/537.36"));
+		headers.add(new BasicHeader(
+				"User-Agent",
+				"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.143 Safari/537.36"));
 
 		client = new DefaultHttpClient();
-		client.getParams().setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.BROWSER_COMPATIBILITY);
-		client.getParams().setBooleanParameter("http.protocol.single-cookie-header", true);
+		client.getParams().setParameter(ClientPNames.COOKIE_POLICY,
+				CookiePolicy.BROWSER_COMPATIBILITY);
+		client.getParams().setBooleanParameter(
+				"http.protocol.single-cookie-header", true);
 		client.getParams().setParameter(ClientPNames.DEFAULT_HEADERS, headers);
 
 		host = new HttpHost(weixin.getString("host"), -1, "https");
@@ -158,7 +179,8 @@ public class WeixinExecutor implements Serializable {
 		try {
 			List<NameValuePair> parameters = new ArrayList<NameValuePair>();
 			parameters.add(new BasicNameValuePair("username", uname));
-			parameters.add(new BasicNameValuePair("pwd", DigestUtils.md5Hex(pwd.getBytes())));
+			parameters.add(new BasicNameValuePair("pwd", DigestUtils.md5Hex(pwd
+					.getBytes())));
 			parameters.add(new BasicNameValuePair("f", "json"));
 			parameters.add(new BasicNameValuePair("imgcode", imgcode));
 			if (!StringUtil.isBlank(imgcode)) {
@@ -169,15 +191,18 @@ public class WeixinExecutor implements Serializable {
 
 			HttpResponse response = client.execute(host, method);
 			HttpEntity entity = response.getEntity();
-			Document root = Jsoup.parse(entity.getContent(), charset.name(), weixin.getString("base"));
+			Document root = Jsoup.parse(entity.getContent(), charset.name(),
+					weixin.getString("base"));
 			StatusLine line = response.getStatusLine();
-			logger.info("step1_login--->status={},body=\n{}", line, root.toString());
+			logger.info("step1_login--->status={},body=\n{}", line,
+					root.toString());
 			if (line.getStatusCode() == HttpStatus.SC_OK) {
 				JSONObject body = JSON.parseObject(root.body().text());
 
 				String msg = "";
 				int code = 0;
-				switch (body.getJSONObject("base_resp").getIntValue("ret")) {
+				switch (body.getIntValue("ret")
+						+ body.getJSONObject("base_resp").getIntValue("ret")) {
 				case -1:
 					msg = "系统错误，请稍候再试。";
 					code = -1;
@@ -223,20 +248,32 @@ public class WeixinExecutor implements Serializable {
 					break;
 				}
 				if (code == 0) {
-					weixin.put("urlToken", getQueryMap(body.getString("redirect_url")).get("token"));
-					weixin.put("indexUrl", String.format("%s%s", weixin.getString("base"), body.getString("redirect_url")));
+					weixin.put(
+							"urlToken",
+							getQueryMap(body.getString("redirect_url")).get(
+									"token"));
+					weixin.put("indexUrl", String.format("%s%s",
+							weixin.getString("base"),
+							body.getString("redirect_url")));
 					weixin.put("step", "1");
 				} else {
 					if (code == 104 || code == 105) {
 						// 下载验证码
-						HttpGet get = new HttpGet(String.format(weixin.getString("verifycode"), System.currentTimeMillis()));
+						HttpGet get = new HttpGet(String.format(
+								weixin.getString("verifycode"),
+								System.currentTimeMillis()));
 						get.setHeaders(method.getAllHeaders());
 						response = client.execute(host, get);
 						StringBuffer base64 = new StringBuffer();
-						base64.append("data:").append(response.getFirstHeader("Content-Type").getValue()).append(";base64,");
-						base64.append(new String(Base64.encodeBase64(IOUtil.toByteArray(response.getEntity().getContent())), charset));
+						base64.append("data:")
+								.append(response.getFirstHeader("Content-Type")
+										.getValue()).append(";base64,");
+						base64.append(new String(
+								Base64.encodeBase64(IOUtil.toByteArray(response
+										.getEntity().getContent())), charset));
 						weixin.put("verifydata", base64.toString());
-						List<Cookie> cookieList = client.getCookieStore().getCookies();
+						List<Cookie> cookieList = client.getCookieStore()
+								.getCookies();
 						for (Cookie cookie : cookieList) {
 							if (cookie.getName().equals("sig")) {
 								weixin.put("sig", cookie.getValue());
@@ -274,38 +311,46 @@ public class WeixinExecutor implements Serializable {
 
 			HttpResponse response = client.execute(host, method);
 			HttpEntity entity = response.getEntity();
-			Document root = Jsoup.parse(entity.getContent(), charset.name(), weixin.getString("base"));
+			Document root = Jsoup.parse(entity.getContent(), charset.name(),
+					weixin.getString("base"));
 			StatusLine line = response.getStatusLine();
-			logger.info("step2_setting--->status={},body=\n{}", line, root.toString());
+			logger.info("step2_setting--->status={},body=\n{}", line,
+					root.toString());
 			if (line.getStatusCode() == HttpStatus.SC_OK) {
-				Element ele = root.getElementById("menuBar").getElementsByTag("dl").last();
+				Element ele = root.getElementById("menuBar")
+						.getElementsByTag("dl").last();
 				url = ele.getElementsByTag("a").last().absUrl("href");
 
 				weixin.put("developerUrl", url);
 
 				method.addHeader("Referer", url);
-				url = ele.previousElementSibling().getElementsByTag("a").first().absUrl("href");
+				url = ele.previousElementSibling().getElementsByTag("a")
+						.first().absUrl("href");
 				weixin.put("settingUrl", url);
 				method.setURI(URI.create(url));
 
 				response = client.execute(host, method);
 				entity = response.getEntity();
-				root = Jsoup.parse(entity.getContent(), charset.name(), weixin.getString("base"));
+				root = Jsoup.parse(entity.getContent(), charset.name(),
+						weixin.getString("base"));
 				line = response.getStatusLine();
 				weixin.put("step", "2-1");
 				// 公众号配置页面
 				if (line.getStatusCode() == HttpStatus.SC_OK) {
-					Elements eles = root.getElementById("settingArea").getElementsByTag("li");
+					Elements eles = root.getElementById("settingArea")
+							.getElementsByTag("li");
 					String key, value;
 					for (Element element : eles) {
 						key = element.getElementsByTag("h4").first().text();
-						ele = element.getElementsByClass("meta_content").first();
+						ele = element.getElementsByClass("meta_content")
+								.first();
 						if (ele.children().isEmpty()) {
 							value = ele.text();
 						} else {
 							if (ele.child(0).tagName().equalsIgnoreCase("a")) {
 								value = ele.child(0).absUrl("href");
-							} else if (ele.child(0).tagName().equalsIgnoreCase("img")) {
+							} else if (ele.child(0).tagName()
+									.equalsIgnoreCase("img")) {
 								value = ele.child(0).absUrl("src");
 							} else {
 								value = ele.text();
@@ -313,14 +358,18 @@ public class WeixinExecutor implements Serializable {
 						}
 						weixin.put(accountMap.get(key), value);
 					}
-					weixin.put("isVerify", weixin.getString("weixinVerify").contains("微信认证"));
-					weixin.put("isService", weixin.getString("accountType").contains("服务号"));
-					weixin.put("isSubscribe", weixin.getString("accountType").contains("订阅号"));
+					weixin.put("isVerify", weixin.getString("weixinVerify")
+							.contains("微信认证"));
+					weixin.put("isService", weixin.getString("accountType")
+							.contains("服务号"));
+					weixin.put("isSubscribe", weixin.getString("accountType")
+							.contains("订阅号"));
 					value = weixin.getString("qrcodeUrl");
 
 					method.setURI(URI.create(value));
 					response = client.execute(host, method);
-					weixin.put("qrcodeData", IOUtil.toByteArray(response.getEntity().getContent()));
+					weixin.put("qrcodeData", IOUtil.toByteArray(response
+							.getEntity().getContent()));
 
 					weixin.put("step", "2-2");
 					// 开发者页面
@@ -329,26 +378,83 @@ public class WeixinExecutor implements Serializable {
 
 					response = client.execute(host, method);
 					entity = response.getEntity();
-					root = Jsoup.parse(entity.getContent(), charset.name(), weixin.getString("base"));
+					root = Jsoup.parse(entity.getContent(), charset.name(),
+							weixin.getString("base"));
 					line = response.getStatusLine();
 
 					if (line.getStatusCode() == HttpStatus.SC_OK) {
+						// 还没有成为开发者 2014.10-06 jy.hu
+						// 触发成为开发者动作
+						ele = root.getElementById("js_toBeDeveloper");
+						if (ele != null && ele.hasText()) {
+							HttpPost post = new HttpPost(URI.create(weixin
+									.getString("bedeveloper")));
+							post.addHeader("Referer", url);
+							List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+							parameters = new ArrayList<NameValuePair>();
+							parameters.add(new BasicNameValuePair("token",
+									weixin.getString("urlToken")));
+							parameters.add(new BasicNameValuePair("f", "json"));
+							parameters.add(new BasicNameValuePair("ajax", "1"));
+							parameters.add(new BasicNameValuePair("lang",
+									"zh_CN"));
+							parameters.add(new BasicNameValuePair("random",
+									System.currentTimeMillis() + ""));
+
+							post.setEntity(new UrlEncodedFormEntity(parameters,
+									charset));
+							response = client.execute(host, post);
+							entity = response.getEntity();
+							root = Jsoup.parse(entity.getContent(),
+									charset.name(), weixin.getString("base"));
+							line = response.getStatusLine();
+							logger.info(
+									"step2_bedeveloper--->status={},body=\n{}",
+									line, root.toString());
+							if (line.getStatusCode() == HttpStatus.SC_OK) {
+								JSONObject body = JSON.parseObject(root.body()
+										.text());
+								if (body.getIntValue("ret") == 0) {
+									method.addHeader("Referer", url);
+									method.setURI(URI.create(weixin
+											.getString("developerUrl")));
+
+									response = client.execute(host, method);
+									entity = response.getEntity();
+									root = Jsoup.parse(entity.getContent(),
+											charset.name(),
+											weixin.getString("base"));
+								} else {
+									weixin.put("code", "-100");
+									weixin.put("msg", "成为开发者失败！");
+									return;
+								}
+							}
+						}
 						// 初始化状态
 						// 配置未启用状态
 						// 配置已启用状态
 						eles = root.getElementsByClass("developer_info_opr");
 						if (eles != null && eles.hasText()) {
-							weixin.put("developerModifyUrl", eles.first().children().last().absUrl("href"));
-							weixin.put("status", eles.first().children().first().text().contains("启用") ? "READY" : "RUNNING");
+							weixin.put("developerModifyUrl", eles.first()
+									.children().first().absUrl("href"));
+							weixin.put("status",
+									eles.text().contains("启用") ? "READY"
+											: "RUNNING");
 						} else {
 							weixin.put("status", "INIT");
 						}
-
 						// appid&appsecret
-						if (weixin.getBooleanValue("isService") || (weixin.getBooleanValue("isSubscribe") && weixin.getBooleanValue("isVerify"))) {
-							eles = root.getElementsByClass("developer_info_item").first().children().last().getElementsByClass("frm_controls");
+						if (weixin.getBooleanValue("isService")
+								|| (weixin.getBooleanValue("isSubscribe") && weixin
+										.getBooleanValue("isVerify"))) {
+							eles = root
+									.getElementsByClass("developer_info_item")
+									.first().children().last()
+									.getElementsByClass("frm_controls");
 							weixin.put("appId", eles.first().text());
-							weixin.put("appSecret", eles.last().text().replace("重置", "").trim());
+							weixin.put("appSecret",
+									eles.last().text().replace("重置", "").trim());
 						}
 						weixin.put("step", "2-3");
 					}
@@ -376,24 +482,35 @@ public class WeixinExecutor implements Serializable {
 	 * step3:填写配置
 	 */
 	private void step3_setting() {
-		HttpPost method = new HttpPost(String.format(weixin.getString("call"), weixin.getString("urlToken")));
+		HttpPost method = new HttpPost(String.format(weixin.getString("call"),
+				weixin.getString("urlToken")));
 		try {
 			List<NameValuePair> parameters = new ArrayList<NameValuePair>();
 			parameters.add(new BasicNameValuePair("url", pushurl));
 			parameters.add(new BasicNameValuePair("callback_token", token));
+			// EncodingAESKey | 消息加解密方式(明文0,兼容1,安全2)
+			parameters.add(new BasicNameValuePair("encoding_aeskey", RandomUtil
+					.generateString(43)));
+			parameters
+					.add(new BasicNameValuePair("callback_encrypt_mode", "0"));
+			parameters.add(new BasicNameValuePair("operation_seq", RandomUtil
+					.generateStringByNumberChar(9)));
 			method.setEntity(new UrlEncodedFormEntity(parameters, charset));
 			method.addHeader("Referer", weixin.getString("developerModifyUrl"));
 
 			HttpResponse response = client.execute(host, method);
 			HttpEntity entity = response.getEntity();
-			Document root = Jsoup.parse(entity.getContent(), charset.name(), weixin.getString("base"));
+			Document root = Jsoup.parse(entity.getContent(), charset.name(),
+					weixin.getString("base"));
 			StatusLine line = response.getStatusLine();
-			logger.info("step3_setting--->status={},body=\n{}", line, root.toString());
+			logger.info("step3_setting--->status={},body=\n{}", line,
+					root.toString());
 			if (line.getStatusCode() == HttpStatus.SC_OK) {
 				JSONObject body = JSON.parseObject(root.body().text());
 				String msg = "";
 				int code = 0;
-				switch (body.getIntValue("ret")) {
+				switch (body.getIntValue("ret")
+						+ body.getJSONObject("base_resp").getIntValue("ret")) {
 				case -201:
 					msg = "无效的URL";
 					code = 200;
@@ -437,25 +554,32 @@ public class WeixinExecutor implements Serializable {
 					// 触发启用按钮
 					if (!weixin.getString("status").equals("RUNNING")) {
 						parameters = new ArrayList<NameValuePair>();
-						parameters.add(new BasicNameValuePair("token", weixin.getString("urlToken")));
+						parameters.add(new BasicNameValuePair("token", weixin
+								.getString("urlToken")));
 						parameters.add(new BasicNameValuePair("f", "json"));
 						parameters.add(new BasicNameValuePair("ajax", "1"));
 						parameters.add(new BasicNameValuePair("flag", "1"));
 						parameters.add(new BasicNameValuePair("type", "2"));
 						parameters.add(new BasicNameValuePair("lang", "zh_CN"));
-						parameters.add(new BasicNameValuePair("random", System.currentTimeMillis() + ""));
+						parameters.add(new BasicNameValuePair("random", System
+								.currentTimeMillis() + ""));
 
-						method.setEntity(new UrlEncodedFormEntity(parameters, charset));
+						method.setEntity(new UrlEncodedFormEntity(parameters,
+								charset));
 						method.setURI(URI.create(weixin.getString("start")));
 
 						response = client.execute(host, method);
 						entity = response.getEntity();
-						root = Jsoup.parse(entity.getContent(), charset.name(), weixin.getString("base"));
+						root = Jsoup.parse(entity.getContent(), charset.name(),
+								weixin.getString("base"));
 						line = response.getStatusLine();
-						logger.info("step3_setting--->status={},body=\n{}", line, root.toString());
+						logger.info("step3_setting--->status={},body=\n{}",
+								line, root.toString());
 						if (line.getStatusCode() == HttpStatus.SC_OK) {
 							body = JSON.parseObject(root.body().text());
-							if (body.getIntValue("ret") != 0 || body.getJSONObject("base_resp").getIntValue("ret") != 0) {
+							if (body.getIntValue("ret")
+									+ body.getJSONObject("base_resp")
+											.getIntValue("ret") != 0) {
 								weixin.put("code", 300);
 								weixin.put("msg", "启用开发者模式失败，请稍后再试!");
 							}
@@ -492,23 +616,29 @@ public class WeixinExecutor implements Serializable {
 
 				List<NameValuePair> parameters = new ArrayList<NameValuePair>();
 				parameters.add(new BasicNameValuePair("domain", backurl));
-				parameters.add(new BasicNameValuePair("token", weixin.getString("urlToken")));
+				parameters.add(new BasicNameValuePair("token", weixin
+						.getString("urlToken")));
 				parameters.add(new BasicNameValuePair("f", "json"));
 				parameters.add(new BasicNameValuePair("ajax", "1"));
 				parameters.add(new BasicNameValuePair("flag", "1"));
 				parameters.add(new BasicNameValuePair("lang", "zh_CN"));
-				parameters.add(new BasicNameValuePair("random", System.currentTimeMillis() + ""));
+				parameters.add(new BasicNameValuePair("random", System
+						.currentTimeMillis() + ""));
 				method.setEntity(new UrlEncodedFormEntity(parameters, charset));
 				method.addHeader("Referer", weixin.getString("developerUrl"));
 
 				HttpResponse response = client.execute(host, method);
 				HttpEntity entity = response.getEntity();
-				Document root = Jsoup.parse(entity.getContent(), charset.name(), weixin.getString("base"));
+				Document root = Jsoup.parse(entity.getContent(),
+						charset.name(), weixin.getString("base"));
 				StatusLine line = response.getStatusLine();
-				logger.info("step4_back--->status={},body=\n{}", line, root.toString());
+				logger.info("step4_back--->status={},body=\n{}", line,
+						root.toString());
 				if (line.getStatusCode() == HttpStatus.SC_OK) {
 					JSONObject body = JSON.parseObject(root.body().text());
-					if (body.getIntValue("ret") != 0 || body.getJSONObject("base_resp").getIntValue("ret") != 0) {
+					if (body.getIntValue("ret")
+							+ body.getJSONObject("base_resp")
+									.getIntValue("ret") != 0) {
 						weixin.put("code", "400");
 						weixin.put("msg", "修改授权回调地址失败!");
 					}

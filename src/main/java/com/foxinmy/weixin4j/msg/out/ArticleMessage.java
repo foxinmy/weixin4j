@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.msg.out;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import com.foxinmy.weixin4j.msg.BaseMessage;
 import com.foxinmy.weixin4j.msg.model.Article;
@@ -35,19 +34,14 @@ public class ArticleMessage extends BaseMessage {
 	@XStreamAlias("Articles")
 	private LinkedList<Article> articles;
 
-	public List<Article> getArticles() {
-		return this.articles;
-	}
-
 	public void pushArticle(String title, String desc, String picUrl, String url) {
-		if ((count + 1) > MAX_ARTICLE_COUNT) {
-			return;
-		}
 		if (this.articles == null) {
 			this.articles = new LinkedList<Article>();
 		}
+		if ((articles.size() + 1) > MAX_ARTICLE_COUNT) {
+			return;
+		}
 		this.articles.add(new Article(title, desc, picUrl, url));
-		count++;
 	}
 
 	public void pushFirstArticle(String title, String desc, String picUrl,
@@ -67,10 +61,11 @@ public class ArticleMessage extends BaseMessage {
 	}
 
 	public Article removeLastArticle() {
+		Article article = null;
 		if (this.articles != null) {
-			return this.articles.removeLast();
+			article = this.articles.removeLast();
 		}
-		return null;
+		return article;
 	}
 
 	public Article removeFirstArticle() {
@@ -86,6 +81,7 @@ public class ArticleMessage extends BaseMessage {
 
 	@Override
 	public String toXml() {
+		this.count = articles.size();
 		XStream xstream = getXStream();
 		xstream.alias("item", Article.class);
 		xstream.aliasField("Title", Article.class, "title");
@@ -101,7 +97,7 @@ public class ArticleMessage extends BaseMessage {
 		sb.append("[ArticleMessage ,toUserName=").append(super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
 		sb.append(" ,msgType=").append(super.getMsgType().name());
-		sb.append(" ,articles=").append(getArticles().toString());
+		sb.append(" ,articles=").append(this.articles.toString());
 		sb.append(" ,createTime=").append(super.getCreateTime());
 		sb.append(" ,msgId=").append(super.getMsgId()).append("]");
 		return sb.toString();

@@ -11,7 +11,6 @@ import org.dom4j.io.SAXReader;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.WeixinProxy;
-import com.foxinmy.weixin4j.msg.BaseResult;
 import com.thoughtworks.xstream.XStream;
 
 public class Response {

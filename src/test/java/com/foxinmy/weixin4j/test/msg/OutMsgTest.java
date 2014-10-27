@@ -1,5 +1,6 @@
-package com.foxinmy.weixin4j.test;
+package com.foxinmy.weixin4j.test.msg;
 
+import org.dom4j.DocumentException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ import com.foxinmy.weixin4j.msg.out.VoiceMessage;
  * @date 2014年3月24日
  * @since JDK 1.7
  */
-public class MessageOutTest {
+public class OutMsgTest {
 	private BaseMessage inMessage;
 
 	@Before
@@ -29,7 +30,7 @@ public class MessageOutTest {
 	}
 
 	@Test
-	public void text() {
+	public void text() throws DocumentException {
 		TextMessage message = new TextMessage("text", inMessage);
 		System.out.println(message.toXml());
 	}

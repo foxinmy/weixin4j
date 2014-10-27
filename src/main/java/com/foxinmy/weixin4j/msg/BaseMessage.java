@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.io.Writer;
 
 import com.foxinmy.weixin4j.type.MessageType;
+import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.xml.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -25,8 +26,14 @@ import com.thoughtworks.xstream.io.json.JsonWriter;
 public class BaseMessage implements Serializable {
 
 	private static final long serialVersionUID = 7761192742840031607L;
-	private static XStream xstream;
-	
+	private final static XStream xmlStream = new XStream();
+	private final static XStream jsonStream = new XStream(
+			new JsonHierarchicalStreamDriver() {
+				public HierarchicalStreamWriter createWriter(Writer writer) {
+					return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
+				}
+			});
+
 	@XStreamAlias("ToUserName")
 	private String toUserName; // 开发者微信号
 	@XStreamAlias("FromUserName")
@@ -38,10 +45,21 @@ public class BaseMessage implements Serializable {
 	@XStreamAlias("MsgId")
 	private long msgId; // 消息ID
 
-	static{
-		xstream = new XStream();
+	static {
+		Class<?>[] classes = ClassUtil.getClasses(
+				TextMessage.class.getPackage()).toArray(new Class[0]);
+
+		xmlStream.ignoreUnknownElements();
+		xmlStream.autodetectAnnotations(true);
+		xmlStream.processAnnotations(classes);
+		xmlStream.omitField(BaseMessage.class, "msgId");
+
+		jsonStream.setMode(XStream.NO_REFERENCES);
+		jsonStream.autodetectAnnotations(true);
+		jsonStream.processAnnotations(classes);
+		jsonStream.omitField(BaseMessage.class, "msgId");
 	}
-	
+
 	public BaseMessage(MessageType msgType) {
 		this.msgType = msgType;
 	}
@@ -108,11 +126,8 @@ public class BaseMessage implements Serializable {
 	protected XStream getXStream() {
 		Class<? extends BaseMessage> targetClass = getMsgType()
 				.getMessageClass();
-		xstream.alias("xml", targetClass);
-		xstream.autodetectAnnotations(true);
-		xstream.processAnnotations(targetClass);
-		xstream.omitField(BaseMessage.class, "msgId");
-		return xstream;
+		xmlStream.alias("xml", targetClass);
+		return xmlStream;
 	}
 
 	/**
@@ -121,13 +136,7 @@ public class BaseMessage implements Serializable {
 	 * @return xml字符串
 	 */
 	public String toXml() {
-		Class<? extends BaseMessage> targetClass = getMsgType()
-				.getMessageClass();
-		xstream.alias("xml", targetClass);
-		xstream.autodetectAnnotations(true);
-		xstream.processAnnotations(targetClass);
-		xstream.omitField(BaseMessage.class, "msgId");
-		return xstream.toXML(this);
+		return getXStream().toXML(this);
 	}
 
 	/**
@@ -136,15 +145,6 @@ public class BaseMessage implements Serializable {
 	 * @return json字符串
 	 */
 	public String toJson() {
-		XStream xstream = new XStream(new JsonHierarchicalStreamDriver() {
-			public HierarchicalStreamWriter createWriter(Writer writer) {
-				return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
-			}
-		});
-		xstream.setMode(XStream.NO_REFERENCES);
-		xstream.autodetectAnnotations(true);
-		xstream.processAnnotations(getMsgType().getMessageClass());
-		xstream.omitField(BaseMessage.class, "msgId");
-		return xstream.toXML(this);
+		return jsonStream.toXML(this);
 	}
 }

@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.api;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -49,37 +48,16 @@ public class MediaApi extends BaseApi {
 	 *            媒体类型
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @throws WeixinException
+	 * @throws IOException
+	 * @throws
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 */
 	public String uploadMedia(File file, MediaType mediaType)
-			throws WeixinException {
-		byte[] b = null;
-		ByteArrayOutputStream out = null;
-		FileInputStream in = null;
-		try {
-			in = new FileInputStream(file);
-			b = IOUtil.toByteArray(in);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					;
-				}
-			}
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {
-					;
-				}
-			}
-		}
-		return uploadMedia(file.getName(), b, mediaType);
+			throws WeixinException, IOException {
+		byte[] datas = IOUtil.toByteArray(new FileInputStream(file));
+		return uploadMedia(file.getName(), datas, mediaType);
 	}
 
 	/**
@@ -116,40 +94,30 @@ public class MediaApi extends BaseApi {
 	 *            媒体类型
 	 * @return 写入硬盘后的文件对象
 	 * @throws WeixinException
+	 * @throws IOException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 */
 	public File downloadMedia(String mediaId, MediaType mediaType)
-			throws WeixinException {
+			throws WeixinException, IOException {
 		String media_path = ConfigUtil.getValue("media_path");
-		String filename = mediaId + mediaType.getFormatType();
+		byte[] datas = downloadMediaData(mediaId, mediaType);
+		String filename = mediaId + "." + mediaType.getFormatType();
 		File file = new File(media_path + File.separator + filename);
 		if (file.exists()) {
 			return file;
 		}
 		FileOutputStream out = null;
 		try {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				file.getParentFile().mkdirs();
-				file.createNewFile();
-			}
-			out = new FileOutputStream(file);
-			byte[] b = downloadMediaData(mediaId, mediaType);
-			out.write(b);
+			file.createNewFile();
 		} catch (IOException e) {
-
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-			} catch (IOException e) {
-
-			}
+			file.getParentFile().mkdirs();
+			file.createNewFile();
 		}
+		out = new FileOutputStream(file);
+		out.write(datas);
+		out.close();
 		return file;
 	}
 

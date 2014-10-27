@@ -32,14 +32,15 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<excludes>
-					<exclude>*.*</exclude>
+					<exclude>logback.xml</exclude>
 				</excludes>
 			</resource>
 			<resource>
 				<directory>src/main/java</directory>
 				<includes>
-					<include>**/config.properties</include>
+					<include>**/*.properties</include>
 					<include>**/error.xml</include>
+					<include>**/README.md</include>
 				</includes>
 			</resource>
 		</resources>
@@ -145,6 +146,11 @@
 			<artifactId>jedis</artifactId>
 			<version>${jedis.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>${netty.version}</version>
+		</dependency>
 	</dependencies>
 
 	<properties>
@@ -160,6 +166,7 @@
 		<jsoup.version>1.7.3</jsoup.version>
 		<jaxen.version>1.1.6</jaxen.version>
 		<jedis.version>2.6.0</jedis.version>
+		<netty.version>4.0.23.Final</netty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<profiles>

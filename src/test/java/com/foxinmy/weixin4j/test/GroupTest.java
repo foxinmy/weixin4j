@@ -2,77 +2,62 @@ package com.foxinmy.weixin4j.test;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.foxinmy.weixin4j.WeixinProxy;
+import com.foxinmy.weixin4j.api.GroupApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.model.Group;
 
 /**
  * 用户分组测试
+ * 
  * @className GroupTest
  * @author jy.hu
  * @date 2014年4月10日
  * @since JDK 1.7
  */
-public class GroupTest {
-	private WeixinProxy weixinProxy;
+public class GroupTest extends TokenTest {
+	private GroupApi groupApi;
 
 	@Before
 	public void init() {
-		weixinProxy = new WeixinProxy();
+		groupApi = new GroupApi(tokenApi);
 	}
 
 	@Test
-	public void create() {
-		try {
-			System.out.println(weixinProxy.createGroup("test"));
-		} catch (WeixinException e) {
-			System.out.println(e.getErrorCode());
-			System.out.println(e.getErrorMsg());
-		}
+	public void create() throws WeixinException {
+		Group group = groupApi.createGroup("my");
+		Assert.assertNotNull(group);
 	}
 
 	@Test
-	public void get() {
-		try {
-			List<Group> groups = weixinProxy.getGroups();
-			for (Group group : groups) {
-				System.out.println(group);
-			}
-		} catch (WeixinException e) {
-			System.out.println(e.getErrorCode());
-			System.out.println(e.getErrorMsg());
+	public void get() throws WeixinException {
+		List<Group> groups = groupApi.getGroups();
+		for (Group group : groups) {
+			System.out.println(group);
 		}
+		Assert.assertEquals(1, groups.size());
 	}
 
 	@Test
-	public void getid() {
-		try {
-			System.out.println(weixinProxy.getGroupByOpenId("owGBft_vbBbOaQOmpEUE4xDLeRSU"));
-		} catch (WeixinException e) {
-			System.out.println(e.getErrorCode());
-			System.out.println(e.getErrorMsg());
-		}
+	public void getid() throws WeixinException {
+		int gid = groupApi.getGroupByOpenId("owGBft_vbBbOaQOmpEUE4xDLeRSU");
+		Assert.assertTrue(gid >= 0);
 	}
 
 	@Test
-	public void modify() {
-		try {
-			weixinProxy.modifyGroup(100, "test1");
-		} catch (WeixinException e) {
-			System.out.println(e.getErrorCode());
-			System.out.println(e.getErrorMsg());
-		}
+	public void modify() throws WeixinException {
+		BaseResult result = groupApi.modifyGroup(100, "my1");
+		Assert.assertEquals(0, result.getErrcode());
 	}
+
 	@Test
-	public void move() {
-		try {
-			weixinProxy.moveGroup("owGBft_vbBbOaQOmpEUE4xDLeRSU",100);
-		} catch (WeixinException e) {
-			System.out.println(e.getErrorCode());
-			System.out.println(e.getErrorMsg());
-		}
+	public void move() throws WeixinException {
+		BaseResult result = groupApi.moveGroup("owGBft_vbBbOaQOmpEUE4xDLeRSU",
+				100);
+		Assert.assertEquals(0, result.getErrcode());
 	}
 }

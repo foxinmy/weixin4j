@@ -23,8 +23,7 @@ public class ImageMessage extends BaseMessage {
 	private static final long serialVersionUID = 6998255203997554731L;
 
 	public ImageMessage(BaseMessage inMessage) {
-		super(MessageType.image, inMessage);
-		super.getMsgType().setMessageClass(ImageMessage.class);
+		this(null, inMessage);
 	}
 
 	public ImageMessage(String mediaId, BaseMessage inMessage) {

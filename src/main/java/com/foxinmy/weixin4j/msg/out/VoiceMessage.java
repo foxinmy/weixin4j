@@ -24,8 +24,7 @@ public class VoiceMessage extends BaseMessage {
 	private static final long serialVersionUID = -7944926238652243793L;
 
 	public VoiceMessage(BaseMessage inMessage) {
-		super(MessageType.voice, inMessage);
-		super.getMsgType().setMessageClass(VoiceMessage.class);
+		this(null, inMessage);
 	}
 
 	public VoiceMessage(String mediaId, BaseMessage inMessage) {

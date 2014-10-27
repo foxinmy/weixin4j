@@ -18,12 +18,15 @@ import com.foxinmy.weixin4j.type.MessageType;
 import com.foxinmy.weixin4j.xml.XStream;
 
 public class MessageUtil {
-	
-	private final static Logger log = LoggerFactory.getLogger(MessageUtil.class);
+
+	private final static Logger log = LoggerFactory
+			.getLogger(MessageUtil.class);
 
 	/**
 	 * 验证微信签名
 	 * 
+	 * @param token
+	 *            开发者填写的token
 	 * @param echostr
 	 *            随机字符串
 	 * @param timestamp
@@ -37,19 +40,20 @@ public class MessageUtil {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97">接入指南</a>
 	 */
-	public static String signature(String echostr, String timestamp, String nonce, String signature) {
-		String app_token = ConfigUtil.getValue("app_token");
-		if (StringUtil.isBlank(app_token)) {
+	public static String signature(String token, String echostr,
+			String timestamp, String nonce, String signature) {
+		if (StringUtil.isBlank(token)) {
 			log.error("signature fail : token is null!");
 			return null;
 		}
-		if (StringUtil.isBlank(echostr) || StringUtil.isBlank(timestamp) || StringUtil.isBlank(nonce)) {
+		if (StringUtil.isBlank(echostr) || StringUtil.isBlank(timestamp)
+				|| StringUtil.isBlank(nonce)) {
 			log.error("signature fail : invalid parameter!");
 			return null;
 		}
 		String _signature = null;
 		try {
-			String[] a = { app_token, timestamp, nonce };
+			String[] a = { token, timestamp, nonce };
 			Arrays.sort(a);
 			StringBuilder sb = new StringBuilder(3);
 			for (String str : a) {
@@ -68,12 +72,26 @@ public class MessageUtil {
 	}
 
 	/**
+	 * 获取对应的mapping key
+	 * @param xmlMsg
+	 * @return
+	 * @throws DocumentException
+	 * @see com.foxinmy.weixin4j.server.WeixinActionMapping
+	 */
+	public static String getMappingKey(String xmlMsg) throws DocumentException {
+		Document doc = DocumentHelper.parseText(xmlMsg);
+		String msgType = doc.selectSingleNode("/xml/MsgType").getStringValue();
+		if (msgType.equalsIgnoreCase(MessageType.event.name())) {
+			msgType += "_"
+					+ doc.selectSingleNode("/xml/Event").getStringValue();
+		}
+		return msgType;
+	}
+
+	/**
 	 * xml消息转换为消息对象
-	 * <p>
-	 * 微信服务器在五秒内收不到响应会断掉连接,并且重新发起请求,总共重试三次
-	 * </p>
 	 * 
-	 * @param xml
+	 * @param xmlMsg
 	 *            消息字符串
 	 * @return 消息对象
 	 * @throws DocumentException
@@ -96,26 +114,26 @@ public class MessageUtil {
 	 * @see com.foxinmy.weixin4j.msg.event.LocationEventMessage
 	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuEventMessage
 	 */
-	public static BaseMessage xml2msg(String xml) throws DocumentException {
-		if (StringUtil.isBlank(xml))
-			return null;
-		Document doc = DocumentHelper.parseText(xml);
+	public static BaseMessage xml2msg(String xmlMsg) throws DocumentException {
+		Document doc = DocumentHelper.parseText(xmlMsg);
 		String type = doc.selectSingleNode("/xml/MsgType").getStringValue();
 		if (StringUtil.isBlank(type)) {
 			return null;
 		}
-		XStream xstream = new XStream();
 		MessageType messageType = MessageType.valueOf(type.toLowerCase());
-		Class<? extends BaseMessage> messageClass = messageType.getMessageClass();
+		Class<? extends BaseMessage> messageClass = messageType
+				.getMessageClass();
 		if (messageType == MessageType.event) {
 			type = doc.selectSingleNode("/xml/Event").getStringValue();
-			messageClass = EventType.valueOf(type.toLowerCase()).getEventClass();
+			messageClass = EventType.valueOf(type.toLowerCase())
+					.getEventClass();
 		}
-		xstream.alias("xml", messageClass);
+		XStream xstream = new XStream();
 		xstream.ignoreUnknownElements();
 		xstream.autodetectAnnotations(true);
 		xstream.processAnnotations(messageClass);
-		return xstream.fromXML(doc.asXML(), messageClass);
+		xstream.alias("xml", messageClass);
+		return xstream.fromXML(xmlMsg, messageClass);
 	}
 
 	/**
@@ -125,9 +143,10 @@ public class MessageUtil {
 	 *            带消息字符串的输入流
 	 * @return 消息对象
 	 * @throws DocumentException
-	 * @see {@link com.foxinmy.weixin4j.WeixinProxy#xml2msg(String)}
+	 * @see {@link com.foxinmy.weixin4j.util.MessageUtil#xml2msg(String)}
 	 */
-	public static BaseMessage xml2msg(InputStream inputStream) throws DocumentException {
+	public static BaseMessage xml2msg(InputStream inputStream)
+			throws DocumentException {
 		SAXReader reader = new SAXReader();
 		Document doc = reader.read(inputStream);
 		return xml2msg(doc.asXML());

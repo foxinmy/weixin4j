@@ -1,48 +1,48 @@
 package com.foxinmy.weixin4j.test;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.foxinmy.weixin4j.WeixinProxy;
+import com.foxinmy.weixin4j.api.MediaApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 媒体上传下载测试
+ * 
  * @className MediaTest
  * @author jy.hu
  * @date 2014年4月10日
  * @since JDK 1.7
  * @see
  */
-public class MediaTest {
+public class MediaTest extends TokenTest {
 
-	private WeixinProxy weixinProxy;
+	private MediaApi mediaApi;
 
 	@Before
 	public void init() {
-		weixinProxy = new WeixinProxy();
+		mediaApi = new MediaApi(tokenApi);
 	}
 
 	@Test
-	public void upload() {
-		File file = new File("D:\\test.jpg");
-		try {
-			System.out.println(weixinProxy.uploadMedia(file, MediaType.image));
-			//vvU_AUtovWyfAxQ8J1DsCoNMtK6U_bUmTpe6lpINUOVRLvt_7rtO4zxzBpPgkmay
-		} catch (WeixinException e) {
-			System.out.println(e.getErrorMsg());
-		}
+	public void upload() throws IOException, WeixinException {
+		File file = new File("/tmp/test.jpg");
+		String mediaId = mediaApi.uploadMedia(file, MediaType.image);
+		// vvU_AUtovWyfAxQ8J1DsCoNMtK6U_bUmTpe6lpINUOVRLvt_7rtO4zxzBpPgkmay
+		Assert.assertNotNull(mediaId);
 	}
-	
+
 	@Test
-	public void download() {
-		try {
-			System.out.println(weixinProxy.downloadMedia("vvU_AUtovWyfAxQ8J1DsCoNMtK6U_bUmTpe6lpINUOVRLvt_7rtO4zxzBpPgkmay", MediaType.image));
-		} catch (WeixinException e) {
-			System.out.println(e.getErrorMsg());
-		}
+	public void download() throws WeixinException, IOException {
+		File file = mediaApi
+				.downloadMedia(
+						"vvU_AUtovWyfAxQ8J1DsCoNMtK6U_bUmTpe6lpINUOVRLvt_7rtO4zxzBpPgkmay",
+						MediaType.image);
+		Assert.assertTrue(file.exists());
 	}
 }

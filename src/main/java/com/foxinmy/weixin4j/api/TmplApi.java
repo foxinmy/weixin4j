@@ -2,9 +2,9 @@ package com.foxinmy.weixin4j.api;
 
 import com.foxinmy.weixin4j.api.token.TokenApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.msg.BaseResult;
 import com.foxinmy.weixin4j.msg.out.TemplateMessage;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
@@ -36,7 +36,7 @@ public class TmplApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.msg.out.TemplateMessage
 	 * @seee com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 */
-	public BaseResult sendTplMessage(TemplateMessage tplMessage)
+	public BaseResult sendTmplMessage(TemplateMessage tplMessage)
 			throws WeixinException {
 		Token token = tokenApi.getToken();
 		String template_send_uri = ConfigUtil.getValue("template_send_uri");

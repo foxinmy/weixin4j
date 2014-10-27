@@ -6,10 +6,10 @@ import java.util.List;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.api.token.TokenApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.MpArticle;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.msg.BaseResult;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
