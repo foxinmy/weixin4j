@@ -39,4 +39,5 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
 接下来
 ------
 maven多模块分离
+
 微信支付模块引入
