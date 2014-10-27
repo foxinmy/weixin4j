@@ -1,3 +1,1 @@
-config.properties包含了app跟接口url信息
-
-WeixinProxy类为接口调用入口
+所有的API调用入口类

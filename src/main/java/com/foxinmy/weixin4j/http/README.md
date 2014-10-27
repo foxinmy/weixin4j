@@ -1,1 +1,1 @@
-基于HttpClient封装的针对微信API的HttpRequest
+基于HttpClient封装的针对微信公众平台API的HttpRequest
