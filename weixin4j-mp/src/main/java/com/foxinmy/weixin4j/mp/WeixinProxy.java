@@ -7,12 +7,14 @@ import java.util.List;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.BaseResult;
+import com.foxinmy.weixin4j.model.WeixinAccountV2;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
 import com.foxinmy.weixin4j.mp.api.HelperApi;
 import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.MenuApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
+import com.foxinmy.weixin4j.mp.api.PayApi;
 import com.foxinmy.weixin4j.mp.api.QrApi;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
 import com.foxinmy.weixin4j.mp.api.UserApi;
@@ -27,6 +29,7 @@ import com.foxinmy.weixin4j.mp.model.UserToken;
 import com.foxinmy.weixin4j.mp.msg.model.Article;
 import com.foxinmy.weixin4j.mp.msg.model.BaseMsg;
 import com.foxinmy.weixin4j.mp.msg.notify.BaseNotify;
+import com.foxinmy.weixin4j.mp.payment.Order;
 import com.foxinmy.weixin4j.mp.response.TemplateMessage;
 import com.foxinmy.weixin4j.token.FileTokenApi;
 import com.foxinmy.weixin4j.token.TokenApi;
@@ -51,6 +54,7 @@ public class WeixinProxy {
 	private final QrApi qrApi;
 	private final TmplApi tmplApi;
 	private final HelperApi helperApi;
+	private final PayApi payApi;
 
 	/**
 	 * 默认采用文件存放Token跟配置文件中的appi信息
@@ -79,6 +83,7 @@ public class WeixinProxy {
 		this.qrApi = new QrApi(tokenApi);
 		this.tmplApi = new TmplApi(tokenApi);
 		this.helperApi = new HelperApi(tokenApi);
+		this.payApi = new PayApi(tokenApi);
 	}
 
 	/**
@@ -703,5 +708,45 @@ public class WeixinProxy {
 	 */
 	public String getShorturl(String url) throws WeixinException {
 		return helperApi.getShorturl(url);
+	}
+
+	/**
+	 * 发货通知
+	 * 
+	 * @param weixinConfig
+	 *            V2版本
+	 * @param transid
+	 *            交易单号
+	 * @param orderNo
+	 *            订单号
+	 * @param status
+	 *            成功|失败
+	 * @param statusMsg
+	 *            status为失败时携带的信息
+	 * @return
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.PayApi
+	 */
+	public BaseResult deliverNotify(WeixinAccountV2 weixinConfig,
+			String transid, String orderNo, boolean status, String statusMsg)
+			throws WeixinException {
+		return payApi.deliverNotify(weixinConfig, transid, orderNo, status,
+				statusMsg);
+	}
+
+	/**
+	 * 订单查询
+	 * 
+	 * @param weixinConfig
+	 *            V2版本
+	 * @param orderNo
+	 *            订单号
+	 * @return
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.PayApi
+	 */
+	public Order orderQuery(WeixinAccountV2 weixinConfig, String orderNo)
+			throws WeixinException {
+		return payApi.orderQuery(weixinConfig, orderNo);
 	}
 }

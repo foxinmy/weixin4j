@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.action;
+package com.foxinmy.weixin4j.mp.mapping;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

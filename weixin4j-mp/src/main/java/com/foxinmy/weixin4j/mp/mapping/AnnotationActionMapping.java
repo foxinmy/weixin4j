@@ -1,19 +1,29 @@
-package com.foxinmy.weixin4j.mp.server;
+package com.foxinmy.weixin4j.mp.mapping;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.foxinmy.weixin4j.mp.action.Action;
+import org.dom4j.DocumentException;
+
 import com.foxinmy.weixin4j.mp.action.WeixinAction;
 import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
 import com.foxinmy.weixin4j.util.ClassUtil;
 
-public class WeixinActionMapping {
+/**
+ * 注解实现的Mapping
+ * 
+ * @className AnnotationActionMapping
+ * @author jy
+ * @date 2014年10月28日
+ * @since JDK 1.7
+ * @see com.foxinmy.weixin4j.mp.mapping.Action
+ */
+public class AnnotationActionMapping extends AbstractActionMapping {
 	private final Map<String, WeixinAction> actionMap;
 
-	public WeixinActionMapping() {
+	public AnnotationActionMapping() {
 		actionMap = new HashMap<String, WeixinAction>();
 		Set<Class<?>> weixinActions = ClassUtil.getClasses(WeixinAction.class
 				.getPackage());
@@ -42,7 +52,8 @@ public class WeixinActionMapping {
 		}
 	}
 
-	public WeixinAction getAction(String key) {
-		return actionMap.get(key.toLowerCase());
+	public WeixinAction getAction(String xmlMsg) throws DocumentException {
+		String key = getMappingKey(xmlMsg);
+		return actionMap.get(key);
 	}
 }

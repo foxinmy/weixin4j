@@ -72,24 +72,6 @@ public class MessageUtil {
 	}
 
 	/**
-	 * 获取对应的mapping key
-	 * 
-	 * @param xmlMsg
-	 * @return
-	 * @throws DocumentException
-	 * @see com.foxinmy.weixin4j.server.WeixinActionMapping
-	 */
-	public static String getMappingKey(String xmlMsg) throws DocumentException {
-		Document doc = DocumentHelper.parseText(xmlMsg);
-		String msgType = doc.selectSingleNode("/xml/MsgType").getStringValue();
-		if (msgType.equalsIgnoreCase(MessageType.event.name())) {
-			msgType += "_"
-					+ doc.selectSingleNode("/xml/Event").getStringValue();
-		}
-		return msgType;
-	}
-
-	/**
 	 * xml消息转换为消息对象
 	 * 
 	 * @param xmlMsg

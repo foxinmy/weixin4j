@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.dom4j.DocumentException;
 
+import com.foxinmy.weixin4j.mp.mapping.Action;
 import com.foxinmy.weixin4j.type.MessageType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;

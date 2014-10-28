@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.mp.action;
 
+import com.foxinmy.weixin4j.mp.mapping.Action;
 import com.foxinmy.weixin4j.mp.response.TextResponse;
 import com.foxinmy.weixin4j.msg.TextMessage;
 import com.foxinmy.weixin4j.type.MessageType;

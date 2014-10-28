@@ -6,12 +6,15 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
+import com.foxinmy.weixin4j.mp.mapping.ActionMapping;
+import com.foxinmy.weixin4j.mp.mapping.AnnotationActionMapping;
+
 public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 
-	private final WeixinActionMapping weixinActionMapping;
+	private final ActionMapping actionMapping;
 
 	public WeixinServerInitializer() {
-		this.weixinActionMapping = new WeixinActionMapping();
+		this.actionMapping = new AnnotationActionMapping();
 	}
 
 	@Override
@@ -19,6 +22,6 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 		ChannelPipeline pipeline = channel.pipeline();
 		pipeline.addLast(new HttpServerCodec());
 		pipeline.addLast(new HttpObjectAggregator(65536));
-		pipeline.addLast(new WeixinServerHandler(weixinActionMapping));
+		pipeline.addLast(new WeixinServerHandler(actionMapping));
 	}
 }

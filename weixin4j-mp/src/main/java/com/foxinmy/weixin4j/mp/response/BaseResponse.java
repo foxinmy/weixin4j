@@ -46,7 +46,7 @@ public class BaseResponse implements Serializable {
 
 	static {
 		Class<?>[] classes = ClassUtil.getClasses(
-				TextResponse.class.getPackage()).toArray(new Class[0]);
+				BaseResponse.class.getPackage()).toArray(new Class[0]);
 
 		xmlStream.ignoreUnknownElements();
 		xmlStream.autodetectAnnotations(true);

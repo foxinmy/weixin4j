@@ -17,6 +17,11 @@ weixin4j
  
    2).weixin4j-mp:用netty构建http服务器并支持消息分发
  
+* 2014-10-28
+   
+   1).weixin4j-mp:调整ActionMapping抽象化
+
+
 接下来
 ------
 公众号支付模块引入

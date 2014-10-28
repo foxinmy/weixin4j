@@ -25,16 +25,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.mp.action.WeixinAction;
-import com.foxinmy.weixin4j.util.MessageUtil;
+import com.foxinmy.weixin4j.mp.mapping.ActionMapping;
 
 public class WeixinServerHandler extends ChannelInboundHandlerAdapter {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private final WeixinActionMapping weixinActionMapping;
+	private final ActionMapping actionMapping;
 
-	public WeixinServerHandler(WeixinActionMapping weixinActionMapping) {
-		this.weixinActionMapping = weixinActionMapping;
+	public WeixinServerHandler(ActionMapping actionMapping) {
+		this.actionMapping = actionMapping;
 	}
 
 	@Override
@@ -54,8 +54,7 @@ public class WeixinServerHandler extends ChannelInboundHandlerAdapter {
 			String xmlMsg = req.content().toString(StandardCharsets.UTF_8);
 			log.info("\n=================message in=================\n{}",
 					xmlMsg);
-			String key = MessageUtil.getMappingKey(xmlMsg);
-			WeixinAction action = weixinActionMapping.getAction(key);
+			WeixinAction action = actionMapping.getAction(xmlMsg);
 			if (action == null) {
 				ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
 						HttpResponseStatus.NOT_FOUND));
