@@ -31,8 +31,7 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
 
 如何使用
 --------
-
-1.编辑weixin.properties文件,填入appid/appsecret信息,当然也可通过构造函数传入.
+1.编辑classweixin.properties并填入appid/appsecret,当然也可通过构造函数传入.
 
 2.实例化一个WeixinProxy对象,调用API.
 
@@ -65,5 +64,3 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
 * 2014-10-31
 
    1).weixin.properties切分为API调用地址/公众号信息两部分
-   
-   2).TokenApi重命名为TokenHolder
