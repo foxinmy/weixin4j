@@ -82,4 +82,16 @@
 	<error code="47001">解析JSON/XML内容错误</error>
 	<error code="48001">api功能未授权</error>
 	<error code="50001">用户未授权该api</error>
+	<error code="SYSTEMERROR">接口后台错误</error>
+	<error code="INVALID_TRANSACTIONID">无效 transaction_id</error>
+	<error code="PARAM_ERROR">提交参数错误</error>
+	<error code="ORDERPAID">订单已支付</error>
+	<error code="OUT_TRADE_NO_USED">商户订单号重复</error>
+	<error code="NOAUTH">商户无权限</error>
+	<error code="NOTENOUGH">余额不足</error>
+	<error code="NOTSUPORTCARD">不支持卡类型</error>
+	<error code="ORDERCLOSED">订单已关闭</error>
+	<error code="BANKERROR">银行系统异常</error>
+	<error code="REFUND_FEE_INVALID">退款金额大于支付金额</error>
+	<error code="ORDERNOTEXIST">订单不存在</error>
 </errors>

@@ -12,8 +12,7 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.model.UserToken;
-import com.foxinmy.weixin4j.token.TokenApi;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
  * 用户相关API
@@ -26,9 +25,9 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  */
 public class UserApi extends BaseApi {
 
-	private final TokenApi tokenApi;
+	private final TokenHolder tokenApi;
 
-	public UserApi(TokenApi tokenApi) {
+	public UserApi(TokenHolder tokenApi) {
 		this.tokenApi = tokenApi;
 	}
 
@@ -44,7 +43,7 @@ public class UserApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.mp.model.UserToken
 	 */
 	public UserToken getAccessToken(String code) throws WeixinException {
-		String user_token_uri = ConfigUtil.getValue("sns_user_token_uri");
+		String user_token_uri = getRequestUri("sns_user_token_uri");
 		Response response = request.get(String.format(user_token_uri, code));
 
 		return response.getAsObject(UserToken.class);
@@ -64,7 +63,7 @@ public class UserApi extends BaseApi {
 	 *      {@link com.foxinmy.weixin4j.mp.api.UserApi#getAccessToken(String)}
 	 */
 	public User getUser(UserToken token) throws WeixinException {
-		String user_info_uri = ConfigUtil.getValue("sns_user_info_uri");
+		String user_info_uri = getRequestUri("sns_user_info_uri");
 		Response response = request.get(String.format(user_info_uri,
 				token.getAccessToken(), token.getOpenid()));
 
@@ -87,7 +86,7 @@ public class UserApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 */
 	public User getUser(String openId) throws WeixinException {
-		String user_info_uri = ConfigUtil.getValue("api_user_info_uri");
+		String user_info_uri = getRequestUri("api_user_info_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.get(String.format(user_info_uri,
 				token.getAccessToken(), openId));
@@ -107,7 +106,7 @@ public class UserApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.mp.model.Following
 	 */
 	public Following getFollowing(String nextOpenId) throws WeixinException {
-		String fllowing_uri = ConfigUtil.getValue("following_uri");
+		String fllowing_uri = getRequestUri("following_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.get(String.format(fllowing_uri,
 				token.getAccessToken(), nextOpenId == null ? "" : nextOpenId));
@@ -168,7 +167,7 @@ public class UserApi extends BaseApi {
 	 */
 	public BaseResult remarkUserName(String openId, String remark)
 			throws WeixinException {
-		String updateremark_uri = ConfigUtil.getValue("updateremark_uri");
+		String updateremark_uri = getRequestUri("updateremark_uri");
 		Token token = tokenApi.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("openid", openId);

@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.model.WeixinAccountV2;
+import com.foxinmy.weixin4j.model.WeixinAccountV3;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
 import com.foxinmy.weixin4j.mp.api.HelperApi;
 import com.foxinmy.weixin4j.mp.api.MassApi;
@@ -29,10 +30,10 @@ import com.foxinmy.weixin4j.mp.model.UserToken;
 import com.foxinmy.weixin4j.mp.msg.model.Article;
 import com.foxinmy.weixin4j.mp.msg.model.BaseMsg;
 import com.foxinmy.weixin4j.mp.msg.notify.BaseNotify;
-import com.foxinmy.weixin4j.mp.payment.Order;
+import com.foxinmy.weixin4j.mp.payment.v2.Order;
 import com.foxinmy.weixin4j.mp.response.TemplateMessage;
-import com.foxinmy.weixin4j.token.FileTokenApi;
-import com.foxinmy.weixin4j.token.TokenApi;
+import com.foxinmy.weixin4j.token.FileTokenHolder;
+import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.type.MediaType;
 
 /**
@@ -60,7 +61,7 @@ public class WeixinProxy {
 	 * 默认采用文件存放Token跟配置文件中的appi信息
 	 */
 	public WeixinProxy() {
-		this(new FileTokenApi());
+		this(new FileTokenHolder());
 	}
 
 	/**
@@ -70,10 +71,10 @@ public class WeixinProxy {
 	 * @param appsecret
 	 */
 	public WeixinProxy(String appid, String appsecret) {
-		this(new FileTokenApi(appid, appsecret));
+		this(new FileTokenHolder(appid, appsecret));
 	}
 
-	public WeixinProxy(TokenApi tokenApi) {
+	public WeixinProxy(TokenHolder tokenApi) {
 		this.mediaApi = new MediaApi(tokenApi);
 		this.notifyApi = new NotifyApi(tokenApi);
 		this.massApi = new MassApi(tokenApi);
@@ -748,5 +749,37 @@ public class WeixinProxy {
 	public Order orderQuery(WeixinAccountV2 weixinConfig, String orderNo)
 			throws WeixinException {
 		return payApi.orderQuery(weixinConfig, orderNo);
+	}
+
+	/**
+	 * 维权处理
+	 * 
+	 * @param openId
+	 *            用户ID
+	 * @param feedbackId
+	 *            维权单号
+	 * @return
+	 * @see com.foxinmy.weixin4j.mp.api.PayApi
+	 * @throws WeixinException
+	 */
+	public BaseResult updateFeedback(String openId, String feedbackId)
+			throws WeixinException {
+		return payApi.updateFeedback(openId, feedbackId);
+	}
+
+	/**
+	 * native支付URL转短链接
+	 * 
+	 * @param weixinConfig
+	 *            商户配置
+	 * @param url
+	 *            native支付URL
+	 * @return 转换后的短链接
+	 * @see com.foxinmy.weixin4j.mp.api.PayApi
+	 * @throws WeixinException
+	 */
+	public String getShorturl(WeixinAccountV3 weixinConfig, String url)
+			throws WeixinException {
+		return payApi.getShorturl(weixinConfig, url);
 	}
 }

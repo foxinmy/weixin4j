@@ -14,7 +14,8 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @author jy
  * @date 2014年9月29日
  * @since JDK 1.7
- * @see <a href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3">模板消息</a>
+ * @see <a
+ *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3">模板消息</a>
  */
 public class TemplateMessage implements Serializable {
 

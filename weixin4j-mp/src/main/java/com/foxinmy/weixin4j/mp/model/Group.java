@@ -2,11 +2,9 @@ package com.foxinmy.weixin4j.mp.model;
 
 import java.io.Serializable;
 
-import com.foxinmy.weixin4j.xml.XStream;
-import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
-
 /**
  * 分组
+ * 
  * @author jy.hu
  * @date 2014年4月4日
  * @since JDK 1.7
@@ -56,29 +54,22 @@ public class Group implements Serializable {
 
 	/**
 	 * 返回创建分组所需的json格式字符串
+	 * 
 	 * @return {"group": {"id": 107, "name": "test"}}
 	 */
 	public String toCreateJson() {
-		XStream xstream = new XStream(new JsonHierarchicalStreamDriver());
-		xstream.omitField(this.getClass(), "id");
-		xstream.omitField(this.getClass(), "count");
-		xstream.alias("group", this.getClass());
-		xstream.autodetectAnnotations(true);
-		xstream.processAnnotations(this.getClass());
-		return xstream.toXML(this);
+		return String.format("{\"group\":{\"id\":%s,\"name\":\"%s\"}}", id,
+				name);
 	}
 
 	/**
 	 * 返回修改分组所需的json格式字符串
-	 * @return
+	 * 
+	 * @return {"group": {"id": 107, "name": "test"}}
 	 */
 	public String toModifyJson() {
-		XStream xstream = new XStream(new JsonHierarchicalStreamDriver());
-		xstream.omitField(this.getClass(), "count");
-		xstream.alias("group", this.getClass());
-		xstream.autodetectAnnotations(true);
-		xstream.processAnnotations(this.getClass());
-		return xstream.toXML(this);
+		return String.format("{\"group\":{\"id\":%s,\"name\":\"%s\"}}", id,
+				name);
 	}
 
 	@Override
@@ -91,6 +82,7 @@ public class Group implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("[Group id=%d ,name=%s ,count=%d]", id, name, count);
+		return String.format("[Group id=%d ,name=%s ,count=%d]", id, name,
+				count);
 	}
 }

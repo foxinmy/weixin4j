@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.mp.response;
 
 import com.foxinmy.weixin4j.mp.type.ResponseType;
 import com.foxinmy.weixin4j.msg.BaseMessage;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 转移消息到多客服端消息
@@ -15,6 +16,7 @@ import com.foxinmy.weixin4j.msg.BaseMessage;
  * @see com.foxinmy.weixin4j.mp.response.BaseResponse
  * @see com.foxinmy.weixin4j.mp.response.BaseResponse#toXml()
  */
+@XStreamAlias("xml")
 public class TransferResponse extends BaseResponse {
 
 	private static final long serialVersionUID = -5479496746108594940L;

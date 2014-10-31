@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.http;
 
 import java.io.InputStream;
-import java.io.Serializable;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -10,7 +9,7 @@ import org.dom4j.io.SAXReader;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.thoughtworks.xstream.XStream;
+import com.foxinmy.weixin4j.xml.XStream;
 
 public class Response {
 
@@ -39,15 +38,14 @@ public class Response {
 		return JSON.parseObject(text);
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T> T getAsObject(Class<? extends Serializable> clazz) {
+	public <T> T getAsObject(Class<T> clazz) {
 		return (T) JSON.parseObject(text, clazz);
 	}
 
-	public Object getAsXml() {
-		XStream xs = new XStream();
-		xs.autodetectAnnotations(true);
-		return xs.fromXML(text);
+	public <T> T getAsXml(Class<T> clazz) {
+		XStream xStream = XStream.get();
+		xStream.processAnnotations(clazz);
+		return xStream.fromXML(text, clazz);
 	}
 
 	/**
@@ -60,12 +58,11 @@ public class Response {
 	 */
 	public BaseResult getBaseError() throws DocumentException {
 		BaseResult result = getAsResult();
-		if (result.getErrcode() != 0) {
+		if (!result.getErrcode().equals("0")) {
 			SAXReader reader = new SAXReader();
-			Document doc = reader.read(Thread.currentThread()
-					.getContextClassLoader().getResourceAsStream("error.xml"));
+			Document doc = reader.read(Response.class.getResourceAsStream("error.xml"));
 			Node node = doc.getRootElement().selectSingleNode(
-					String.format("error[@code='%d']", result.getErrcode()));
+					String.format("error[@code='%s']", result.getErrcode()));
 			if (node != null) {
 				result.setText(node.getStringValue());
 			}

@@ -37,7 +37,7 @@ public class GroupTest extends TokenTest {
 	public void get() throws WeixinException {
 		List<Group> groups = groupApi.getGroups();
 		for (Group group : groups) {
-			System.out.println(group);
+			System.out.println(group.toModifyJson());
 		}
 		Assert.assertEquals(1, groups.size());
 	}

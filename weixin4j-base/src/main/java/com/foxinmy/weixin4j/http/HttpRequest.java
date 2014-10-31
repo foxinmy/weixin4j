@@ -3,10 +3,10 @@ package com.foxinmy.weixin4j.http;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -33,6 +33,7 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 
+import com.alibaba.fastjson.JSONException;
 import com.foxinmy.weixin4j.exception.WeixinException;
 
 /**
@@ -155,12 +156,12 @@ public class HttpRequest {
 
 			int status = statusLine.getStatusCode();
 			if (status != HttpStatus.SC_OK) {
-				throw new WeixinException(status, "request fail");
+				throw new WeixinException(status + "", "request fail");
 			}
 			// 301或者302
 			if (status == HttpStatus.SC_MOVED_PERMANENTLY
 					|| status == HttpStatus.SC_MOVED_TEMPORARILY) {
-				throw new WeixinException(status, String.format(
+				throw new WeixinException(status + "", String.format(
 						"the page was redirected to %s",
 						httpResponse.getFirstHeader("location")));
 			}
@@ -170,7 +171,7 @@ public class HttpRequest {
 			response.setStatusCode(status);
 			response.setStatusText(statusLine.getReasonPhrase());
 			response.setStream(new ByteArrayInputStream(data));
-			response.setText(StringUtils.join(data));
+			response.setText(new String(data, StandardCharsets.UTF_8));
 
 			Header contentType = httpResponse
 					.getFirstHeader(HttpHeaders.CONTENT_TYPE);
@@ -178,18 +179,25 @@ public class HttpRequest {
 					ContentType.APPLICATION_JSON.getMimeType())
 					|| contentType.getValue().contains(
 							ContentType.TEXT_PLAIN.getMimeType())) {
-				BaseResult result = response.getAsResult();
-				if (result.getErrcode() != 0) {
-					throw new WeixinException(result.getErrcode(),
-							result.getErrmsg());
+				BaseResult result = null;
+				try {
+					result = response.getAsResult();
+				} catch (JSONException e) {
+					result = response.getAsXml(BaseResult.class);
 				}
+				if (result.getErrcode().equals("0")
+						|| result.getErrcode().equalsIgnoreCase("success")) {
+					EntityUtils.consume(httpEntity);
+					return response;
+				}
+				throw new WeixinException(result.getErrcode(),
+						result.getErrmsg());
 			}
-			EntityUtils.consume(httpEntity);
-			return response;
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		} finally {
 			request.releaseConnection();
 		}
+		throw new WeixinException("-1", "request fail");
 	}
 }

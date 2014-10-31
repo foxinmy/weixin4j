@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import com.foxinmy.weixin4j.mp.msg.model.Article;
 import com.foxinmy.weixin4j.mp.type.ResponseType;
 import com.foxinmy.weixin4j.msg.BaseMessage;
-import com.foxinmy.weixin4j.xml.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -21,6 +20,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see com.foxinmy.weixin4j.mp.response.BaseResponse
  * @see com.foxinmy.weixin4j.mp.response.BaseResponse#toXml()
  */
+@XStreamAlias("xml")
 public class ArticleResponse extends BaseResponse {
 	private static final int MAX_ARTICLE_COUNT = 10;
 	private static final long serialVersionUID = -7331603018352309317L;
@@ -82,13 +82,12 @@ public class ArticleResponse extends BaseResponse {
 	@Override
 	public String toXml() {
 		this.count = articles.size();
-		XStream xstream = getXStream();
-		xstream.alias("item", Article.class);
-		xstream.aliasField("Title", Article.class, "title");
-		xstream.aliasField("Description", Article.class, "desc");
-		xstream.aliasField("PicUrl", Article.class, "picUrl");
-		xstream.aliasField("Url", Article.class, "url");
-		return xstream.toXML(this);
+		xmlStream.alias("item", Article.class);
+		xmlStream.aliasField("Title", Article.class, "title");
+		xmlStream.aliasField("Description", Article.class, "desc");
+		xmlStream.aliasField("PicUrl", Article.class, "picUrl");
+		xmlStream.aliasField("Url", Article.class, "url");
+		return xmlStream.toXML(this);
 	}
 
 	@Override

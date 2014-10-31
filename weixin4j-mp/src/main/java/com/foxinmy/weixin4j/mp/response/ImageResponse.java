@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.mp.response;
 import com.foxinmy.weixin4j.mp.msg.model.Image;
 import com.foxinmy.weixin4j.mp.type.ResponseType;
 import com.foxinmy.weixin4j.msg.BaseMessage;
-import com.foxinmy.weixin4j.xml.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -20,6 +19,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see com.foxinmy.weixin4j.mp.response.BaseResponse
  * @see com.foxinmy.weixin4j.mp.response.BaseResponse#toXml()
  */
+@XStreamAlias("xml")
 public class ImageResponse extends BaseResponse {
 	private static final long serialVersionUID = 6998255203997554731L;
 
@@ -42,9 +42,8 @@ public class ImageResponse extends BaseResponse {
 
 	@Override
 	public String toXml() {
-		XStream xstream = getXStream();
-		xstream.aliasField("MediaId", Image.class, "mediaId");
-		return xstream.toXML(this);
+		xmlStream.aliasField("MediaId", Image.class, "mediaId");
+		return xmlStream.toXML(this);
 	}
 
 	@Override

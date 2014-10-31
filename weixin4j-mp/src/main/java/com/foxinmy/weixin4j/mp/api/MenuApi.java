@@ -9,8 +9,7 @@ import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Button;
-import com.foxinmy.weixin4j.token.TokenApi;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
  * 菜单相关API
@@ -23,9 +22,9 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  */
 public class MenuApi extends BaseApi {
 
-	private final TokenApi tokenApi;
+	private final TokenHolder tokenApi;
 
-	public MenuApi(TokenApi tokenApi) {
+	public MenuApi(TokenHolder tokenApi) {
 		this.tokenApi = tokenApi;
 	}
 
@@ -39,7 +38,7 @@ public class MenuApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.mp.model.Button
 	 */
 	public BaseResult createMenu(List<Button> btnList) throws WeixinException {
-		String menu_create_uri = ConfigUtil.getValue("menu_create_uri");
+		String menu_create_uri = getRequestUri("menu_create_uri");
 		Token token = tokenApi.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("button", btnList);
@@ -60,7 +59,7 @@ public class MenuApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.mp.model.Button
 	 */
 	public List<Button> getMenu() throws WeixinException {
-		String menu_get_uri = ConfigUtil.getValue("menu_get_uri");
+		String menu_get_uri = getRequestUri("menu_get_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.get(String.format(menu_get_uri,
 				token.getAccessToken()));
@@ -79,7 +78,7 @@ public class MenuApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.mp.model.Button
 	 */
 	public BaseResult deleteMenu() throws WeixinException {
-		String menu_delete_uri = ConfigUtil.getValue("menu_delete_uri");
+		String menu_delete_uri = getRequestUri("menu_delete_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.get(String.format(menu_delete_uri,
 				token.getAccessToken()));

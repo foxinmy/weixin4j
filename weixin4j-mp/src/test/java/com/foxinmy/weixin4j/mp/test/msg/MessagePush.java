@@ -23,8 +23,7 @@ public class MessagePush {
 
 	public MessagePush() {
 		this.httpClient = new DefaultHttpClient();
-		ResourceBundle config = ResourceBundle
-				.getBundle("netty");
+		ResourceBundle config = ResourceBundle.getBundle("netty");
 		httpPost = new HttpPost();
 		httpPost.setURI(URI.create(String.format("http://localhost:%s",
 				Integer.parseInt(config.getString("port")))));
@@ -37,11 +36,11 @@ public class MessagePush {
 
 		int status = statusLine.getStatusCode();
 		if (status != HttpStatus.SC_OK) {
-			throw new WeixinException(status, "request fail");
+			throw new WeixinException(status + "", "request fail");
 		}
 		if (status == HttpStatus.SC_MOVED_PERMANENTLY
 				|| status == HttpStatus.SC_MOVED_TEMPORARILY) {
-			throw new WeixinException(status, "uri moved");
+			throw new WeixinException(status + "", "uri moved");
 		}
 		return EntityUtils.toString(httpResponse.getEntity(),
 				StandardCharsets.UTF_8);

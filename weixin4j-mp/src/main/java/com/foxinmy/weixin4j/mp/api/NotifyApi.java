@@ -13,8 +13,7 @@ import com.foxinmy.weixin4j.mp.msg.model.Article;
 import com.foxinmy.weixin4j.mp.msg.model.BaseMsg;
 import com.foxinmy.weixin4j.mp.msg.notify.ArticleNotify;
 import com.foxinmy.weixin4j.mp.msg.notify.BaseNotify;
-import com.foxinmy.weixin4j.token.TokenApi;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
  * 客服相关API
@@ -34,9 +33,9 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  */
 public class NotifyApi extends BaseApi {
 
-	private final TokenApi tokenApi;
+	private final TokenHolder tokenApi;
 
-	public NotifyApi(TokenApi tokenApi) {
+	public NotifyApi(TokenHolder tokenApi) {
 		this.tokenApi = tokenApi;
 	}
 
@@ -50,7 +49,7 @@ public class NotifyApi extends BaseApi {
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E5%8F%91%E9%80%81%E5%AE%A2%E6%9C%8D%E6%B6%88%E6%81%AF#.E5.8F.91.E9.80.81.E9.9F.B3.E4.B9.90.E6.B6.88.E6.81.AF">发送客服消息</a>
 	 */
 	private BaseResult sendNotify(String jsonPara) throws WeixinException {
-		String custom_notify_uri = ConfigUtil.getValue("custom_notify_uri");
+		String custom_notify_uri = getRequestUri("custom_notify_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.post(
 				String.format(custom_notify_uri, token.getAccessToken()),
@@ -154,7 +153,7 @@ public class NotifyApi extends BaseApi {
 		obj.put("endtime", endtime);
 		obj.put("pagesize", pagesize > 1000 ? 1000 : pagesize);
 		obj.put("pageindex", pageindex);
-		String custom_record_uri = ConfigUtil.getValue("custom_record_uri");
+		String custom_record_uri = getRequestUri("custom_record_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.post(
 				String.format(custom_record_uri, token.getAccessToken()),

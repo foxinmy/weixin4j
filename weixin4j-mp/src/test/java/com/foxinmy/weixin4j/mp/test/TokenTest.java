@@ -5,8 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.token.FileTokenApi;
-import com.foxinmy.weixin4j.token.TokenApi;
+import com.foxinmy.weixin4j.token.FileTokenHolder;
+import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
  * token测试
@@ -18,11 +18,11 @@ import com.foxinmy.weixin4j.token.TokenApi;
  */
 public class TokenTest {
 
-	protected TokenApi tokenApi;
+	protected TokenHolder tokenApi;
 
 	@Before
 	public void setUp() {
-		tokenApi = new FileTokenApi();
+		tokenApi = new FileTokenHolder();
 	}
 
 	@Test

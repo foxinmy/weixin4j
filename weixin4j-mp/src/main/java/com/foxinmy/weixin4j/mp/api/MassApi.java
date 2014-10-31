@@ -9,9 +9,8 @@ import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.MpArticle;
-import com.foxinmy.weixin4j.token.TokenApi;
+import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.type.MediaType;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * 群发相关API
@@ -26,9 +25,9 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  */
 public class MassApi extends BaseApi {
 
-	private final TokenApi tokenApi;
+	private final TokenHolder tokenApi;
 
-	public MassApi(TokenApi tokenApi) {
+	public MassApi(TokenHolder tokenApi) {
 		this.tokenApi = tokenApi;
 	}
 
@@ -47,7 +46,7 @@ public class MassApi extends BaseApi {
 	 */
 	public String uploadArticle(List<MpArticle> articles)
 			throws WeixinException {
-		String article_upload_uri = ConfigUtil.getValue("article_upload_uri");
+		String article_upload_uri = getRequestUri("article_upload_uri");
 		Token token = tokenApi.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("articles", articles);
@@ -75,7 +74,7 @@ public class MassApi extends BaseApi {
 	 */
 	public String uploadVideo(String mediaId, String title, String desc)
 			throws WeixinException {
-		String video_upload_uri = ConfigUtil.getValue("video_upload_uri");
+		String video_upload_uri = getRequestUri("video_upload_uri");
 		Token token = tokenApi.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("media_id", mediaId);
@@ -109,7 +108,7 @@ public class MassApi extends BaseApi {
 	 */
 	private String massByGroup(JSONObject jsonPara, String groupId)
 			throws WeixinException {
-		String mass_group_uri = ConfigUtil.getValue("mass_group_uri");
+		String mass_group_uri = getRequestUri("mass_group_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.post(
 				String.format(mass_group_uri, token.getAccessToken()),
@@ -133,7 +132,7 @@ public class MassApi extends BaseApi {
 	 */
 	private String massByOpenIds(JSONObject jsonPara, String... openIds)
 			throws WeixinException {
-		String mass_openid_uri = ConfigUtil.getValue("mass_openid_uri");
+		String mass_openid_uri = getRequestUri("mass_openid_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.post(
 				String.format(mass_openid_uri, token.getAccessToken()),
@@ -259,7 +258,7 @@ public class MassApi extends BaseApi {
 	public BaseResult deleteMassNews(String msgid) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("msgid", msgid);
-		String mass_delete_uri = ConfigUtil.getValue("mass_delete_uri");
+		String mass_delete_uri = getRequestUri("mass_delete_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.post(
 				String.format(mass_delete_uri, token.getAccessToken()),

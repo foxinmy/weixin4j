@@ -5,8 +5,7 @@ import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.response.TemplateMessage;
-import com.foxinmy.weixin4j.token.TokenApi;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
  * 模板消息相关API
@@ -19,9 +18,9 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  */
 public class TmplApi extends BaseApi {
 
-	private final TokenApi tokenApi;
+	private final TokenHolder tokenApi;
 
-	public TmplApi(TokenApi tokenApi) {
+	public TmplApi(TokenHolder tokenApi) {
 		this.tokenApi = tokenApi;
 	}
 
@@ -39,7 +38,7 @@ public class TmplApi extends BaseApi {
 	public BaseResult sendTmplMessage(TemplateMessage tplMessage)
 			throws WeixinException {
 		Token token = tokenApi.getToken();
-		String template_send_uri = ConfigUtil.getValue("template_send_uri");
+		String template_send_uri = getRequestUri("template_send_uri");
 		Response response = request.post(
 				String.format(template_send_uri, token.getAccessToken()),
 				tplMessage.toJson());

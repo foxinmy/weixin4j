@@ -26,7 +26,7 @@ import com.thoughtworks.xstream.io.json.JsonWriter;
 public class BaseMessage implements Serializable {
 
 	private static final long serialVersionUID = 7761192742840031607L;
-	private final static XStream xmlStream = new XStream();
+	private final static XStream xmlStream = XStream.get();
 	private final static XStream jsonStream = new XStream(
 			new JsonHierarchicalStreamDriver() {
 				public HierarchicalStreamWriter createWriter(Writer writer) {
@@ -49,8 +49,6 @@ public class BaseMessage implements Serializable {
 		Class<?>[] classes = ClassUtil.getClasses(
 				TextMessage.class.getPackage()).toArray(new Class[0]);
 
-		xmlStream.ignoreUnknownElements();
-		xmlStream.autodetectAnnotations(true);
 		xmlStream.processAnnotations(classes);
 		xmlStream.omitField(BaseMessage.class, "msgId");
 
@@ -123,20 +121,16 @@ public class BaseMessage implements Serializable {
 		return false;
 	}
 
-	protected XStream getXStream() {
-		Class<? extends BaseMessage> targetClass = getMsgType()
-				.getMessageClass();
-		xmlStream.alias("xml", targetClass);
-		return xmlStream;
-	}
-
 	/**
 	 * 消息对象转换为微信服务器接受的xml格式消息
 	 * 
 	 * @return xml字符串
 	 */
 	public String toXml() {
-		return getXStream().toXML(this);
+		Class<? extends BaseMessage> targetClass = getMsgType()
+				.getMessageClass();
+		xmlStream.alias("xml", targetClass);
+		return xmlStream.toXML(this);
 	}
 
 	/**

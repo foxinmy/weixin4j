@@ -7,14 +7,12 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * 基于redis保存的Token获取类
  * 
- * @className RedisTokenApi
+ * @className RedisTokenHolder
  * @author jy.hu
  * @date 2014年9月27日
  * @since JDK 1.7
@@ -22,24 +20,23 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token">获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class RedisTokenApi extends AbstractTokenApi {
-
-	private final HttpRequest request = new HttpRequest();
+public class RedisTokenHolder extends AbstractTokenHolder {
 
 	private final String appid;
 	private final String appsecret;
 	private JedisPool jedisPool;
 
-	public RedisTokenApi() {
+	public RedisTokenHolder() {
 		this.appid = getAppid();
 		this.appsecret = getAppsecret();
 	}
 
-	public RedisTokenApi(String appid, String appsecret) {
+	public RedisTokenHolder(String appid, String appsecret) {
 		this(appid, appsecret, "localhost", 6379);
 	}
 
-	public RedisTokenApi(String appid, String appsecret, String host, int port) {
+	public RedisTokenHolder(String appid, String appsecret, String host,
+			int port) {
 		this.appid = appid;
 		this.appsecret = appsecret;
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
@@ -64,8 +61,8 @@ public class RedisTokenApi extends AbstractTokenApi {
 			String key = String.format("token:%s", appid);
 			String accessToken = jedis.get(key);
 			if (StringUtils.isBlank(accessToken)) {
-				String api_token_uri = String.format(
-						ConfigUtil.getValue("api_token_uri"), appid, appsecret);
+				String api_token_uri = String
+						.format(tokenUrl, appid, appsecret);
 				token = request.get(api_token_uri).getAsObject(Token.class);
 				jedis.setex(key, token.getExpiresIn() - 3,
 						token.getAccessToken());

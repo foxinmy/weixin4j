@@ -111,9 +111,7 @@ public class MessageUtil {
 			messageClass = EventType.valueOf(type.toLowerCase())
 					.getEventClass();
 		}
-		XStream xstream = new XStream();
-		xstream.ignoreUnknownElements();
-		xstream.autodetectAnnotations(true);
+		XStream xstream = XStream.get();
 		xstream.processAnnotations(messageClass);
 		xstream.alias("xml", messageClass);
 		return xstream.fromXML(xmlMsg, messageClass);

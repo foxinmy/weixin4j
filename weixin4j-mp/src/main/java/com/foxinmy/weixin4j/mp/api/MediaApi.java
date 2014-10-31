@@ -11,9 +11,8 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.PartParameter;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.token.TokenApi;
+import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.type.MediaType;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
 
 /**
@@ -29,9 +28,9 @@ import com.foxinmy.weixin4j.util.IOUtil;
  */
 public class MediaApi extends BaseApi {
 
-	private final TokenApi tokenApi;
+	private final TokenHolder tokenApi;
 
-	public MediaApi(TokenApi tokenApi) {
+	public MediaApi(TokenHolder tokenApi) {
 		this.tokenApi = tokenApi;
 	}
 
@@ -74,7 +73,7 @@ public class MediaApi extends BaseApi {
 	public String uploadMedia(String fileName, byte[] bytes, MediaType mediaType)
 			throws WeixinException {
 		Token token = tokenApi.getToken();
-		String file_upload_uri = ConfigUtil.getValue("file_upload_uri");
+		String file_upload_uri = getRequestUri("file_upload_uri");
 		Response response = request.post(String.format(file_upload_uri,
 				token.getAccessToken(), mediaType.name()), new PartParameter(
 				"media", new ByteArrayBody(bytes, fileName)));
@@ -101,7 +100,7 @@ public class MediaApi extends BaseApi {
 	 */
 	public File downloadMedia(String mediaId, MediaType mediaType)
 			throws WeixinException, IOException {
-		String media_path = ConfigUtil.getValue("media_path");
+		String media_path = getRequestUri("media_path");
 		byte[] datas = downloadMediaData(mediaId, mediaType);
 		String filename = mediaId + "." + mediaType.getFormatType();
 		File file = new File(media_path + File.separator + filename);
@@ -133,7 +132,7 @@ public class MediaApi extends BaseApi {
 	public byte[] downloadMediaData(String mediaId, MediaType mediaType)
 			throws WeixinException {
 		Token token = tokenApi.getToken();
-		String file_download_uri = ConfigUtil.getValue("file_download_uri");
+		String file_download_uri = getRequestUri("file_download_uri");
 		Response response = request.get(String.format(file_download_uri,
 				token.getAccessToken(), mediaId));
 

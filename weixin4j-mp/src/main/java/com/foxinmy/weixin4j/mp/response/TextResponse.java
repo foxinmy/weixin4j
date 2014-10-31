@@ -19,6 +19,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see com.foxinmy.weixin4j.mp.response.BaseResponse
  * @see com.foxinmy.weixin4j.mp.response.BaseResponse#toXml()
  */
+@XStreamAlias("xml")
 public class TextResponse extends BaseResponse {
 
 	private static final long serialVersionUID = -7018053906644190260L;

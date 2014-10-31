@@ -30,9 +30,7 @@ public abstract class AbstractAction<M extends BaseMessage> implements
 		BaseMessage message = MessageUtil.xml2msg(msg);
 		if (message == null) {
 			Class<M> messageClass = getGenericType();
-			XStream xstream = new XStream();
-			xstream.ignoreUnknownElements();
-			xstream.autodetectAnnotations(true);
+			XStream xstream = XStream.get();
 			xstream.processAnnotations(messageClass);
 			xstream.alias("xml", messageClass);
 			return execute(xstream.fromXML(msg, messageClass)).toXml();

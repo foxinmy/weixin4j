@@ -6,7 +6,7 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
 功能列表
 -------
 
-* TokenApi token实现API
+* TokenHolder token的实现
 
 * MediaApi 上传/下载媒体文件API
 
@@ -34,16 +34,16 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
 
 1.编辑weixin.properties文件,填入appid/appsecret信息,当然也可通过构造函数传入.
 
-2.实例化一个WeixinProxy对象,如无特别指明appid/appsecret则使用weixin.properties中的值.
+2.实例化一个WeixinProxy对象,调用API.
 
     WeixinProxy weixinProxy = new WeixinProxy();
     // weixinProxy = new WeixinProxy(appid,appsecret);
     weixinProxy.getUser(openId);
     
-3.针对token存储有两种方案,File存储/Redis存储,当然也可自己实现TokenApi,如无特别指明默认使用文件(xml)的方式保存token,如果环境中支持redis,建议使用RedisTokenApi.
+3.针对token存储有两种方案,File存储/Redis存储,当然也可自己实现TokenHolder(继承AbstractTokenHolder类并重写getToken方法),默认使用文件(xml)的方式保存token,如果环境中支持redis,建议使用RedisTokenHolder.
 
-    WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenApi());
-    // weixinProxy = new WeixinProxy(new RedisTokenApi(appid,appsecret));
+    WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenHolder());
+    // weixinProxy = new WeixinProxy(new RedisTokenHolder(appid,appsecret));
 
 4.mvn package,得到一个zip的压缩包,解压到启动目录(见src/main/startup.sh/APP_HOME)
 
@@ -61,3 +61,9 @@ tencent weixin platform java sdk 微信公众平台开发工具包 http://mp.wei
 * 2014-10-28
    
    1).调整ActionMapping抽象化
+   
+* 2014-10-31
+
+   1).weixin.properties切分为API调用地址/公众号信息两部分
+   
+   2).TokenApi重命名为TokenHolder

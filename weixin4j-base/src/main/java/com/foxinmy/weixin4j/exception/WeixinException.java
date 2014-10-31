@@ -13,14 +13,10 @@ public class WeixinException extends Exception {
 
 	private static final long serialVersionUID = 7148145661883468514L;
 
-	private int errorCode;
+	private String errorCode;
 	private String errorMsg;
 
-	public WeixinException(int errorCode) {
-		this.errorCode = errorCode;
-	}
-
-	public WeixinException(int errorCode, String errorMsg) {
+	public WeixinException(String errorCode, String errorMsg) {
 		this.errorCode = errorCode;
 		this.errorMsg = errorMsg;
 	}
@@ -29,7 +25,7 @@ public class WeixinException extends Exception {
 		this.errorMsg = errorMsg;
 	}
 
-	public int getErrorCode() {
+	public String getErrorCode() {
 		return errorCode;
 	}
 

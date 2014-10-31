@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.mp.response;
 import com.foxinmy.weixin4j.mp.msg.model.Music;
 import com.foxinmy.weixin4j.mp.type.ResponseType;
 import com.foxinmy.weixin4j.msg.BaseMessage;
-import com.foxinmy.weixin4j.xml.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -19,6 +18,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see com.foxinmy.weixin4j.mp.response.BaseResponse
  * @see com.foxinmy.weixin4j.mp.response.BaseResponse#toXml()
  */
+@XStreamAlias("xml")
 public class MusicResponse extends BaseResponse {
 
 	private static final long serialVersionUID = 4384403772658796395L;
@@ -40,13 +40,12 @@ public class MusicResponse extends BaseResponse {
 
 	@Override
 	public String toXml() {
-		XStream xstream = getXStream();
-		xstream.aliasField("MediaId", Music.class, "musicUrl");
-		xstream.aliasField("Title", Music.class, "title");
-		xstream.aliasField("Description", Music.class, "desc");
-		xstream.aliasField("HQMusicUrl", Music.class, "hqMusicUrl");
-		xstream.aliasField("ThumbMediaId", Music.class, "thumbMediaId");
-		return xstream.toXML(this);
+		xmlStream.aliasField("MediaId", Music.class, "musicUrl");
+		xmlStream.aliasField("Title", Music.class, "title");
+		xmlStream.aliasField("Description", Music.class, "desc");
+		xmlStream.aliasField("HQMusicUrl", Music.class, "hqMusicUrl");
+		xmlStream.aliasField("ThumbMediaId", Music.class, "thumbMediaId");
+		return xmlStream.toXML(this);
 	}
 
 	@Override

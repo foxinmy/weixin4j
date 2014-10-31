@@ -8,8 +8,7 @@ import com.foxinmy.weixin4j.http.BaseResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Group;
-import com.foxinmy.weixin4j.token.TokenApi;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
  * 分组相关API
@@ -24,8 +23,8 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  */
 public class GroupApi extends BaseApi {
 	
-	private final TokenApi tokenApi;
-	public GroupApi(TokenApi tokenApi) {
+	private final TokenHolder tokenApi;
+	public GroupApi(TokenHolder tokenApi) {
 		this.tokenApi = tokenApi;
 	}
 
@@ -42,7 +41,7 @@ public class GroupApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.mp.model.Group#toCreateJson()
 	 */
 	public Group createGroup(String name) throws WeixinException {
-		String group_create_uri = ConfigUtil.getValue("group_create_uri");
+		String group_create_uri = getRequestUri("group_create_uri");
 		Token token = tokenApi.getToken();
 		Group group = new Group(name);
 		Response response = request.post(
@@ -62,7 +61,7 @@ public class GroupApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
 	public List<Group> getGroups() throws WeixinException {
-		String group_get_uri = ConfigUtil.getValue("group_get_uri");
+		String group_get_uri = getRequestUri("group_get_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.get(String.format(group_get_uri,
 				token.getAccessToken()));
@@ -83,7 +82,7 @@ public class GroupApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
 	public int getGroupByOpenId(String openId) throws WeixinException {
-		String group_getid_uri = ConfigUtil.getValue("group_getid_uri");
+		String group_getid_uri = getRequestUri("group_getid_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.post(
 				String.format(group_getid_uri, token.getAccessToken()),
@@ -107,7 +106,7 @@ public class GroupApi extends BaseApi {
 	 */
 	public BaseResult modifyGroup(int groupId, String name)
 			throws WeixinException {
-		String group_modify_uri = ConfigUtil.getValue("group_modify_uri");
+		String group_modify_uri = getRequestUri("group_modify_uri");
 		Token token = tokenApi.getToken();
 		Group group = new Group(groupId, name);
 
@@ -131,7 +130,7 @@ public class GroupApi extends BaseApi {
 	 */
 	public BaseResult moveGroup(String openId, int groupId)
 			throws WeixinException {
-		String group_move_uri = ConfigUtil.getValue("group_move_uri");
+		String group_move_uri = getRequestUri("group_move_uri");
 		Token token = tokenApi.getToken();
 		Response response = request.post(String.format(group_move_uri,
 				token.getAccessToken()), String.format(

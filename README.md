@@ -21,6 +21,13 @@ weixin4j
    
    1).weixin4j-mp:调整ActionMapping抽象化
 
+* 2014-10-31
+
+   1).weixin4j-mp:weixin.properties切分为API调用地址/公众号信息两部分
+   
+   2).weixin4j-base:TokenApi重命名为TokenHolder
+   
+   3).weixin4j-base:新增WeixinConfig等类
 
 接下来
 ------

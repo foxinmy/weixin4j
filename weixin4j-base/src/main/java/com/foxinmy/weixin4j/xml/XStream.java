@@ -29,9 +29,11 @@ public class XStream extends com.thoughtworks.xstream.XStream {
 			}
 		});
 	}
+
 	public XStream(HierarchicalStreamDriver hierarchicalStreamDriver) {
 		super(hierarchicalStreamDriver);
 	}
+
 	@SuppressWarnings("unchecked")
 	public <T> T fromXML(String xml, Class<T> t) {
 		return (T) super.fromXML(xml);
@@ -40,5 +42,12 @@ public class XStream extends com.thoughtworks.xstream.XStream {
 	@SuppressWarnings("unchecked")
 	public <T> T fromXML(InputStream inputStream, Class<T> t) {
 		return (T) super.fromXML(inputStream);
+	}
+
+	public static XStream get() {
+		XStream xstream = new XStream();
+		xstream.ignoreUnknownElements();
+		xstream.autodetectAnnotations(true);
+		return xstream;
 	}
 }

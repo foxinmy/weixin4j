@@ -10,8 +10,7 @@ import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.QRParameter.QRType;
-import com.foxinmy.weixin4j.token.TokenApi;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
  * 二维码相关API
@@ -25,9 +24,9 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  */
 public class QrApi extends BaseApi {
 
-	private final TokenApi tokenApi;
+	private final TokenHolder tokenApi;
 
-	public QrApi(TokenApi tokenApi) {
+	public QrApi(TokenHolder tokenApi) {
 		this.tokenApi = tokenApi;
 	}
 
@@ -41,12 +40,12 @@ public class QrApi extends BaseApi {
 	 */
 	public byte[] getQRData(QRParameter parameter) throws WeixinException {
 		Token token = tokenApi.getToken();
-		String qr_uri = ConfigUtil.getValue("qr_ticket_uri");
+		String qr_uri = getRequestUri("qr_ticket_uri");
 		Response response = request.post(
 				String.format(qr_uri, token.getAccessToken()),
 				parameter.toJson());
 		String ticket = response.getAsJson().getString("ticket");
-		qr_uri = ConfigUtil.getValue("qr_image_uri");
+		qr_uri = getRequestUri("qr_image_uri");
 		response = request.get(String.format(qr_uri, ticket));
 
 		return response.getBody();
@@ -90,7 +89,7 @@ public class QrApi extends BaseApi {
 	 */
 	public File getQR(QRParameter parameter) throws WeixinException,
 			IOException {
-		String qr_path = ConfigUtil.getValue("qr_path");
+		String qr_path = getRequestUri("qr_path");
 		String filename = String.format("%s_%d_%d.jpg", parameter.getQrType()
 				.name(), parameter.getSceneId(), parameter.getExpireSeconds());
 		File file = new File(qr_path + File.separator + filename);
