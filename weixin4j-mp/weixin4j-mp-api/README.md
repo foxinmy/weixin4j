@@ -28,15 +28,17 @@ weixin4j-mp-api
 
 如何使用
 --------
-1.API工程可以单独使用,需新增或拷贝`weixin.properties`文件到`classpath`
+1.API工程可以单独打包到其他项目中使用,需新增或拷贝`weixin.properties`文件到项目的`classpath`中
 
-weixin.properties
+weixin.properties说明
 
 | 属性名       |       说明      |
 | :---------- | :-------------- |
 | account     | 微信公众号信息 `json格式`  |
 | token_path  | 使用FileTokenHolder时token保存的物理路径 |
-| qr_path     | 调用二维码接口时保存的物理路径 |
+| qr_path     | 调用二维码接口时保存二维码图片的物理路径 |
+| media_path  | 调用媒体接口时保存媒体文件的物理路径 |
+| bill_path   | 调用支付(`V3`)下载对账单接口保存excel文件的物理路径 |
 
 示例
 
@@ -61,7 +63,7 @@ weixin.properties
     WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenHolder());
     // weixinProxy = new WeixinProxy(new RedisTokenHolder(appid,appsecret));
     
-4.mvn package.
+4.`mvn package`.
 	
 更新LOG
 -------
