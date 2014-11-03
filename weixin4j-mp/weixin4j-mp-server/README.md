@@ -1,8 +1,6 @@
 weixin4j-mp-server
 ==================
 
-@(weixin4j)[netty服务]
-
 微信netty服务
 ------------
 
@@ -12,7 +10,6 @@ weixin4j-mp-server
 * `netty构建服务器`
 
 * `消息分发`
-
 
 如何使用
 --------

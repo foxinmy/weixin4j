@@ -1,8 +1,6 @@
 weixin4j-mp
 ===========
 
-@(weixin4j)[公众平台]
-
 微信[公众平台](http://mp.weixin.qq.com/wiki)开发工具包
 ----------------------------------------------------
 
@@ -50,4 +48,4 @@ weixin4j-mp
 
   + `weixin-mp`分离为`weixin-mp-api`和`weixin-mp-server`两个工程
    
-  + `weixin-mp`:加入支付模块
+  + **weixin-mp**: 加入`支付`模块
