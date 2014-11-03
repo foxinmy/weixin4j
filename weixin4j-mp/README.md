@@ -6,7 +6,7 @@ weixin4j-mp
 
 功能列表
 -------
-* weixin4j-mp-api
+* **weixin4j-mp-api**
 
   + MediaApi `上传/下载媒体文件API`
 	
@@ -26,7 +26,7 @@ weixin4j-mp
 	
   + HelperApi `辅助API`
 
-* weixin4j-mp-server
+* **weixin4j-mp-server**
 
   `netty服务器 & 消息分发`
 

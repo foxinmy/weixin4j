@@ -6,7 +6,7 @@ weixin4j
 
 功能列表
 -------
-* weixin4j-mp
+* **weixin4j-mp**
 
   `公众平台API封装`
 	
@@ -14,7 +14,7 @@ weixin4j
 	
   `微信支付(公众号)`
 	
-* weixin4j-qy
+* **weixin4j-qy**
 
   `企业号API封装`
 	
@@ -36,7 +36,7 @@ weixin4j
    
   + **weixin4j-base**: `TokenApi`重命名为`TokenHolder`
   
-  + **weixin4j-base**:`新增`WeixinConfig`等类
+  + **weixin4j-base**:新增`WeixinConfig`等类
 
 * 2014-11-03
 
