@@ -6,6 +6,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
 
@@ -22,13 +23,10 @@ import com.foxinmy.weixin4j.model.Token;
  */
 public class RedisTokenHolder extends AbstractTokenHolder {
 
-	private final String appid;
-	private final String appsecret;
 	private JedisPool jedisPool;
 
 	public RedisTokenHolder() {
-		this.appid = getAppid();
-		this.appsecret = getAppsecret();
+		super();
 	}
 
 	public RedisTokenHolder(String appid, String appsecret) {
@@ -37,8 +35,7 @@ public class RedisTokenHolder extends AbstractTokenHolder {
 
 	public RedisTokenHolder(String appid, String appsecret, String host,
 			int port) {
-		this.appid = appid;
-		this.appsecret = appsecret;
+		super(appid, appsecret);
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxTotal(50);
 		poolConfig.setMaxIdle(5);
@@ -50,6 +47,8 @@ public class RedisTokenHolder extends AbstractTokenHolder {
 
 	@Override
 	public Token getToken() throws WeixinException {
+		String appid = getAppid();
+		String appsecret = getAppsecret();
 		if (StringUtils.isBlank(appid) || StringUtils.isBlank(appsecret)) {
 			throw new IllegalArgumentException(
 					"appid or appsecret not be null!");
@@ -63,7 +62,9 @@ public class RedisTokenHolder extends AbstractTokenHolder {
 			if (StringUtils.isBlank(accessToken)) {
 				String api_token_uri = String
 						.format(tokenUrl, appid, appsecret);
-				token = request.get(api_token_uri).getAsObject(Token.class);
+				token = request.get(api_token_uri).getAsObject(
+						new TypeReference<Token>() {
+						});
 				jedis.setex(key, token.getExpiresIn() - 3,
 						token.getAccessToken());
 			} else {

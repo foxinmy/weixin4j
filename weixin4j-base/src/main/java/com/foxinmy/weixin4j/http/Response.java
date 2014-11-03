@@ -9,6 +9,7 @@ import org.dom4j.io.SAXReader;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.xml.XStream;
 
 public class Response {
@@ -18,6 +19,8 @@ public class Response {
 	private String statusText;
 	private byte[] body;
 	private InputStream stream;
+	private boolean isJsonResult;
+	private boolean isXmlResult;
 
 	public Response() {
 	}
@@ -26,26 +29,40 @@ public class Response {
 		this.text = text;
 	}
 
+	public void setJsonResult(boolean isJsonResult) {
+		this.isJsonResult = isJsonResult;
+	}
+
+	public void setXmlResult(boolean isXmlResult) {
+		this.isXmlResult = isXmlResult;
+	}
+
 	public String getAsString() {
 		return text;
 	}
 
-	public BaseResult getAsResult() {
-		return JSON.parseObject(text, BaseResult.class);
+	public JsonResult getAsJsonResult() {
+		return JSON.parseObject(text, JsonResult.class);
 	}
 
 	public JSONObject getAsJson() {
 		return JSON.parseObject(text);
 	}
 
-	public <T> T getAsObject(Class<T> clazz) {
-		return (T) JSON.parseObject(text, clazz);
+	public <T> T getAsObject(TypeReference<T> typeReference) {
+		if (isJsonResult) {
+			return JSON.parseObject(text, typeReference);
+		}
+		if (isXmlResult) {
+			@SuppressWarnings("unchecked")
+			Class<T> clazz = (Class<T>) typeReference.getType();
+			return XStream.get(text, clazz);
+		}
+		return null;
 	}
 
-	public <T> T getAsXml(Class<T> clazz) {
-		XStream xStream = XStream.get();
-		xStream.processAnnotations(clazz);
-		return xStream.fromXML(text, clazz);
+	public XmlResult getAsXmlResult() {
+		return XStream.get(text, XmlResult.class);
 	}
 
 	/**
@@ -56,22 +73,20 @@ public class Response {
 	 * @return
 	 * @throws DocumentException
 	 */
-	public BaseResult getBaseError() throws DocumentException {
-		BaseResult result = getAsResult();
-		if (!result.getErrcode().equals("0")) {
+	public JsonResult getTextError() throws DocumentException {
+		JsonResult result = getAsJsonResult();
+		if (result.getCode() != 0) {
 			SAXReader reader = new SAXReader();
-			Document doc = reader.read(Response.class.getResourceAsStream("error.xml"));
+			Document doc = reader.read(Response.class
+					.getResourceAsStream("error.xml"));
 			Node node = doc.getRootElement().selectSingleNode(
-					String.format("error[@code='%s']", result.getErrcode()));
+					String.format("error/code[text()='%d']", result.getCode()));
 			if (node != null) {
-				result.setText(node.getStringValue());
+				result.setText(node.getParent().selectSingleNode("text")
+						.getStringValue());
 			}
 		}
 		return result;
-	}
-
-	public String getText() {
-		return text;
 	}
 
 	public void setText(String text) {

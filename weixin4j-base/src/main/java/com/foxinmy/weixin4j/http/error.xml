@@ -1,97 +1,427 @@
 <?xml version="1.0"?>
 <!-- http://mp.weixin.qq.com/wiki/index.php?title=%E5%85%A8%E5%B1%80%E8%BF%94%E5%9B%9E%E7%A0%81%E8%AF%B4%E6%98%8E -->
 <errors>
-	<error code="-1">系统繁忙</error>
-	<error code="40001">获取access_token时AppSecret错误，或者access_token无效</error>
-	<error code="40002">不合法的凭证类型</error>
-	<error code="40003">不合法的OpenID</error>
-	<error code="40004">不合法的媒体文件类型</error>
-	<error code="40005">不合法的文件类型</error>
-	<error code="40006">不合法的文件大小</error>
-	<error code="40007">不合法的媒体文件id</error>
-	<error code="40008">不合法的消息类型</error>
-	<error code="40009">不合法的图片文件大小</error>
-	<error code="40010">不合法的语音文件大小</error>
-	<error code="40011">不合法的视频文件大小</error>
-	<error code="40012">不合法的缩略图文件大小</error>
-	<error code="40013">不合法的APPID</error>
-	<error code="40014">不合法的access_token</error>
-	<error code="40015">不合法的菜单类型</error>
-	<error code="40016">不合法的按钮个数</error>
-	<error code="40017">不合法的按钮个数</error>
-	<error code="40018">不合法的按钮名字长度</error>
-	<error code="40019">不合法的按钮KEY长度</error>
-	<error code="40020">不合法的按钮URL长度</error>
-	<error code="40021">不合法的菜单版本号</error>
-	<error code="40022">不合法的子菜单级数</error>
-	<error code="40023">不合法的子菜单按钮个数</error>
-	<error code="40024">不合法的子菜单按钮类型</error>
-	<error code="40025">不合法的子菜单按钮名字长度</error>
-	<error code="40026">不合法的子菜单按钮KEY长度</error>
-	<error code="40027">不合法的子菜单按钮URL长度</error>
-	<error code="40028">不合法的自定义菜单使用用户</error>
-	<error code="40029">不合法的oauth_code</error>
-	<error code="40030">不合法的refresh_token</error>
-	<error code="40031">不合法的openid列表</error>
-	<error code="40032">不合法的openid列表长度</error>
-	<error code="40033">不合法的请求字符，不能包含\uxxxx格式的字符</error>
-	<error code="40035">不合法的参数</error>
-	<error code="40038">不合法的请求格式</error>
-	<error code="40039">不合法的URL长度</error>
-	<error code="40050">不合法的分组id</error>
-	<error code="40051">分组名字不合法</error>
-	<error code="41001">缺少access_token参数</error>
-	<error code="41002">缺少appid参数</error>
-	<error code="41003">缺少refresh_token参数</error>
-	<error code="41004">缺少secret参数</error>
-	<error code="41005">缺少多媒体文件数据</error>
-	<error code="41006">缺少media_id参数</error>
-	<error code="41007">缺少子菜单数据</error>
-	<error code="41008">缺少oauth code</error>
-	<error code="41009">缺少openid</error>
-	<error code="42001">access_token超时</error>
-	<error code="42002">refresh_token超时</error>
-	<error code="42003">oauth_code超时</error>
-	<error code="43001">需要GET请求</error>
-	<error code="43002">需要POST请求</error>
-	<error code="43003">需要HTTPS请求</error>
-	<error code="43004">需要接收者关注</error>
-	<error code="43005">需要好友关系</error>
-	<error code="44001">多媒体文件为空</error>
-	<error code="44002">POST的数据包为空</error>
-	<error code="44003">图文消息内容为空</error>
-	<error code="44004">文本消息内容为空</error>
-	<error code="45001">多媒体文件大小超过限制</error>
-	<error code="45002">消息内容超过限制</error>
-	<error code="45003">标题字段超过限制</error>
-	<error code="45004">描述字段超过限制</error>
-	<error code="45005">链接字段超过限制</error>
-	<error code="45006">图片链接字段超过限制</error>
-	<error code="45007">语音播放时间超过限制</error>
-	<error code="45008">图文消息超过限制</error>
-	<error code="45009">接口调用超过限制</error>
-	<error code="45010">创建菜单个数超过限制</error>
-	<error code="45015">回复时间超过限制</error>
-	<error code="45016">系统分组，不允许修改</error>
-	<error code="45017">分组名字过长</error>
-	<error code="45018">分组数量超过上限</error>
-	<error code="46001">不存在媒体数据</error>
-	<error code="46002">不存在的菜单版本</error>
-	<error code="46003">不存在的菜单数据</error>
-	<error code="46004">不存在的用户</error>
-	<error code="47001">解析JSON/XML内容错误</error>
-	<error code="48001">api功能未授权</error>
-	<error code="50001">用户未授权该api</error>
-	<error code="SYSTEMERROR">接口后台错误</error>
-	<error code="INVALID_TRANSACTIONID">无效 transaction_id</error>
-	<error code="PARAM_ERROR">提交参数错误</error>
-	<error code="ORDERPAID">订单已支付</error>
-	<error code="OUT_TRADE_NO_USED">商户订单号重复</error>
-	<error code="NOAUTH">商户无权限</error>
-	<error code="NOTENOUGH">余额不足</error>
-	<error code="NOTSUPORTCARD">不支持卡类型</error>
-	<error code="ORDERCLOSED">订单已关闭</error>
-	<error code="BANKERROR">银行系统异常</error>
-	<error code="REFUND_FEE_INVALID">退款金额大于支付金额</error>
-	<error code="ORDERNOTEXIST">订单不存在</error>
+	<error>
+		<code>0</code>
+		<desc>OK</desc>
+		<text>请求成功</text>
+	</error>
+	<error>
+		<code>-1</code>
+		<desc>system error</desc>
+		<text>系统繁忙</text>
+	</error>
+	<!-- 公众平台API错误 -->
+	<error>
+		<code>40001</code>
+		<desc>invalid credential</desc>
+		<text>不合法的调用凭证</text>
+	</error>
+	<error>
+		<code>40002</code>
+		<desc>invalid grant_type</desc>
+		<text>不合法的grant_type</text>
+	</error>
+	<error>
+		<code>40003</code>
+		<desc>invalid openid</desc>
+		<text>不合法的OpenID</text>
+	</error>
+	<error>
+		<code>40004</code>
+		<desc>invalid media type</desc>
+		<text>不合法的媒体文件类型</text>
+	</error>
+	<error>
+		<code>40007</code>
+		<desc>invalid media_id</desc>
+		<text>不合法的media_id</text>
+	</error>
+	<error>
+		<code>40008</code>
+		<desc>invalid message type</desc>
+		<text>不合法的message_type</text>
+	</error>
+	<error>
+		<code>40009</code>
+		<desc>invalid image size</desc>
+		<text>不合法的图片大小</text>
+	</error>
+	<error>
+		<code>40010</code>
+		<desc>invalid voice size</desc>
+		<text>不合法的语音大小</text>
+	</error>
+	<error>
+		<code>40011</code>
+		<desc>invalid video size</desc>
+		<text>不合法的视频大小</text>
+	</error>
+	<error>
+		<code>40012</code>
+		<desc>invalid thumb size</desc>
+		<text>不合法的缩略图大小</text>
+	</error>
+	<error>
+		<code>40013</code>
+		<desc>invalid appid</desc>
+		<text>不合法的AppID</text>
+	</error>
+	<error>
+		<code>40014</code>
+		<desc>invalid access_token</desc>
+		<text>不合法的access_token</text>
+	</error>
+	<error>
+		<code>40015</code>
+		<desc>invalid menu type</desc>
+		<text>不合法的菜单类型</text>
+	</error>
+	<error>
+		<code>40016</code>
+		<desc>invalid button size</desc>
+		<text>不合法的菜单按钮个数</text>
+	</error>
+	<error>
+		<code>40017</code>
+		<desc>invalid button type</desc>
+		<text>不合法的按钮类型</text>
+	</error>
+	<error>
+		<code>40018</code>
+		<desc>invalid button name size</desc>
+		<text>不合法的按钮名称长度</text>
+	</error>
+	<error>
+		<code>40019</code>
+		<desc>invalid button key size</desc>
+		<text>不合法的按钮KEY长度</text>
+	</error>
+	<error>
+		<code>40020</code>
+		<desc>invalid button url size</desc>
+		<text>不合法的url长度</text>
+	</error>
+	<error>
+		<code>40023</code>
+		<desc>invalid sub button size</desc>
+		<text>不合法的子菜单按钮个数</text>
+	</error>
+	<error>
+		<code>40024</code>
+		<desc>invalid sub button type</desc>
+		<text>不合法的子菜单类型</text>
+	</error>
+	<error>
+		<code>40025</code>
+		<desc>invalid sub button name size</desc>
+		<text>不合法的子菜单按钮名称长度</text>
+	</error>
+	<error>
+		<code>40026</code>
+		<desc>invalid sub button key size</desc>
+		<text>不合法的子菜单按钮KEY长度</text>
+	</error>
+	<error>
+		<code>40027</code>
+		<desc>invalid sub button url size</desc>
+		<text>不合法的子菜单按钮url长度</text>
+	</error>
+	<error>
+		<code>40029</code>
+		<desc>invalid code</desc>
+		<text>不合法或已过期的code</text>
+	</error>
+	<error>
+		<code>40030</code>
+		<desc>invalid refresh_token</desc>
+		<text>不合法的refresh_token</text>
+	</error>
+	<error>
+		<code>40036</code>
+		<desc>invalid template_id size</desc>
+		<text>不合法的template_id长度</text>
+	</error>
+	<error>
+		<code>40037</code>
+		<desc>invalid template_id</desc>
+		<text>不合法的template_id</text>
+	</error>
+	<error>
+		<code>40039</code>
+		<desc>invalid url size</desc>
+		<text>不合法的url长度</text>
+	</error>
+	<error>
+		<code>40048</code>
+		<desc>invalid url domain</desc>
+		<text>不合法的url域名</text>
+	</error>
+	<error>
+		<code>40054</code>
+		<desc>invalid sub button url domain</desc>
+		<text>不合法的子菜单按钮url域名</text>
+	</error>
+	<error>
+		<code>40055</code>
+		<desc>invalid button url domain</desc>
+		<text>不合法的菜单按钮url域名</text>
+	</error>
+	<error>
+		<code>40066</code>
+		<desc>invalid url</desc>
+		<text>不合法的url</text>
+	</error>
+	<error>
+		<code>41001</code>
+		<desc>access_token missing</desc>
+		<text>缺失access_token参数</text>
+	</error>
+	<error>
+		<code>41002</code>
+		<desc>appid missing</desc>
+		<text>缺失appid参数</text>
+	</error>
+	<error>
+		<code>41003</code>
+		<desc>refresh_token missing</desc>
+		<text>缺失refresh_token参数</text>
+	</error>
+	<error>
+		<code>41004</code>
+		<desc>appsecret missing</desc>
+		<text>缺失secret参数</text>
+	</error>
+	<error>
+		<code>41005</code>
+		<desc>media data missing</desc>
+		<text>缺失二进制媒体文件</text>
+	</error>
+	<error>
+		<code>41006</code>
+		<desc>media_id missing</desc>
+		<text>缺失media_id参数</text>
+	</error>
+	<error>
+		<code>41007</code>
+		<desc>sub_menu data missing</desc>
+		<text>缺失子菜单数据</text>
+	</error>
+	<error>
+		<code>41008</code>
+		<desc>missing code</desc>
+		<text>缺失code参数</text>
+	</error>
+	<error>
+		<code>41009</code>
+		<desc>missing openid</desc>
+		<text>缺失openid参数</text>
+	</error>
+	<error>
+		<code>41010</code>
+		<desc>missing url</desc>
+		<text>缺失url参数</text>
+	</error>
+	<error>
+		<code>42001</code>
+		<desc>access_token expired</desc>
+		<text>access_token超时</text>
+	</error>
+	<error>
+		<code>42002</code>
+		<desc>refresh_token expired</desc>
+		<text>refresh_token超时</text>
+	</error>
+	<error>
+		<code>42003</code>
+		<desc>code expired</desc>
+		<text>code超时</text>
+	</error>
+	<error>
+		<code>43001</code>
+		<desc>require GET method</desc>
+		<text>需要使用GET方法请求</text>
+	</error>
+	<error>
+		<code>43002</code>
+		<desc>require POST method</desc>
+		<text>需要使用POST方法请求</text>
+	</error>
+	<error>
+		<code>43003</code>
+		<desc>require https</desc>
+		<text>需要使用HTTPS</text>
+	</error>
+	<error>
+		<code>43004</code>
+		<desc>require subscribe</desc>
+		<text>需要订阅关系</text>
+	</error>
+	<error>
+		<code>44001</code>
+		<desc>empty media data</desc>
+		<text>空白的二进制数据</text>
+	</error>
+	<error>
+		<code>44002</code>
+		<desc>empty post data</desc>
+		<text>空白的POST数据</text>
+	</error>
+	<error>
+		<code>44003</code>
+		<desc>empty news data</desc>
+		<text>空白的news数据</text>
+	</error>
+	<error>
+		<code>44004</code>
+		<desc>empty content</desc>
+		<text>空白的内容</text>
+	</error>
+	<error>
+		<code>44005</code>
+		<desc>empty list size</desc>
+		<text>空白的列表</text>
+	</error>
+	<error>
+		<code>45001</code>
+		<desc>media size out of limit</desc>
+		<text>二进制文件超过限制</text>
+	</error>
+	<error>
+		<code>45002</code>
+		<desc>content size out of limit</desc>
+		<text>content参数超过限制</text>
+	</error>
+	<error>
+		<code>45003</code>
+		<desc>title size out of limit</desc>
+		<text>title参数超过限制</text>
+	</error>
+	<error>
+		<code>45004</code>
+		<desc>description size out of limit</desc>
+		<text>description参数超过限制</text>
+	</error>
+	<error>
+		<code>45005</code>
+		<desc>url size out of limit</desc>
+		<text>url参数长度超过限制</text>
+	</error>
+	<error>
+		<code>45006</code>
+		<desc>picurl size out of limit</desc>
+		<text>picurl参数超过限制</text>
+	</error>
+	<error>
+		<code>45007</code>
+		<desc>playtime out of limit</desc>
+		<text>播放时间超过限制（语音为60s最大）</text>
+	</error>
+	<error>
+		<code>45008</code>
+		<desc>article size out of limit</desc>
+		<text>article参数超过限制</text>
+	</error>
+	<error>
+		<code>45009</code>
+		<desc>api freq out of limit</desc>
+		<text>接口调动频率超过限制</text>
+	</error>
+	<error>
+		<code>45010</code>
+		<desc>create menu limit</desc>
+		<text>建立菜单被限制</text>
+	</error>
+	<error>
+		<code>45011</code>
+		<desc>api limit</desc>
+		<text>频率限制</text>
+	</error>
+	<error>
+		<code>45012</code>
+		<desc>template size out of limit</desc>
+		<text>模板大小超过限制</text>
+	</error>
+	<error>
+		<code>45016</code>
+		<desc>can't modify sys group</desc>
+		<text>不能修改默认组</text>
+	</error>
+	<error>
+		<code>45017</code>
+		<desc>can't set group name too long sys group</desc>
+		<text>修改组名过长</text>
+	</error>
+	<error>
+		<code>45018</code>
+		<desc>too many group now, no need to add new</desc>
+		<text>组数量过多</text>
+	</error>
+	<error>
+		<code>50001</code>
+		<desc>api unauthorized</desc>
+		<text>接口未授权</text>
+	</error>
+	<!-- 微信支付API错误 -->
+	<error>
+		<code>SYSTEMERROR</code>
+		<desc>SYSTEMERROR</desc>
+		<text>接口后台错误</text>
+	</error>
+	<error>
+		<code>INVALID_TRANSACTIONID</code>
+		<desc>INVALID_TRANSACTIONID</desc>
+		<text>无效 transaction_id</text>
+	</error>
+	<error>
+		<code>PARAM_ERROR</code>
+		<desc>PARAM_ERROR</desc>
+		<text>提交参数错误</text>
+	</error>
+	<error>
+		<code>ORDERPAID</code>
+		<desc>ORDERPAID</desc>
+		<text>订单已支付</text>
+	</error>
+
+	<error>
+		<code>OUT_TRADE_NO_USED</code>
+		<desc>OUT_TRADE_NO_USED</desc>
+		<text>商户订单号重复</text>
+	</error>
+	<error>
+		<code>NOAUTH</code>
+		<desc>NOAUTH</desc>
+		<text>商户无权限</text>
+	</error>
+	<error>
+		<code>NOTENOUGH</code>
+		<desc>NOTENOUGH</desc>
+		<text>余额不足</text>
+	</error>
+	<error>
+		<code>NOTSUPORTCARD</code>
+		<desc>NOTSUPORTCARD</desc>
+		<text>不支持卡类型</text>
+	</error>
+	<error>
+		<code>ORDERCLOSED</code>
+		<desc>ORDERCLOSED</desc>
+		<text>订单已关闭</text>
+	</error>
+	<error>
+		<code>BANKERROR</code>
+		<desc>BANKERROR</desc>
+		<text>银行系统异常</text>
+	</error>
+	<error>
+		<code>REFUND_FEE_INVALID</code>
+		<desc>REFUND_FEE_INVALID</desc>
+		<text>退款金额大于支付金额</text>
+	</error>
+	<error>
+		<code>ORDERNOTEXIST</code>
+		<desc>ORDERNOTEXIST</desc>
+		<text>订单不存在</text>
+	</error>
 </errors>

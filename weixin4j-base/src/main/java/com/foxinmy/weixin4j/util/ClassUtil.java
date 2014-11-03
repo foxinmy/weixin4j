@@ -6,6 +6,14 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 对class的获取
+ * @className ClassUtil
+ * @author jy
+ * @date 2014年10月31日
+ * @since JDK 1.7
+ * @see
+ */
 public class ClassUtil {
 
 	public static Set<Class<?>> getClasses(Package _package) {

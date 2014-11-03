@@ -1,12 +1,14 @@
 package com.foxinmy.weixin4j.token;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
@@ -26,17 +28,12 @@ import com.foxinmy.weixin4j.xml.XStream;
  */
 public class FileTokenHolder extends AbstractTokenHolder {
 
-	private final String appid;
-	private final String appsecret;
-
 	public FileTokenHolder() {
-		this.appid = getAppid();
-		this.appsecret = getAppsecret();
+		super();
 	}
 
 	public FileTokenHolder(String appid, String appsecret) {
-		this.appid = appid;
-		this.appsecret = appsecret;
+		super(appid, appsecret);
 	}
 
 	/**
@@ -53,12 +50,12 @@ public class FileTokenHolder extends AbstractTokenHolder {
 	 */
 	@Override
 	public Token getToken() throws WeixinException {
+		String appid = getAppid();
+		String appsecret = getAppsecret();
 		if (StringUtils.isBlank(appid) || StringUtils.isBlank(appsecret)) {
 			throw new IllegalArgumentException(
 					"appid or appsecret not be null!");
 		}
-		XStream xstream = XStream.get();
-		xstream.processAnnotations(Token.class);
 		File token_file = new File(String.format("%s/token_%s.xml",
 				ConfigUtil.getValue("token_path"), appid));
 		Token token = null;
@@ -66,7 +63,8 @@ public class FileTokenHolder extends AbstractTokenHolder {
 		long now_time = ca.getTimeInMillis();
 		try {
 			if (token_file.exists()) {
-				token = (Token) xstream.fromXML(token_file);
+				token = XStream.get(new FileInputStream(token_file),
+						Token.class);
 
 				long expise_time = token.getTime()
 						+ (token.getExpiresIn() * 1000) - 3;
@@ -74,23 +72,18 @@ public class FileTokenHolder extends AbstractTokenHolder {
 					return token;
 				}
 			} else {
-				try {
-					token_file.createNewFile();
-				} catch (IOException e) {
-					token_file.getParentFile().mkdirs();
-				}
+				token_file.createNewFile();
 			}
-			String api_token_uri = String.format(
-					tokenUrl, appid, appsecret);
+			String api_token_uri = String.format(tokenUrl, appid, appsecret);
 			Response response = request.get(api_token_uri);
-			token = response.getAsObject(Token.class);
+			token = response.getAsObject(new TypeReference<Token>() {
+			});
 			token.setTime(now_time);
 			token.setOpenid(appid);
-			xstream.toXML(token, new FileOutputStream(token_file));
-			return token;
+			XStream.to(token, new FileOutputStream(token_file));
 		} catch (IOException e) {
-			;
+			throw new WeixinException("-1", "IO ERROR");
 		}
-		throw new WeixinException("-1", "request fail");
+		return token;
 	}
 }

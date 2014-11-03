@@ -8,54 +8,23 @@
 		<artifactId>weixin4j</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.foxinmy.weixin</groupId>
 	<artifactId>weixin4j-mp</artifactId>
 	<name>weixin4j-mp</name>
-
+	<packaging>pom</packaging>
+	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-mp</url>
+	<description>微信公众号工具包</description>
+	<modules>
+		<module>weixin4j-mp-api</module>
+		<module>weixin4j-mp-server</module>
+	</modules>
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2.1</version>
-				<configuration>
-					<descriptors>
-						<descriptor>src/main/assembly.xml</descriptor>
-					</descriptors>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 		<finalName>weixin4j-mp</finalName>
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>${jsoup.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-			<version>${jaxen.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>${netty.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>com.foxinmy.weixin4j</groupId>
 			<artifactId>weixin4j-base</artifactId>
-			<version>${weixin4j.version}</version>
+			<version>${weixin4j.base.version}</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -17,6 +17,14 @@ import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
 import com.foxinmy.weixin4j.xml.XStream;
 
+/**
+ * 消息工具类
+ * @className MessageUtil
+ * @author jy
+ * @date 2014年10月31日
+ * @since JDK 1.7
+ * @see
+ */
 public class MessageUtil {
 
 	private final static Logger log = LoggerFactory
@@ -111,10 +119,7 @@ public class MessageUtil {
 			messageClass = EventType.valueOf(type.toLowerCase())
 					.getEventClass();
 		}
-		XStream xstream = XStream.get();
-		xstream.processAnnotations(messageClass);
-		xstream.alias("xml", messageClass);
-		return xstream.fromXML(xmlMsg, messageClass);
+		return XStream.get(xmlMsg, messageClass);
 	}
 
 	/**

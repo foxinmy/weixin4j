@@ -46,6 +46,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
  * @see
  */
 public class HttpRequest {
+	private final String SUCCESS = "success";
 	private AbstractHttpClient client;
 
 	public HttpRequest() {
@@ -149,6 +150,7 @@ public class HttpRequest {
 
 	protected Response doRequest(HttpRequestBase request)
 			throws WeixinException {
+		Response response = null;
 		try {
 			HttpResponse httpResponse = client.execute(request);
 			StatusLine statusLine = httpResponse.getStatusLine();
@@ -166,38 +168,47 @@ public class HttpRequest {
 						httpResponse.getFirstHeader("location")));
 			}
 			byte[] data = EntityUtils.toByteArray(httpEntity);
-			Response response = new Response();
+			response = new Response();
 			response.setBody(data);
 			response.setStatusCode(status);
 			response.setStatusText(statusLine.getReasonPhrase());
 			response.setStream(new ByteArrayInputStream(data));
-			response.setText(new String(data, StandardCharsets.UTF_8));
 
+			EntityUtils.consume(httpEntity);
 			Header contentType = httpResponse
 					.getFirstHeader(HttpHeaders.CONTENT_TYPE);
 			if (contentType.getValue().contains(
 					ContentType.APPLICATION_JSON.getMimeType())
 					|| contentType.getValue().contains(
 							ContentType.TEXT_PLAIN.getMimeType())) {
-				BaseResult result = null;
+				response.setText(new String(data, StandardCharsets.UTF_8));
 				try {
-					result = response.getAsResult();
-				} catch (JSONException e) {
-					result = response.getAsXml(BaseResult.class);
-				}
-				if (result.getErrcode().equals("0")
-						|| result.getErrcode().equalsIgnoreCase("success")) {
-					EntityUtils.consume(httpEntity);
+					JsonResult jsonResult = response.getAsJsonResult();
+					response.setJsonResult(true);
+					if (jsonResult.getCode() != 0) {
+						throw new WeixinException(jsonResult.getCode() + "",
+								jsonResult.getDesc());
+					}
 					return response;
+				} catch (JSONException e) {
+					;
 				}
-				throw new WeixinException(result.getErrcode(),
-						result.getErrmsg());
+				XmlResult xmlResult = response.getAsXmlResult();
+				response.setXmlResult(true);
+				if (!xmlResult.getReturnCode().equalsIgnoreCase(SUCCESS)) {
+					throw new WeixinException(xmlResult.getReturnCode(),
+							xmlResult.getReturnMsg());
+				}
+				if (!xmlResult.getResultCode().equalsIgnoreCase(SUCCESS)) {
+					throw new WeixinException(xmlResult.getErrCode(),
+							xmlResult.getErrCodeDes());
+				}
 			}
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		} finally {
 			request.releaseConnection();
 		}
-		throw new WeixinException("-1", "request fail");
+		return response;
 	}
 }

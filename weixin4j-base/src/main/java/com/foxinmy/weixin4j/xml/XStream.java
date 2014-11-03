@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.xml;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
 
 import com.thoughtworks.xstream.core.util.QuickWriter;
@@ -49,5 +50,35 @@ public class XStream extends com.thoughtworks.xstream.XStream {
 		xstream.ignoreUnknownElements();
 		xstream.autodetectAnnotations(true);
 		return xstream;
+	}
+
+	public static <T> T get(InputStream inputStream, Class<T> clazz) {
+		XStream xStream = get();
+		xStream.alias("xml", clazz);
+		xStream.processAnnotations(clazz);
+		return xStream.fromXML(inputStream, clazz);
+	}
+
+	public static <T> T get(String xml, Class<T> clazz) {
+		XStream xStream = get();
+		xStream.alias("xml", clazz);
+		xStream.processAnnotations(clazz);
+		return xStream.fromXML(xml, clazz);
+	}
+
+	public static String to(Object obj) {
+		XStream xStream = get();
+		Class<?> clazz = obj.getClass();
+		xStream.alias("xml", clazz);
+		xStream.processAnnotations(clazz);
+		return xStream.toXML(obj);
+	}
+
+	public static void to(Object obj, OutputStream out) {
+		XStream xStream = get();
+		Class<?> clazz = obj.getClass();
+		xStream.alias("xml", clazz);
+		xStream.processAnnotations(clazz);
+		xStream.toXML(obj, out);
 	}
 }
