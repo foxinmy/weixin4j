@@ -8,6 +8,7 @@ weixin4j-mp-server
 
 功能列表
 -------
+
 * `netty构建服务器`
 
 * `消息分发`
@@ -27,4 +28,4 @@ weixin4j-mp-server
 -------
 * 2014-11-03
 
-   + 得到`weixin-mp-server`工程
+  + 得到`weixin-mp-server`工程

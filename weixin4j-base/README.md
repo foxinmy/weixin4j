@@ -8,6 +8,7 @@ weixin4j-base
 
 功能列表
 -------
+
 `Token的实现`
 
 `通用消息实体`
@@ -16,6 +17,6 @@ weixin4j-base
 -------
 * 2014-10-31
 
-   + `TokenApi`重命名为`TokenHolder`
-   
-   + 新增`WeixinConfig`等类
+  + `TokenApi`重命名为`TokenHolder`
+  
+  + 新增`WeixinConfig`等类
