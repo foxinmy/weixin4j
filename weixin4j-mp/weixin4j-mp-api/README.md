@@ -42,15 +42,15 @@ weixin.properties
 
 示例
 
->**account={"appId":"appId","appSecret":"appSecret",
-"token":"开放者的token 非必须","openId":"公众号的openid 非必须",
-"mchId":"V3.x版本下的微信商户号",
-"partnerId":"财付通的商户号","partnerKey":"财付通商户权限密钥Key",
-"paySignKey":"微信支付中调用API的密钥"}**
->**token_path=/tmp/weixin/token`
-`qr_path=/tmp/weixin/qr
-`media_path=/tmp/weixin/media
-`bill_path=/tmp/weixin/bill**
+> account={"appId":"appId","appSecret":"appSecret",
+> "token":"开放者的token 非必须","openId":"公众号的openid 非必须",
+> "mchId":"V3.x版本下的微信商户号",
+> "partnerId":"财付通的商户号","partnerKey":"财付通商户权限密钥Key",
+> "paySignKey":"微信支付中调用API的密钥"}**
+> token_path=/tmp/weixin/token
+> qr_path=/tmp/weixin/qr
+> media_path=/tmp/weixin/media
+> bill_path=/tmp/weixin/bill
 
 2.实例化一个`WeixinProxy`对象,调用API.
 
