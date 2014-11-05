@@ -334,7 +334,7 @@ public class PayApi extends BaseApi {
 	 * 退款查询<br/>
 	 * 退款有一定延时,用零钱支付的退款20分钟内到账,银行卡支付的退款 3 个工作日后重新查询退款状态
 	 * 
-	 * @param weixinAccount
+	 * @param weixinAccount 商户信息
 	 * @param idQuery
 	 *            单号 refund_id、out_refund_no、 out_trade_no 、 transaction_id
 	 *            四个参数必填一个,优先级为:

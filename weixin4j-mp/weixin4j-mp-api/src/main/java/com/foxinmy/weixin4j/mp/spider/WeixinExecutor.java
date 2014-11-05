@@ -41,10 +41,10 @@ import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
- * 模拟微信WEB登陆
+ * 模拟微信公众平台登陆
  * 
  * <p>
- * (模拟登录|启用开发者模式|修改服务器配置|修改回调地址|创建自定义菜单....more)
+ * (模拟登录|启用开发者模式|修改服务器配置|修改回调地址|启用服务器配置....more)
  * </p>
  * 
  * @className WeixinExecutor

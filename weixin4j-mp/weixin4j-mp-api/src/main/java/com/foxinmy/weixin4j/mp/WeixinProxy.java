@@ -396,7 +396,8 @@ public class WeixinProxy {
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3#.E5.88.A0.E9.99.A4.E7.BE.A4.E5.8F.91">删除群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByGroup(JSONObject, String)}
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(JSONObject, String...)
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(JSONObject, String...)
+
 	 */
 	public JsonResult deleteMassNews(String msgid) throws WeixinException {
 		return massApi.deleteMassNews(msgid);

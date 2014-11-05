@@ -59,5 +59,4 @@ public class Parameter {
 	public String toString() {
 		return String.format("[Parameter name=%s, value=%s]", name, value);
 	}
-
 }
