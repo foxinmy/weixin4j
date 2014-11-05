@@ -5,9 +5,10 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 
 import com.foxinmy.weixin4j.mp.payment.PayPackage;
+import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
- * 微信支付的订单详情
+ * V2支付的订单详情
  * 
  * @className PayPackageV2
  * @author jy
@@ -33,26 +34,31 @@ public class PayPackageV2 extends PayPackage {
 	private String product_fee;
 	// 传入参数字符编码 取值范围:"GBK"、"UTF-8",默认:"GBK" 可为空
 	private String input_charset;
-	private String goods_tag;// 􏱙􏴱􏲹􏺯􏱮􏺰􏺱􏺲􏱫􏱥􏵧􏲛􏳙􏱙􏴱􏲹􏺯􏱮􏺰􏺱􏺲􏱫􏱥􏵧􏲛􏳙􏱙􏴱􏲹􏺯􏱮􏺰􏺱􏺲􏱫􏱥􏵧􏲛􏳙􏱙􏴱􏲹􏺯􏱮􏺰􏺱􏺲􏱫􏱥􏵧􏲛􏳙􏱙􏴱􏲹􏺯􏱮􏺰􏺱􏺲􏱫􏱥􏵧􏲛􏳙商品标记优惠券可能用到
-								// 可为空
+
 	public String getBank_type() {
 		return bank_type;
 	}
+
 	public void setBank_type(String bank_type) {
 		this.bank_type = bank_type;
 	}
+
 	public void setBody(String body) {
 		super.setBody(StringUtils.isBlank(body) ? "服务费用" : body);
 	}
+
 	public String getPartner() {
 		return partner;
 	}
+
 	public void setPartner(String partner) {
 		this.partner = partner;
 	}
+
 	public String getFee_type() {
 		return fee_type;
 	}
+
 	public void setFee_type(String fee_type) {
 		this.fee_type = fee_type;
 	}
@@ -64,24 +70,23 @@ public class PayPackageV2 extends PayPackage {
 	public String getTransport_fee() {
 		return transport_fee;
 	}
+
 	public void setTransport_fee(double transport_fee) {
-		this.transport_fee = FEE_FORMAT.format(transport_fee);
+		this.transport_fee = DateUtil.format2fee(transport_fee);
 	}
+
 	public String getProduct_fee() {
 		return product_fee;
 	}
+
 	public void setProduct_fee(double product_fee) {
-		this.product_fee = FEE_FORMAT.format(product_fee);
+		this.product_fee = DateUtil.format2fee(product_fee);
 	}
-	public String getGoods_tag() {
-		return goods_tag;
-	}
-	public void setGoods_tag(String goods_tag) {
-		this.goods_tag = goods_tag;
-	}
+
 	public String getInput_charset() {
 		return input_charset;
 	}
+
 	public void setInput_charset(String input_charset) {
 		this.input_charset = input_charset;
 	}
@@ -97,11 +102,13 @@ public class PayPackageV2 extends PayPackage {
 		this(null, null, null, out_trade_no, total_fee, null, spbill_create_ip,
 				null, null, 0d, 0d, null);
 	}
+
 	public PayPackageV2(String body, String out_trade_no, double total_fee,
 			String spbill_create_ip) {
 		this(body, null, null, out_trade_no, total_fee, null, spbill_create_ip,
 				null, null, 0d, 0d, null);
 	}
+
 	public PayPackageV2(String body, String partner, String out_trade_no,
 			double total_fee, String notify_url, String spbill_create_ip) {
 		this(body, null, partner, out_trade_no, total_fee, notify_url,
@@ -117,10 +124,10 @@ public class PayPackageV2 extends PayPackage {
 		this.bank_type = "WX";
 		this.fee_type = "1";
 		this.input_charset = "UTF-8";
-		this.transport_fee = transport_fee > 0d ? FEE_FORMAT
-				.format(transport_fee * 100) : null;
-		this.product_fee = product_fee > 0 ? FEE_FORMAT
-				.format(product_fee * 100) : null;
+		this.transport_fee = transport_fee > 0d ? DateUtil
+				.format2fee(transport_fee) : null;
+		this.product_fee = product_fee > 0 ? DateUtil.format2fee(product_fee)
+				: null;
 	}
 
 	@Override
@@ -128,7 +135,7 @@ public class PayPackageV2 extends PayPackage {
 		return "PayPackageV2 [bank_type=" + bank_type + ", partner=" + partner
 				+ ", fee_type=" + fee_type + ", transport_fee=" + transport_fee
 				+ ", product_fee=" + product_fee + ", input_charset="
-				+ input_charset + ", goods_tag=" + goods_tag
+				+ input_charset + ", goods_tag=" + getGoods_tag()
 				+ ", getBank_type()=" + getBank_type() + ", getPartner()="
 				+ getPartner() + ", getFee_type()=" + getFee_type()
 				+ ", getTransport_fee()=" + getTransport_fee()

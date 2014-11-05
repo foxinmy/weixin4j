@@ -1,11 +1,11 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
 import com.foxinmy.weixin4j.mp.payment.ApiResult;
-import com.foxinmy.weixin4j.mp.payment.TradeType;
+import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * 预生成订单信息
+ * 预订单信息
  * 
  * @className PrePay
  * @author jy

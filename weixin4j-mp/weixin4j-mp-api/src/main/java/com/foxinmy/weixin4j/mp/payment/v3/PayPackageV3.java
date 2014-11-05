@@ -6,14 +6,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.payment.PayPackage;
-import com.foxinmy.weixin4j.mp.payment.TradeType;
+import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * 微信支付V3<br/>
- * 注意:
- * <font color="red">total_fee字段传入时单位为元,创建支付时会转换为分</font>
+ * V3支付的订单详情<br/>
+ * 注意: <font color="red">total_fee字段传入时单位为元,创建支付时会转换为分</font>
+ * 
  * @className PayPackageV3
  * @author jy
  * @date 2014年10月21日
@@ -38,22 +38,21 @@ public class PayPackageV3 extends PayPackage {
 
 	}
 
-	public PayPackageV3(WeixinAccount weixinAccount, String body,
-			String out_trade_no, double total_fee, String spbill_create_ip,
-			TradeType tradeType) {
-		this(weixinAccount.getAppId(), weixinAccount.getMchId(), null,
-				RandomUtil.generateString(16), body, null, out_trade_no,
-				total_fee, spbill_create_ip, null, null, null, null, tradeType,
-				weixinAccount.getOpenId(), null, weixinAccount.getPaySignKey());
+	public PayPackageV3(WeixinAccount weixinAccount, String openId,
+			String body, String out_trade_no, double total_fee,
+			String spbill_create_ip, TradeType tradeType) {
+		this(weixinAccount, openId, body, null, out_trade_no, total_fee,
+				spbill_create_ip, null, tradeType);
 	}
 
-	public PayPackageV3(WeixinAccount weixinAccount, String body,
-			String attach, String out_trade_no, double total_fee,
+	public PayPackageV3(WeixinAccount weixinAccount, String openId,
+			String body, String attach, String out_trade_no, double total_fee,
 			String spbill_create_ip, String notify_url, TradeType tradeType) {
-		this(weixinAccount.getAppId(), weixinAccount.getMchId(), null, RandomUtil
-				.generateString(16), body, attach, out_trade_no, total_fee,
-				spbill_create_ip, null, null, null, notify_url, tradeType,
-				weixinAccount.getOpenId(), null, weixinAccount.getPaySignKey());
+		this(weixinAccount.getAppId(), weixinAccount.getMchId(), weixinAccount
+				.getDeviceInfo(), RandomUtil.generateString(16), body, attach,
+				out_trade_no, total_fee, spbill_create_ip, null, null, null,
+				notify_url, tradeType, openId, null, weixinAccount
+						.getPaySignKey());
 	}
 
 	public PayPackageV3(String appid, String mch_id, String device_info,

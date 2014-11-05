@@ -5,7 +5,7 @@ import com.foxinmy.weixin4j.msg.LocationMessage;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
- * 地理位置响应
+ * 地理位置处理
  * 
  * @className LocationAction
  * @author jy

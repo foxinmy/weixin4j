@@ -5,7 +5,7 @@ import com.foxinmy.weixin4j.msg.VideoMessage;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
- * 视频消息响应
+ * 视频消息处理
  * 
  * @className VideoAction
  * @author jy

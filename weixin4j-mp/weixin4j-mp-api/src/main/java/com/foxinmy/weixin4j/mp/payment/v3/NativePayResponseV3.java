@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * Native支付响应
+ * Native支付时的回调响应
  * 
  * @className NativePayResponseV3
  * @author jy
@@ -50,9 +50,9 @@ public class NativePayResponseV3 extends ApiResult {
 				+ getAppId() + ", getMchId()=" + getMchId()
 				+ ", getNonceStr()=" + getNonceStr() + ", getSign()="
 				+ getSign() + ", getDeviceInfo()=" + getDeviceInfo()
-				+ ", toString()=" + super.toString() + ", getReturnCode()="
-				+ getReturnCode() + ", getReturnMsg()=" + getReturnMsg()
-				+ ", getResultCode()=" + getResultCode() + ", getErrCode()="
-				+ getErrCode() + ", getErrCodeDes()=" + getErrCodeDes() + "]";
+				+ ", getReturnCode()=" + getReturnCode() + ", getReturnMsg()="
+				+ getReturnMsg() + ", getResultCode()=" + getResultCode()
+				+ ", getErrCode()=" + getErrCode() + ", getErrCodeDes()="
+				+ getErrCodeDes() + "]";
 	}
 }

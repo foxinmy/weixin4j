@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.foxinmy.weixin4j.mp.type.FaceSize;
+import com.foxinmy.weixin4j.mp.type.Gender;
+import com.foxinmy.weixin4j.mp.type.Lang;
+
 /**
  * 用户对象
  * <p>
@@ -33,48 +37,9 @@ public class User implements Serializable {
 	private Lang language; // 使用语言
 	private String unionid; // 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段
 
-	// 国家地区语言版本
-	public enum Lang {
-		zh_CN("简体"), zh_TW("繁体"), en("英语");
-
-		private String desc;
-
-		Lang(String desc) {
-			this.desc = desc;
-		}
-
-		public String getDesc() {
-			return desc;
-		}
-	}
-
-	// 用户性别 值为1时是男性，值为2时是女性，值为0时是未知
-	public enum Gender {
-		male(1), female(2), unknown(0);
-
-		private int sex;
-
-		Gender(int sex) {
-			this.sex = sex;
-		}
-
-		public int getInt() {
-			return sex;
-		}
-	}
-
-	// （有0、46、64、96、132数值可选，0代表640*640正方形头像）
-	public enum Size {
-		small(46), middle1(64), middle2(96), big(132);
-		private int size;
-
-		Size(int size) {
-			this.size = size;
-		}
-
-		public int getInt() {
-			return size;
-		}
+	public User() {
+		this.sex = 0;
+		this.language = Lang.zh_CN;
 	}
 
 	public String getOpenid() {
@@ -139,8 +104,8 @@ public class User implements Serializable {
 		return headimgurl;
 	}
 
-	public String getHeadimgurl(Size size) {
-		if (StringUtils.isNoneBlank(headimgurl)) {
+	public String getHeadimgurl(FaceSize size) {
+		if (StringUtils.isNotBlank(headimgurl)) {
 			StringBuilder sb = new StringBuilder(headimgurl);
 			return sb.replace(0, (headimgurl.length() - 1), size.getInt() + "")
 					.toString();

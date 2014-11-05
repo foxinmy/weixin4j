@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 
 /**
- * 用于校验消息安全性
+ * 用于校验消息是否来自微信
  * 
  * @className SignatureAction
  * @author jy

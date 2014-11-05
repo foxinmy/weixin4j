@@ -16,9 +16,11 @@ import com.foxinmy.weixin4j.mp.payment.v2.NativePayNotifyV2;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayResponseV2;
 import com.foxinmy.weixin4j.mp.payment.v2.PayFeedback;
 import com.foxinmy.weixin4j.mp.payment.v2.PayPackageV2;
+import com.foxinmy.weixin4j.mp.payment.v2.PayWarn;
 import com.foxinmy.weixin4j.mp.payment.v3.NativePayNotifyV3;
 import com.foxinmy.weixin4j.mp.payment.v3.NativePayResponseV3;
 import com.foxinmy.weixin4j.mp.payment.v3.PayPackageV3;
+import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.xml.XStream;
 
@@ -47,8 +49,8 @@ public class PayAction {
 		// 此处的openid为微信用户的openid
 		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
 		weixinAccount.setOpenId("用户的openId");
-		payPackage = new PayPackageV3(weixinAccount, "商品描述", "系统内部订单号", 1d,
-				"IP地址", TradeType.JSAPI);
+		payPackage = new PayPackageV3(weixinAccount, "用户openid", "商品描述",
+				"系统内部订单号", 1d, "IP地址", TradeType.JSAPI);
 		// V2 支付
 		payPackage = new PayPackageV2("商品描述", weixinAccount.getPartnerId(),
 				"系统内部订单号", 1d, "回调地址", "IP地址");
@@ -111,9 +113,9 @@ public class PayAction {
 		 * &total_fee=1&trade_mode=1&trade_state=0&
 		 * transaction_id=1221928801201410296039230054&transport_fee=0
 		 */
-		log.info("pay_notify_orderinfo,{}", objMap);
+		log.info("jspay_notify_orderinfo,{}", objMap);
 		JsPayNotify payNotify = XStream.get(inputStream, JsPayNotify.class);
-		log.info("pay_notify_userinfo,{}", payNotify);
+		log.info("jspay_notify_userinfo,{}", payNotify);
 		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
 		// 验证财付通签名
 		String sign = objMap.get("sign");
@@ -126,9 +128,9 @@ public class PayAction {
 		}
 		objMap.clear();
 		// 验证微信签名
-		sign = payNotify.getAppsignature();
-		payNotify.setAppsignature(null);
-		payNotify.setSignmethod(null);
+		sign = payNotify.getPaySign();
+		payNotify.setPaySign(null);
+		payNotify.setSignType(null);
 		String vaild_sign = PayUtil.paysignSha(payNotify,
 				weixinAccount.getPaySignKey());
 		log.info("微信签名----->sign={},vaild_sign={}", sign, vaild_sign);
@@ -153,7 +155,7 @@ public class PayAction {
 	public String jsNotifyV3(InputStream inputStream) {
 		com.foxinmy.weixin4j.mp.payment.v3.Order order = XStream.get(
 				inputStream, com.foxinmy.weixin4j.mp.payment.v3.Order.class);
-		log.info("order_info:", order);
+		log.info("jaapi_notify_order_info:", order);
 		String sign = order.getSign();
 		order.setSign(null);
 		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
@@ -182,16 +184,16 @@ public class PayAction {
 	 * 
 	 * @param inputStream
 	 *            xml数据
-	 * @see com.foxinmy.weixin4j.mp.payment.PayWarn
+	 * @see com.foxinmy.weixin4j.mp.payment.v2.PayWarn
 	 * @return
 	 */
 	public String warning(InputStream inputStream) {
 		PayWarn payWarn = XStream.get(inputStream, PayWarn.class);
 		log.info("pay_warning,{}", payWarn);
 		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
-		String sign = payWarn.getAppsignature();
-		payWarn.setSignmethod(null);
-		payWarn.setAppsignature(null);
+		String sign = payWarn.getPaySign();
+		payWarn.setPaySign(null);
+		payWarn.setSignType(null);
 		// 验证微信签名
 		String vaild_sign = PayUtil.paysignSha(payWarn,
 				weixinAccount.getPaySignKey());
@@ -224,9 +226,9 @@ public class PayAction {
 				NativePayNotifyV2.class);
 		log.info("native_pay_notify,{}", payNotify);
 		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
-		String sign = payNotify.getAppsignature();
-		payNotify.setAppsignature(null);
-		payNotify.setSignmethod(null);
+		String sign = payNotify.getPaySign();
+		payNotify.setPaySign(null);
+		payNotify.setSignType(null);
 		// 验证微信签名
 		String vaild_sign = PayUtil.paysignSha(payNotify,
 				weixinAccount.getPaySignKey());
@@ -268,8 +270,8 @@ public class PayAction {
 				weixinAccount.getPaySignKey());
 		log.info("微信签名----->sign={},vaild_sign={}", sign, valid_sign);
 		// 生成Package
-		PayPackageV3 payPackage = new PayPackageV3(weixinAccount, "商品描述",
-				"系统内部订单号", 1d, "IP地址", TradeType.NATIVE);
+		PayPackageV3 payPackage = new PayPackageV3(weixinAccount, "用户openid",
+				"商品描述", "系统内部订单号", 1d, "IP地址", TradeType.NATIVE);
 		payPackage.setProduct_id(payNotify.getProductId());
 		if (!sign.equals(valid_sign)) {
 			NativePayResponseV3 payReponse = new NativePayResponseV3(
@@ -303,8 +305,7 @@ public class PayAction {
 		obj.put("appid", feedback.getAppId());
 		obj.put("timestamp", feedback.getTimeStamp());
 		String sign = PayUtil.paysignSha(obj, weixinAccount.getPaySignKey());
-		log.info("微信签名----->sign={},vaild_sign={}", sign,
-				feedback.getAppSignature());
+		log.info("微信签名----->sign={},vaild_sign={}", sign, feedback.getPaySign());
 		return "success";
 	}
 

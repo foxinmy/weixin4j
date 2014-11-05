@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment;
+package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -9,8 +9,6 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.foxinmy.weixin4j.mp.payment.v3.Refund;
-import com.foxinmy.weixin4j.mp.payment.v3.RefundDetail;
 import com.foxinmy.weixin4j.xml.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -23,11 +21,13 @@ import com.thoughtworks.xstream.mapper.Mapper;
 
 /**
  * 退款查询接口调用结果转换类
+ * 
  * @className RefundConverter
  * @author jy
  * @date 2014年11月2日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.mp.payment.v3.Refund
+ * @see com.foxinmy.weixin4j.mp.payment.v3.RefundDetail
  */
 public class RefundConverter {
 	private final static XStream xStream = XStream.get();

@@ -71,7 +71,7 @@ public class XmlResult implements Serializable {
 	}
 
 	public XmlResult() {
-		this("success", "");
+		this(SUCCESS.toLowerCase(), "");
 	}
 
 	public XmlResult(String returnCode, String returnMsg) {

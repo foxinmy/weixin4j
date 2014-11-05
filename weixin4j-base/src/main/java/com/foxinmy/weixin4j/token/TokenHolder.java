@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.token;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.model.WeixinConfig;
 
 /**
  * 获取Token接口
@@ -16,5 +17,7 @@ import com.foxinmy.weixin4j.model.Token;
  * @see com.foxinmy.weixin4j.token.RedisTokenHolder
  */
 public interface TokenHolder {
+	public WeixinConfig getConfig();
+
 	public Token getToken() throws WeixinException;
 }

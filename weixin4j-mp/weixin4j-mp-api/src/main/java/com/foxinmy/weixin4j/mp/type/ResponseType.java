@@ -10,11 +10,12 @@ import com.foxinmy.weixin4j.mp.response.VideoResponse;
 import com.foxinmy.weixin4j.mp.response.VoiceResponse;
 
 /**
- * 
- * 响应类型
- * 
- * @author jy.hu
- * 
+ * 被动响应类型
+ * @className ResponseType
+ * @author jy
+ * @date 2014年11月5日
+ * @since JDK 1.7
+ * @see
  */
 public enum ResponseType {
 	text(TextResponse.class), image(ImageResponse.class), voice(

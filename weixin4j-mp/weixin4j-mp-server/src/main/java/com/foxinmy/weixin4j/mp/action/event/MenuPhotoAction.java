@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
- * 菜单发送图片时触发
+ * 点击菜单发送图片时触发
  * 
  * @className MenuPhotoAction
  * @author jy

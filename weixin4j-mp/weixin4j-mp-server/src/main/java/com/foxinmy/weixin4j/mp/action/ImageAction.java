@@ -5,7 +5,7 @@ import com.foxinmy.weixin4j.msg.ImageMessage;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
- * 图片消息响应
+ * 图片消息处理
  * 
  * @className ImageAction
  * @author jy

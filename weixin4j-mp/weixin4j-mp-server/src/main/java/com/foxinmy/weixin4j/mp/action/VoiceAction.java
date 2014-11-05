@@ -5,7 +5,7 @@ import com.foxinmy.weixin4j.msg.VoiceMessage;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
- * 语音消息响应
+ * 语音消息处理
  * 
  * @className VoiceAction
  * @author jy

@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
-import com.foxinmy.weixin4j.mp.model.QRParameter.QRType;
+import com.foxinmy.weixin4j.mp.type.QRType;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
@@ -64,11 +64,7 @@ public class QrApi extends BaseApi {
 	 */
 	public byte[] getQRData(int sceneId, int expireSeconds)
 			throws WeixinException {
-		QRParameter parameter = new QRParameter(sceneId, QRType.TEMPORARY,
-				expireSeconds);
-		if (expireSeconds <= 0) {
-			parameter.setQrType(QRType.PERMANENCE);
-		}
+		QRParameter parameter = new QRParameter(sceneId, expireSeconds);
 		return getQRData(parameter);
 	}
 

@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * @author jy
  * @date 2014年10月10日
  * @since JDK 1.7
- * @see com.foxinmy.weixin4j.msg.event.ScanEventMessage
+ * @see com.foxinmy.weixin4j.msg.event.ScribeEventMessage
  */
 @Action(msgType = MessageType.event, eventType = { EventType.unsubscribe })
 public class UnsubscribeAction extends DebugAction<ScribeEventMessage> {

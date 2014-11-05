@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.mp.response;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -115,6 +116,7 @@ public class TemplateMessage implements Serializable {
 				+ ", data=" + data + "]";
 	}
 
+	@Transient
 	@JSONField(serialize = false)
 	public String toJson() {
 		return JSON.toJSONString(this);

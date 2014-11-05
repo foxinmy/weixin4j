@@ -4,7 +4,7 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * Native支付响应
+ * Native支付时的回调响应
  * 
  * @className NativePayResponseV2
  * @author jy
@@ -47,9 +47,9 @@ public class NativePayResponseV2 extends JsPayRequestV2 {
 	@Override
 	public String toString() {
 		return "NativePayResponseV2 [retCode=" + retCode + ", retMsg=" + retMsg
-				+ ", getAppId()=" + getAppId() + ", getTimeStamp()="
-				+ getTimeStamp() + ", getNonceStr()=" + getNonceStr()
-				+ ", getPackageInfo()=" + getPackageInfo() + ", getSignType()="
-				+ getSignType() + ", getPaySign()=" + getPaySign() + "]";
+				+ ", getPackageInfo()=" + getPackageInfo() + ", getAppId()="
+				+ getAppId() + ", getTimeStamp()=" + getTimeStamp()
+				+ ", getNonceStr()=" + getNonceStr() + ", getPaySign()="
+				+ getPaySign() + ", getSignType()=" + getSignType() + "]";
 	}
 }

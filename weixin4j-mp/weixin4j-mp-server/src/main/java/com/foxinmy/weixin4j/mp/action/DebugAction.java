@@ -4,7 +4,7 @@ import com.foxinmy.weixin4j.mp.response.TextResponse;
 import com.foxinmy.weixin4j.msg.BaseMessage;
 
 /**
- * 显示调试信息
+ * 调试输出用户消息
  * 
  * @className DebugAction
  * @author jy

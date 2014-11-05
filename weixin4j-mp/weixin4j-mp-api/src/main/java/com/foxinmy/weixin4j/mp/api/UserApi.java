@@ -10,9 +10,10 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.model.WeixinConfig;
 import com.foxinmy.weixin4j.mp.model.Following;
+import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.User;
-import com.foxinmy.weixin4j.mp.model.UserToken;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
@@ -41,13 +42,15 @@ public class UserApi extends BaseApi {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E7%BD%91%E9%A1%B5%E6%8E%88%E6%9D%83%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF#.E7.AC.AC.E4.BA.8C.E6.AD.A5.EF.BC.9A.E9.80.9A.E8.BF.87code.E6.8D.A2.E5.8F.96.E7.BD.91.E9.A1.B5.E6.8E.88.E6.9D.83access_token">获取用户token</a>
-	 * @see com.foxinmy.weixin4j.mp.model.UserToken
+	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
 	 */
-	public UserToken getAccessToken(String code) throws WeixinException {
+	public OauthToken getOauthToken(String code) throws WeixinException {
 		String user_token_uri = getRequestUri("sns_user_token_uri");
-		Response response = request.get(String.format(user_token_uri, code));
+		WeixinConfig weixinConfig = tokenHolder.getConfig();
+		Response response = request.get(String.format(user_token_uri,
+				weixinConfig.getAppId(), weixinConfig.getAppSecret(), code));
 
-		return response.getAsObject(new TypeReference<UserToken>() {
+		return response.getAsObject(new TypeReference<OauthToken>() {
 		});
 	}
 
@@ -61,10 +64,10 @@ public class UserApi extends BaseApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E7%BD%91%E9%A1%B5%E6%8E%88%E6%9D%83%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF#.E7.AC.AC.E5.9B.9B.E6.AD.A5.EF.BC.9A.E6.8B.89.E5.8F.96.E7.94.A8.E6.88.B7.E4.BF.A1.E6.81.AF.28.E9.9C.80scope.E4.B8.BA_snsapi_userinfo.29">拉取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see com.foxinmy.weixin4j.mp.model.UserToken
-	 *      {@link com.foxinmy.weixin4j.mp.api.UserApi#getAccessToken(String)}
+	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
+	 *      {@link com.foxinmy.weixin4j.mp.api.UserApi#getOauthToken(String)}
 	 */
-	public User getUser(UserToken token) throws WeixinException {
+	public User getUser(OauthToken token) throws WeixinException {
 		String user_info_uri = getRequestUri("sns_user_info_uri");
 		Response response = request.get(String.format(user_info_uri,
 				token.getAccessToken(), token.getOpenid()));

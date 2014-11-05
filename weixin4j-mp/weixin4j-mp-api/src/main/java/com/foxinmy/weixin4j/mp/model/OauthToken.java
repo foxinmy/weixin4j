@@ -4,16 +4,16 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.Token;
 
 /**
- * 用户token 一般通过授权页面获得
+ * 用户授权token 一般通过授权页面获得
  * 
- * @className UserToken
+ * @className OauthToken
  * @author jy.hu
  * @date 2014年4月6日
  * @since JDK 1.7
  * @see com.foxinmy.weixin4j.mp.model.AuthResult
  * @see com.foxinmy.weixin4j.mp.model.AuthResult.AuthScope
  */
-public class UserToken extends Token {
+public class OauthToken extends Token {
 
 	private static final long serialVersionUID = 1L;
 

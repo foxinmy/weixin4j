@@ -26,49 +26,64 @@ public class MpArticle implements Serializable {
 	private String content;// 图文消息页面的内容，支持HTML标签 非空
 	private String digest;// 图文消息的描述 可为空
 	@JSONField(name = "show_cover_pic")
-	private short showCoverPic; // 是否显示封面，1为显示，0为不显示 可为空
+	private String showCoverPic; // 是否显示封面，1为显示，0为不显示 可为空
+
 	public String getThumbMediaId() {
 		return thumbMediaId;
 	}
+
 	public void setThumbMediaId(String thumbMediaId) {
 		this.thumbMediaId = thumbMediaId;
 	}
+
 	public String getAuthor() {
 		return author;
 	}
+
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getUrl() {
 		return url;
 	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 	public String getDigest() {
 		return digest;
 	}
+
 	public void setDigest(String digest) {
 		this.digest = digest;
 	}
-	public short getShowCoverPic() {
+
+	public String getShowCoverPic() {
 		return showCoverPic;
 	}
-	public void setShowCoverPic(short showCoverPic) {
-		this.showCoverPic = showCoverPic;
+
+	public void setShowCoverPic(boolean showCoverPic) {
+		this.showCoverPic = showCoverPic ? "1" : "0";
 	}
+
 	public MpArticle(String thumbMediaId, String title, String content) {
 		this.thumbMediaId = thumbMediaId;
 		this.title = title;
@@ -78,6 +93,7 @@ public class MpArticle implements Serializable {
 	public MpArticle() {
 
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

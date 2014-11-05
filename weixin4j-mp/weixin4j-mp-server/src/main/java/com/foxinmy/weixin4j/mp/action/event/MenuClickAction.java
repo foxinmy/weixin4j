@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
- * 菜单点击click事件时触发
+ * click类型菜单点击时触发
  * 
  * @className MenuClickAction
  * @author jy

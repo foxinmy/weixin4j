@@ -27,16 +27,16 @@ import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.MpArticle;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.User;
-import com.foxinmy.weixin4j.mp.model.UserToken;
+import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.msg.model.Article;
 import com.foxinmy.weixin4j.mp.msg.model.BaseMsg;
 import com.foxinmy.weixin4j.mp.msg.notify.BaseNotify;
-import com.foxinmy.weixin4j.mp.payment.BillType;
-import com.foxinmy.weixin4j.mp.payment.IdQuery;
-import com.foxinmy.weixin4j.mp.payment.IdType;
 import com.foxinmy.weixin4j.mp.payment.v2.Order;
 import com.foxinmy.weixin4j.mp.payment.v3.Refund;
 import com.foxinmy.weixin4j.mp.response.TemplateMessage;
+import com.foxinmy.weixin4j.mp.type.BillType;
+import com.foxinmy.weixin4j.mp.type.IdQuery;
+import com.foxinmy.weixin4j.mp.type.IdType;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.type.MediaType;
@@ -411,11 +411,11 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E7%BD%91%E9%A1%B5%E6%8E%88%E6%9D%83%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF#.E7.AC.AC.E4.BA.8C.E6.AD.A5.EF.BC.9A.E9.80.9A.E8.BF.87code.E6.8D.A2.E5.8F.96.E7.BD.91.E9.A1.B5.E6.8E.88.E6.9D.83access_token">获取用户token</a>
-	 * @see com.foxinmy.weixin4j.mp.model.UserToken
+	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
 	 */
-	public UserToken getAccessToken(String code) throws WeixinException {
-		return userApi.getAccessToken(code);
+	public OauthToken getOauthToken(String code) throws WeixinException {
+		return userApi.getOauthToken(code);
 	}
 
 	/**
@@ -428,11 +428,11 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E7%BD%91%E9%A1%B5%E6%8E%88%E6%9D%83%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF#.E7.AC.AC.E5.9B.9B.E6.AD.A5.EF.BC.9A.E6.8B.89.E5.8F.96.E7.94.A8.E6.88.B7.E4.BF.A1.E6.81.AF.28.E9.9C.80scope.E4.B8.BA_snsapi_userinfo.29">拉取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see com.foxinmy.weixin4j.mp.model.UserToken
+	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#getAccessToken(String)}
 	 */
-	public User getUser(UserToken token) throws WeixinException {
+	public User getUser(OauthToken token) throws WeixinException {
 		return userApi.getUser(token);
 	}
 
@@ -721,6 +721,8 @@ public class WeixinProxy {
 	 * 
 	 * @param weixinAccount
 	 *            商户信息
+	 * @param openId
+	 *            用户ID
 	 * @param transid
 	 *            交易单号
 	 * @param orderNo
@@ -733,11 +735,11 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.PayApi
 	 */
-	public JsonResult deliverNotify(WeixinAccount weixinAccount,
+	public JsonResult deliverNotify(WeixinAccount weixinAccount, String openId,
 			String transid, String orderNo, boolean status, String statusMsg)
 			throws WeixinException {
-		return payApi.deliverNotify(weixinAccount, transid, orderNo, status,
-				statusMsg);
+		return payApi.deliverNotify(weixinAccount, openId, transid, orderNo,
+				status, statusMsg);
 	}
 
 	/**
@@ -862,7 +864,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.PayApi
 	 * @throws WeixinException
 	 */
-	public String getShorturl(WeixinAccount weixinAccount, String url)
+	public String getPayShorturl(WeixinAccount weixinAccount, String url)
 			throws WeixinException {
 		return payApi.getShorturl(weixinAccount, url);
 	}

@@ -82,5 +82,4 @@ public class Following implements Serializable {
 		sb.append(", nextOpenId=").append(nextOpenId).append("]");
 		return sb.toString();
 	}
-
 }

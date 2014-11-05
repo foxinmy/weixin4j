@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
-import java.io.Serializable;
-
+import com.foxinmy.weixin4j.mp.payment.PayBaseInfo;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -14,7 +13,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see
  */
 @XStreamAlias("xml")
-public class PayFeedback implements Serializable {
+public class PayFeedback extends PayBaseInfo {
 
 	private static final long serialVersionUID = 7230049346213966310L;
 
@@ -34,12 +33,6 @@ public class PayFeedback implements Serializable {
 	private String picInfo;
 	@XStreamAlias("MsgType")
 	private String status;
-	@XStreamAlias("AppId")
-	private String appId;
-	@XStreamAlias("TimeStamp")
-	private String timeStamp;
-	@XStreamAlias("AppSignature")
-	private String appSignature;
 
 	public String getFeedbackId() {
 		return feedbackId;
@@ -105,36 +98,14 @@ public class PayFeedback implements Serializable {
 		this.status = status;
 	}
 
-	public String getAppId() {
-		return appId;
-	}
-
-	public void setAppId(String appId) {
-		this.appId = appId;
-	}
-
-	public String getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
-	}
-
-	public String getAppSignature() {
-		return appSignature;
-	}
-
-	public void setAppSignature(String appSignature) {
-		this.appSignature = appSignature;
-	}
-
 	@Override
 	public String toString() {
 		return "PayFeedback [feedbackId=" + feedbackId + ", openId=" + openId
 				+ ", transId=" + transId + ", reason=" + reason + ", solution="
 				+ solution + ", extInfo=" + extInfo + ", picInfo=" + picInfo
-				+ ", status=" + status + ", appId=" + appId + ", timeStamp="
-				+ timeStamp + ", appSignature=" + appSignature + "]";
+				+ ", status=" + status + ", getAppId()=" + getAppId()
+				+ ", getTimeStamp()=" + getTimeStamp() + ", getNonceStr()="
+				+ getNonceStr() + ", getPaySign()=" + getPaySign()
+				+ ", getSignType()=" + getSignType() + "]";
 	}
 }

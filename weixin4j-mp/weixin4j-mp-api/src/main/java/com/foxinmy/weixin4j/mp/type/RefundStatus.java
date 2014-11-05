@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment;
+package com.foxinmy.weixin4j.mp.type;
 
 /**
  * 退款状态

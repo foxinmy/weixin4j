@@ -46,14 +46,14 @@ public class AuthResult implements Serializable {
 
 	private AuthCode authCode;
 	private String location;
-	private UserToken accessToken;
+	private OauthToken accessToken;
 
 	public AuthResult(String location) {
 		this.location = location;
 		this.authCode = AuthCode.REDIRECT;
 	}
 
-	public AuthResult(UserToken accessToken) {
+	public AuthResult(OauthToken accessToken) {
 		this.authCode = AuthCode.OK;
 		this.accessToken = accessToken;
 	}
@@ -79,11 +79,11 @@ public class AuthResult implements Serializable {
 		this.location = location;
 	}
 
-	public UserToken getAccessToken() {
+	public OauthToken getAccessToken() {
 		return accessToken;
 	}
 
-	public void setAccessToken(UserToken accessToken) {
+	public void setAccessToken(OauthToken accessToken) {
 		this.accessToken = accessToken;
 	}
 

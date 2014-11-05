@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 import com.foxinmy.weixin4j.mp.server.WeixinServerInitializer;
 
 /**
- * 微信服务启动程序
+ * 微信服务netty启动程序
  * 
  * @className WeixinBootstrap
  * @author jy

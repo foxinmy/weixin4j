@@ -28,13 +28,12 @@ import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.http.XmlResult;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
-import com.foxinmy.weixin4j.mp.payment.BillType;
-import com.foxinmy.weixin4j.mp.payment.IdQuery;
-import com.foxinmy.weixin4j.mp.payment.IdType;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
-import com.foxinmy.weixin4j.mp.payment.RefundConverter;
 import com.foxinmy.weixin4j.mp.payment.v2.Order;
 import com.foxinmy.weixin4j.mp.payment.v3.Refund;
+import com.foxinmy.weixin4j.mp.payment.v3.RefundConverter;
+import com.foxinmy.weixin4j.mp.type.BillType;
+import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.util.ExcelUtil;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
@@ -62,6 +61,9 @@ public class PayApi extends BaseApi {
 	 * 发货通知
 	 * 
 	 * @param weixinAccount
+	 *            商户信息
+	 * @param openId
+	 *            用户ID
 	 * @param transid
 	 *            交易单号
 	 * @param orderNo
@@ -73,7 +75,7 @@ public class PayApi extends BaseApi {
 	 * @return
 	 * @throws WeixinException
 	 */
-	public JsonResult deliverNotify(WeixinAccount weixinAccount,
+	public JsonResult deliverNotify(WeixinAccount weixinAccount, String openId,
 			String transid, String orderNo, boolean status, String statusMsg)
 			throws WeixinException {
 		String delivernotify_uri = getRequestUri("delivernotify_uri");
@@ -83,7 +85,7 @@ public class PayApi extends BaseApi {
 		param.put("appid", weixinAccount.getAppId());
 		param.put("appkey", weixinAccount.getPaySignKey());
 		// 用户购买的openId
-		param.put("openid", weixinAccount.getOpenId());
+		param.put("openid", openId);
 		param.put("transid", transid);
 		param.put("out_trade_no", orderNo);
 		param.put("deliver_timestamp", System.currentTimeMillis() / 1000 + "");
@@ -165,8 +167,7 @@ public class PayApi extends BaseApi {
 	 */
 	public JsonResult updateFeedback(String openId, String feedbackId)
 			throws WeixinException {
-		String payfeedback_update_uri = ConfigUtil
-				.getValue("payfeedback_update_uri");
+		String payfeedback_update_uri = getRequestUri("payfeedback_update_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.get(String.format(payfeedback_update_uri,
 				token.getAccessToken(), openId, feedbackId));
@@ -288,7 +289,7 @@ public class PayApi extends BaseApi {
 		if (billType == null) {
 			billType = BillType.ALL;
 		}
-		String _billDate = DateUtil.fortmatYYYYMMDD(billDate);
+		String _billDate = DateUtil.fortmat2yyyyMMdd(billDate);
 		String bill_path = ConfigUtil.getValue("bill_path");
 		String fileName = String.format("%s_%s_%s.xls", _billDate, billType
 				.name().toLowerCase(), weixinAccount.getAppId());
@@ -355,14 +356,5 @@ public class PayApi extends BaseApi {
 		String refundquery_uri = getRequestUri("refundquery_uri");
 		Response response = request.post(refundquery_uri, param);
 		return new RefundConverter().fromXML(response.getAsString());
-	}
-
-	public static void main(String[] args) throws Exception {
-		WeixinAccount weixinAccount = new WeixinAccount("wx0d1d598c0c03c999",
-				null, "GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ", "10020674");
-		PayApi payApi = new PayApi(null);
-
-		System.out.println(payApi.refundQuery(weixinAccount, new IdQuery(
-				"T0002", IdType.ORDERNO)));
 	}
 }

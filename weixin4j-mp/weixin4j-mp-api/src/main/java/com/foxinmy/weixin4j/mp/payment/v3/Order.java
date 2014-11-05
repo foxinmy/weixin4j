@@ -1,9 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
 import com.foxinmy.weixin4j.mp.payment.ApiResult;
-import com.foxinmy.weixin4j.mp.payment.CurrencyType;
-import com.foxinmy.weixin4j.mp.payment.TradeState;
-import com.foxinmy.weixin4j.mp.payment.TradeType;
+import com.foxinmy.weixin4j.mp.type.CurrencyType;
+import com.foxinmy.weixin4j.mp.type.TradeState;
+import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -164,9 +164,9 @@ public class Order extends ApiResult {
 				+ ", getAppId()=" + getAppId() + ", getMchId()=" + getMchId()
 				+ ", getNonceStr()=" + getNonceStr() + ", getSign()="
 				+ getSign() + ", getDeviceInfo()=" + getDeviceInfo()
-				+ ", toString()=" + super.toString() + ", getReturnCode()="
-				+ getReturnCode() + ", getReturnMsg()=" + getReturnMsg()
-				+ ", getResultCode()=" + getResultCode() + ", getErrCode()="
-				+ getErrCode() + ", getErrCodeDes()=" + getErrCodeDes() + "]";
+				+ ", getReturnCode()=" + getReturnCode() + ", getReturnMsg()="
+				+ getReturnMsg() + ", getResultCode()=" + getResultCode()
+				+ ", getErrCode()=" + getErrCode() + ", getErrCodeDes()="
+				+ getErrCodeDes() + "]";
 	}
 }

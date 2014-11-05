@@ -6,7 +6,7 @@ import com.foxinmy.weixin4j.msg.TextMessage;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
- * 文字消息响应
+ * 文字消息处理
  * 
  * @className TextAction
  * @author jy

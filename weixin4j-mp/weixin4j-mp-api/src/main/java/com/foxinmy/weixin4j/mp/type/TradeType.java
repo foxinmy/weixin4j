@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment;
+package com.foxinmy.weixin4j.mp.type;
 
 /**
  * 微信支付类型

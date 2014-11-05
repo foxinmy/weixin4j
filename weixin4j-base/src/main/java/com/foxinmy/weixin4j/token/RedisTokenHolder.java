@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.exceptions.JedisException;
 
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -74,7 +75,7 @@ public class RedisTokenHolder extends AbstractTokenHolder {
 			}
 			token.setTime(System.currentTimeMillis());
 			token.setOpenid(appid);
-		} catch (Exception e) {
+		} catch (JedisException e) {
 			jedisPool.returnBrokenResource(jedis);
 		} finally {
 			jedisPool.returnResource(jedis);

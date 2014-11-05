@@ -23,8 +23,8 @@ public class Map2ObjectConverter extends MapConverter {
 	@Override
 	public Object unmarshal(HierarchicalStreamReader reader,
 			UnmarshallingContext context) {
-		Map<String,String> map = new HashMap<String, String>();
-		while(reader.hasMoreChildren()){
+		Map<String, String> map = new HashMap<String, String>();
+		while (reader.hasMoreChildren()) {
 			reader.moveDown();
 			map.put(reader.getNodeName(), reader.getValue());
 			reader.moveUp();
@@ -37,12 +37,13 @@ public class Map2ObjectConverter extends MapConverter {
 			MarshallingContext context) {
 		Map<?, ?> map = (Map<?, ?>) source;
 		for (Entry<?, ?> entry : map.entrySet()) {
-			if (StringUtils.isBlank((String) entry.getValue())) {
+			String value = (String) entry.getValue();
+			if (StringUtils.isBlank(value)) {
 				continue;
 			}
 			ExtendedHierarchicalStreamWriterHelper.startNode(writer, entry
 					.getKey().toString(), entry.getClass());
-			writer.setValue(entry.getValue().toString());
+			writer.setValue(value);
 			writer.endNode();
 		}
 	}

@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
- * 菜单扫描时触发
+ * 点击菜单扫描时触发
  * 
  * @className MenuScanAction
  * @author jy

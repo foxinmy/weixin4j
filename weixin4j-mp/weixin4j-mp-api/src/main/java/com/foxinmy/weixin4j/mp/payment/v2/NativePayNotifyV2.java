@@ -28,11 +28,11 @@ public class NativePayNotifyV2 extends JsPayNotify {
 
 	@Override
 	public String toString() {
-		return "PayNativeNotifyV2 [productId=" + productId + ", getAppid()="
-				+ getAppid() + ", getTimestamp()=" + getTimestamp()
-				+ ", getNoncestr()=" + getNoncestr() + ", getOpenid()="
-				+ getOpenid() + ", getAppsignature()=" + getAppsignature()
-				+ ", getIssubscribe()=" + getIssubscribe()
-				+ ", getSignmethod()=" + getSignmethod() + "]";
+		return "NativePayNotifyV2 [productId=" + productId + ", getOpenid()="
+				+ getOpenid() + ", getIssubscribe()=" + getIssubscribe()
+				+ ", getAppId()=" + getAppId() + ", getTimeStamp()="
+				+ getTimeStamp() + ", getNonceStr()=" + getNonceStr()
+				+ ", getPaySign()=" + getPaySign() + ", getSignType()="
+				+ getSignType() + "]";
 	}
 }

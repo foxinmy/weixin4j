@@ -2,8 +2,7 @@ package com.foxinmy.weixin4j.mp.model;
 
 import java.io.Serializable;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import com.foxinmy.weixin4j.mp.type.QRType;
 
 /**
  * 二维码参数对象
@@ -16,6 +15,8 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @author jy.hu
  * @date 2014年4月8日
  * @since JDK 1.7
+ * 
+ * @see com.foxinmy.weixin4j.mp.type.QRType
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E7%94%9F%E6%88%90%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81">生成带参数的二维码</a>
  */
@@ -23,26 +24,8 @@ public class QRParameter implements Serializable {
 
 	private static final long serialVersionUID = 6611187606558274253L;
 
-	public enum QRType {
-		TEMPORARY("QR_SCENE"), // 临时
-		PERMANENCE("QR_LIMIT_SCENE"); // 永久
-		private String name;
-
-		QRType(String name) {
-			this.name = name;
-		}
-
-		public String getName() {
-			return name;
-		}
-	}
-
-	@XStreamAlias("expire_seconds")
 	private int expireSeconds; // 该二维码有效时间，以秒为单位。 最大不超过1800。
-	@XStreamAlias("action_name")
 	private QRType qrType; // 二维码类型，QR_SCENE为临时,QR_LIMIT_SCENE为永久
-	@XStreamOmitField
-	@XStreamAlias("scene_id")
 	private int sceneId; // 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000）
 
 	public int getExpireSeconds() {
@@ -69,18 +52,17 @@ public class QRParameter implements Serializable {
 		this.sceneId = sceneId;
 	}
 
-	public QRParameter(int expireSeconds, QRType qrType, int sceneId) {
+	public QRParameter(int sceneId, int expireSeconds) {
+		this(sceneId, expireSeconds, QRType.TEMPORARY);
+		if (expireSeconds <= 0) {
+			this.qrType = QRType.PERMANENCE;
+		}
+	}
+
+	public QRParameter(int sceneId, int expireSeconds, QRType qrType) {
 		this.expireSeconds = expireSeconds;
 		this.qrType = qrType;
 		this.sceneId = sceneId;
-	}
-
-	public QRParameter(QRType qrType, int sceneId) {
-		this(0, qrType, sceneId);
-	}
-
-	public QRParameter(int sceneId, int expireSeconds) {
-		this(0, null, sceneId);
 	}
 
 	public String toJson() {
@@ -94,17 +76,20 @@ public class QRParameter implements Serializable {
 		 * "expire_seconds"); } return xstream.toXML(this);
 		 */
 		StringBuilder jsonBuilder = new StringBuilder("{");
-		jsonBuilder.append("\"action_name\":\"").append(qrType.getName()).append("\"");
+		jsonBuilder.append("\"action_name\":\"").append(qrType.getName())
+				.append("\"");
 		if (this.qrType == QRType.TEMPORARY) {
 			jsonBuilder.append(",\"expire_seconds\":").append(expireSeconds);
 		}
-		jsonBuilder.append(",\"action_info\":").append(String.format("{\"scene\": {\"scene_id\": %d}}", sceneId));
+		jsonBuilder.append(",\"action_info\":").append(
+				String.format("{\"scene\": {\"scene_id\": %d}}", sceneId));
 		jsonBuilder.append("}");
 		return jsonBuilder.toString();
 	}
 
 	@Override
 	public String toString() {
-		return "QRParameter [expireSeconds=" + expireSeconds + ", qrType=" + qrType + ", sceneId=" + sceneId + "]";
+		return "QRParameter [expireSeconds=" + expireSeconds + ", qrType="
+				+ qrType + ", sceneId=" + sceneId + "]";
 	}
 }

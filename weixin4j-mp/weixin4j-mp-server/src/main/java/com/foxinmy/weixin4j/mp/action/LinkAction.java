@@ -5,7 +5,7 @@ import com.foxinmy.weixin4j.msg.LinkMessage;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
- * 链接消息响应
+ * 链接消息处理
  * 
  * @className LinkAction
  * @author jy

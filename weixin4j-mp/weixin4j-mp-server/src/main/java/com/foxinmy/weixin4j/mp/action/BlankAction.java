@@ -4,7 +4,7 @@ import com.foxinmy.weixin4j.mp.response.TextResponse;
 import com.foxinmy.weixin4j.msg.BaseMessage;
 
 /**
- * 返回空白消息
+ * 输出空白消息
  * 
  * @className BlankAction
  * @author jy.hu

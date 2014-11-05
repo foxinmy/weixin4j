@@ -35,12 +35,10 @@ public class MenuTest extends TokenTest {
 	public void create() throws WeixinException {
 		btnList = new ArrayList<Button>();
 
-		Button b = new Button("click");
-		b.setType(ButtonType.click);
-		b.setKey("click");
+		Button b = new Button("click", "name", ButtonType.click);
 		btnList.add(b);
 
-		b = new Button("qq", "http://www.qq.com");
+		b = new Button("qq", "http://www.qq.com", ButtonType.view);
 		btnList.add(b);
 
 		JsonResult result = menuApi.createMenu(btnList);

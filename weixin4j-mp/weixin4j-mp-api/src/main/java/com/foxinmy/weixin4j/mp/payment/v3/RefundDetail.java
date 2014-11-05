@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.io.Serializable;
 
-import com.foxinmy.weixin4j.mp.payment.RefundStatus;
+import com.foxinmy.weixin4j.mp.type.RefundStatus;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**

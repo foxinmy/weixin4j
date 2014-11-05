@@ -23,9 +23,11 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.payment.v2.JsPayRequestV2;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayResponseV2;
 import com.foxinmy.weixin4j.mp.payment.v2.PayPackageV2;
-import com.foxinmy.weixin4j.mp.payment.v3.PayRequestV3;
 import com.foxinmy.weixin4j.mp.payment.v3.PayPackageV3;
+import com.foxinmy.weixin4j.mp.payment.v3.PayRequestV3;
 import com.foxinmy.weixin4j.mp.payment.v3.PrePay;
+import com.foxinmy.weixin4j.mp.type.SignType;
+import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.xml.XStream;
@@ -153,6 +155,8 @@ public class PayUtil {
 	/**
 	 * 生成V3.x版本JSAPI支付字符串
 	 * 
+	 * @param openId
+	 *            用户ID
 	 * @param body
 	 *            订单描述
 	 * @param orderNo
@@ -162,15 +166,15 @@ public class PayUtil {
 	 * @param ip
 	 * @param notifyUrl
 	 *            支付通知地址
-	 * @param weixinConfig
-	 *            appid等信息
-	 * @return
+	 * @param weixinAccount
+	 *            商户信息
+	 * @return 支付json串
 	 * @throws PayException
 	 */
-	public static String createPayJsRequestJsonV3(String body, String orderNo,
-			double orderFee, String ip, String notifyUrl,
+	public static String createPayJsRequestJsonV3(String openId, String body,
+			String orderNo, double orderFee, String ip, String notifyUrl,
 			WeixinAccount weixinAccount) throws PayException {
-		PayPackageV3 payPackage = new PayPackageV3(weixinAccount, body,
+		PayPackageV3 payPackage = new PayPackageV3(weixinAccount, openId, body,
 				orderNo, orderFee, ip, TradeType.JSAPI);
 		payPackage.setNotify_url(notifyUrl);
 		return createPayJsRequestJsonV3(payPackage, weixinAccount);
@@ -352,8 +356,9 @@ public class PayUtil {
 					"2270e6c67cf4ff48fe2c6d7cc5a42157",
 					"6b506ef5fefba3142653a9affd2648d8", "10020674",
 					"oyFLst1bqtuTcxK-ojF8hOGtLQao");
-			System.out.println(PayUtil.createPayJsRequestJsonV3("测试", "T001",
-					1d, "192.0.0.1", "http://182.92.74.85:8082/pay/notify",
+			System.out.println(PayUtil.createPayJsRequestJsonV3(
+					"oyFLst1bqtuTcxK-ojF8hOGtLQao", "测试", "T001", 1d,
+					"192.0.0.1", "http://182.92.74.85:8082/pay/notify",
 					weixinAccount));
 		} catch (PayException e) {
 			e.printStackTrace();

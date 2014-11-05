@@ -78,7 +78,6 @@ public class CustomRecord implements Serializable {
 		public String getDesc() {
 			return desc;
 		}
-
 	}
 
 	@Override

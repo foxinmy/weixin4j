@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * 退款记录
@@ -13,7 +12,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @author jy
  * @date 2014年11月1日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.mp.payment.v3.RefundDetail
  */
 @XStreamAlias("xml")
 public class Refund extends ApiResult {
@@ -28,7 +27,6 @@ public class Refund extends ApiResult {
 	private String subMchId; //
 	@XStreamAlias("refund_count")
 	private int count;// 退款笔数
-	@XStreamOmitField
 	private List<RefundDetail> details;
 
 	public String getTransactionId() {

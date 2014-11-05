@@ -35,14 +35,14 @@ public class Button implements Serializable {
 	public Button() {
 	}
 
-	public Button(String name) {
+	public Button(String name, String value, ButtonType buttonType) {
 		this.name = name;
-	}
-
-	public Button(String name, String url) {
-		this.name = name;
-		this.url = url;
-		this.type = ButtonType.view;
+		this.type = buttonType;
+		if (buttonType == ButtonType.click) {
+			this.key = value;
+		} else if (buttonType == ButtonType.view) {
+			this.url = value;
+		}
 	}
 
 	public String getName() {

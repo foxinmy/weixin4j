@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import java.beans.Transient;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -32,6 +34,7 @@ public class JsPayRequestV2 extends PayRequest {
 				weixinAccount.getPartnerKey()));
 	}
 
+	@Transient
 	@JSONField(serialize = false)
 	private String package2string(PayPackageV2 payPackage, String partnerKey) {
 		StringBuilder sb = new StringBuilder();
@@ -56,9 +59,10 @@ public class JsPayRequestV2 extends PayRequest {
 
 	@Override
 	public String toString() {
-		return "JsPayRequest [getAppId()=" + getAppId() + ", getTimeStamp()="
+		return "JsPayRequestV2 [getPackageInfo()=" + getPackageInfo()
+				+ ", getAppId()=" + getAppId() + ", getTimeStamp()="
 				+ getTimeStamp() + ", getNonceStr()=" + getNonceStr()
-				+ ", getPackageInfo()=" + getPackageInfo() + ", getSignType()="
-				+ getSignType() + ", getPaySign()=" + getPaySign() + "]";
+				+ ", getPaySign()=" + getPaySign() + ", getSignType()="
+				+ getSignType() + "]";
 	}
 }
