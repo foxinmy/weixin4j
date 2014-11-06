@@ -108,11 +108,12 @@ public class PayApi extends BaseApi {
 	}
 
 	/**
-	 * 订单查询
+	 * V2订单查询
 	 * 
 	 * @param orderNo
 	 *            订单号
-	 * @return
+	 * @return 订单信息
+	 * @see com.foxinmy.weixin4j.mp.payment.v2.Order
 	 * @throws WeixinException
 	 */
 	public Order orderQueryV2(String orderNo) throws WeixinException {
@@ -168,7 +169,7 @@ public class PayApi extends BaseApi {
 	 *            用户ID
 	 * @param feedbackId
 	 *            维权单号
-	 * @return
+	 * @return 维权处理结果
 	 * @throws WeixinException
 	 */
 	public JsonResult updateFeedback(String openId, String feedbackId)
@@ -186,6 +187,8 @@ public class PayApi extends BaseApi {
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id、out_trade_no 二 选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
+	 * @return 订单信息
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.Order
 	 * @throws WeixinException
 	 */
 	public com.foxinmy.weixin4j.mp.payment.v3.Order orderQueryV3(IdQuery idQuery)
@@ -223,9 +226,11 @@ public class PayApi extends BaseApi {
 	 *            退款总金额,单位为元,可以做部分退款
 	 * @param opUserId
 	 *            操作员帐号, 默认为商户号
+	 * 
+	 * @return 退款申请结果
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.RefundResult
 	 * @throws WeixinException
 	 * @throws IOException
-	 * @return 退款结果
 	 */
 	public RefundResult refund(InputStream ca, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
@@ -266,8 +271,6 @@ public class PayApi extends BaseApi {
 	/**
 	 * native支付URL转短链接
 	 * 
-	 * @param weixinAccount
-	 *            商户信息
 	 * @param url
 	 *            具有native标识的支付URL
 	 * @return 转换后的短链接
@@ -298,7 +301,7 @@ public class PayApi extends BaseApi {
 	 * 
 	 * @param outTradeNo
 	 *            商户系统内部的订单号
-	 * @return
+	 * @return 处理结果
 	 * @throws WeixinException
 	 */
 	public XmlResult closeOrder(String outTradeNo) throws WeixinException {
@@ -386,6 +389,7 @@ public class PayApi extends BaseApi {
 	 *            四个参数必填一个,优先级为:
 	 *            refund_id>out_refund_no>transaction_id>out_trade_no
 	 * @return 退款记录
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.Refund
 	 * @throws WeixinException
 	 */
 	public Refund refundQuery(IdQuery idQuery) throws WeixinException {
