@@ -31,13 +31,14 @@ import com.thoughtworks.xstream.mapper.Mapper;
  */
 public class RefundConverter {
 	private final static XStream xStream = XStream.get();
-	private final ReflectionConverter reflectionConverter;
+	private final Mapper mapper;
+	private final ReflectionProvider reflectionProvider;
 
 	public RefundConverter() {
 		xStream.processAnnotations(Refund.class);
 		xStream.registerConverter(new RefundConverter.$());
-		reflectionConverter = new ReflectionConverter(xStream.getMapper(),
-				xStream.getReflectionProvider());
+		this.mapper = xStream.getMapper();
+		this.reflectionProvider = xStream.getReflectionProvider();
 	}
 
 	public String toXML(Refund refund) {
@@ -57,7 +58,8 @@ public class RefundConverter {
 		@Override
 		public void marshal(Object source, HierarchicalStreamWriter writer,
 				MarshallingContext context) {
-			reflectionConverter.marshal(source, writer, context);
+			new ReflectionConverter(mapper, reflectionProvider).marshal(source,
+					writer, context);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -65,9 +67,6 @@ public class RefundConverter {
 		public Object unmarshal(HierarchicalStreamReader reader,
 				UnmarshallingContext context) {
 			Refund refund = new Refund();
-			Mapper mapper = xStream.getMapper();
-			ReflectionProvider reflectionProvider = xStream
-					.getReflectionProvider();
 			Pattern pattern = Pattern.compile("(_\\d)$");
 			Matcher matcher = null;
 			Map<String, Map<String, String>> outMap = new HashMap<String, Map<String, String>>();

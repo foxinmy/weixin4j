@@ -1,7 +1,7 @@
 weixin4j-mp-api
 ===============
 
-微信[公众平台](http://mp.weixin.qq.com/wiki)开发工具包
+[微信公众平台](http://mp.weixin.qq.com/wiki)开发工具包
 
 功能列表
 -------
@@ -40,7 +40,7 @@ weixin.properties说明
 | media_path  | 调用媒体接口时保存媒体文件的物理路径 |
 | bill_path   | 调用支付(`V3`)下载对账单接口保存excel文件的物理路径 |
 
-示例
+示例(properties中换行用右斜杆\)
 
 > account={"appId":"appId","appSecret":"appSecret",
 > "token":"开放者的token 非必须","openId":"公众号的openid 非必须",
@@ -58,7 +58,7 @@ weixin.properties说明
     // weixinProxy = new WeixinProxy(appid,appsecret);
     weixinProxy.getUser(openId);
 
-3.针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenHolder`(继承`AbstractTokenHolder`类并重写`getToken`方法),默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用`RedisTokenHolder`.
+3.针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenHolder`(继承`AbstractTokenHolder`并重写`getToken`方法),默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用`RedisTokenHolder`.
 
     WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenHolder());
     // weixinProxy = new WeixinProxy(new RedisTokenHolder(appid,appsecret));
@@ -69,7 +69,7 @@ weixin.properties说明
 -------
 * 2014-10-27
 
-  + 用netty构建http服务器并支持消息分发
+  + 用netty构建http服务器&消息分发
 
 * 2014-10-28
    
@@ -77,7 +77,7 @@ weixin.properties说明
    
 * 2014-10-31
 
-  + `weixin.properties`切分为API调用地址/公众号信息两部分
+  + `weixin.properties`切分为API调用地址和公众号appid等信息两部分
    
 * 2014-11-03
 

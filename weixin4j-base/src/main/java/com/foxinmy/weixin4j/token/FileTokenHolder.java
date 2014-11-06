@@ -50,8 +50,8 @@ public class FileTokenHolder extends AbstractTokenHolder {
 	 */
 	@Override
 	public Token getToken() throws WeixinException {
-		String appid = getAppid();
-		String appsecret = getAppsecret();
+		String appid = getConfig().getAppId();
+		String appsecret = getConfig().getAppSecret();
 		if (StringUtils.isBlank(appid) || StringUtils.isBlank(appsecret)) {
 			throw new IllegalArgumentException(
 					"appid or appsecret not be null!");

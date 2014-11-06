@@ -26,14 +26,6 @@ public abstract class AbstractTokenHolder implements TokenHolder {
 		this.weixinConfig = new WeixinConfig(appid, appsecret);
 	}
 
-	protected String getAppid() {
-		return this.weixinConfig.getAppId();
-	}
-
-	protected String getAppsecret() {
-		return this.weixinConfig.getAppSecret();
-	}
-
 	public WeixinConfig getConfig() {
 		return this.weixinConfig;
 	}

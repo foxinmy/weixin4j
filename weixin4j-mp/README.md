@@ -34,7 +34,7 @@ weixin4j-mp
 -------
 * 2014-10-27
 
-  + 用netty构建http服务器并支持消息分发
+  + 用netty构建http服务器&消息分发
 
 * 2014-10-28
    
@@ -42,7 +42,7 @@ weixin4j-mp
    
 * 2014-10-31
 
-  + `weixin.properties`切分为API调用地址/公众号信息两部分
+  + `weixin.properties`切分为API调用地址和公众号appid等信息两部分
    
 * 2014-11-03
 

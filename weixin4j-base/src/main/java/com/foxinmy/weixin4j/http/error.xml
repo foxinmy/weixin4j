@@ -383,7 +383,6 @@
 		<desc>ORDERPAID</desc>
 		<text>订单已支付</text>
 	</error>
-
 	<error>
 		<code>OUT_TRADE_NO_USED</code>
 		<desc>OUT_TRADE_NO_USED</desc>
