@@ -52,6 +52,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * @see <a href="http://mp.weixin.qq.com/wiki/index.php">api文档</a>
  */
 public class WeixinProxy {
+
 	private final MediaApi mediaApi;
 	private final NotifyApi notifyApi;
 	private final MassApi massApi;
@@ -64,14 +65,15 @@ public class WeixinProxy {
 	private final PayApi payApi;
 
 	/**
-	 * 默认采用文件存放Token跟配置文件中的appi信息
+	 * 默认采用文件存放Token信息
 	 */
 	public WeixinProxy() {
 		this(new FileTokenHolder());
 	}
 
 	/**
-	 * 也可接受传递过来的appid跟appsecret
+	 * appid,appsecret<br/>
+	 * <font color="red">将无法调用支付相关接口</font>
 	 * 
 	 * @param appid
 	 * @param appsecret
@@ -80,6 +82,20 @@ public class WeixinProxy {
 		this(new FileTokenHolder(appid, appsecret));
 	}
 
+	/**
+	 * WeixinAccount对象
+	 * 
+	 * @param weixinAccount
+	 */
+	public WeixinProxy(WeixinAccount weixinAccount) {
+		this(new FileTokenHolder(weixinAccount));
+	}
+
+	/**
+	 * TokenHolder对象
+	 * 
+	 * @param tokenHolder
+	 */
 	public WeixinProxy(TokenHolder tokenHolder) {
 		this.mediaApi = new MediaApi(tokenHolder);
 		this.notifyApi = new NotifyApi(tokenHolder);

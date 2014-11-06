@@ -55,16 +55,18 @@ weixin.properties说明
 > bill_path=/tmp/weixin/bill <br/>
 > ca_file=/tmp/weixin/xxxxx.p12 <br/>
 
-2.实例化一个`WeixinProxy`对象,调用API.
+2.实例化一个`WeixinProxy`对象,调用API,需要强调的是如果只传入appid,appsecret两个参数将无法调用支付相关接口
 
     WeixinProxy weixinProxy = new WeixinProxy();
     // weixinProxy = new WeixinProxy(appid,appsecret);
+    // weixinProxy = new WeixinProxy(weixinAccount);
     weixinProxy.getUser(openId);
 
 3.针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenHolder`(继承`AbstractTokenHolder`并重写`getToken`方法),默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用`RedisTokenHolder`.
 
     WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenHolder());
     // weixinProxy = new WeixinProxy(new RedisTokenHolder(appid,appsecret));
+    // weixinProxy = new WeixinProxy(new RedisTokenHolder(weixinAccount));
     
 4.`mvn package`.
 	
