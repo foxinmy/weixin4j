@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.model.WeixinAccount;
-import com.foxinmy.weixin4j.model.WeixinConfig;
 
 /**
  * 商户配置工具类
@@ -37,10 +36,5 @@ public class ConfigUtil {
 	public static WeixinAccount getWeixinAccount() {
 		String text = getValue("account");
 		return JSON.parseObject(text, WeixinAccount.class);
-	}
-
-	public static WeixinConfig getWeixinConfig() {
-		String text = getValue("account");
-		return JSON.parseObject(text, WeixinConfig.class);
 	}
 }

@@ -20,6 +20,8 @@ public class ApiResult extends XmlResult {
 	private String appId;// 微信分配的公众账号 ID商户号 非空
 	@XStreamAlias("mch_id")
 	private String mchId;// 微信支付分配的商户号 非空
+	@XStreamAlias("sub_mch_id")
+	private String subMchId; // 未知 可能为空
 	@XStreamAlias("nonce_str")
 	private String nonceStr;// 随机字符串 非空
 	private String sign;// 签名 非空
@@ -50,6 +52,14 @@ public class ApiResult extends XmlResult {
 		this.mchId = mchId;
 	}
 
+	public String getSubMchId() {
+		return subMchId;
+	}
+
+	public void setSubMchId(String subMchId) {
+		this.subMchId = subMchId;
+	}
+
 	public String getNonceStr() {
 		return nonceStr;
 	}
@@ -76,8 +86,11 @@ public class ApiResult extends XmlResult {
 
 	@Override
 	public String toString() {
-		return "ApiResult [appId=" + appId + ", mchId=" + mchId + ", nonceStr="
-				+ nonceStr + ", sign=" + sign + ", deviceInfo=" + deviceInfo
-				+ "]";
+		return "ApiResult [appId=" + appId + ", mchId=" + mchId + ", subMchId="
+				+ subMchId + ", nonceStr=" + nonceStr + ", sign=" + sign
+				+ ", deviceInfo=" + deviceInfo + ", getReturnCode()="
+				+ getReturnCode() + ", getReturnMsg()=" + getReturnMsg()
+				+ ", getResultCode()=" + getResultCode() + ", getErrCode()="
+				+ getErrCode() + ", getErrCodeDes()=" + getErrCodeDes() + "]";
 	}
 }

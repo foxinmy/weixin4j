@@ -47,7 +47,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
  */
 public class HttpRequest {
 	private final String SUCCESS = "success";
-	private AbstractHttpClient client;
+	protected AbstractHttpClient client;
 
 	public HttpRequest() {
 		this(150, 100, 10000, 10000);
@@ -155,17 +155,17 @@ public class HttpRequest {
 			HttpResponse httpResponse = client.execute(request);
 			StatusLine statusLine = httpResponse.getStatusLine();
 			HttpEntity httpEntity = httpResponse.getEntity();
-
 			int status = statusLine.getStatusCode();
 			if (status != HttpStatus.SC_OK) {
-				throw new WeixinException(status + "", "request fail");
+				throw new WeixinException(Integer.toString(status),
+						"request fail");
 			}
 			// 301或者302
 			if (status == HttpStatus.SC_MOVED_PERMANENTLY
 					|| status == HttpStatus.SC_MOVED_TEMPORARILY) {
-				throw new WeixinException(status + "", String.format(
-						"the page was redirected to %s",
-						httpResponse.getFirstHeader("location")));
+				throw new WeixinException(Integer.toString(status),
+						String.format("the page was redirected to %s",
+								httpResponse.getFirstHeader("location")));
 			}
 			byte[] data = EntityUtils.toByteArray(httpEntity);
 			response = new Response();
@@ -186,8 +186,8 @@ public class HttpRequest {
 					JsonResult jsonResult = response.getAsJsonResult();
 					response.setJsonResult(true);
 					if (jsonResult.getCode() != 0) {
-						throw new WeixinException(jsonResult.getCode() + "",
-								jsonResult.getDesc());
+						throw new WeixinException(Integer.toString(jsonResult
+								.getCode()), jsonResult.getDesc());
 					}
 					return response;
 				} catch (JSONException e) {
@@ -205,7 +205,7 @@ public class HttpRequest {
 				}
 			}
 		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
+			throw new WeixinException("-1", e.getMessage());
 		} finally {
 			request.releaseConnection();
 		}

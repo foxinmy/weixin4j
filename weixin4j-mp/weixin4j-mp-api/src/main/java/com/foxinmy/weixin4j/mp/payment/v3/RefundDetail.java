@@ -2,6 +2,9 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.foxinmy.weixin4j.mp.type.RefundChannel;
 import com.foxinmy.weixin4j.mp.type.RefundStatus;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -35,48 +38,35 @@ public class RefundDetail implements Serializable {
 		return outRefundNo;
 	}
 
-	public void setOutRefundNo(String outRefundNo) {
-		this.outRefundNo = outRefundNo;
-	}
-
 	public String getRefundId() {
 		return refundId;
 	}
 
-	public void setRefundId(String refundId) {
-		this.refundId = refundId;
-	}
-
 	public String getRefundChannel() {
-		return refundChannel;
+		return StringUtils.isBlank(refundChannel) ? RefundChannel.BALANCE
+				.name() : refundChannel;
 	}
 
-	public void setRefundChannel(String refundChannel) {
-		this.refundChannel = refundChannel;
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	public double getRefundFee() {
+		return refundFee / 100d;
 	}
 
-	public int getRefundFee() {
-		return refundFee;
-	}
-
-	public void setRefundFee(int refundFee) {
-		this.refundFee = refundFee;
-	}
-
-	public int getCouponRefundFee() {
-		return couponRefundFee;
-	}
-
-	public void setCouponRefundFee(int couponRefundFee) {
-		this.couponRefundFee = couponRefundFee;
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	public double getCouponRefundFee() {
+		return couponRefundFee / 100d;
 	}
 
 	public RefundStatus getRefundStatus() {
 		return refundStatus;
-	}
-
-	public void setRefundStatus(RefundStatus refundStatus) {
-		this.refundStatus = refundStatus;
 	}
 
 	@Override

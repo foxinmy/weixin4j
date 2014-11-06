@@ -1,8 +1,11 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import java.util.Date;
 import java.util.Map;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.JsonResult;
+import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
  * 订单信息
@@ -18,84 +21,104 @@ public class Order extends JsonResult {
 	private static final long serialVersionUID = 4543552984506609920L;
 
 	// 是查询结果状态码,0 表明成功,其他表明错误;
-	private String ret_code;
+	@JSONField(name = "ret_code")
+	private int retCode;
 	// 是查询结果出错信息;
-	private String ret_msg;
+	@JSONField(name = "ret_msg")
+	private String retMsg;
 	// 是返回信息中的编码方式;
-	private String input_charset;
+	@JSONField(name = "input_charset")
+	private String inputCharset;
 	// 是订单状态,0 为成功,其他为失败;
-	private String trade_state;
+	@JSONField(name = "trade_state")
+	private int tradeState;
 	// 是交易模式,1 为即时到帐,其他保留;
-	private String trade_mode;
+	@JSONField(name = "trade_mode")
+	private int tradeMode;
 	// 是财付通商户号,即前文的 partnerid;
 	private String partner;
 	// 是银行类型;
-	private String bank_type;
+	@JSONField(name = "bank_type")
+	private String bankType;
 	// 是银行订单号;
-	private String bank_billno;
+	@JSONField(name = "bank_billno")
+	private String bankBillno;
 	// 是总金额,单位为分;
-	private String total_fee;
+	@JSONField(name = "total_fee")
+	private int totalFee;
 	// 是币种,1 为人民币;
-	private String fee_type;
+	@JSONField(name = "fee_type")
+	private String feeType;
 	// 是财付通订单号;
-	private String transaction_id;
+	@JSONField(name = "transaction_id")
+	private String transactionId;
 	// 是第三方订单号;
-	private String out_trade_no;
+	@JSONField(name = "out_trade_no")
+	private String outTradeNo;
 	// 表明是否分账,false 为无分账,true 为有分账;
-	private boolean is_split;
+	@JSONField(name = "is_split")
+	private boolean isSplit;
 	// 表明是否退款,false 为无退款,ture 为退款;
-	private boolean is_refund;
+	@JSONField(name = "is_refund")
+	private boolean isRefund;
 	// attach 是商户数据包,即生成订单package 时商户填入的 attach;
 	private String attach;
 	// 支付完成时间;
-	private String time_end;
+	@JSONField(name = "time_end")
+	private String timeEnd;
 	// 物流费用,单位为分;
-	private String transport_fee;
+	@JSONField(name = "transport_fee")
+	private int transportFee;
 	// 物品费用,单位为分;
-	private String product_fee;
+	@JSONField(name = "product_fee")
+	private int productFee;
 	// 折扣价格,单位为分;
-	private String discount;
+	private int discount;
 	// 换算成人民币之后的总金额,单位为分,一般看 total_fee 即可。
-	private String rmb_total_fee;
+	@JSONField(name = "rmb_total_fee")
+	private int rmbTotalFee;
 
-	public String getRet_code() {
-		return ret_code;
+	@JSONField(serialize = false)
+	private Map<String, String> mapData;
+
+	public int getRetCode() {
+		return retCode;
 	}
 
-	public void setRet_code(String ret_code) {
-		this.ret_code = ret_code;
+	public void setRetCode(int retCode) {
+		this.retCode = retCode;
 	}
 
-	public String getRet_msg() {
-		return ret_msg;
+	public String getRetMsg() {
+		return retMsg;
 	}
 
-	public void setRet_msg(String ret_msg) {
-		this.ret_msg = ret_msg;
+	public void setRetMsg(String retMsg) {
+		this.retMsg = retMsg;
 	}
 
-	public String getInput_charset() {
-		return input_charset;
+	public String getInputCharset() {
+		return inputCharset;
 	}
 
-	public void setInput_charset(String input_charset) {
-		this.input_charset = input_charset;
+	public void setInputCharset(String inputCharset) {
+		this.inputCharset = inputCharset;
 	}
 
-	public String getTrade_state() {
-		return trade_state;
+	public int getTradeState() {
+		return tradeState;
 	}
 
-	public void setTrade_state(String trade_state) {
-		this.trade_state = trade_state;
+	public void setTradeState(int tradeState) {
+		this.tradeState = tradeState;
 	}
 
-	public String getTrade_mode() {
-		return trade_mode;
+	public int getTradeMode() {
+		return tradeMode;
 	}
 
-	public void setTrade_mode(String trade_mode) {
-		this.trade_mode = trade_mode;
+	public void setTradeMode(int tradeMode) {
+		this.tradeMode = tradeMode;
 	}
 
 	public String getPartner() {
@@ -106,68 +129,73 @@ public class Order extends JsonResult {
 		this.partner = partner;
 	}
 
-	public String getBank_type() {
-		return bank_type;
+	public String getBankType() {
+		return bankType;
 	}
 
-	public void setBank_type(String bank_type) {
-		this.bank_type = bank_type;
+	public void setBankType(String bankType) {
+		this.bankType = bankType;
 	}
 
-	public String getBank_billno() {
-		return bank_billno;
+	public String getBankBillno() {
+		return bankBillno;
 	}
 
-	public void setBank_billno(String bank_billno) {
-		this.bank_billno = bank_billno;
+	public void setBankBillno(String bankBillno) {
+		this.bankBillno = bankBillno;
 	}
 
-	public String getTotal_fee() {
-		return total_fee;
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	public double getTotalFee() {
+		return totalFee / 100d;
 	}
 
-	public void setTotal_fee(String total_fee) {
-		this.total_fee = total_fee;
+	public void setTotalFee(int totalFee) {
+		this.totalFee = totalFee;
 	}
 
-	public String getFee_type() {
-		return fee_type;
+	public String getFeeType() {
+		return feeType;
 	}
 
-	public void setFee_type(String fee_type) {
-		this.fee_type = fee_type;
+	public void setFeeType(String feeType) {
+		this.feeType = feeType;
 	}
 
-	public String getTransaction_id() {
-		return transaction_id;
+	public String getTransactionId() {
+		return transactionId;
 	}
 
-	public void setTransaction_id(String transaction_id) {
-		this.transaction_id = transaction_id;
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 	}
 
-	public String getOut_trade_no() {
-		return out_trade_no;
+	public String getOutTradeNo() {
+		return outTradeNo;
 	}
 
-	public void setOut_trade_no(String out_trade_no) {
-		this.out_trade_no = out_trade_no;
+	public void setOutTradeNo(String outTradeNo) {
+		this.outTradeNo = outTradeNo;
 	}
 
-	public boolean isIs_split() {
-		return is_split;
+	public boolean isSplit() {
+		return isSplit;
 	}
 
-	public void setIs_split(boolean is_split) {
-		this.is_split = is_split;
+	public void setSplit(boolean isSplit) {
+		this.isSplit = isSplit;
 	}
 
-	public boolean isIs_refund() {
-		return is_refund;
+	public boolean isRefund() {
+		return isRefund;
 	}
 
-	public void setIs_refund(boolean is_refund) {
-		this.is_refund = is_refund;
+	public void setRefund(boolean isRefund) {
+		this.isRefund = isRefund;
 	}
 
 	public String getAttach() {
@@ -178,47 +206,65 @@ public class Order extends JsonResult {
 		this.attach = attach;
 	}
 
-	public String getTime_end() {
-		return time_end;
+	public Date getTimeEnd() {
+		return DateUtil.parse2yyyyMMddHHmmss(timeEnd);
 	}
 
-	public void setTime_end(String time_end) {
-		this.time_end = time_end;
+	public void setTimeEnd(String timeEnd) {
+		this.timeEnd = timeEnd;
 	}
 
-	public String getTransport_fee() {
-		return transport_fee;
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	public double getTransportFee() {
+		return transportFee / 100d;
 	}
 
-	public void setTransport_fee(String transport_fee) {
-		this.transport_fee = transport_fee;
+	public void setTransportFee(int transportFee) {
+		this.transportFee = transportFee;
 	}
 
-	public String getProduct_fee() {
-		return product_fee;
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	public double getProductFee() {
+		return productFee / 100d;
 	}
 
-	public void setProduct_fee(String product_fee) {
-		this.product_fee = product_fee;
+	public void setProductFee(int productFee) {
+		this.productFee = productFee;
 	}
 
-	public String getDiscount() {
-		return discount;
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	public double getDiscount() {
+		return discount / 100d;
 	}
 
-	public void setDiscount(String discount) {
+	public void setDiscount(int discount) {
 		this.discount = discount;
 	}
 
-	public String getRmb_total_fee() {
-		return rmb_total_fee;
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	public double getRmbTotalFee() {
+		return rmbTotalFee / 100d;
 	}
 
-	public void setRmb_total_fee(String rmb_total_fee) {
-		this.rmb_total_fee = rmb_total_fee;
+	public void setRmbTotalFee(int rmbTotalFee) {
+		this.rmbTotalFee = rmbTotalFee;
 	}
-
-	private Map<String, String> mapData;
 
 	public Map<String, String> getMapData() {
 		return mapData;
@@ -230,16 +276,16 @@ public class Order extends JsonResult {
 
 	@Override
 	public String toString() {
-		return "Order [ret_code=" + ret_code + ", ret_msg=" + ret_msg
-				+ ", input_charset=" + input_charset + ", trade_state="
-				+ trade_state + ", trade_mode=" + trade_mode + ", partner="
-				+ partner + ", bank_type=" + bank_type + ", bank_billno="
-				+ bank_billno + ", total_fee=" + total_fee + ", fee_type="
-				+ fee_type + ", transaction_id=" + transaction_id
-				+ ", out_trade_no=" + out_trade_no + ", is_split=" + is_split
-				+ ", is_refund=" + is_refund + ", attach=" + attach
-				+ ", time_end=" + time_end + ", transport_fee=" + transport_fee
-				+ ", product_fee=" + product_fee + ", discount=" + discount
-				+ ", rmb_total_fee=" + rmb_total_fee + "]";
+		return "Order [retCode=" + retCode + ", retMsg=" + retMsg
+				+ ", inputCharset=" + inputCharset + ", tradeState="
+				+ tradeState + ", tradeMode=" + tradeMode + ", partner="
+				+ partner + ", bankType=" + bankType + ", bankBillno="
+				+ bankBillno + ", totalFee=" + totalFee + ", feeType="
+				+ feeType + ", transactionId=" + transactionId
+				+ ", outTradeNo=" + outTradeNo + ", isSplit=" + isSplit
+				+ ", isRefund=" + isRefund + ", attach=" + attach
+				+ ", timeEnd=" + timeEnd + ", transportFee=" + transportFee
+				+ ", productFee=" + productFee + ", discount=" + discount
+				+ ", rmbTotalFee=" + rmbTotalFee + ", mapData=" + mapData + "]";
 	}
 }

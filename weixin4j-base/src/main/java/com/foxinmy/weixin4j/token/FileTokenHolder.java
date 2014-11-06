@@ -12,6 +12,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.xml.XStream;
 
@@ -32,8 +33,12 @@ public class FileTokenHolder extends AbstractTokenHolder {
 		super();
 	}
 
+	public FileTokenHolder(WeixinAccount weixinAccount) {
+		super(weixinAccount);
+	}
+
 	public FileTokenHolder(String appid, String appsecret) {
-		super(appid, appsecret);
+		this(new WeixinAccount(appid, appsecret));
 	}
 
 	/**
@@ -50,8 +55,8 @@ public class FileTokenHolder extends AbstractTokenHolder {
 	 */
 	@Override
 	public Token getToken() throws WeixinException {
-		String appid = getConfig().getAppId();
-		String appsecret = getConfig().getAppSecret();
+		String appid = getAccount().getAppId();
+		String appsecret = getAccount().getAppSecret();
 		if (StringUtils.isBlank(appid) || StringUtils.isBlank(appsecret)) {
 			throw new IllegalArgumentException(
 					"appid or appsecret not be null!");
@@ -65,7 +70,6 @@ public class FileTokenHolder extends AbstractTokenHolder {
 			if (token_file.exists()) {
 				token = XStream.get(new FileInputStream(token_file),
 						Token.class);
-
 				long expise_time = token.getTime()
 						+ (token.getExpiresIn() * 1000) - 3;
 				if (expise_time > now_time) {
@@ -79,7 +83,6 @@ public class FileTokenHolder extends AbstractTokenHolder {
 			token = response.getAsObject(new TypeReference<Token>() {
 			});
 			token.setTime(now_time);
-			token.setOpenid(appid);
 			XStream.to(token, new FileOutputStream(token_file));
 		} catch (IOException e) {
 			throw new WeixinException("-1", "IO ERROR");

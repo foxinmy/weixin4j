@@ -17,10 +17,20 @@ public class OauthToken extends Token {
 
 	private static final long serialVersionUID = 1L;
 
+	private String openid;
+
 	@JSONField(name = "refresh_token")
 	private String refreshToken;
 
 	private String scope;
+
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
+	}
 
 	public String getRefreshToken() {
 		return refreshToken;
@@ -40,6 +50,9 @@ public class OauthToken extends Token {
 
 	@Override
 	public String toString() {
-		return "UserToken [refreshToken=" + refreshToken + ", scope=" + scope + ", getAccessToken()=" + getAccessToken() + ", getExpiresIn()=" + getExpiresIn() + ", getOpenid()=" + getOpenid() + ", getTime()=" + getTime() + "]";
+		return "OauthToken [openid=" + openid + ", refreshToken="
+				+ refreshToken + ", scope=" + scope + ", getAccessToken()="
+				+ getAccessToken() + ", getExpiresIn()=" + getExpiresIn()
+				+ ", getTime()=" + getTime() + "]";
 	}
 }

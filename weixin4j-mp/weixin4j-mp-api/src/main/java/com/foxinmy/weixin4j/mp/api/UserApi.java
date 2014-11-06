@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.WeixinConfig;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.User;
@@ -45,10 +45,10 @@ public class UserApi extends BaseApi {
 	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
 	 */
 	public OauthToken getOauthToken(String code) throws WeixinException {
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		String user_token_uri = getRequestUri("sns_user_token_uri");
-		WeixinConfig weixinConfig = tokenHolder.getConfig();
 		Response response = request.get(String.format(user_token_uri,
-				weixinConfig.getAppId(), weixinConfig.getAppSecret(), code));
+				weixinAccount.getAppId(), weixinAccount.getAppSecret(), code));
 
 		return response.getAsObject(new TypeReference<OauthToken>() {
 		});

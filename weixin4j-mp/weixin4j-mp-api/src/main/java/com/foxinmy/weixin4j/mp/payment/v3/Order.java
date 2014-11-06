@@ -1,9 +1,12 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
+import java.util.Date;
+
 import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.TradeState;
 import com.foxinmy.weixin4j.mp.type.TradeType;
+import com.foxinmy.weixin4j.util.DateUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -51,7 +54,6 @@ public class Order extends ApiResult {
 	@XStreamAlias("out_rade_no")
 	private String outTradeNo;
 	// 商家数据包
-	@XStreamAlias("attach")
 	private String attach;
 	// 支付完成时间,格式为 yyyyMMddhhmmss
 	@XStreamAlias("time_end")
@@ -61,96 +63,58 @@ public class Order extends ApiResult {
 		return tradeState;
 	}
 
-	public void setTradeState(TradeState tradeState) {
-		this.tradeState = tradeState;
-	}
-
 	public String getOpenId() {
 		return openId;
-	}
-
-	public void setOpenId(String openId) {
-		this.openId = openId;
 	}
 
 	public String getIsSubscribe() {
 		return isSubscribe;
 	}
 
-	public void setIsSubscribe(String isSubscribe) {
-		this.isSubscribe = isSubscribe;
-	}
-
 	public TradeType getTradeType() {
 		return tradeType;
-	}
-
-	public void setTradeType(TradeType tradeType) {
-		this.tradeType = tradeType;
 	}
 
 	public String getBankType() {
 		return bankType;
 	}
 
-	public void setBankType(String bankType) {
-		this.bankType = bankType;
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	public double getTotalFee() {
+		return totalFee / 100d;
 	}
 
-	public int getTotalFee() {
-		return totalFee;
-	}
-
-	public void setTotalFee(int totalFee) {
-		this.totalFee = totalFee;
-	}
-
-	public int getCouponFee() {
-		return couponFee;
-	}
-
-	public void setCouponFee(int couponFee) {
-		this.couponFee = couponFee;
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	public double getCouponFee() {
+		return couponFee / 100d;
 	}
 
 	public CurrencyType getFeeType() {
 		return feeType;
 	}
 
-	public void setFeeType(CurrencyType feeType) {
-		this.feeType = feeType;
-	}
-
 	public String getTransactionId() {
 		return transactionId;
-	}
-
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
 	}
 
 	public String getOutTradeNo() {
 		return outTradeNo;
 	}
 
-	public void setOutTradeNo(String outTradeNo) {
-		this.outTradeNo = outTradeNo;
-	}
-
 	public String getAttach() {
 		return attach;
 	}
 
-	public void setAttach(String attach) {
-		this.attach = attach;
-	}
-
-	public String getTimeEnd() {
-		return timeEnd;
-	}
-
-	public void setTimeEnd(String timeEnd) {
-		this.timeEnd = timeEnd;
+	public Date getTimeEnd() {
+		return DateUtil.parse2yyyyMMddHHmmss(timeEnd);
 	}
 
 	@Override

@@ -21,24 +21,12 @@ public class PayWarn extends PayBaseInfo {
 		return errortype;
 	}
 
-	public void setErrortype(String errortype) {
-		this.errortype = errortype;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public String getAlarmcontent() {
 		return alarmcontent;
-	}
-
-	public void setAlarmcontent(String alarmcontent) {
-		this.alarmcontent = alarmcontent;
 	}
 
 	@Override

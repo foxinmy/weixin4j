@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.model;
 
+import java.io.Serializable;
+
 /**
  * 微信账户信息
  * 
@@ -9,9 +11,16 @@ package com.foxinmy.weixin4j.model;
  * @since JDK 1.7
  * @see
  */
-public class WeixinAccount extends WeixinConfig {
+public class WeixinAccount implements Serializable {
 	private static final long serialVersionUID = 3689999353867189585L;
 
+	private String token;
+	// 支付场景下为用户的openid 其余情况可能是公众号的原始ID
+	private String openId;
+	// 公众号身份的唯一标识
+	private String appId;
+	// 公众平台接口 API 的权限获取所需密钥 Key
+	private String appSecret;
 	// 公众号支付请求中用于加密的密钥 Key,可验证商户唯一身份,PaySignKey 对应于支付场景中的 appKey 值
 	private String paySignKey;
 	// 财付通商户身份的标识
@@ -29,6 +38,38 @@ public class WeixinAccount extends WeixinConfig {
 	private boolean isService;
 	// 是否是订阅号
 	private boolean isSubscribe;
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getAppSecret() {
+		return appSecret;
+	}
+
+	public void setAppSecret(String appSecret) {
+		this.appSecret = appSecret;
+	}
 
 	public String getPaySignKey() {
 		return paySignKey;
@@ -98,19 +139,51 @@ public class WeixinAccount extends WeixinConfig {
 
 	}
 
+	public WeixinAccount(String appId, String appSecret) {
+		this.appId = appId;
+		this.appSecret = appSecret;
+	}
+
+	/**
+	 * V3版本字段
+	 * 
+	 * @param appId
+	 * @param appSecret
+	 * @param paySignKey
+	 * @param mchId
+	 */
 	public WeixinAccount(String appId, String appSecret, String paySignKey,
 			String mchId) {
-		super(appId, appSecret);
+		this(appId, appSecret);
 		this.paySignKey = paySignKey;
 		this.mchId = mchId;
 	}
 
+	/**
+	 * V2版本字段
+	 * 
+	 * @param appId
+	 * @param appSecret
+	 * @param paySignKey
+	 * @param partnerId
+	 * @param partnerKey
+	 */
 	public WeixinAccount(String appId, String appSecret, String paySignKey,
 			String partnerId, String partnerKey) {
-		super(appId, appSecret);
+		this(appId, appSecret);
 		this.paySignKey = paySignKey;
 		this.partnerId = partnerId;
 		this.partnerKey = partnerKey;
 	}
 
+	@Override
+	public String toString() {
+		return "WeixinAccount [token=" + token + ", openId=" + openId
+				+ ", appId=" + appId + ", appSecret=" + appSecret
+				+ ", paySignKey=" + paySignKey + ", partnerId=" + partnerId
+				+ ", partnerKey=" + partnerKey + ", mchId=" + mchId
+				+ ", deviceInfo=" + deviceInfo + ", isAlive=" + isAlive
+				+ ", isService=" + isService + ", isSubscribe=" + isSubscribe
+				+ "]";
+	}
 }

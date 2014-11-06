@@ -12,7 +12,7 @@ package com.foxinmy.weixin4j.mp.type;
 public enum IdType {
 	REFUNDID("refund_id"), // 微信退款单号
 	TRANSACTIONID("transaction_id"), // 微信订单号
-	ORDERNO("out_trade_no"), // 商户订单号
+	TRADENO("out_trade_no"), // 商户订单号
 	REFUNDNO("out_refund_no"); // 商户退款号
 	private String name;
 

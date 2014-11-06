@@ -24,7 +24,6 @@ public class Token implements Serializable {
 	private String accessToken;
 	@JSONField(name = "expires_in")
 	private int expiresIn;
-	private String openid;
 	private long time;
 
 	public String getAccessToken() {
@@ -41,14 +40,6 @@ public class Token implements Serializable {
 
 	public void setExpiresIn(int expiresIn) {
 		this.expiresIn = expiresIn;
-	}
-
-	public String getOpenid() {
-		return openid;
-	}
-
-	public void setOpenid(String openid) {
-		this.openid = openid;
 	}
 
 	public long getTime() {
@@ -69,6 +60,7 @@ public class Token implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Token [accessToken=" + accessToken + ", expiresIn=" + expiresIn + ", openid=" + openid + ", time=" + time + "]";
+		return "Token [accessToken=" + accessToken + ", expiresIn=" + expiresIn
+				+ ", time=" + time + "]";
 	}
 }

@@ -41,7 +41,7 @@ weixin.properties说明
 | media_path  | 调用媒体接口时保存媒体文件的物理路径 |
 | bill_path   | 调用支付(`V3`)下载对账单接口保存excel文件的物理路径 |
 
-示例(properties中换行用右斜杆\)
+示例(properties中换行用右斜杆\\)
 
 > account={"appId":"appId","appSecret":"appSecret",
 > "token":"开放者的token 非必须","openId":"公众号的openid 非必须",
@@ -84,4 +84,8 @@ weixin.properties说明
 
   + 分离为`weixin-mp-api`和`weixin-mp-server`两个工程
    
-  + 加入`支付模块`
+  + 新增`支付模块`
+
+* 2014-11-06
+ 
+  + 新增`退款申请`接口

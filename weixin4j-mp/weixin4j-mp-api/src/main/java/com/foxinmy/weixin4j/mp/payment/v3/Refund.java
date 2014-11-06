@@ -33,32 +33,16 @@ public class Refund extends ApiResult {
 		return transactionId;
 	}
 
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
-	}
-
 	public String getOrderNo() {
 		return orderNo;
-	}
-
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
 	}
 
 	public String getSubMchId() {
 		return subMchId;
 	}
 
-	public void setSubMchId(String subMchId) {
-		this.subMchId = subMchId;
-	}
-
 	public int getCount() {
 		return count;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
 	}
 
 	public List<RefundDetail> getDetails() {
@@ -71,15 +55,14 @@ public class Refund extends ApiResult {
 
 	@Override
 	public String toString() {
-		return "Refund [transactionId=" + transactionId + ", subMchId="
-				+ subMchId + ", orderNo=" + orderNo + ", count=" + count
+		return "Refund [transactionId=" + transactionId + ", orderNo="
+				+ orderNo + ", subMchId=" + subMchId + ", count=" + count
 				+ ", details=" + details + ", getAppId()=" + getAppId()
 				+ ", getMchId()=" + getMchId() + ", getNonceStr()="
 				+ getNonceStr() + ", getSign()=" + getSign()
-				+ ", getDeviceInfo()=" + getDeviceInfo() + ", toString()="
-				+ super.toString() + ", getReturnCode()=" + getReturnCode()
-				+ ", getReturnMsg()=" + getReturnMsg() + ", getResultCode()="
-				+ getResultCode() + ", getErrCode()=" + getErrCode()
-				+ ", getErrCodeDes()=" + getErrCodeDes() + "]";
+				+ ", getDeviceInfo()=" + getDeviceInfo() + ", getReturnCode()="
+				+ getReturnCode() + ", getReturnMsg()=" + getReturnMsg()
+				+ ", getResultCode()=" + getResultCode() + ", getErrCode()="
+				+ getErrCode() + ", getErrCodeDes()=" + getErrCodeDes() + "]";
 	}
 }

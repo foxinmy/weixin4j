@@ -18,3 +18,7 @@ weixin4j-base
   + `TokenApi`重命名为`TokenHolder`
   
   + 新增`WeixinConfig`等类
+
+* 2014-11-06
+ 
+  + 删除`WeixinConfig`类只保留`WeixinAccount`类

@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.token;
 
 import com.foxinmy.weixin4j.http.HttpRequest;
-import com.foxinmy.weixin4j.model.WeixinConfig;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
@@ -16,17 +16,17 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
 public abstract class AbstractTokenHolder implements TokenHolder {
 	protected final String tokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
 	protected final HttpRequest request = new HttpRequest();
-	private final WeixinConfig weixinConfig;
+	private final WeixinAccount weixinAccount;
 
 	public AbstractTokenHolder() {
-		this.weixinConfig = ConfigUtil.getWeixinConfig();
+		this.weixinAccount = ConfigUtil.getWeixinAccount();
 	}
 
-	public AbstractTokenHolder(String appid, String appsecret) {
-		this.weixinConfig = new WeixinConfig(appid, appsecret);
+	public AbstractTokenHolder(WeixinAccount weixinAccount) {
+		this.weixinAccount = weixinAccount;
 	}
 
-	public WeixinConfig getConfig() {
-		return this.weixinConfig;
+	public WeixinAccount getAccount() {
+		return weixinAccount;
 	}
 }

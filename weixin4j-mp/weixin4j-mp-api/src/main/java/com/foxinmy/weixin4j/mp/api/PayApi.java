@@ -2,8 +2,10 @@ package com.foxinmy.weixin4j.mp.api;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import com.alibaba.fastjson.JSON;
@@ -25,6 +28,7 @@ import com.alibaba.fastjson.parser.Feature;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.SSLHttpRequest;
 import com.foxinmy.weixin4j.http.XmlResult;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
@@ -32,8 +36,10 @@ import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.v2.Order;
 import com.foxinmy.weixin4j.mp.payment.v3.Refund;
 import com.foxinmy.weixin4j.mp.payment.v3.RefundConverter;
+import com.foxinmy.weixin4j.mp.payment.v3.RefundResult;
 import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
+import com.foxinmy.weixin4j.mp.type.IdType;
 import com.foxinmy.weixin4j.mp.util.ExcelUtil;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
@@ -60,24 +66,23 @@ public class PayApi extends BaseApi {
 	/**
 	 * 发货通知
 	 * 
-	 * @param weixinAccount
-	 *            商户信息
 	 * @param openId
 	 *            用户ID
 	 * @param transid
 	 *            交易单号
-	 * @param orderNo
+	 * @param outTradeNo
 	 *            订单号
 	 * @param status
 	 *            成功|失败
 	 * @param statusMsg
 	 *            status为失败时携带的信息
-	 * @return
+	 * @return 发货处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult deliverNotify(WeixinAccount weixinAccount, String openId,
-			String transid, String orderNo, boolean status, String statusMsg)
+	public JsonResult deliverNotify(String openId, String transid,
+			String outTradeNo, boolean status, String statusMsg)
 			throws WeixinException {
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		String delivernotify_uri = getRequestUri("delivernotify_uri");
 		Token token = tokenHolder.getToken();
 
@@ -87,7 +92,7 @@ public class PayApi extends BaseApi {
 		// 用户购买的openId
 		param.put("openid", openId);
 		param.put("transid", transid);
-		param.put("out_trade_no", orderNo);
+		param.put("out_trade_no", outTradeNo);
 		param.put("deliver_timestamp", System.currentTimeMillis() / 1000 + "");
 		param.put("deliver_status", status ? "1" : "0");
 		param.put("deliver_msg", statusMsg);
@@ -105,20 +110,17 @@ public class PayApi extends BaseApi {
 	/**
 	 * 订单查询
 	 * 
-	 * @param weixinAccount
-	 *            商户信息
 	 * @param orderNo
 	 *            订单号
 	 * @return
 	 * @throws WeixinException
 	 */
-	public Order orderQueryV2(WeixinAccount weixinAccount, IdQuery idQuery)
-			throws WeixinException {
+	public Order orderQueryV2(String orderNo) throws WeixinException {
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		String orderquery_uri = getRequestUri("orderquery_uri");
 		Token token = tokenHolder.getToken();
-
 		StringBuilder sb = new StringBuilder();
-		sb.append(idQuery.getType().getName()).append(idQuery.getId());
+		sb.append("out_trade_no=").append(orderNo);
 		sb.append("&partner=").append(weixinAccount.getPartnerId());
 		String part = sb.toString();
 		sb.append("&key=").append(weixinAccount.getPartnerKey());
@@ -149,6 +151,10 @@ public class PayApi extends BaseApi {
 		String order_info = response.getAsJson().getString("order_info");
 		Order order = JSON.parseObject(order_info, Order.class,
 				Feature.IgnoreNotMatch);
+		if (order.getRetCode() != 0) {
+			throw new WeixinException(Integer.toString(order.getRetCode()),
+					order.getRetMsg());
+		}
 		order.setMapData(JSON.parseObject(order_info,
 				new TypeReference<Map<String, String>>() {
 				}));
@@ -177,21 +183,15 @@ public class PayApi extends BaseApi {
 	/**
 	 * V3订单查询
 	 * 
-	 * @param weixinAccount
-	 *            商户信息
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id、out_trade_no 二 选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
 	 * @throws WeixinException
 	 */
-	public com.foxinmy.weixin4j.mp.payment.v3.Order orderQueryV3(
-			WeixinAccount weixinAccount, IdQuery idQuery)
+	public com.foxinmy.weixin4j.mp.payment.v3.Order orderQueryV3(IdQuery idQuery)
 			throws WeixinException {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("appid", weixinAccount.getAppId());
-		map.put("mch_id", weixinAccount.getMchId());
-		map.put("nonce_str", RandomUtil.generateString(16));
-		map.put(idQuery.getType().getName(), idQuery.getId());
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
+		Map<String, String> map = baseMap2V3(idQuery);
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = map2xml(map);
@@ -200,6 +200,67 @@ public class PayApi extends BaseApi {
 		return response
 				.getAsObject(new TypeReference<com.foxinmy.weixin4j.mp.payment.v3.Order>() {
 				});
+	}
+
+	/**
+	 * 申请退款(请求需要双向证书)<br/>
+	 * <p style="color:red">
+	 * 交易时间超过 1 年的订单无法提交退款; <br/>
+	 * 支持部分退款,部分退需要设置相同的订单号和不同的 out_refund_no。一笔退款失 败后重新提交,要采用原来的
+	 * out_refund_no。总退款金额不能超过用户实际支付金额。<br/>
+	 * </p>
+	 * 
+	 * @param ca
+	 *            证书文件
+	 * @param idQuery
+	 *            ) 商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
+	 *            transaction_id> out_trade_no
+	 * @param outRefundNo
+	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
+	 * @param totalFee
+	 *            订单总金额,单位为元
+	 * @param refundFee
+	 *            退款总金额,单位为元,可以做部分退款
+	 * @param opUserId
+	 *            操作员帐号, 默认为商户号
+	 * @throws WeixinException
+	 * @throws IOException
+	 * @return 退款结果
+	 */
+	public RefundResult refund(InputStream ca, IdQuery idQuery,
+			String outRefundNo, double totalFee, double refundFee,
+			String opUserId) throws WeixinException, IOException {
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
+		Map<String, String> map = baseMap2V3(idQuery);
+		map.put("out_refund_no", outRefundNo);
+		map.put("total_fee", DateUtil.formaFee2Fen(totalFee));
+		map.put("refund_fee", DateUtil.formaFee2Fen(refundFee));
+		if (StringUtils.isBlank(opUserId)) {
+			opUserId = weixinAccount.getMchId();
+		}
+		map.put("op_user_id", opUserId);
+		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
+		map.put("sign", sign);
+		String param = map2xml(map);
+		String refund_uri = getRequestUri("refund_uri");
+		SSLHttpRequest request = new SSLHttpRequest(weixinAccount.getMchId(),
+				ca);
+		Response response = request.post(refund_uri, param);
+		return response.getAsObject(new TypeReference<RefundResult>() {
+		});
+	}
+
+	/**
+	 * 使用properties中配置的ca文件
+	 * 
+	 * @see {@link com.foxinmy.weixin4j.mp.api.PayApi#refund(InputStream, IdQuery, String, double, double, String)}
+	 */
+	public RefundResult refund(IdQuery idQuery, String outRefundNo,
+			double totalFee, double refundFee, String opUserId)
+			throws WeixinException, IOException {
+		File caFile = new File(ConfigUtil.getValue("ca_file"));
+		return refund(new FileInputStream(caFile), idQuery, outRefundNo,
+				totalFee, refundFee, opUserId);
 	}
 
 	/**
@@ -212,13 +273,10 @@ public class PayApi extends BaseApi {
 	 * @return 转换后的短链接
 	 * @throws WeixinException
 	 */
-	public String getShorturl(WeixinAccount weixinAccount, String url)
-			throws WeixinException {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("appid", weixinAccount.getAppId());
-		map.put("mch_id", weixinAccount.getMchId());
+	public String getShorturl(String url) throws WeixinException {
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
+		Map<String, String> map = baseMap2V3(null);
 		map.put("long_url", url);
-		map.put("nonce_str", RandomUtil.generateString(16));
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		try {
@@ -238,20 +296,15 @@ public class PayApi extends BaseApi {
 	 * 当订单支付失败,调用关单接口后用新订单号重新发起支付,如果关单失败,返回已完
 	 * 成支付请按正常支付处理。如果出现银行掉单,调用关单成功后,微信后台会主动发起退款。
 	 * 
-	 * @param weixinAccount
-	 *            商户信息
-	 * @param idQuery
+	 * @param outTradeNo
 	 *            商户系统内部的订单号
 	 * @return
 	 * @throws WeixinException
 	 */
-	public XmlResult closeOrder(WeixinAccount weixinAccount, IdQuery idQuery)
-			throws WeixinException {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("appid", weixinAccount.getAppId());
-		map.put("mch_id", weixinAccount.getMchId());
-		map.put("nonce_str", RandomUtil.generateString(16));
-		map.put(idQuery.getType().getName(), idQuery.getId());
+	public XmlResult closeOrder(String outTradeNo) throws WeixinException {
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
+		Map<String, String> map = baseMap2V3(new IdQuery(outTradeNo,
+				IdType.TRADENO));
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = map2xml(map);
@@ -267,8 +320,6 @@ public class PayApi extends BaseApi {
 	 * 2.微信在次日 9 点启动生成前一天的对账单,建议商户 9 点半后再获取;<br>
 	 * 3.对账单中涉及金额的字段单位为“元”。<br>
 	 * 
-	 * @param weixinAccount
-	 *            商户配置
 	 * @param billDate
 	 *            下载对账单的日期
 	 * @param billType
@@ -278,9 +329,9 @@ public class PayApi extends BaseApi {
 	 * @throws WeixinException
 	 * @throws IOException
 	 */
-	public File downloadbill(WeixinAccount weixinAccount, Date billDate,
-			BillType billType) throws WeixinException, IOException {
-
+	public File downloadbill(Date billDate, BillType billType)
+			throws WeixinException, IOException {
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		if (billDate == null) {
 			Calendar now = Calendar.getInstance();
 			now.add(Calendar.DAY_OF_MONTH, -10);
@@ -297,11 +348,7 @@ public class PayApi extends BaseApi {
 		if (file.exists()) {
 			return file;
 		}
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("appid", weixinAccount.getAppId());
-		map.put("mch_id", weixinAccount.getMchId());
-		map.put("nonce_str", RandomUtil.generateString(16));
-		map.put("device_info", weixinAccount.getDeviceInfo());
+		Map<String, String> map = baseMap2V3(null);
 		map.put("bill_date", _billDate);
 		map.put("bill_type", billType.name());
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
@@ -334,7 +381,6 @@ public class PayApi extends BaseApi {
 	 * 退款查询<br/>
 	 * 退款有一定延时,用零钱支付的退款20分钟内到账,银行卡支付的退款 3 个工作日后重新查询退款状态
 	 * 
-	 * @param weixinAccount 商户信息
 	 * @param idQuery
 	 *            单号 refund_id、out_refund_no、 out_trade_no 、 transaction_id
 	 *            四个参数必填一个,优先级为:
@@ -342,19 +388,34 @@ public class PayApi extends BaseApi {
 	 * @return 退款记录
 	 * @throws WeixinException
 	 */
-	public Refund refundQuery(WeixinAccount weixinAccount, IdQuery idQuery)
-			throws WeixinException {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("appid", weixinAccount.getAppId());
-		map.put("mch_id", weixinAccount.getMchId());
-		map.put("nonce_str", RandomUtil.generateString(16));
-		map.put("device_info", weixinAccount.getDeviceInfo());
-		map.put(idQuery.getType().getName(), idQuery.getId());
+	public Refund refundQuery(IdQuery idQuery) throws WeixinException {
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
+		Map<String, String> map = baseMap2V3(idQuery);
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = map2xml(map);
 		String refundquery_uri = getRequestUri("refundquery_uri");
 		Response response = request.post(refundquery_uri, param);
 		return new RefundConverter().fromXML(response.getAsString());
+	}
+
+	/**
+	 * V3接口请求基本数据
+	 * 
+	 * @return
+	 */
+	private Map<String, String> baseMap2V3(IdQuery idQuery) {
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("appid", weixinAccount.getAppId());
+		map.put("mch_id", weixinAccount.getMchId());
+		map.put("nonce_str", RandomUtil.generateString(16));
+		if (StringUtils.isNotBlank(weixinAccount.getDeviceInfo())) {
+			map.put("device_info", weixinAccount.getDeviceInfo());
+		}
+		if (idQuery != null) {
+			map.put(idQuery.getType().getName(), idQuery.getId());
+		}
+		return map;
 	}
 }

@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.util;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -25,7 +26,16 @@ public class DateUtil {
 		return new SimpleDateFormat(yyyyMMddHHmmss).format(date);
 	}
 
-	public static String format2fee(double fee) {
+	public static Date parse2yyyyMMddHHmmss(String date) {
+		try {
+			return new SimpleDateFormat(yyyyMMddHHmmss).parse(date);
+		} catch (ParseException e) {
+			;
+		}
+		return null;
+	}
+
+	public static String formaFee2Fen(double fee) {
 		return new DecimalFormat("#").format(fee * 100);
 	}
 }

@@ -48,10 +48,14 @@ weixin4j
 
   + 优化了代码
 
+* 2014-11-06
+ 
+  + **weixin-base**: 删除`WeixinConfig`类只保留`WeixinAccount`类
+  
+  + **weixin-mp**: 新增`退款接口`
+
 接下来
 ------
-* 公众号退款接口
-
 * 公众号智能接口
 
 * 微信消息加密

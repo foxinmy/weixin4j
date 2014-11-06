@@ -52,7 +52,7 @@ public class PayPackage implements Serializable {
 	}
 
 	public void setTotal_fee(double total_fee) {
-		this.total_fee = DateUtil.format2fee(total_fee);
+		this.total_fee = DateUtil.formaFee2Fen(total_fee);
 	}
 
 	public String getSpbill_create_ip() {
@@ -78,7 +78,6 @@ public class PayPackage implements Serializable {
 	public void setTime_start(Date time_start) {
 		this.time_start = time_start != null ? DateUtil
 				.fortmat2yyyyMMddHHmmss(time_start) : null;
-		;
 	}
 
 	public String getTime_expire() {
@@ -88,7 +87,6 @@ public class PayPackage implements Serializable {
 	public void setTime_expire(Date time_expire) {
 		this.time_expire = time_expire != null ? DateUtil
 				.fortmat2yyyyMMddHHmmss(time_expire) : null;
-		;
 	}
 
 	public String getGoods_tag() {
@@ -116,7 +114,7 @@ public class PayPackage implements Serializable {
 		this.body = body;
 		this.attach = attach;
 		this.out_trade_no = out_trade_no;
-		this.total_fee = DateUtil.format2fee(total_fee);
+		this.total_fee = DateUtil.formaFee2Fen(total_fee);
 		this.spbill_create_ip = spbill_create_ip;
 		this.time_start = time_start != null ? DateUtil
 				.fortmat2yyyyMMddHHmmss(time_start) : null;

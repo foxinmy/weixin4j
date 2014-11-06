@@ -28,7 +28,7 @@ weixin4j-mp
 
 * **weixin4j-mp-server**
 
-  `netty服务器 & 消息分发`
+  `netty服务器` & `消息分发`
 
 更新LOG
 -------
@@ -48,4 +48,8 @@ weixin4j-mp
 
   + `weixin-mp`分离为`weixin-mp-api`和`weixin-mp-server`两个工程
    
-  + **weixin-mp**: 加入`支付`模块
+  + **weixin-mp**: 新增`支付`模块
+
+* 2014-11-06
+  
+  + **weixin-mp**: 新增`退款接口`

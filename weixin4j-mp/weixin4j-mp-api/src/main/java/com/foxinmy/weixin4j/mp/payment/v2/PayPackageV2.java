@@ -72,7 +72,7 @@ public class PayPackageV2 extends PayPackage {
 	}
 
 	public void setTransport_fee(double transport_fee) {
-		this.transport_fee = DateUtil.format2fee(transport_fee);
+		this.transport_fee = DateUtil.formaFee2Fen(transport_fee);
 	}
 
 	public String getProduct_fee() {
@@ -80,7 +80,7 @@ public class PayPackageV2 extends PayPackage {
 	}
 
 	public void setProduct_fee(double product_fee) {
-		this.product_fee = DateUtil.format2fee(product_fee);
+		this.product_fee = DateUtil.formaFee2Fen(product_fee);
 	}
 
 	public String getInput_charset() {
@@ -125,8 +125,8 @@ public class PayPackageV2 extends PayPackage {
 		this.fee_type = "1";
 		this.input_charset = "UTF-8";
 		this.transport_fee = transport_fee > 0d ? DateUtil
-				.format2fee(transport_fee) : null;
-		this.product_fee = product_fee > 0 ? DateUtil.format2fee(product_fee)
+				.formaFee2Fen(transport_fee) : null;
+		this.product_fee = product_fee > 0 ? DateUtil.formaFee2Fen(product_fee)
 				: null;
 	}
 
