@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment.v3;
+package com.foxinmy.weixin4j.mp.payment;
 
 import java.io.Serializable;
 
@@ -32,7 +32,15 @@ public class RefundDetail implements Serializable {
 	@XStreamAlias("coupon_refund_fee")
 	private int couponRefundFee; // 现金券退款金额<=退款金额,退款金额-现金券退款金额为现金
 	@XStreamAlias("refund_status")
-	private RefundStatus refundStatus; // 退款状态
+	private String refundStatus; // 退款状态
+	@XStreamAlias("recv_user_id")
+	private String recvUserId;// 转账退款接收退款的财付通帐号
+	@XStreamAlias("reccv_user_name")
+	private String reccvUserName;// 转账退款接收退款的姓名(需与接收退款的财 付通帐号绑定的姓名一致)
+	@XStreamAlias("sign_key_index")
+	private String signKeyIndex;// 多密钥支持的密钥序号,默认 1
+	@XStreamAlias("sign_type")
+	private String signType;// 签名类型,取值:MD5、RSA,默认:MD5
 
 	public String getOutRefundNo() {
 		return outRefundNo;
@@ -43,8 +51,16 @@ public class RefundDetail implements Serializable {
 	}
 
 	public String getRefundChannel() {
-		return StringUtils.isBlank(refundChannel) ? RefundChannel.BALANCE
-				.name() : refundChannel;
+		if (StringUtils.isBlank(refundChannel)) {
+			return RefundChannel.BALANCE.name();
+		}
+		// V2
+		if (refundChannel.equals("0")) {
+			return RefundChannel.TENPAY.name();
+		} else if (refundChannel.equals("1")) {
+			return RefundChannel.BALANCE.name();
+		}
+		return refundChannel;
 	}
 
 	/**
@@ -66,7 +82,36 @@ public class RefundDetail implements Serializable {
 	}
 
 	public RefundStatus getRefundStatus() {
-		return refundStatus;
+		// V2
+		if ("4,10,".contains(refundStatus + ",")) {
+			return RefundStatus.SUCCES;
+		} else if ("3,5,6,".contains(refundStatus + ",")) {
+			return RefundStatus.FAIL;
+		} else if ("8,9,10,".contains(refundStatus + ",")) {
+			return RefundStatus.PROCESSING;
+		} else if ("1,2,".contains(refundStatus + ",")) {
+			return RefundStatus.NOTSURE;
+		} else if ("7,".contains(refundStatus + ",")) {
+			return RefundStatus.CHANGE;
+		} else {
+			return RefundStatus.valueOf(refundStatus);
+		}
+	}
+
+	public String getRecvUserId() {
+		return recvUserId;
+	}
+
+	public String getReccvUserName() {
+		return reccvUserName;
+	}
+
+	public String getSignKeyIndex() {
+		return signKeyIndex;
+	}
+
+	public String getSignType() {
+		return signType;
 	}
 
 	@Override
@@ -74,6 +119,9 @@ public class RefundDetail implements Serializable {
 		return "RefundDetail [outRefundNo=" + outRefundNo + ", refundId="
 				+ refundId + ", refundChannel=" + refundChannel
 				+ ", refundFee=" + refundFee + ", couponRefundFee="
-				+ couponRefundFee + ", refundStatus=" + refundStatus + "]";
+				+ couponRefundFee + ", refundStatus=" + refundStatus
+				+ ", recvUserId=" + recvUserId + ", reccvUserName="
+				+ reccvUserName + ", signKeyIndex=" + signKeyIndex
+				+ ", signType=" + signType + "]";
 	}
 }

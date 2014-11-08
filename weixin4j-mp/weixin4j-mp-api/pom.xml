@@ -14,21 +14,8 @@
 	<description>微信公众号API</description>
 	<build>
 		<finalName>weixin4j-mp-api</finalName>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>*.*</exclude>
-				</excludes>
-			</resource>
-		</resources>
 	</build>
 	<dependencies>
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>${jsoup.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>

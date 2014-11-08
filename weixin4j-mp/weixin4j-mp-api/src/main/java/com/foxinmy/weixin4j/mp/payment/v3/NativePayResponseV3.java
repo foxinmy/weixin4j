@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 import org.apache.commons.lang3.StringUtils;
 
 import com.foxinmy.weixin4j.exception.PayException;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
@@ -27,9 +28,11 @@ public class NativePayResponseV3 extends ApiResult {
 	public NativePayResponseV3(PayPackageV3 payPackage, String returnMsg,
 			String resultMsg) throws PayException {
 		super.setReturnMsg(returnMsg);
-		super.setReturnCode(StringUtils.isNotBlank(returnMsg) ? FAIL : SUCCESS);
+		super.setReturnCode(StringUtils.isNotBlank(returnMsg) ? Consts.FAIL
+				: Consts.SUCCESS);
 		this.setErrCodeDes(resultMsg);
-		this.setResultCode(StringUtils.isNotBlank(resultMsg) ? FAIL : SUCCESS);
+		this.setResultCode(StringUtils.isNotBlank(resultMsg) ? Consts.FAIL
+				: Consts.SUCCESS);
 		this.setMchId(payPackage.getMch_id());
 		this.setAppId(payPackage.getAppid());
 		this.setNonceStr(RandomUtil.generateString(16));

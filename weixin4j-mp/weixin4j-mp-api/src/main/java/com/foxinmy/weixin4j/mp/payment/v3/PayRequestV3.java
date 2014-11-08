@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.exception.PayException;
-import com.foxinmy.weixin4j.http.XmlResult;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.payment.PayRequest;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -32,11 +32,11 @@ public class PayRequestV3 extends PayRequest {
 	private PrePay prePay;
 
 	public PayRequestV3(PrePay prePay) throws PayException {
-		if (!prePay.getReturnCode().equalsIgnoreCase(XmlResult.SUCCESS)) {
+		if (!prePay.getReturnCode().equalsIgnoreCase(Consts.SUCCESS)) {
 			throw new PayException(prePay.getReturnMsg(),
 					prePay.getReturnCode());
 		}
-		if (!prePay.getResultCode().equalsIgnoreCase(XmlResult.SUCCESS)) {
+		if (!prePay.getResultCode().equalsIgnoreCase(Consts.SUCCESS)) {
 			throw new PayException(prePay.getResultCode(),
 					prePay.getErrCodeDes());
 		}

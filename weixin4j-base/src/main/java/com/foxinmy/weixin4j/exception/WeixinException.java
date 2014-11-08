@@ -22,6 +22,7 @@ public class WeixinException extends Exception {
 	}
 
 	public WeixinException(String errorMsg) {
+		this.errorCode = "";
 		this.errorMsg = errorMsg;
 	}
 

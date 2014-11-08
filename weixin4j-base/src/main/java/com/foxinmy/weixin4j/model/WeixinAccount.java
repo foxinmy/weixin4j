@@ -2,6 +2,8 @@ package com.foxinmy.weixin4j.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 微信账户信息
  * 
@@ -31,6 +33,8 @@ public class WeixinAccount implements Serializable {
 	private String mchId;
 	// 微信支付分配的设备号
 	private String deviceInfo;
+	// 微信支付版本号(如果无则按照mchId来做判断)
+	private int version;
 
 	// 是否已经认证
 	private boolean isAlive;
@@ -133,6 +137,17 @@ public class WeixinAccount implements Serializable {
 
 	public void setIsSubscribe(Boolean isSubscribe) {
 		this.isSubscribe = isSubscribe;
+	}
+
+	public int getVersion() {
+		if (version == 0) {
+			return StringUtils.isNotBlank(mchId) ? 3 : 2;
+		}
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public WeixinAccount() {

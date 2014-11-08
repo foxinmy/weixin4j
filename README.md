@@ -32,7 +32,7 @@ weixin4j
 
 * 2014-10-31
 
-  + **weixin4j-mp**: `weixin.properties`切分为API调用地址/公众号信息两部分
+  + **weixin4j-mp**: `weixin.properties`切分为API调用地址和公众号信息两部分
    
   + **weixin4j-base**: `TokenApi`重命名为`TokenHolder`
   
@@ -53,6 +53,12 @@ weixin4j
   + **weixin-base**: 删除`WeixinConfig`类只保留`WeixinAccount`类
   
   + **weixin-mp**: 新增`退款接口`
+
+* 2014-11-08
+ 
+  + **weixin-mp**: 新增V2版本`退款申请`、`退款查询`、`对账单下载`三个接口
+  
+  + **weixin-mp**: 新增一个简单的`语义理解`接口
 
 接下来
 ------

@@ -1,8 +1,7 @@
-package com.foxinmy.weixin4j.mp.payment.v3;
+package com.foxinmy.weixin4j.mp.payment;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.foxinmy.weixin4j.mp.type.RefundChannel;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -41,6 +40,14 @@ public class RefundResult extends ApiResult {
 	// 现金券退款金额<=退款金 额,退款金额-现金券退款金 额为现金
 	@XStreamAlias("coupon_refund_fee")
 	private int couponRefundFee;
+	@XStreamAlias("recv_user_id")
+	private String recvUserId;// 转账退款接收退款的财付通帐号
+	@XStreamAlias("reccv_user_name")
+	private String reccvUserName;// 转账退款接收退款的姓名(需与接收退款的财 付通帐号绑定的姓名一致)
+	@XStreamAlias("sign_key_index")
+	private String signKeyIndex;// 多密钥支持的密钥序号,默认 1
+	@XStreamAlias("sign_type")
+	private String signType;// 签名类型,取值:MD5、RSA,默认:MD5
 
 	public String getTransactionId() {
 		return transactionId;
@@ -59,8 +66,16 @@ public class RefundResult extends ApiResult {
 	}
 
 	public String getRefundChannel() {
-		return StringUtils.isBlank(refundChannel) ? RefundChannel.BALANCE
-				.name() : refundChannel;
+		if (StringUtils.isBlank(refundChannel)) {
+			return RefundChannel.BALANCE.name();
+		}
+		// V2
+		if (refundChannel.equals("0")) {
+			return RefundChannel.TENPAY.name();
+		} else if (refundChannel.equals("1")) {
+			return RefundChannel.BALANCE.name();
+		}
+		return refundChannel;
 	}
 
 	/**
@@ -81,14 +96,25 @@ public class RefundResult extends ApiResult {
 		return couponRefundFee / 100d;
 	}
 
+	public String getSignKeyIndex() {
+		return signKeyIndex;
+	}
+
+	public String getSignType() {
+		return signType;
+	}
+
 	@Override
 	public String toString() {
 		return "RefundResult [transactionId=" + transactionId + ", outTradeNo="
 				+ outTradeNo + ", outRefundNo=" + outRefundNo + ", refundId="
 				+ refundId + ", refundChannel=" + refundChannel
 				+ ", refundFee=" + refundFee + ", couponRefundFee="
-				+ couponRefundFee + ", getAppId()=" + getAppId()
-				+ ", getMchId()=" + getMchId() + ", getNonceStr()="
+				+ couponRefundFee + ", recvUserId=" + recvUserId
+				+ ", reccvUserName=" + reccvUserName + ", signKeyIndex="
+				+ signKeyIndex + ", signType=" + signType + ", getAppId()="
+				+ getAppId() + ", getMchId()=" + getMchId()
+				+ ", getSubMchId()=" + getSubMchId() + ", getNonceStr()="
 				+ getNonceStr() + ", getSign()=" + getSign()
 				+ ", getDeviceInfo()=" + getDeviceInfo() + ", getReturnCode()="
 				+ getReturnCode() + ", getReturnMsg()=" + getReturnMsg()

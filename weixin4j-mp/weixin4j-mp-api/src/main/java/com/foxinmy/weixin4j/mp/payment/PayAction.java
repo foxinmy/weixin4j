@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.http.XmlResult;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayNotifyV2;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayResponseV2;
@@ -163,7 +164,7 @@ public class PayAction {
 				weixinAccount.getPaySignKey());
 		log.info("微信签名----->sign={},vaild_sign={}", sign, valid_sign);
 		if (!sign.equals(valid_sign)) {
-			return XStream.to(new XmlResult(XmlResult.FAIL, "签名错误"));
+			return XStream.to(new XmlResult(Consts.FAIL, "签名错误"));
 		}
 		return XStream.to(new XmlResult());
 	}

@@ -1,9 +1,13 @@
 package com.foxinmy.weixin4j.mp.api;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.mp.model.SemQuery;
+import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
@@ -43,5 +47,29 @@ public class HelperApi extends BaseApi {
 				obj.toJSONString());
 
 		return response.getAsJson().getString("short_url");
+	}
+
+	/**
+	 * 语义理解
+	 * 
+	 * @param semQuery
+	 *            语义理解协议
+	 * @return 语义理解结果
+	 * @see com.foxinmy.weixin4j.mp.model.SemQuery
+	 * @see com.foxinmy.weixin4j.mp.model.SemResult
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%AF%AD%E4%B9%89%E7%90%86%E8%A7%A3">语义理解</a>
+	 * @throws WeixinException
+	 */
+	public SemResult semantic(SemQuery semQuery) throws WeixinException {
+		WeixinAccount weixinAccount = tokenHolder.getAccount();
+		String semantic_uri = getRequestUri("semantic_uri");
+		Token token = tokenHolder.getToken();
+		semQuery.appid(weixinAccount.getAppId());
+		Response response = request.post(
+				String.format(semantic_uri, token.getAccessToken()),
+				semQuery.toJson());
+		return response.getAsObject(new TypeReference<SemResult>() {
+		});
 	}
 }

@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment.v3;
+package com.foxinmy.weixin4j.mp.payment;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -26,8 +26,8 @@ import com.thoughtworks.xstream.mapper.Mapper;
  * @author jy
  * @date 2014年11月2日
  * @since JDK 1.7
- * @see com.foxinmy.weixin4j.mp.payment.v3.Refund
- * @see com.foxinmy.weixin4j.mp.payment.v3.RefundDetail
+ * @see com.foxinmy.weixin4j.mp.payment.Refund
+ * @see com.foxinmy.weixin4j.mp.payment.RefundDetail
  */
 public class RefundConverter {
 	private final static XStream xStream = XStream.get();

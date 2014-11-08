@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.http;
 
 import java.io.InputStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
@@ -73,18 +74,41 @@ public class Response {
 	 * @return
 	 * @throws DocumentException
 	 */
-	public JsonResult getTextError() throws DocumentException {
-		JsonResult result = getAsJsonResult();
-		if (result.getCode() != 0) {
-			SAXReader reader = new SAXReader();
-			Document doc = reader.read(Response.class
-					.getResourceAsStream("error.xml"));
-			Node node = doc.getRootElement().selectSingleNode(
-					String.format("error/code[text()='%d']", result.getCode()));
-			if (node != null) {
-				result.setText(node.getParent().selectSingleNode("text")
-						.getStringValue());
+	public JsonResult getTextError(int code) {
+		JsonResult result = new JsonResult();
+		result.setCode(code);
+		SAXReader reader = new SAXReader();
+		Document doc = null;
+		try {
+			doc = reader.read(Response.class.getResourceAsStream("error.xml"));
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+		Node node = doc.getRootElement().selectSingleNode(
+				String.format("error/code[text()=%d]", code));
+		if (node != null) {
+			node = node.getParent();
+			String desc = null;
+			Node _node = node.selectSingleNode("desc");
+			if (_node != null) {
+				desc = _node.getStringValue();
 			}
+			String text = null;
+			_node = node.selectSingleNode("text");
+			if (_node != null) {
+				text = _node.getStringValue();
+			}
+			if (StringUtils.isBlank(desc) && StringUtils.isNotBlank(text)) {
+				desc = text;
+			}
+			if (StringUtils.isBlank(text) && StringUtils.isNotBlank(desc)) {
+				text = desc;
+			}
+			result.setDesc(desc);
+			result.setText(text);
+		} else {
+			result.setDesc("unknown error");
+			result.setText("未知错误");
 		}
 		return result;
 	}

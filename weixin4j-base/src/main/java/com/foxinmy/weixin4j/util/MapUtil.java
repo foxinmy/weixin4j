@@ -2,19 +2,19 @@ package com.foxinmy.weixin4j.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.http.Consts;
+
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 
 /**
  * 签名工具类
+ * 
  * @className MapUtil
  * @author jy
  * @date 2014年10月31日
@@ -22,10 +22,8 @@ import com.alibaba.fastjson.TypeReference;
  * @see
  */
 public class MapUtil {
-	private final static Charset charset = StandardCharsets.UTF_8;
-
 	public static String toJoinString(Object object, boolean encoder,
-			boolean lowerCase, JSONObject extra) {
+			boolean lowerCase, Map<String, String> extra) {
 		String text = JSON.toJSONString(object);
 		Map<String, String> map = new TreeMap<String, String>(
 				new Comparator<String>() {
@@ -34,14 +32,18 @@ public class MapUtil {
 						return o1.compareTo(o2);
 					}
 				});
+
 		map.putAll(JSON.parseObject(text,
 				new TypeReference<Map<String, String>>() {
 				}));
 		if (extra != null && !extra.isEmpty()) {
-			for (String key : extra.keySet()) {
-				map.put(key, extra.getString(key));
-			}
+			map.putAll(extra);
 		}
+		return toJoinString(map, encoder, lowerCase);
+	}
+
+	public static String toJoinString(Map<String, String> map, boolean encoder,
+			boolean lowerCase) {
 		StringBuilder sb = new StringBuilder();
 		Set<Map.Entry<String, String>> set = map.entrySet();
 		try {
@@ -50,14 +52,14 @@ public class MapUtil {
 					sb.append(entry.getKey().toLowerCase())
 							.append("=")
 							.append(URLEncoder.encode(entry.getValue(),
-									charset.name())).append("&");
+									Consts.UTF_8.name())).append("&");
 				}
 			} else if (encoder) {
 				for (Map.Entry<String, String> entry : set) {
 					sb.append(entry.getKey())
 							.append("=")
 							.append(URLEncoder.encode(entry.getValue(),
-									charset.name())).append("&");
+									Consts.UTF_8.name())).append("&");
 				}
 			} else if (lowerCase) {
 				for (Map.Entry<String, String> entry : set) {

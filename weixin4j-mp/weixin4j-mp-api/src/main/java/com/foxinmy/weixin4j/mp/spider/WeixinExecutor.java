@@ -2,8 +2,6 @@ package com.foxinmy.weixin4j.mp.spider;
 
 import java.io.Serializable;
 import java.net.URI;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +10,7 @@ import java.util.Map;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -58,8 +57,6 @@ public class WeixinExecutor implements Serializable {
 	private static final long serialVersionUID = 4253859892138066462L;
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-
-	private final static Charset charset = StandardCharsets.UTF_8;
 
 	private final static Map<String, String> accountMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 1L;
@@ -186,13 +183,13 @@ public class WeixinExecutor implements Serializable {
 			if (!StringUtils.isBlank(imgcode)) {
 				method.addHeader("Cookie", "sig=" + sig);
 			}
-			method.setEntity(new UrlEncodedFormEntity(parameters, charset));
+			method.setEntity(new UrlEncodedFormEntity(parameters, Consts.UTF_8));
 			method.addHeader("Referer", weixin.getString("base"));
 
 			HttpResponse response = client.execute(host, method);
 			HttpEntity entity = response.getEntity();
-			Document root = Jsoup.parse(entity.getContent(), charset.name(),
-					weixin.getString("base"));
+			Document root = Jsoup.parse(entity.getContent(),
+					Consts.UTF_8.name(), weixin.getString("base"));
 			StatusLine line = response.getStatusLine();
 			logger.info("step1_login--->status={},body=\n{}", line,
 					root.toString());
@@ -270,7 +267,8 @@ public class WeixinExecutor implements Serializable {
 										.getValue()).append(";base64,");
 						base64.append(new String(
 								Base64.encodeBase64(IOUtil.toByteArray(response
-										.getEntity().getContent())), charset));
+										.getEntity().getContent())),
+								Consts.UTF_8));
 						weixin.put("verifydata", base64.toString());
 						List<Cookie> cookieList = client.getCookieStore()
 								.getCookies();
@@ -311,8 +309,8 @@ public class WeixinExecutor implements Serializable {
 
 			HttpResponse response = client.execute(host, method);
 			HttpEntity entity = response.getEntity();
-			Document root = Jsoup.parse(entity.getContent(), charset.name(),
-					weixin.getString("base"));
+			Document root = Jsoup.parse(entity.getContent(),
+					Consts.UTF_8.name(), weixin.getString("base"));
 			StatusLine line = response.getStatusLine();
 			logger.info("step2_setting--->status={},body=\n{}", line,
 					root.toString());
@@ -331,7 +329,7 @@ public class WeixinExecutor implements Serializable {
 
 				response = client.execute(host, method);
 				entity = response.getEntity();
-				root = Jsoup.parse(entity.getContent(), charset.name(),
+				root = Jsoup.parse(entity.getContent(), Consts.UTF_8.name(),
 						weixin.getString("base"));
 				line = response.getStatusLine();
 				weixin.put("step", "2-1");
@@ -378,8 +376,8 @@ public class WeixinExecutor implements Serializable {
 
 					response = client.execute(host, method);
 					entity = response.getEntity();
-					root = Jsoup.parse(entity.getContent(), charset.name(),
-							weixin.getString("base"));
+					root = Jsoup.parse(entity.getContent(),
+							Consts.UTF_8.name(), weixin.getString("base"));
 					line = response.getStatusLine();
 
 					if (line.getStatusCode() == HttpStatus.SC_OK) {
@@ -402,11 +400,12 @@ public class WeixinExecutor implements Serializable {
 									System.currentTimeMillis() + ""));
 
 							post.setEntity(new UrlEncodedFormEntity(parameters,
-									charset));
+									Consts.UTF_8));
 							response = client.execute(host, post);
 							entity = response.getEntity();
 							root = Jsoup.parse(entity.getContent(),
-									charset.name(), weixin.getString("base"));
+									Consts.UTF_8.name(),
+									weixin.getString("base"));
 							line = response.getStatusLine();
 							logger.info(
 									"step2_bedeveloper--->status={},body=\n{}",
@@ -422,7 +421,7 @@ public class WeixinExecutor implements Serializable {
 									response = client.execute(host, method);
 									entity = response.getEntity();
 									root = Jsoup.parse(entity.getContent(),
-											charset.name(),
+											Consts.UTF_8.name(),
 											weixin.getString("base"));
 								} else {
 									weixin.put("code", "-100");
@@ -495,13 +494,13 @@ public class WeixinExecutor implements Serializable {
 					.add(new BasicNameValuePair("callback_encrypt_mode", "0"));
 			parameters.add(new BasicNameValuePair("operation_seq", RandomUtil
 					.generateStringByNumberChar(9)));
-			method.setEntity(new UrlEncodedFormEntity(parameters, charset));
+			method.setEntity(new UrlEncodedFormEntity(parameters, Consts.UTF_8));
 			method.addHeader("Referer", weixin.getString("developerModifyUrl"));
 
 			HttpResponse response = client.execute(host, method);
 			HttpEntity entity = response.getEntity();
-			Document root = Jsoup.parse(entity.getContent(), charset.name(),
-					weixin.getString("base"));
+			Document root = Jsoup.parse(entity.getContent(),
+					Consts.UTF_8.name(), weixin.getString("base"));
 			StatusLine line = response.getStatusLine();
 			logger.info("step3_setting--->status={},body=\n{}", line,
 					root.toString());
@@ -565,13 +564,13 @@ public class WeixinExecutor implements Serializable {
 								.currentTimeMillis() + ""));
 
 						method.setEntity(new UrlEncodedFormEntity(parameters,
-								charset));
+								Consts.UTF_8));
 						method.setURI(URI.create(weixin.getString("start")));
 
 						response = client.execute(host, method);
 						entity = response.getEntity();
-						root = Jsoup.parse(entity.getContent(), charset.name(),
-								weixin.getString("base"));
+						root = Jsoup.parse(entity.getContent(),
+								Consts.UTF_8.name(), weixin.getString("base"));
 						line = response.getStatusLine();
 						logger.info("step3_setting--->status={},body=\n{}",
 								line, root.toString());
@@ -624,13 +623,14 @@ public class WeixinExecutor implements Serializable {
 				parameters.add(new BasicNameValuePair("lang", "zh_CN"));
 				parameters.add(new BasicNameValuePair("random", System
 						.currentTimeMillis() + ""));
-				method.setEntity(new UrlEncodedFormEntity(parameters, charset));
+				method.setEntity(new UrlEncodedFormEntity(parameters,
+						Consts.UTF_8));
 				method.addHeader("Referer", weixin.getString("developerUrl"));
 
 				HttpResponse response = client.execute(host, method);
 				HttpEntity entity = response.getEntity();
 				Document root = Jsoup.parse(entity.getContent(),
-						charset.name(), weixin.getString("base"));
+						Consts.UTF_8.name(), weixin.getString("base"));
 				StatusLine line = response.getStatusLine();
 				logger.info("step4_back--->status={},body=\n{}", line,
 						root.toString());

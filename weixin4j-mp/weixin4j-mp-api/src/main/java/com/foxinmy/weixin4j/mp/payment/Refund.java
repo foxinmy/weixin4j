@@ -1,8 +1,7 @@
-package com.foxinmy.weixin4j.mp.payment.v3;
+package com.foxinmy.weixin4j.mp.payment;
 
 import java.util.List;
 
-import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -12,7 +11,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @author jy
  * @date 2014年11月1日
  * @since JDK 1.7
- * @see com.foxinmy.weixin4j.mp.payment.v3.RefundDetail
+ * @see com.foxinmy.weixin4j.mp.payment.RefundDetail
  */
 @XStreamAlias("xml")
 public class Refund extends ApiResult {
@@ -27,6 +26,7 @@ public class Refund extends ApiResult {
 	private String subMchId; //
 	@XStreamAlias("refund_count")
 	private int count;// 退款笔数
+	private String partner; // 商户号V2
 	private List<RefundDetail> details;
 
 	public String getTransactionId() {
@@ -45,6 +45,10 @@ public class Refund extends ApiResult {
 		return count;
 	}
 
+	public String getPartner() {
+		return partner;
+	}
+
 	public List<RefundDetail> getDetails() {
 		return details;
 	}
@@ -57,12 +61,13 @@ public class Refund extends ApiResult {
 	public String toString() {
 		return "Refund [transactionId=" + transactionId + ", orderNo="
 				+ orderNo + ", subMchId=" + subMchId + ", count=" + count
-				+ ", details=" + details + ", getAppId()=" + getAppId()
-				+ ", getMchId()=" + getMchId() + ", getNonceStr()="
-				+ getNonceStr() + ", getSign()=" + getSign()
-				+ ", getDeviceInfo()=" + getDeviceInfo() + ", getReturnCode()="
-				+ getReturnCode() + ", getReturnMsg()=" + getReturnMsg()
-				+ ", getResultCode()=" + getResultCode() + ", getErrCode()="
-				+ getErrCode() + ", getErrCodeDes()=" + getErrCodeDes() + "]";
+				+ ", partner=" + partner + ", details=" + details
+				+ ", getAppId()=" + getAppId() + ", getMchId()=" + getMchId()
+				+ ", getNonceStr()=" + getNonceStr() + ", getSign()="
+				+ getSign() + ", getDeviceInfo()=" + getDeviceInfo()
+				+ ", getReturnCode()=" + getReturnCode() + ", getReturnMsg()="
+				+ getReturnMsg() + ", getResultCode()=" + getResultCode()
+				+ ", getErrCode()=" + getErrCode() + ", getErrCodeDes()="
+				+ getErrCodeDes() + "]";
 	}
 }

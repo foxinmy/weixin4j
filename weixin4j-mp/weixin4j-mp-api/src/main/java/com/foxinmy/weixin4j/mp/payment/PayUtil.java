@@ -122,9 +122,9 @@ public class PayUtil {
 	 * @return
 	 */
 	public static String paysignSha(Object obj, String paySignKey) {
-		JSONObject extra = null;
+		Map<String, String> extra = null;
 		if (StringUtils.isNotBlank(paySignKey)) {
-			extra = new JSONObject();
+			extra = new HashMap<String, String>();
 			extra.put("appKey", paySignKey);
 		}
 		return DigestUtils.sha1Hex(MapUtil
@@ -255,7 +255,7 @@ public class PayUtil {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("appId", appId);
 		param.put("url", url);
-		param.put("timeStamp", System.currentTimeMillis() / 1000 + "");
+		param.put("timeStamp", Long.toString(System.currentTimeMillis() / 1000));
 		param.put("nonceStr", RandomUtil.generateString(16));
 		param.put("accessToken", accessToken);
 		String sign = paysignSha(param, null);

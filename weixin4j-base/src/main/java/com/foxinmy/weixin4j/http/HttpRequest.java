@@ -3,10 +3,11 @@ package com.foxinmy.weixin4j.http;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -32,9 +33,13 @@ import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import com.alibaba.fastjson.JSONException;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.util.MapUtil;
+import com.thoughtworks.xstream.mapper.CannotResolveClassException;
 
 /**
  * 调用微信相关接口的HttpRequest,对于其他请求可能并不试用
@@ -46,7 +51,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
  * @see
  */
 public class HttpRequest {
-	private final String SUCCESS = "success";
+
 	protected AbstractHttpClient client;
 
 	public HttpRequest() {
@@ -84,6 +89,14 @@ public class HttpRequest {
 		return get(url, (Parameter[]) null);
 	}
 
+	public Response get(String url, Map<String, String> para)
+			throws WeixinException {
+		return get(
+				String.format("%s?%s", url,
+						MapUtil.toJoinString(para, false, false, null)),
+				(Parameter[]) null);
+	}
+
 	public Response get(String url, Parameter... parameters)
 			throws WeixinException {
 		StringBuilder sb = new StringBuilder(url);
@@ -106,11 +119,13 @@ public class HttpRequest {
 	public Response post(String url, Parameter... parameters)
 			throws WeixinException {
 		HttpPost method = new HttpPost(url);
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		for (Parameter parameter : parameters) {
-			params.add(parameter.toPostPara());
+		if (parameters != null && parameters.length > 0) {
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			for (Parameter parameter : parameters) {
+				params.add(parameter.toPostPara());
+			}
+			method.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
 		}
-		method.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
 		return doRequest(method);
 	}
 
@@ -167,42 +182,39 @@ public class HttpRequest {
 						String.format("the page was redirected to %s",
 								httpResponse.getFirstHeader("location")));
 			}
+
 			byte[] data = EntityUtils.toByteArray(httpEntity);
 			response = new Response();
 			response.setBody(data);
 			response.setStatusCode(status);
 			response.setStatusText(statusLine.getReasonPhrase());
 			response.setStream(new ByteArrayInputStream(data));
+			response.setText(new String(data, Consts.UTF_8));
 
 			EntityUtils.consume(httpEntity);
 			Header contentType = httpResponse
 					.getFirstHeader(HttpHeaders.CONTENT_TYPE);
+			// error with html
 			if (contentType.getValue().contains(
-					ContentType.APPLICATION_JSON.getMimeType())
-					|| contentType.getValue().contains(
-							ContentType.TEXT_PLAIN.getMimeType())) {
-				response.setText(new String(data, StandardCharsets.UTF_8));
+					ContentType.TEXT_HTML.getMimeType())) {
+				response.setText(new String(data, "gbk"));
+				Document doc = Jsoup.parse(response.getAsString());
+				throw new WeixinException(doc.body().text());
+			} else if (contentType.getValue().contains(
+					ContentType.APPLICATION_JSON.getMimeType())) {
+				checkJson(response);
+			} else if (contentType.getValue().contains(
+					ContentType.TEXT_XML.getMimeType())) {
+				checkXml(response);
+			} else if (contentType.getValue().contains(
+					ContentType.TEXT_PLAIN.getMimeType())) {
 				try {
-					JsonResult jsonResult = response.getAsJsonResult();
-					response.setJsonResult(true);
-					if (jsonResult.getCode() != 0) {
-						throw new WeixinException(Integer.toString(jsonResult
-								.getCode()), jsonResult.getDesc());
-					}
+					checkJson(response);
 					return response;
 				} catch (JSONException e) {
 					;
 				}
-				XmlResult xmlResult = response.getAsXmlResult();
-				response.setXmlResult(true);
-				if (!xmlResult.getReturnCode().equalsIgnoreCase(SUCCESS)) {
-					throw new WeixinException(xmlResult.getReturnCode(),
-							xmlResult.getReturnMsg());
-				}
-				if (!xmlResult.getResultCode().equalsIgnoreCase(SUCCESS)) {
-					throw new WeixinException(xmlResult.getErrCode(),
-							xmlResult.getErrCodeDes());
-				}
+				checkXml(response);
 			}
 		} catch (IOException e) {
 			throw new WeixinException("-1", e.getMessage());
@@ -210,5 +222,49 @@ public class HttpRequest {
 			request.releaseConnection();
 		}
 		return response;
+	}
+
+	private void checkJson(Response response) throws WeixinException {
+		response.setJsonResult(true);
+		JsonResult jsonResult = response.getAsJsonResult();
+		if (jsonResult.getCode() != 0) {
+			if (StringUtils.isBlank(jsonResult.getDesc())) {
+				jsonResult = response.getTextError(jsonResult.getCode());
+			}
+			throw new WeixinException(Integer.toString(jsonResult.getCode()),
+					jsonResult.getDesc());
+		}
+	}
+
+	private void checkXml(Response response) throws WeixinException {
+		response.setXmlResult(true);
+		XmlResult xmlResult = null;
+		try {
+			xmlResult = response.getAsXmlResult();
+		} catch (CannotResolveClassException ex) {
+			// <?xml><root><data..../data></root>
+			String newXml = response.getAsString()
+					.replaceFirst("<root>", "<xml>")
+					.replaceFirst("<retcode>", "<return_code>")
+					.replaceFirst("</retcode>", "</return_code>")
+					.replaceFirst("<retmsg>", "<return_msg>")
+					.replaceFirst("</retmsg>", "</return_msg>")
+					.replaceFirst("</root>", "</xml>");
+			response.setText(newXml);
+			xmlResult = response.getAsXmlResult();
+		}
+		if (xmlResult.getReturnCode().equals("0")) {
+			return;
+		}
+		if (!xmlResult.getReturnCode().equalsIgnoreCase(
+				com.foxinmy.weixin4j.model.Consts.SUCCESS)) {
+			throw new WeixinException(xmlResult.getReturnCode(),
+					xmlResult.getReturnMsg());
+		}
+		if (!xmlResult.getResultCode().equalsIgnoreCase(
+				com.foxinmy.weixin4j.model.Consts.SUCCESS)) {
+			throw new WeixinException(xmlResult.getErrCode(),
+					xmlResult.getErrCodeDes());
+		}
 	}
 }

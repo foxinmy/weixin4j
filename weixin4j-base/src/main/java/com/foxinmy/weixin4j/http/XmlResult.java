@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.http;
 
 import java.io.Serializable;
 
+import com.foxinmy.weixin4j.model.Consts;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -16,8 +17,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class XmlResult implements Serializable {
 
 	private static final long serialVersionUID = -6185313616955051150L;
-	public static final String SUCCESS = "SUCCESS";
-	public static final String FAIL = "FAIL";
 
 	@XStreamAlias("return_code")
 	private String returnCode;// 此字段是通信标识,非交易 标识,交易是否成功需要查 看 result_code 来判断 非空
@@ -71,15 +70,15 @@ public class XmlResult implements Serializable {
 	}
 
 	public XmlResult() {
-		this(SUCCESS.toLowerCase(), "");
+		this(Consts.SUCCESS.toLowerCase(), "");
 	}
 
 	public XmlResult(String returnCode, String returnMsg) {
 		this.returnCode = returnCode;
 		this.returnMsg = returnMsg;
-		if (returnCode.equalsIgnoreCase(SUCCESS)) {
-			this.resultCode = SUCCESS.toLowerCase();
-			this.errCode = SUCCESS.toLowerCase();
+		if (returnCode.equalsIgnoreCase(Consts.SUCCESS)) {
+			this.resultCode = Consts.SUCCESS.toLowerCase();
+			this.errCode = Consts.SUCCESS.toLowerCase();
 			this.errCodeDes = "";
 		}
 	}

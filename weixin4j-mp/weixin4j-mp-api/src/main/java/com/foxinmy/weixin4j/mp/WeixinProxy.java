@@ -32,9 +32,9 @@ import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.msg.model.Article;
 import com.foxinmy.weixin4j.mp.msg.model.BaseMsg;
 import com.foxinmy.weixin4j.mp.msg.notify.BaseNotify;
+import com.foxinmy.weixin4j.mp.payment.Refund;
+import com.foxinmy.weixin4j.mp.payment.RefundResult;
 import com.foxinmy.weixin4j.mp.payment.v2.Order;
-import com.foxinmy.weixin4j.mp.payment.v3.Refund;
-import com.foxinmy.weixin4j.mp.payment.v3.RefundResult;
 import com.foxinmy.weixin4j.mp.response.TemplateMessage;
 import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
@@ -740,15 +740,16 @@ public class WeixinProxy {
 	 *            用户ID
 	 * @param transid
 	 *            交易单号
-	 * @param orderNo
+	 * @param outTradeNo
 	 *            订单号
 	 * @param status
 	 *            成功|失败
 	 * @param statusMsg
 	 *            status为失败时携带的信息
-	 * @return 调用结果
-	 * @throws WeixinException
+	 * @return 发货处理结果
+	 * @since V2 & V3
 	 * @see com.foxinmy.weixin4j.mp.api.PayApi
+	 * @throws WeixinException
 	 */
 	public JsonResult deliverNotify(String openId, String transid,
 			String outTradeNo, boolean status, String statusMsg)
@@ -780,6 +781,7 @@ public class WeixinProxy {
 	 *            维权单号
 	 * @return 调用结果
 	 * @see com.foxinmy.weixin4j.mp.api.PayApi
+	 * @since V2 & V3
 	 * @throws WeixinException
 	 */
 	public JsonResult updateFeedback(String openId, String feedbackId)
@@ -814,6 +816,7 @@ public class WeixinProxy {
 	 *            下载对账单的类型 ALL,返回当日所有订单信息, 默认值 SUCCESS,返回当日成功支付的订单
 	 *            REFUND,返回当日退款订单
 	 * @return excel表格
+	 * @since V2 & V3
 	 * @see com.foxinmy.weixin4j.mp.api.PayApi
 	 * @throws WeixinException
 	 * @throws IOException
@@ -824,7 +827,7 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 申请退款(请求需要双向证书)<br/>
+	 * 申请退款(V3请求需要双向证书)<br/>
 	 * <p style="color:red">
 	 * 交易时间超过 1 年的订单无法提交退款; <br/>
 	 * 支持部分退款,部分退需要设置相同的订单号和不同的 out_refund_no。一笔退款失 败后重新提交,要采用原来的
@@ -832,7 +835,7 @@ public class WeixinProxy {
 	 * </p>
 	 * 
 	 * @param ca
-	 *            证书文件
+	 *            证书文件<font color="red">V2版本时无需传入</font>
 	 * @param idQuery
 	 *            ) 商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
@@ -844,28 +847,36 @@ public class WeixinProxy {
 	 *            退款总金额,单位为元,可以做部分退款
 	 * @param opUserId
 	 *            操作员帐号, 默认为商户号
+	 * @param opUserPasswd
+	 *            <font color="red">V3版本留空,V2版本需传入值</font>
+	 * 
+	 * @return 退款申请结果
 	 * @see com.foxinmy.weixin4j.mp.api.PayApi
+	 * @see com.foxinmy.weixin4j.mp.payment.RefundResult
+	 * @since V2 & V3
 	 * @throws WeixinException
 	 * @throws IOException
-	 * @return 退款结果
 	 */
 	public RefundResult refund(InputStream ca, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
-			String opUserId) throws WeixinException, IOException {
-		return payApi.refund(idQuery, outRefundNo, totalFee, refundFee,
-				opUserId);
+			String opUserId, String opUserPasswd) throws WeixinException,
+			IOException {
+		return payApi.refund(ca, idQuery, outRefundNo, totalFee, refundFee,
+				opUserId, opUserPasswd);
 	}
 
 	/**
-	 * 使用properties中配置的ca文件
+	 * 不同的退款接口选择<br/>
+	 * V3支付则采用properties中配置的ca文件<br/>
+	 * V2支付则需要传入opUserPasswd参数<br/>
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#refund(InputStream, IdQuery, String, double, double, String)}
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#refund(InputStream, IdQuery, String, double, double, String,String)}
 	 */
 	public RefundResult refund(IdQuery idQuery, String outRefundNo,
-			double totalFee, double refundFee, String opUserId)
-			throws WeixinException, IOException {
+			double totalFee, double refundFee, String opUserId,
+			String opUserPasswd) throws WeixinException, IOException {
 		return payApi.refund(idQuery, outRefundNo, totalFee, refundFee,
-				opUserId);
+				opUserId, opUserPasswd);
 	}
 
 	/**
@@ -876,8 +887,10 @@ public class WeixinProxy {
 	 *            单号 refund_id、out_refund_no、 out_trade_no 、 transaction_id
 	 *            四个参数必填一个,优先级为:
 	 *            refund_id>out_refund_no>transaction_id>out_trade_no
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
 	 * @return 退款记录
+	 * @see com.foxinmy.weixin4j.mp.api.PayApi
+	 * @see com.foxinmy.weixin4j.mp.payment.Refund
+	 * @since V2 & V3
 	 * @throws WeixinException
 	 */
 	public Refund refundQuery(IdQuery idQuery) throws WeixinException {
@@ -893,6 +906,7 @@ public class WeixinProxy {
 	 *            商户系统内部的订单号
 	 * @return 执行结果
 	 * @see com.foxinmy.weixin4j.mp.api.PayApi
+	 * @since V3
 	 * @throws WeixinException
 	 */
 	public XmlResult closeOrder(String outTradeNo) throws WeixinException {

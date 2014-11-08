@@ -16,12 +16,15 @@ import java.util.Date;
  */
 public class DateUtil {
 	private static final String yyyyMMdd = "yyyyMMdd";
+	private static final String yyyy_MM_dd = "yyyy-MM-dd";
 	private static final String yyyyMMddHHmmss = "yyyyMMddHHmmss";
 
 	public static String fortmat2yyyyMMdd(Date date) {
 		return new SimpleDateFormat(yyyyMMdd).format(date);
 	}
-
+	public static String fortmat2yyyy_MM_dd(Date date) {
+		return new SimpleDateFormat(yyyy_MM_dd).format(date);
+	}
 	public static String fortmat2yyyyMMddHHmmss(Date date) {
 		return new SimpleDateFormat(yyyyMMddHHmmss).format(date);
 	}

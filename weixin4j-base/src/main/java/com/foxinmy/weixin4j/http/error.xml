@@ -362,6 +362,83 @@
 		<desc>api unauthorized</desc>
 		<text>接口未授权</text>
 	</error>
+	<!-- 语义理解API错误 -->
+	<error>
+		<code>7000000</code>
+		<text>请求正常,无语义结果</text>
+	</error>
+	<error>
+		<code>7000001</code>
+		<text>缺失请求参数</text>
+	</error>
+	<error>
+		<code>7000002</code>
+		<text>signature 参数无效</text>
+	</error>
+	<error>
+		<code>7000003</code>
+		<text>地理位置相关配置 1 无效</text>
+	</error>
+	<error>
+		<code>7000004</code>
+		<text>地理位置相关配置 2 无效</text>
+	</error>
+	<error>
+		<code>7000005</code>
+		<text>请求地理位置信息失败</text>
+	</error>
+	<error>
+		<code>7000006</code>
+		<text>地理位置结果解析失败</text>
+	</error>
+	<error>
+		<code>7000007</code>
+		<text>内部初始化失败</text>
+	</error>
+	<error>
+		<code>7000008</code>
+		<text>非法 appid(获取密钥失败)</text>
+	</error>
+	<error>
+		<code>7000009</code>
+		<text>请求语义服务失败</text>
+	</error>
+	<error>
+		<code>7000010</code>
+		<text>非法 post 请求</text>
+	</error>
+	<error>
+		<code>7000011</code>
+		<text>post 请求 json 字段无效</text>
+	</error>
+	<error>
+		<code>7000030</code>
+		<text>查询 query 太短</text>
+	</error>
+	<error>
+		<code>7000031</code>
+		<text>查询 query 太长</text>
+	</error>
+	<error>
+		<code>7000032</code>
+		<text>城市、经纬度信息缺失</text>
+	</error>
+	<error>
+		<code>7000033</code>
+		<text>query 请求语义处理失败</text>
+	</error>
+	<error>
+		<code>7000034</code>
+		<text>获取天气信息失败</text>
+	</error>
+	<error>
+		<code>7000035</code>
+		<text>获取股票信息失败</text>
+	</error>
+	<error>
+		<code>7000036</code>
+		<text>utf8 编码转换失败</text>
+	</error>
 	<!-- 微信支付API错误 -->
 	<error>
 		<code>SYSTEMERROR</code>

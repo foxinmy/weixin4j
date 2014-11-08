@@ -19,7 +19,6 @@ public class ScanEventMessage extends EventMessage {
 	}
 
 	private static final long serialVersionUID = 8078674062833071562L;
-	private static final String PARA_PREFIX = "qrscene_";
 
 	@XStreamAlias("EventKey")
 	private String eventKey; // 事件KEY值，是一个32位无符号整数，即创建二维码时的二维码scene_id
@@ -35,7 +34,7 @@ public class ScanEventMessage extends EventMessage {
 	}
 
 	public String getParameter() {
-		return eventKey.replace(PARA_PREFIX, "");
+		return eventKey.replace("qrscene_", "");
 	}
 
 	@Override

@@ -2,15 +2,13 @@ package com.foxinmy.weixin4j.http;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
+import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 public class Parameter {
-	
-	private final static String CHARSET = StandardCharsets.UTF_8.name();
-	
+
 	private String name;
 	private String value;
 
@@ -41,7 +39,8 @@ public class Parameter {
 
 	public String toGetPara() {
 		try {
-			return String.format("&%s=%s", name, URLEncoder.encode(value, CHARSET));
+			return String.format("&%s=%s", name,
+					URLEncoder.encode(value, Consts.UTF_8.name()));
 		} catch (UnsupportedEncodingException e) {
 			return String.format("&%s=%s", name, value);
 		}
@@ -49,7 +48,8 @@ public class Parameter {
 
 	public NameValuePair toPostPara() {
 		try {
-			return new BasicNameValuePair(name, URLEncoder.encode(value, CHARSET));
+			return new BasicNameValuePair(name, URLEncoder.encode(value,
+					Consts.UTF_8.name()));
 		} catch (UnsupportedEncodingException e) {
 			return new BasicNameValuePair(name, value);
 		}

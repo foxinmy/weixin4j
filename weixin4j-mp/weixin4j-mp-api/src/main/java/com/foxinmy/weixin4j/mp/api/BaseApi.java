@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.mp.api;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -24,7 +22,6 @@ import com.thoughtworks.xstream.mapper.DefaultMapper;
 public class BaseApi {
 	protected final HttpRequest request = new HttpRequest();
 	protected final static XStream mapXstream = XStream.get();
-	protected final Charset utf8 = StandardCharsets.UTF_8;
 	private final static ResourceBundle weixinBundle;
 	static {
 		weixinBundle = ResourceBundle
@@ -40,7 +37,7 @@ public class BaseApi {
 
 	@SuppressWarnings("unchecked")
 	protected Map<String, String> xml2map(String xml) {
-		return mapXstream.fromXML(xml,Map.class);
+		return mapXstream.fromXML(xml, Map.class);
 	}
 
 	protected String getRequestUri(String key) {

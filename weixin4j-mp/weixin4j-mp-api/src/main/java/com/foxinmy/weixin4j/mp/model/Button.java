@@ -38,10 +38,10 @@ public class Button implements Serializable {
 	public Button(String name, String value, ButtonType buttonType) {
 		this.name = name;
 		this.type = buttonType;
-		if (buttonType == ButtonType.click) {
-			this.key = value;
-		} else if (buttonType == ButtonType.view) {
+		if (buttonType == ButtonType.view) {
 			this.url = value;
+		} else {
+			this.key = value;
 		}
 	}
 

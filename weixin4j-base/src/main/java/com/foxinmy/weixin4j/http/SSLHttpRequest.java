@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 
+import javax.net.ssl.SSLContext;
+
 import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeSocketFactory;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
 /**
@@ -27,7 +30,8 @@ public class SSLHttpRequest extends HttpRequest {
 	public SSLHttpRequest(String password, InputStream inputStream) {
 		super();
 		try {
-			KeyStore trustStore = KeyStore.getInstance("PKCS12");
+			KeyStore trustStore = KeyStore
+					.getInstance(com.foxinmy.weixin4j.model.Consts.PKCS12);
 			trustStore.load(inputStream, password.toCharArray());
 			SSLSocketFactory socketFactory = new SSLSocketFactory(trustStore,
 					password);
@@ -44,5 +48,12 @@ public class SSLHttpRequest extends HttpRequest {
 				;
 			}
 		}
+	}
+
+	public SSLHttpRequest(SSLContext sslContext) {
+		super();
+		SchemeSocketFactory socketFactory = new SSLSocketFactory(sslContext);
+		client.getConnectionManager().getSchemeRegistry()
+				.register(new Scheme("https", 443, socketFactory));
 	}
 }
