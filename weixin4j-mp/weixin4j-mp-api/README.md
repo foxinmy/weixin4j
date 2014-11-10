@@ -39,7 +39,7 @@ weixin.properties说明
 | token_path  | 使用FileTokenHolder时token保存的物理路径 |
 | qr_path     | 调用二维码接口时保存二维码图片的物理路径 |
 | media_path  | 调用媒体接口时保存媒体文件的物理路径 |
-| bill_path   | 调用支付(`V3`)下载对账单接口保存excel文件的物理路径 |
+| bill_path   | 调用下载对账单接口保存excel文件的物理路径 |
 | ca_file     | 调用某些接口(支付相关)强制需要auth的ca授权文件 |
 
 示例(properties中换行用右斜杆\\)
@@ -48,12 +48,13 @@ weixin.properties说明
 > "token":"开放者的token 非必须","openId":"公众号的openid 非必须",
 > "mchId":"V3.x版本下的微信商户号",
 > "partnerId":"财付通的商户号","partnerKey":"财付通商户权限密钥Key",
+> "version":"针对微信支付的版本号(2,3),如果不填则按照mchId非空与否来判断",
 > "paySignKey":"微信支付中调用API的密钥"} <br/>
 > token_path=/tmp/weixin/token <br/>
 > qr_path=/tmp/weixin/qr <br/>
 > media_path=/tmp/weixin/media <br/>
 > bill_path=/tmp/weixin/bill <br/>
-> ca_file=/tmp/weixin/xxxxx.p12 <br/>
+> ca_file=/tmp/weixin/xxxxx.p12|xxxx.pfx <br/>
 
 2.实例化一个`WeixinProxy`对象,调用API,需要强调的是如果只传入appid,appsecret两个参数将无法调用支付相关接口
 

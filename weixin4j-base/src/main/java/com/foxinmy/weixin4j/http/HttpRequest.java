@@ -33,8 +33,6 @@ import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import com.alibaba.fastjson.JSONException;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -198,8 +196,7 @@ public class HttpRequest {
 			if (contentType.getValue().contains(
 					ContentType.TEXT_HTML.getMimeType())) {
 				response.setText(new String(data, "gbk"));
-				Document doc = Jsoup.parse(response.getAsString());
-				throw new WeixinException(doc.body().text());
+				throw new WeixinException(response.getAsString());
 			} else if (contentType.getValue().contains(
 					ContentType.APPLICATION_JSON.getMimeType())) {
 				checkJson(response);
