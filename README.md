@@ -52,13 +52,17 @@ weixin4j
  
   + **weixin-base**: 删除`WeixinConfig`类只保留`WeixinAccount`类
   
-  + **weixin-mp**: 新增`退款接口`
+  + **weixin-mp**: 新增V3版本`退款接口`
 
 * 2014-11-08
  
   + **weixin-mp**: 新增V2版本`退款申请`、`退款查询`、`对账单下载`三个接口
   
   + **weixin-mp**: 新增一个简单的`语义理解`接口
+
+* 2014-11-11
+
+  + **weixin-mp**: 自定义`assembly`将`weixin4j-base`工程也一起打包(`weixin4j-mp-api-full.jar`)
 
 接下来
 ------

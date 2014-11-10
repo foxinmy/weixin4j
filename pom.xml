@@ -53,22 +53,54 @@
 		<commons.lang.version>3.3.2</commons.lang.version>
 		<commons.codec.version>1.9</commons.codec.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.source.plugin.version>2.4</maven.source.plugin.version>
+		<maven.compiler.plugin.version>3.0</maven.compiler.plugin.version>
+		<maven.resources.plugin.version>2.6</maven.resources.plugin.version>
+		<maven.jar.plugin.version>2.5</maven.jar.plugin.version>
+		<maven.assembly.plugin.version>2.5.1</maven.assembly.plugin.version>
+		<maven.javadoc.plugin.version>2.10.1</maven.javadoc.plugin.version>
 	</properties>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven.source.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven.javadoc.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
-				<version>3.0</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
+				<version>${maven.resources.plugin.version}</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
@@ -76,7 +108,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.5</version>
+				<version>${maven.jar.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>default-jar</id>
@@ -99,6 +131,24 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.md</include>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+					<include>**/*.pem</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*.xml</include>
+					<include>*.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 	<dependencies>
 		<dependency>

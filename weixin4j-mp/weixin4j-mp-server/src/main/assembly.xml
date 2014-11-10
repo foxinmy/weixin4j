@@ -9,12 +9,12 @@
 	<dependencySets>
 		<dependencySet>
 			<useProjectArtifact>true</useProjectArtifact>
-			<outputDirectory>lib</outputDirectory>
+			<outputDirectory>/lib</outputDirectory>
 		</dependencySet>
 	</dependencySets>
 	<fileSets>
 		<fileSet>
-			<directory>com.foxinmy.weixin4j.mp</directory>
+			<directory>com/foxinmy/weixin4j/mp</directory>
 			<includes>
 				<include>**/*.md</include>
 			</includes>
