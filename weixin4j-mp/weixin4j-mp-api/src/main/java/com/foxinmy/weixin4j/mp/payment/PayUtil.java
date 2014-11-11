@@ -28,6 +28,7 @@ import com.foxinmy.weixin4j.mp.payment.v3.PayRequestV3;
 import com.foxinmy.weixin4j.mp.payment.v3.PrePay;
 import com.foxinmy.weixin4j.mp.type.SignType;
 import com.foxinmy.weixin4j.mp.type.TradeType;
+import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.xml.XStream;
@@ -255,14 +256,14 @@ public class PayUtil {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("appId", appId);
 		param.put("url", url);
-		param.put("timeStamp", Long.toString(System.currentTimeMillis() / 1000));
+		param.put("timeStamp", DateUtil.timestamp2string());
 		param.put("nonceStr", RandomUtil.generateString(16));
 		param.put("accessToken", accessToken);
 		String sign = paysignSha(param, null);
 		JSONObject obj = new JSONObject();
 		obj.put("appId", appId);
 		obj.put("scope", "jsapi_address");
-		obj.put("signType", "sha1");
+		obj.put("signType", SignType.SHA1.name().toLowerCase());
 		obj.put("addrSign", sign);
 		obj.put("timeStamp", param.get("timeStamp"));
 		obj.put("nonceStr", param.get("nonceStr"));
@@ -282,7 +283,7 @@ public class PayUtil {
 	public String createNativePayRequestURLV2(WeixinAccount weixinAccount,
 			String productId) {
 		Map<String, String> map = new HashMap<String, String>();
-		String timestamp = System.currentTimeMillis() / 1000 + "";
+		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(16);
 		map.put("appid", weixinAccount.getAppId());
 		map.put("timestamp", timestamp);
@@ -305,7 +306,7 @@ public class PayUtil {
 	public String createNativePayRequestURLV3(WeixinAccount weixinAccount,
 			String productId) {
 		Map<String, String> map = new HashMap<String, String>();
-		String timestamp = System.currentTimeMillis() / 1000 + "";
+		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(16);
 		map.put("appid", weixinAccount.getAppId());
 		map.put("mch_id", weixinAccount.getMchId());
@@ -322,7 +323,7 @@ public class PayUtil {
 		NativePayResponseV2 payRequest = new NativePayResponseV2(weixinAccount,
 				payPackage);
 		Map<String, String> map = new HashMap<String, String>();
-		String timestamp = System.currentTimeMillis() / 1000 + "";
+		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(16);
 		map.put("appid", weixinAccount.getAppId());
 		map.put("timestamp", timestamp);

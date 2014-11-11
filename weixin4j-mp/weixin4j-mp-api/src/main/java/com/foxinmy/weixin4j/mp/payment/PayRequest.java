@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.mp.payment;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -18,7 +19,7 @@ public class PayRequest extends PayBaseInfo {
 	}
 
 	public PayRequest(String appId, String packageInfo) {
-		super(appId, System.currentTimeMillis() / 1000 + "", RandomUtil
+		super(appId, DateUtil.timestamp2string(), RandomUtil
 				.generateString(16));
 		this.packageInfo = packageInfo;
 	}

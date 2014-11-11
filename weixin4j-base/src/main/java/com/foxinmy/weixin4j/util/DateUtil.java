@@ -22,9 +22,11 @@ public class DateUtil {
 	public static String fortmat2yyyyMMdd(Date date) {
 		return new SimpleDateFormat(yyyyMMdd).format(date);
 	}
+
 	public static String fortmat2yyyy_MM_dd(Date date) {
 		return new SimpleDateFormat(yyyy_MM_dd).format(date);
 	}
+
 	public static String fortmat2yyyyMMddHHmmss(Date date) {
 		return new SimpleDateFormat(yyyyMMddHHmmss).format(date);
 	}
@@ -40,5 +42,9 @@ public class DateUtil {
 
 	public static String formaFee2Fen(double fee) {
 		return new DecimalFormat("#").format(fee * 100);
+	}
+
+	public static String timestamp2string() {
+		return String.valueOf(System.currentTimeMillis() / 1000);
 	}
 }

@@ -32,7 +32,9 @@ public class MassApi extends BaseApi {
 	}
 
 	/**
-	 * 上传图文消息,一个图文消息支持1到10条图文
+	 * 上传图文消息,一个图文消息支持1到10条图文<br/>
+	 * <font
+	 * color="red">具备微信支付权限的公众号，在使用高级群发接口上传、群发图文消息类型时，可使用&lta&gt标签加入外链</font>
 	 * 
 	 * @param articles
 	 *            图片消息

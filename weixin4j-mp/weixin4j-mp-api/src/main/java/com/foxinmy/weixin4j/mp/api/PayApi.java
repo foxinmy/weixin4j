@@ -50,6 +50,7 @@ import com.foxinmy.weixin4j.mp.payment.v2.Order;
 import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.IdType;
+import com.foxinmy.weixin4j.mp.type.SignType;
 import com.foxinmy.weixin4j.mp.util.ExcelUtil;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
@@ -68,9 +69,11 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  */
 public class PayApi extends BaseApi {
 	private final TokenHolder tokenHolder;
+	private final WeixinAccount weixinAccount;
 
 	public PayApi(TokenHolder tokenHolder) {
 		this.tokenHolder = tokenHolder;
+		this.weixinAccount = tokenHolder.getAccount();
 	}
 
 	/**
@@ -93,7 +96,6 @@ public class PayApi extends BaseApi {
 	public JsonResult deliverNotify(String openId, String transid,
 			String outTradeNo, boolean status, String statusMsg)
 			throws WeixinException {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		String delivernotify_uri = getRequestUri("delivernotify_uri");
 		Token token = tokenHolder.getToken();
 
@@ -104,11 +106,11 @@ public class PayApi extends BaseApi {
 		param.put("openid", openId);
 		param.put("transid", transid);
 		param.put("out_trade_no", outTradeNo);
-		param.put("deliver_timestamp", System.currentTimeMillis() / 1000 + "");
+		param.put("deliver_timestamp", DateUtil.timestamp2string());
 		param.put("deliver_status", status ? "1" : "0");
 		param.put("deliver_msg", statusMsg);
 		param.put("app_signature", PayUtil.paysignSha(param, null));
-		param.put("sign_method", "sha1");
+		param.put("sign_method", SignType.SHA1.name().toLowerCase());
 
 		Response response = request.post(
 				String.format(delivernotify_uri, token.getAccessToken()),
@@ -127,7 +129,6 @@ public class PayApi extends BaseApi {
 	 * @throws WeixinException
 	 */
 	public Order orderQueryV2(String orderNo) throws WeixinException {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		String orderquery_uri = getRequestUri("orderquery_uri");
 		Token token = tokenHolder.getToken();
 		StringBuilder sb = new StringBuilder();
@@ -139,7 +140,7 @@ public class PayApi extends BaseApi {
 		sb.delete(0, sb.length());
 		sb.append(part).append("&sign=").append(sign);
 
-		String timestamp = System.currentTimeMillis() / 1000 + "";
+		String timestamp = DateUtil.timestamp2string();
 		JSONObject obj = new JSONObject();
 		obj.put("appid", weixinAccount.getAppId());
 		obj.put("appkey", weixinAccount.getPaySignKey());
@@ -152,7 +153,7 @@ public class PayApi extends BaseApi {
 		obj.put("package", sb.toString());
 		obj.put("timestamp", timestamp);
 		obj.put("app_signature", signature);
-		obj.put("sign_method", "sha1");
+		obj.put("sign_method", SignType.SHA1.name().toLowerCase());
 
 		Response response = request.post(
 				String.format(orderquery_uri, token.getAccessToken()),
@@ -203,7 +204,6 @@ public class PayApi extends BaseApi {
 	 */
 	public com.foxinmy.weixin4j.mp.payment.v3.Order orderQueryV3(IdQuery idQuery)
 			throws WeixinException {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		Map<String, String> map = baseMap2V3(idQuery);
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
@@ -249,8 +249,6 @@ public class PayApi extends BaseApi {
 			String outRefundNo, double totalFee, double refundFee,
 			String opUserId, String opUserPasswd) throws WeixinException,
 			IOException {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
-
 		int version = weixinAccount.getVersion();
 		String refund_uri = getRequestUri(String.format("refund_v%d_uri",
 				version));
@@ -387,7 +385,6 @@ public class PayApi extends BaseApi {
 	 * @throws WeixinException
 	 */
 	public String getShorturl(String url) throws WeixinException {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		Map<String, String> map = baseMap2V3(null);
 		map.put("long_url", url);
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
@@ -416,7 +413,6 @@ public class PayApi extends BaseApi {
 	 * @throws WeixinException
 	 */
 	public XmlResult closeOrder(String outTradeNo) throws WeixinException {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		Map<String, String> map = baseMap2V3(new IdQuery(outTradeNo,
 				IdType.TRADENO));
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
@@ -446,7 +442,6 @@ public class PayApi extends BaseApi {
 	 */
 	public File downloadbill(Date billDate, BillType billType)
 			throws WeixinException, IOException {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		if (billDate == null) {
 			Calendar now = Calendar.getInstance();
 			now.add(Calendar.DAY_OF_MONTH, -1);
@@ -472,7 +467,7 @@ public class PayApi extends BaseApi {
 			Map<String, String> map = new LinkedHashMap<String, String>();
 			map.put("spid", weixinAccount.getPartnerId());
 			map.put("trans_time", DateUtil.fortmat2yyyy_MM_dd(billDate));
-			map.put("stamp", Long.toString(System.currentTimeMillis() / 100));
+			map.put("stamp", DateUtil.timestamp2string());
 			map.put("cft_signtype", "0");
 			map.put("mchtype", Integer.toString(billType.getVal()));
 			map.put("key", weixinAccount.getPartnerKey());
@@ -526,7 +521,6 @@ public class PayApi extends BaseApi {
 	 * @throws WeixinException
 	 */
 	public Refund refundQuery(IdQuery idQuery) throws WeixinException {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		int version = weixinAccount.getVersion();
 		String refundquery_uri = getRequestUri(String.format(
 				"refundquery_v%d_uri", version));
@@ -557,7 +551,6 @@ public class PayApi extends BaseApi {
 	 * @return
 	 */
 	private Map<String, String> baseMap2V3(IdQuery idQuery) {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("appid", weixinAccount.getAppId());
 		map.put("mch_id", weixinAccount.getMchId());
