@@ -1,5 +1,8 @@
 package com.foxinmy.weixin4j.mp.api;
 
+import java.util.List;
+
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -71,5 +74,22 @@ public class HelperApi extends BaseApi {
 				semQuery.toJson());
 		return response.getAsObject(new TypeReference<SemResult>() {
 		});
+	}
+
+	/**
+	 * 获取微信服务器IP地址
+	 * 
+	 * @return IP地址
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%99%A8IP%E5%9C%B0%E5%9D%80">获取IP地址</a>
+	 * @throws WeixinException
+	 */
+	public List<String> getcallbackip() throws WeixinException {
+		String getcallbackip_uri = getRequestUri("getcallbackip_uri");
+		Token token = tokenHolder.getToken();
+		Response response = request.post(String.format(getcallbackip_uri,
+				token.getAccessToken()));
+		return JSON.parseArray(response.getAsJson().getString("ip_list"),
+				String.class);
 	}
 }

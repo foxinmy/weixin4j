@@ -22,6 +22,8 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 		ChannelPipeline pipeline = channel.pipeline();
 		pipeline.addLast(new HttpServerCodec());
 		pipeline.addLast(new HttpObjectAggregator(65536));
+		pipeline.addLast(new WeixinMessageDecoder());
+		pipeline.addLast(new WeixinMessageEncoder());
 		pipeline.addLast(new WeixinServerHandler(actionMapping));
 	}
 }

@@ -56,16 +56,6 @@ public class BaseMessage extends BaseMsg {
 		this.msgType = msgType;
 	}
 
-	public BaseMessage(MessageType msgType, BaseMessage inMessage) {
-		this(msgType, inMessage.getFromUserName(), inMessage.getToUserName());
-	}
-
-	public BaseMessage(MessageType msgType, String toUserName,
-			String fromUserName) {
-		super(toUserName, fromUserName);
-		this.msgType = msgType;
-	}
-
 	public MessageType getMsgType() {
 		return msgType;
 	}

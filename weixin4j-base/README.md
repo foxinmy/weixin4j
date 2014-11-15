@@ -22,3 +22,7 @@ weixin4j-base
 * 2014-11-06
  
   + 删除`WeixinConfig`类只保留`WeixinAccount`类
+
+* 2014-11-15
+
+  + 新增`aes加密解密`函数

@@ -20,7 +20,7 @@ public enum MessageType {
 	text(TextMessage.class), image(ImageMessage.class), voice(
 			VoiceMessage.class), video(VideoMessage.class), location(
 			LocationMessage.class), link(LinkMessage.class), event(
-			EventMessage.class), signature(null);
+			EventMessage.class);
 	private Class<? extends BaseMessage> messageClass;
 
 	MessageType(Class<? extends BaseMessage> messageClass) {

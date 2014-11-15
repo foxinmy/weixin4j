@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.mp.response.ArticleResponse;
 import com.foxinmy.weixin4j.mp.response.ImageResponse;
 import com.foxinmy.weixin4j.mp.response.MusicResponse;
+import com.foxinmy.weixin4j.mp.response.TextResponse;
 import com.foxinmy.weixin4j.mp.response.VideoResponse;
 import com.foxinmy.weixin4j.mp.response.VoiceResponse;
 import com.foxinmy.weixin4j.msg.BaseMessage;
@@ -31,7 +32,7 @@ public class OutMsgTest {
 
 	@Test
 	public void text() throws DocumentException {
-		TextMessage message = new TextMessage("text", inMessage);
+		TextResponse message = new TextResponse("text", inMessage);
 		System.out.println(message.toXml());
 	}
 

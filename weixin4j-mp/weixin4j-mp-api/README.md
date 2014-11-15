@@ -46,6 +46,7 @@ weixin.properties说明
 
 > account={"appId":"appId","appSecret":"appSecret",
 > "token":"开放者的token 非必须","openId":"公众号的openid 非必须",
+> "encodingAesKey":"公众号设置了加密方式且为「安全模式」需要填入",
 > "mchId":"V3.x版本下的微信商户号",
 > "partnerId":"财付通的商户号","partnerKey":"财付通商户权限密钥Key",
 > "version":"针对微信支付的版本号(2,3),如果不填则按照mchId非空与否来判断",
@@ -104,3 +105,7 @@ weixin.properties说明
 * 2014-11-11
 
   + 自定义`assembly`将`weixin4j-base`工程也一起打包(`weixin4j-mp-api-full.jar`)
+ 
+* 2014-11-15
+
+  + 新增获取`微信服务器IP地址接口`

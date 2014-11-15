@@ -49,7 +49,6 @@ public class PayAction {
 		// V3 支付
 		// 此处的openid为微信用户的openid
 		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
-		weixinAccount.setOpenId("用户的openId");
 		payPackage = new PayPackageV3(weixinAccount, "用户openid", "商品描述",
 				"系统内部订单号", 1d, "IP地址", TradeType.JSAPI);
 		// V2 支付
@@ -147,7 +146,7 @@ public class PayAction {
 	 * 
 	 * 
 	 * @param inputStream
-	 *            订单细腻
+	 *            订单回调
 	 * @return &ltxml&gt<br>
 	 *         &ltreturn_code&gtSUCCESS/FAIL&lt/return_code&gt<br>
 	 *         &ltreturn_msg&gt如非空,为错误 原因签名失败参数格式校验错误&lt/return_msg&gt<br>

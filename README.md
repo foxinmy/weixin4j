@@ -40,9 +40,9 @@ weixin4j
 
 * 2014-11-03
 
-  + **weixin-mp**: 分离为`weixin-mp-api`和`weixin-mp-server`两个工程
+  + **weixin4j-mp**: 分离为`weixin-mp-api`和`weixin-mp-server`两个工程
    
-  + **weixin-mp**: 加入支付模块
+  + **weixin4j-mp**: 加入支付模块
   
 * 2014-11-05
 
@@ -50,25 +50,34 @@ weixin4j
 
 * 2014-11-06
  
-  + **weixin-base**: 删除`WeixinConfig`类只保留`WeixinAccount`类
+  + **weixin4j-base**: 删除`WeixinConfig`类只保留`WeixinAccount`类
   
-  + **weixin-mp**: 新增V3版本`退款接口`
+  + **weixin4j-mp**: 新增V3版本`退款接口`
 
 * 2014-11-08
  
-  + **weixin-mp**: 新增V2版本`退款申请`、`退款查询`、`对账单下载`三个接口
+  + **weixin4j-mp**: 新增V2版本`退款申请`、`退款查询`、`对账单下载`三个接口
   
   + **weixin-mp**: 新增一个简单的`语义理解`接口
 
 * 2014-11-11
 
-  + **weixin-mp**: 自定义`assembly`将`weixin4j-base`工程也一起打包(`weixin4j-mp-api-full.jar`)
+  + **weixin4j-mp**: 自定义`assembly`将`weixin4j-base`工程也一起打包(`weixin4j-mp-api-full.jar`)
+
+* 2014-11-15
+
+  + **weixin4j-base**: 新增aes加密解密函数
+  
+  + **weixin4j-mp**: 新增获取`微信服务器IP地址`接口
+    
+  + **weixin4j-mp**: 解决`server工程`打包不能运行问题(`ClassUtil`无法获取jar包里面的类)
+  
+  + **weixin4j-mp**: 新增被动消息的`加密`以及回复消息的`解密`
+ 
 
 接下来
 ------
 * 公众号智能接口
-
-* 微信消息加密
 
 * 被扫支付
 

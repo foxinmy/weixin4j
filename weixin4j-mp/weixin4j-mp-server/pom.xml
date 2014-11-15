@@ -13,7 +13,7 @@
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-mp/weixin4j-server</url>
 	<description>微信公众号服务</description>
 	<build>
-		<finalName>weixin4j-mp-server</finalName>
+		<finalName>weixin-mp-server</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

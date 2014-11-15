@@ -17,28 +17,27 @@ import com.foxinmy.weixin4j.xml.XStream;
  * @author jy
  * @date 2014年10月12日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.mp.action.WeixinAction
  */
+@SuppressWarnings("unchecked")
 public abstract class AbstractAction<M extends BaseMessage> implements
 		WeixinAction {
 
 	public abstract BaseResponse execute(M inMessage);
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public String execute(String msg) throws DocumentException {
+	public BaseResponse execute(String msg) throws DocumentException {
 		BaseMessage message = MessageUtil.xml2msg(msg);
 		if (message == null) {
 			Class<M> messageClass = getGenericType();
 			XStream xstream = XStream.get();
 			xstream.processAnnotations(messageClass);
 			xstream.alias("xml", messageClass);
-			return execute(xstream.fromXML(msg, messageClass)).toXml();
+			return execute(xstream.fromXML(msg, messageClass));
 		}
-		return execute((M) message).toXml();
+		return execute((M) message);
 	}
 
-	@SuppressWarnings("unchecked")
 	private Class<M> getGenericType() {
 		Class<M> clazz = null;
 		Type type = getClass().getGenericSuperclass();

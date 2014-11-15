@@ -25,6 +25,8 @@ public class WeixinAccount implements Serializable {
 	private String appSecret;
 	// 公众号支付请求中用于加密的密钥 Key,可验证商户唯一身份,PaySignKey 对应于支付场景中的 appKey 值
 	private String paySignKey;
+	// 安全模式下的加密密钥
+	private String encodingAesKey;
 	// 财付通商户身份的标识
 	private String partnerId;
 	// 财付通商户权限密钥Key
@@ -73,6 +75,14 @@ public class WeixinAccount implements Serializable {
 
 	public void setAppSecret(String appSecret) {
 		this.appSecret = appSecret;
+	}
+
+	public String getEncodingAesKey() {
+		return encodingAesKey;
+	}
+
+	public void setEncodingAesKey(String encodingAesKey) {
+		this.encodingAesKey = encodingAesKey;
 	}
 
 	public String getPaySignKey() {
@@ -195,10 +205,10 @@ public class WeixinAccount implements Serializable {
 	public String toString() {
 		return "WeixinAccount [token=" + token + ", openId=" + openId
 				+ ", appId=" + appId + ", appSecret=" + appSecret
-				+ ", paySignKey=" + paySignKey + ", partnerId=" + partnerId
-				+ ", partnerKey=" + partnerKey + ", mchId=" + mchId
-				+ ", deviceInfo=" + deviceInfo + ", isAlive=" + isAlive
-				+ ", isService=" + isService + ", isSubscribe=" + isSubscribe
-				+ "]";
+				+ ", encodingAesKey=" + encodingAesKey + ", paySignKey="
+				+ paySignKey + ", partnerId=" + partnerId + ", partnerKey="
+				+ partnerKey + ", mchId=" + mchId + ", deviceInfo="
+				+ deviceInfo + ", isAlive=" + isAlive + ", isService="
+				+ isService + ", isSubscribe=" + isSubscribe + "]";
 	}
 }

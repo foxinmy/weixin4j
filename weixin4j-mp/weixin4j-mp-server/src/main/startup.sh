@@ -6,10 +6,10 @@ JAVA_HOME="/usr/local/java/"
 RUNNING_USER=root
  
 #Run home
-APP_HOME="/usr/local/weixin/weixin-service"
+APP_HOME="/usr/local/weixin/weixin-mp-server"
  
 #main class
-APP_MAINCLASS=com.foxinmy.weixin4j.mp.startup.WeixinServiceBootstrap
+APP_MAINCLASS=com.foxinmy.weixin4j.mp.startup.WeixinServerBootstrap
  
 #classpath
 CLASSPATH=$APP_HOME/classes
@@ -42,9 +42,9 @@ start() {
    checkpid
  
    if [ $psid -ne 0 ]; then
-      echo "================================"
+      echo "====================================================="
       echo "warn: $APP_MAINCLASS already started! (pid=$psid)"
-      echo "================================"
+      echo "====================================================="
    else
       echo -n "Starting $APP_MAINCLASS ..."
 #      JAVA_CMD="nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS >/dev/null 2>&1 &"
@@ -79,9 +79,9 @@ stop() {
          stop
       fi
    else
-      echo "================================"
+      echo "====================================================="
       echo "warn: $APP_MAINCLASS is not running"
-      echo "================================"
+      echo "====================================================="
    fi
 }
  

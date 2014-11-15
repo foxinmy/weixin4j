@@ -2,12 +2,21 @@ package com.foxinmy.weixin4j.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import com.alibaba.fastjson.JSON;
+import com.foxinmy.weixin4j.model.Consts;
 
 /**
  * 对class的获取
+ * 
  * @className ClassUtil
  * @author jy
  * @date 2014年10月31日
@@ -17,15 +26,28 @@ import java.util.Set;
 public class ClassUtil {
 
 	public static Set<Class<?>> getClasses(Package _package) {
-		ClassLoader classLoader = Thread.currentThread()
-				.getContextClassLoader();
-		String subPath = _package.getName().replace(".", File.separator);
-		URL fullPath = classLoader.getResource(subPath);
-		File dir = new File(fullPath.getPath());
-		return findClasses(dir, _package.getName());
+		String packageName = _package.getName();
+		String packageFileName = packageName.replace(".", File.separator);
+		URL fullPath = Thread.currentThread().getContextClassLoader()
+				.getResource(packageFileName);
+		String protocol = fullPath.getProtocol();
+		if (protocol.equals(Consts.PROTOCOL_FILE)) {
+			File dir = new File(fullPath.getPath());
+			return findClassesByFile(dir, packageName);
+		} else if (protocol.equals(Consts.PROTOCOL_JAR)) {
+			try {
+				return findClassesByJar(
+						((JarURLConnection) fullPath.openConnection())
+								.getJarFile(),
+						packageFileName);
+			} catch (IOException e) {
+				;
+			}
+		}
+		return null;
 	}
 
-	private static Set<Class<?>> findClasses(File dir, String packageName) {
+	private static Set<Class<?>> findClassesByFile(File dir, String packageName) {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
 		File[] files = dir.listFiles(new FilenameFilter() {
 			@Override
@@ -35,7 +57,7 @@ public class ClassUtil {
 		});
 		for (File file : files) {
 			if (file.isDirectory()) {
-				classes.addAll(findClasses(file,
+				classes.addAll(findClassesByFile(file,
 						packageName + "." + file.getName()));
 			} else {
 				try {
@@ -48,9 +70,43 @@ public class ClassUtil {
 				} catch (ClassNotFoundException e) {
 					;
 				}
-
 			}
 		}
 		return classes;
+	}
+
+	private static Set<Class<?>> findClassesByJar(JarFile jar,
+			String packageName) {
+		Set<Class<?>> classes = new HashSet<Class<?>>();
+		Enumeration<JarEntry> jarEntries = jar.entries();
+		while (jarEntries.hasMoreElements()) {
+			JarEntry jarEntry = jarEntries.nextElement();
+			if (jarEntry.isDirectory()) {
+				continue;
+			}
+			String entryName = jarEntry.getName();
+			if (!entryName.startsWith(packageName)) {
+				continue;
+			}
+			if (!entryName.endsWith(".class")) {
+				continue;
+			}
+			try {
+				Class<?> clazz = Class.forName(entryName.replaceAll("/", ".")
+						.replace(".class", ""));
+				if (clazz.isInterface()) {
+					continue;
+				}
+				classes.add(clazz);
+			} catch (ClassNotFoundException e) {
+				;
+			}
+		}
+		return classes;
+	}
+
+	public static void main(String[] args) {
+		Package _package = JSON.class.getPackage();
+		System.out.println(getClasses(_package));
 	}
 }

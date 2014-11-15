@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.statrup;
+package com.foxinmy.weixin4j.mp.startup;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.mp.server.WeixinServerInitializer;
  * @since JDK 1.7
  * @see
  */
-public final class WeixinServiceBootstrap {
+public final class WeixinServerBootstrap {
 
 	private final static int port;
 	private final static int workerThreads;

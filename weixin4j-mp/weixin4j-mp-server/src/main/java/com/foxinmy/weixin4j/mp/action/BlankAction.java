@@ -1,21 +1,21 @@
 package com.foxinmy.weixin4j.mp.action;
 
-import com.foxinmy.weixin4j.mp.response.TextResponse;
+import com.foxinmy.weixin4j.mp.response.BaseResponse;
 import com.foxinmy.weixin4j.msg.BaseMessage;
 
 /**
- * 输出空白消息
+ * 回复一个空字符串 而不是一个XML结构体中content字段的内容为空
  * 
  * @className BlankAction
  * @author jy.hu
  * @date 2014年10月2日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.mp.action.AbstractAction
  */
 public class BlankAction<M extends BaseMessage> extends AbstractAction<M> {
 
 	@Override
-	public TextResponse execute(M inMessage) {
-		return new TextResponse("", inMessage);
+	public BaseResponse execute(M inMessage) {
+		return null;
 	}
 }

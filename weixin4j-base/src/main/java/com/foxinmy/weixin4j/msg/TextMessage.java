@@ -25,11 +25,6 @@ public class TextMessage extends BaseMessage {
 		super(MessageType.text);
 	}
 
-	public TextMessage(String content, BaseMessage inMessage) {
-		super(MessageType.text, inMessage);
-		this.content = content;
-	}
-
 	@XStreamAlias("Content")
 	private String content; // 消息内容
 
