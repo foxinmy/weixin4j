@@ -28,6 +28,8 @@ import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.MpArticle;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
+import com.foxinmy.weixin4j.mp.model.SemQuery;
+import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.msg.model.Article;
 import com.foxinmy.weixin4j.mp.msg.model.BaseMsg;
@@ -924,5 +926,35 @@ public class WeixinProxy {
 	 */
 	public String getPayShorturl(String url) throws WeixinException {
 		return payApi.getShorturl(url);
+	}
+
+	/**
+	 * 语义理解
+	 * 
+	 * @param semQuery
+	 *            语义理解协议
+	 * @return 语义理解结果
+	 * @see com.foxinmy.weixin4j.mp.model.SemQuery
+	 * @see com.foxinmy.weixin4j.mp.model.SemResult
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%AF%AD%E4%B9%89%E7%90%86%E8%A7%A3">语义理解</a>
+	 * @see com.foxinmy.weixin4j.mp.api.HelperApi
+	 * @throws WeixinException
+	 */
+	public SemResult semantic(SemQuery semQuery) throws WeixinException {
+		return helperApi.semantic(semQuery);
+	}
+
+	/**
+	 * 获取微信服务器IP地址
+	 * 
+	 * @return IP地址
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%99%A8IP%E5%9C%B0%E5%9D%80">获取IP地址</a>
+	 * @see com.foxinmy.weixin4j.mp.api.HelperApi
+	 * @throws WeixinException
+	 */
+	public List<String> getcallbackip() throws WeixinException {
+		return helperApi.getcallbackip();
 	}
 }

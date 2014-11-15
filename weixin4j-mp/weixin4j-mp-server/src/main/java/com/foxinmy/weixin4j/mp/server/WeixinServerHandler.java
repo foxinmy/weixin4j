@@ -79,6 +79,11 @@ public class WeixinServerHandler extends
 		BaseResponse response = action.execute(xmlContent);
 		log.info("\n=================message out=================\n{}",
 				response);
+		if (response == null) {
+			HttpResponse httpResponse = HttpUtil
+					.createWeixinMessageResponse("");
+			ctx.write(httpResponse);
+		}
 		if (httpMessage.getEncryptType() == EncryptType.RAW) {
 			HttpResponse httpResponse = HttpUtil
 					.createWeixinMessageResponse(response.toXml());
