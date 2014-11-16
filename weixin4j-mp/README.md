@@ -46,7 +46,7 @@ weixin4j-mp
    
 * 2014-11-03
 
-  + `weixin-mp`分离为`weixin-mp-api`和`weixin-mp-server`两个工程
+  + `weixin-mp`分离为`weixin4j-mp-api`和`weixin4j-mp-server`两个工程
    
   + **weixin4j-mp**: 新增`支付`模块
 
@@ -71,3 +71,7 @@ weixin4j-mp
   + **weixin4j-mp-server**: 解决`server工程`打包不能运行问题(`ClassUtil`无法获取jar包里面的类)
   
   + **weixin4j-mp-server**: 新增被动消息的`加密`以及回复消息的`解密`
+  
+* 2014-11-16
+
+  + **weixin4j-mp-api**: 新增`多客服`接口

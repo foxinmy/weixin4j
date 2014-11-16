@@ -11,6 +11,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.XmlResult;
 import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
 import com.foxinmy.weixin4j.mp.api.HelperApi;
 import com.foxinmy.weixin4j.mp.api.MassApi;
@@ -25,6 +26,7 @@ import com.foxinmy.weixin4j.mp.model.Button;
 import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
+import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.MpArticle;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
@@ -57,6 +59,7 @@ public class WeixinProxy {
 
 	private final MediaApi mediaApi;
 	private final NotifyApi notifyApi;
+	private final CustomApi customApi;
 	private final MassApi massApi;
 	private final UserApi userApi;
 	private final GroupApi groupApi;
@@ -101,6 +104,7 @@ public class WeixinProxy {
 	public WeixinProxy(TokenHolder tokenHolder) {
 		this.mediaApi = new MediaApi(tokenHolder);
 		this.notifyApi = new NotifyApi(tokenHolder);
+		this.customApi = new CustomApi(tokenHolder);
 		this.massApi = new MassApi(tokenHolder);
 		this.userApi = new UserApi(tokenHolder);
 		this.groupApi = new GroupApi(tokenHolder);
@@ -236,13 +240,13 @@ public class WeixinProxy {
 	 * @param baseMsg
 	 *            消息类型
 	 * @return 发送结果
-	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.msg.model.Text
 	 * @see com.foxinmy.weixin4j.mp.msg.model.Image
 	 * @see com.foxinmy.weixin4j.mp.msg.model.Music
 	 * @see com.foxinmy.weixin4j.mp.msg.model.Video
 	 * @see com.foxinmy.weixin4j.mp.msg.model.Voice
 	 * @see com.foxinmy.weixin4j.mp.api.NotifyApi
+	 * @throws WeixinException
 	 */
 	public JsonResult sendNotify(String touser, BaseMsg baseMsg)
 			throws WeixinException {
@@ -253,7 +257,7 @@ public class WeixinProxy {
 	 * 客服聊天记录
 	 * 
 	 * @param openId
-	 *            用户标识 可为空
+	 *            用户标识 为空时则查询全部记录
 	 * @param starttime
 	 *            查询开始时间
 	 * @param endtime
@@ -262,16 +266,35 @@ public class WeixinProxy {
 	 *            每页大小 每页最多拉取1000条
 	 * @param pageindex
 	 *            查询第几页 从1开始
-	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.CustomRecord
-	 * @see com.foxinmy.weixin4j.mp.api.NotifyApi
+	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
+	 * @see <a href="http://dkf.qq.com/document-1_1.html">查询客服聊天记录</a>
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%AE%A2%E6%9C%8D%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95">查询客服聊天记录</a>
+	 * @throws WeixinException
 	 */
-	public List<CustomRecord> getCustomRecord(String openId, long starttime,
-			long endtime, int pagesize, int pageindex) throws WeixinException {
-		return notifyApi.getCustomRecord(openId, starttime, endtime, pagesize,
+	public List<CustomRecord> getCustomRecord(String openId, Date starttime,
+			Date endtime, int pagesize, int pageindex) throws WeixinException {
+		return customApi.getCustomRecord(openId, starttime, endtime, pagesize,
 				pageindex);
+	}
+
+	/**
+	 * 获取公众号中所设置的客服基本信息，包括客服工号、客服昵称、客服登录账号
+	 * 
+	 * @param isOnline
+	 *            是否在线 为ture时可以可以获取客服在线状态（手机在线、PC客户端在线、手机和PC客户端全都在线）、客服自动接入最大值、
+	 *            客服当前接待客户数
+	 * @return 多客服信息列表
+	 * @see com.foxinmy.weixin4j.mp.model.KfAccount
+	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
+	 * @see <a href="http://dkf.qq.com/document-3_1.html">获取客服基本信息</a>
+	 * @see <a href="http://dkf.qq.com/document-3_2.html">获取在线客服接待信息</a>
+	 * @throws WeixinException
+	 */
+	public List<KfAccount> getKfAccountList(boolean isOnline)
+			throws WeixinException {
+		return customApi.getKfAccountList(isOnline);
 	}
 
 	/**

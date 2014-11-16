@@ -3,6 +3,9 @@ package com.foxinmy.weixin4j.mp.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.foxinmy.weixin4j.mp.type.CustomRecordOperCode;
+import com.foxinmy.weixin4j.mp.util.EntityUtil;
+
 /**
  * 客服聊天记录
  * 
@@ -18,7 +21,7 @@ public class CustomRecord implements Serializable {
 	private static final long serialVersionUID = -4024147769411601325L;
 	private String worker;// 客服账号
 	private String openid;// 用户的标识
-	private Opercode opercode;// 操作ID（会话状态）
+	private CustomRecordOperCode opercode;// 操作ID（会话状态）
 	private Date time;// 操作时间
 	private String text;// 聊天记录
 
@@ -38,20 +41,20 @@ public class CustomRecord implements Serializable {
 		this.openid = openid;
 	}
 
-	public Opercode getOpercode() {
+	public CustomRecordOperCode getOpercode() {
 		return opercode;
 	}
 
-	public void setOpercode(Opercode opercode) {
-		this.opercode = opercode;
+	public void setOpercode(int opercode) {
+		this.opercode = EntityUtil.getCustomRecordOperCode(opercode);
 	}
 
 	public Date getTime() {
 		return time;
 	}
 
-	public void setTime(Date time) {
-		this.time = time;
+	public void setTime(long time) {
+		this.time = new Date(time * 1000);
 	}
 
 	public String getText() {
@@ -60,24 +63,6 @@ public class CustomRecord implements Serializable {
 
 	public void setText(String text) {
 		this.text = text;
-	}
-
-	public enum Opercode {
-		MISS(1000, "创建未接入会话"), ONLINE(1001, "接入会话"), CALL(1002, "主动发起会话"), CLOSE(
-				1004, "关闭会话"), RASE(1005, "抢接会话"), RECEIVE1(2001, "公众号收到消息"), SEND(
-				2002, "客服发送消息"), RECEIVE2(2003, "客服收到消息");
-		private int code;
-		private String desc;
-		Opercode(int code, String desc) {
-			this.code = code;
-			this.desc = desc;
-		}
-		public int getCode() {
-			return code;
-		}
-		public String getDesc() {
-			return desc;
-		}
 	}
 
 	@Override

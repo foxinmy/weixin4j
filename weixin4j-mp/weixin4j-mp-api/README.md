@@ -11,6 +11,8 @@ weixin4j-mp-api
 
 * NotifyApi `客服消息API`
 
+* CustomApi `多客服API`*
+
 * MassApi `群发消息API`
 
 * UserApi `用户管理API`
@@ -109,3 +111,7 @@ weixin.properties说明
 * 2014-11-15
 
   + 新增获取`微信服务器IP地址接口`
+  
+* 2014-11-16
+
+  + 新增`多客服`接口
