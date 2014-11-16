@@ -11,6 +11,8 @@ weixin4j-mp
   + MediaApi `上传/下载媒体文件API`
 	
   + NotifyApi `客服消息API`
+  
+  + CustomApi `多客服API`
 	
   + MassApi `群发消息API`
 	
@@ -28,7 +30,9 @@ weixin4j-mp
 
 * **weixin4j-mp-server**
 
-  `netty服务器` & `消息分发`
+  + `netty服务器` & `消息分发`
+  
+  + 被动消息`AES`加密、解密
 
 更新LOG
 -------

@@ -11,7 +11,7 @@ weixin4j-mp-api
 
 * NotifyApi `客服消息API`
 
-* CustomApi `多客服API`*
+* CustomApi `多客服API`
 
 * MassApi `群发消息API`
 
@@ -57,7 +57,7 @@ weixin.properties说明
 > qr_path=/tmp/weixin/qr <br/>
 > media_path=/tmp/weixin/media <br/>
 > bill_path=/tmp/weixin/bill <br/>
-> ca_file=/tmp/weixin/xxxxx.p12|xxxx.pfx <br/>
+> ca_file=/tmp/weixin/xxxxx.p12 | xxxx.pfx <br/>
 
 2.实例化一个`WeixinProxy`对象,调用API,需要强调的是如果只传入appid,appsecret两个参数将无法调用支付相关接口
 

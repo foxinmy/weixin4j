@@ -37,7 +37,7 @@ weixin4j-mp-server
 > qr_path=/tmp/weixin/qr <br/>
 > media_path=/tmp/weixin/media <br/>
 > bill_path=/tmp/weixin/bill <br/>
-> ca_file=/tmp/weixin/xxxxx.p12|xxxxx.pfx <br/>
+> ca_file=/tmp/weixin/xxxxx.p12 | xxxxx.pfx <br/>
 
 2.mvn package,得到一个zip的压缩包,解压到启动目录(见`src/main/startup.sh/APP_HOME`)
 
