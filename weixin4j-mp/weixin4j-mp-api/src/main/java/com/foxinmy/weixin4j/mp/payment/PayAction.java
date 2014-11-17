@@ -46,9 +46,8 @@ public class PayAction {
 	public JSONObject jsPay() {
 		JSONObject obj = new JSONObject();
 		PayPackage payPackage = null;
-		// V3 支付
-		// 此处的openid为微信用户的openid
 		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		// V3 支付
 		payPackage = new PayPackageV3(weixinAccount, "用户openid", "商品描述",
 				"系统内部订单号", 1d, "IP地址", TradeType.JSAPI);
 		// V2 支付
@@ -57,7 +56,6 @@ public class PayAction {
 		payPackage.setAttach("ID");
 		String jspay = null;
 		try {
-			jspay = PayUtil.createPayJsRequestJson(payPackage, weixinAccount);
 			jspay = PayUtil.createPayJsRequestJson(payPackage, weixinAccount);
 		} catch (PayException e) {
 			log.error("create jspay error,{}", weixinAccount, e);
@@ -80,7 +78,7 @@ public class PayAction {
 	}
 
 	/**
-	 * JSAPI(V2)支付成功时的回调通知＝<br>
+	 * JSAPI(V2)支付成功(前端)时的回调通知<br>
 	 * &ltxml&gt<br/>
 	 * &ltOpenId&gt&lt![CDATA[111222]]&gt&lt/OpenId&gt<br/>
 	 * &ltAppId&gt&lt![CDATA[wwwwb4f85f3a797777]]&gt&lt/AppId&gt<br/>
@@ -105,12 +103,9 @@ public class PayAction {
 		/*
 		 * 收集url中携带的参数 /pay/notify/back?attach=8&bank_billno=201410293351060&
 		 * bank_type=2032&discount=0&fee_type=1&input_charset=UTF-8&
-		 * notify_id=9fKbVf_qg6y-
-		 * wSjtSMV0PLXeEn2oGfTM1s9dWSvR2B9U6iFQRTzmjrMWKUxvh9mpBLvnh8aqFbC_OFk1pTvFnFUO00Lln4fh
-		 * & out_trade_no=D14102900031&partner=1221928801&product_fee=1&sign=
-		 * B9D6E772C271C9B86B8436FC9F5DFC1A&
-		 * sign_type=MD5&time_end=20141029183707
-		 * &total_fee=1&trade_mode=1&trade_state=0&
+		 * notify_id=9fKbVf_qg6y-wSjtSMV0PLXeEn2oGfTM1s9dWSvR2B9U6iFQRTzmjrMWKUxvh9mpBLvnh8aqFbC_OFk1pTvFnFUO00Lln4fh&
+		 * out_trade_no=D14102900031&partner=1221928801&product_fee=1&sign=B9D6E772C271C9B86B8436FC9F5DFC1A&
+		 * sign_type=MD5&time_end=20141029183707&total_fee=1&trade_mode=1&trade_state=0&
 		 * transaction_id=1221928801201410296039230054&transport_fee=0
 		 */
 		log.info("jspay_notify_orderinfo,{}", objMap);
@@ -142,7 +137,7 @@ public class PayAction {
 	}
 
 	/**
-	 * JSAPI(V3)支付成功时的回调通知
+	 * JSAPI(V3)支付成功(前端)时的回调通知
 	 * 
 	 * 
 	 * @param inputStream
@@ -166,39 +161,6 @@ public class PayAction {
 			return XStream.to(new XmlResult(Consts.FAIL, "签名错误"));
 		}
 		return XStream.to(new XmlResult());
-	}
-
-	/**
-	 * 告警通知 需要成功返回 success <br/>
-	 * &ltxml&gt<br/>
-	 * &ltAppId&gt&lt![CDATA[wxf8b4f85f3a794e77]]&gt&lt/AppId&gt<br/>
-	 * &ltErrorType&gt1001&lt/ErrorType&gt<br/>
-	 * &ltDescription&gt&lt![CDATA[错误描述]]>&lt/Description&gt<br/>
-	 * &ltAlarmContent&gt&lt![CDATA[错误详情]]>&lt/AlarmContent&gt<br/>
-	 * &ltTimeStamp&gt1393860740&lt/TimeStamp&gt<br/>
-	 * &ltAppSignature&gt&lt![CDATA[签名方式跟JsPayRequest中的paySign一样]]&gt&lt/
-	 * AppSignature&gt<br/>
-	 * &ltSignMethod&gt&lt![CDATA[sha1]]&gt&lt/SignMethod&gt<br/>
-	 * &lt/xml&gt<br/>
-	 * 参与签名字段:alarmcontent、appid、appkey、description、errortype、timestamp
-	 * 
-	 * @param inputStream
-	 *            xml数据
-	 * @see com.foxinmy.weixin4j.mp.payment.v2.PayWarn
-	 * @return
-	 */
-	public String warning(InputStream inputStream) {
-		PayWarn payWarn = XStream.get(inputStream, PayWarn.class);
-		log.info("pay_warning,{}", payWarn);
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
-		String sign = payWarn.getPaySign();
-		payWarn.setPaySign(null);
-		payWarn.setSignType(null);
-		// 验证微信签名
-		String vaild_sign = PayUtil.paysignSha(payWarn,
-				weixinAccount.getPaySignKey());
-		log.info("微信签名----->sign={},vaild_sign={}", sign, vaild_sign);
-		return "success";
 	}
 
 	/**
@@ -289,6 +251,39 @@ public class PayAction {
 	}
 
 	/**
+	 * 告警通知 需要成功返回 success <br/>
+	 * &ltxml&gt<br/>
+	 * &ltAppId&gt&lt![CDATA[wxf8b4f85f3a794e77]]&gt&lt/AppId&gt<br/>
+	 * &ltErrorType&gt1001&lt/ErrorType&gt<br/>
+	 * &ltDescription&gt&lt![CDATA[错误描述]]>&lt/Description&gt<br/>
+	 * &ltAlarmContent&gt&lt![CDATA[错误详情]]>&lt/AlarmContent&gt<br/>
+	 * &ltTimeStamp&gt1393860740&lt/TimeStamp&gt<br/>
+	 * &ltAppSignature&gt&lt![CDATA[签名方式跟JsPayRequest中的paySign一样]]&gt&lt/
+	 * AppSignature&gt<br/>
+	 * &ltSignMethod&gt&lt![CDATA[sha1]]&gt&lt/SignMethod&gt<br/>
+	 * &lt/xml&gt<br/>
+	 * 参与签名字段:alarmcontent、appid、appkey、description、errortype、timestamp
+	 * 
+	 * @param inputStream
+	 *            xml数据
+	 * @see com.foxinmy.weixin4j.mp.payment.v2.PayWarn
+	 * @return
+	 */
+	public String warning(InputStream inputStream) {
+		PayWarn payWarn = XStream.get(inputStream, PayWarn.class);
+		log.info("pay_warning,{}", payWarn);
+		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		String sign = payWarn.getPaySign();
+		payWarn.setPaySign(null);
+		payWarn.setSignType(null);
+		// 验证微信签名
+		String vaild_sign = PayUtil.paysignSha(payWarn,
+				weixinAccount.getPaySignKey());
+		log.info("微信签名----->sign={},vaild_sign={}", sign, vaild_sign);
+		return "success";
+	}
+
+	/**
 	 * 用户维权
 	 * 
 	 * @param inputStream
@@ -307,9 +302,5 @@ public class PayAction {
 		String sign = PayUtil.paysignSha(obj, weixinAccount.getPaySignKey());
 		log.info("微信签名----->sign={},vaild_sign={}", sign, feedback.getPaySign());
 		return "success";
-	}
-
-	public static void main(String[] args) {
-
 	}
 }

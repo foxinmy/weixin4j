@@ -42,6 +42,7 @@ import com.foxinmy.weixin4j.http.SSLHttpRequest;
 import com.foxinmy.weixin4j.http.XmlResult;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.Refund;
 import com.foxinmy.weixin4j.mp.payment.RefundConverter;
@@ -102,7 +103,6 @@ public class PayApi extends BaseApi {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("appid", weixinAccount.getAppId());
 		param.put("appkey", weixinAccount.getPaySignKey());
-		// 用户购买的openId
 		param.put("openid", openId);
 		param.put("transid", transid);
 		param.put("out_trade_no", outTradeNo);
@@ -204,7 +204,7 @@ public class PayApi extends BaseApi {
 	 */
 	public com.foxinmy.weixin4j.mp.payment.v3.Order orderQueryV3(IdQuery idQuery)
 			throws WeixinException {
-		Map<String, String> map = baseMap2V3(idQuery);
+		Map<String, String> map = baseMapV3(idQuery);
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = map2xml(map);
@@ -216,17 +216,16 @@ public class PayApi extends BaseApi {
 	}
 
 	/**
-	 * 申请退款(请求需要双向证书)<br/>
+	 * 申请退款(请求需要双向证书)</br>
 	 * <p style="color:red">
-	 * 交易时间超过 1 年的订单无法提交退款; <br/>
-	 * 支持部分退款,部分退需要设置相同的订单号和不同的 out_refund_no。一笔退款失 败后重新提交,要采用原来的
-	 * out_refund_no。总退款金额不能超过用户实际支付金额。<br/>
+	 * 交易时间超过 1 年的订单无法提交退款; </br> 支持部分退款,部分退需要设置相同的订单号和不同的 out_refund_no。一笔退款失
+	 * 败后重新提交,要采用原来的 out_refund_no。总退款金额不能超过用户实际支付金额。</br>
 	 * </p>
 	 * 
 	 * @param ca
 	 *            证书文件
 	 * @param idQuery
-	 *            ) 商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
+	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
 	 * @param outRefundNo
 	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
@@ -341,7 +340,7 @@ public class PayApi extends BaseApi {
 			SSLHttpRequest request = new SSLHttpRequest(ctx);
 			response = request.get(refund_uri, map);
 		} else if (version == 3) {
-			Map<String, String> map = baseMap2V3(idQuery);
+			Map<String, String> map = baseMapV3(idQuery);
 			map.put("out_refund_no", outRefundNo);
 			map.put("total_fee", DateUtil.formaFee2Fen(totalFee));
 			map.put("refund_fee", DateUtil.formaFee2Fen(refundFee));
@@ -362,9 +361,8 @@ public class PayApi extends BaseApi {
 	}
 
 	/**
-	 * 不同的退款接口选择<br/>
-	 * 默认采用properties中配置的ca文件<br/>
-	 * V2支付则需要传入opUserPasswd参数<br/>
+	 * 退款申请:默认采用properties中配置的ca文件</br> <font
+	 * color="red">V2支付则需要传入opUserPasswd参数</font>
 	 * 
 	 * @see {@link com.foxinmy.weixin4j.mp.api.PayApi#refund(InputStream, IdQuery, String, double, double, String, String)}
 	 */
@@ -377,6 +375,50 @@ public class PayApi extends BaseApi {
 	}
 
 	/**
+	 * 冲正订单(需要证书)</br> 当支付返回失败,或收银系统超时需要取消交易,可以调用该接口</br> 接口逻辑:支
+	 * 付失败的关单,支付成功的撤销支付</br> <font color="red">7天以内的单可撤销,其他正常支付的单
+	 * 如需实现相同功能请调用退款接口</font></br> <font
+	 * color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font></br>
+	 * 
+	 * @param ca
+	 *            证书文件
+	 * @param idQuery
+	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
+	 *            transaction_id> out_trade_no
+	 * @return 撤销结果
+	 * @throws WeixinException
+	 */
+	public ApiResult reverse(InputStream ca, IdQuery idQuery)
+			throws WeixinException {
+		SSLHttpRequest request = new SSLHttpRequest(weixinAccount.getMchId(),
+				ca);
+		String reverse_uri = getRequestUri("reverse_uri");
+		Map<String, String> map = baseMapV3(idQuery);
+		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
+		map.put("sign", sign);
+		String param = map2xml(map);
+		Response response = request.post(reverse_uri, param);
+		return response.getAsObject(new TypeReference<ApiResult>() {
+		});
+	}
+
+	/**
+	 * 冲正撤销:默认采用properties中配置的ca文件
+	 * 
+	 * @param idQuery
+	 *            transaction_id、out_trade_no 二选一
+	 * @return 撤销结果
+	 * @see {@link com.foxinmy.weixin4j.mp.api.PayApi#reverse(InputStream, IdQuery)}
+	 * @throws WeixinException
+	 * @throws IOException
+	 */
+	public ApiResult reverse(IdQuery idQuery) throws WeixinException,
+			IOException {
+		File ca = new File(ConfigUtil.getValue("ca_file"));
+		return reverse(new FileInputStream(ca), idQuery);
+	}
+
+	/**
 	 * native支付URL转短链接
 	 * 
 	 * @param url
@@ -385,7 +427,7 @@ public class PayApi extends BaseApi {
 	 * @throws WeixinException
 	 */
 	public String getShorturl(String url) throws WeixinException {
-		Map<String, String> map = baseMap2V3(null);
+		Map<String, String> map = baseMapV3(null);
 		map.put("long_url", url);
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
@@ -402,8 +444,7 @@ public class PayApi extends BaseApi {
 	}
 
 	/**
-	 * 关闭订单<br/>
-	 * 当订单支付失败,调用关单接口后用新订单号重新发起支付,如果关单失败,返回已完
+	 * 关闭订单</br> 当订单支付失败,调用关单接口后用新订单号重新发起支付,如果关单失败,返回已完
 	 * 成支付请按正常支付处理。如果出现银行掉单,调用关单成功后,微信后台会主动发起退款。
 	 * 
 	 * @param outTradeNo
@@ -413,7 +454,7 @@ public class PayApi extends BaseApi {
 	 * @throws WeixinException
 	 */
 	public XmlResult closeOrder(String outTradeNo) throws WeixinException {
-		Map<String, String> map = baseMap2V3(new IdQuery(outTradeNo,
+		Map<String, String> map = baseMapV3(new IdQuery(outTradeNo,
 				IdType.TRADENO));
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
@@ -477,7 +518,7 @@ public class PayApi extends BaseApi {
 			response = request.get(downloadbill_uri, map);
 			charset = Charset.forName("GBK");
 		} else if (version == 3) {
-			Map<String, String> map = baseMap2V3(null);
+			Map<String, String> map = baseMapV3(null);
 			map.put("bill_date", _billDate);
 			map.put("bill_type", billType.name());
 			String sign = PayUtil
@@ -508,8 +549,7 @@ public class PayApi extends BaseApi {
 	}
 
 	/**
-	 * 退款查询<br/>
-	 * 退款有一定延时,用零钱支付的退款20分钟内到账,银行卡支付的退款 3 个工作日后重新查询退款状态
+	 * 退款查询</br> 退款有一定延时,用零钱支付的退款20分钟内到账,银行卡支付的退款 3 个工作日后重新查询退款状态
 	 * 
 	 * @param idQuery
 	 *            单号 refund_id、out_refund_no、 out_trade_no 、 transaction_id
@@ -535,7 +575,7 @@ public class PayApi extends BaseApi {
 			map.put("sign", sign.toLowerCase());
 			response = request.get(refundquery_uri, map);
 		} else if (version == 3) {
-			Map<String, String> map = baseMap2V3(idQuery);
+			Map<String, String> map = baseMapV3(idQuery);
 			String sign = PayUtil
 					.paysignMd5(map, weixinAccount.getPaySignKey());
 			map.put("sign", sign);
@@ -550,7 +590,7 @@ public class PayApi extends BaseApi {
 	 * 
 	 * @return
 	 */
-	private Map<String, String> baseMap2V3(IdQuery idQuery) {
+	private Map<String, String> baseMapV3(IdQuery idQuery) {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("appid", weixinAccount.getAppId());
 		map.put("mch_id", weixinAccount.getMchId());

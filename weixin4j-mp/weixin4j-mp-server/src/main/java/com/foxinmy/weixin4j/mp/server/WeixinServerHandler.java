@@ -19,6 +19,14 @@ import com.foxinmy.weixin4j.mp.type.EncryptType;
 import com.foxinmy.weixin4j.mp.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 
+/**
+ * 微信被动消息处理类
+ * @className WeixinServerHandler
+ * @author jy
+ * @date 2014年11月16日
+ * @since JDK 1.7
+ * @see
+ */
 public class WeixinServerHandler extends
 		SimpleChannelInboundHandler<HttpWeixinMessage> {
 
@@ -83,6 +91,7 @@ public class WeixinServerHandler extends
 			HttpResponse httpResponse = HttpUtil
 					.createWeixinMessageResponse("");
 			ctx.write(httpResponse);
+			return;
 		}
 		if (httpMessage.getEncryptType() == EncryptType.RAW) {
 			HttpResponse httpResponse = HttpUtil

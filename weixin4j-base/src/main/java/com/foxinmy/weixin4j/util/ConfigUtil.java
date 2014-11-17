@@ -17,10 +17,10 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  * @see
  */
 public class ConfigUtil {
-	private static ResourceBundle weixin;
+	private final static ResourceBundle weixinBundle;
 	static {
-		weixin = ResourceBundle.getBundle("weixin");
-		Set<String> keySet = weixin.keySet();
+		weixinBundle = ResourceBundle.getBundle("weixin");
+		Set<String> keySet = weixinBundle.keySet();
 		for (String key : keySet) {
 			if (!key.endsWith("_path")) {
 				continue;
@@ -30,7 +30,7 @@ public class ConfigUtil {
 	}
 
 	public static String getValue(String key) {
-		return weixin.getString(key);
+		return weixinBundle.getString(key);
 	}
 
 	public static WeixinAccount getWeixinAccount() {

@@ -27,6 +27,7 @@ public class ApiResult extends XmlResult {
 	private String sign;// 签名 非空
 	@XStreamAlias("device_info")
 	private String deviceInfo;// 微信支付分配的终端设备号 可能为空
+	private String recall;// 是否需要继续调用接口 Y- 需要,N-不需要
 
 	public ApiResult() {
 
@@ -84,13 +85,18 @@ public class ApiResult extends XmlResult {
 		this.deviceInfo = deviceInfo;
 	}
 
+	public String getRecall() {
+		return recall;
+	}
+
+	public void setRecall(String recall) {
+		this.recall = recall;
+	}
+
 	@Override
 	public String toString() {
 		return "ApiResult [appId=" + appId + ", mchId=" + mchId + ", subMchId="
 				+ subMchId + ", nonceStr=" + nonceStr + ", sign=" + sign
-				+ ", deviceInfo=" + deviceInfo + ", getReturnCode()="
-				+ getReturnCode() + ", getReturnMsg()=" + getReturnMsg()
-				+ ", getResultCode()=" + getResultCode() + ", getErrCode()="
-				+ getErrCode() + ", getErrCodeDes()=" + getErrCodeDes() + "]";
+				+ ", deviceInfo=" + deviceInfo + ", recall=" + recall + "]";
 	}
 }

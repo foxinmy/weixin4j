@@ -72,10 +72,14 @@ weixin4j-mp
 
   + **weixin4j-mp-api**: 新增获取`微信服务器IP地址接口`
   
-  + **weixin4j-mp-server**: 解决`server工程`打包不能运行问题(`ClassUtil`无法获取jar包里面的类)
+  + **weixin4j-mp-server**: 解决`server工程`打包后不能运行问题(`ClassUtil`无法获取jar包里面的类)
   
   + **weixin4j-mp-server**: 新增被动消息的`加密`以及回复消息的`解密`
   
 * 2014-11-16
 
   + **weixin4j-mp-api**: 新增`多客服`接口
+  
+* 2014-11-17
+
+  + **weixin4j-mp-api**: 新增`冲正`和`被扫支付`接口

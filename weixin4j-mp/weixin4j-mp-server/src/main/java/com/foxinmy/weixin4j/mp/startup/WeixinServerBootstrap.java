@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.mp.server.WeixinServerInitializer;
 /**
  * 微信服务netty启动程序
  * 
- * @className WeixinBootstrap
+ * @className WeixinServerBootstrap
  * @author jy
  * @date 2014年10月12日
  * @since JDK 1.7

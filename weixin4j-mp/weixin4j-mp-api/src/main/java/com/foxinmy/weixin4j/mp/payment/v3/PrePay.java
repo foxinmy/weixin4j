@@ -25,7 +25,6 @@ public class PrePay extends ApiResult {
 	@XStreamAlias("code_url")
 	private String codeUrl;// trade_type 为 NATIVE 是有 返回,此参数可直接生成二 维码展示出来进行扫码支付
 							// 可能为空
-
 	public PrePay() {
 
 	}

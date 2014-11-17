@@ -1,24 +1,18 @@
 package com.foxinmy.weixin4j.mp.payment;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.PayException;
+import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.http.HttpRequest;
+import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.payment.v2.JsPayRequestV2;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayResponseV2;
@@ -43,8 +37,8 @@ import com.foxinmy.weixin4j.xml.XStream;
  * @see
  */
 public class PayUtil {
-
 	private static final String UNIFIEDORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+	private static final String MICROPAYURL = "https://api.mch.weixin.qq.com/pay/micropay";
 	private static final String NATIVEURLV2 = "weixin://wxpay/bizpayurl?sign=%s&appid=%s&productid=%s&timestamp=%s&noncestr=%s";
 	private static final String NATIVEURLV3 = "weixin://wxpay/bizpayurl?sign=%s&appid=%s&mch_id=%s&product_id=%s&time_stamp=%s&nonce_str=%s";
 
@@ -203,28 +197,17 @@ public class PayUtil {
 	}
 
 	public static PrePay createPrePay(PayPackageV3 payPackage) {
+		PrePay prePay = null;
 		String payJsRequestXml = XStream.to(payPackage).replaceAll("__", "_");
-		HttpClient client = null;
+		HttpRequest request = new HttpRequest();
 		try {
-			client = new DefaultHttpClient();
-			HttpPost post = new HttpPost(UNIFIEDORDER);
-			post.setEntity(new StringEntity(payJsRequestXml,
-					StandardCharsets.UTF_8));
-			HttpResponse response = client.execute(post);
-			StatusLine statusLine = response.getStatusLine();
-			if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
-				return new PrePay("-1", "网络异常[" + statusLine.getStatusCode()
-						+ "," + statusLine.getReasonPhrase() + "]！");
-			}
-			String returnXml = EntityUtils.toString(response.getEntity(),
-					StandardCharsets.UTF_8);
-			return XStream.get(returnXml, PrePay.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			client.getConnectionManager().shutdown();
+			Response response = request.post(UNIFIEDORDER, payJsRequestXml);
+			prePay = response.getAsObject(new TypeReference<PrePay>() {
+			});
+		} catch (WeixinException e) {
+			prePay = new PrePay(e.getErrorCode(), e.getErrorMsg());
 		}
-		return new PrePay("-1", "request fail");
+		return prePay;
 	}
 
 	/**
@@ -336,40 +319,55 @@ public class PayUtil {
 	}
 
 	/**
-	 * 测试js支付请求
+	 * 提交被扫支付
 	 * 
-	 * @return
+	 * @param authCode
+	 *            扫码支付授权码 ,设备读取用 户微信中的条码或者二维码 信息
+	 * @param body
+	 *            商品描述
+	 * @param attach
+	 *            附加数据
+	 * @param orderNo
+	 *            商户内部唯一订单号
+	 * @param orderFee
+	 *            商品总额 单位元
+	 * @param ip
+	 *            订单生成的机器 IP
+	 * @param weixinAccount
+	 *            商户信息
+	 * @return 返回数据
+	 * @see {@link com.foxinmy.weixin4j.mp.payment.PayUtil#createMicroPay(MicroPayPackage, WeixinAccount)}
+	 * @throws WeixinException
 	 */
-	private static void createTestPayJsRequestJson() {
-		// V2.xAPI支付
-		PayPackageV2 payPackage = new PayPackageV2("pay_test", "1220403701",
-				"D123456", 0.01, "http://182.92.74.85:8082/pay/notify",
-				"192.168.1.1");
-		WeixinAccount weixinAccount = new WeixinAccount("wx0d1d598c0c03c999",
-				"2270e6c67cf4ff48fe2c6d7cc5a42157",
-				"GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ", "1221966601",
-				"6b506ef5fefba3142653a9affd2648d8");
-		System.out.println(PayUtil.createPayJsRequestJsonV2(payPackage,
-				weixinAccount));
-		// V3.xJSAPI支付
-		try {
-			weixinAccount = new WeixinAccount("wx0d1d598c0c03c999",
-					"2270e6c67cf4ff48fe2c6d7cc5a42157",
-					"6b506ef5fefba3142653a9affd2648d8", "10020674",
-					"oyFLst1bqtuTcxK-ojF8hOGtLQao");
-			System.out.println(PayUtil.createPayJsRequestJsonV3(
-					"oyFLst1bqtuTcxK-ojF8hOGtLQao", "测试", "T001", 1d,
-					"192.0.0.1", "http://182.92.74.85:8082/pay/notify",
-					weixinAccount));
-		} catch (PayException e) {
-			e.printStackTrace();
-		}
-		// V2.xNative支付
-		System.out.println(PayUtil.createNativePayRequestV2(weixinAccount,
-				payPackage));
+	public static com.foxinmy.weixin4j.mp.payment.v3.Order createMicroPay(
+			String authCode, String body, String attach, String orderNo,
+			double orderFee, String ip, WeixinAccount weixinAccount)
+			throws WeixinException {
+		MicroPayPackage payPackage = new MicroPayPackage(weixinAccount, body,
+				attach, orderNo, orderFee, ip, authCode);
+		return createMicroPay(payPackage, weixinAccount);
 	}
 
-	public static void main(String[] args) {
-		createTestPayJsRequestJson();
+	/**
+	 * 提交被扫支付
+	 * 
+	 * @param payPackage
+	 *            订单信息
+	 * @param weixinAccount
+	 *            商户信息
+	 * @return 返回数据
+	 * @throws WeixinException
+	 */
+	public static com.foxinmy.weixin4j.mp.payment.v3.Order createMicroPay(
+			MicroPayPackage payPackage, WeixinAccount weixinAccount)
+			throws WeixinException {
+		String sign = paysignMd5(payPackage, weixinAccount.getPaySignKey());
+		payPackage.setSign(sign);
+		String para = XStream.to(payPackage).replaceAll("__", "_");
+		HttpRequest request = new HttpRequest();
+		Response response = request.post(MICROPAYURL, para);
+		return response
+				.getAsObject(new TypeReference<com.foxinmy.weixin4j.mp.payment.v3.Order>() {
+				});
 	}
 }

@@ -36,6 +36,7 @@ import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.msg.model.Article;
 import com.foxinmy.weixin4j.mp.msg.model.BaseMsg;
 import com.foxinmy.weixin4j.mp.msg.notify.BaseNotify;
+import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.Refund;
 import com.foxinmy.weixin4j.mp.payment.RefundResult;
 import com.foxinmy.weixin4j.mp.payment.v2.Order;
@@ -979,5 +980,40 @@ public class WeixinProxy {
 	 */
 	public List<String> getcallbackip() throws WeixinException {
 		return helperApi.getcallbackip();
+	}
+
+	/**
+	 * 冲正订单(需要证书)</br> 当支付返回失败,或收银系统超时需要取消交易,可以调用该接口</br> 接口逻辑:支
+	 * 付失败的关单,支付成功的撤销支付</br> <font color="red">7天以内的单可撤销,其他正常支付的单
+	 * 如需实现相同功能请调用退款接口</font></br> <font
+	 * color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font></br>
+	 * 
+	 * @param ca
+	 *            证书文件
+	 * @param idQuery
+	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
+	 *            transaction_id> out_trade_no
+	 * @return 撤销结果
+	 * @see com.foxinmy.weixin4j.mp.api.PayApi
+	 * @throws WeixinException
+	 */
+	public ApiResult reverse(InputStream ca, IdQuery idQuery)
+			throws WeixinException {
+		return payApi.reverse(ca, idQuery);
+	}
+
+	/**
+	 * 冲正撤销:默认采用properties中配置的ca文件
+	 * 
+	 * @param idQuery
+	 *            transaction_id、out_trade_no 二选一
+	 * @return 撤销结果
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#reverse(InputStream, IdQuery)}
+	 * @throws WeixinException
+	 * @throws IOException
+	 */
+	public ApiResult reverse(IdQuery idQuery) throws WeixinException,
+			IOException {
+		return payApi.reverse(idQuery);
 	}
 }

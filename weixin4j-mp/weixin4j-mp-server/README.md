@@ -53,6 +53,6 @@ weixin4j-mp-server
 
 * 2014-11-15
 
-  +  解决`server工程`打包不能运行问题(`ClassUtil`无法获取jar包里面的类)
+  +  解决`server工程`打包后不能运行问题(`ClassUtil`无法获取jar包里面的类)
   
   + 新增被动消息的`加密`以及回复消息的`解密`

@@ -51,16 +51,14 @@ public class PayPackageV3 extends PayPackage {
 		this(weixinAccount.getAppId(), weixinAccount.getMchId(), weixinAccount
 				.getDeviceInfo(), RandomUtil.generateString(16), body, attach,
 				out_trade_no, total_fee, spbill_create_ip, null, null, null,
-				notify_url, tradeType, openId, null, weixinAccount
-						.getPaySignKey());
+				notify_url, tradeType, openId, null);
 	}
 
 	public PayPackageV3(String appid, String mch_id, String device_info,
 			String nonce_str, String body, String attach, String out_trade_no,
 			double total_fee, String spbill_create_ip, Date time_start,
 			Date time_expire, String goods_tag, String notify_url,
-			TradeType tradeType, String openid, String product_id,
-			String paySignKey) {
+			TradeType tradeType, String openid, String product_id) {
 		super(body, attach, out_trade_no, total_fee, spbill_create_ip,
 				time_start, time_expire, goods_tag, notify_url);
 		this.appid = appid;
