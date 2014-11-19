@@ -11,4 +11,12 @@ public final class Consts {
 	public static final String AES = "AES";
 	public static final String PROTOCOL_FILE = "file";
 	public static final String PROTOCOL_JAR = "jar";
+
+	public static final String MP_ASSESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
+	public static final String QY_ASSESS_TOKEN_URL = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s";
+
+	public static final String UNIFIEDORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+	public static final String MICROPAYURL = "https://api.mch.weixin.qq.com/pay/micropay";
+	public static final String NATIVEURLV2 = "weixin://wxpay/bizpayurl?sign=%s&appid=%s&productid=%s&timestamp=%s&noncestr=%s";
+	public static final String NATIVEURLV3 = "weixin://wxpay/bizpayurl?sign=%s&appid=%s&mch_id=%s&product_id=%s&time_stamp=%s&nonce_str=%s";
 }

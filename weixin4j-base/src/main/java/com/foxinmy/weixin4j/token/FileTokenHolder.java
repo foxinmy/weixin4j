@@ -13,6 +13,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.xml.XStream;
 
@@ -24,21 +25,18 @@ import com.foxinmy.weixin4j.xml.XStream;
  * @date 2014年9月27日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token">获取token说明</a>
+ *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token">微信公众平台获取token说明</a>
+ * @see <a href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%BB%E5%8A%A8%E8%B0%83%E7%94%A8">微信企业号获取token说明</a>     
  * @see com.foxinmy.weixin4j.model.Token
  */
 public class FileTokenHolder extends AbstractTokenHolder {
 
-	public FileTokenHolder() {
-		super();
+	public FileTokenHolder(AccountType accountType) {
+		super(accountType);
 	}
 
 	public FileTokenHolder(WeixinAccount weixinAccount) {
 		super(weixinAccount);
-	}
-
-	public FileTokenHolder(String appid, String appsecret) {
-		this(new WeixinAccount(appid, appsecret));
 	}
 
 	/**
@@ -55,14 +53,13 @@ public class FileTokenHolder extends AbstractTokenHolder {
 	 */
 	@Override
 	public Token getToken() throws WeixinException {
-		String appid = getAccount().getAppId();
-		String appsecret = getAccount().getAppSecret();
-		if (StringUtils.isBlank(appid) || StringUtils.isBlank(appsecret)) {
+		String id = weixinAccount.getId();
+		if (StringUtils.isBlank(id) || StringUtils.isBlank(weixinAccount.getSecret())) {
 			throw new IllegalArgumentException(
-					"appid or appsecret not be null!");
+					"id or secret not be null!");
 		}
 		File token_file = new File(String.format("%s/token_%s.xml",
-				ConfigUtil.getValue("token_path"), appid));
+				ConfigUtil.getValue("token_path"), id));
 		Token token = null;
 		Calendar ca = Calendar.getInstance();
 		long now_time = ca.getTimeInMillis();
@@ -78,8 +75,7 @@ public class FileTokenHolder extends AbstractTokenHolder {
 			} else {
 				token_file.createNewFile();
 			}
-			String api_token_uri = String.format(tokenUrl, appid, appsecret);
-			Response response = request.get(api_token_uri);
+			Response response = request.get(weixinAccount.getTokenUrl());
 			token = response.getAsObject(new TypeReference<Token>() {
 			});
 			token.setTime(now_time);

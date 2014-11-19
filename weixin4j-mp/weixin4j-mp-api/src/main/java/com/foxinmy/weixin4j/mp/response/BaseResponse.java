@@ -1,16 +1,11 @@
 package com.foxinmy.weixin4j.mp.response;
 
-import java.io.Writer;
-
 import com.foxinmy.weixin4j.model.BaseMsg;
 import com.foxinmy.weixin4j.mp.type.ResponseType;
 import com.foxinmy.weixin4j.msg.BaseMessage;
 import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.xml.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
-import com.thoughtworks.xstream.io.json.JsonWriter;
 
 /**
  * 响应消息基类
@@ -28,26 +23,15 @@ public class BaseResponse extends BaseMsg {
 
 	private static final long serialVersionUID = 7761192742840031607L;
 	protected final static XStream xmlStream = XStream.get();
-	private final static XStream jsonStream = new XStream(
-			new JsonHierarchicalStreamDriver() {
-				public HierarchicalStreamWriter createWriter(Writer writer) {
-					return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
-				}
-			});
-
-	@XStreamAlias("MsgType")
-	private ResponseType msgType; // 消息类型
-
 	static {
 		Class<?>[] classes = ClassUtil.getClasses(
 				BaseResponse.class.getPackage()).toArray(new Class[0]);
 
+		xmlStream.autodetectAnnotations(true);
 		xmlStream.processAnnotations(classes);
-
-		jsonStream.setMode(XStream.NO_REFERENCES);
-		jsonStream.autodetectAnnotations(true);
-		jsonStream.processAnnotations(classes);
 	}
+	@XStreamAlias("MsgType")
+	private ResponseType msgType; // 消息类型
 
 	public BaseResponse(ResponseType msgType) {
 		this.msgType = msgType;
@@ -59,7 +43,7 @@ public class BaseResponse extends BaseMsg {
 
 	public BaseResponse(ResponseType msgType, String toUserName,
 			String fromUserName) {
-		super(toUserName,fromUserName);
+		super(toUserName, fromUserName);
 		this.msgType = msgType;
 
 	}
@@ -78,17 +62,6 @@ public class BaseResponse extends BaseMsg {
 	 * @return xml字符串
 	 */
 	public String toXml() {
-		Class<? extends BaseResponse> targetClass = msgType.getMessageClass();
-		xmlStream.alias("xml", targetClass);
 		return xmlStream.toXML(this);
-	}
-
-	/**
-	 * 消息对象转换为微信服务器接受的json格式字符串
-	 * 
-	 * @return json字符串
-	 */
-	public String toJson() {
-		return jsonStream.toXML(this);
 	}
 }

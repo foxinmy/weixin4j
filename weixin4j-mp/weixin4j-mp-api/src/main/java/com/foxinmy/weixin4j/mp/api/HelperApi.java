@@ -8,7 +8,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -65,10 +65,10 @@ public class HelperApi extends BaseApi {
 	 * @throws WeixinException
 	 */
 	public SemResult semantic(SemQuery semQuery) throws WeixinException {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
+		WeixinMpAccount weixinAccount = (WeixinMpAccount) tokenHolder.getAccount();
 		String semantic_uri = getRequestUri("semantic_uri");
 		Token token = tokenHolder.getToken();
-		semQuery.appid(weixinAccount.getAppId());
+		semQuery.appid(weixinAccount.getId());
 		Response response = request.post(
 				String.format(semantic_uri, token.getAccessToken()),
 				semQuery.toJson());

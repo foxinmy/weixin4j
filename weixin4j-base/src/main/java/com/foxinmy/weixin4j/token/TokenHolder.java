@@ -18,6 +18,5 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  */
 public interface TokenHolder {
 	public WeixinAccount getAccount();
-
 	public Token getToken() throws WeixinException;
 }

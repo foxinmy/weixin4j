@@ -41,7 +41,7 @@ import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.http.SSLHttpRequest;
 import com.foxinmy.weixin4j.http.XmlResult;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.Refund;
@@ -70,11 +70,11 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  */
 public class PayApi extends BaseApi {
 	private final TokenHolder tokenHolder;
-	private final WeixinAccount weixinAccount;
+	private final WeixinMpAccount weixinAccount;
 
 	public PayApi(TokenHolder tokenHolder) {
 		this.tokenHolder = tokenHolder;
-		this.weixinAccount = tokenHolder.getAccount();
+		this.weixinAccount = (WeixinMpAccount) tokenHolder.getAccount();
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class PayApi extends BaseApi {
 		Token token = tokenHolder.getToken();
 
 		Map<String, String> param = new HashMap<String, String>();
-		param.put("appid", weixinAccount.getAppId());
+		param.put("appid", weixinAccount.getId());
 		param.put("appkey", weixinAccount.getPaySignKey());
 		param.put("openid", openId);
 		param.put("transid", transid);
@@ -142,14 +142,14 @@ public class PayApi extends BaseApi {
 
 		String timestamp = DateUtil.timestamp2string();
 		JSONObject obj = new JSONObject();
-		obj.put("appid", weixinAccount.getAppId());
+		obj.put("appid", weixinAccount.getId());
 		obj.put("appkey", weixinAccount.getPaySignKey());
 		obj.put("package", sb.toString());
 		obj.put("timestamp", timestamp);
 		String signature = PayUtil.paysignSha(obj, null);
 
 		obj.clear();
-		obj.put("appid", weixinAccount.getAppId());
+		obj.put("appid", weixinAccount.getId());
 		obj.put("package", sb.toString());
 		obj.put("timestamp", timestamp);
 		obj.put("app_signature", signature);
@@ -494,7 +494,7 @@ public class PayApi extends BaseApi {
 		String _billDate = DateUtil.fortmat2yyyyMMdd(billDate);
 		String bill_path = ConfigUtil.getValue("bill_path");
 		String fileName = String.format("%s_%s_%s.xls", _billDate, billType
-				.name().toLowerCase(), weixinAccount.getAppId());
+				.name().toLowerCase(), weixinAccount.getId());
 		File file = new File(String.format("%s/%s", bill_path, fileName));
 		if (file.exists()) {
 			return file;
@@ -592,7 +592,7 @@ public class PayApi extends BaseApi {
 	 */
 	private Map<String, String> baseMapV3(IdQuery idQuery) {
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("appid", weixinAccount.getAppId());
+		map.put("appid", weixinAccount.getId());
 		map.put("mch_id", weixinAccount.getMchId());
 		map.put("nonce_str", RandomUtil.generateString(16));
 		if (StringUtils.isNotBlank(weixinAccount.getDeviceInfo())) {

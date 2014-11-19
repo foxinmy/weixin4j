@@ -13,7 +13,7 @@ import org.apache.http.Consts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.model.HttpWeixinMessage;
 import com.foxinmy.weixin4j.mp.type.EncryptType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
@@ -37,7 +37,7 @@ public class WeixinMessageDecoder extends
 	@Override
 	protected void decode(ChannelHandlerContext ctx, FullHttpRequest req,
 			List<Object> out) throws Exception {
-		WeixinAccount account = ConfigUtil.getWeixinAccount();
+		WeixinMpAccount mpAccount = ConfigUtil.getWeixinMpAccount();
 		String xmlContent = req.content().toString(Consts.UTF_8);
 		HttpWeixinMessage message = new HttpWeixinMessage();
 		if (StringUtils.isNotBlank(xmlContent)) {
@@ -72,10 +72,10 @@ public class WeixinMessageDecoder extends
 
 		message.setXmlContent(xmlContent);
 		if (message.getEncryptType() == EncryptType.AES) {
-			message.setXmlContent(MessageUtil.aesDecrypt(account.getAppId(),
-					account.getEncodingAesKey(), message.getEncryptContent()));
+			message.setXmlContent(MessageUtil.aesDecrypt(mpAccount.getId(),
+					mpAccount.getEncodingAesKey(), message.getEncryptContent()));
 		}
-		message.setToken(account.getToken());
+		message.setToken(mpAccount.getToken());
 		out.add(message);
 	}
 }

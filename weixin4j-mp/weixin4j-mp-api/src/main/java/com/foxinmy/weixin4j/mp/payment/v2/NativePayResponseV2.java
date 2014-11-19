@@ -1,6 +1,6 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -21,7 +21,7 @@ public class NativePayResponseV2 extends JsPayRequestV2 {
 	@XStreamAlias("RetErrMsg")
 	private String retMsg;
 
-	public NativePayResponseV2(WeixinAccount weixinAccount,
+	public NativePayResponseV2(WeixinMpAccount weixinAccount,
 			PayPackageV2 payPackage) {
 		super(weixinAccount, payPackage);
 		this.retCode = "0";

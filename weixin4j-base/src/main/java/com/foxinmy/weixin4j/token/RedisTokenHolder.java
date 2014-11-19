@@ -11,6 +11,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.type.AccountType;
 
 /**
  * 基于redis保存的Token获取类
@@ -20,7 +21,10 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  * @date 2014年9月27日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token">获取token说明</a>
+ *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token">微信公众平台获取token说明</a>
+ * @see <a href=
+ *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%BB%E5%8A%A8%E8%B0%83%E7%94%A8"
+ *      >微信企业号获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
 public class RedisTokenHolder extends AbstractTokenHolder {
@@ -37,47 +41,39 @@ public class RedisTokenHolder extends AbstractTokenHolder {
 		this.jedisPool = new JedisPool(poolConfig, host, port);
 	}
 
-	public RedisTokenHolder() {
-		this("localhost", 6379);
-	}
-
-	public RedisTokenHolder(String host, int port) {
-		super();
+	public RedisTokenHolder(String host, int port, AccountType accountType) {
+		super(accountType);
 		createPool(host, port);
 	}
 
+	public RedisTokenHolder(AccountType accountType) {
+		this("localhost", 6379, accountType);
+	}
+
 	public RedisTokenHolder(WeixinAccount weixinAccount) {
-		this(weixinAccount, "localhost", 6379);
+		this("localhost", 6379, weixinAccount);
 	}
 
-	public RedisTokenHolder(String appId, String appSecret, String host,
-			int port) {
-		this(new WeixinAccount(appId, appSecret), host, port);
-	}
-
-	public RedisTokenHolder(WeixinAccount weixinAccount, String host, int port) {
+	public RedisTokenHolder(String host, int port, WeixinAccount weixinAccount) {
 		super(weixinAccount);
 		createPool(host, port);
 	}
 
 	@Override
 	public Token getToken() throws WeixinException {
-		String appid = getAccount().getAppId();
-		String appsecret = getAccount().getAppSecret();
-		if (StringUtils.isBlank(appid) || StringUtils.isBlank(appsecret)) {
-			throw new IllegalArgumentException(
-					"appid or appsecret not be null!");
+		String id = weixinAccount.getId();
+		if (StringUtils.isBlank(id)
+				|| StringUtils.isBlank(weixinAccount.getSecret())) {
+			throw new IllegalArgumentException("id or secret not be null!");
 		}
 		Token token = null;
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
-			String key = String.format("token:%s", appid);
+			String key = String.format("token:%s", id);
 			String accessToken = jedis.get(key);
 			if (StringUtils.isBlank(accessToken)) {
-				String api_token_uri = String
-						.format(tokenUrl, appid, appsecret);
-				token = request.get(api_token_uri).getAsObject(
+				token = request.get(weixinAccount.getTokenUrl()).getAsObject(
 						new TypeReference<Token>() {
 						});
 				jedis.setex(key, token.getExpiresIn() - 3,

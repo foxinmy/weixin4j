@@ -26,3 +26,7 @@ weixin4j-base
 * 2014-11-15
 
   + 新增`aes加密解密`函数
+  
+* 2014-11-19
+
+  + 新增`WeixinQyAccount`企业号账号信息类

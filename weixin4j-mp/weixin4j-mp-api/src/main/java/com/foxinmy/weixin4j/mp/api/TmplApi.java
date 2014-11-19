@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.mp.api;
 
+import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
@@ -39,9 +40,9 @@ public class TmplApi extends BaseApi {
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String template_send_uri = getRequestUri("template_send_uri");
+		String para = JSON.toJSONString(tplMessage);
 		Response response = request.post(
-				String.format(template_send_uri, token.getAccessToken()),
-				tplMessage.toJson());
+				String.format(template_send_uri, token.getAccessToken()), para);
 
 		return response.getAsJsonResult();
 	}

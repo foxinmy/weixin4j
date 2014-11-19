@@ -1,15 +1,8 @@
 package com.foxinmy.weixin4j.msg;
 
-import java.io.Writer;
-
 import com.foxinmy.weixin4j.model.BaseMsg;
 import com.foxinmy.weixin4j.type.MessageType;
-import com.foxinmy.weixin4j.util.ClassUtil;
-import com.foxinmy.weixin4j.xml.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
-import com.thoughtworks.xstream.io.json.JsonWriter;
 
 /**
  * 普通消息基类
@@ -26,31 +19,11 @@ import com.thoughtworks.xstream.io.json.JsonWriter;
 public class BaseMessage extends BaseMsg {
 
 	private static final long serialVersionUID = 7761192742840031607L;
-	private final static XStream xmlStream = XStream.get();
-	private final static XStream jsonStream = new XStream(
-			new JsonHierarchicalStreamDriver() {
-				public HierarchicalStreamWriter createWriter(Writer writer) {
-					return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
-				}
-			});
 
 	@XStreamAlias("MsgType")
 	private MessageType msgType; // 消息类型
 	@XStreamAlias("MsgId")
 	private long msgId; // 消息ID
-
-	static {
-		Class<?>[] classes = ClassUtil.getClasses(
-				TextMessage.class.getPackage()).toArray(new Class[0]);
-
-		xmlStream.processAnnotations(classes);
-		xmlStream.omitField(BaseMessage.class, "msgId");
-
-		jsonStream.setMode(XStream.NO_REFERENCES);
-		jsonStream.autodetectAnnotations(true);
-		jsonStream.processAnnotations(classes);
-		jsonStream.omitField(BaseMessage.class, "msgId");
-	}
 
 	public BaseMessage(MessageType msgType) {
 		this.msgType = msgType;
@@ -78,26 +51,5 @@ public class BaseMessage extends BaseMsg {
 			return ((BaseMessage) obj).getMsgId() == msgId;
 		}
 		return false;
-	}
-
-	/**
-	 * 消息对象转换为微信服务器接受的xml格式消息
-	 * 
-	 * @return xml字符串
-	 */
-	public String toXml() {
-		Class<? extends BaseMessage> targetClass = getMsgType()
-				.getMessageClass();
-		xmlStream.alias("xml", targetClass);
-		return xmlStream.toXML(this);
-	}
-
-	/**
-	 * 消息对象转换为微信服务器接受的json格式字符串
-	 * 
-	 * @return json字符串
-	 */
-	public String toJson() {
-		return jsonStream.toXML(this);
 	}
 }

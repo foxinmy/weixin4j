@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>weixin4j-mp-server</artifactId>
 	<name>weixin4j-mp-server</name>
-	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-mp/weixin4j-server</url>
+	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-mp/weixin4j-mp-server</url>
 	<description>微信公众号服务</description>
 	<build>
 		<finalName>weixin-mp-server</finalName>

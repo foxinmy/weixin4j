@@ -12,7 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.http.XmlResult;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayNotifyV2;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayResponseV2;
 import com.foxinmy.weixin4j.mp.payment.v2.PayFeedback;
@@ -46,7 +46,7 @@ public class PayAction {
 	public JSONObject jsPay() {
 		JSONObject obj = new JSONObject();
 		PayPackage payPackage = null;
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		// V3 支付
 		payPackage = new PayPackageV3(weixinAccount, "用户openid", "商品描述",
 				"系统内部订单号", 1d, "IP地址", TradeType.JSAPI);
@@ -111,7 +111,7 @@ public class PayAction {
 		log.info("jspay_notify_orderinfo,{}", objMap);
 		JsPayNotify payNotify = XStream.get(inputStream, JsPayNotify.class);
 		log.info("jspay_notify_userinfo,{}", payNotify);
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		// 验证财付通签名
 		String sign = objMap.get("sign");
 		objMap.remove("sign");
@@ -153,7 +153,7 @@ public class PayAction {
 		log.info("jaapi_notify_order_info:", order);
 		String sign = order.getSign();
 		order.setSign(null);
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		String valid_sign = PayUtil.paysignMd5(order,
 				weixinAccount.getPaySignKey());
 		log.info("微信签名----->sign={},vaild_sign={}", sign, valid_sign);
@@ -187,7 +187,7 @@ public class PayAction {
 		NativePayNotifyV2 payNotify = XStream.get(inputStream,
 				NativePayNotifyV2.class);
 		log.info("native_pay_notify,{}", payNotify);
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		String sign = payNotify.getPaySign();
 		payNotify.setPaySign(null);
 		payNotify.setSignType(null);
@@ -227,7 +227,7 @@ public class PayAction {
 				NativePayNotifyV3.class);
 		String sign = payNotify.getSign();
 		payNotify.setSign(null);
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		String valid_sign = PayUtil.paysignMd5(payNotify,
 				weixinAccount.getPaySignKey());
 		log.info("微信签名----->sign={},vaild_sign={}", sign, valid_sign);
@@ -272,7 +272,7 @@ public class PayAction {
 	public String warning(InputStream inputStream) {
 		PayWarn payWarn = XStream.get(inputStream, PayWarn.class);
 		log.info("pay_warning,{}", payWarn);
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		String sign = payWarn.getPaySign();
 		payWarn.setPaySign(null);
 		payWarn.setSignType(null);
@@ -293,7 +293,7 @@ public class PayAction {
 	public String feedback(InputStream inputStream) {
 		PayFeedback feedback = XStream.get(inputStream, PayFeedback.class);
 		log.info("pay_feedback_info:{}", feedback);
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		// 验证微信签名
 		Map<String, String> obj = new HashMap<String, String>();
 		obj.put("openid", feedback.getOpenId());

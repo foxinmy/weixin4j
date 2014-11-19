@@ -1,12 +1,8 @@
 package com.foxinmy.weixin4j.mp.response;
 
-import java.beans.Transient;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * 模板消息
@@ -114,11 +110,5 @@ public class TemplateMessage implements Serializable {
 		return "TemplateMessage [touser=" + touser + ", template_id="
 				+ template_id + ", url=" + url + ", topcolor=" + topcolor
 				+ ", data=" + data + "]";
-	}
-
-	@Transient
-	@JSONField(serialize = false)
-	public String toJson() {
-		return JSON.toJSONString(this);
 	}
 }

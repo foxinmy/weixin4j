@@ -81,6 +81,18 @@ weixin4j
 * 2014-11-17
 
   + **weixin4j-mp**: 新增`冲正`和`被扫支付`接口
+  
+* 2014-11-19
+
+  + **weixin4j-base**: 新增`WeixinQyAccount`企业号账号信息类
+  
+  + **weixin4j-qy**: 得到`weixin4j-qy`和`weixin4j-qy-server`工程
+  
+  + **weixin4j-qy**: 新增`部门管理`接口
+  
+  + **weixin4j-qy**: 新增`用户管理`接口
+  
+  + **weixin4j-qy**: 新增`标签管理`接口
 
 接下来
 ------

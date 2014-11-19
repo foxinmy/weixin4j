@@ -46,7 +46,7 @@ weixin.properties说明
 
 示例(properties中换行用右斜杆\\)
 
-> account={"appId":"appId","appSecret":"appSecret",
+> account={"id":"appId","secret":"appSecret",
 > "token":"开放者的token 非必须","openId":"公众号的openid 非必须",
 > "encodingAesKey":"公众号设置了加密方式且为「安全模式」需要填入",
 > "mchId":"V3.x版本下的微信商户号",
@@ -69,7 +69,6 @@ weixin.properties说明
 3.针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenHolder`(继承`AbstractTokenHolder`并重写`getToken`方法),默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用`RedisTokenHolder`.
 
     WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenHolder());
-    // weixinProxy = new WeixinProxy(new RedisTokenHolder(appid,appsecret));
     // weixinProxy = new WeixinProxy(new RedisTokenHolder(weixinAccount));
     
 4.`mvn package`.

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.io.Writer;
 
 import com.foxinmy.weixin4j.mp.type.ResponseType;
+import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.xml.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
@@ -22,6 +23,21 @@ public class BaseNotify implements Serializable {
 
 	private static final long serialVersionUID = 7190233634431087729L;
 
+	private final static XStream jsonStream = new XStream(
+			new JsonHierarchicalStreamDriver() {
+				public HierarchicalStreamWriter createWriter(Writer writer) {
+					return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
+				}
+			});
+	static {
+		Class<?>[] classes = ClassUtil
+				.getClasses(BaseNotify.class.getPackage())
+				.toArray(new Class[0]);
+
+		jsonStream.setMode(XStream.NO_REFERENCES);
+		jsonStream.autodetectAnnotations(true);
+		jsonStream.processAnnotations(classes);
+	}
 	private String touser;
 	private ResponseType msgtype;
 
@@ -56,15 +72,7 @@ public class BaseNotify implements Serializable {
 	 * @return {"touser": "to","msgtype": "text","text": {"content": "123"}}
 	 */
 	public String toJson() {
-		XStream xstream = new XStream(new JsonHierarchicalStreamDriver() {
-			public HierarchicalStreamWriter createWriter(Writer writer) {
-				return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
-			}
-		});
-		xstream.setMode(XStream.NO_REFERENCES);
-		xstream.autodetectAnnotations(true);
-		xstream.processAnnotations(this.getClass());
-		return xstream.toXML(this);
+		return jsonStream.toXML(this);
 	}
 
 	@Override

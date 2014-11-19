@@ -11,7 +11,7 @@
 		<desc>system error</desc>
 		<text>系统繁忙</text>
 	</error>
-	<!-- 公众平台API错误 -->
+	<!-- 公众平台&企业号API错误 -->
 	<error>
 		<code>40001</code>
 		<desc>invalid credential</desc>
@@ -31,6 +31,14 @@
 		<code>40004</code>
 		<desc>invalid media type</desc>
 		<text>不合法的媒体文件类型</text>
+	</error>
+	<error>
+		<code>40005</code>
+		<text>不合法的文件类型</text>
+	</error>
+	<error>
+		<code>40006</code>
+		<text>不合法的文件大小</text>
 	</error>
 	<error>
 		<code>40007</code>
@@ -103,6 +111,14 @@
 		<text>不合法的url长度</text>
 	</error>
 	<error>
+		<code>40021</code>
+		<text>不合法的菜单版本号</text>
+	</error>
+	<error>
+		<code>40022</code>
+		<text>不合法的子菜单级数</text>
+	</error>
+	<error>
 		<code>40023</code>
 		<desc>invalid sub button size</desc>
 		<text>不合法的子菜单按钮个数</text>
@@ -128,6 +144,10 @@
 		<text>不合法的子菜单按钮url长度</text>
 	</error>
 	<error>
+		<code>40028</code>
+		<text>不合法的自定义菜单使用员工</text>
+	</error>
+	<error>
 		<code>40029</code>
 		<desc>invalid code</desc>
 		<text>不合法或已过期的code</text>
@@ -136,6 +156,22 @@
 		<code>40030</code>
 		<desc>invalid refresh_token</desc>
 		<text>不合法的refresh_token</text>
+	</error>
+	<error>
+		<code>40031</code>
+		<text>不合法的UserID列表</text>
+	</error>
+	<error>
+		<code>40032</code>
+		<text>不合法的UserID列表长度</text>
+	</error>
+	<error>
+		<code>40033</code>
+		<text>不合法的请求字符，不能包含\uxxxx格式的字符</text>
+	</error>
+	<error>
+		<code>40035</code>
+		<text>不合法的参数</text>
 	</error>
 	<error>
 		<code>40036</code>
@@ -148,9 +184,25 @@
 		<text>不合法的template_id</text>
 	</error>
 	<error>
+		<code>40038</code>
+		<text>不合法的请求格式</text>
+	</error>
+	<error>
 		<code>40039</code>
 		<desc>invalid url size</desc>
 		<text>不合法的url长度</text>
+	</error>
+	<error>
+		<code>40040</code>
+		<text>不合法的插件token</text>
+	</error>
+	<error>
+		<code>40041</code>
+		<text>不合法的插件id</text>
+	</error>
+	<error>
+		<code>40042</code>
+		<text>不合法的插件会话</text>
 	</error>
 	<error>
 		<code>40048</code>
@@ -168,9 +220,81 @@
 		<text>不合法的菜单按钮url域名</text>
 	</error>
 	<error>
+		<code>40056</code>
+		<text>不合法的agentid</text>
+	</error>
+	<error>
+		<code>40057</code>
+		<text>不合法的callbackurl</text>
+	</error>
+	<error>
+		<code>40058</code>
+		<text>不合法的红包参数</text>
+	</error>
+	<error>
+		<code>40059</code>
+		<text>不合法的上报地理位置标志位</text>
+	</error>
+	<error>
+		<code>40060</code>
+		<text>设置上报地理位置标志位时没有设置callbackurl</text>
+	</error>
+	<error>
+		<code>40061</code>
+		<text>设置应用头像失败</text>
+	</error>
+	<error>
+		<code>40062</code>
+		<text>不合法的应用模式</text>
+	</error>
+	<error>
+		<code>40063</code>
+		<text>红包参数为空</text>
+	</error>
+	<error>
+		<code>40064</code>
+		<text>管理组名字已存在</text>
+	</error>
+	<error>
+		<code>40065</code>
+		<text>不合法的管理组名字长度</text>
+	</error>
+	<error>
 		<code>40066</code>
-		<desc>invalid url</desc>
-		<text>不合法的url</text>
+		<desc>invalid url/department</desc>
+		<text>不合法的url/不合法的部门列表</text>
+	</error>
+	<error>
+		<code>40067</code>
+		<text>标题长度不合法</text>
+	</error>
+	<error>
+		<code>40068</code>
+		<text>不合法的标签ID</text>
+	</error>
+	<error>
+		<code>40069</code>
+		<text>不合法的标签ID列表</text>
+	</error>
+	<error>
+		<code>40070</code>
+		<text>列表中所有标签（用户）ID都不合法</text>
+	</error>
+	<error>
+		<code>40071</code>
+		<text>不合法的标签名字，标签名字已经存在</text>
+	</error>
+	<error>
+		<code>40072</code>
+		<text>不合法的标签名字长度</text>
+	</error>
+	<error>
+		<code>40073</code>
+		<text>不合法的openid</text>
+	</error>
+	<error>
+		<code>40074</code>
+		<text>news消息不支持指定为高保密消息</text>
 	</error>
 	<error>
 		<code>41001</code>
@@ -223,6 +347,38 @@
 		<text>缺失url参数</text>
 	</error>
 	<error>
+		<code>41011</code>
+		<text>缺少agentid</text>
+	</error>
+	<error>
+		<code>41012</code>
+		<text>缺少应用头像mediaid</text>
+	</error>
+	<error>
+		<code>41013</code>
+		<text>缺少应用名字</text>
+	</error>
+	<error>
+		<code>41014</code>
+		<text>缺少应用描述</text>
+	</error>
+	<error>
+		<code>41015</code>
+		<text>缺少Content</text>
+	</error>
+	<error>
+		<code>41016</code>
+		<text>缺少标题</text>
+	</error>
+	<error>
+		<code>41017</code>
+		<text>缺少标签ID</text>
+	</error>
+	<error>
+		<code>41018</code>
+		<text>缺少标签名字</text>
+	</error>
+	<error>
 		<code>42001</code>
 		<desc>access_token expired</desc>
 		<text>access_token超时</text>
@@ -236,6 +392,10 @@
 		<code>42003</code>
 		<desc>code expired</desc>
 		<text>code超时</text>
+	</error>
+	<error>
+		<code>42004</code>
+		<text>插件token超时</text>
 	</error>
 	<error>
 		<code>43001</code>
@@ -256,6 +416,34 @@
 		<code>43004</code>
 		<desc>require subscribe</desc>
 		<text>需要订阅关系</text>
+	</error>
+	<error>
+		<code>43005</code>
+		<text>需要好友关系</text>
+	</error>
+	<error>
+		<code>43006</code>
+		<text>需要订阅</text>
+	</error>
+	<error>
+		<code>43007</code>
+		<text>需要授权</text>
+	</error>
+	<error>
+		<code>43008</code>
+		<text>需要支付授权</text>
+	</error>
+	<error>
+		<code>43009</code>
+		<text>需要员工已关注</text>
+	</error>
+	<error>
+		<code>43010</code>
+		<text>需要处于回调模式</text>
+	</error>
+	<error>
+		<code>43011</code>
+		<text>需要企业授权</text>
 	</error>
 	<error>
 		<code>44001</code>
@@ -343,6 +531,10 @@
 		<text>模板大小超过限制</text>
 	</error>
 	<error>
+		<code>45015</code>
+		<text>回复时间超过限制</text>
+	</error>
+	<error>
 		<code>45016</code>
 		<desc>can't modify sys group</desc>
 		<text>不能修改默认组</text>
@@ -358,9 +550,174 @@
 		<text>组数量过多</text>
 	</error>
 	<error>
+		<code>45024</code>
+		<text>账号数量超过上限</text>
+	</error>
+	<error>
+		<code>46001</code>
+		<text>不存在媒体数据</text>
+	</error>
+	<error>
+		<code>46002</code>
+		<text>不存在的菜单版本</text>
+	</error>
+	<error>
+		<code>46003</code>
+		<text>不存在的菜单数据</text>
+	</error>
+	<error>
+		<code>46004</code>
+		<text>不存在的员工</text>
+	</error>
+	<error>
+		<code>47001</code>
+		<text>解析JSON/XML内容错误</text>
+	</error>
+	<error>
+		<code>48002</code>
+		<text>Api禁用</text>
+	</error>
+	<error>
 		<code>50001</code>
-		<desc>api unauthorized</desc>
+		<desc>api/redirect_uri unauthorized</desc>
 		<text>接口未授权</text>
+	</error>
+	<error>
+		<code>50002</code>
+		<text>员工不在权限范围</text>
+	</error>
+	<error>
+		<code>50003</code>
+		<text>应用已停用</text>
+	</error>
+	<error>
+		<code>50004</code>
+		<text>员工状态不正确（未关注状态）</text>
+	</error>
+	<error>
+		<code>50005</code>
+		<text>企业已禁用</text>
+	</error>
+	<!-- 企业号API错误 -->
+	<error>
+		<code>60001</code>
+		<text>部门长度不符合限制</text>
+	</error>
+	<error>
+		<code>60002</code>
+		<text>部门层级深度超过限制</text>
+	</error>
+	<error>
+		<code>60003</code>
+		<text>部门不存在</text>
+	</error>
+	<error>
+		<code>60004</code>
+		<text>父亲部门不存在</text>
+	</error>
+	<error>
+		<code>60005</code>
+		<text>不允许删除有成员的部门</text>
+	</error>
+	<error>
+		<code>60006</code>
+		<text>不允许删除有子部门的部门</text>
+	</error>
+	<error>
+		<code>60007</code>
+		<text>不允许删除根部门</text>
+	</error>
+	<error>
+		<code>60008</code>
+		<text>部门名称已存在</text>
+	</error>
+	<error>
+		<code>60009</code>
+		<text>部门名称含有非法字符</text>
+	</error>
+	<error>
+		<code>60010</code>
+		<text>部门存在循环关系</text>
+	</error>
+	<error>
+		<code>60011</code>
+		<text>管理员权限不足(user/department/agent)无权限</text>
+	</error>
+	<error>
+		<code>60012</code>
+		<text>不允许删除默认应用</text>
+	</error>
+	<error>
+		<code>60013</code>
+		<text>不允许关闭应用</text>
+	</error>
+	<error>
+		<code>60014</code>
+		<text>不允许开启应用</text>
+	</error>
+	<error>
+		<code>60015</code>
+		<text>不允许修改默认应用可见范围</text>
+	</error>
+	<error>
+		<code>60016</code>
+		<text>不允许删除存在成员的标签</text>
+	</error>
+	<error>
+		<code>60017</code>
+		<text>不允许设置企业</text>
+	</error>
+	<error>
+		<code>60102</code>
+		<text>UserID已存在</text>
+	</error>
+	<error>
+		<code>60103</code>
+		<text>手机号码不合法</text>
+	</error>
+	<error>
+		<code>60104</code>
+		<text>手机号码已存在</text>
+	</error>
+	<error>
+		<code>60105</code>
+		<text>邮箱不合法</text>
+	</error>
+	<error>
+		<code>60106</code>
+		<text>邮箱已存在</text>
+	</error>
+	<error>
+		<code>60107</code>
+		<text>微信号不合法</text>
+	</error>
+	<error>
+		<code>60108</code>
+		<text>微信号已存在</text>
+	</error>
+	<error>
+		<code>60109</code>
+		<text>QQ号已存在</text>
+	</error>
+	<error>
+		<code>60110</code>
+		<text>部门个数超出限制</text>
+	</error>
+	<error>
+		<code>60111</code>
+		<text>UserID不存在</text>
+	</error>
+	<error>
+		<code>60112</code>
+		<text>成员姓名不合法</text>
+	</error>
+	<error>
+		<code>60113</code>
+		<text>身份认证信息（微信号/手机/邮箱）不能同时为空</text>
+	</error>
+	<error>
+		<code>60114</code>
+		<text>性别不合法</text>
 	</error>
 	<!-- 语义理解API错误 -->
 	<error>

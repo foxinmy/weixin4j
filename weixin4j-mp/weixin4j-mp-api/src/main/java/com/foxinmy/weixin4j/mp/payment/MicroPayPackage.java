@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -33,10 +33,10 @@ public class MicroPayPackage extends PayPackage {
 
 	}
 
-	public MicroPayPackage(WeixinAccount weixinAccount, String body,
+	public MicroPayPackage(WeixinMpAccount weixinAccount, String body,
 			String attach, String out_trade_no, double total_fee,
 			String spbill_create_ip, String auth_code) {
-		this(weixinAccount.getAppId(), weixinAccount.getMchId(), weixinAccount
+		this(weixinAccount.getId(), weixinAccount.getMchId(), weixinAccount
 				.getDeviceInfo(), RandomUtil.generateString(16), body, attach,
 				out_trade_no, total_fee, spbill_create_ip, null, null, null,
 				auth_code);

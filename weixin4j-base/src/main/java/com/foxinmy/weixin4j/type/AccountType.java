@@ -1,0 +1,14 @@
+package com.foxinmy.weixin4j.type;
+
+/**
+ * 账号类型
+ * 
+ * @className AccountType
+ * @author jy
+ * @date 2014年11月18日
+ * @since JDK 1.7
+ * @see
+ */
+public enum AccountType {
+	MP, QY
+}

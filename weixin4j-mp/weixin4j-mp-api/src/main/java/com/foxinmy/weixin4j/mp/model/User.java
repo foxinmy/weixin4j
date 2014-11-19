@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.foxinmy.weixin4j.model.Gender;
 import com.foxinmy.weixin4j.mp.type.FaceSize;
-import com.foxinmy.weixin4j.mp.type.Gender;
 import com.foxinmy.weixin4j.mp.type.Lang;
 
 /**

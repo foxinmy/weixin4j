@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayPackage;
 import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.foxinmy.weixin4j.util.RandomUtil;
@@ -38,17 +38,17 @@ public class PayPackageV3 extends PayPackage {
 
 	}
 
-	public PayPackageV3(WeixinAccount weixinAccount, String openId,
+	public PayPackageV3(WeixinMpAccount weixinAccount, String openId,
 			String body, String out_trade_no, double total_fee,
 			String spbill_create_ip, TradeType tradeType) {
 		this(weixinAccount, openId, body, null, out_trade_no, total_fee,
 				spbill_create_ip, null, tradeType);
 	}
 
-	public PayPackageV3(WeixinAccount weixinAccount, String openId,
+	public PayPackageV3(WeixinMpAccount weixinAccount, String openId,
 			String body, String attach, String out_trade_no, double total_fee,
 			String spbill_create_ip, String notify_url, TradeType tradeType) {
-		this(weixinAccount.getAppId(), weixinAccount.getMchId(), weixinAccount
+		this(weixinAccount.getId(), weixinAccount.getMchId(), weixinAccount
 				.getDeviceInfo(), RandomUtil.generateString(16), body, attach,
 				out_trade_no, total_fee, spbill_create_ip, null, null, null,
 				notify_url, tradeType, openId, null);

@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.XmlResult;
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
 import com.foxinmy.weixin4j.mp.api.HelperApi;
@@ -45,10 +45,11 @@ import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.type.MediaType;
 
 /**
- * 微信服务实现
+ * 微信公众平台接口实现
  * 
  * @className WeixinProxy
  * @author jy.hu
@@ -74,18 +75,18 @@ public class WeixinProxy {
 	 * 默认采用文件存放Token信息
 	 */
 	public WeixinProxy() {
-		this(new FileTokenHolder());
+		this(new FileTokenHolder(AccountType.MP));
 	}
 
 	/**
-	 * appid,appsecret<br/>
+	 * appid,appsecret<br>
 	 * <font color="red">将无法调用支付相关接口</font>
 	 * 
 	 * @param appid
 	 * @param appsecret
 	 */
 	public WeixinProxy(String appid, String appsecret) {
-		this(new FileTokenHolder(appid, appsecret));
+		this(new WeixinMpAccount(appid, appsecret));
 	}
 
 	/**
@@ -93,7 +94,7 @@ public class WeixinProxy {
 	 * 
 	 * @param weixinAccount
 	 */
-	public WeixinProxy(WeixinAccount weixinAccount) {
+	public WeixinProxy(WeixinMpAccount weixinAccount) {
 		this(new FileTokenHolder(weixinAccount));
 	}
 
@@ -793,7 +794,7 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.PayApi
 	 */
-	public Order orderQueryV2(WeixinAccount weixinAccount, String outTradeNo)
+	public Order orderQueryV2(WeixinMpAccount weixinAccount, String outTradeNo)
 			throws WeixinException {
 		return payApi.orderQueryV2(outTradeNo);
 	}

@@ -11,7 +11,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.response.BaseResponse;
 import com.foxinmy.weixin4j.mp.util.HttpUtil;
 import com.foxinmy.weixin4j.util.ConfigUtil;
@@ -45,13 +45,13 @@ public class WeixinMessageEncoder extends MessageToMessageEncoder<BaseResponse> 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, BaseResponse response,
 			List<Object> out) throws Exception {
-		WeixinAccount account = ConfigUtil.getWeixinAccount();
+		WeixinMpAccount mpAccount = ConfigUtil.getWeixinMpAccount();
 		String xmlContent = response.toXml();
 		String nonce = RandomUtil.generateString(32);
 		String timestamp = DateUtil.timestamp2string();
-		String encrtypt = MessageUtil.aesEncrypt(account.getAppId(),
-				account.getEncodingAesKey(), xmlContent);
-		String msgSignature = MessageUtil.signature(account.getToken(), nonce,
+		String encrtypt = MessageUtil.aesEncrypt(mpAccount.getId(),
+				mpAccount.getEncodingAesKey(), xmlContent);
+		String msgSignature = MessageUtil.signature(mpAccount.getToken(), nonce,
 				timestamp, encrtypt);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("Encrypt", encrtypt);

@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.type.AccountType;
 
 /**
  * token测试
@@ -22,7 +23,7 @@ public class TokenTest {
 
 	@Before
 	public void setUp() {
-		tokenHolder = new FileTokenHolder();
+		tokenHolder = new FileTokenHolder(AccountType.MP);
 	}
 
 	@Test

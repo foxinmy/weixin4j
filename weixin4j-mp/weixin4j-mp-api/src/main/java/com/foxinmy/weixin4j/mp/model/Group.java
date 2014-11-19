@@ -55,11 +55,10 @@ public class Group implements Serializable {
 	/**
 	 * 返回创建分组所需的json格式字符串
 	 * 
-	 * @return {"group": {"id": 107, "name": "test"}}
+	 * @return {"group": {"name": "test"}}
 	 */
 	public String toCreateJson() {
-		return String.format("{\"group\":{\"id\":%s,\"name\":\"%s\"}}", id,
-				name);
+		return String.format("{\"group\":{\"name\":\"%s\"}}", name);
 	}
 
 	/**

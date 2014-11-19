@@ -5,7 +5,7 @@ import java.beans.Transient;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayRequest;
 import com.foxinmy.weixin4j.util.MapUtil;
 
@@ -28,8 +28,8 @@ public class JsPayRequestV2 extends PayRequest {
 
 	private static final long serialVersionUID = -5972173459255255197L;
 
-	public JsPayRequestV2(WeixinAccount weixinAccount, PayPackageV2 payPackage) {
-		this.setAppId(weixinAccount.getAppId());
+	public JsPayRequestV2(WeixinMpAccount weixinAccount, PayPackageV2 payPackage) {
+		this.setAppId(weixinAccount.getId());
 		this.setPackageInfo(package2string(payPackage,
 				weixinAccount.getPartnerKey()));
 	}

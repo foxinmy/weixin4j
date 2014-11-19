@@ -48,7 +48,7 @@ public class UserApi extends BaseApi {
 		WeixinAccount weixinAccount = tokenHolder.getAccount();
 		String user_token_uri = getRequestUri("sns_user_token_uri");
 		Response response = request.get(String.format(user_token_uri,
-				weixinAccount.getAppId(), weixinAccount.getAppSecret(), code));
+				weixinAccount.getId(), weixinAccount.getSecret(), code));
 
 		return response.getAsObject(new TypeReference<OauthToken>() {
 		});
