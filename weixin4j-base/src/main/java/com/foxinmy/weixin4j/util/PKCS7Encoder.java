@@ -13,7 +13,7 @@ import java.util.Arrays;
 import org.apache.http.Consts;
 
 /**
- * 提供基于PKCS7算法的加解密接口<br/>
+ * 提供基于PKCS7算法的加解密接口</br>
  * 提供接收和推送给公众平台消息的加解密接口(UTF8编码的字符串).
  * <ol>
  * <li>第三方回复加密消息给公众平台</li>

@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.mp.payment.PayRequest;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
- * JS支付:get_brand_wcpay_request<br/>
+ * JS支付:get_brand_wcpay_request</br>
  * <p>
  * get_brand_wcpay_request:ok 支付成功<br>
  * get_brand_wcpay_request:cancel 支付过程中用户取消<br>

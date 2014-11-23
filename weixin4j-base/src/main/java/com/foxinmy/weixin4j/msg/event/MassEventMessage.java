@@ -58,7 +58,7 @@ public class MassEventMessage extends EventMessage {
 		sb.append("[MassEventMessage ,toUserName=").append(
 				super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType().name());
+		sb.append(" ,msgType=").append(super.getMsgType());
 		sb.append(" ,eventType=").append(super.getEventType().name());
 		sb.append(" ,status=").append(status);
 		sb.append(" ,totalCount=").append(totalCount);

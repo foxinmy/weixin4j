@@ -11,9 +11,6 @@
 	<artifactId>weixin4j-base</artifactId>
 	<name>weixin4j-base</name>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-base</url>
-	<build>
-		<finalName>weixin4j-base</finalName>
-	</build>
 	<dependencies>
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>

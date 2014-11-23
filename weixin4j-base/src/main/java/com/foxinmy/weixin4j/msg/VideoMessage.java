@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.msg;
 
+import com.foxinmy.weixin4j.model.BaseMsg;
 import com.foxinmy.weixin4j.type.MessageType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -13,12 +14,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#.E8.A7.86.E9.A2.91.E6.B6.88.E6.81.AF">视频消息</a>
  */
-public class VideoMessage extends BaseMessage {
+public class VideoMessage extends BaseMsg {
 
 	private static final long serialVersionUID = -1013075358679078381L;
 
 	public VideoMessage() {
-		super(MessageType.video);
+		super(MessageType.video.name());
 	}
 
 	@XStreamAlias("MediaId")
@@ -39,7 +40,7 @@ public class VideoMessage extends BaseMessage {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[VideoMessage ,toUserName=").append(super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType().name());
+		sb.append(" ,msgType=").append(super.getMsgType());
 		sb.append(" ,mediaId=").append(mediaId);
 		sb.append(" ,thumbMediaId=").append(thumbMediaId);
 		sb.append(" ,createTime=").append(super.getCreateTime());

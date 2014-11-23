@@ -1,8 +1,9 @@
 package com.foxinmy.weixin4j.mp.action;
 
 import com.foxinmy.weixin4j.mp.mapping.Action;
-import com.foxinmy.weixin4j.mp.response.TextResponse;
+import com.foxinmy.weixin4j.mp.message.ResponseMessage;
 import com.foxinmy.weixin4j.msg.TextMessage;
+import com.foxinmy.weixin4j.msg.model.Text;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
@@ -18,7 +19,7 @@ import com.foxinmy.weixin4j.type.MessageType;
 public class TextAction extends AbstractAction<TextMessage> {
 
 	@Override
-	public TextResponse execute(TextMessage inMessage) {
-		return new TextResponse("Hello World!", inMessage);
+	public ResponseMessage execute(TextMessage inMessage) {
+		return new ResponseMessage(new Text("Hello World!"), inMessage);
 	}
 }

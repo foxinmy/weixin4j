@@ -27,13 +27,15 @@ public class IOUtil {
 		return toByteArray(input, Charset.defaultCharset());
 	}
 
-	public static byte[] toByteArray(Reader input, Charset encoding) throws IOException {
+	public static byte[] toByteArray(Reader input, Charset encoding)
+			throws IOException {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		copy(input, output, encoding);
 		return output.toByteArray();
 	}
 
-	public static void copy(Reader input, OutputStream output, Charset encoding) throws IOException {
+	public static void copy(Reader input, OutputStream output, Charset encoding)
+			throws IOException {
 		OutputStreamWriter out = new OutputStreamWriter(output, encoding);
 		copyLarge(input, out, new char[DEFAULT_BUFFER_SIZE]);
 		out.flush();
@@ -45,7 +47,8 @@ public class IOUtil {
 		return output.toByteArray();
 	}
 
-	private static long copyLarge(InputStream input, OutputStream output, byte[] buffer) throws IOException {
+	private static long copyLarge(InputStream input, OutputStream output,
+			byte[] buffer) throws IOException {
 		long count = 0;
 		int n = 0;
 		while (EOF != (n = input.read(buffer))) {
@@ -55,7 +58,8 @@ public class IOUtil {
 		return count;
 	}
 
-	private static long copyLarge(Reader input, Writer output, char[] buffer) throws IOException {
+	private static long copyLarge(Reader input, Writer output, char[] buffer)
+			throws IOException {
 		long count = 0;
 		int n = 0;
 		while (EOF != (n = input.read(buffer))) {
@@ -63,5 +67,17 @@ public class IOUtil {
 			count += n;
 		}
 		return count;
+	}
+
+	public static String getExtension(String filename) {
+		int extensionPos = filename.lastIndexOf(".");
+		if (extensionPos < 0) {
+			return "";
+		}
+		int lastUnixPos = filename.lastIndexOf("/");
+		int lastWindowsPos = filename.lastIndexOf("\\");
+		int lastSeparator = Math.max(lastUnixPos, lastWindowsPos);
+		return lastSeparator > extensionPos ? "" : filename
+				.substring(extensionPos + 1);
 	}
 }

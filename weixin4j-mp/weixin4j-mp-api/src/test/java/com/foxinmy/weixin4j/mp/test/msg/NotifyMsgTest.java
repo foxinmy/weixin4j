@@ -11,14 +11,14 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
-import com.foxinmy.weixin4j.mp.msg.notify.ArticleNotify;
-import com.foxinmy.weixin4j.mp.msg.notify.BaseNotify;
-import com.foxinmy.weixin4j.mp.msg.notify.ImageNotify;
-import com.foxinmy.weixin4j.mp.msg.notify.MusicNotify;
-import com.foxinmy.weixin4j.mp.msg.notify.TextNotify;
-import com.foxinmy.weixin4j.mp.msg.notify.VideoNotify;
-import com.foxinmy.weixin4j.mp.msg.notify.VoiceNotify;
+import com.foxinmy.weixin4j.mp.message.NotifyMessage;
 import com.foxinmy.weixin4j.mp.test.TokenTest;
+import com.foxinmy.weixin4j.msg.model.Image;
+import com.foxinmy.weixin4j.msg.model.Music;
+import com.foxinmy.weixin4j.msg.model.News;
+import com.foxinmy.weixin4j.msg.model.Text;
+import com.foxinmy.weixin4j.msg.model.Video;
+import com.foxinmy.weixin4j.msg.model.Voice;
 import com.foxinmy.weixin4j.type.MediaType;
 
 /**
@@ -43,50 +43,48 @@ public class NotifyMsgTest extends TokenTest {
 
 	@Test
 	public void text() {
-		TextNotify notify = new TextNotify("123", "to");
+		NotifyMessage notify = new NotifyMessage("to", new Text("ttt"));
 		System.out.println(notify.toJson());
 	}
 
 	@Test
 	public void image() {
-		ImageNotify notify = new ImageNotify("to");
-		notify.pushMediaId("123");
+		NotifyMessage notify = new NotifyMessage("to", new Image("image"));
 		System.out.println(notify.toJson());
 	}
 
 	@Test
 	public void voice() {
-		VoiceNotify notify = new VoiceNotify("to");
-		notify.pushMediaId("123");
+		NotifyMessage notify = new NotifyMessage("to", new Voice("voice"));
 		System.out.println(notify.toJson());
 	}
 
 	@Test
 	public void video() {
-		VideoNotify notify = new VideoNotify("to");
-		notify.pushVideo("123", "m123");
+		NotifyMessage notify = new NotifyMessage("to", new Video("video"));
 		System.out.println(notify.toJson());
 	}
 
 	@Test
 	public void music() {
-		MusicNotify notify = new MusicNotify("to");
-		notify.pushMusic("url", "hqUrl", "mediaId");
+		NotifyMessage notify = new NotifyMessage("to", new Music("music"));
 		System.out.println(notify.toJson());
 	}
 
 	@Test
-	public void article() {
-		ArticleNotify notify = new ArticleNotify("to");
-		notify.pushArticle("title1", "desc1", "picUrl1", "url1");
-		notify.pushArticle("title2", "desc2", "picUrl2", "url2");
+	public void news() {
+		News news = new News();
+		NotifyMessage notify = new NotifyMessage("to", news);
+		news.pushArticle("title1", "desc1", "picUrl1", "url1");
+		news.pushArticle("title2", "desc2", "picUrl2", "url2");
 		System.out.println(notify.toJson());
 	}
 
 	@Test
 	public void send1() throws IOException, WeixinException {
-		BaseNotify notify = new TextNotify("this is a notify message!",
-				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
+		NotifyMessage notify = new NotifyMessage(
+				"owGBft_vbBbOaQOmpEUE4xDLeRSU", new Text(
+						"this is a notify message!"));
 		JsonResult result = notifyApi.sendNotify(notify);
 		Assert.assertEquals(0, result.getCode());
 	}
@@ -95,9 +93,8 @@ public class NotifyMsgTest extends TokenTest {
 	public void send2() throws WeixinException, IOException {
 		String mediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"),
 				MediaType.image);
-		ImageNotify imageNotify = new ImageNotify(
-				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
-		imageNotify.pushMediaId(mediaId);
+		NotifyMessage imageNotify = new NotifyMessage(
+				"owGBft_vbBbOaQOmpEUE4xDLeRSU", new Image(mediaId));
 		JsonResult result = notifyApi.sendNotify(imageNotify);
 		Assert.assertEquals(0, result.getCode());
 	}

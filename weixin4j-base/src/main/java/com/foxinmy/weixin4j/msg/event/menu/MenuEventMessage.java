@@ -35,7 +35,7 @@ public class MenuEventMessage extends EventMessage {
 		sb.append("[MenuEventMessage ,toUserName=").append(
 				super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType().name());
+		sb.append(" ,msgType=").append(super.getMsgType());
 		sb.append(" ,eventType=").append(super.getEventType().name());
 		sb.append(" ,eventKey=").append(eventKey);
 		sb.append(" ,createTime=").append(super.getCreateTime());

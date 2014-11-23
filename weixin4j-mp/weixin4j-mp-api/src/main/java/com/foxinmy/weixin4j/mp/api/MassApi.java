@@ -3,14 +3,20 @@ package com.foxinmy.weixin4j.mp.api;
 import java.io.File;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.mp.model.MpArticle;
+import com.foxinmy.weixin4j.msg.model.Base;
+import com.foxinmy.weixin4j.msg.model.Massable;
+import com.foxinmy.weixin4j.msg.model.MpArticle;
+import com.foxinmy.weixin4j.msg.model.MpNews;
+import com.foxinmy.weixin4j.msg.model.Video;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 群发相关API
@@ -21,7 +27,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * @since JDK 1.7
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3">群发接口</a>
- * @see com.foxinmy.weixin4j.mp.model.MpArticle
+ * @see com.foxinmy.weixin4j.msg.model.MpArticle
  */
 public class MassApi extends BaseApi {
 
@@ -32,8 +38,7 @@ public class MassApi extends BaseApi {
 	}
 
 	/**
-	 * 上传图文消息,一个图文消息支持1到10条图文<br/>
-	 * <font
+	 * 上传图文消息,一个图文消息支持1到10条图文</br> <font
 	 * color="red">具备微信支付权限的公众号，在使用高级群发接口上传、群发图文消息类型时，可使用&lta&gt标签加入外链</font>
 	 * 
 	 * @param articles
@@ -44,7 +49,7 @@ public class MassApi extends BaseApi {
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3">高级群发</a>
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3#.E4.B8.8A.E4.BC.A0.E5.9B.BE.E6.96.87.E6.B6.88.E6.81.AF.E7.B4.A0.E6.9D.90">上传图文消息</a>
-	 * @see com.foxinmy.weixin4j.mp.model.MpArticle
+	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
 	 */
 	public String uploadArticle(List<MpArticle> articles)
 			throws WeixinException {
@@ -62,29 +67,22 @@ public class MassApi extends BaseApi {
 	/**
 	 * 上传分组群发的视频素材
 	 * 
-	 * @param mediaId
-	 *            媒体文件中上传得到的Id
-	 * @param title
-	 *            标题 可为空
-	 * @param desc
-	 *            描述 可为空
-	 * @return 上传后的ID
+	 * @param video
+	 *            视频对象 其中mediaId媒体文件中上传得到的Id 不能为空
+	 * @return 上传后的ID 可用于群发视频消息
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3">高级群发</a>
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File, MediaType)}
+	 * @see com.foxinmy.weixin4j.msg.model.Video
+	 * @see com.foxinmy.weixin4j.msg.model.MpVideo
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 */
-	public String uploadVideo(String mediaId, String title, String desc)
-			throws WeixinException {
+	public String uploadVideo(Video video) throws WeixinException {
 		String video_upload_uri = getRequestUri("video_upload_uri");
 		Token token = tokenHolder.getToken();
-		JSONObject obj = new JSONObject();
-		obj.put("media_id", mediaId);
-		obj.put("title", title);
-		obj.put("description", desc);
 		Response response = request.post(
 				String.format(video_upload_uri, token.getAccessToken()),
-				obj.toJSONString());
+				JSON.toJSONString(video));
 
 		return response.getAsJson().getString("media_id");
 	}
@@ -96,151 +94,128 @@ public class MassApi extends BaseApi {
 	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
 	 * </p>
 	 * 
-	 * @param jsonPara
-	 *            json格式的参数
+	 * @param box
+	 *            消息项
 	 * @param groupId
 	 *            分组ID
-	 * @return 发送出去的消息ID
+	 * @return 群发后的消息ID
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91">分组群发</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
-	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroupByOpenId(String)}
+	 * @see com.foxinmy.weixin4j.msg.model.Text
+	 * @see com.foxinmy.weixin4j.msg.model.Image
+	 * @see com.foxinmy.weixin4j.msg.model.Voice
+	 * @see com.foxinmy.weixin4j.msg.model.MpVideo
+	 * @see com.foxinmy.weixin4j.msg.model.MpNews
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroups()}
 	 */
-	private String massByGroup(JSONObject jsonPara, String groupId)
-			throws WeixinException {
+	public String massByGroupId(Base box, int groupId) throws WeixinException {
+		if (box instanceof MpNews) {
+			MpNews _news = (MpNews) box;
+			List<MpArticle> _articles = _news.getArticles();
+			if (StringUtils.isBlank(_news.getMediaId()) && _articles != null
+					&& !_articles.isEmpty()) {
+				return massArticleByGroupId(_articles, groupId);
+			}
+		}
+		if (!(box instanceof Massable)) {
+			throw new WeixinException("-1", String.format(
+					"%s not implement Massable", box.getClass()));
+		}
+		String msgtype = box.getMediaType().name();
+		JSONObject obj = new JSONObject();
+		JSONObject item = new JSONObject();
+		item.put("group_id", groupId);
+		obj.put("filter", item);
+		obj.put(msgtype, JSON.toJSON(box));
+		obj.put("msgtype", msgtype);
 		String mass_group_uri = getRequestUri("mass_group_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(
 				String.format(mass_group_uri, token.getAccessToken()),
-				jsonPara.toJSONString());
+				obj.toJSONString());
 
 		return response.getAsJson().getString("msg_id");
 	}
 
 	/**
+	 * 分组ID群发图文消息
+	 * 
+	 * @param articles
+	 *            图文列表
+	 * @param openIds
+	 *            openId列表
+	 * @return 群发后的消息ID
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByGroupId(Base,int)}
+	 * @throws WeixinException
+	 */
+	public String massArticleByGroupId(List<MpArticle> articles, int groupId)
+			throws WeixinException {
+		String mediaId = uploadArticle(articles);
+		return massByGroupId(new MpNews(mediaId), groupId);
+	}
+
+	/**
 	 * openId群发
 	 * 
-	 * @param jsonPara
-	 *            json格式的参数
+	 * @param box
+	 *            消息项
 	 * @param openIds
-	 *            目标ID列表
-	 * @return 发送出去的消息ID
+	 *            openId列表
+	 * @return 群发后的消息ID
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91">openId群发</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
+	 * @see com.foxinmy.weixin4j.msg.model.Text
+	 * @see com.foxinmy.weixin4j.msg.model.Image
+	 * @see com.foxinmy.weixin4j.msg.model.Voice
+	 * @see com.foxinmy.weixin4j.msg.model.MpVideo
+	 * @see com.foxinmy.weixin4j.msg.model.MpNews
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
+	 * @see {@link com.foxinmy.weixin4j.mp.api.UserApi#getUser(String)}
 	 */
-	private String massByOpenIds(JSONObject jsonPara, String... openIds)
+	public String massByOpenIds(Base box, String... openIds)
 			throws WeixinException {
+		if (box instanceof MpNews) {
+			MpNews _news = (MpNews) box;
+			List<MpArticle> _articles = _news.getArticles();
+			if (StringUtils.isBlank(_news.getMediaId()) && _articles != null
+					&& !_articles.isEmpty()) {
+				return massArticleByOpenIds(_articles, openIds);
+			}
+		}
+		if (!(box instanceof Massable)) {
+			throw new WeixinException("-1", String.format(
+					"%s not implement Massable", box.getClass()));
+		}
+		String msgtype = box.getMediaType().name();
+		JSONObject obj = new JSONObject();
+		obj.put("touser", openIds);
+		obj.put(msgtype, JSON.toJSON(box));
+		obj.put("msgtype", msgtype);
 		String mass_openid_uri = getRequestUri("mass_openid_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(
 				String.format(mass_openid_uri, token.getAccessToken()),
-				jsonPara.toJSONString());
+				obj.toJSONString());
 
 		return response.getAsJson().getString("msg_id");
 	}
 
 	/**
-	 * 分组群发
-	 * 
-	 * @param mediaId
-	 *            媒体ID 如果为text 则表示content
-	 * @param mediaType
-	 *            媒体类型
-	 * @param groupId
-	 *            分组ID
-	 * @return
-	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.Group
-	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File, MediaType)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroupByOpenId(String)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroups()}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByGroup(JSONObject,String)}
-	 */
-	public String massByGroup(String mediaId, MediaType mediaType,
-			String groupId) throws WeixinException {
-		JSONObject jsonPara = new JSONObject();
-		jsonPara.put("filter", new JSONObject().put("group_id", groupId));
-		jsonPara.put(mediaType.name(), new JSONObject().put(
-				mediaType == MediaType.text ? "content" : "media_id", mediaId));
-		jsonPara.put("msgtype", mediaType.name());
-
-		return massByGroup(jsonPara, groupId);
-	}
-
-	/**
-	 * 分组群发图文消息
+	 * 根据openid群发图文消息
 	 * 
 	 * @param articles
-	 *            图文消息列表
-	 * @param groupId
-	 *            分组ID
-	 * @return 发送出去的消息ID
-	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.MpArticle
-	 * @see com.foxinmy.weixin4j.mp.model.Group
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File, MediaType)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#uploadNews(List)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByGroup(String,MediaType,String)}
-	 */
-	public String massArticleByGroup(List<MpArticle> articles, String groupId)
-			throws WeixinException {
-		String mediaId = uploadArticle(articles);
-
-		return massByGroup(mediaId, MediaType.mpnews, groupId);
-	}
-
-	/**
-	 * openId群发
-	 * 
-	 * @param mediaId
-	 *            媒体ID 如果为text 则表示content
-	 * @param mediaType
-	 *            媒体类型
+	 *            图文列表
 	 * @param openIds
 	 *            openId列表
-	 * @return
+	 * @return 群发后的消息ID
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByOpenIds(Base,String...)}
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File, MediaType)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByOpenIds(JSONObject,String...)}
-	 */
-	public String massByOpenIds(String mediaId, MediaType mediaType,
-			String... openIds) throws WeixinException {
-		JSONObject jsonPara = new JSONObject();
-		jsonPara.put("touser", openIds);
-		jsonPara.put(mediaType.name(), new JSONObject().put(
-				mediaType == MediaType.text ? "content" : "media_id", mediaId));
-		jsonPara.put("msgtype", mediaType.name());
-
-		return massByOpenIds(jsonPara, openIds);
-	}
-
-	/**
-	 * openId图文群发
-	 * 
-	 * @param articles
-	 *            图文消息列表
-	 * @param openIds
-	 *            目标ID列表
-	 * @return 发送出去的消息ID
-	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.MpArticle
-	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File, MediaType)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadNews(List)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByOpenIds(String,MediaType,String...)}
 	 */
 	public String massArticleByOpenIds(List<MpArticle> articles,
 			String... openIds) throws WeixinException {
 		String mediaId = uploadArticle(articles);
-
-		return massByOpenIds(mediaId, MediaType.mpnews, openIds);
+		return massByOpenIds(new MpNews(mediaId), openIds);
 	}
 
 	/**
@@ -254,8 +229,8 @@ public class MassApi extends BaseApi {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3#.E5.88.A0.E9.99.A4.E7.BE.A4.E5.8F.91">删除群发</a>
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByGroup(JSONObject, String)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByOpenIds(JSONObject, String...)
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByGroup(Base, int)}
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByOpenIds(Base, String...)
 	 */
 	public JsonResult deleteMassNews(String msgid) throws WeixinException {
 		JSONObject obj = new JSONObject();

@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.mp.action;
 
 import org.dom4j.DocumentException;
 
-import com.foxinmy.weixin4j.mp.response.BaseResponse;
+import com.foxinmy.weixin4j.mp.message.ResponseMessage;
 
 /**
  * 消息处理接口
@@ -16,5 +16,5 @@ import com.foxinmy.weixin4j.mp.response.BaseResponse;
  * @see com.foxinmy.weixin4j.mp.action.DebugAction
  */
 public interface WeixinAction {
-	public BaseResponse execute(String msg) throws DocumentException;
+	public ResponseMessage execute(String inMsg) throws DocumentException;
 }

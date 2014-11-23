@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
+import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.mp.api.MenuApi;
-import com.foxinmy.weixin4j.mp.model.Button;
 import com.foxinmy.weixin4j.type.ButtonType;
 
 /**

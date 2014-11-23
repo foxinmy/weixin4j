@@ -79,16 +79,16 @@ public class PayAction {
 
 	/**
 	 * JSAPI(V2)支付成功(前端)时的回调通知<br>
-	 * &ltxml&gt<br/>
-	 * &ltOpenId&gt&lt![CDATA[111222]]&gt&lt/OpenId&gt<br/>
-	 * &ltAppId&gt&lt![CDATA[wwwwb4f85f3a797777]]&gt&lt/AppId&gt<br/>
-	 * &ltIsSubscribe&gt1&lt/IsSubscribe&gt<br/>
-	 * &ltTimeStamp&gt1369743511&lt/TimeStamp&gt<br/>
-	 * &ltNonceStr&gt&lt![CDATA[jALldRTHAFd5Tgs5]]&gt&lt/NonceStr&gt<br/>
+	 * &ltxml&gt</br>
+	 * &ltOpenId&gt&lt![CDATA[111222]]&gt&lt/OpenId&gt</br>
+	 * &ltAppId&gt&lt![CDATA[wwwwb4f85f3a797777]]&gt&lt/AppId&gt</br>
+	 * &ltIsSubscribe&gt1&lt/IsSubscribe&gt</br>
+	 * &ltTimeStamp&gt1369743511&lt/TimeStamp&gt</br>
+	 * &ltNonceStr&gt&lt![CDATA[jALldRTHAFd5Tgs5]]&gt&lt/NonceStr&gt</br>
 	 * &ltAppSignature>&lt![CDATA[bafe07f060f22dcda0bfdb4b5ff756f973aecffa]]&gt
-	 * &lt/AppSignature&gt<br/>
-	 * &ltSignMethod>&lt![CDATA[sha1]]&gt&lt/SignMethod&gt<br/>
-	 * &lt/xml&gt<br/>
+	 * &lt/AppSignature&gt</br>
+	 * &ltSignMethod>&lt![CDATA[sha1]]&gt&lt/SignMethod&gt</br>
+	 * &lt/xml&gt</br>
 	 * 参与签名的字段为: appid、appkey、timestamp、noncestr、openid、issubscribe
 	 * 
 	 * @param 订单信息
@@ -165,17 +165,17 @@ public class PayAction {
 
 	/**
 	 * V2.x版本Native支付时POST数据<br>
-	 * &ltxml&gt<br/>
-	 * &ltOpenId&gt&lt![CDATA[111222]]&gt&lt/OpenId&gt<br/>
-	 * &ltAppId&gt&lt![CDATA[wwwwb4f85f3a797777]]&gt&lt/AppId&gt<br/>
-	 * &ltIsSubscribe&gt1&lt/IsSubscribe&gt<br/>
-	 * &ltProductId&gt[CDATA[000000]]&lt/ProductId&gt<br/>
-	 * &ltTimeStamp&gt1369743511&lt/TimeStamp&gt<br/>
-	 * &ltNonceStr&gt&lt![CDATA[jALldRTHAFd5Tgs5]]&gt&lt/NonceStr&gt<br/>
+	 * &ltxml&gt</br>
+	 * &ltOpenId&gt&lt![CDATA[111222]]&gt&lt/OpenId&gt</br>
+	 * &ltAppId&gt&lt![CDATA[wwwwb4f85f3a797777]]&gt&lt/AppId&gt</br>
+	 * &ltIsSubscribe&gt1&lt/IsSubscribe&gt</br>
+	 * &ltProductId&gt[CDATA[000000]]&lt/ProductId&gt</br>
+	 * &ltTimeStamp&gt1369743511&lt/TimeStamp&gt</br>
+	 * &ltNonceStr&gt&lt![CDATA[jALldRTHAFd5Tgs5]]&gt&lt/NonceStr&gt</br>
 	 * &ltAppSignature>&lt![CDATA[bafe07f060f22dcda0bfdb4b5ff756f973aecffa]]&gt
-	 * &lt/AppSignature&gt<br/>
-	 * &ltSignMethod>&lt![CDATA[sha1]]&gt&lt/SignMethod&gt<br/>
-	 * &lt/xml&gt<br/>
+	 * &lt/AppSignature&gt</br>
+	 * &ltSignMethod>&lt![CDATA[sha1]]&gt&lt/SignMethod&gt</br>
+	 * &lt/xml&gt</br>
 	 * 参与签名的字段为: appid、appkey、timestamp、noncestr、openid、issubscribe、productId
 	 * 
 	 * @param inputStream
@@ -208,16 +208,16 @@ public class PayAction {
 
 	/**
 	 * V3.x版本native回调<br>
-	 * &ltxml&gt<br/>
-	 * &ltopenid&gt&lt![CDATA[111222]]&gt&lt/openid&gt<br/>
-	 * &ltappid&gt&lt![CDATA[wwwwb4f85f3a797777]]&gt&lt/appid&gt<br/>
-	 * &ltmch_id&gt&lt![CDATA[1100022]]&gt&lt/mch_id&gt<br/>
-	 * &ltis_subscribe&gt1&lt/is_subscribe&gt<br/>
-	 * &ltproduct_id&gt[CDATA[000000]]&lt/product_id&gt<br/>
-	 * &ltnonce_str&gt&lt![CDATA[jALldRTHAFd5Tgs5]]&gt&lt/nonce_str&gt<br/>
+	 * &ltxml&gt</br>
+	 * &ltopenid&gt&lt![CDATA[111222]]&gt&lt/openid&gt</br>
+	 * &ltappid&gt&lt![CDATA[wwwwb4f85f3a797777]]&gt&lt/appid&gt</br>
+	 * &ltmch_id&gt&lt![CDATA[1100022]]&gt&lt/mch_id&gt</br>
+	 * &ltis_subscribe&gt1&lt/is_subscribe&gt</br>
+	 * &ltproduct_id&gt[CDATA[000000]]&lt/product_id&gt</br>
+	 * &ltnonce_str&gt&lt![CDATA[jALldRTHAFd5Tgs5]]&gt&lt/nonce_str&gt</br>
 	 * &ltsign>&lt![CDATA[bafe07f060f22dcda0bfdb4b5ff756f973aecffa]]&gt&lt/sign&
-	 * gt<br/>
-	 * &lt/xml&gt<br/>
+	 * gt</br>
+	 * &lt/xml&gt</br>
 	 * 
 	 * @return
 	 * @throws PayException
@@ -251,17 +251,17 @@ public class PayAction {
 	}
 
 	/**
-	 * 告警通知 需要成功返回 success <br/>
-	 * &ltxml&gt<br/>
-	 * &ltAppId&gt&lt![CDATA[wxf8b4f85f3a794e77]]&gt&lt/AppId&gt<br/>
-	 * &ltErrorType&gt1001&lt/ErrorType&gt<br/>
-	 * &ltDescription&gt&lt![CDATA[错误描述]]>&lt/Description&gt<br/>
-	 * &ltAlarmContent&gt&lt![CDATA[错误详情]]>&lt/AlarmContent&gt<br/>
-	 * &ltTimeStamp&gt1393860740&lt/TimeStamp&gt<br/>
+	 * 告警通知 需要成功返回 success </br>
+	 * &ltxml&gt</br>
+	 * &ltAppId&gt&lt![CDATA[wxf8b4f85f3a794e77]]&gt&lt/AppId&gt</br>
+	 * &ltErrorType&gt1001&lt/ErrorType&gt</br>
+	 * &ltDescription&gt&lt![CDATA[错误描述]]>&lt/Description&gt</br>
+	 * &ltAlarmContent&gt&lt![CDATA[错误详情]]>&lt/AlarmContent&gt</br>
+	 * &ltTimeStamp&gt1393860740&lt/TimeStamp&gt</br>
 	 * &ltAppSignature&gt&lt![CDATA[签名方式跟JsPayRequest中的paySign一样]]&gt&lt/
-	 * AppSignature&gt<br/>
-	 * &ltSignMethod&gt&lt![CDATA[sha1]]&gt&lt/SignMethod&gt<br/>
-	 * &lt/xml&gt<br/>
+	 * AppSignature&gt</br>
+	 * &ltSignMethod&gt&lt![CDATA[sha1]]&gt&lt/SignMethod&gt</br>
+	 * &lt/xml&gt</br>
 	 * 参与签名字段:alarmcontent、appid、appkey、description、errortype、timestamp
 	 * 
 	 * @param inputStream

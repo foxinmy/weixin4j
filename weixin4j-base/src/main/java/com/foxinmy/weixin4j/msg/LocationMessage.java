@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.msg;
 
+import com.foxinmy.weixin4j.model.BaseMsg;
 import com.foxinmy.weixin4j.type.MessageType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -13,12 +14,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#.E5.9C.B0.E7.90.86.E4.BD.8D.E7.BD.AE.E6.B6.88.E6.81.AF">地理位置消息</a>
  */
-public class LocationMessage extends BaseMessage {
+public class LocationMessage extends BaseMsg {
 
 	private static final long serialVersionUID = 2866021596599237334L;
 
 	public LocationMessage() {
-		super(MessageType.location);
+		super(MessageType.location.name());
 	}
 
 	@XStreamAlias("Location_X")
@@ -56,7 +57,7 @@ public class LocationMessage extends BaseMessage {
 		sb.append("[LocationMessage ,toUserName=")
 				.append(super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType().name());
+		sb.append(" ,msgType=").append(super.getMsgType());
 		sb.append(" ,location_X=").append(x);
 		sb.append(" ,location_Y=").append(y);
 		sb.append(" ,scale=").append(scale);

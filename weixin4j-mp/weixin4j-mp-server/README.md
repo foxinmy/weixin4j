@@ -27,21 +27,21 @@ weixin4j-mp-server
 示例(properties中换行用右斜杆\\)
 
 > account={"id":"appId","secret":"appSecret",
-> "token":"开放者的token 非必须","openId":"公众号的openid 非必须",
+> "token":"开放者的token 必须","openId":"公众号的openid 非必须",
 > "encodingAesKey":"公众号设置了加密方式且为「安全模式」时需要填入",
 > "mchId":"V3.x版本下的微信商户号",
 > "partnerId":"财付通的商户号","partnerKey":"财付通商户权限密钥Key",
 > "version":"针对微信支付的版本号(目前可能为2,3),如果不填则按照mchId非空与否来做判断",
-> "paySignKey":"微信支付中调用API的密钥"} <br/>
-> token_path=/tmp/weixin/token <br/>
-> qr_path=/tmp/weixin/qr <br/>
-> media_path=/tmp/weixin/media <br/>
-> bill_path=/tmp/weixin/bill <br/>
-> ca_file=/tmp/weixin/xxxxx.p12 | xxxxx.pfx <br/>
+> "paySignKey":"微信支付中调用API的密钥"} </br>
+> token_path=/tmp/weixin/token </br>
+> qr_path=/tmp/weixin/qr </br>
+> media_path=/tmp/weixin/media </br>
+> bill_path=/tmp/weixin/bill </br>
+> ca_file=/tmp/weixin/xxxxx.p12 | xxxxx.pfx </br>
 
 2.mvn package,得到一个zip的压缩包,解压到启动目录(见`src/main/startup.sh/APP_HOME`)
 
-3.启动netty服务(`com.foxinmy.weixin4j.mp.startup.WeixinServerBootstrap`)
+3.启动netty服务(`com.foxinmy.weixin4j.mp.startup.WeixinMpServerBootstrap`)
     
     sh startup.sh start
 	
@@ -56,3 +56,7 @@ weixin4j-mp-server
   +  解决`server工程`打包后不能运行问题(`ClassUtil`无法获取jar包里面的类)
   
   + 新增被动消息的`加密`以及回复消息的`解密`
+  
+* 2014-11-23
+
+  + `WeixinServerBootstrap`重命名为`WeixinMpServerBootstrap`

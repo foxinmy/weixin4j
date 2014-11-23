@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.mp.payment.PayRequest;
 import com.foxinmy.weixin4j.util.MapUtil;
 
 /**
- * 微信JS支付:get_brand_wcpay_request<br/>
+ * 微信JS支付:get_brand_wcpay_request</br>
  * <font color="red">所列参数均为非空字符串</font>
  * <p>
  * get_brand_wcpay_request:ok 支付成功<br>

@@ -13,8 +13,10 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
-import com.foxinmy.weixin4j.mp.model.MpArticle;
 import com.foxinmy.weixin4j.mp.test.TokenTest;
+import com.foxinmy.weixin4j.msg.model.Image;
+import com.foxinmy.weixin4j.msg.model.MpArticle;
+import com.foxinmy.weixin4j.msg.model.Video;
 import com.foxinmy.weixin4j.type.MediaType;
 
 /**
@@ -47,20 +49,20 @@ public class MassMsgTest extends TokenTest {
 
 	@Test
 	public void uploadVideo() throws WeixinException {
-		String massId = massApi.uploadVideo("mediaId", "title", "desc");
+		Video video = new Video("mediaId", "title", "desc");
+		String massId = massApi.uploadVideo(video);
 		Assert.assertTrue(massId != null);
 	}
 
 	@Test
 	public void massByGroup() throws WeixinException {
-		String massId = massApi.massByGroup("123", MediaType.image, "groupId");
+		String massId = massApi.massByGroupId(new Image("mediaId"), 0);
 		Assert.assertTrue(massId != null);
 	}
 
 	@Test
 	public void massByOpenIds() throws WeixinException {
-		String massId = massApi
-				.massByOpenIds("123", MediaType.image, "openIds");
+		String massId = massApi.massByOpenIds(new Image("mediaId"), "openIds");
 		Assert.assertTrue(massId != null);
 	}
 
@@ -70,7 +72,7 @@ public class MassMsgTest extends TokenTest {
 		String thumbMediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"),
 				MediaType.image);
 		articles.add(new MpArticle(thumbMediaId, "title", "content"));
-		String massId = massApi.massArticleByGroup(articles, "0");
+		String massId = massApi.massArticleByGroupId(articles, 0);
 		Assert.assertTrue(massId != null);
 	}
 

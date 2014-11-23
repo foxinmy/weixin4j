@@ -6,10 +6,10 @@ JAVA_HOME="/usr/local/java/"
 RUNNING_USER=root
  
 #Run home
-APP_HOME="/usr/local/weixin/weixin-mp-server"
+APP_HOME="/usr/local/weixin/weixin-qy-server"
  
 #main class
-APP_MAINCLASS=com.foxinmy.weixin4j.mp.startup.WeixinServerBootstrap
+APP_MAINCLASS=com.foxinmy.weixin4j.qy.startup.WeixinServerBootstrap
  
 #classpath
 CLASSPATH=$APP_HOME/classes

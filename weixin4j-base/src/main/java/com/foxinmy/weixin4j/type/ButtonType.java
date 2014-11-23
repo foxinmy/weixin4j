@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.type;
 
 /**
- * 自定义菜单类型 <br/>
+ * 自定义菜单类型 </br>
  * <font color="red">scancode_push 到 location_selec
  * 仅支持微信iPhone5.4.1以上版本，和Android5 .4以上版本的微信用户 旧版本微信用户点击后将没有回应
  * 开发者也不能正常接收到事件推送。</font>

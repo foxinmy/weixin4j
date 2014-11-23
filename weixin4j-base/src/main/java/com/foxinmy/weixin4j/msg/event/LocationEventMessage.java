@@ -46,7 +46,7 @@ public class LocationEventMessage extends EventMessage {
 		sb.append("[LocationEventMessage ,toUserName=").append(
 				super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType().name());
+		sb.append(" ,msgType=").append(super.getMsgType());
 		sb.append(" ,eventType=").append(super.getEventType().name());
 		sb.append(" ,longitude=").append(longitude);
 		sb.append(" ,latitude=").append(latitude);

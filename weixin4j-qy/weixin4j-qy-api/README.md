@@ -29,7 +29,7 @@ weixin.properties说明
 > account={"id":"corpid","secret":"corpsecret",
 > "token":"开放者的token 非必须",
 > "encodingAesKey":"AES加密密钥"}
-> token_path=/tmp/weixin/token <br/>
+> token_path=/tmp/weixin/token </br>
 
 2.实例化一个`WeixinProxy`对象,调用API
 

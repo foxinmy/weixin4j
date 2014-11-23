@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
-import com.foxinmy.weixin4j.mp.response.TemplateMessage;
+import com.foxinmy.weixin4j.mp.message.TemplateMessage;
 import com.foxinmy.weixin4j.mp.test.TokenTest;
 
 public class TemplateMsgTest extends TokenTest {

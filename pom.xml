@@ -36,6 +36,7 @@
 	<properties>
 		<weixin4j.base.version>0.0.1-SNAPSHOT</weixin4j.base.version>
 		<weixin4j.mp.version>0.0.1-SNAPSHOT</weixin4j.mp.version>
+		<weixin4j.qy.version>0.0.1-SNAPSHOT</weixin4j.qy.version>
 		<junit.version>4.8.2</junit.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<logback.version>1.0.9</logback.version>

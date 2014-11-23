@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.msg;
 
+import com.foxinmy.weixin4j.model.BaseMsg;
 import com.foxinmy.weixin4j.type.MessageType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -16,12 +17,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#.E8.AF.AD.E9.9F.B3.E6.B6.88.E6.81.AF">语音消息</a>
  */
-public class VoiceMessage extends BaseMessage {
+public class VoiceMessage extends BaseMsg {
 
 	private static final long serialVersionUID = -7988380977182214003L;
 
 	public VoiceMessage() {
-		super(MessageType.voice);
+		super(MessageType.voice.name());
 	}
 
 	@XStreamAlias("MediaId")
@@ -49,7 +50,7 @@ public class VoiceMessage extends BaseMessage {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[VoiceMessage ,toUserName=").append(super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType().name());
+		sb.append(" ,msgType=").append(super.getMsgType());
 		sb.append(" ,mediaId=").append(mediaId);
 		sb.append(" ,format=").append(format);
 		sb.append(" ,recognition=").append(recognition);

@@ -13,11 +13,13 @@
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-qy/weixin4j-qy-api</url>
 	<description>微信企业号API</description>
 	<build>
-		<finalName>weixin4j-qy-api</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<finalName>${project.name}</finalName>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

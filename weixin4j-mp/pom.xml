@@ -17,9 +17,6 @@
 		<module>weixin4j-mp-api</module>
 		<module>weixin4j-mp-server</module>
 	</modules>
-	<build>
-		<finalName>weixin4j-mp</finalName>
-	</build>
 	<dependencies>
 		<dependency>
 			<groupId>com.foxinmy.weixin4j</groupId>

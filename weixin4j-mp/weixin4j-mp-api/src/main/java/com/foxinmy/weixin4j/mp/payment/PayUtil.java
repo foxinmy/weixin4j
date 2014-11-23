@@ -211,16 +211,16 @@ public class PayUtil {
 	 * 生成编辑地址请求
 	 * </p>
 	 * 
-	 * err_msg edit_address:ok获取编辑收货地址成功<br/>
-	 * edit_address:fail获取编辑收货地址失败<br/>
-	 * userName 收货人姓名<br/>
-	 * telNumber 收货人电话<br/>
-	 * addressPostalCode 邮编<br/>
-	 * proviceFirstStageName 国标收货地址第一级地址<br/>
-	 * addressCitySecondStageName 国标收货地址第二级地址<br/>
-	 * addressCountiesThirdStageName 国标收货地址第三级地址<br/>
-	 * addressDetailInfo 详细收货地址信息<br/>
-	 * nationalCode 收货地址国家码<br/>
+	 * err_msg edit_address:ok获取编辑收货地址成功</br>
+	 * edit_address:fail获取编辑收货地址失败</br>
+	 * userName 收货人姓名</br>
+	 * telNumber 收货人电话</br>
+	 * addressPostalCode 邮编</br>
+	 * proviceFirstStageName 国标收货地址第一级地址</br>
+	 * addressCitySecondStageName 国标收货地址第二级地址</br>
+	 * addressCountiesThirdStageName 国标收货地址第三级地址</br>
+	 * addressDetailInfo 详细收货地址信息</br>
+	 * nationalCode 收货地址国家码</br>
 	 * 
 	 * @param appId
 	 *            公众号的ID

@@ -1,7 +1,8 @@
 package com.foxinmy.weixin4j.mp.action;
 
-import com.foxinmy.weixin4j.mp.response.TextResponse;
-import com.foxinmy.weixin4j.msg.BaseMessage;
+import com.foxinmy.weixin4j.model.BaseMsg;
+import com.foxinmy.weixin4j.mp.message.ResponseMessage;
+import com.foxinmy.weixin4j.msg.model.Text;
 
 /**
  * 调试输出用户消息
@@ -12,11 +13,10 @@ import com.foxinmy.weixin4j.msg.BaseMessage;
  * @since JDK 1.7
  * @see
  */
-public abstract class DebugAction<M extends BaseMessage> extends
-		AbstractAction<M> {
+public abstract class DebugAction<M extends BaseMsg> extends AbstractAction<M> {
 
 	@Override
-	public TextResponse execute(M message) {
-		return new TextResponse(message.toString(), message);
+	public ResponseMessage execute(M message) {
+		return new ResponseMessage(new Text(message.toString()), message);
 	}
 }

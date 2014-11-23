@@ -30,3 +30,7 @@ weixin4j-base
 * 2014-11-19
 
   + 新增`WeixinQyAccount`企业号账号信息类
+
+* 2014-11-23
+
+  + 新增企业号消息体以及用`Responseable`,`Notifyable`,`Massable`三个接口标记不同的可接受的消息类型

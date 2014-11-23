@@ -94,9 +94,23 @@ weixin4j
   
   + **weixin4j-qy**: 新增`标签管理`接口
 
+* 2014-11-23
+
+  + **weixin4j-base**: 新增企业号消息体以及用`Responseable`,`Notifyable`,`Massable`三个接口标记不同的可接受的消息类型
+  
+  + **weixin4j-mp**: 重新定义(手贱)了「被动消息」「客服消息」「群发消息」的传输实体
+  
+  + **weixin4j-mp**: `WeixinServerBootstrap`重命名为`WeixinMpServerBootstrap`
+  
+  + **weixin4j-qy**: 新增`多媒体管理`接口
+  
+  + **weixin4j-qy**: 新增`发送消息`接口
+  
+  + **weixin4j-qy**: 新增`菜单管理`接口
+  
 接下来
 ------
-* 企业号API封装
+* 企业号消息与事件
 
 * 微信小店
 

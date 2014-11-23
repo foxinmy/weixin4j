@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.mp.action.WeixinAction;
 import com.foxinmy.weixin4j.mp.mapping.ActionMapping;
+import com.foxinmy.weixin4j.mp.message.ResponseMessage;
 import com.foxinmy.weixin4j.mp.model.HttpWeixinMessage;
-import com.foxinmy.weixin4j.mp.response.BaseResponse;
 import com.foxinmy.weixin4j.mp.type.EncryptType;
 import com.foxinmy.weixin4j.mp.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
@@ -84,7 +84,7 @@ public class WeixinServerHandler extends
 					HttpResponseStatus.NOT_FOUND));
 			return;
 		}
-		BaseResponse response = action.execute(xmlContent);
+		ResponseMessage response = action.execute(xmlContent);
 		log.info("\n=================message out=================\n{}",
 				response);
 		if (response == null) {

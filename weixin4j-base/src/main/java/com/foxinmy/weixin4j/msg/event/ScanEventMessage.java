@@ -43,7 +43,7 @@ public class ScanEventMessage extends EventMessage {
 		sb.append("[ScanEventMessage ,toUserName=").append(
 				super.getToUserName());
 		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType().name());
+		sb.append(" ,msgType=").append(super.getMsgType());
 		sb.append(" ,eventType=").append(super.getEventType().name());
 		sb.append(" ,eventKey=").append(eventKey);
 		sb.append(" ,ticket=").append(ticket);

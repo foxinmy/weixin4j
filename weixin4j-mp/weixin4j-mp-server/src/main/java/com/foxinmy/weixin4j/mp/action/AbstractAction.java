@@ -5,8 +5,8 @@ import java.lang.reflect.Type;
 
 import org.dom4j.DocumentException;
 
-import com.foxinmy.weixin4j.mp.response.BaseResponse;
-import com.foxinmy.weixin4j.msg.BaseMessage;
+import com.foxinmy.weixin4j.model.BaseMsg;
+import com.foxinmy.weixin4j.mp.message.ResponseMessage;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.xml.XStream;
 
@@ -20,14 +20,14 @@ import com.foxinmy.weixin4j.xml.XStream;
  * @see com.foxinmy.weixin4j.mp.action.WeixinAction
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractAction<M extends BaseMessage> implements
+public abstract class AbstractAction<M extends BaseMsg> implements
 		WeixinAction {
 
-	public abstract BaseResponse execute(M inMessage);
+	public abstract ResponseMessage execute(M inMessage);
 
 	@Override
-	public BaseResponse execute(String msg) throws DocumentException {
-		BaseMessage message = MessageUtil.xml2msg(msg);
+	public ResponseMessage execute(String msg) throws DocumentException {
+		BaseMsg message = MessageUtil.xml2msg(msg);
 		if (message == null) {
 			Class<M> messageClass = getGenericType();
 			XStream xstream = XStream.get();

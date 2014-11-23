@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
-import com.foxinmy.weixin4j.mp.response.BaseResponse;
+import com.foxinmy.weixin4j.mp.message.ResponseMessage;
 import com.foxinmy.weixin4j.mp.util.HttpUtil;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
@@ -33,7 +33,7 @@ import com.thoughtworks.xstream.mapper.DefaultMapper;
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E5%85%A5%E6%8C%87%E5%BC%95">加密接入指引</a>
  */
-public class WeixinMessageEncoder extends MessageToMessageEncoder<BaseResponse> {
+public class WeixinMessageEncoder extends MessageToMessageEncoder<ResponseMessage> {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	protected final static XStream mapXstream = XStream.get();
 	static {
@@ -43,7 +43,7 @@ public class WeixinMessageEncoder extends MessageToMessageEncoder<BaseResponse> 
 	}
 
 	@Override
-	protected void encode(ChannelHandlerContext ctx, BaseResponse response,
+	protected void encode(ChannelHandlerContext ctx, ResponseMessage response,
 			List<Object> out) throws Exception {
 		WeixinMpAccount mpAccount = ConfigUtil.getWeixinMpAccount();
 		String xmlContent = response.toXml();

@@ -1,7 +1,11 @@
 package com.foxinmy.weixin4j.mp.type;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 客服消息记录中的回话状态
+ * 
  * @className CustomRecordOperCode
  * @author jy
  * @date 2014年11月16日
@@ -14,6 +18,17 @@ public enum CustomRecordOperCode {
 			2002, "客服发送消息"), RECEIVE2(2003, "客服收到消息");
 	private int code;
 	private String desc;
+	private static Map<Integer, CustomRecordOperCode> customRecordOperCodeMap;
+	static {
+		customRecordOperCodeMap = new HashMap<Integer, CustomRecordOperCode>();
+		for (CustomRecordOperCode operCode : CustomRecordOperCode.values()) {
+			customRecordOperCodeMap.put(operCode.getCode(), operCode);
+		}
+	}
+
+	public static CustomRecordOperCode getOper(int code) {
+		return customRecordOperCodeMap.get(code);
+	}
 
 	CustomRecordOperCode(int code, String desc) {
 		this.code = code;

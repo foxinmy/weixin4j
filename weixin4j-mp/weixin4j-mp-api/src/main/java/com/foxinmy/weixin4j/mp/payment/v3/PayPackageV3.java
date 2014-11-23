@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * V3支付的订单详情<br/>
+ * V3支付的订单详情</br>
  * 注意: <font color="red">total_fee字段传入时单位为元,创建支付时会转换为分</font>
  * 
  * @className PayPackageV3

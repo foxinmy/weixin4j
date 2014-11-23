@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.foxinmy.weixin4j.mp.type.CustomRecordOperCode;
-import com.foxinmy.weixin4j.mp.util.EntityUtil;
 
 /**
  * 客服聊天记录
@@ -46,7 +45,7 @@ public class CustomRecord implements Serializable {
 	}
 
 	public void setOpercode(int opercode) {
-		this.opercode = EntityUtil.getCustomRecordOperCode(opercode);
+		this.opercode = CustomRecordOperCode.getOper(opercode);
 	}
 
 	public Date getTime() {

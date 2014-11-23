@@ -16,8 +16,8 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.io.SAXReader;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.BaseMsg;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.msg.BaseMessage;
 import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
 import com.foxinmy.weixin4j.xml.XStream;
@@ -112,14 +112,14 @@ public class MessageUtil {
 	}
 
 	/**
-	 * 对xml消息解密
+	 * 对AES消息解密
 	 * 
 	 * @param appId
 	 * @param encodingAesKey
 	 *            aes加密的密钥
 	 * @param encryptContent
 	 *            加密的消息体
-	 * @return 解密后的xml
+	 * @return 解密后的字符
 	 * @throws WeixinException
 	 */
 	public static String aesDecrypt(String appId, String encodingAesKey,
@@ -191,14 +191,14 @@ public class MessageUtil {
 	 * @see com.foxinmy.weixin4j.msg.event.LocationEventMessage
 	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuEventMessage
 	 */
-	public static BaseMessage xml2msg(String xmlMsg) throws DocumentException {
+	public static BaseMsg xml2msg(String xmlMsg) throws DocumentException {
 		Document doc = DocumentHelper.parseText(xmlMsg);
 		String type = doc.selectSingleNode("/xml/MsgType").getStringValue();
 		if (StringUtils.isBlank(type)) {
 			return null;
 		}
 		MessageType messageType = MessageType.valueOf(type.toLowerCase());
-		Class<? extends BaseMessage> messageClass = messageType
+		Class<? extends BaseMsg> messageClass = messageType
 				.getMessageClass();
 		if (messageType == MessageType.event) {
 			type = doc.selectSingleNode("/xml/Event").getStringValue();
@@ -217,7 +217,7 @@ public class MessageUtil {
 	 * @throws DocumentException
 	 * @see {@link com.foxinmy.weixin4j.util.MessageUtil#xml2msg(String)}
 	 */
-	public static BaseMessage xml2msg(InputStream inputStream)
+	public static BaseMsg xml2msg(InputStream inputStream)
 			throws DocumentException {
 		SAXReader reader = new SAXReader();
 		Document doc = reader.read(inputStream);

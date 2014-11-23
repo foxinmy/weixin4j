@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.XmlResult;
+import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
@@ -22,27 +22,26 @@ import com.foxinmy.weixin4j.mp.api.PayApi;
 import com.foxinmy.weixin4j.mp.api.QrApi;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
 import com.foxinmy.weixin4j.mp.api.UserApi;
-import com.foxinmy.weixin4j.mp.model.Button;
+import com.foxinmy.weixin4j.mp.message.NotifyMessage;
+import com.foxinmy.weixin4j.mp.message.TemplateMessage;
 import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
-import com.foxinmy.weixin4j.mp.model.MpArticle;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.User;
-import com.foxinmy.weixin4j.mp.msg.model.Article;
-import com.foxinmy.weixin4j.mp.msg.model.BaseMsg;
-import com.foxinmy.weixin4j.mp.msg.notify.BaseNotify;
 import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.Refund;
 import com.foxinmy.weixin4j.mp.payment.RefundResult;
 import com.foxinmy.weixin4j.mp.payment.v2.Order;
-import com.foxinmy.weixin4j.mp.response.TemplateMessage;
 import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
+import com.foxinmy.weixin4j.msg.model.Base;
+import com.foxinmy.weixin4j.msg.model.MpArticle;
+import com.foxinmy.weixin4j.msg.model.Video;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.type.AccountType;
@@ -119,10 +118,20 @@ public class WeixinProxy {
 
 	/**
 	 * 上传媒体文件
-	 * <p>
-	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
-	 * 否则抛出异常.
-	 * </p>
+	 * 
+	 * @param file
+	 *            媒体对象
+	 * @return 上传到微信服务器返回的媒体标识
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#uploadMedia(File, MediaType)}
+	 * @throws WeixinException
+	 * @throws IOException
+	 */
+	public String uploadMedia(File file) throws WeixinException, IOException {
+		return mediaApi.uploadMedia(file);
+	}
+
+	/**
+	 * 上传媒体文件
 	 * 
 	 * @param file
 	 *            文件对象
@@ -131,10 +140,8 @@ public class WeixinProxy {
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @throws WeixinException
 	 * @throws IOException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#uploadMedia(String, byte[],String)}
 	 */
 	public String uploadMedia(File file, MediaType mediaType)
 			throws WeixinException, IOException {
@@ -143,17 +150,24 @@ public class WeixinProxy {
 
 	/**
 	 * 上传媒体文件
+	 * <p>
+	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
+	 * 否则抛出异常.
+	 * </p>
 	 * 
+	 * @param fileName
+	 *            文件名
 	 * @param bytes
 	 *            媒体数据包
 	 * @param mediaType
 	 *            媒体类型
 	 * @return 上传到微信服务器返回的媒体标识
-	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#uploadMedia(File, MediaType)}
+	 * @throws WeixinException
 	 */
-	public String uploadMedia(String fileName, byte[] data, MediaType mediaType)
+	public String uploadMedia(String fileName, byte[] data, String mediaType)
 			throws WeixinException {
 		return mediaApi.uploadMedia(fileName, data, mediaType);
 	}
@@ -175,6 +189,7 @@ public class WeixinProxy {
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#downloadMedia(String)}
 	 */
 	public File downloadMedia(String mediaId, MediaType mediaType)
 			throws WeixinException, IOException {
@@ -185,15 +200,13 @@ public class WeixinProxy {
 	 * 下载媒体文件
 	 * 
 	 * @param mediaId
-	 * @param mediaType
+	 *            媒体ID
 	 * @return 二进制数据包
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#downloadMedia(String, MediaType)}
 	 */
-	public byte[] downloadMediaData(String mediaId, MediaType mediaType)
-			throws WeixinException {
-		return mediaApi.downloadMediaData(mediaId, mediaType);
+	public byte[] downloadMedia(String mediaId) throws WeixinException {
+		return mediaApi.downloadMedia(mediaId);
 	}
 
 	/**
@@ -204,55 +217,16 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E5%8F%91%E9%80%81%E5%AE%A2%E6%9C%8D%E6%B6%88%E6%81%AF">发送客服消息</a>
-	 * @see com.foxinmy.weixin4j.mp.msg.notify.TextNotify
-	 * @see com.foxinmy.weixin4j.mp.msg.notify.ImageNotify
-	 * @see com.foxinmy.weixin4j.mp.msg.notify.MusicNotify
-	 * @see com.foxinmy.weixin4j.mp.msg.notify.VideoNotify
-	 * @see com.foxinmy.weixin4j.mp.msg.notify.VoiceNotify
-	 * @see com.foxinmy.weixin4j.mp.msg.notify.ArticleNotify
+	 * @see com.foxinmy.weixin4j.msg.model.Text
+	 * @see com.foxinmy.weixin4j.msg.model.Image
+	 * @see com.foxinmy.weixin4j.msg.model.Voice
+	 * @see com.foxinmy.weixin4j.msg.model.Video
+	 * @see com.foxinmy.weixin4j.msg.model.Music
+	 * @see com.foxinmy.weixin4j.msg.model.News
 	 * @see com.foxinmy.weixin4j.mp.api.NotifyApi
 	 */
-	public JsonResult sendNotify(BaseNotify notify) throws WeixinException {
+	public JsonResult sendNotify(NotifyMessage notify) throws WeixinException {
 		return notifyApi.sendNotify(notify);
-	}
-
-	/**
-	 * 发送图文消息
-	 * 
-	 * @param touser
-	 *            目标ID
-	 * @param articles
-	 *            图文列表
-	 * @return 发送结果
-	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.msg.model.Article
-	 * @see com.foxinmy.weixin4j.mp.msg.notify.ArticleNotify
-	 * @see com.foxinmy.weixin4j.mp.api.NotifyApi
-	 */
-	public JsonResult sendNotify(String touser, List<Article> articles)
-			throws WeixinException {
-		return notifyApi.sendNotify(touser, articles);
-	}
-
-	/**
-	 * 发送客服消息(不包含图文消息)
-	 * 
-	 * @param touser
-	 *            目标用户
-	 * @param baseMsg
-	 *            消息类型
-	 * @return 发送结果
-	 * @see com.foxinmy.weixin4j.mp.msg.model.Text
-	 * @see com.foxinmy.weixin4j.mp.msg.model.Image
-	 * @see com.foxinmy.weixin4j.mp.msg.model.Music
-	 * @see com.foxinmy.weixin4j.mp.msg.model.Video
-	 * @see com.foxinmy.weixin4j.mp.msg.model.Voice
-	 * @see com.foxinmy.weixin4j.mp.api.NotifyApi
-	 * @throws WeixinException
-	 */
-	public JsonResult sendNotify(String touser, BaseMsg baseMsg)
-			throws WeixinException {
-		return notifyApi.sendNotify(touser, baseMsg);
 	}
 
 	/**
@@ -310,7 +284,7 @@ public class WeixinProxy {
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3">高级群发</a>
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3#.E4.B8.8A.E4.BC.A0.E5.9B.BE.E6.96.87.E6.B6.88.E6.81.AF.E7.B4.A0.E6.9D.90">上传图文消息</a>
-	 * @see com.foxinmy.weixin4j.mp.model.MpArticle
+	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 */
 	public String uploadArticle(List<MpArticle> articles)
@@ -321,106 +295,96 @@ public class WeixinProxy {
 	/**
 	 * 上传分组群发的视频素材
 	 * 
-	 * @param mediaId
-	 *            媒体文件中上传得到的Id
-	 * @param title
-	 *            标题 可为空
-	 * @param desc
-	 *            描述 可为空
+	 * @param video
+	 *            视频对象 其中mediaId媒体文件中上传得到的Id 不能为空
 	 * @return 上传后的ID
 	 * @throws WeixinException
 	 * 
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3">高级群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File, MediaType)}
+	 * @see com.foxinmy.weixin4j.msg.model.Video
+	 * @see com.foxinmy.weixin4j.msg.model.MpVideo
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 */
-	public String uploadVideo(String mediaId, String title, String desc)
-			throws WeixinException {
-		return massApi.uploadVideo(mediaId, title, desc);
+	public String uploadVideo(Video video) throws WeixinException {
+		return massApi.uploadVideo(video);
 	}
 
 	/**
 	 * 分组群发
 	 * 
-	 * @param mediaId
-	 *            媒体ID 如果为text 则表示content
-	 * @param mediaType
-	 *            媒体类型
+	 * @param box
+	 *            消息项
 	 * @param groupId
 	 *            分组ID
-	 * @return
+	 * @return 群发后的消息ID
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.Group
-	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File, MediaType)}
+	 * @see com.foxinmy.weixin4j.msg.model.Text
+	 * @see com.foxinmy.weixin4j.msg.model.Image
+	 * @see com.foxinmy.weixin4j.msg.model.Voice
+	 * @see com.foxinmy.weixin4j.msg.model.MpVideo
+	 * @see com.foxinmy.weixin4j.msg.model.MpNews
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroupByOpenId(String)}
 	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroups()}
 	 */
-	public String massByGroup(String mediaId, MediaType mediaType,
-			String groupId) throws WeixinException {
-		return massApi.massByGroup(mediaId, mediaType, groupId);
+	public String massByGroupId(Base box, int groupId) throws WeixinException {
+		return massApi.massByGroupId(box, groupId);
 	}
 
 	/**
-	 * 分组群发图文消息
+	 * 分组ID群发图文消息
 	 * 
 	 * @param articles
-	 *            图文消息列表
-	 * @param groupId
-	 *            分组ID
-	 * @return 发送出去的消息ID
+	 *            图文列表
+	 * @param openIds
+	 *            openId列表
+	 * @return 群发后的消息ID
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByGroupId(Base,int)}
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.MpArticle
-	 * @see com.foxinmy.weixin4j.mp.model.Group
-	 * @see com.foxinmy.weixin4j.mp.api.MassApi
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File, MediaType)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#uploadNews(List)}
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByGroup(String,MediaType,String)}
 	 */
-	public String massArticleByGroup(List<MpArticle> articles, String groupId)
+	public String massArticleByGroupId(List<MpArticle> articles, int groupId)
 			throws WeixinException {
-		return massApi.massArticleByGroup(articles, groupId);
+		return massApi.massArticleByGroupId(articles, groupId);
 	}
 
 	/**
 	 * openId群发
 	 * 
-	 * @param mediaId
-	 *            媒体ID 如果为text 则表示content
-	 * @param mediaType
-	 *            媒体类型
+	 * @param box
+	 *            消息项
 	 * @param openIds
 	 *            openId列表
-	 * @return
+	 * @return 群发后的消息ID
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File, MediaType)}
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(JSONObject,String...)}
+	 * @see com.foxinmy.weixin4j.msg.model.Text
+	 * @see com.foxinmy.weixin4j.msg.model.Image
+	 * @see com.foxinmy.weixin4j.msg.model.Voice
+	 * @see com.foxinmy.weixin4j.msg.model.MpVideo
+	 * @see com.foxinmy.weixin4j.msg.model.MpNews
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
+	 * @see {@link com.foxinmy.weixin4j.mp.api.UserApi#getUser(String)}
 	 */
-	public String massByOpenIds(String mediaId, MediaType mediaType,
-			String... openIds) throws WeixinException {
-		return massApi.massByOpenIds(mediaId, mediaType, openIds);
+	public String massByOpenIds(Base box, String... openIds)
+			throws WeixinException {
+		return massApi.massByOpenIds(box, openIds);
 	}
 
 	/**
-	 * openId图文群发
+	 * 根据openid群发图文消息
 	 * 
 	 * @param articles
-	 *            图文消息列表
+	 *            图文列表
 	 * @param openIds
-	 *            目标ID列表
-	 * @return 发送出去的消息ID
+	 *            openId列表
+	 * @return 群发后的消息ID
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(Base,String...)}
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.MpArticle
-	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see com.foxinmy.weixin4j.mp.api.MassApi
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File, MediaType)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadNews(List)}
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(String,MediaType,String...)}
 	 */
 	public String massArticleByOpenIds(List<MpArticle> articles,
 			String... openIds) throws WeixinException {
@@ -439,8 +403,8 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3#.E5.88.A0.E9.99.A4.E7.BE.A4.E5.8F.91">删除群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByGroup(JSONObject, String)}
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(JSONObject, String...)
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByGroupId(Base, int)}
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(Base, String...)
 	 */
 	public JsonResult deleteMassNews(String msgid) throws WeixinException {
 		return massApi.deleteMassNews(msgid);
@@ -643,7 +607,7 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E5%88%9B%E5%BB%BA%E6%8E%A5%E5%8F%A3">创建自定义菜单</a>
-	 * @see com.foxinmy.weixin4j.mp.model.Button
+	 * @see com.foxinmy.weixin4j.model.Button
 	 * @see com.foxinmy.weixin4j.type.ButtonType
 	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
 	 */
@@ -658,7 +622,7 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3">查询菜单</a>
-	 * @see com.foxinmy.weixin4j.mp.model.Button
+	 * @see com.foxinmy.weixin4j.model.Button
 	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
 	 */
 	public List<Button> getMenu() throws WeixinException {
@@ -671,7 +635,7 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E5%88%A0%E9%99%A4%E6%8E%A5%E5%8F%A3">删除菜单</a>
-	 * @see com.foxinmy.weixin4j.mp.model.Button
+	 * @see com.foxinmy.weixin4j.model.Button
 	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
 	 */
 	public JsonResult deleteMenu() throws WeixinException {
@@ -737,7 +701,7 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3">模板消息</a>
-	 * @see com.foxinmy.weixin4j.mp.response.TemplateMessage
+	 * @see com.foxinmy.weixin4j.mp.message.TemplateMessage
 	 * @seee com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
 	 */
@@ -854,11 +818,10 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 申请退款(V3请求需要双向证书)<br/>
+	 * 申请退款(V3请求需要双向证书)</br>
 	 * <p style="color:red">
-	 * 交易时间超过 1 年的订单无法提交退款; <br/>
-	 * 支持部分退款,部分退需要设置相同的订单号和不同的 out_refund_no。一笔退款失 败后重新提交,要采用原来的
-	 * out_refund_no。总退款金额不能超过用户实际支付金额。<br/>
+	 * 交易时间超过 1 年的订单无法提交退款; </br> 支持部分退款,部分退需要设置相同的订单号和不同的 out_refund_no。一笔退款失
+	 * 败后重新提交,要采用原来的 out_refund_no。总退款金额不能超过用户实际支付金额。</br>
 	 * </p>
 	 * 
 	 * @param ca
@@ -893,9 +856,8 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 不同的退款接口选择<br/>
-	 * V3支付则采用properties中配置的ca文件<br/>
-	 * V2支付则需要传入opUserPasswd参数<br/>
+	 * 不同的退款接口选择</br> V3支付则采用properties中配置的ca文件</br>
+	 * V2支付则需要传入opUserPasswd参数</br>
 	 * 
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#refund(InputStream, IdQuery, String, double, double, String,String)}
 	 */
@@ -907,8 +869,7 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 退款查询<br/>
-	 * 退款有一定延时,用零钱支付的退款20分钟内到账,银行卡支付的退款 3 个工作日后重新查询退款状态
+	 * 退款查询</br> 退款有一定延时,用零钱支付的退款20分钟内到账,银行卡支付的退款 3 个工作日后重新查询退款状态
 	 * 
 	 * @param idQuery
 	 *            单号 refund_id、out_refund_no、 out_trade_no 、 transaction_id
@@ -925,8 +886,7 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 关闭订单<br/>
-	 * 当订单支付失败,调用关单接口后用新订单号重新发起支付,如果关单失败,返回已完
+	 * 关闭订单</br> 当订单支付失败,调用关单接口后用新订单号重新发起支付,如果关单失败,返回已完
 	 * 成支付请按正常支付处理。如果出现银行掉单,调用关单成功后,微信后台会主动发起退款。
 	 * 
 	 * @param outTradeNo

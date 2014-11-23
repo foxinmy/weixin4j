@@ -83,3 +83,9 @@ weixin4j-mp
 * 2014-11-17
 
   + **weixin4j-mp-api**: 新增`冲正`和`被扫支付`接口
+  
+* 2014-11-23
+
+  + **weixin4j-mp-api**: 重新定义(手贱)了「被动消息」「客服消息」「群发消息」的传输实体
+  
+  + **weixin4j-mp-server**: `WeixinServerBootstrap`重命名为`WeixinMpServerBootstrap`
