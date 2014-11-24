@@ -27,8 +27,8 @@ weixin.properties说明
 
 示例(properties中换行用右斜杆\\)
 
-	account={"id":"corpid","secret":"corpsecret",\\
-		"token":"企业号中应用在回调模式下的token",\\
+	account={"id":"corpid","secret":"corpsecret",\
+		"token":"企业号中应用在回调模式下的token",\
 		"encodingAesKey":"企业号中应用在回调模式下AES加密密钥"}
 	
 	token_path=/tmp/weixin/token
