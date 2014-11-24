@@ -12,11 +12,13 @@ weixin4j
 	
   `微信支付(公众号)`
   
-  `netty构建服务器`
+  `netty服务器&消息分发`
 	
 * **weixin4j-qy**
 
   `企业号API封装`
+  
+  `netty服务器&消息分发`
 	
 更新LOG
 -------
@@ -108,6 +110,12 @@ weixin4j
   
   + **weixin4j-qy**: 新增`菜单管理`接口
   
+* 2014-11-24
+
+  + **weixin4j-base**: 将Action跟Mapping基础类并入到项目
+  
+  + **weixin4j-qy**: 新增netty服务与消息分发
+
 接下来
 ------
 * 企业号消息与事件

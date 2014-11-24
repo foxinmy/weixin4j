@@ -13,7 +13,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @date 2014年4月6日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6%E6%8E%A8%E9%80%81">事件推送</a>
+ *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6%E6%8E%A8%E9%80%81">订阅号、服务号的事件推送</a>
+ * @see <a
+ *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6">企业号的事件消息</a>
  */
 public class EventMessage extends BaseMsg {
 
@@ -31,19 +33,8 @@ public class EventMessage extends BaseMsg {
 		return eventType;
 	}
 
-	public void setEventType(EventType eventType) {
-		this.eventType = eventType;
-	}
-
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[EventMessage ,toUserName=").append(super.getToUserName());
-		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType());
-		sb.append(" ,eventType=").append(eventType.name());
-		sb.append(" ,createTime=").append(super.getCreateTime());
-		sb.append(" ,msgId=").append(super.getMsgId()).append("]");
-		return sb.toString();
+		return "eventType=" + eventType + ", " + super.toString();
 	}
 }

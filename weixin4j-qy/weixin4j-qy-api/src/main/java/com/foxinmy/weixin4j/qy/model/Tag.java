@@ -1,0 +1,54 @@
+package com.foxinmy.weixin4j.qy.model;
+
+import java.io.Serializable;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
+/**
+ * 标签对象
+ * 
+ * @className Tag
+ * @author jy
+ * @date 2014年11月24日
+ * @since JDK 1.7
+ * @see
+ */
+public class Tag implements Serializable {
+
+	private static final long serialVersionUID = 5204620476267654921L;
+
+	@JSONField(name = "tagid")
+	private int id;
+	@JSONField(name = "tagname")
+	private String name;
+
+	public Tag() {
+
+	}
+
+	public Tag(int id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Tag [id=" + id + ", name=" + name + "]";
+	}
+}

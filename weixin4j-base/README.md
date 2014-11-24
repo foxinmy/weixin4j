@@ -34,3 +34,7 @@ weixin4j-base
 * 2014-11-23
 
   + 新增企业号消息体以及用`Responseable`,`Notifyable`,`Massable`三个接口标记不同的可接受的消息类型
+  
+* 2014-11-24
+
+  + 将Action跟Mapping基础类并入到项目

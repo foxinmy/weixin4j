@@ -24,7 +24,7 @@ weixin4j-qy
 
   + `netty服务器` & `消息分发`
   
-  + 回调链接`AES`加密、解密
+  + 回调连接`AES`加密、解密
 
 更新LOG
 -------
@@ -45,3 +45,7 @@ weixin4j-qy
   + **weixin4j-qy-api**: 新增`发送消息`接口
   
   + **weixin4j-qy-api**: 新增`菜单管理`接口
+  
+* 2014-11-24
+
+  + **weixin4j-qy-server**: 新增netty服务与消息分发

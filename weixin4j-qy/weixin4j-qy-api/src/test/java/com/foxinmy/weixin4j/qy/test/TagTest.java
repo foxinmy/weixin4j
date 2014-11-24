@@ -7,10 +7,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alibaba.fastjson.JSONArray;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.qy.api.TagApi;
+import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
 
 /**
@@ -38,7 +38,7 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void update() throws WeixinException {
-		JsonResult result = tagApi.updateTag(1, "coder456");
+		JsonResult result = tagApi.updateTag(new Tag(1, "coder456"));
 		Assert.assertEquals("updated", result.getDesc());
 	}
 
@@ -64,7 +64,7 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void list() throws WeixinException {
-		JSONArray tags = tagApi.listTag();
+		List<Tag> tags = tagApi.listTag();
 		Assert.assertFalse(tags.isEmpty());
 		System.out.println(tags);
 	}

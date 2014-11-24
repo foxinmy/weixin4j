@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.mp.action;
 
-import com.foxinmy.weixin4j.mp.mapping.Action;
+import com.foxinmy.weixin4j.action.DebugAction;
+import com.foxinmy.weixin4j.action.mapping.ActionAnnotation;
 import com.foxinmy.weixin4j.msg.LinkMessage;
 import com.foxinmy.weixin4j.type.MessageType;
 
@@ -13,7 +14,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * @since JDK 1.7
  * @see com.foxinmy.weixin4j.msg.LinkMessage
  */
-@Action(msgType = MessageType.link)
+@ActionAnnotation(msgType = MessageType.link)
 public class LinkAction extends DebugAction<LinkMessage> {
 
 }

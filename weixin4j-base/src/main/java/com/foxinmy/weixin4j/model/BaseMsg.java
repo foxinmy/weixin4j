@@ -26,6 +26,8 @@ public class BaseMsg implements Serializable {
 	private String msgType; // 消息类型
 	@XStreamAlias("MsgId")
 	private long msgId; // 消息ID
+	@XStreamAlias("AgentID")
+	private String agentId; // 企业号独有的应用ID
 
 	public BaseMsg() {
 
@@ -81,8 +83,8 @@ public class BaseMsg implements Serializable {
 		return msgId;
 	}
 
-	public void setMsgId(long msgId) {
-		this.msgId = msgId;
+	public String getAgentId() {
+		return agentId;
 	}
 
 	@Override
@@ -95,8 +97,8 @@ public class BaseMsg implements Serializable {
 
 	@Override
 	public String toString() {
-		return "BaseMsg [toUserName=" + toUserName + ", fromUserName="
-				+ fromUserName + ", createTime=" + createTime + ", msgType="
-				+ msgType + ", msgId=" + msgId + "]";
+		return "toUserName=" + toUserName + ", fromUserName=" + fromUserName
+				+ ", createTime=" + createTime + ", msgType=" + msgType
+				+ ", msgId=" + msgId + ", agentId=" + agentId;
 	}
 }

@@ -27,7 +27,7 @@ weixin4j-mp-server
 示例(properties中换行用右斜杆\\)
 
 > account={"id":"appId","secret":"appSecret",
-> "token":"开放者的token 必须","openId":"公众号的openid 非必须",
+> "token":"开放者的token","openId":"公众号的openid 非必须",
 > "encodingAesKey":"公众号设置了加密方式且为「安全模式」时需要填入",
 > "mchId":"V3.x版本下的微信商户号",
 > "partnerId":"财付通的商户号","partnerKey":"财付通商户权限密钥Key",

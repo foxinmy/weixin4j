@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.qy;
 
 import java.util.List;
 
-import com.alibaba.fastjson.JSONArray;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.model.WeixinQyAccount;
@@ -10,6 +9,7 @@ import com.foxinmy.weixin4j.qy.api.DepartApi;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
 import com.foxinmy.weixin4j.qy.model.Department;
+import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
@@ -251,13 +251,13 @@ public class WeixinProxy {
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E6.9B.B4.E6.96.B0.E6.A0.87.E7.AD.BE.E5.90.8D.E5.AD.97"
 	 *      >更新标签说明</a>
+	 * @see com.foxinmy.weixin4j.qy.model.Tag
 	 * @see com.foxinmy.weixin4j.qy.api.TagApi
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateTag(int tagId, String tagName)
-			throws WeixinException {
-		return tagApi.updateTag(tagId, tagName);
+	public JsonResult updateTag(Tag tag) throws WeixinException {
+		return tagApi.updateTag(tag);
 	}
 
 	/**
@@ -280,11 +280,12 @@ public class WeixinProxy {
 	 * 
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E8.8E.B7.E5.8F.96.E6.A0.87.E7.AD.BE.E5.88.97.E8.A1.A8">获取标签列表说明</a>
+	 * @see com.foxinmy.weixin4j.qy.model.Tag
 	 * @see com.foxinmy.weixin4j.qy.api.TagApi
 	 * @return 标签列表
 	 * @throws WeixinException
 	 */
-	public JSONArray listTag() throws WeixinException {
+	public List<Tag> listTag() throws WeixinException {
 		return tagApi.listTag();
 	}
 

@@ -4,23 +4,24 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
+import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foxinmy.weixin4j.mp.action.WeixinAction;
-import com.foxinmy.weixin4j.mp.mapping.ActionMapping;
-import com.foxinmy.weixin4j.mp.message.ResponseMessage;
-import com.foxinmy.weixin4j.mp.model.HttpWeixinMessage;
-import com.foxinmy.weixin4j.mp.type.EncryptType;
+import com.foxinmy.weixin4j.action.WeixinAction;
+import com.foxinmy.weixin4j.action.mapping.ActionMapping;
 import com.foxinmy.weixin4j.mp.util.HttpUtil;
+import com.foxinmy.weixin4j.response.HttpWeixinMessage;
+import com.foxinmy.weixin4j.response.ResponseMessage;
+import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.MessageUtil;
 
 /**
  * 微信被动消息处理类
+ * 
  * @className WeixinServerHandler
  * @author jy
  * @date 2014年11月16日
@@ -53,16 +54,15 @@ public class WeixinServerHandler extends
 			HttpWeixinMessage httpMessage) throws Exception {
 		log.info("\n=================message in=================\n{}",
 				httpMessage);
+		boolean isGet = httpMessage.getMethod().equals(HttpMethod.GET.name());
 		boolean validate = false;
-		if (httpMessage.getMethod() == HttpMethod.GET
-				|| httpMessage.getEncryptType() == EncryptType.RAW) {
+		if (isGet || httpMessage.getEncryptType() == EncryptType.RAW) {
 			validate = MessageUtil.signature(httpMessage.getToken(),
 					httpMessage.getTimeStamp(), httpMessage.getNonce()).equals(
 					httpMessage.getSignature());
-			if (httpMessage.getMethod() == HttpMethod.GET && validate) {
-				HttpResponse httpResponse = HttpUtil
-						.createWeixinMessageResponse(httpMessage.getEchoStr());
-				ctx.write(httpResponse);
+			if (isGet && validate) {
+				ctx.write(HttpUtil.createWeixinMessageResponse(
+						httpMessage.getEchoStr(), ContentType.TEXT_PLAIN));
 				return;
 			}
 		} else {
@@ -88,15 +88,13 @@ public class WeixinServerHandler extends
 		log.info("\n=================message out=================\n{}",
 				response);
 		if (response == null) {
-			HttpResponse httpResponse = HttpUtil
-					.createWeixinMessageResponse("");
-			ctx.write(httpResponse);
+			ctx.write(HttpUtil.createWeixinMessageResponse("",
+					ContentType.TEXT_PLAIN));
 			return;
 		}
 		if (httpMessage.getEncryptType() == EncryptType.RAW) {
-			HttpResponse httpResponse = HttpUtil
-					.createWeixinMessageResponse(response.toXml());
-			ctx.write(httpResponse);
+			ctx.write(HttpUtil.createWeixinMessageResponse(response.toXml(),
+					null));
 		} else {
 			ctx.write(response);
 		}

@@ -15,7 +15,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @date 2014年4月6日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#.E8.AF.AD.E9.9F.B3.E6.B6.88.E6.81.AF">语音消息</a>
+ *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#.E8.AF.AD.E9.9F.B3.E6.B6.88.E6.81.AF">订阅号、服务号的语音消息</a>
+ * @see <a
+ *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#voice.E6.B6.88.E6.81.AF">企业号的语音消息</a>
  */
 public class VoiceMessage extends BaseMsg {
 
@@ -47,15 +49,8 @@ public class VoiceMessage extends BaseMsg {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[VoiceMessage ,toUserName=").append(super.getToUserName());
-		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType());
-		sb.append(" ,mediaId=").append(mediaId);
-		sb.append(" ,format=").append(format);
-		sb.append(" ,recognition=").append(recognition);
-		sb.append(" ,createTime=").append(super.getCreateTime());
-		sb.append(" ,msgId=").append(super.getMsgId()).append("]");
-		return sb.toString();
+		return "VoiceMessage [mediaId=" + mediaId + ", format=" + format
+				+ ", recognition=" + recognition + ", " + super.toString()
+				+ "]";
 	}
 }

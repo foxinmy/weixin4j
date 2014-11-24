@@ -54,19 +54,9 @@ public class MassEventMessage extends EventMessage {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[MassEventMessage ,toUserName=").append(
-				super.getToUserName());
-		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType());
-		sb.append(" ,eventType=").append(super.getEventType().name());
-		sb.append(" ,status=").append(status);
-		sb.append(" ,totalCount=").append(totalCount);
-		sb.append(" ,filterCount=").append(filterCount);
-		sb.append(" ,sentCount=").append(sentCount);
-		sb.append(" ,errorCount=").append(errorCount);
-		sb.append(" ,createTime=").append(super.getCreateTime());
-		sb.append(" ,msgId=").append(super.getMsgId()).append("]");
-		return sb.toString();
+		return "MassEventMessage [status=" + status + ", totalCount="
+				+ totalCount + ", filterCount=" + filterCount + ", sentCount="
+				+ sentCount + ", errorCount=" + errorCount + ", "
+				+ super.toString() + "]";
 	}
 }

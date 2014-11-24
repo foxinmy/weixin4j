@@ -16,6 +16,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import java.util.Date;
 
 import org.apache.http.Consts;
+import org.apache.http.entity.ContentType;
 
 /**
  * HTTP工具类
@@ -28,7 +29,11 @@ import org.apache.http.Consts;
  */
 public class HttpUtil {
 
-	public static HttpResponse createWeixinMessageResponse(String content) {
+	public static HttpResponse createWeixinMessageResponse(String content,
+			ContentType contentType) {
+		if (contentType == null) {
+			contentType = ContentType.APPLICATION_XML;
+		}
 		FullHttpResponse httpResponse = new DefaultFullHttpResponse(HTTP_1_1,
 				OK, Unpooled.copiedBuffer(content, Consts.UTF_8));
 		httpResponse.headers().set(CONTENT_TYPE,

@@ -101,6 +101,29 @@ public class UserApi extends BaseApi {
 	}
 
 	/**
+	 * code获取userid(管理员须拥有agent的使用权限；agentid必须和跳转链接时所在的企业应用ID相同。)
+	 * 
+	 * @param code
+	 *            通过员工授权获取到的code，每次员工授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期
+	 * @param agentid
+	 *            跳转链接时所在的企业应用ID
+	 * @return {"UserId":"员工UserID","DeviceId":"手机设备号(由微信在安装时随机生成)"}
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E8%8E%B7%E5%8F%96code">企业获取code</a>
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E6%A0%B9%E6%8D%AEcode%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E4%BF%A1%E6%81%AF">根据code获取成员信息</a>
+	 * @throws WeixinException
+	 */
+	public JSONObject getUserid(String code, int agentid)
+			throws WeixinException {
+		String user_getid_uri = getRequestUri("user_getid_uri");
+		Token token = tokenHolder.getToken();
+		Response response = request.post(String.format(user_getid_uri,
+				token.getAccessToken(), code, agentid));
+		return response.getAsJson();
+	}
+
+	/**
 	 * 获取部门成员
 	 * 
 	 * @param departId
@@ -153,6 +176,24 @@ public class UserApi extends BaseApi {
 		String user_delete_uri = getRequestUri("user_delete_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(String.format(user_delete_uri,
+				token.getAccessToken(), userid));
+		return response.getAsJsonResult();
+	}
+
+	/**
+	 * 开启二次验证成功时调用(管理员须拥有userid对应员工的管理权限)
+	 * 
+	 * @param userid
+	 *            成员ID
+	 * @return 调用结果
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%85%B3%E6%B3%A8%E4%B8%8E%E5%8F%96%E6%B6%88%E5%85%B3%E6%B3%A8">二次验证说明</a>
+	 * @throws WeixinException
+	 */
+	public JsonResult authsucc(String userid) throws WeixinException {
+		String user_authsucc_uri = getRequestUri("user_authsucc_uri");
+		Token token = tokenHolder.getToken();
+		Response response = request.post(String.format(user_authsucc_uri,
 				token.getAccessToken(), userid));
 		return response.getAsJsonResult();
 	}

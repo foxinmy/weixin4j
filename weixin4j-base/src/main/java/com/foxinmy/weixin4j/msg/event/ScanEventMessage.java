@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.msg.event;
 
+import com.foxinmy.weixin4j.type.EventType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -15,7 +16,11 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class ScanEventMessage extends EventMessage {
 
 	public ScanEventMessage() {
-		super(null);
+		super(EventType.scan);
+	}
+
+	public ScanEventMessage(EventType eventType) {
+		super(eventType);
 	}
 
 	private static final long serialVersionUID = 8078674062833071562L;
@@ -39,16 +44,7 @@ public class ScanEventMessage extends EventMessage {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[ScanEventMessage ,toUserName=").append(
-				super.getToUserName());
-		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType());
-		sb.append(" ,eventType=").append(super.getEventType().name());
-		sb.append(" ,eventKey=").append(eventKey);
-		sb.append(" ,ticket=").append(ticket);
-		sb.append(" ,createTime=").append(super.getCreateTime());
-		sb.append(" ,msgId=").append(super.getMsgId()).append("]");
-		return sb.toString();
+		return "ScanEventMessage [eventKey=" + eventKey + ", ticket=" + ticket
+				+ ", " + super.toString() + "]";
 	}
 }

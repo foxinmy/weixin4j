@@ -1,9 +1,10 @@
 package com.foxinmy.weixin4j.mp.action;
 
-import com.foxinmy.weixin4j.mp.mapping.Action;
-import com.foxinmy.weixin4j.mp.message.ResponseMessage;
+import com.foxinmy.weixin4j.action.AbstractAction;
+import com.foxinmy.weixin4j.action.mapping.ActionAnnotation;
 import com.foxinmy.weixin4j.msg.TextMessage;
 import com.foxinmy.weixin4j.msg.model.Text;
+import com.foxinmy.weixin4j.response.ResponseMessage;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
@@ -15,7 +16,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * @since JDK 1.7
  * @see com.foxinmy.weixin4j.msg.TextMessage
  */
-@Action(msgType = MessageType.text)
+@ActionAnnotation(msgType = MessageType.text)
 public class TextAction extends AbstractAction<TextMessage> {
 
 	@Override

@@ -3,12 +3,12 @@ package com.foxinmy.weixin4j.qy.api;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
@@ -59,15 +59,15 @@ public class TagApi extends BaseApi {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E6.9B.B4.E6.96.B0.E6.A0.87.E7.AD.BE.E5.90.8D.E5.AD.97"
 	 *      >更新标签说明</a>
 	 * @return 处理结果
+	 * @see com.foxinmy.weixin4j.qy.model.Tag
 	 * @throws WeixinException
 	 */
-	public JsonResult updateTag(int tagId, String tagName)
-			throws WeixinException {
+	public JsonResult updateTag(Tag tag) throws WeixinException {
 		String tag_update_uri = getRequestUri("tag_update_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(String.format(tag_update_uri,
-				token.getAccessToken()), String.format(
-				"{\"tagid\":%d,\"tagname\":\"%s\"}", tagId, tagName));
+		Response response = request.post(
+				String.format(tag_update_uri, token.getAccessToken()),
+				JSON.toJSONString(tag));
 		return response.getAsJsonResult();
 	}
 
@@ -95,14 +95,16 @@ public class TagApi extends BaseApi {
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E8.8E.B7.E5.8F.96.E6.A0.87.E7.AD.BE.E5.88.97.E8.A1.A8">获取标签列表说明</a>
 	 * @return 标签列表
+	 * @see com.foxinmy.weixin4j.qy.model.Tag
 	 * @throws WeixinException
 	 */
-	public JSONArray listTag() throws WeixinException {
+	public List<Tag> listTag() throws WeixinException {
 		String tag_list_uri = getRequestUri("tag_list_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(String.format(tag_list_uri,
 				token.getAccessToken()));
-		return response.getAsJson().getJSONArray("taglist");
+		return JSON.parseArray(response.getAsJson().getString("taglist"),
+				Tag.class);
 	}
 
 	/**

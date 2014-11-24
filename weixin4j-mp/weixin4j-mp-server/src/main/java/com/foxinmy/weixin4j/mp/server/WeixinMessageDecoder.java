@@ -14,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
-import com.foxinmy.weixin4j.mp.model.HttpWeixinMessage;
-import com.foxinmy.weixin4j.mp.type.EncryptType;
+import com.foxinmy.weixin4j.response.HttpWeixinMessage;
+import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.xml.XStream;
@@ -43,7 +43,7 @@ public class WeixinMessageDecoder extends
 		if (StringUtils.isNotBlank(xmlContent)) {
 			message = XStream.get(xmlContent, HttpWeixinMessage.class);
 		}
-		message.setMethod(req.getMethod());
+		message.setMethod(req.getMethod().name());
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
 				true);
 		log.info("\n=================receive request=================");

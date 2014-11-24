@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.model.BaseMsg;
-import com.foxinmy.weixin4j.mp.message.ResponseMessage;
 import com.foxinmy.weixin4j.msg.TextMessage;
 import com.foxinmy.weixin4j.msg.model.Image;
 import com.foxinmy.weixin4j.msg.model.Music;
@@ -14,6 +13,7 @@ import com.foxinmy.weixin4j.msg.model.Text;
 import com.foxinmy.weixin4j.msg.model.Trans;
 import com.foxinmy.weixin4j.msg.model.Video;
 import com.foxinmy.weixin4j.msg.model.Voice;
+import com.foxinmy.weixin4j.response.ResponseMessage;
 
 /**
  * 发送消息格式测试

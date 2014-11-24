@@ -30,6 +30,7 @@ public class TemplatesendjobfinishMessage extends EventMessage {
 
 	@Override
 	public String toString() {
-		return "TemplatesendjobfinishMessage [status=" + status + "]";
+		return "TemplatesendjobfinishMessage [status=" + status + ", "
+				+ super.toString() + "]";
 	}
 }
