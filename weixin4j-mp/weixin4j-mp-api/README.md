@@ -48,7 +48,7 @@ weixin.properties说明
 
 	account={"id":"appId","secret":"appSecret",\
 		"token":"开放者的token",\
-		"encodingAesKey":"公众号设置了加密方式且为「安全模式」需要填入",\
+		"encodingAesKey":"公众号设置了加密方式且为「安全模式」时需要填入",\
 		"mchId":"V3.x版本下的微信商户号",\
 		"partnerId":"财付通的商户号",\
 		"partnerKey":"财付通商户权限密钥Key",\
