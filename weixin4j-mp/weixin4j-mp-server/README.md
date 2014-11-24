@@ -26,18 +26,19 @@ weixin4j-mp-server
 
 示例(properties中换行用右斜杆\\)
 
-> account={"id":"appId","secret":"appSecret",
-> "token":"开放者的token","openId":"公众号的openid 非必须",
-> "encodingAesKey":"公众号设置了加密方式且为「安全模式」时需要填入",
-> "mchId":"V3.x版本下的微信商户号",
-> "partnerId":"财付通的商户号","partnerKey":"财付通商户权限密钥Key",
-> "version":"针对微信支付的版本号(目前可能为2,3),如果不填则按照mchId非空与否来做判断",
-> "paySignKey":"微信支付中调用API的密钥"} </br>
-> token_path=/tmp/weixin/token </br>
-> qr_path=/tmp/weixin/qr </br>
-> media_path=/tmp/weixin/media </br>
-> bill_path=/tmp/weixin/bill </br>
-> ca_file=/tmp/weixin/xxxxx.p12 | xxxxx.pfx </br>
+	account={"id":"appId","secret":"appSecret",\\
+		"token":"开放者的token","openId":"公众号的openid 非必须",\\
+		"encodingAesKey":"公众号设置了加密方式且为「安全模式」时需要填入",\\
+		"mchId":"V3.x版本下的微信商户号",\\
+		"partnerId":"财付通的商户号","partnerKey":"财付通商户权限密钥Key",\\
+		"version":"针对微信支付的版本号(目前可能为2,3),如果不填则按照mchId非空与否来做判断",\\
+		"paySignKey":"微信支付中调用API的密钥"}
+	
+	token_path=/tmp/weixin/token
+	qr_path=/tmp/weixin/qr
+	media_path=/tmp/weixin/media
+	bill_path=/tmp/weixin/bill
+	ca_file=/tmp/weixin/xxxxx.p12 | xxxxx.pfx
 
 2.mvn package,得到一个zip的压缩包,解压到启动目录(见`src/main/startup.sh/APP_HOME`)
 

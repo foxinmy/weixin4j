@@ -27,11 +27,12 @@ weixin.properties说明
 
 示例(properties中换行用右斜杆\\)
 
-> account={"id":"corpid","secret":"corpsecret",
-> "token":"企业号中应用在回调模式下的token",
-> "encodingAesKey":"企业号中应用在回调模式下AES加密密钥"}
-> token_path=/tmp/weixin/token </br>
-> media_path=/tmp/weixin/media </br>
+	account={"id":"corpid","secret":"corpsecret",\\
+		"token":"企业号中应用在回调模式下的token",\\
+		"encodingAesKey":"企业号中应用在回调模式下AES加密密钥"}
+	
+	token_path=/tmp/weixin/token
+	media_path=/tmp/weixin/media
 
 2.实例化一个`WeixinProxy`对象,调用API
 
