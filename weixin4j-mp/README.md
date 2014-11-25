@@ -34,6 +34,56 @@ weixin4j-mp
   
   + 被动消息`AES`加密、解密
 
+项目说明
+-------
+1.`weixin4j-mp`包含「微信公众平台」的API封装以及一个半成品的netty服务实现.
+
+2.API的成功调用依赖于正确的appid等数据,创建(或者copy项目里面的)一个名为**weixin.properties**的资源文件放在自己工程中的classpath下.
+
+| 属性名       |       说明      |
+| :---------- | :-------------- |
+| account     | 微信公众号信息 `json格式`  |
+| token_path  | 使用FileTokenHolder时token保存的物理路径 |
+| qr_path     | 调用二维码接口时保存二维码图片的物理路径 |
+| media_path  | 调用媒体接口时保存媒体文件的物理路径 |
+| bill_path   | 调用下载对账单接口保存excel文件的物理路径 |
+| ca_file     | 调用某些接口(支付相关)强制需要auth的ca授权文件 |
+
+示例(properties中换行用右斜杆\\)
+
+	account={"id":"appId","secret":"appSecret",\
+		"token":"开放者的token",\
+		"encodingAesKey":"公众号设置了加密方式且为「安全模式」时需要填入",\
+		"mchId":"V3.x版本下的微信商户号",\
+		"partnerId":"财付通的商户号",\
+		"partnerKey":"财付通商户权限密钥Key",\
+		"version":"针对微信支付的版本号(2,3),如果不填则按照mchId非空与否来判断",\
+		"paySignKey":"微信支付中调用API的密钥"}
+	
+	token_path=/tmp/weixin/token
+	qr_path=/tmp/weixin/qr
+	media_path=/tmp/weixin/media
+	bill_path=/tmp/weixin/bill
+	ca_file=/tmp/weixin/xxxxx.p12 | xxxx.pfx
+
+3.`mvn package`得到jar包,在自己的项目中可单独引用`weixin4j-qy-api-full`包,也可分别引用`weixin4j-base`跟`weixin4j-mp-api`两个包.
+
+    WeixinProxy weixinProxy = new WeixinProxy();
+    // weixinProxy = new WeixinProxy(appid,appsecret);
+    // weixinProxy = new WeixinProxy(weixinAccount);
+    weixinProxy.getUser(openId);
+
+4.如需使用netty服务,则可以在相应的action中实现自己的业务处理,打包后解压`weixin-mp-server-bin.zip`执行`sh startup.sh start`即可.
+
+	@ActionAnnotation(msgType = MessageType.text)
+	public class TextAction extends AbstractAction<TextMessage> {
+	
+		@Override
+		public ResponseMessage execute(TextMessage inMessage) {
+			return new ResponseMessage(new Text("Hello World!"), inMessage);
+		}
+	}
+
 更新LOG
 -------
 * 2014-10-27

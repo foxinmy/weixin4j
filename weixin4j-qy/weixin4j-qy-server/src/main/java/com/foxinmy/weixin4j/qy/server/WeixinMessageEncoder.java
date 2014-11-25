@@ -35,7 +35,7 @@ import com.thoughtworks.xstream.mapper.DefaultMapper;
 public class WeixinMessageEncoder extends
 		MessageToMessageEncoder<ResponseMessage> {
 	private final Logger log = LoggerFactory.getLogger(getClass());
-	protected final static XStream mapXstream = XStream.get();
+	private final static XStream mapXstream = XStream.get();
 	static {
 		mapXstream.alias("xml", Map.class);
 		mapXstream.registerConverter(new Map2ObjectConverter(new DefaultMapper(

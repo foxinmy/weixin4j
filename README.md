@@ -19,6 +19,18 @@ weixin4j
   `企业号API封装`
   
   `netty服务器&消息分发`
+  
+项目说明
+-------
+1.`weixin4j`总共包含「微信公众平台」和「微信企业号」的API封装以及一个半成品的netty服务实现.
+
+2.API的成功调用需要正确的appid等数据,填写格式在每个项目下的README.md文件中都有说明.
+
+3.需要创建(或者copy项目里面的)一个名为**weixin.properties**的资源文件放在自己工程中的classpath下.
+
+4.`mvn package`得到jar包,在自己的项目中可单独引用`weixin4j-*-api-full`包,也可分别引用`weixin4j-base`跟`weixin4j-*-api`两个包.
+
+5.如需使用netty服务,则可以在相应的action中实现自己的业务处理,打包后解压`weixin-*-server-bin.zip`执行`sh startup.sh start`即可.
 	
 更新LOG
 -------
