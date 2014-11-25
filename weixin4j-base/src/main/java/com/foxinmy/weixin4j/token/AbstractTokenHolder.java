@@ -20,13 +20,8 @@ public abstract class AbstractTokenHolder implements TokenHolder {
 	protected final WeixinAccount weixinAccount;
 
 	public AbstractTokenHolder(AccountType accountType) {
-		if (accountType == AccountType.MP) {
-			this.weixinAccount = ConfigUtil.getWeixinMpAccount();
-		} else if (accountType == AccountType.QY) {
-			this.weixinAccount = ConfigUtil.getWeixinQyAccount();
-		} else {
-			this.weixinAccount = null;
-		}
+		this.weixinAccount = ConfigUtil
+				.getWeixinAccount(accountType.getClazz());
 	}
 
 	public AbstractTokenHolder(WeixinAccount weixinAccount) {

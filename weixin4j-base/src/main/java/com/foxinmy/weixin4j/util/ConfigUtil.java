@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.model.WeixinQyAccount;
 
@@ -34,13 +35,16 @@ public class ConfigUtil {
 		return weixinBundle.getString(key);
 	}
 
-	public static WeixinMpAccount getWeixinMpAccount() {
+	public static <T extends WeixinAccount> T getWeixinAccount(Class<T> clazz) {
 		String text = getValue("account");
-		return JSON.parseObject(text, WeixinMpAccount.class);
+		return JSON.parseObject(text, clazz);
+	}
+
+	public static WeixinMpAccount getWeixinMpAccount() {
+		return getWeixinAccount(WeixinMpAccount.class);
 	}
 
 	public static WeixinQyAccount getWeixinQyAccount() {
-		String text = getValue("account");
-		return JSON.parseObject(text, WeixinQyAccount.class);
+		return getWeixinAccount(WeixinQyAccount.class);
 	}
 }

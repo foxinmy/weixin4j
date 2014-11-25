@@ -1,5 +1,9 @@
 package com.foxinmy.weixin4j.type;
 
+import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
+import com.foxinmy.weixin4j.model.WeixinQyAccount;
+
 /**
  * 账号类型
  * 
@@ -10,5 +14,14 @@ package com.foxinmy.weixin4j.type;
  * @see
  */
 public enum AccountType {
-	MP, QY
+	MP(WeixinMpAccount.class), QY(WeixinQyAccount.class);
+	private Class<? extends WeixinAccount> clazz;
+
+	AccountType(Class<? extends WeixinAccount> clazz) {
+		this.clazz = clazz;
+	}
+
+	public Class<? extends WeixinAccount> getClazz() {
+		return clazz;
+	}
 }

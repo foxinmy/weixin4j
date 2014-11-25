@@ -40,7 +40,8 @@ public class MenuTest extends TokenTest {
 
 		b = new Button("qq", "http://www.qq.com", ButtonType.view);
 		btnList.add(b);
-
+		b = new Button("photo", "photo", ButtonType.pic_photo_or_album);
+		btnList.add(b);
 		JsonResult result = menuApi.createMenu(btnList, 1);
 		Assert.assertEquals(0, result.getCode());
 	}
