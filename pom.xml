@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.foxinmy.weixin4j</groupId>
 	<artifactId>weixin4j</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${weixin4j.version}</version>
 	<packaging>pom</packaging>
 	<name>weixin4j</name>
 	<url>https://github.com/foxinmy/weixin4j</url>
@@ -34,9 +34,10 @@
 		<module>weixin4j-qy</module>
 	</modules>
 	<properties>
-		<weixin4j.base.version>0.0.1-SNAPSHOT</weixin4j.base.version>
-		<weixin4j.mp.version>0.0.1-SNAPSHOT</weixin4j.mp.version>
-		<weixin4j.qy.version>0.0.1-SNAPSHOT</weixin4j.qy.version>
+		<weixin4j.version>1.0</weixin4j.version>
+		<weixin4j.base.version>1.0</weixin4j.base.version>
+		<weixin4j.mp.version>1.0</weixin4j.mp.version>
+		<weixin4j.qy.version>1.0</weixin4j.qy.version>
 		<junit.version>4.8.2</junit.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<logback.version>1.0.9</logback.version>

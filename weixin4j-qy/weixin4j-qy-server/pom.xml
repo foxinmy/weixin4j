@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.foxinmy.weixin4j</groupId>
 		<artifactId>weixin4j-qy</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${weixin4j.qy.version}</version>
 	</parent>
 	<artifactId>weixin4j-qy-server</artifactId>
 	<name>weixin4j-qy-server</name>

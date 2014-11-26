@@ -6,9 +6,10 @@
 	<parent>
 		<groupId>com.foxinmy.weixin4j</groupId>
 		<artifactId>weixin4j</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${weixin4j.version}</version>
 	</parent>
 	<artifactId>weixin4j-base</artifactId>
+	<version>${weixin4j.base.version}</version>
 	<name>weixin4j-base</name>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-base</url>
 	<dependencies>

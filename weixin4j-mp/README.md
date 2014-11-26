@@ -66,14 +66,14 @@ weixin4j-mp
 	bill_path=/tmp/weixin/bill
 	ca_file=/tmp/weixin/xxxxx.p12 | xxxx.pfx
 
-3.`mvn package`得到jar包,在自己的项目中可单独引用`weixin4j-qy-api-full`包,也可分别引用`weixin4j-base`跟`weixin4j-mp-api`两个包.
+3.在项目根目录下执行`mvn package`命令后得到jar包,将`weixin4j-qy-api-full`包或者`weixin4j-base`跟`weixin4j-mp-api`两个包引入到自己的工程内.
 
     WeixinProxy weixinProxy = new WeixinProxy();
     // weixinProxy = new WeixinProxy(appid,appsecret);
     // weixinProxy = new WeixinProxy(weixinAccount);
     weixinProxy.getUser(openId);
 
-4.如需使用netty服务,则可以在相应的action中实现自己的业务处理,打包后解压`weixin-mp-server-bin.zip`执行`sh startup.sh start`即可.
+4.如需使用netty服务,则可以在相应的action中实现自己的业务处理,打包后放到`正确的目录`下解压`weixin-*-server-bin.zip`执行`sh startup.sh start`便可启动服务.
 
 	@ActionAnnotation(msgType = MessageType.text)
 	public class TextAction extends AbstractAction<TextMessage> {
