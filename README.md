@@ -36,7 +36,7 @@ Maven
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
-	    <artifactId>weixin4j-qy-api</artifactId>
+	    <artifactId>weixin4j-mp-api</artifactId>
 	    <version>1.0</version>
 	</dependency>
 微信企业号API
@@ -47,9 +47,9 @@ Maven
 	    <version>1.0</version>
 	</dependency>
 
-直接下载
+直接下载jar包
 
-https://github.com/foxinmy/weixin4j/releases/tag/1.0
+https://github.com/foxinmy/weixin4j/releases
 
 更新LOG
 -------
