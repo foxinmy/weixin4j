@@ -4,7 +4,7 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.foxinmy.weixin4j</groupId>
+		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j-mp</artifactId>
 		<version>${weixin4j.mp.version}</version>
 	</parent>
@@ -18,7 +18,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-					<finalName>${project.name}</finalName>
+					<finalName>weixin4j-mp</finalName>
 				</configuration>
 			</plugin>
 		</plugins>

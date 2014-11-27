@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.foxinmy.weixin4j</groupId>
+	<groupId>com.foxinmy</groupId>
 	<artifactId>weixin4j</artifactId>
-	<version>${weixin4j.version}</version>
+	<version>1.0</version>
 	<packaging>pom</packaging>
 	<name>weixin4j</name>
 	<url>https://github.com/foxinmy/weixin4j</url>
@@ -16,6 +16,11 @@
 			<url>https://github.com/foxinmy/weixin4j/blob/master/LICENSE</url>
 		</license>
 	</licenses>
+	<scm>
+		<url>https://github.com/foxinmy/weixin4j</url>
+		<connection>scm:git:git://github.com/foxinmy/weixin4j.git</connection>
+		<developerConnection>scm:git:git@github.com:foxinmy/weixin4j.git</developerConnection>
+	</scm>
 	<developers>
 		<developer>
 			<email>hujinyuhao@163.com</email>
@@ -34,10 +39,10 @@
 		<module>weixin4j-qy</module>
 	</modules>
 	<properties>
-		<weixin4j.version>1.0</weixin4j.version>
 		<weixin4j.base.version>1.0</weixin4j.base.version>
 		<weixin4j.mp.version>1.0</weixin4j.mp.version>
 		<weixin4j.qy.version>1.0</weixin4j.qy.version>
+		<jdk.version>1.7</jdk.version>
 		<junit.version>4.8.2</junit.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<logback.version>1.0.9</logback.version>
@@ -61,42 +66,17 @@
 		<maven.jar.plugin.version>2.5</maven.jar.plugin.version>
 		<maven.assembly.plugin.version>2.5.1</maven.assembly.plugin.version>
 		<maven.javadoc.plugin.version>2.10.1</maven.javadoc.plugin.version>
+		<maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
 	</properties>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>${maven.source.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven.javadoc.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -154,6 +134,32 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven.source.plugin.version}</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven.javadoc.plugin.version}</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<resources>
@@ -185,7 +191,7 @@
 	</dependencies>
 	<profiles>
 		<profile>
-			<id>default</id>
+			<id>dev</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -193,5 +199,46 @@
 				<maven.test.skip>true</maven.test.skip>
 			</properties>
 		</profile>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${maven.gpg.plugin.version}</version>
+						<executions>
+							<execution>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+		</profile>
 	</profiles>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>oss</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>oss</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 </project>

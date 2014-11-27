@@ -66,7 +66,7 @@ weixin4j-mp
 	bill_path=/tmp/weixin/bill
 	ca_file=/tmp/weixin/xxxxx.p12 | xxxx.pfx
 
-3.在项目根目录下执行`mvn package`命令后得到jar包,将`weixin4j-qy-api-full`包或者`weixin4j-base`跟`weixin4j-mp-api`两个包引入到自己的工程内.
+3.在项目根目录下执行`mvn package`命令后得到jar包,将`weixin4j-mp-full`包或者`weixin4j-base`和`weixin4j-mp-api`两个包引入到自己的工程.
 
     WeixinProxy weixinProxy = new WeixinProxy();
     // weixinProxy = new WeixinProxy(appid,appsecret);

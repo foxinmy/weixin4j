@@ -7,7 +7,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -104,10 +103,10 @@ public class PayUtil {
 	}
 
 	/**
-	 * V2.x版本的PayRequest签名
+	 * sha签名(一般用于V2.x支付接口)
 	 * 
-	 * @param jsPayRequestV2
-	 *            支付请求
+	 * @param obj
+	 *            签名对象
 	 * @param paySignKey
 	 *            支付API的密钥
 	 * @return
@@ -123,10 +122,10 @@ public class PayUtil {
 	}
 
 	/**
-	 * V3.x版本的PayRequest签名
+	 * md5签名(一般用于V3.x支付接口)
 	 * 
-	 * @param jsPayRequestV3
-	 *            支付请求
+	 * @param obj
+	 *           签名对象
 	 * @param paySignKey
 	 *            支付API的密钥
 	 * @return
@@ -192,12 +191,22 @@ public class PayUtil {
 		return JSON.toJSONString(jsPayRequest);
 	}
 
+	/**
+	 * 创建预支付对象
+	 * 
+	 * @param payPackage
+	 *            包含订单信息的对象
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.PayPackageV3
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.PrePay
+	 * @return 预支付对象
+	 */
 	public static PrePay createPrePay(PayPackageV3 payPackage) {
 		PrePay prePay = null;
 		String payJsRequestXml = XStream.to(payPackage).replaceAll("__", "_");
 		HttpRequest request = new HttpRequest();
 		try {
-			Response response = request.post(Consts.UNIFIEDORDER, payJsRequestXml);
+			Response response = request.post(Consts.UNIFIEDORDER,
+					payJsRequestXml);
 			prePay = response.getAsObject(new TypeReference<PrePay>() {
 			});
 		} catch (WeixinException e) {
@@ -211,16 +220,11 @@ public class PayUtil {
 	 * 生成编辑地址请求
 	 * </p>
 	 * 
-	 * err_msg edit_address:ok获取编辑收货地址成功</br>
-	 * edit_address:fail获取编辑收货地址失败</br>
-	 * userName 收货人姓名</br>
-	 * telNumber 收货人电话</br>
-	 * addressPostalCode 邮编</br>
-	 * proviceFirstStageName 国标收货地址第一级地址</br>
-	 * addressCitySecondStageName 国标收货地址第二级地址</br>
-	 * addressCountiesThirdStageName 国标收货地址第三级地址</br>
-	 * addressDetailInfo 详细收货地址信息</br>
-	 * nationalCode 收货地址国家码</br>
+	 * err_msg edit_address:ok获取编辑收货地址成功</br> edit_address:fail获取编辑收货地址失败</br>
+	 * userName 收货人姓名</br> telNumber 收货人电话</br> addressPostalCode 邮编</br>
+	 * proviceFirstStageName 国标收货地址第一级地址</br> addressCitySecondStageName
+	 * 国标收货地址第二级地址</br> addressCountiesThirdStageName 国标收货地址第三级地址</br>
+	 * addressDetailInfo 详细收货地址信息</br> nationalCode 收货地址国家码</br>
 	 * 
 	 * @param appId
 	 *            公众号的ID
@@ -232,22 +236,20 @@ public class PayUtil {
 	 */
 	public static String createAddressRequestJson(String appId, String url,
 			String accessToken) {
-		Map<String, String> param = new HashMap<String, String>();
-		param.put("appId", appId);
-		param.put("url", url);
-		param.put("timeStamp", DateUtil.timestamp2string());
-		param.put("nonceStr", RandomUtil.generateString(16));
-		param.put("accessToken", accessToken);
-		String sign = paysignSha(param, null);
-		JSONObject obj = new JSONObject();
+		Map<String, String> obj = new HashMap<String, String>();
 		obj.put("appId", appId);
+		obj.put("timeStamp", DateUtil.timestamp2string());
+		obj.put("nonceStr", RandomUtil.generateString(16));
+		obj.put("url", url);
+		obj.put("accessToken", accessToken);
+		String sign = paysignSha(obj, null);
+		obj.remove("url");
+		obj.remove("accessToken");
 		obj.put("scope", "jsapi_address");
 		obj.put("signType", SignType.SHA1.name().toLowerCase());
 		obj.put("addrSign", sign);
-		obj.put("timeStamp", param.get("timeStamp"));
-		obj.put("nonceStr", param.get("nonceStr"));
 
-		return obj.toJSONString();
+		return JSON.toJSONString(obj);
 	}
 
 	/**
@@ -297,8 +299,8 @@ public class PayUtil {
 				weixinAccount.getMchId(), productId, timestamp, noncestr);
 	}
 
-	public static String createNativePayRequestV2(WeixinMpAccount weixinAccount,
-			PayPackageV2 payPackage) {
+	public static String createNativePayRequestV2(
+			WeixinMpAccount weixinAccount, PayPackageV2 payPackage) {
 		NativePayResponseV2 payRequest = new NativePayResponseV2(weixinAccount,
 				payPackage);
 		Map<String, String> map = new HashMap<String, String>();

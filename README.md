@@ -26,11 +26,31 @@ weixin4j
 
 2.API的成功调用依赖于正确的appid等数据,其填写格式在每个项目下的README.md文件中都有说明.
 
-3.在`weixin-4j`根目录执行`mvn package`命令得到jar包后,将`weixin4j-*-api-full`包或者`weixin4j-base`跟`weixin4j-*-api`引入到自己的工程.
+3.在`weixin-4j`根目录执行`mvn package`命令得到jar包后,将`weixin4j-*-full`包或者`weixin4j-base`和`weixin4j-*-api`引入到自己的工程.
 
 4.如需使用netty服务,则可以在相应的action中实现自己的业务处理,打包后放到`正确的目录`下解压`weixin-*-server-bin.zip`执行`sh startup.sh start`便可启动服务.
 
-	
+Maven
+-----
+微信公众平台API
+
+	<dependency>
+	    <groupId>com.foxinmy</groupId>
+	    <artifactId>weixin4j-qy-api</artifactId>
+	    <version>1.0</version>
+	</dependency>
+微信企业号API
+
+	<dependency>
+	    <groupId>com.foxinmy</groupId>
+	    <artifactId>weixin4j-qy-api</artifactId>
+	    <version>1.0</version>
+	</dependency>
+
+直接下载
+
+https://github.com/foxinmy/weixin4j/releases/tag/1.0
+
 更新LOG
 -------
 * 2014-10-27

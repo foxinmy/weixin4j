@@ -47,7 +47,7 @@ weixin4j-qy
 	token_path=/tmp/weixin/token
 	media_path=/tmp/weixin/media
 
-3.在项目根目录执行`mvn package`命令后得到jar包,将`weixin4j-qy-api-full`包或者`weixin4j-base`跟`weixin4j-qy-api`两个包引入到自己的工程内.
+3.在项目根目录执行`mvn package`命令后得到jar包,将`weixin4j-qy-full`包或者`weixin4j-base`跟`weixin4j-qy-api`两个包引入到自己的工程内.
 
     WeixinProxy weixinProxy = new WeixinProxy();
     // weixinProxy = new WeixinProxy(corpid,corpsecret);
