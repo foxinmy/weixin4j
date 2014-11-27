@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @since JDK 1.7
  * @see
  */
-public class TmplApi extends BaseApi {
+public class TmplApi extends MpApi {
 
 	private final TokenHolder tokenHolder;
 

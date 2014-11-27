@@ -32,6 +32,7 @@ public class UserTest extends TokenTest {
 		User user = userApi.getUser("owGBft_vbBbOaQOmpEUE4xDLeRSU");
 		Assert.assertNotNull(user);
 		System.out.println(user);
+		following();
 	}
 
 	@Test

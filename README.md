@@ -146,6 +146,10 @@ https://github.com/foxinmy/weixin4j/releases
   + **weixin4j-base**: 将Action跟Mapping基础类并入到项目
   
   + **weixin4j-qy**: 新增netty服务与消息分发
+  
+* 2014-11-27
+
+  + **weixin-base**: 将BaseApi移入
 
 接下来
 ------

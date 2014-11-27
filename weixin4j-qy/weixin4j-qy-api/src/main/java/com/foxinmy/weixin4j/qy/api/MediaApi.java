@@ -29,7 +29,7 @@ import com.foxinmy.weixin4j.util.IOUtil;
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">管理多媒体文件</a>
  * @see com.foxinmy.weixin4j.type.MediaType
  */
-public class MediaApi extends BaseApi {
+public class MediaApi extends QyApi {
 
 	private final TokenHolder tokenHolder;
 

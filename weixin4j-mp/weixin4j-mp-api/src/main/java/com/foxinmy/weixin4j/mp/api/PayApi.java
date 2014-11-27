@@ -68,7 +68,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * @since JDK 1.7
  * @see
  */
-public class PayApi extends BaseApi {
+public class PayApi extends MpApi {
 	private final TokenHolder tokenHolder;
 	private final WeixinMpAccount weixinAccount;
 

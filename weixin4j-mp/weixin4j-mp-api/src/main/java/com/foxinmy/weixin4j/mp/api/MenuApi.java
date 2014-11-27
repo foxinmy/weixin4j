@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @since JDK 1.7
  * @see com.foxinmy.weixin4j.model.Button
  */
-public class MenuApi extends BaseApi {
+public class MenuApi extends MpApi {
 
 	private final TokenHolder tokenHolder;
 

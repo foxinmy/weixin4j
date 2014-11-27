@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE">管理标签</a>
  */
-public class TagApi extends BaseApi {
+public class TagApi extends QyApi {
 	private final TokenHolder tokenHolder;
 
 	public TagApi(TokenHolder tokenHolder) {

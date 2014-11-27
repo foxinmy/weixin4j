@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  *      BB%84%E7%AE%A1%E7%90%86%E6%8E%A5%E5%8F%A3">分组接口</a>
  * @see com.foxinmy.weixin4j.mp.model.Group
  */
-public class GroupApi extends BaseApi {
+public class GroupApi extends MpApi {
 	
 	private final TokenHolder tokenHolder;
 	public GroupApi(TokenHolder tokenHolder) {

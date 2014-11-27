@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @see com.foxinmy.weixin4j.msg.model.News
  * @see com.foxinmy.weixin4j.msg.model.MpNews
  */
-public class NotifyApi extends BaseApi {
+public class NotifyApi extends QyApi {
 
 	private final TokenHolder tokenHolder;
 

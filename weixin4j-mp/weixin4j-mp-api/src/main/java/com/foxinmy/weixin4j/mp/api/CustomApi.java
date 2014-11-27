@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @since JDK 1.7
  * @see <a href="http://dkf.qq.com">多客服说明</a>
  */
-public class CustomApi extends BaseApi {
+public class CustomApi extends MpApi {
 
 	private final TokenHolder tokenHolder;
 

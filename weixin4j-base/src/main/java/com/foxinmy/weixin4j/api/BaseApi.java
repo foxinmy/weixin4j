@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.api;
+package com.foxinmy.weixin4j.api;
 
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -12,20 +12,19 @@ import com.thoughtworks.xstream.core.ClassLoaderReference;
 import com.thoughtworks.xstream.mapper.DefaultMapper;
 
 /**
- * 
+ * API基础
  * @className BaseApi
  * @author jy.hu
  * @date 2014年9月26日
  * @since JDK 1.7
- * @see <a href="http://mp.weixin.qq.com/wiki/index.php">api文档</a>
+ * @see <a href="http://mp.weixin.qq.com/wiki/index.php">微信公众平台API文档</a>
+ * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">微信企业号API文档</a>
  */
 public class BaseApi {
 	protected final HttpRequest request = new HttpRequest();
 	protected final static XStream mapXstream = XStream.get();
-	private final static ResourceBundle weixinBundle;
+	protected static ResourceBundle weixinBundle;
 	static {
-		weixinBundle = ResourceBundle
-				.getBundle("com/foxinmy/weixin4j/mp/api/weixin");
 		mapXstream.alias("xml", Map.class);
 		mapXstream.registerConverter(new Map2ObjectConverter(new DefaultMapper(
 				new ClassLoaderReference(XStream.class.getClassLoader()))));

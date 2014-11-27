@@ -29,7 +29,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3">群发接口</a>
  * @see com.foxinmy.weixin4j.msg.model.MpArticle
  */
-public class MassApi extends BaseApi {
+public class MassApi extends MpApi {
 
 	private final TokenHolder tokenHolder;
 

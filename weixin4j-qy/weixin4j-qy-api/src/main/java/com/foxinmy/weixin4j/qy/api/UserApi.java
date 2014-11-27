@@ -23,7 +23,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98">管理成员说明</a>
  */
-public class UserApi extends BaseApi {
+public class UserApi extends QyApi {
 	private final TokenHolder tokenHolder;
 
 	public UserApi(TokenHolder tokenHolder) {
