@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j-qy</artifactId>
-		<version>${weixin4j.qy.version}</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>weixin4j-qy-api</artifactId>
 	<name>weixin4j-qy-api</name>
@@ -23,4 +23,15 @@
 			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>${jaxen.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+	</dependencies>
 </project>

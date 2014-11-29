@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j-mp</artifactId>
-		<version>${weixin4j.mp.version}</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>weixin4j-mp-server</artifactId>
 	<name>weixin4j-mp-server</name>
@@ -39,7 +39,45 @@
 		<dependency>
 			<groupId>com.foxinmy</groupId>
 			<artifactId>weixin4j-mp-api</artifactId>
-			<version>${weixin4j.mp.version}</version>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>logback-core</artifactId>
+					<groupId>ch.qos.logback</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${jcl.over.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>${log4j.over.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 </project>

@@ -24,14 +24,13 @@ weixin4j
 -------
 1.`weixin4j`包含「微信公众平台」和「微信企业号」的API封装以及一个半成品的netty服务实现.
 
-2.API的成功调用依赖于正确的appid等数据,其填写格式在每个项目下的README.md文件中都有说明.
+2.API的成功调用依赖于正确的appid等数据,填写格式说明见API工程下的README.md文件.
 
-3.在`weixin-4j`根目录执行`mvn package`命令得到jar包后,将`weixin4j-*-full`包或者`weixin4j-base`和`weixin4j-*-api`引入到自己的工程.
+3.如需使用netty服务,可以在相应的action中实现自己的具体业务,打包后放到`正确的目录`下解压`weixin-*-server-bin.zip`执行`sh startup.sh start`便可启动服务.
 
-4.如需使用netty服务,则可以在相应的action中实现自己的业务处理,打包后放到`正确的目录`下解压`weixin-*-server-bin.zip`执行`sh startup.sh start`便可启动服务.
-
-Maven
------
+如何获取
+-------
+###1.maven依赖
 微信公众平台API
 
 	<dependency>
@@ -46,10 +45,20 @@ Maven
 	    <artifactId>weixin4j-qy-api</artifactId>
 	    <version>1.0</version>
 	</dependency>
+以上依赖如果出现Missing artifact错误 请尝试在eclipse里这么做
 
-直接下载jar包
+  + 进入 Window > Show View > Other > Maven Repositories 展开 Global Repositories 在group或者central上右键执行`update index` 操作
+  
+  + 或者进入 Windows > Preferences > Maven 选中 `Download repository index updates on startup` 即可
+
+
+###2.直接下载jar包
 
 https://github.com/foxinmy/weixin4j/releases
+
+###3.从源码打包
+
+`git clone`到本地在根目录下执行`mvn package`命令得到jar包,到target目录下将`weixin4j-*-full`包或者`weixin4j-base`和`weixin4j-*-api`引入到自己的工程.
 
 更新LOG
 -------
@@ -150,7 +159,11 @@ https://github.com/foxinmy/weixin4j/releases
 * 2014-11-27
 
   + **weixin-base**: 将BaseApi移入
+  
+* 2014-11-29
 
+  + 重构了POM
+  
 接下来
 ------
 * 微信小店

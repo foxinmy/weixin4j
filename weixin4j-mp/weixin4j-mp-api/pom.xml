@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j-mp</artifactId>
-		<version>${weixin4j.mp.version}</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>weixin4j-mp-api</artifactId>
 	<name>weixin4j-mp-api</name>
@@ -26,29 +26,37 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
+			<artifactId>poi-ooxml</artifactId>
 			<version>${poi.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-codec</groupId>
 					<artifactId>commons-codec</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>${poi.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml-schemas</artifactId>
-			<version>${poi.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>${jsoup.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${jcl.over.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>${jaxen.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
 </project>

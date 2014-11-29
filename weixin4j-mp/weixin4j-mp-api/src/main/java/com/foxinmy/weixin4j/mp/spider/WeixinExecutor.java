@@ -53,10 +53,8 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * @see
  */
 public class WeixinExecutor implements Serializable {
-
-	private static final long serialVersionUID = 4253859892138066462L;
-
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private static final long serialVersionUID = 4253859892138066462L;
 
 	private final static Map<String, String> accountMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment;
+package com.foxinmy.weixin4j.mp.action;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -13,6 +13,9 @@ import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.http.XmlResult;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
+import com.foxinmy.weixin4j.mp.payment.JsPayNotify;
+import com.foxinmy.weixin4j.mp.payment.PayPackage;
+import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayNotifyV2;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayResponseV2;
 import com.foxinmy.weixin4j.mp.payment.v2.PayFeedback;
