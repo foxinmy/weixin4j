@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.foxinmy</groupId>
 	<artifactId>weixin4j</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>weixin4j</name>
 	<url>https://github.com/foxinmy/weixin4j</url>
@@ -21,6 +21,9 @@
 		<connection>scm:git:git://github.com/foxinmy/weixin4j.git</connection>
 		<developerConnection>scm:git:git@github.com:foxinmy/weixin4j.git</developerConnection>
 	</scm>
+	<issueManagement>
+		<url>https://github.com/foxinmy/weixin4j/issues</url>
+	</issueManagement>
 	<developers>
 		<developer>
 			<email>hujinyuhao@163.com</email>
@@ -29,7 +32,7 @@
 			<url>https://github.com/foxinmy</url>
 			<timezone>8</timezone>
 			<roles>
-				<role>developer</role>
+				<role>java developer</role>
 			</roles>
 		</developer>
 	</developers>
@@ -158,6 +161,15 @@
 							</goals>
 						</execution>
 					</executions>
+					<configuration>
+						<show>public</show>
+						<charset>${project.build.sourceEncoding}</charset>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<docencoding>${project.build.sourceEncoding}</docencoding>
+						<links>
+							<link>http://docs.oracle.com/javase/7/docs/api</link>
+						</links>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
