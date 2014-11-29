@@ -16,7 +16,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-					<finalName>weixin4j-mp</finalName>
+					<finalName>weixin4j-mp-${project.version}</finalName>
 				</configuration>
 			</plugin>
 		</plugins>
