@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.foxinmy</groupId>
 	<artifactId>weixin4j</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>weixin4j</name>
 	<url>https://github.com/foxinmy/weixin4j</url>
@@ -12,14 +12,17 @@
 	<inceptionYear>2014</inceptionYear>
 	<licenses>
 		<license>
-			<name>MIT</name>
-			<url>https://github.com/foxinmy/weixin4j/blob/master/LICENSE</url>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
 	<scm>
 		<url>https://github.com/foxinmy/weixin4j</url>
 		<connection>scm:git:git://github.com/foxinmy/weixin4j.git</connection>
 		<developerConnection>scm:git:git@github.com:foxinmy/weixin4j.git</developerConnection>
+		<tag>HEAD</tag>
 	</scm>
 	<issueManagement>
 		<url>https://github.com/foxinmy/weixin4j/issues</url>
@@ -30,7 +33,7 @@
 			<id>jinyu</id>
 			<name>jinyu</name>
 			<url>https://github.com/foxinmy</url>
-			<timezone>8</timezone>
+			<timezone>+8</timezone>
 			<roles>
 				<role>java developer</role>
 			</roles>
@@ -144,7 +147,7 @@
 						<execution>
 							<id>attach-sources</id>
 							<goals>
-								<goal>jar</goal>
+								<goal>jar-no-fork</goal>
 							</goals>
 						</execution>
 					</executions>
@@ -221,15 +224,6 @@
 	</dependencyManagement>
 	<profiles>
 		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<maven.test.skip>true</maven.test.skip>
-			</properties>
-		</profile>
-		<profile>
 			<id>release</id>
 			<build>
 				<plugins>
@@ -254,11 +248,11 @@
 	</profiles>
 	<distributionManagement>
 		<snapshotRepository>
-			<id>oss</id>
+			<id>oss-snapshot</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</snapshotRepository>
 		<repository>
-			<id>oss</id>
+			<id>oss-release</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
