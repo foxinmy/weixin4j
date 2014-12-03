@@ -20,8 +20,7 @@ import com.foxinmy.weixin4j.xml.XStream;
  * @see com.foxinmy.weixin4j.action.WeixinAction
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractAction<M extends BaseMsg> implements
-		WeixinAction {
+public abstract class AbstractAction<M extends BaseMsg> implements WeixinAction {
 
 	public abstract ResponseMessage execute(M inMessage);
 
@@ -29,11 +28,7 @@ public abstract class AbstractAction<M extends BaseMsg> implements
 	public ResponseMessage execute(String msg) throws DocumentException {
 		BaseMsg message = MessageUtil.xml2msg(msg);
 		if (message == null) {
-			Class<M> messageClass = getGenericType();
-			XStream xstream = XStream.get();
-			xstream.processAnnotations(messageClass);
-			xstream.alias("xml", messageClass);
-			return execute(xstream.fromXML(msg, messageClass));
+			return execute(XStream.get(msg, getGenericType()));
 		}
 		return execute((M) message);
 	}

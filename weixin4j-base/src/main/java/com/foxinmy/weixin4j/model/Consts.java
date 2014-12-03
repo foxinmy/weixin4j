@@ -1,5 +1,12 @@
 package com.foxinmy.weixin4j.model;
-
+/**
+ * 常量类
+ * @className Consts
+ * @author jy
+ * @date 2014年12月3日
+ * @since JDK 1.7
+ * @see
+ */
 public final class Consts {
 	public static final String SUCCESS = "SUCCESS";
 	public static final String FAIL = "FAIL";

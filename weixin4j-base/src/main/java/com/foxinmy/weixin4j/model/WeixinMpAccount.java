@@ -171,8 +171,6 @@ public class WeixinMpAccount extends WeixinAccount {
 				+ partnerKey + ", mchId=" + mchId + ", deviceInfo="
 				+ deviceInfo + ", version=" + version + ", isAlive=" + isAlive
 				+ ", isService=" + isService + ", isSubscribe=" + isSubscribe
-				+ ", getId()=" + getId() + ", getSecret()=" + getSecret()
-				+ ", getToken()=" + getToken() + ", getEncodingAesKey()="
-				+ getEncodingAesKey() + "]";
+				+ ", " + super.toString() + "]";
 	}
 }

@@ -31,25 +31,26 @@ import com.thoughtworks.xstream.mapper.Mapper;
  */
 public class RefundConverter {
 	private final static XStream xStream = XStream.get();
-	private final Mapper mapper;
-	private final ReflectionProvider reflectionProvider;
-
-	public RefundConverter() {
+	private final static Mapper mapper;
+	private final static ReflectionProvider reflectionProvider;
+	private final static Pattern pattern = Pattern.compile("(_\\d)$");
+	static {
 		xStream.processAnnotations(Refund.class);
-		xStream.registerConverter(new RefundConverter.$());
-		this.mapper = xStream.getMapper();
-		this.reflectionProvider = xStream.getReflectionProvider();
+		xStream.processAnnotations(RefundDetail.class);
+		xStream.registerConverter(new $());
+		mapper = xStream.getMapper();
+		reflectionProvider = xStream.getReflectionProvider();
 	}
 
-	public String toXML(Refund refund) {
+	public static String toXML(Refund refund) {
 		return xStream.toXML(refund);
 	}
 
-	public Refund fromXML(String xml) {
+	public static Refund fromXML(String xml) {
 		return xStream.fromXML(xml, Refund.class);
 	}
 
-	private class $ implements Converter {
+	private static class $ implements Converter {
 		@Override
 		public boolean canConvert(@SuppressWarnings("rawtypes") Class clazz) {
 			return clazz.equals(Refund.class);
@@ -67,7 +68,6 @@ public class RefundConverter {
 		public Object unmarshal(HierarchicalStreamReader reader,
 				UnmarshallingContext context) {
 			Refund refund = new Refund();
-			Pattern pattern = Pattern.compile("(_\\d)$");
 			Matcher matcher = null;
 			Map<String, Map<String, String>> outMap = new HashMap<String, Map<String, String>>();
 			while (reader.hasMoreChildren()) {
@@ -108,7 +108,6 @@ public class RefundConverter {
 				detailXml.append("</").append(detailCanonicalName).append(">");
 			}
 			detailXml.append("</list>");
-			xStream.processAnnotations(RefundDetail.class);
 			refund.setDetails(xStream.fromXML(detailXml.toString(), List.class));
 			return refund;
 		}

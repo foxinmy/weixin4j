@@ -56,7 +56,7 @@ public class PayUtil {
 			return createPayJsRequestJsonV3((PayPackageV3) payPackage,
 					weixinAccount);
 		}
-		throw new PayException("-1", "unknown pay");
+		throw new PayException("unknown pay");
 	}
 
 	/**

@@ -26,9 +26,6 @@ public class WeixinQyAccount extends WeixinAccount {
 
 	@Override
 	public String toString() {
-		return "WeixinQyAccount [getTokenUrl()=" + getTokenUrl() + ", getId()="
-				+ getId() + ", getSecret()=" + getSecret() + ", getToken()="
-				+ getToken() + ", getEncodingAesKey()=" + getEncodingAesKey()
-				+ "]";
+		return "WeixinQyAccount [" + super.toString() + "]";
 	}
 }

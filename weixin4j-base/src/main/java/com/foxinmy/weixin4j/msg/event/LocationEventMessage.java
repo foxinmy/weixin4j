@@ -44,17 +44,8 @@ public class LocationEventMessage extends EventMessage {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[LocationEventMessage ,toUserName=").append(
-				super.getToUserName());
-		sb.append(" ,fromUserName=").append(super.getFromUserName());
-		sb.append(" ,msgType=").append(super.getMsgType());
-		sb.append(" ,eventType=").append(super.getEventType().name());
-		sb.append(" ,longitude=").append(longitude);
-		sb.append(" ,latitude=").append(latitude);
-		sb.append(" ,precision=").append(precision);
-		sb.append(" ,createTime=").append(super.getCreateTime());
-		sb.append(" ,msgId=").append(super.getMsgId()).append("]");
-		return sb.toString();
+		return "LocationEventMessage [latitude=" + latitude + ", longitude="
+				+ longitude + ", precision=" + precision + ", "
+				+ super.toString() + "]";
 	}
 }

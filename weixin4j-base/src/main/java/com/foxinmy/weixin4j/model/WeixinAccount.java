@@ -103,7 +103,7 @@ public abstract class WeixinAccount implements Serializable {
 
 	@Override
 	public String toString() {
-		return "WeixinAccount [id=" + id + ", secret=" + secret + ", token="
-				+ token + ", encodingAesKey=" + encodingAesKey + "]";
+		return "id=" + id + ", secret=" + secret + ", token=" + token
+				+ ", encodingAesKey=" + encodingAesKey;
 	}
 }

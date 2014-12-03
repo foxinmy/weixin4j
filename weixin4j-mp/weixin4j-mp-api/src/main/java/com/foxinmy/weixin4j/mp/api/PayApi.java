@@ -582,7 +582,7 @@ public class PayApi extends MpApi {
 			String param = map2xml(map);
 			response = request.post(refundquery_uri, param);
 		}
-		return new RefundConverter().fromXML(response.getAsString());
+		return RefundConverter.fromXML(response.getAsString());
 	}
 
 	/**

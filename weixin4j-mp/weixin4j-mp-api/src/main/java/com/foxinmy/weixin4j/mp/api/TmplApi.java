@@ -28,7 +28,7 @@ public class TmplApi extends MpApi {
 	/**
 	 * 发送模板消息
 	 * 
-	 * @param message
+	 * @param message 消息对象
 	 * @return 发送结果
 	 * @throws WeixinException
 	 * @see <a
@@ -40,9 +40,8 @@ public class TmplApi extends MpApi {
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String template_send_uri = getRequestUri("template_send_uri");
-		String para = JSON.toJSONString(tplMessage);
 		Response response = request.post(
-				String.format(template_send_uri, token.getAccessToken()), para);
+				String.format(template_send_uri, token.getAccessToken()), JSON.toJSONString(tplMessage));
 
 		return response.getAsJsonResult();
 	}
