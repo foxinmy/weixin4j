@@ -26,11 +26,11 @@ weixin4j
 
 2.API的成功调用依赖于正确的appid等数据,填写格式说明见API工程下的README.md文件.
 
-3.如需使用netty服务,可以在相应的action中实现自己的具体业务,打包后启动服务即可,具体详情可参考README.
+3.如需使用netty服务,可以在相应的action中实现自己的具体业务,打包后启动服务即可.
 
 如何获取
 -------
-###1.maven依赖
+###1.maven依赖(目前最新版本1.0)
 微信公众平台API
 
 	<dependency>
