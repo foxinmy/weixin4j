@@ -22,14 +22,14 @@ weixin4j
   
 项目说明
 -------
-1.`weixin4j`包含「微信公众平台」和「微信企业号」的API封装以及一个半成品的netty服务实现.
++ `weixin4j`包含「微信公众平台」和「微信企业号」的API封装以及一个半成品的netty服务实现.
 
-2.API的成功调用依赖于正确的appid等数据,填写格式说明见API工程下的README.md文件.
++ API的成功调用依赖于正确的appid等数据,填写格式说明见API工程下的README.md文件.
 
-3.如需使用netty服务,可以在相应的action中实现自己的具体业务,打包后启动服务即可.
++ 如需使用netty服务,可以在相应的action中实现自己的具体业务,打包后启动服务即可.
 
-如何获取
--------
+如何获取API
+----------
 ###1.maven依赖(目前最新版本1.0)
 微信公众平台API
 
@@ -59,6 +59,12 @@ https://github.com/foxinmy/weixin4j/releases
 ###3.从源码打包
 
 `git clone`到本地在根目录下执行`mvn package`命令得到jar包,到target目录下将`weixin4j-*-full`包或者`weixin4j-base`和`weixin4j-*-api`引入到自己的工程.
+
+如何获取netty部分
+---------------
+netty的代码没有放到maven中心仓库,也没什么意义,因为最终需要自己去实现具体的业务逻辑,
+
+目前的做法是建议下载server部分的源代码复制到自己的工程内,当然你也可以直接在上面进行开发.
 
 更新LOG
 -------
