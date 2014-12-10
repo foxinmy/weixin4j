@@ -17,6 +17,10 @@ hs_err_pid*
 /.classpath
 /.tomcatplugin
 
+# idea ignore
+/.idea
+*.iml
+
 # maven ignore
 target/*
 

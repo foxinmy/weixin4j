@@ -26,7 +26,8 @@ import com.foxinmy.weixin4j.xml.XStream;
  * @since JDK 1.7
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token">微信公众平台获取token说明</a>
- * @see <a href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%BB%E5%8A%A8%E8%B0%83%E7%94%A8">微信企业号获取token说明</a>     
+ * @see <a
+ *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%BB%E5%8A%A8%E8%B0%83%E7%94%A8">微信企业号获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
 public class FileTokenHolder extends AbstractTokenHolder {
@@ -54,9 +55,9 @@ public class FileTokenHolder extends AbstractTokenHolder {
 	@Override
 	public Token getToken() throws WeixinException {
 		String id = weixinAccount.getId();
-		if (StringUtils.isBlank(id) || StringUtils.isBlank(weixinAccount.getSecret())) {
-			throw new IllegalArgumentException(
-					"id or secret not be null!");
+		if (StringUtils.isBlank(id)
+				|| StringUtils.isBlank(weixinAccount.getSecret())) {
+			throw new IllegalArgumentException("id or secret not be null!");
 		}
 		File token_file = new File(String.format("%s/token_%s.xml",
 				ConfigUtil.getValue("token_path"), id));
@@ -67,13 +68,11 @@ public class FileTokenHolder extends AbstractTokenHolder {
 			if (token_file.exists()) {
 				token = XStream.get(new FileInputStream(token_file),
 						Token.class);
-				long expise_time = token.getTime()
-						+ (token.getExpiresIn() * 1000) - 3;
-				if (expise_time > now_time) {
+				long expire_time = token.getTime()
+						+ (token.getExpiresIn() * 1000) - 2;
+				if (expire_time > now_time) {
 					return token;
 				}
-			} else {
-				token_file.createNewFile();
 			}
 			Response response = request.get(weixinAccount.getTokenUrl());
 			token = response.getAsObject(new TypeReference<Token>() {
@@ -81,7 +80,7 @@ public class FileTokenHolder extends AbstractTokenHolder {
 			token.setTime(now_time);
 			XStream.to(token, new FileOutputStream(token_file));
 		} catch (IOException e) {
-			throw new WeixinException("-1", "IO ERROR");
+			throw new WeixinException(e.getMessage());
 		}
 		return token;
 	}

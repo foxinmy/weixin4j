@@ -26,7 +26,7 @@ weixin4j
 
 2.API的成功调用依赖于正确的appid等数据,填写格式说明见API工程下的README.md文件.
 
-3.如需使用netty服务,可以在相应的action中实现自己的具体业务,打包后放到`正确的目录`下解压`weixin-*-server-bin.zip`执行`sh startup.sh start`便可启动服务.
+3.如需使用netty服务,可以在相应的action中实现自己的具体业务,打包后启动服务即可,具体详情可参考README.
 
 如何获取
 -------

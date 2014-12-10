@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.token;
 
+import java.util.Calendar;
+
 import org.apache.commons.lang3.StringUtils;
 
 import redis.clients.jedis.Jedis;
@@ -70,19 +72,19 @@ public class RedisTokenHolder extends AbstractTokenHolder {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
+			Calendar now = Calendar.getInstance();
 			String key = String.format("token:%s", id);
 			String accessToken = jedis.get(key);
 			if (StringUtils.isBlank(accessToken)) {
 				token = request.get(weixinAccount.getTokenUrl()).getAsObject(
 						new TypeReference<Token>() {
 						});
-				jedis.setex(key, token.getExpiresIn() - 3,
+				jedis.setex(key, token.getExpiresIn(),
 						token.getAccessToken());
-				token.setTime(System.currentTimeMillis());
+				token.setTime(now.getTimeInMillis());
 			} else {
 				token = new Token();
 				token.setAccessToken(accessToken);
-				token.setExpiresIn(jedis.ttl(key).intValue());
 			}
 		} catch (JedisException e) {
 			jedisPool.returnBrokenResource(jedis);

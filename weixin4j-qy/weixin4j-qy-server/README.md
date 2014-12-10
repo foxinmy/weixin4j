@@ -30,9 +30,16 @@ weixin4j-qy-server
 	token_path=/tmp/weixin/token
 	media_path=/tmp/weixin/media
 
-2.`mvn package`,得到一个zip的压缩包,解压到启动目录(见`src/main/startup.sh/APP_HOME`)
+2.在对应的action中实现自己的具体业务 如 TextAction 则表示收到文本消息
 
-3.启动netty服务(`com.foxinmy.weixin4j.mp.startup.WeixinQyServerBootstrap`)
+	@Override
+	public ResponseMessage execute(TextMessage inMessage) {
+		return new ResponseMessage(new Text("Hello World!"), inMessage);
+	}
+
+3.`mvn package`,得到一个zip的压缩包,解压到启动目录(见`src/main/startup.sh/APP_HOME`)
+
+4.启动netty服务(`com.foxinmy.weixin4j.mp.startup.WeixinQyServerBootstrap`)
     
     sh startup.sh start
 	
