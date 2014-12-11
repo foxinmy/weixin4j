@@ -106,10 +106,10 @@ public class PayAction {
 		 * bank_type=2032&discount=0&fee_type=1&input_charset=UTF-8&
 		 * notify_id=9fKbVf_qg6y-
 		 * wSjtSMV0PLXeEn2oGfTM1s9dWSvR2B9U6iFQRTzmjrMWKUxvh9mpBLvnh8aqFbC_OFk1pTvFnFUO00Lln4fh
-		 * & out_trade_no=D14102900031&partner=1221928801&product_fee=1&sign=
-		 * B9D6E772C271C9B86B8436FC9F5DFC1A&
-		 * sign_type=MD5&time_end=20141029183707
-		 * &total_fee=1&trade_mode=1&trade_state=0&
+		 * & out_trade_no=D14102900031&partner=1221928801&product_fee=1&
+		 * sign=B9D6E772C271C9B86B8436FC9F5DFC1A&
+		 * sign_type=MD5&time_end=20141029183707&
+		 * total_fee=1&trade_mode=1&trade_state=0&
 		 * transaction_id=1221928801201410296039230054&transport_fee=0
 		 */
 		log.info("jspay_notify_orderinfo,{}", objMap);
@@ -216,8 +216,8 @@ public class PayAction {
 	 * &ltis_subscribe&gt1&lt/is_subscribe&gt</br>
 	 * &ltproduct_id&gt[CDATA[000000]]&lt/product_id&gt</br>
 	 * &ltnonce_str&gt&lt![CDATA[jALldRTHAFd5Tgs5]]&gt&lt/nonce_str&gt</br>
-	 * &ltsign>&lt![CDATA[bafe07f060f22dcda0bfdb4b5ff756f973aecffa]]&gt&lt/sign&
-	 * gt</br> &lt/xml&gt</br>
+	 * &ltsign>&lt![CDATA[bafe07f060f22dcda0bfdb4b5ff756f973aecffa]]&gt
+	 * &lt/sign&gt</br> &lt/xml&gt</br>
 	 * 
 	 * @return
 	 * @throws PayException

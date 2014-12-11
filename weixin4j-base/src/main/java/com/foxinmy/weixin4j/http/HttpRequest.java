@@ -130,7 +130,7 @@ public class HttpRequest {
 	public Response post(String url, String body) throws WeixinException {
 		HttpPost method = new HttpPost(url);
 		method.setEntity(new StringEntity(body, ContentType.create(
-				ContentType.APPLICATION_JSON.getMimeType(), Consts.UTF_8)));
+				ContentType.DEFAULT_TEXT.getMimeType(), Consts.UTF_8)));
 		return doRequest(method);
 	}
 
@@ -222,8 +222,8 @@ public class HttpRequest {
 	}
 
 	private void checkJson(Response response) throws WeixinException {
-		response.setJsonResult(true);
 		JsonResult jsonResult = response.getAsJsonResult();
+		response.setJsonResult(true);
 		if (jsonResult.getCode() != 0) {
 			if (StringUtils.isBlank(jsonResult.getDesc())) {
 				jsonResult = response.getTextError(jsonResult.getCode());
@@ -234,7 +234,6 @@ public class HttpRequest {
 	}
 
 	private void checkXml(Response response) throws WeixinException {
-		response.setXmlResult(true);
 		XmlResult xmlResult = null;
 		try {
 			xmlResult = response.getAsXmlResult();
@@ -250,6 +249,7 @@ public class HttpRequest {
 			response.setText(newXml);
 			xmlResult = response.getAsXmlResult();
 		}
+		response.setXmlResult(true);
 		if (xmlResult.getReturnCode().equals("0")) {
 			return;
 		}

@@ -125,7 +125,7 @@ public class PayUtil {
 	 * md5签名(一般用于V3.x支付接口)
 	 * 
 	 * @param obj
-	 *           签名对象
+	 *            签名对象
 	 * @param paySignKey
 	 *            支付API的密钥
 	 * @return
@@ -192,7 +192,7 @@ public class PayUtil {
 	}
 
 	/**
-	 * 创建预支付对象
+	 * 创建预支付对象</br> <font color="red">此方法并不包含签名,需要自己传入一个完整并且合法的PayPackage</font>
 	 * 
 	 * @param payPackage
 	 *            包含订单信息的对象
@@ -200,19 +200,22 @@ public class PayUtil {
 	 * @see com.foxinmy.weixin4j.mp.payment.v3.PrePay
 	 * @return 预支付对象
 	 */
-	public static PrePay createPrePay(PayPackageV3 payPackage) {
-		PrePay prePay = null;
+	public static PrePay createPrePay(PayPackageV3 payPackage)
+			throws PayException {
+		if (StringUtils.isBlank(payPackage.getSign())) {
+			// String paySignKey = weixinAccount.getPaySignKey();
+			// payPackage.setSign(paysignMd5(payPackage, paySignKey));
+		}
 		String payJsRequestXml = XStream.to(payPackage).replaceAll("__", "_");
 		HttpRequest request = new HttpRequest();
+		Response response = null;
 		try {
-			Response response = request.post(Consts.UNIFIEDORDER,
-					payJsRequestXml);
-			prePay = response.getAsObject(new TypeReference<PrePay>() {
+			response = request.post(Consts.UNIFIEDORDER, payJsRequestXml);
+			return response.getAsObject(new TypeReference<PrePay>() {
 			});
 		} catch (WeixinException e) {
-			prePay = new PrePay(e.getErrorCode(), e.getErrorMsg());
+			throw new PayException(e.getErrorCode(), e.getErrorMsg());
 		}
-		return prePay;
 	}
 
 	/**
