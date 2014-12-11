@@ -24,7 +24,7 @@
 		<dependencySet>
 			<unpack>true</unpack>
 			<includes>
-				<include>com.foxinmy.weixin4j:weixin4j-base</include>
+				<include>com.foxinmy:weixin4j-base</include>
 			</includes>
 		</dependencySet>
 	</dependencySets>
