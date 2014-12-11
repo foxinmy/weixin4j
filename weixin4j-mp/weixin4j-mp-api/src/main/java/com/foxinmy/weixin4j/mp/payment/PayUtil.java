@@ -208,9 +208,8 @@ public class PayUtil {
 		}
 		String payJsRequestXml = XStream.to(payPackage).replaceAll("__", "_");
 		HttpRequest request = new HttpRequest();
-		Response response = null;
 		try {
-			response = request.post(Consts.UNIFIEDORDER, payJsRequestXml);
+			Response response = request.post(Consts.UNIFIEDORDER, payJsRequestXml);
 			return response.getAsObject(new TypeReference<PrePay>() {
 			});
 		} catch (WeixinException e) {
