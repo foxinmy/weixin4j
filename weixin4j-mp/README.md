@@ -139,3 +139,7 @@ weixin4j-mp
   + **weixin4j-mp-api**: 重新定义(手贱)了「被动消息」「客服消息」「群发消息」的传输实体
   
   + **weixin4j-mp-server**: `WeixinServerBootstrap`重命名为`WeixinMpServerBootstrap`
+  
+ * 2014-12-12
+
+  + **weixin4j-mp-api**: 新增设置`模板消息所处行业`、`获取模板消息ID`接口

@@ -39,6 +39,7 @@ import com.foxinmy.weixin4j.mp.payment.RefundResult;
 import com.foxinmy.weixin4j.mp.payment.v2.Order;
 import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
+import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.msg.model.Base;
 import com.foxinmy.weixin4j.msg.model.MpArticle;
 import com.foxinmy.weixin4j.msg.model.Video;
@@ -691,6 +692,40 @@ public class WeixinProxy {
 	public File getQR(QRParameter parameter) throws WeixinException,
 			IOException {
 		return qrApi.getQR(parameter);
+	}
+
+	/**
+	 * 设置所属行业(每月可修改行业1次，账号仅可使用所属行业中相关的模板)
+	 * 
+	 * @param industryType
+	 *            所处行业 目前不超过两个
+	 * @return 操作结果
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.type.IndustryType
+	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
+	 * @see <a href="http://mp.weixin.qq.com/wiki/17/304
+	 *      c1885ea66dbedf7dc170d84999a9d
+	 *      .html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1
+	 *      .9E.E8.A1.8C.E4.B8.9A">设置所处行业</a>
+	 */
+	public JsonResult setTmplIndustry(IndustryType... industryType)
+			throws WeixinException {
+		return tmplApi.setTmplIndustry(industryType);
+	}
+
+	/**
+	 * 获取模板ID
+	 * 
+	 * @param shortId
+	 *            模板库中模板的编号，有“TM**”和“OPENTMTM**”等形式
+	 * @return 模板ID
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E8.8E.B7.E5.BE.97.E6.A8.A1.E6.9D.BFID">获得模板ID</a>
+	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
+	 */
+	public String getTemplateId(String shortId) throws WeixinException {
+		return tmplApi.getTemplateId(shortId);
 	}
 
 	/**

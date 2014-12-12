@@ -9,6 +9,7 @@ import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
 import com.foxinmy.weixin4j.mp.message.TemplateMessage;
 import com.foxinmy.weixin4j.mp.test.TokenTest;
+import com.foxinmy.weixin4j.mp.type.IndustryType;
 
 public class TemplateMsgTest extends TokenTest {
 	private TmplApi tmplApi;
@@ -16,6 +17,17 @@ public class TemplateMsgTest extends TokenTest {
 	@Before
 	public void init() {
 		this.tmplApi = new TmplApi(tokenHolder);
+	}
+
+	@Test
+	public void setIndustry() throws WeixinException {
+		System.out.println(tmplApi
+				.setTmplIndustry(IndustryType.ITKEJI_DIANZIJISHU));
+	}
+
+	@Test
+	public void getid() throws WeixinException {
+		System.out.println(tmplApi.getTemplateId("OPENTM201490080"));
 	}
 
 	@Test
