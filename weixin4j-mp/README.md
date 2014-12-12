@@ -140,6 +140,6 @@ weixin4j-mp
   
   + **weixin4j-mp-server**: `WeixinServerBootstrap`重命名为`WeixinMpServerBootstrap`
   
- * 2014-12-12
+* 2014-12-12
 
   + **weixin4j-mp-api**: 新增设置`模板消息所处行业`、`获取模板消息ID`接口
