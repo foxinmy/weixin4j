@@ -85,8 +85,8 @@ public class XmlResult implements Serializable {
 
 	@Override
 	public String toString() {
-		return "XmlResult [returnCode=" + returnCode + ", returnMsg="
-				+ returnMsg + ", resultCode=" + resultCode + ", errCode="
-				+ errCode + ", errCodeDes=" + errCodeDes + "]";
+		return "returnCode=" + returnCode + ", returnMsg=" + returnMsg
+				+ ", resultCode=" + resultCode + ", errCode=" + errCode
+				+ ", errCodeDes=" + errCodeDes;
 	}
 }

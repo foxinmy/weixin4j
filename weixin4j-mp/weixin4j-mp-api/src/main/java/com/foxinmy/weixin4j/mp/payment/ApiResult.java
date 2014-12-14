@@ -95,8 +95,8 @@ public class ApiResult extends XmlResult {
 
 	@Override
 	public String toString() {
-		return "ApiResult [appId=" + appId + ", mchId=" + mchId + ", subMchId="
-				+ subMchId + ", nonceStr=" + nonceStr + ", sign=" + sign
-				+ ", deviceInfo=" + deviceInfo + ", recall=" + recall + "]";
+		return "appId=" + appId + ", mchId=" + mchId + ", subMchId=" + subMchId
+				+ ", nonceStr=" + nonceStr + ", sign=" + sign + ", deviceInfo="
+				+ deviceInfo + ", recall=" + recall + ", " + super.toString();
 	}
 }

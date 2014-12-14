@@ -87,8 +87,8 @@ public class PayBaseInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PayBaseInfo [appId=" + appId + ", timeStamp=" + timeStamp
+		return "appId=" + appId + ", timeStamp=" + timeStamp
 				+ ", nonceStr=" + nonceStr + ", paySign=" + paySign
-				+ ", signType=" + signType + "]";
+				+ ", signType=" + signType;
 	}
 }

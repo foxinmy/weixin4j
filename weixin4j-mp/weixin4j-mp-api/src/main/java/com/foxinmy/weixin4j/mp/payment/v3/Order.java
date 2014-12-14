@@ -125,12 +125,6 @@ public class Order extends ApiResult {
 				+ ", couponFee=" + couponFee + ", feeType=" + feeType
 				+ ", transactionId=" + transactionId + ", outTradeNo="
 				+ outTradeNo + ", attach=" + attach + ", timeEnd=" + timeEnd
-				+ ", getAppId()=" + getAppId() + ", getMchId()=" + getMchId()
-				+ ", getNonceStr()=" + getNonceStr() + ", getSign()="
-				+ getSign() + ", getDeviceInfo()=" + getDeviceInfo()
-				+ ", getReturnCode()=" + getReturnCode() + ", getReturnMsg()="
-				+ getReturnMsg() + ", getResultCode()=" + getResultCode()
-				+ ", getErrCode()=" + getErrCode() + ", getErrCodeDes()="
-				+ getErrCodeDes() + "]";
+				+ ", " + super.toString() + "]";
 	}
 }

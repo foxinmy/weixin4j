@@ -32,10 +32,7 @@ public class PayWarn extends PayBaseInfo {
 	@Override
 	public String toString() {
 		return "PayWarn [errortype=" + errortype + ", description="
-				+ description + ", alarmcontent=" + alarmcontent
-				+ ", getAppId()=" + getAppId() + ", getTimeStamp()="
-				+ getTimeStamp() + ", getNonceStr()=" + getNonceStr()
-				+ ", getPaySign()=" + getPaySign() + ", getSignType()="
-				+ getSignType() + "]";
+				+ description + ", alarmcontent=" + alarmcontent + ", "
+				+ super.toString() + "]";
 	}
 }

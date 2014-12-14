@@ -59,10 +59,6 @@ public class JsPayRequestV2 extends PayRequest {
 
 	@Override
 	public String toString() {
-		return "JsPayRequestV2 [getPackageInfo()=" + getPackageInfo()
-				+ ", getAppId()=" + getAppId() + ", getTimeStamp()="
-				+ getTimeStamp() + ", getNonceStr()=" + getNonceStr()
-				+ ", getPaySign()=" + getPaySign() + ", getSignType()="
-				+ getSignType() + "]";
+		return "JsPayRequestV2 [" + super.toString() + "]";
 	}
 }

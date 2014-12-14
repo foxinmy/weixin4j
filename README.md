@@ -174,6 +174,16 @@ netty的代码没有放到maven中心仓库,也没什么意义,因为最终需�
 
   + **weixin4j-mp**: 新增设置`模板消息所处行业`、`获取模板消息ID`接口
   
+* 2014-12-15
+
+  + 修改某些函数在注释上的参数描述错误
+  
+  + 调整PayUtil类中`createPayJsRequestJsonV3`的形参位置,`notify_url`与`spbill_create_ip`对换与V2保持一致
+  
+  + 在PayUtil类中新增paySign重载版本函数,避免在某些地方产生歧义造成签名错误(appid,appKey)
+  
+  + 修正V3版本JSAPI接口支付签名错误bug(坑)
+  
 接下来
 ------
 * 微信小店

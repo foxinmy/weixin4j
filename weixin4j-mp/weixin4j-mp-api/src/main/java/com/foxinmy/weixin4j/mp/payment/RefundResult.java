@@ -112,13 +112,7 @@ public class RefundResult extends ApiResult {
 				+ ", refundFee=" + refundFee + ", couponRefundFee="
 				+ couponRefundFee + ", recvUserId=" + recvUserId
 				+ ", reccvUserName=" + reccvUserName + ", signKeyIndex="
-				+ signKeyIndex + ", signType=" + signType + ", getAppId()="
-				+ getAppId() + ", getMchId()=" + getMchId()
-				+ ", getSubMchId()=" + getSubMchId() + ", getNonceStr()="
-				+ getNonceStr() + ", getSign()=" + getSign()
-				+ ", getDeviceInfo()=" + getDeviceInfo() + ", getReturnCode()="
-				+ getReturnCode() + ", getReturnMsg()=" + getReturnMsg()
-				+ ", getResultCode()=" + getResultCode() + ", getErrCode()="
-				+ getErrCode() + ", getErrCodeDes()=" + getErrCodeDes() + "]";
+				+ signKeyIndex + ", signType=" + signType + ", "
+				+ super.toString() + "]";
 	}
 }

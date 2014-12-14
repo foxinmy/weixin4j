@@ -67,7 +67,7 @@ public class MediaApi extends QyApi {
 	 * @throws WeixinException
 	 * @throws IOException
 	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#uploadMedia(File, byte[],String)}
+	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#uploadMedia(String, byte[],String)}
 	 */
 	public String uploadMedia(File file, MediaType mediaType)
 			throws WeixinException, IOException {

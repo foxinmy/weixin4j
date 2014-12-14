@@ -15,12 +15,11 @@ public class PayRequest extends PayBaseInfo {
 	private String packageInfo;
 
 	public PayRequest() {
-		this(null, null);
+		super(null, DateUtil.timestamp2string(), RandomUtil.generateString(16));
 	}
 
 	public PayRequest(String appId, String packageInfo) {
-		super(appId, DateUtil.timestamp2string(), RandomUtil
-				.generateString(16));
+		super(appId, DateUtil.timestamp2string(), RandomUtil.generateString(16));
 		this.packageInfo = packageInfo;
 	}
 
@@ -30,5 +29,10 @@ public class PayRequest extends PayBaseInfo {
 
 	public void setPackageInfo(String packageInfo) {
 		this.packageInfo = packageInfo;
+	}
+
+	@Override
+	public String toString() {
+		return "package" + packageInfo + ", " + super.toString();
 	}
 }

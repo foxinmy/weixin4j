@@ -47,9 +47,6 @@ public class NativePayResponseV2 extends JsPayRequestV2 {
 	@Override
 	public String toString() {
 		return "NativePayResponseV2 [retCode=" + retCode + ", retMsg=" + retMsg
-				+ ", getPackageInfo()=" + getPackageInfo() + ", getAppId()="
-				+ getAppId() + ", getTimeStamp()=" + getTimeStamp()
-				+ ", getNonceStr()=" + getNonceStr() + ", getPaySign()="
-				+ getPaySign() + ", getSignType()=" + getSignType() + "]";
+				+ ", " + super.toString() + "]";
 	}
 }

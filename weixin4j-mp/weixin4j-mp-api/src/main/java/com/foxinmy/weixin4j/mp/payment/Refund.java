@@ -62,12 +62,6 @@ public class Refund extends ApiResult {
 		return "Refund [transactionId=" + transactionId + ", orderNo="
 				+ orderNo + ", subMchId=" + subMchId + ", count=" + count
 				+ ", partner=" + partner + ", details=" + details
-				+ ", getAppId()=" + getAppId() + ", getMchId()=" + getMchId()
-				+ ", getNonceStr()=" + getNonceStr() + ", getSign()="
-				+ getSign() + ", getDeviceInfo()=" + getDeviceInfo()
-				+ ", getReturnCode()=" + getReturnCode() + ", getReturnMsg()="
-				+ getReturnMsg() + ", getResultCode()=" + getResultCode()
-				+ ", getErrCode()=" + getErrCode() + ", getErrCodeDes()="
-				+ getErrCodeDes() + "]";
+				+ ", " + super.toString() + "]";
 	}
 }

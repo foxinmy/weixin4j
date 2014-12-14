@@ -9,7 +9,9 @@ import org.apache.commons.lang3.StringUtils;
  * @author jy
  * @date 2014年8月17日
  * @since JDK 1.7
- * @see
+ * @see<a href=
+ *        "https://mp.weixin.qq.com/advanced/advanced?action=dev&t=advanced/dev&token=836970804&lang=zh_CN"
+ *        >开发者模式</a>
  */
 public class WeixinMpAccount extends WeixinAccount {
 	private static final long serialVersionUID = 3689999353867189585L;
@@ -28,13 +30,6 @@ public class WeixinMpAccount extends WeixinAccount {
 	private String deviceInfo;
 	// 微信支付版本号(如果无则按照mchId来做判断)
 	private int version;
-
-	// 是否已经认证
-	private boolean isAlive;
-	// 是否是服务号
-	private boolean isService;
-	// 是否是订阅号
-	private boolean isSubscribe;
 
 	@Override
 	public String getTokenUrl() {
@@ -87,30 +82,6 @@ public class WeixinMpAccount extends WeixinAccount {
 
 	public void setDeviceInfo(String deviceInfo) {
 		this.deviceInfo = deviceInfo;
-	}
-
-	public boolean getIsAlive() {
-		return isAlive;
-	}
-
-	public void setIsAlive(Boolean isAlive) {
-		this.isAlive = isAlive;
-	}
-
-	public boolean getIsService() {
-		return isService;
-	}
-
-	public void setIsService(Boolean isService) {
-		this.isService = isService;
-	}
-
-	public boolean getIsSubscribe() {
-		return isSubscribe;
-	}
-
-	public void setIsSubscribe(Boolean isSubscribe) {
-		this.isSubscribe = isSubscribe;
 	}
 
 	public int getVersion() {
@@ -169,8 +140,7 @@ public class WeixinMpAccount extends WeixinAccount {
 		return "WeixinMpAccount [openId=" + openId + ", paySignKey="
 				+ paySignKey + ", partnerId=" + partnerId + ", partnerKey="
 				+ partnerKey + ", mchId=" + mchId + ", deviceInfo="
-				+ deviceInfo + ", version=" + version + ", isAlive=" + isAlive
-				+ ", isService=" + isService + ", isSubscribe=" + isSubscribe
-				+ ", " + super.toString() + "]";
+				+ deviceInfo + ", version=" + version + ", " + super.toString()
+				+ "]";
 	}
 }

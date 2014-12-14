@@ -11,8 +11,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * V3支付的订单详情</br>
- * 注意: <font color="red">total_fee字段传入时单位为元,创建支付时会转换为分</font>
+ * V3支付的订单详情</br> 注意: <font color="red">total_fee字段传入时单位为元,创建支付时会转换为分</font>
  * 
  * @className PayPackageV3
  * @author jy
@@ -41,13 +40,13 @@ public class PayPackageV3 extends PayPackage {
 	public PayPackageV3(WeixinMpAccount weixinAccount, String openId,
 			String body, String out_trade_no, double total_fee,
 			String spbill_create_ip, TradeType tradeType) {
-		this(weixinAccount, openId, body, null, out_trade_no, total_fee,
-				spbill_create_ip, null, tradeType);
+		this(weixinAccount, openId, body, null, out_trade_no, total_fee, null,
+				spbill_create_ip, tradeType);
 	}
 
 	public PayPackageV3(WeixinMpAccount weixinAccount, String openId,
 			String body, String attach, String out_trade_no, double total_fee,
-			String spbill_create_ip, String notify_url, TradeType tradeType) {
+			String notify_url, String spbill_create_ip, TradeType tradeType) {
 		this(weixinAccount.getId(), weixinAccount.getMchId(), weixinAccount
 				.getDeviceInfo(), RandomUtil.generateString(16), body, attach,
 				out_trade_no, total_fee, spbill_create_ip, null, null, null,

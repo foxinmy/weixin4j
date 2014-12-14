@@ -92,7 +92,7 @@ public class WeixinProxy {
 	/**
 	 * WeixinAccount对象
 	 * 
-	 * @param weixinAccount
+	 * @param weixinAccount 微信账户
 	 */
 	public WeixinProxy(WeixinMpAccount weixinAccount) {
 		this(new FileTokenHolder(weixinAccount));
@@ -158,7 +158,7 @@ public class WeixinProxy {
 	 * 
 	 * @param fileName
 	 *            文件名
-	 * @param bytes
+	 * @param data
 	 *            媒体数据包
 	 * @param mediaType
 	 *            媒体类型
@@ -341,8 +341,8 @@ public class WeixinProxy {
 	 * 
 	 * @param articles
 	 *            图文列表
-	 * @param openIds
-	 *            openId列表
+	 * @param groupId
+	 *            分组ID
 	 * @return 群发后的消息ID
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByGroupId(Base,int)}
 	 * @throws WeixinException
@@ -405,7 +405,8 @@ public class WeixinProxy {
 	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3#.E5.88.A0.E9.99.A4.E7.BE.A4.E5.8F.91">删除群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByGroupId(Base, int)}
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(Base, String...)
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(Base, String...)
+
 	 */
 	public JsonResult deleteMassNews(String msgid) throws WeixinException {
 		return massApi.deleteMassNews(msgid);
@@ -439,7 +440,6 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#getAccessToken(String)}
 	 */
 	public User getUser(OauthToken token) throws WeixinException {
 		return userApi.getUser(token);
@@ -650,7 +650,6 @@ public class WeixinProxy {
 	 * @return byte数据包
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.QrApi
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy.QrApi#getQR(QRParameter)}
 	 */
 	public byte[] getQRData(QRParameter parameter) throws WeixinException {
 		return qrApi.getQRData(parameter);
@@ -666,7 +665,7 @@ public class WeixinProxy {
 	 * @return byte数据包
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.QrApi
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy.QrApi#getQR(QRParameter)}
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#getQR(QRParameter)}
 	 */
 	public byte[] getQRData(int sceneId, int expireSeconds)
 			throws WeixinException {
@@ -731,7 +730,7 @@ public class WeixinProxy {
 	/**
 	 * 发送模板消息
 	 * 
-	 * @param message
+	 * @param tplMessage 模板消息主体
 	 * @return 发送结果
 	 * @throws WeixinException
 	 * @see <a

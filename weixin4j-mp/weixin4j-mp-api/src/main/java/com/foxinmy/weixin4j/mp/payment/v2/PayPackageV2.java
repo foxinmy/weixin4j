@@ -104,9 +104,9 @@ public class PayPackageV2 extends PayPackage {
 	}
 
 	public PayPackageV2(String body, String out_trade_no, double total_fee,
-			String spbill_create_ip) {
-		this(body, null, null, out_trade_no, total_fee, null, spbill_create_ip,
-				null, null, 0d, 0d, null);
+			String notify_url, String spbill_create_ip) {
+		this(body, null, null, out_trade_no, total_fee, notify_url,
+				spbill_create_ip, null, null, 0d, 0d, null);
 	}
 
 	public PayPackageV2(String body, String partner, String out_trade_no,

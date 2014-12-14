@@ -30,12 +30,7 @@ public class NativePayNotifyV3 extends ApiResult {
 
 	@Override
 	public String toString() {
-		return "NativePayNotifyV3 [mchId=" + getMchId() + ", productId="
-				+ productId + ", getAppId()=" + getAppId() + ", getNonceStr()="
-				+ getNonceStr() + ", getSign()=" + getSign()
-				+ ", getDeviceInfo()=" + getDeviceInfo() + ", getReturnCode()="
-				+ getReturnCode() + ", getReturnMsg()=" + getReturnMsg()
-				+ ", getResultCode()=" + getResultCode() + ", getErrCode()="
-				+ getErrCode() + ", getErrCodeDes()=" + getErrCodeDes() + "]";
+		return "NativePayNotifyV3 [productId=" + productId + ", "
+				+ super.toString() + "]";
 	}
 }

@@ -236,15 +236,17 @@ public class PayAction {
 				"商品描述", "系统内部订单号", 1d, "IP地址", TradeType.NATIVE);
 		payPackage.setProduct_id(payNotify.getProductId());
 		if (!sign.equals(valid_sign)) {
-			NativePayResponseV3 payReponse = new NativePayResponseV3(
-					payPackage, "签名失败", null);
+			// 校验失败
+			NativePayResponseV3 payReponse = new NativePayResponseV3("签名失败",
+					null);
 			payReponse.setSign(PayUtil.paysignMd5(payReponse,
 					weixinAccount.getPaySignKey()));
 			return XStream.to(payReponse);
 
 		}
+		// 成功返回
 		NativePayResponseV3 payReponse = new NativePayResponseV3(payPackage,
-				null, null);
+				weixinAccount.getPaySignKey());
 		payReponse.setSign(PayUtil.paysignMd5(payReponse,
 				weixinAccount.getPaySignKey()));
 		return XStream.to(payReponse);
@@ -298,7 +300,8 @@ public class PayAction {
 		obj.put("openid", feedback.getOpenId());
 		obj.put("appid", feedback.getAppId());
 		obj.put("timestamp", feedback.getTimeStamp());
-		String sign = PayUtil.paysignSha(obj, weixinAccount.getPaySignKey());
+		obj.put("appkey", weixinAccount.getPaySignKey());
+		String sign = PayUtil.paysignSha(obj);
 		log.info("微信签名----->sign={},vaild_sign={}", sign, feedback.getPaySign());
 		return "success";
 	}

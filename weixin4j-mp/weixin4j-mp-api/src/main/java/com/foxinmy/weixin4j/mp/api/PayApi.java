@@ -100,21 +100,21 @@ public class PayApi extends MpApi {
 		String delivernotify_uri = getRequestUri("delivernotify_uri");
 		Token token = tokenHolder.getToken();
 
-		Map<String, String> param = new HashMap<String, String>();
-		param.put("appid", weixinAccount.getId());
-		param.put("appkey", weixinAccount.getPaySignKey());
-		param.put("openid", openId);
-		param.put("transid", transid);
-		param.put("out_trade_no", outTradeNo);
-		param.put("deliver_timestamp", DateUtil.timestamp2string());
-		param.put("deliver_status", status ? "1" : "0");
-		param.put("deliver_msg", statusMsg);
-		param.put("app_signature", PayUtil.paysignSha(param, null));
-		param.put("sign_method", SignType.SHA1.name().toLowerCase());
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("appid", weixinAccount.getId());
+		map.put("appkey", weixinAccount.getPaySignKey());
+		map.put("openid", openId);
+		map.put("transid", transid);
+		map.put("out_trade_no", outTradeNo);
+		map.put("deliver_timestamp", DateUtil.timestamp2string());
+		map.put("deliver_status", status ? "1" : "0");
+		map.put("deliver_msg", statusMsg);
+		map.put("app_signature", PayUtil.paysignSha(map));
+		map.put("sign_method", SignType.SHA1.name().toLowerCase());
 
 		Response response = request.post(
 				String.format(delivernotify_uri, token.getAccessToken()),
-				JSON.toJSONString(param));
+				JSON.toJSONString(map));
 
 		return response.getAsJsonResult();
 	}
@@ -146,7 +146,7 @@ public class PayApi extends MpApi {
 		obj.put("appkey", weixinAccount.getPaySignKey());
 		obj.put("package", sb.toString());
 		obj.put("timestamp", timestamp);
-		String signature = PayUtil.paysignSha(obj, null);
+		String signature = PayUtil.paysignSha(obj);
 
 		obj.clear();
 		obj.put("appid", weixinAccount.getId());

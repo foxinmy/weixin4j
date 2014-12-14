@@ -22,13 +22,14 @@ import com.foxinmy.weixin4j.mp.payment.v3.PayRequestV3;
 import com.foxinmy.weixin4j.mp.payment.v3.PrePay;
 import com.foxinmy.weixin4j.mp.type.SignType;
 import com.foxinmy.weixin4j.mp.type.TradeType;
+import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.xml.XStream;
 
 /**
- * 支付工具类
+ * 支付工具类(JSAPI,NATIVE,MicroPay)
  * 
  * @className PayUtil
  * @author jy
@@ -42,9 +43,9 @@ public class PayUtil {
 	 * 
 	 * @param payPackage
 	 *            订单信息
-	 * @param weixinConfig
-	 *            appid等信息
-	 * @return
+	 * @param WeixinMpAccount
+	 *            商户信息
+	 * @return 支付json串
 	 * @throws PayException
 	 */
 	public static String createPayJsRequestJson(PayPackage payPackage,
@@ -64,9 +65,9 @@ public class PayUtil {
 	 * 
 	 * @param payPackage
 	 *            订单信息
-	 * @param weixinConfig
-	 *            appid等信息
-	 * @return
+	 * @param weixinAccount
+	 *            商户信息
+	 * @return 支付json串
 	 */
 	public static String createPayJsRequestJsonV2(PayPackageV2 payPackage,
 			WeixinMpAccount weixinAccount) {
@@ -89,15 +90,17 @@ public class PayUtil {
 	 * @param orderNo
 	 *            订单号
 	 * @param orderFee
-	 *            订单总额
+	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
 	 * @param ip
-	 * @param weixinConfig
-	 *            appid等信息
-	 * @return
+	 * @param weixinAccount
+	 *            商户信息
+	 * @return 支付json串
 	 */
 	public static String createPayJsRequestJsonV2(String body, String orderNo,
-			double orderFee, String ip, WeixinMpAccount weixinAccount) {
-		PayPackageV2 payPackage = new PayPackageV2(body, orderNo, orderFee, ip);
+			double orderFee, String notify_url, String ip,
+			WeixinMpAccount weixinAccount) {
+		PayPackageV2 payPackage = new PayPackageV2(body, orderNo, orderFee,
+				notify_url, ip);
 		payPackage.setPartner(weixinAccount.getPartnerId());
 		return createPayJsRequestJsonV2(payPackage, weixinAccount);
 	}
@@ -107,16 +110,26 @@ public class PayUtil {
 	 * 
 	 * @param obj
 	 *            签名对象
+	 * @return
+	 */
+	public static String paysignSha(Object obj) {
+		return DigestUtils
+				.sha1Hex(MapUtil.toJoinString(obj, false, true, null));
+	}
+
+	/**
+	 * sha签名(一般用于V2.x支付接口)
+	 * 
+	 * @param obj
+	 *            签名对象
 	 * @param paySignKey
-	 *            支付API的密钥
+	 *            支付API的密钥<font color="red">请注意排序放进去的是put("appKey",
+	 *            paySignKey)</font>
 	 * @return
 	 */
 	public static String paysignSha(Object obj, String paySignKey) {
-		Map<String, String> extra = null;
-		if (StringUtils.isNotBlank(paySignKey)) {
-			extra = new HashMap<String, String>();
-			extra.put("appKey", paySignKey);
-		}
+		Map<String, String> extra = new HashMap<String, String>();
+		extra.put("appKey", paySignKey);
 		return DigestUtils.sha1Hex(MapUtil
 				.toJoinString(obj, false, true, extra));
 	}
@@ -152,8 +165,9 @@ public class PayUtil {
 	 * @param orderNo
 	 *            订单号
 	 * @param orderFee
-	 *            订单总额
+	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
 	 * @param ip
+	 *            ip地址
 	 * @param notifyUrl
 	 *            支付通知地址
 	 * @param weixinAccount
@@ -162,7 +176,7 @@ public class PayUtil {
 	 * @throws PayException
 	 */
 	public static String createPayJsRequestJsonV3(String openId, String body,
-			String orderNo, double orderFee, String ip, String notifyUrl,
+			String orderNo, double orderFee, String notifyUrl, String ip,
 			WeixinMpAccount weixinAccount) throws PayException {
 		PayPackageV3 payPackage = new PayPackageV3(weixinAccount, openId, body,
 				orderNo, orderFee, ip, TradeType.JSAPI);
@@ -175,43 +189,54 @@ public class PayUtil {
 	 * 
 	 * @param payPackage
 	 *            订单信息
-	 * @param weixinConfig
-	 *            appid等信息
-	 * @return
+	 * @param weixinAccount
+	 *            商户信息
+	 * @return 支付json串
 	 * @throws PayException
 	 */
 	public static String createPayJsRequestJsonV3(PayPackageV3 payPackage,
 			WeixinMpAccount weixinAccount) throws PayException {
 		String paySignKey = weixinAccount.getPaySignKey();
 		payPackage.setSign(paysignMd5(payPackage, paySignKey));
-		PrePay prePay = createPrePay(payPackage);
+		PrePay prePay = createPrePay(payPackage, paySignKey);
 		PayRequestV3 jsPayRequest = new PayRequestV3(prePay);
-		jsPayRequest.setPaySign(paysignMd5(jsPayRequest, paySignKey));
 		jsPayRequest.setSignType(SignType.MD5);
+		jsPayRequest.setPaySign(paysignMd5(jsPayRequest, paySignKey));
 		return JSON.toJSONString(jsPayRequest);
 	}
 
 	/**
-	 * 创建预支付对象</br> <font color="red">此方法并不包含签名,需要自己传入一个完整并且合法的PayPackage</font>
+	 * 创建预支付对象</br>
 	 * 
 	 * @param payPackage
 	 *            包含订单信息的对象
+	 * @param paySignKey
+	 *            <font color="red">如果sign为空 则拿paysignkey进行签名</font>
 	 * @see com.foxinmy.weixin4j.mp.payment.v3.PayPackageV3
 	 * @see com.foxinmy.weixin4j.mp.payment.v3.PrePay
 	 * @return 预支付对象
 	 */
-	public static PrePay createPrePay(PayPackageV3 payPackage)
+	public static PrePay createPrePay(PayPackageV3 payPackage, String paySignKey)
 			throws PayException {
 		if (StringUtils.isBlank(payPackage.getSign())) {
-			// String paySignKey = weixinAccount.getPaySignKey();
-			// payPackage.setSign(paysignMd5(payPackage, paySignKey));
+			payPackage.setSign(paysignMd5(payPackage, paySignKey));
 		}
 		String payJsRequestXml = XStream.to(payPackage).replaceAll("__", "_");
 		HttpRequest request = new HttpRequest();
 		try {
-			Response response = request.post(Consts.UNIFIEDORDER, payJsRequestXml);
-			return response.getAsObject(new TypeReference<PrePay>() {
+			Response response = request.post(Consts.UNIFIEDORDER,
+					payJsRequestXml);
+			PrePay prePay = response.getAsObject(new TypeReference<PrePay>() {
 			});
+			if (!prePay.getReturnCode().equalsIgnoreCase(Consts.SUCCESS)) {
+				throw new PayException(prePay.getReturnMsg(),
+						prePay.getReturnCode());
+			}
+			if (!prePay.getResultCode().equalsIgnoreCase(Consts.SUCCESS)) {
+				throw new PayException(prePay.getResultCode(),
+						prePay.getErrCodeDes());
+			}
+			return prePay;
 		} catch (WeixinException e) {
 			throw new PayException(e.getErrorCode(), e.getErrorMsg());
 		}
@@ -238,33 +263,33 @@ public class PayUtil {
 	 */
 	public static String createAddressRequestJson(String appId, String url,
 			String accessToken) {
-		Map<String, String> obj = new HashMap<String, String>();
-		obj.put("appId", appId);
-		obj.put("timeStamp", DateUtil.timestamp2string());
-		obj.put("nonceStr", RandomUtil.generateString(16));
-		obj.put("url", url);
-		obj.put("accessToken", accessToken);
-		String sign = paysignSha(obj, null);
-		obj.remove("url");
-		obj.remove("accessToken");
-		obj.put("scope", "jsapi_address");
-		obj.put("signType", SignType.SHA1.name().toLowerCase());
-		obj.put("addrSign", sign);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("appId", appId);
+		map.put("timeStamp", DateUtil.timestamp2string());
+		map.put("nonceStr", RandomUtil.generateString(16));
+		map.put("url", url);
+		map.put("accessToken", accessToken);
+		String sign = paysignSha(map);
+		map.remove("url");
+		map.remove("accessToken");
+		map.put("scope", "jsapi_address");
+		map.put("signType", SignType.SHA1.name().toLowerCase());
+		map.put("addrSign", sign);
 
-		return JSON.toJSONString(obj);
+		return JSON.toJSONString(map);
 	}
 
 	/**
 	 * 创建V2.x NativePay支付链接
 	 * 
-	 * @param weixinConfig
-	 *            支付配置信息
+	 * @param weixinAccount
+	 *            商户信息
 	 * @param productId
 	 *            与订单ID等价
 	 * @return
 	 */
-	public String createNativePayRequestURLV2(WeixinMpAccount weixinAccount,
-			String productId) {
+	public static String createNativePayRequestURLV2(
+			WeixinMpAccount weixinAccount, String productId) {
 		Map<String, String> map = new HashMap<String, String>();
 		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(16);
@@ -272,7 +297,8 @@ public class PayUtil {
 		map.put("timestamp", timestamp);
 		map.put("noncestr", noncestr);
 		map.put("productid", productId);
-		String sign = paysignSha(map, weixinAccount.getPaySignKey());
+		map.put("appkey", weixinAccount.getPaySignKey());
+		String sign = paysignSha(map);
 		return String.format(Consts.NATIVEURLV2, sign, weixinAccount.getId(),
 				productId, timestamp, noncestr);
 	}
@@ -286,8 +312,8 @@ public class PayUtil {
 	 *            与订单ID等价
 	 * @return
 	 */
-	public String createNativePayRequestURLV3(WeixinMpAccount weixinAccount,
-			String productId) {
+	public static String createNativePayRequestURLV3(
+			WeixinMpAccount weixinAccount, String productId) {
 		Map<String, String> map = new HashMap<String, String>();
 		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(16);
@@ -301,7 +327,16 @@ public class PayUtil {
 				weixinAccount.getMchId(), productId, timestamp, noncestr);
 	}
 
-	public static String createNativePayRequestV2(
+	/**
+	 * NATIVE回调时的响应
+	 * 
+	 * @param weixinAccount
+	 *            商户信息
+	 * @param payPackage
+	 *            订单信息
+	 * @return
+	 */
+	public static String createNativePayResponseV2(
 			WeixinMpAccount weixinAccount, PayPackageV2 payPackage) {
 		NativePayResponseV2 payRequest = new NativePayResponseV2(weixinAccount,
 				payPackage);
@@ -309,12 +344,13 @@ public class PayUtil {
 		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(16);
 		map.put("appid", weixinAccount.getId());
+		map.put("appkey", weixinAccount.getPaySignKey());
 		map.put("timestamp", timestamp);
 		map.put("noncestr", noncestr);
 		map.put("package", payRequest.getPackageInfo());
 		map.put("retcode", payRequest.getRetCode());
 		map.put("reterrmsg", payRequest.getRetMsg());
-		payRequest.setPaySign(paysignSha(map, weixinAccount.getPaySignKey()));
+		payRequest.setPaySign(paysignSha(map));
 		return XStream.to(payRequest);
 	}
 
@@ -369,5 +405,39 @@ public class PayUtil {
 		return response
 				.getAsObject(new TypeReference<com.foxinmy.weixin4j.mp.payment.v3.Order>() {
 				});
+	}
+
+	private static String JSAPIV2() {
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
+		return createPayJsRequestJsonV2("支付测试", "JSAPI01", 0.01d, "127.0.0.0",
+				"http://127.0.0.1/jsapi/notify", weixinAccount);
+	}
+
+	private static String NATIVEV2() {
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
+		return createNativePayRequestURLV2(weixinAccount, "P1");
+	}
+
+	private static String JSAPIV3() throws PayException {
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
+		return createPayJsRequestJsonV3("oyFLst1bqtuTcxK-ojF8hOGtLQao", "支付测试",
+				"JSAPI01", 0.01d, "http://127.0.0.1/jsapi/notify", "127.0.0.0",
+				weixinAccount);
+	}
+
+	private static String NATIVEV3() {
+		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
+		return createNativePayRequestURLV3(weixinAccount, "P1");
+	}
+
+	public static void main(String[] args) throws PayException {
+		// V2版本下的JS支付
+		System.out.println(JSAPIV2());
+		// V2版本下的原生支付
+		System.out.println(NATIVEV2());
+		// V3版本下的JS支付
+		System.out.println(JSAPIV3());
+		// V3版本下的原生支付
+		System.out.println(NATIVEV3());
 	}
 }

@@ -79,7 +79,7 @@ public class TmplApi extends MpApi {
 	/**
 	 * 发送模板消息
 	 * 
-	 * @param message
+	 * @param tplMessage
 	 *            消息对象
 	 * @return 发送结果
 	 * @throws WeixinException

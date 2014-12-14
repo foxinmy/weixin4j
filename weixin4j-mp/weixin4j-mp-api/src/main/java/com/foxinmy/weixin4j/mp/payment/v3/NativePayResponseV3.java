@@ -1,13 +1,13 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * Native支付时的回调响应
@@ -23,20 +23,44 @@ public class NativePayResponseV3 extends ApiResult {
 
 	private static final long serialVersionUID = 6119895998783333012L;
 
+	@XStreamOmitField
+	@JSONField(serialize = false)
+	private PrePay prePay;
+
 	private String prepay_id;
 
-	public NativePayResponseV3(PayPackageV3 payPackage, String returnMsg,
-			String resultMsg) throws PayException {
+	/**
+	 * 一般作为校验失败时返回
+	 * 
+	 * @param returnMsg
+	 *            失败消息
+	 * @param resultMsg
+	 *            结果消息
+	 * @throws PayException
+	 */
+	public NativePayResponseV3(String returnMsg, String resultMsg) {
 		super.setReturnMsg(returnMsg);
-		super.setReturnCode(StringUtils.isNotBlank(returnMsg) ? Consts.FAIL
-				: Consts.SUCCESS);
-		this.setErrCodeDes(resultMsg);
-		this.setResultCode(StringUtils.isNotBlank(resultMsg) ? Consts.FAIL
-				: Consts.SUCCESS);
+		super.setReturnCode(Consts.FAIL);
+		super.setErrCodeDes(resultMsg);
+		super.setResultCode(Consts.FAIL);
+	}
+
+	/**
+	 * 作为return_code 为 SUCCESS 的时候返回
+	 * 
+	 * @param payPackage
+	 *            订单信息
+	 * @throws PayException
+	 */
+	public NativePayResponseV3(PayPackageV3 payPackage, String paysignKey)
+			throws PayException {
+		super.setReturnCode(Consts.SUCCESS);
+		this.setResultCode(Consts.SUCCESS);
 		this.setMchId(payPackage.getMch_id());
 		this.setAppId(payPackage.getAppid());
 		this.setNonceStr(RandomUtil.generateString(16));
-		this.prepay_id = PayUtil.createPrePay(payPackage).getPrepayId();
+		this.prePay = PayUtil.createPrePay(payPackage, paysignKey);
+		this.prepay_id = prePay.getPrepayId();
 	}
 
 	public String getPrepay_id() {
@@ -49,13 +73,8 @@ public class NativePayResponseV3 extends ApiResult {
 
 	@Override
 	public String toString() {
-		return "NativePayResponseV3 [prepay_id=" + prepay_id + ", getAppId()="
-				+ getAppId() + ", getMchId()=" + getMchId()
-				+ ", getNonceStr()=" + getNonceStr() + ", getSign()="
-				+ getSign() + ", getDeviceInfo()=" + getDeviceInfo()
-				+ ", getReturnCode()=" + getReturnCode() + ", getReturnMsg()="
-				+ getReturnMsg() + ", getResultCode()=" + getResultCode()
-				+ ", getErrCode()=" + getErrCode() + ", getErrCodeDes()="
-				+ getErrCodeDes() + "]";
+		return "NativePayResponseV3 [prePay=" + prePay + ", prepay_id="
+				+ prepay_id + ", " + super.toString() + "]";
 	}
+
 }

@@ -1,10 +1,7 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.exception.PayException;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.payment.PayRequest;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * JS支付:get_brand_wcpay_request</br>
@@ -26,35 +23,13 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 public class PayRequestV3 extends PayRequest {
 
 	private static final long serialVersionUID = -5972173459255255197L;
-
-	@XStreamOmitField
-	@JSONField(serialize = false)
-	private PrePay prePay;
-
 	public PayRequestV3(PrePay prePay) throws PayException {
-		if (!prePay.getReturnCode().equalsIgnoreCase(Consts.SUCCESS)) {
-			throw new PayException(prePay.getReturnMsg(),
-					prePay.getReturnCode());
-		}
-		if (!prePay.getResultCode().equalsIgnoreCase(Consts.SUCCESS)) {
-			throw new PayException(prePay.getResultCode(),
-					prePay.getErrCodeDes());
-		}
-		this.prePay = prePay;
 		this.setAppId(prePay.getAppId());
 		this.setPackageInfo("prepay_id=" + prePay.getPrepayId());
 	}
 
-	public PrePay getPrePay() {
-		return prePay;
-	}
-
 	@Override
 	public String toString() {
-		return "PayRequestV3 [prePay=" + prePay + ", getPackageInfo()="
-				+ getPackageInfo() + ", getAppId()=" + getAppId()
-				+ ", getTimeStamp()=" + getTimeStamp() + ", getNonceStr()="
-				+ getNonceStr() + ", getPaySign()=" + getPaySign()
-				+ ", getSignType()=" + getSignType() + "]";
+		return "JsPayRequestV3 [" + super.toString() + "]";
 	}
 }

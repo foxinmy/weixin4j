@@ -40,8 +40,8 @@ public class WeixinProxy {
 	/**
 	 * appid,appsecret
 	 * 
-	 * @param appid
-	 * @param appsecret
+	 * @param corpid
+	 * @param corpsecret
 	 */
 	public WeixinProxy(String corpid, String corpsecret) {
 		this(new WeixinQyAccount(corpid, corpsecret));
@@ -244,10 +244,7 @@ public class WeixinProxy {
 	/**
 	 * 更新标签(管理组必须是指定标签的创建者)
 	 * 
-	 * @param tagId
-	 *            标签ID
-	 * @param tagName
-	 *            标签名称
+	 * @param tag 标签信息
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E6.9B.B4.E6.96.B0.E6.A0.87.E7.AD.BE.E5.90.8D.E5.AD.97"
 	 *      >更新标签说明</a>

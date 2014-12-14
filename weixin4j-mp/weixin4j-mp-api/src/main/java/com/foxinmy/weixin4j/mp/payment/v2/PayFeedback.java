@@ -71,9 +71,7 @@ public class PayFeedback extends PayBaseInfo {
 		return "PayFeedback [feedbackId=" + feedbackId + ", openId=" + openId
 				+ ", transId=" + transId + ", reason=" + reason + ", solution="
 				+ solution + ", extInfo=" + extInfo + ", picInfo=" + picInfo
-				+ ", status=" + status + ", getAppId()=" + getAppId()
-				+ ", getTimeStamp()=" + getTimeStamp() + ", getNonceStr()="
-				+ getNonceStr() + ", getPaySign()=" + getPaySign()
-				+ ", getSignType()=" + getSignType() + "]";
+				+ ", status=" + status + ", " + super.toString()
+				+ "]";
 	}
 }

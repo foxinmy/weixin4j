@@ -39,10 +39,7 @@ public class JsPayNotify extends PayBaseInfo {
 
 	@Override
 	public String toString() {
-		return "JsPayNotify [openid=" + openid + ", issubscribe=" + issubscribe
-				+ ", getAppId()=" + getAppId() + ", getTimeStamp()="
-				+ getTimeStamp() + ", getNonceStr()=" + getNonceStr()
-				+ ", getPaySign()=" + getPaySign() + ", getSignType()="
-				+ getSignType() + "]";
+		return "openid=" + openid + ", issubscribe=" + issubscribe
+				+ ", " + super.toString();
 	}
 }
