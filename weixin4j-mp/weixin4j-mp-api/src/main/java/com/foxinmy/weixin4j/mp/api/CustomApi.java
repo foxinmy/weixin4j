@@ -29,6 +29,9 @@ import com.foxinmy.weixin4j.util.IOUtil;
  * @date 2014年11月16日
  * @since JDK 1.7
  * @see <a href="http://dkf.qq.com">多客服说明</a>
+ * @see<a 
+ *        href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html"
+ *        >多客服说明</a>
  */
 public class CustomApi extends MpApi {
 

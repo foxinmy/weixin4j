@@ -27,7 +27,6 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @since JDK 1.7
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html">群发接口</a>
- * @see com.foxinmy.weixin4j.msg.model.MpArticle
  */
 public class MassApi extends MpApi {
 
