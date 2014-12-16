@@ -14,8 +14,10 @@ import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.test.TokenTest;
+import com.foxinmy.weixin4j.msg.event.MassEventMessage;
 import com.foxinmy.weixin4j.msg.model.Image;
 import com.foxinmy.weixin4j.msg.model.MpArticle;
+import com.foxinmy.weixin4j.msg.model.Text;
 import com.foxinmy.weixin4j.msg.model.Video;
 import com.foxinmy.weixin4j.type.MediaType;
 
@@ -55,15 +57,15 @@ public class MassMsgTest extends TokenTest {
 	}
 
 	@Test
-	public void massByGroup() throws WeixinException {
-		String massId = massApi.massByGroupId(new Image("mediaId"), 0);
-		Assert.assertTrue(massId != null);
+	public void massByGroupId() throws WeixinException {
+		String msgId = massApi.massByGroupId(new Image("mediaId"), 0);
+		Assert.assertTrue(msgId != null);
 	}
 
 	@Test
 	public void massByOpenIds() throws WeixinException {
-		String massId = massApi.massByOpenIds(new Image("mediaId"), "openIds");
-		Assert.assertTrue(massId != null);
+		String msgId = massApi.massByOpenIds(new Text("HI"), "oyFLst1bqtuTcxK-ojF8hOGtLQao");
+		Assert.assertTrue(msgId != null);
 	}
 
 	@Test
@@ -91,5 +93,19 @@ public class MassMsgTest extends TokenTest {
 	public void deleteMass() throws WeixinException {
 		JsonResult result = massApi.deleteMassNews("34182");
 		Assert.assertEquals(0, result.getCode());
+	}
+
+	@Test
+	public void previewMass() throws WeixinException {
+		JsonResult result = massApi.previewMassNews("oyFLst1bqtuTcxK-ojF8hOGtLQao", new Text("test"));
+		Assert.assertEquals("0", result.getCode());
+	}
+	
+	@Test
+	public void getMassNews() throws WeixinException {
+		String status = massApi.getMassNews("82358");
+		System.out.println(status);
+		System.out.println(MassEventMessage.getStatusDesc(status));
+		Assert.assertNotNull(status);
 	}
 }

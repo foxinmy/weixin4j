@@ -29,7 +29,7 @@ public enum EventType {
 			MenuPhotoEventMessage.class), pic_weixin(
 			MenuPhotoEventMessage.class), location_select(
 			MenuLocationEventMessage.class), click(MenuEventMessage.class), location(
-			LocationEventMessage.class), massendjobfinish(
+			LocationEventMessage.class),masssendjobfinish(
 			MassEventMessage.class), templatesendjobfinish(
 			TemplatesendjobfinishMessage.class);
 

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<!-- http://mp.weixin.qq.com/wiki/index.php?title=%E5%85%A8%E5%B1%80%E8%BF%94%E5%9B%9E%E7%A0%81%E8%AF%B4%E6%98%8E -->
+<!-- http://mp.weixin.qq.com/wiki/17/346c05c1f2a12fb8cb020f3f5414da69.html -->
+<!-- http://qydev.weixin.qq.com/wiki/index.php?title=%E5%85%A8%E5%B1%80%E8%BF%94%E5%9B%9E%E7%A0%81%E8%AF%B4%E6%98%8E -->
 <errors>
 	<error>
 		<code>0</code>
@@ -577,11 +578,41 @@
 		<code>48002</code>
 		<text>Api禁用</text>
 	</error>
+	<!-- 多客服API错误 -->
+	<error>
+		<code>61451</code>
+		<text>参数错误(invalid parameter)</text>
+	</error>
+	<error>
+		<code>61452</code>
+		<text>无效客服账号(invalid kf_account)</text>
+	</error>
+	<error>
+		<code>61453</code>
+		<text>账号已存在(kf_account exsited)</text>
+	</error>
+	<error>
+		<code>61454</code>
+		<text>账号名长度超过限制(前缀10个英文字符)(invalid kf_acount length)</text>
+	</error>
+	<error>
+		<code>61455</code>
+		<text>账号名包含非法字符(英文+数字)(illegal character in kf_account)</text>
+	</error>
+	<error>
+		<code>61456</code>
+		<text>账号个数超过限制(10个客服账号)(kf_account count exceeded)</text>
+	</error>
+	<error>
+		<code>61457</code>
+		<text>无效头像文件类型(invalid file type)</text>
+	</error>
 	<error>
 		<code>50001</code>
 		<desc>api/redirect_uri unauthorized</desc>
 		<text>接口未授权</text>
 	</error>
+	<!-- 企业号API错误 -->
 	<error>
 		<code>50002</code>
 		<text>员工不在权限范围</text>
@@ -598,7 +629,6 @@
 		<code>50005</code>
 		<text>企业已禁用</text>
 	</error>
-	<!-- 企业号API错误 -->
 	<error>
 		<code>60001</code>
 		<text>部门长度不符合限制</text>

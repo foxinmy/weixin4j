@@ -41,7 +41,7 @@ public class MessageUtil {
 	 * @return 开发者通过检验signature对请求进行相关校验。若确认此次GET请求来自微信服务器
 	 *         请原样返回echostr参数内容，则接入生效 成为开发者成功，否则接入失败
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97">接入指南</a>
+	 *      href="http://mp.weixin.qq.com/wiki/0/61c3a8b9d50ac74f18bdf2e54ddfc4e0.html">接入指南</a>
 	 */
 	public static String signature(String... para) {
 		Arrays.sort(para);
@@ -173,11 +173,11 @@ public class MessageUtil {
 	 * @return 消息对象
 	 * @throws DocumentException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AA%8C%E8%AF%81%E6%B6%88%E6%81%AF%E7%9C%9F%E5%AE%9E%E6%80%A7">验证消息的合法性</a>
+	 *      href="http://mp.weixin.qq.com/wiki/4/2ccadaef44fe1e4b0322355c2312bfa8.html">验证消息的合法性</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF">普通消息</a>
+	 *      href="http://mp.weixin.qq.com/wiki/10/79502792eef98d6e0c6e1739da387346.html">普通消息</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6%E6%8E%A8%E9%80%81">事件触发</a>
+	 *      href="http://mp.weixin.qq.com/wiki/2/5baf56ce4947d35003b86a9805634b1e.html">事件触发</a>
 	 * @see com.foxinmy.weixin4j.type.MessageType
 	 * @see com.feican.weixin.msg.BaeMessage
 	 * @see com.foxinmy.weixin4j.msg.TextMessage

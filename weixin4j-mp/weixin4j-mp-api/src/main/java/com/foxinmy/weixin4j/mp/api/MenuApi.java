@@ -34,7 +34,7 @@ public class MenuApi extends MpApi {
 	 * @param btnList
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E5%88%9B%E5%BB%BA%E6%8E%A5%E5%8F%A3">创建自定义菜单</a>
+	 *      href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">创建自定义菜单</a>
 	 * @see com.foxinmy.weixin4j.model.Button
 	 */
 	public JsonResult createMenu(List<Button> btnList) throws WeixinException {
@@ -55,7 +55,7 @@ public class MenuApi extends MpApi {
 	 * @return 菜单集合
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3">查询菜单</a>
+	 *      href="http://mp.weixin.qq.com/wiki/16/ff9b7b85220e1396ffa16794a9d95adc.html">查询菜单</a>
 	 * @see com.foxinmy.weixin4j.model.Button
 	 */
 	public List<Button> getMenu() throws WeixinException {
@@ -74,7 +74,7 @@ public class MenuApi extends MpApi {
 	 * 
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E5%88%A0%E9%99%A4%E6%8E%A5%E5%8F%A3">删除菜单</a>
+	 *      href="http://mp.weixin.qq.com/wiki/16/8ed41ba931e4845844ad6d1eeb8060c8.html">删除菜单</a>
 	 * @return 处理结果
 	 */
 	public JsonResult deleteMenu() throws WeixinException {

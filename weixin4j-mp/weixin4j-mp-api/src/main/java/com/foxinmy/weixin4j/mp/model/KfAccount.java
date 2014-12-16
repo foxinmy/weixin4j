@@ -25,6 +25,8 @@ public class KfAccount implements Serializable {
 	private String nickName;// 客服昵称
 	@JSONField(name = "kf_id")
 	private String id;// 客服工号
+	@JSONField(name = "kf_headimg")
+	private String headImg; //客服头像
 
 	// 以下字段是调用在线客服状态返回的字段
 	private KfOnlineStatus status; // 客服在线状态 1：pc在线，2：手机在线 若pc和手机同时在线则为 1+2=3
@@ -55,6 +57,14 @@ public class KfAccount implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getHeadImg() {
+		return headImg;
+	}
+
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
 	}
 
 	public KfOnlineStatus getStatus() {

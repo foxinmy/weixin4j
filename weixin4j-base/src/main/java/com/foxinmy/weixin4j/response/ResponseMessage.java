@@ -30,7 +30,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see com.foxinmy.weixin4j.msg.model.News
  * @see com.foxinmy.weixin4j.msg.model.Trans
  * @see <a href=
- *      "http://mp.weixin.qq.com/wiki/index.php?title=%E5%8F%91%E9%80%81%E8%A2%AB%E5%8A%A8%E5%93%8D%E5%BA%94%E6%B6%88%E6%81%AF"
+ *      "http://mp.weixin.qq.com/wiki/9/2c15b20a16019ae613d413e30cac8ea1.html"
  *      >订阅号、服务号的被动响应消息</a>
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%A2%AB%E5%8A%A8%E5%93%8D%E5%BA%94%E6%B6%88%E6%81%AF">企业号的被动响应消息</a>

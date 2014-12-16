@@ -28,7 +28,7 @@ import com.foxinmy.weixin4j.xml.XStream;
  * @date 2014年11月13日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E5%85%A5%E6%8C%87%E5%BC%95">加密接入指引</a>
+ *      href="http://mp.weixin.qq.com/wiki/0/61c3a8b9d50ac74f18bdf2e54ddfc4e0.html">加密接入指引</a>
  */
 public class WeixinMessageDecoder extends
 		MessageToMessageDecoder<FullHttpRequest> {

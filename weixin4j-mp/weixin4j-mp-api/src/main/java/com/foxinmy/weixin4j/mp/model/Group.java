@@ -8,8 +8,6 @@ import java.io.Serializable;
  * @author jy.hu
  * @date 2014年4月4日
  * @since JDK 1.7
- * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E5%88%86%E7%BB%84%E7%AE%A1%E7%90%86%E6%8E%A5%E5%8F%A3">分组</a>
  */
 public class Group implements Serializable {
 

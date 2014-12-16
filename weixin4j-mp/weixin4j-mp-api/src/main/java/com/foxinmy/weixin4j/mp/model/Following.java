@@ -11,9 +11,6 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @author jy.hu
  * @date 2014年4月4日
  * @since JDK 1.7
- * @see <a href=
- *        "http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%85%B3%E6%B3%A8%E8%80%85%E5%88%97%E8%A1%A8"
- *        >关注信息</a>
  */
 public class Following implements Serializable {
 

@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.http.JsonResult;
  * @date 2014年11月7日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%AF%AD%E4%B9%89%E7%90%86%E8%A7%A3">语义理解</a>
+ *      href="http://mp.weixin.qq.com/wiki/0/0ce78b3c9524811fee34aba3e33f3448.html">语义理解</a>
  */
 public class SemResult extends JsonResult {
 

@@ -10,8 +10,6 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @author jy.hu
  * @date 2014年4月26日
  * @since JDK 1.7
- * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E9%AB%98%E7%BA%A7%E7%BE%A4%E5%8F%91%E6%8E%A5%E5%8F%A3#.E4.B8.8A.E4.BC.A0.E5.9B.BE.E6.96.87.E6.B6.88.E6.81.AF.E7.B4.A0.E6.9D.90">群发消息描述</a>
  */
 public class MpArticle implements Serializable {
 

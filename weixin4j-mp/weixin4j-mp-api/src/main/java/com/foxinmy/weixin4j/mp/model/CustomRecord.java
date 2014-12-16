@@ -12,8 +12,6 @@ import com.foxinmy.weixin4j.mp.type.CustomRecordOperCode;
  * @author jy
  * @date 2014年6月28日
  * @since JDK 1.7
- * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%AE%A2%E6%9C%8D%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95">客服聊天记录</a>
  */
 public class CustomRecord implements Serializable {
 

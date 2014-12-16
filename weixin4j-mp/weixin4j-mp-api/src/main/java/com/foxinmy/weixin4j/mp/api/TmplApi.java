@@ -35,10 +35,8 @@ public class TmplApi extends MpApi {
 	 * @return 操作结果
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.type.IndustryType
-	 * @see <a href="http://mp.weixin.qq.com/wiki/17/304
-	 *      c1885ea66dbedf7dc170d84999a9d
-	 *      .html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1
-	 *      .9E.E8.A1.8C.E4.B8.9A">设置所处行业</a>
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1.9E.E8.A1.8C.E4.B8.9A">设置所处行业</a>
 	 */
 	public JsonResult setTmplIndustry(IndustryType... industryType)
 			throws WeixinException {
@@ -84,7 +82,7 @@ public class TmplApi extends MpApi {
 	 * @return 发送结果
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3">模板消息</a>
+	 *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E5.8F.91.E9.80.81.E6.A8.A1.E6.9D.BF.E6.B6.88.E6.81.AF">模板消息</a>
 	 * @see com.foxinmy.weixin4j.mp.message.TemplateMessage
 	 * @seee com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 */

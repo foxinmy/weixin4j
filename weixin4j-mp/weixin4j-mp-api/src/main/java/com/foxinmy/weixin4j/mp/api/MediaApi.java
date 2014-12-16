@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.util.IOUtil;
  * @date 2014年9月25日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传多媒体文件</a>
+ *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传多媒体文件</a>
  * @see com.foxinmy.weixin4j.type.MediaType
  */
 public class MediaApi extends MpApi {
@@ -90,7 +90,7 @@ public class MediaApi extends MpApi {
 	 *            媒体类型
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传下载说明</a>
+	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
 	 * @throws WeixinException
 	 */
 	public String uploadMedia(String fileName, byte[] bytes, String mediaType)
@@ -118,7 +118,7 @@ public class MediaApi extends MpApi {
 	 * @throws WeixinException
 	 * @throws IOException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传下载说明</a>
+	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#downloadMedia(String)}
 	 */
@@ -146,7 +146,7 @@ public class MediaApi extends MpApi {
 	 * @return 二进制数据包
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传下载说明</a>
+	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
 	 */
 	public byte[] downloadMedia(String mediaId) throws WeixinException {
 		Token token = tokenHolder.getToken();

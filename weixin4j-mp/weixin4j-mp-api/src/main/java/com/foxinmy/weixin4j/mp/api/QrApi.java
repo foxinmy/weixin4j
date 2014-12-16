@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  * @date 2014年9月25日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E7%94%9F%E6%88%90%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81">二维码支持</a>
+ *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">二维码支持</a>
  */
 public class QrApi extends MpApi {
 
@@ -37,6 +37,8 @@ public class QrApi extends MpApi {
 	 *            二维码参数
 	 * @return byte数据包
 	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">生成二维码</a>
 	 */
 	public byte[] getQRData(QRParameter parameter) throws WeixinException {
 		Token token = tokenHolder.getToken();
@@ -61,6 +63,8 @@ public class QrApi extends MpApi {
 	 * @return byte数据包
 	 * @throws WeixinException
 	 * @see {@link com.foxinmy.weixin4j.mp.api.QrApi#getQR(QRParameter)}
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">生成二维码</a>
 	 */
 	public byte[] getQRData(int sceneId, int expireSeconds)
 			throws WeixinException {
@@ -80,7 +84,7 @@ public class QrApi extends MpApi {
 	 * @throws WeixinException
 	 * @throws IOException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E7%94%9F%E6%88%90%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81">二维码</a>
+	 *      href="mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">二维码</a>
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 */
 	public File getQR(QRParameter parameter) throws WeixinException,

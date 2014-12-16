@@ -196,6 +196,18 @@ public class HttpRequest {
 			if (contentType.getValue().contains(
 					ContentType.TEXT_HTML.getMimeType())) {
 				response.setText(new String(data, "gbk"));
+				try {
+					checkJson(response);
+					return response;
+				} catch (JSONException e) {
+					;
+				}
+				try {
+					checkXml(response);
+					return response;
+				} catch (CannotResolveClassException ex) {
+					;
+				}
 				throw new WeixinException(response.getAsString());
 			} else if (contentType.getValue().contains(
 					ContentType.APPLICATION_JSON.getMimeType())) {
@@ -211,7 +223,13 @@ public class HttpRequest {
 				} catch (JSONException e) {
 					;
 				}
-				checkXml(response);
+				try {
+					checkXml(response);
+					return response;
+				} catch (CannotResolveClassException ex) {
+					;
+				}
+				throw new WeixinException(response.getAsString());
 			}
 		} catch (IOException e) {
 			throw new WeixinException("-1", e.getMessage());

@@ -11,7 +11,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @date 2014年9月19日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3">模板消息事件推送</a>
+ *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81">模板消息事件推送</a>
  */
 public class TemplatesendjobfinishMessage extends EventMessage {
 

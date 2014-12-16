@@ -17,12 +17,10 @@ import com.foxinmy.weixin4j.mp.type.Lang;
  * @author jy.hu
  * @date 2014年4月8日
  * @since JDK 1.7
- * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF">获取用户基本资料</a>
  */
 public class User implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1638176217299286265L;
 
 	private String openid; // 用户的唯一标识
 	private String nickname; // 用户昵称

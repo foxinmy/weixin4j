@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * @since JDK 1.7
  * @see com.foxinmy.weixin4j.msg.event.MassEventMessage
  */
-@ActionAnnotation(msgType = MessageType.event, eventType = { EventType.massendjobfinish })
+@ActionAnnotation(msgType = MessageType.event, eventType = { EventType.masssendjobfinish })
 public class MassSendAction extends DebugAction<MassEventMessage> {
 
 }

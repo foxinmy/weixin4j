@@ -68,7 +68,7 @@ public class Response {
 
 	/**
 	 * <a href=
-	 * "http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E5%8F%A3%E9%A2%91%E7%8E%87%E9%99%90%E5%88%B6%E8%AF%B4%E6%98%8E"
+	 * "http://mp.weixin.qq.com/wiki/17/fa4e1434e57290788bde25603fa2fcbd.html"
 	 * >全局返回码</a> {"errcode":45009,"errmsg":"api freq out of limit"}
 	 * 
 	 * @return

@@ -11,7 +11,7 @@ package com.foxinmy.weixin4j.type;
  * @date 2014年9月30日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E5%88%9B%E5%BB%BA%E6%8E%A5%E5%8F%A3">按钮类型</a>
+ *      href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">按钮类型</a>
  */
 public enum ButtonType {
 	/**

@@ -176,13 +176,21 @@ netty的代码没有放到maven中心仓库,也没什么意义,因为最终需�
   
 * 2014-12-15
 
-  + 修改某些函数在注释上的参数描述错误
+  + **weixin4j-mp**: 修改某些函数在注释上的参数描述错误
   
-  + 调整PayUtil类中`createPayJsRequestJsonV3`的形参位置,`notify_url`与`spbill_create_ip`对换与V2保持一致
+  + **weixin4j-mp**: 调整PayUtil类中`createPayJsRequestJsonV3`的形参位置,`notify_url`与`spbill_create_ip`对换与V2保持一致
   
-  + 在PayUtil类中新增paySign重载版本函数,避免在某些地方产生歧义造成签名错误(appid,appKey)
+  + **weixin4j-mp**: 在PayUtil类中新增paySign重载版本函数,避免在某些地方产生歧义造成签名错误(appid,appKey)
   
-  + 修正V3版本JSAPI接口支付签名错误bug(坑)
+  + **weixin4j-mp**: 修正V3版本JSAPI接口支付签名错误bug(坑)
+  
+* 2014-12-16
+
+  + **weixin4j-mp**: 调整方法上@see注解的文档说明接口url
+  
+  + **weixin4j-mp**: 新增群发消息预览、状态查询接口
+  
+  + **weixin4j-mp**: 新增多客服添加账号、更新账号、上传头像、删除账号接口
   
 接下来
 ------
