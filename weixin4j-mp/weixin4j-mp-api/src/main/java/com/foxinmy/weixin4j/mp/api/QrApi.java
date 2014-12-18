@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.mp.api;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
@@ -82,13 +83,11 @@ public class QrApi extends MpApi {
 	 *            二维码参数
 	 * @return 硬盘存储的文件对象
 	 * @throws WeixinException
-	 * @throws IOException
 	 * @see <a
 	 *      href="mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">二维码</a>
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 */
-	public File getQR(QRParameter parameter) throws WeixinException,
-			IOException {
+	public File getQR(QRParameter parameter) throws WeixinException {
 		String qr_path = ConfigUtil.getValue("qr_path");
 		String filename = String.format("%s_%d_%d.jpg", parameter.getQrType()
 				.name(), parameter.getSceneId(), parameter.getExpireSeconds());
@@ -97,10 +96,27 @@ public class QrApi extends MpApi {
 			return file;
 		}
 		byte[] datas = getQRData(parameter);
-		file.createNewFile();
-		FileOutputStream out = new FileOutputStream(file);
-		out.write(datas);
-		out.close();
+		OutputStream os = null;
+		try {
+			boolean flag = file.createNewFile();
+			if (flag) {
+				os = new FileOutputStream(file);
+				os.write(datas);
+			} else {
+				throw new WeixinException("-1", String.format(
+						"create file fail:%s", file.getAbsolutePath()));
+			}
+		} catch (IOException e) {
+			throw new WeixinException("-1", e.getMessage());
+		} finally {
+			try {
+				if (os != null) {
+					os.close();
+				}
+			} catch (IOException ignore) {
+				;
+			}
+		}
 		return file;
 	}
 }

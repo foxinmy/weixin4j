@@ -15,8 +15,14 @@ import com.foxinmy.weixin4j.api.BaseApi;
  * @see <a href="http://mp.weixin.qq.com/wiki/index.php">api文档</a>
  */
 public class MpApi extends BaseApi {
+	private final static ResourceBundle weixinBundle;
 	static {
 		weixinBundle = ResourceBundle
 				.getBundle("com/foxinmy/weixin4j/mp/api/weixin");
+	}
+
+	@Override
+	protected ResourceBundle getWeixinBundle() {
+		return weixinBundle;
 	}
 }

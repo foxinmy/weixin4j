@@ -36,9 +36,11 @@ public class HttpUtil {
 		}
 		FullHttpResponse httpResponse = new DefaultFullHttpResponse(HTTP_1_1,
 				OK, Unpooled.copiedBuffer(content, Consts.UTF_8));
-		httpResponse.headers().set(CONTENT_TYPE,
-				"application/xml;encoding=utf-8");
-		httpResponse.headers().set(CONTENT_LENGTH, content.getBytes().length);
+		httpResponse.headers().set(
+				CONTENT_TYPE,
+				String.format("%s;encoding=%s", contentType.getMimeType(),
+						Consts.UTF_8.displayName()));
+		httpResponse.headers().set(CONTENT_LENGTH, content.getBytes(Consts.UTF_8).length);
 		httpResponse.headers().set(CONNECTION, Values.KEEP_ALIVE);
 		httpResponse.headers().set(DATE, new Date());
 		httpResponse.headers().set(SERVER, "netty4");

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -65,7 +66,6 @@ public class MediaApi extends MpApi {
 	 *            媒体类型
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @throws WeixinException
-	 * @throws IOException
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(String, byte[],String)}
 	 */
@@ -116,14 +116,13 @@ public class MediaApi extends MpApi {
 	 *            媒体类型
 	 * @return 写入硬盘后的文件对象
 	 * @throws WeixinException
-	 * @throws IOException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#downloadMedia(String)}
 	 */
 	public File downloadMedia(String mediaId, MediaType mediaType)
-			throws WeixinException, IOException {
+			throws WeixinException {
 		String media_path = ConfigUtil.getValue("media_path");
 		File file = new File(media_path + File.separator + mediaId + "."
 				+ mediaType.getFormatName());
@@ -131,10 +130,27 @@ public class MediaApi extends MpApi {
 			return file;
 		}
 		byte[] datas = downloadMedia(mediaId);
-		file.createNewFile();
-		FileOutputStream out = new FileOutputStream(file);
-		out.write(datas);
-		out.close();
+		OutputStream os = null;
+		try {
+			boolean flag = file.createNewFile();
+			if (flag) {
+				os = new FileOutputStream(file);
+				os.write(datas);
+			} else {
+				throw new WeixinException("-1", String.format(
+						"create file fail:%s", file.getAbsolutePath()));
+			}
+		} catch (IOException e) {
+			throw new WeixinException("-1", e.getMessage());
+		} finally {
+			try {
+				if (os != null) {
+					os.close();
+				}
+			} catch (IOException ignore) {
+				;
+			}
+		}
 		return file;
 	}
 

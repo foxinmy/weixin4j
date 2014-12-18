@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.xml.Map2ObjectConverter;
-import com.foxinmy.weixin4j.xml.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 import com.thoughtworks.xstream.core.ClassLoaderReference;
 import com.thoughtworks.xstream.mapper.DefaultMapper;
 
@@ -35,11 +35,11 @@ import com.thoughtworks.xstream.mapper.DefaultMapper;
 public class WeixinMessageEncoder extends
 		MessageToMessageEncoder<ResponseMessage> {
 	private final Logger log = LoggerFactory.getLogger(getClass());
-	private final static XStream mapXstream = XStream.get();
+	private final static XmlStream mapXstream = XmlStream.get();
 	static {
 		mapXstream.alias("xml", Map.class);
 		mapXstream.registerConverter(new Map2ObjectConverter(new DefaultMapper(
-				new ClassLoaderReference(XStream.class.getClassLoader()))));
+				new ClassLoaderReference(XmlStream.class.getClassLoader()))));
 	}
 
 	@Override

@@ -19,8 +19,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @XStreamAlias("app-token")
 public class Token implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = -7564855472419104084L;
+	
 	@JSONField(name = "access_token")
 	private String accessToken;
 	@JSONField(name = "expires_in")
@@ -49,14 +50,6 @@ public class Token implements Serializable {
 
 	public void setTime(long time) {
 		this.time = time;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Token) {
-			return accessToken.equals(((Token) obj).getAccessToken());
-		}
-		return false;
 	}
 
 	@Override

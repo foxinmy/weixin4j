@@ -8,7 +8,7 @@ import org.dom4j.DocumentException;
 import com.foxinmy.weixin4j.model.BaseMsg;
 import com.foxinmy.weixin4j.response.ResponseMessage;
 import com.foxinmy.weixin4j.util.MessageUtil;
-import com.foxinmy.weixin4j.xml.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 继承的类需实现execute(M inMessage)
@@ -28,7 +28,7 @@ public abstract class AbstractAction<M extends BaseMsg> implements WeixinAction 
 	public ResponseMessage execute(String msg) throws DocumentException {
 		BaseMsg message = MessageUtil.xml2msg(msg);
 		if (message == null) {
-			return execute(XStream.get(msg, getGenericType()));
+			return execute(XmlStream.get(msg, getGenericType()));
 		}
 		return execute((M) message);
 	}

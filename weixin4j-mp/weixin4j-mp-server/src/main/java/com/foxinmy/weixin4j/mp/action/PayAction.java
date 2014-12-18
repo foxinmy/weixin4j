@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.mp.payment.v3.NativePayResponseV3;
 import com.foxinmy.weixin4j.mp.payment.v3.PayPackageV3;
 import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
-import com.foxinmy.weixin4j.xml.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 支付示例
@@ -48,10 +48,9 @@ public class PayAction {
 	 */
 	public JSONObject jsPay() {
 		JSONObject obj = new JSONObject();
-		PayPackage payPackage = null;
 		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		// V3 支付
-		payPackage = new PayPackageV3(weixinAccount, "用户openid", "商品描述",
+		PayPackage payPackage = new PayPackageV3(weixinAccount, "用户openid", "商品描述",
 				"系统内部订单号", 1d, "IP地址", TradeType.JSAPI);
 		// V2 支付
 		payPackage = new PayPackageV2("商品描述", weixinAccount.getPartnerId(),
@@ -113,7 +112,7 @@ public class PayAction {
 		 * transaction_id=1221928801201410296039230054&transport_fee=0
 		 */
 		log.info("jspay_notify_orderinfo,{}", objMap);
-		JsPayNotify payNotify = XStream.get(inputStream, JsPayNotify.class);
+		JsPayNotify payNotify = XmlStream.get(inputStream, JsPayNotify.class);
 		log.info("jspay_notify_userinfo,{}", payNotify);
 		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		// 验证财付通签名
@@ -152,7 +151,7 @@ public class PayAction {
 	 *         &lt/xml&gt
 	 */
 	public String jsNotifyV3(InputStream inputStream) {
-		com.foxinmy.weixin4j.mp.payment.v3.Order order = XStream.get(
+		com.foxinmy.weixin4j.mp.payment.v3.Order order = XmlStream.get(
 				inputStream, com.foxinmy.weixin4j.mp.payment.v3.Order.class);
 		log.info("jaapi_notify_order_info:", order);
 		String sign = order.getSign();
@@ -162,9 +161,9 @@ public class PayAction {
 				weixinAccount.getPaySignKey());
 		log.info("微信签名----->sign={},vaild_sign={}", sign, valid_sign);
 		if (!sign.equals(valid_sign)) {
-			return XStream.to(new XmlResult(Consts.FAIL, "签名错误"));
+			return XmlStream.to(new XmlResult(Consts.FAIL, "签名错误"));
 		}
-		return XStream.to(new XmlResult());
+		return XmlStream.to(new XmlResult());
 	}
 
 	/**
@@ -186,7 +185,7 @@ public class PayAction {
 	 */
 	public String nativeNotifyV2(InputStream inputStream) {
 		// V2.x版本
-		NativePayNotifyV2 payNotify = XStream.get(inputStream,
+		NativePayNotifyV2 payNotify = XmlStream.get(inputStream,
 				NativePayNotifyV2.class);
 		log.info("native_pay_notify,{}", payNotify);
 		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
@@ -205,7 +204,7 @@ public class PayAction {
 				weixinAccount.getPartnerId(), "系统内部订单号", 1d, "回调地址", "IP地址");
 		NativePayResponseV2 payResponse = new NativePayResponseV2(
 				weixinAccount, payPackage);
-		return XStream.to(payResponse);
+		return XmlStream.to(payResponse);
 	}
 
 	/**
@@ -223,7 +222,7 @@ public class PayAction {
 	 * @throws PayException
 	 */
 	public String nativeNotifyV3(InputStream inputStream) throws PayException {
-		NativePayNotifyV3 payNotify = XStream.get(inputStream,
+		NativePayNotifyV3 payNotify = XmlStream.get(inputStream,
 				NativePayNotifyV3.class);
 		String sign = payNotify.getSign();
 		payNotify.setSign(null);
@@ -241,7 +240,7 @@ public class PayAction {
 					null);
 			payReponse.setSign(PayUtil.paysignMd5(payReponse,
 					weixinAccount.getPaySignKey()));
-			return XStream.to(payReponse);
+			return XmlStream.to(payReponse);
 
 		}
 		// 成功返回
@@ -249,7 +248,7 @@ public class PayAction {
 				weixinAccount.getPaySignKey());
 		payReponse.setSign(PayUtil.paysignMd5(payReponse,
 				weixinAccount.getPaySignKey()));
-		return XStream.to(payReponse);
+		return XmlStream.to(payReponse);
 	}
 
 	/**
@@ -271,7 +270,7 @@ public class PayAction {
 	 * @return
 	 */
 	public String warning(InputStream inputStream) {
-		PayWarn payWarn = XStream.get(inputStream, PayWarn.class);
+		PayWarn payWarn = XmlStream.get(inputStream, PayWarn.class);
 		log.info("pay_warning,{}", payWarn);
 		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		String sign = payWarn.getPaySign();
@@ -292,7 +291,7 @@ public class PayAction {
 	 * @return
 	 */
 	public String feedback(InputStream inputStream) {
-		PayFeedback feedback = XStream.get(inputStream, PayFeedback.class);
+		PayFeedback feedback = XmlStream.get(inputStream, PayFeedback.class);
 		log.info("pay_feedback_info:{}", feedback);
 		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		// 验证微信签名

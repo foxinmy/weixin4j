@@ -187,7 +187,6 @@ public class WeixinProxy {
 	 *            媒体类型
 	 * @return 写入硬盘后的文件对象
 	 * @throws WeixinException
-	 * @throws IOException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
@@ -195,7 +194,7 @@ public class WeixinProxy {
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#downloadMedia(String)}
 	 */
 	public File downloadMedia(String mediaId, MediaType mediaType)
-			throws WeixinException, IOException {
+			throws WeixinException {
 		return mediaApi.downloadMedia(mediaId, mediaType);
 	}
 
@@ -503,7 +502,8 @@ public class WeixinProxy {
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E5.88.A0.E9.99.A4.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">删除群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByGroupId(Base, int)}
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(Base, String...)
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(Base, String...)
+
 	 */
 	public JsonResult deleteMassNews(String msgid) throws WeixinException {
 		return massApi.deleteMassNews(msgid);
@@ -756,7 +756,7 @@ public class WeixinProxy {
 	/**
 	 * 自定义菜单
 	 * 
-	 * @param btnList
+	 * @param btnList 菜单列表
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">创建自定义菜单</a>
@@ -798,7 +798,7 @@ public class WeixinProxy {
 	/**
 	 * 生成带参数的二维码
 	 * 
-	 * @param parameter
+	 * @param parameter 二维码参数
 	 * @return byte数据包
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.QrApi
@@ -838,14 +838,12 @@ public class WeixinProxy {
 	 *            二维码参数
 	 * @return 硬盘存储的文件对象
 	 * @throws WeixinException
-	 * @throws IOException
 	 * @see <a
 	 *      href="mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">二维码</a>
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 * @see com.foxinmy.weixin4j.mp.api.QrApi
 	 */
-	public File getQR(QRParameter parameter) throws WeixinException,
-			IOException {
+	public File getQR(QRParameter parameter) throws WeixinException {
 		return qrApi.getQR(parameter);
 	}
 
@@ -902,7 +900,7 @@ public class WeixinProxy {
 	/**
 	 * 长链接转短链接
 	 * 
-	 * @param url
+	 * @param url 待转换的链接
 	 * @return 短链接
 	 * @throws WeixinException
 	 * @see <a

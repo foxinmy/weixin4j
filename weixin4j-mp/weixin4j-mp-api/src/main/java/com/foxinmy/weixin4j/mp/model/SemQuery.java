@@ -33,16 +33,16 @@ public class SemQuery implements Serializable {
 
 	// 需要使用的服务类别,多个用,隔开,不能为空
 	public SemQuery category(SemCategory... categorys) {
-		String category = "";
+		StringBuilder category = new StringBuilder();
 		if (categorys.length == 1) {
-			category = categorys[0].name();
+			category.append(categorys[0].name());
 		} else {
 			for (int i = 0; i < categorys.length - 1; i++) {
-				category += categorys[i].name() + ",";
+				category.append(categorys[i].name()).append(",");
 			}
-			category += categorys[categorys.length - 1].name();
+			category.append(categorys[categorys.length - 1].name());
 		}
-		jsonObj.put("category", category);
+		jsonObj.put("category", category.toString());
 		return this;
 	}
 

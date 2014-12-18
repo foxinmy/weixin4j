@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.msg.event.menu;
 
+import java.io.Serializable;
+
 import com.foxinmy.weixin4j.type.EventType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -30,7 +32,10 @@ public class MenuLocationEventMessage extends MenuEventMessage {
 		return locationInfo;
 	}
 
-	public static class LocationInfo {
+	public static class LocationInfo implements Serializable {
+		
+		private static final long serialVersionUID = 4904181780216819965L;
+		
 		@XStreamAlias("Location_X")
 		private double x; // 地理位置维度
 		@XStreamAlias("Location_Y")

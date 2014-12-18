@@ -31,7 +31,7 @@ public class MenuApi extends MpApi {
 	/**
 	 * 自定义菜单
 	 * 
-	 * @param btnList
+	 * @param btnList 菜单列表
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">创建自定义菜单</a>

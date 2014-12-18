@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.mp.spider;
 
-import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,9 +51,8 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * @since JDK 1.7
  * @see
  */
-public class WeixinExecutor implements Serializable {
+public class WeixinExecutor {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-	private static final long serialVersionUID = 4253859892138066462L;
 
 	private final static Map<String, String> accountMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 1L;
@@ -175,7 +173,7 @@ public class WeixinExecutor implements Serializable {
 			List<NameValuePair> parameters = new ArrayList<NameValuePair>();
 			parameters.add(new BasicNameValuePair("username", uname));
 			parameters.add(new BasicNameValuePair("pwd", DigestUtils.md5Hex(pwd
-					.getBytes())));
+					.getBytes(Consts.UTF_8))));
 			parameters.add(new BasicNameValuePair("f", "json"));
 			parameters.add(new BasicNameValuePair("imgcode", imgcode));
 			if (!StringUtils.isBlank(imgcode)) {
@@ -387,7 +385,6 @@ public class WeixinExecutor implements Serializable {
 									.getString("bedeveloper")));
 							post.addHeader("Referer", url);
 							List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-							parameters = new ArrayList<NameValuePair>();
 							parameters.add(new BasicNameValuePair("token",
 									weixin.getString("urlToken")));
 							parameters.add(new BasicNameValuePair("f", "json"));
@@ -527,6 +524,7 @@ public class WeixinExecutor implements Serializable {
 				case -205:
 					msg = "该URL可能存在安全风险，请检查";
 					code = 207;
+					break;
 				case -301:
 					msg = "请求URL超时";
 					code = 204;

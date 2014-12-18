@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.msg.event.menu;
 
+import java.io.Serializable;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -25,7 +27,10 @@ public class MenuScanEventMessage extends MenuEventMessage {
 		return scanInfo;
 	}
 
-	public static class ScanInfo {
+	public static class ScanInfo implements Serializable {
+	
+		private static final long serialVersionUID = 2237570238164900421L;
+		
 		@XStreamAlias("ScanType")
 		private String type;
 		@XStreamAlias("ScanResult")

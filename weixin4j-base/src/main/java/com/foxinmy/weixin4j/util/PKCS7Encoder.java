@@ -48,11 +48,11 @@ public class PKCS7Encoder {
 		// 获得补位所用的字符
 		byte target = (byte) (amountToPad & 0xFF);
 		char padChr = (char) target;
-		String tmp = new String();
+		StringBuilder tmp = new StringBuilder();
 		for (int index = 0; index < amountToPad; index++) {
-			tmp += padChr;
+			tmp.append(padChr);
 		}
-		return tmp.getBytes(Consts.UTF_8);
+		return tmp.toString().getBytes(Consts.UTF_8);
 	}
 
 	/**

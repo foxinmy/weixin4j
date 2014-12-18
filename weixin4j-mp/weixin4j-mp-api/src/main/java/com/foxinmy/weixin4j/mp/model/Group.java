@@ -78,6 +78,16 @@ public class Group implements Serializable {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + count;
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
 	public String toString() {
 		return String.format("[Group id=%d ,name=%s ,count=%d]", id, name,
 				count);

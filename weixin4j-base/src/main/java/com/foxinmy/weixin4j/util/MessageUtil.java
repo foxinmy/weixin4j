@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.model.BaseMsg;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
-import com.foxinmy.weixin4j.xml.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 消息工具类
@@ -205,7 +205,7 @@ public class MessageUtil {
 			messageClass = EventType.valueOf(type.toLowerCase())
 					.getEventClass();
 		}
-		return XStream.get(xmlMsg, messageClass);
+		return XmlStream.get(xmlMsg, messageClass);
 	}
 
 	/**

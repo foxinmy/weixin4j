@@ -23,11 +23,16 @@ public class ConfigUtil {
 	static {
 		weixinBundle = ResourceBundle.getBundle("weixin");
 		Set<String> keySet = weixinBundle.keySet();
+		File file = null;
 		for (String key : keySet) {
 			if (!key.endsWith("_path")) {
 				continue;
 			}
-			new File(getValue(key)).mkdirs();
+			file = new File(getValue(key));
+			if (!file.exists() && !file.mkdirs()) {
+				System.err.append(String.format("%s create fail.%n",
+						file.getAbsolutePath()));
+			}
 		}
 	}
 

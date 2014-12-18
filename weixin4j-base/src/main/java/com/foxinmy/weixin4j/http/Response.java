@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.http;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +12,7 @@ import org.dom4j.io.SAXReader;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.foxinmy.weixin4j.xml.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 public class Response {
 
@@ -57,13 +58,13 @@ public class Response {
 		if (isXmlResult) {
 			@SuppressWarnings("unchecked")
 			Class<T> clazz = (Class<T>) typeReference.getType();
-			return XStream.get(text, clazz);
+			return XmlStream.get(text, clazz);
 		}
 		return null;
 	}
 
 	public XmlResult getAsXmlResult() {
-		return XStream.get(text, XmlResult.class);
+		return XmlStream.get(text, XmlResult.class);
 	}
 
 	/**
@@ -79,36 +80,48 @@ public class Response {
 		result.setCode(code);
 		SAXReader reader = new SAXReader();
 		Document doc = null;
+		InputStream is = null;
 		try {
-			doc = reader.read(Response.class.getResourceAsStream("error.xml"));
+			is = Response.class.getResourceAsStream("error.xml");
+			doc = reader.read(is);
+			Node node = doc.getRootElement().selectSingleNode(
+					String.format("error/code[text()=%d]", code));
+			if (node != null) {
+				node = node.getParent();
+				String desc = null;
+				Node _node = node.selectSingleNode("desc");
+				if (_node != null) {
+					desc = _node.getStringValue();
+				}
+				String text = null;
+				_node = node.selectSingleNode("text");
+				if (_node != null) {
+					text = _node.getStringValue();
+				}
+				if (StringUtils.isBlank(desc) && StringUtils.isNotBlank(text)) {
+					desc = text;
+				}
+				if (StringUtils.isBlank(text) && StringUtils.isNotBlank(desc)) {
+					text = desc;
+				}
+				result.setDesc(desc);
+				result.setText(text);
+			} else {
+				result.setDesc("unknown error");
+				result.setText("未知错误");
+			}
 		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
-		Node node = doc.getRootElement().selectSingleNode(
-				String.format("error/code[text()=%d]", code));
-		if (node != null) {
-			node = node.getParent();
-			String desc = null;
-			Node _node = node.selectSingleNode("desc");
-			if (_node != null) {
-				desc = _node.getStringValue();
-			}
-			String text = null;
-			_node = node.selectSingleNode("text");
-			if (_node != null) {
-				text = _node.getStringValue();
-			}
-			if (StringUtils.isBlank(desc) && StringUtils.isNotBlank(text)) {
-				desc = text;
-			}
-			if (StringUtils.isBlank(text) && StringUtils.isNotBlank(desc)) {
-				text = desc;
-			}
-			result.setDesc(desc);
-			result.setText(text);
-		} else {
 			result.setDesc("unknown error");
 			result.setText("未知错误");
+			e.printStackTrace();
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					;
+				}
+			}
 		}
 		return result;
 	}
@@ -134,11 +147,15 @@ public class Response {
 	}
 
 	public byte[] getBody() {
-		return body;
+		return (byte[]) body.clone();
 	}
 
+	/**
+	 * May expose internal representation by incorporating reference to mutable
+	 * object
+	 */
 	public void setBody(byte[] body) {
-		this.body = body;
+		this.body = (byte[]) body.clone();
 	}
 
 	public InputStream getStream() {

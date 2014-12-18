@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
-import com.foxinmy.weixin4j.xml.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 支付工具类(JSAPI,NATIVE,MicroPay)
@@ -166,10 +166,10 @@ public class PayUtil {
 	 *            订单号
 	 * @param orderFee
 	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
-	 * @param ip
-	 *            ip地址
 	 * @param notifyUrl
 	 *            支付通知地址
+	 * @param ip
+	 *            ip地址
 	 * @param weixinAccount
 	 *            商户信息
 	 * @return 支付json串
@@ -221,7 +221,7 @@ public class PayUtil {
 		if (StringUtils.isBlank(payPackage.getSign())) {
 			payPackage.setSign(paysignMd5(payPackage, paySignKey));
 		}
-		String payJsRequestXml = XStream.to(payPackage).replaceAll("__", "_");
+		String payJsRequestXml = XmlStream.to(payPackage).replaceAll("__", "_");
 		HttpRequest request = new HttpRequest();
 		try {
 			Response response = request.post(Consts.UNIFIEDORDER,
@@ -351,7 +351,7 @@ public class PayUtil {
 		map.put("retcode", payRequest.getRetCode());
 		map.put("reterrmsg", payRequest.getRetMsg());
 		payRequest.setPaySign(paysignSha(map));
-		return XStream.to(payRequest);
+		return XmlStream.to(payRequest);
 	}
 
 	/**
@@ -399,7 +399,7 @@ public class PayUtil {
 			throws WeixinException {
 		String sign = paysignMd5(payPackage, weixinAccount.getPaySignKey());
 		payPackage.setSign(sign);
-		String para = XStream.to(payPackage).replaceAll("__", "_");
+		String para = XmlStream.to(payPackage).replaceAll("__", "_");
 		HttpRequest request = new HttpRequest();
 		Response response = request.post(Consts.MICROPAYURL, para);
 		return response

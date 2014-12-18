@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.foxinmy.weixin4j.xml.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -30,7 +30,7 @@ import com.thoughtworks.xstream.mapper.Mapper;
  * @see com.foxinmy.weixin4j.mp.payment.RefundDetail
  */
 public class RefundConverter {
-	private final static XStream xStream = XStream.get();
+	private final static XmlStream xStream = XmlStream.get();
 	private final static Mapper mapper;
 	private final static ReflectionProvider reflectionProvider;
 	private final static Pattern pattern = Pattern.compile("(_\\d)$");

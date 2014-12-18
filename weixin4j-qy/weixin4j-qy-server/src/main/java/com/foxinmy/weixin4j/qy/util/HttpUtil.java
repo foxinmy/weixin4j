@@ -41,7 +41,7 @@ public class HttpUtil {
 				String.format("%s;encoding=%s", contentType.getMimeType(),
 						Consts.UTF_8.displayName()));
 
-		httpResponse.headers().set(CONTENT_LENGTH, content.getBytes().length);
+		httpResponse.headers().set(CONTENT_LENGTH, content.getBytes(Consts.UTF_8).length);
 		httpResponse.headers().set(CONNECTION, Values.KEEP_ALIVE);
 		httpResponse.headers().set(DATE, new Date());
 		httpResponse.headers().set(SERVER, "netty4");

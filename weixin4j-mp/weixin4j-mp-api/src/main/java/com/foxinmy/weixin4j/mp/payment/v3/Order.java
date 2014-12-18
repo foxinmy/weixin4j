@@ -31,6 +31,7 @@ public class Order extends ApiResult {
 	@XStreamAlias("openid")
 	private String openId;
 	// 用户是否关注公众账号,Y- 关注,N-未关注,仅在公众 账号类型支付有效
+	@XStreamAlias("is_subscribe")
 	private String isSubscribe;
 	// 交易类型
 	@XStreamAlias("trade_type")
@@ -54,6 +55,7 @@ public class Order extends ApiResult {
 	@XStreamAlias("out_rade_no")
 	private String outTradeNo;
 	// 商家数据包
+	@XStreamAlias("attach")
 	private String attach;
 	// 支付完成时间,格式为 yyyyMMddhhmmss
 	@XStreamAlias("time_end")

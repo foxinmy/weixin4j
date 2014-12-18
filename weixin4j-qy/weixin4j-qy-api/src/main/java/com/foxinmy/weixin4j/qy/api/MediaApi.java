@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -121,7 +122,7 @@ public class MediaApi extends QyApi {
 	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#downloadMedia(String)}
 	 */
 	public File downloadMedia(String mediaId, String extension)
-			throws WeixinException, IOException {
+			throws WeixinException {
 		String media_path = ConfigUtil.getValue("media_path");
 		File file = new File(media_path + File.separator + mediaId + "."
 				+ extension);
@@ -129,10 +130,27 @@ public class MediaApi extends QyApi {
 			return file;
 		}
 		byte[] datas = downloadMedia(mediaId);
-		file.createNewFile();
-		FileOutputStream out = new FileOutputStream(file);
-		out.write(datas);
-		out.close();
+		OutputStream os = null;
+		try {
+			boolean flag = file.createNewFile();
+			if (flag) {
+				os = new FileOutputStream(file);
+				os.write(datas);
+			} else {
+				throw new WeixinException("-1", String.format(
+						"create file fail:%s", file.getAbsolutePath()));
+			}
+		} catch (IOException e) {
+			throw new WeixinException("-1", e.getMessage());
+		} finally {
+			try {
+				if (os != null) {
+					os.close();
+				}
+			} catch (IOException ignore) {
+				;
+			}
+		}
 		return file;
 	}
 

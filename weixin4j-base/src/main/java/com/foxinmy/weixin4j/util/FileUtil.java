@@ -92,6 +92,7 @@ public class FileUtil {
 
 	/**
 	 * 获取文件类型
+	 * 
 	 * @param file
 	 * @return
 	 */
@@ -101,14 +102,16 @@ public class FileUtil {
 		try {
 			fis = new FileInputStream(file);
 			byte[] b = new byte[10];
-			fis.read(b, 0, b.length);
-			String fileCode = bytesToHexString(b).toLowerCase();
-			Iterator<String> keyIter = FILE_TYPE_MAP.keySet().iterator();
-			while (keyIter.hasNext()) {
-				String key = keyIter.next().toLowerCase();
-				if (key.startsWith(fileCode) || fileCode.startsWith(key)) {
-					fileType = FILE_TYPE_MAP.get(key);
-					break;
+			int t = fis.read(b, 0, b.length);
+			if (t > 0) {
+				String fileCode = bytesToHexString(b).toLowerCase();
+				Iterator<String> keyIter = FILE_TYPE_MAP.keySet().iterator();
+				while (keyIter.hasNext()) {
+					String key = keyIter.next().toLowerCase();
+					if (key.startsWith(fileCode) || fileCode.startsWith(key)) {
+						fileType = FILE_TYPE_MAP.get(key);
+						break;
+					}
 				}
 			}
 		} catch (IOException e) {

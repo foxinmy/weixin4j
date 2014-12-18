@@ -164,6 +164,31 @@ public class User implements Serializable {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime * result
+				+ ((headimgurl == null) ? 0 : headimgurl.hashCode());
+		result = prime * result
+				+ ((language == null) ? 0 : language.hashCode());
+		result = prime * result
+				+ ((nickname == null) ? 0 : nickname.hashCode());
+		result = prime * result + ((openid == null) ? 0 : openid.hashCode());
+		result = prime * result
+				+ ((privilege == null) ? 0 : privilege.hashCode());
+		result = prime * result
+				+ ((province == null) ? 0 : province.hashCode());
+		result = prime * result + sex;
+		result = prime * result + subscribe;
+		result = prime * result
+				+ (int) (subscribe_time ^ (subscribe_time >>> 32));
+		result = prime * result + ((unionid == null) ? 0 : unionid.hashCode());
+		return result;
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[User openid=").append(openid);

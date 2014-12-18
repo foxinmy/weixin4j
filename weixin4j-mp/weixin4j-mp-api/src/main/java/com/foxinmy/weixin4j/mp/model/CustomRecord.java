@@ -47,7 +47,7 @@ public class CustomRecord implements Serializable {
 	}
 
 	public Date getTime() {
-		return time;
+		return (Date) time.clone();
 	}
 
 	public void setTime(long time) {

@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
-import com.foxinmy.weixin4j.xml.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 基于文件保存的Token获取类
@@ -66,7 +66,7 @@ public class FileTokenHolder extends AbstractTokenHolder {
 		long now_time = ca.getTimeInMillis();
 		try {
 			if (token_file.exists()) {
-				token = XStream.get(new FileInputStream(token_file),
+				token = XmlStream.get(new FileInputStream(token_file),
 						Token.class);
 				long expire_time = token.getTime()
 						+ (token.getExpiresIn() * 1000) - 2;
@@ -78,7 +78,7 @@ public class FileTokenHolder extends AbstractTokenHolder {
 			token = response.getAsObject(new TypeReference<Token>() {
 			});
 			token.setTime(now_time);
-			XStream.to(token, new FileOutputStream(token_file));
+			XmlStream.to(token, new FileOutputStream(token_file));
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		}

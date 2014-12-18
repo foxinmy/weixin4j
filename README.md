@@ -191,6 +191,12 @@ netty的代码没有放到maven中心仓库,也没什么意义,因为最终需�
   + **weixin4j-mp**: 新增群发消息预览、状态查询接口
   
   + **weixin4j-mp**: 新增多客服添加账号、更新账号、上传头像、删除账号接口
+
+* 2014-12-18
+  
+  + clear code with findbugs plugin
+  
+  + change the version to 1.1
   
 接下来
 ------

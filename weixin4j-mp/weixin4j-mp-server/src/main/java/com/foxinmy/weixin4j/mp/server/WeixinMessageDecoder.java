@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.response.HttpWeixinMessage;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
-import com.foxinmy.weixin4j.xml.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 微信消息解码类
@@ -41,7 +41,7 @@ public class WeixinMessageDecoder extends
 		String xmlContent = req.content().toString(Consts.UTF_8);
 		HttpWeixinMessage message = new HttpWeixinMessage();
 		if (StringUtils.isNotBlank(xmlContent)) {
-			message = XStream.get(xmlContent, HttpWeixinMessage.class);
+			message = XmlStream.get(xmlContent, HttpWeixinMessage.class);
 		}
 		message.setMethod(req.getMethod().name());
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),

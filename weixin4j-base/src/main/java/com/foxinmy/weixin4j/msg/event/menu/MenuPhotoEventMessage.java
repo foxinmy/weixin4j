@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.msg.event.menu;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -27,7 +28,10 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 		return pictureInfo;
 	}
 
-	public static class PictureInfo {
+	public static class PictureInfo implements Serializable {
+
+		private static final long serialVersionUID = -3361375879168233258L;
+
 		@XStreamAlias("Count")
 		private int count;
 		@XStreamAlias("PicList")
@@ -48,7 +52,10 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 	}
 
 	@XStreamAlias("item")
-	public static class PictureItem {
+	public static class PictureItem implements Serializable {
+
+		private static final long serialVersionUID = -7636697449096645590L;
+
 		@XStreamAlias("PicMd5Sum")
 		private String md5;
 

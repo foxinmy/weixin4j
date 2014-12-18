@@ -10,9 +10,9 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.Xpp3Driver;
 
-public class XStream extends com.thoughtworks.xstream.XStream {
+public class XmlStream extends com.thoughtworks.xstream.XStream {
 
-	public XStream() {
+	public XmlStream() {
 
 		super(new Xpp3Driver() {
 
@@ -31,7 +31,7 @@ public class XStream extends com.thoughtworks.xstream.XStream {
 		});
 	}
 
-	public XStream(HierarchicalStreamDriver hierarchicalStreamDriver) {
+	public XmlStream(HierarchicalStreamDriver hierarchicalStreamDriver) {
 		super(hierarchicalStreamDriver);
 	}
 
@@ -45,29 +45,29 @@ public class XStream extends com.thoughtworks.xstream.XStream {
 		return (T) super.fromXML(inputStream);
 	}
 
-	public static XStream get() {
-		XStream xstream = new XStream();
+	public static XmlStream get() {
+		XmlStream xstream = new XmlStream();
 		xstream.ignoreUnknownElements();
 		xstream.autodetectAnnotations(true);
 		return xstream;
 	}
 
 	public static <T> T get(InputStream inputStream, Class<T> clazz) {
-		XStream xStream = get();
+		XmlStream xStream = get();
 		xStream.alias("xml", clazz);
 		xStream.processAnnotations(clazz);
 		return xStream.fromXML(inputStream, clazz);
 	}
 
 	public static <T> T get(String xml, Class<T> clazz) {
-		XStream xStream = get();
+		XmlStream xStream = get();
 		xStream.alias("xml", clazz);
 		xStream.processAnnotations(clazz);
 		return xStream.fromXML(xml, clazz);
 	}
 
 	public static String to(Object obj) {
-		XStream xStream = get();
+		XmlStream xStream = get();
 		Class<?> clazz = obj.getClass();
 		xStream.alias("xml", clazz);
 		xStream.processAnnotations(clazz);
@@ -75,7 +75,7 @@ public class XStream extends com.thoughtworks.xstream.XStream {
 	}
 
 	public static void to(Object obj, OutputStream out) {
-		XStream xStream = get();
+		XmlStream xStream = get();
 		Class<?> clazz = obj.getClass();
 		xStream.alias("xml", clazz);
 		xStream.processAnnotations(clazz);

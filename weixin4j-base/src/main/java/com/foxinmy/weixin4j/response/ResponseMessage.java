@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.msg.model.Base;
 import com.foxinmy.weixin4j.msg.model.News;
 import com.foxinmy.weixin4j.msg.model.Responseable;
 import com.foxinmy.weixin4j.util.ClassUtil;
-import com.foxinmy.weixin4j.xml.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -40,7 +40,7 @@ public class ResponseMessage extends BaseMsg {
 
 	private static final long serialVersionUID = 7761192742840031607L;
 
-	protected final static XStream xmlStream = XStream.get();
+	protected final static XmlStream xmlStream = XmlStream.get();
 	static {
 		Class<?>[] classes = ClassUtil.getClasses(Base.class.getPackage())
 				.toArray(new Class[0]);
@@ -58,7 +58,8 @@ public class ResponseMessage extends BaseMsg {
 	private final Base box;
 
 	public ResponseMessage(Base box) {
-		this(box, null);
+		super(box.getMediaType().name());
+		this.box = box;
 	}
 
 	public ResponseMessage(Base box, BaseMsg inMessage) {

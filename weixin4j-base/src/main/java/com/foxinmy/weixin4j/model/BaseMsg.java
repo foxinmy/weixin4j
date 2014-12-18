@@ -88,6 +88,21 @@ public class BaseMsg implements Serializable {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((agentId == null) ? 0 : agentId.hashCode());
+		result = prime * result + (int) (createTime ^ (createTime >>> 32));
+		result = prime * result
+				+ ((fromUserName == null) ? 0 : fromUserName.hashCode());
+		result = prime * result + (int) (msgId ^ (msgId >>> 32));
+		result = prime * result + ((msgType == null) ? 0 : msgType.hashCode());
+		result = prime * result
+				+ ((toUserName == null) ? 0 : toUserName.hashCode());
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof BaseMsg) {
 			return ((BaseMsg) obj).getMsgId() == msgId;

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -246,8 +247,7 @@ public class PayApi extends MpApi {
 	 */
 	public RefundResult refund(InputStream ca, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
-			String opUserId, String opUserPasswd) throws WeixinException,
-			IOException {
+			String opUserId, String opUserPasswd) throws WeixinException{
 		int version = weixinAccount.getVersion();
 		String refund_uri = getRequestUri(String.format("refund_v%d_uri",
 				version));
@@ -355,6 +355,9 @@ public class PayApi extends MpApi {
 			SSLHttpRequest request = new SSLHttpRequest(
 					weixinAccount.getMchId(), ca);
 			response = request.post(refund_uri, param);
+		} else {
+			throw new WeixinException("-1", String.format("unknown version:%d",
+					version));
 		}
 		return response.getAsObject(new TypeReference<RefundResult>() {
 		});
@@ -482,7 +485,7 @@ public class PayApi extends MpApi {
 	 * @throws IOException
 	 */
 	public File downloadbill(Date billDate, BillType billType)
-			throws WeixinException, IOException {
+			throws WeixinException {
 		if (billDate == null) {
 			Calendar now = Calendar.getInstance();
 			now.add(Calendar.DAY_OF_MONTH, -1);
@@ -526,25 +529,46 @@ public class PayApi extends MpApi {
 			map.put("sign", sign);
 			String param = map2xml(map);
 			response = request.post(downloadbill_uri, param);
+		} else {
+			throw new WeixinException("-1", String.format("unknown version:%d",
+					version));
 		}
+		BufferedReader reader = null;
+		OutputStream os = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(
+					response.getStream(), charset));
+			String line = null;
+			List<String[]> bills = new LinkedList<String[]>();
+			while ((line = reader.readLine()) != null) {
+				bills.add(line.replaceAll("`", "").split(","));
+			}
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				response.getStream(), charset));
-		String line = null;
-		List<String[]> bills = new LinkedList<String[]>();
-		while ((line = reader.readLine()) != null) {
-			bills.add(line.replaceAll("`", "").split(","));
+			List<String> headers = Arrays.asList(bills.remove(0));
+			List<String> totalDatas = Arrays
+					.asList(bills.remove(bills.size() - 1));
+			List<String> totalHeaders = Arrays
+					.asList(bills.remove(bills.size() - 1));
+			HSSFWorkbook wb = new HSSFWorkbook();
+			wb.createSheet(_billDate + "对账单");
+			ExcelUtil.list2excel(wb, headers, bills);
+			ExcelUtil.list2excel(wb, totalHeaders, totalDatas);
+			os = new FileOutputStream(file);
+			wb.write(os);
+		} catch (IOException e) {
+			throw new WeixinException("-1", e.getMessage());
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+				if (os != null) {
+					os.close();
+				}
+			} catch (IOException ignore) {
+				;
+			}
 		}
-		reader.close();
-		List<String> headers = Arrays.asList(bills.remove(0));
-		List<String> totalDatas = Arrays.asList(bills.remove(bills.size() - 1));
-		List<String> totalHeaders = Arrays
-				.asList(bills.remove(bills.size() - 1));
-		HSSFWorkbook wb = new HSSFWorkbook();
-		wb.createSheet(_billDate + "对账单");
-		ExcelUtil.list2excel(wb, headers, bills);
-		ExcelUtil.list2excel(wb, totalHeaders, totalDatas);
-		wb.write(new FileOutputStream(file));
 		return file;
 	}
 
@@ -581,6 +605,9 @@ public class PayApi extends MpApi {
 			map.put("sign", sign);
 			String param = map2xml(map);
 			response = request.post(refundquery_uri, param);
+		} else {
+			throw new WeixinException("-1", String.format("unknown version:%d",
+					version));
 		}
 		return RefundConverter.fromXML(response.getAsString());
 	}

@@ -33,7 +33,7 @@ public class HelperApi extends MpApi {
 	/**
 	 * 长链接转短链接
 	 * 
-	 * @param url
+	 * @param url 待转换的链接
 	 * @return 短链接
 	 * @throws WeixinException
 	 * @see <a
