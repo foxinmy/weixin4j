@@ -356,7 +356,7 @@ public class PayApi extends MpApi {
 					weixinAccount.getMchId(), ca);
 			response = request.post(refund_uri, param);
 		} else {
-			throw new WeixinException("-1", String.format("unknown version:%d",
+			throw new WeixinException(String.format("unknown version:%d",
 					version));
 		}
 		return response.getAsObject(new TypeReference<RefundResult>() {
@@ -530,7 +530,7 @@ public class PayApi extends MpApi {
 			String param = map2xml(map);
 			response = request.post(downloadbill_uri, param);
 		} else {
-			throw new WeixinException("-1", String.format("unknown version:%d",
+			throw new WeixinException(String.format("unknown version:%d",
 					version));
 		}
 		BufferedReader reader = null;
@@ -556,7 +556,7 @@ public class PayApi extends MpApi {
 			os = new FileOutputStream(file);
 			wb.write(os);
 		} catch (IOException e) {
-			throw new WeixinException("-1", e.getMessage());
+			throw new WeixinException(e.getMessage());
 		} finally {
 			try {
 				if (reader != null) {
@@ -606,7 +606,7 @@ public class PayApi extends MpApi {
 			String param = map2xml(map);
 			response = request.post(refundquery_uri, param);
 		} else {
-			throw new WeixinException("-1", String.format("unknown version:%d",
+			throw new WeixinException(String.format("unknown version:%d",
 					version));
 		}
 		return RefundConverter.fromXML(response.getAsString());

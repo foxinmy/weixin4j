@@ -133,9 +133,9 @@ public class UserApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.Following
 	 */
 	public Following getFollowing(String nextOpenId) throws WeixinException {
-		String fllowing_uri = getRequestUri("following_uri");
+		String following_uri = getRequestUri("following_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.get(String.format(fllowing_uri,
+		Response response = request.get(String.format(following_uri,
 				token.getAccessToken(), nextOpenId == null ? "" : nextOpenId));
 
 		Following following = response

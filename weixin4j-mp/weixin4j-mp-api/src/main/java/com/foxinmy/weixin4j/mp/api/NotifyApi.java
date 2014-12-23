@@ -45,7 +45,7 @@ public class NotifyApi extends MpApi {
 	 */
 	public JsonResult sendNotify(NotifyMessage notify) throws WeixinException {
 		if (!(notify.getBox() instanceof Notifyable)) {
-			throw new WeixinException("-1", String.format(
+			throw new WeixinException(String.format(
 					"%s not implement Notifyable", notify.getBox().getClass()));
 		}
 		String custom_notify_uri = getRequestUri("custom_notify_uri");

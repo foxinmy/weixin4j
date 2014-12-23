@@ -146,12 +146,7 @@ public class PayPackageV3 extends PayPackage {
 		return "PayPackageV3 [appid=" + appid + ", mch_id=" + mch_id
 				+ ", device_info=" + device_info + ", nonce_str=" + nonce_str
 				+ ", sign=" + sign + ", trade_type=" + trade_type + ", openid="
-				+ openid + ", product_id=" + product_id + ", getAppid()="
-				+ getAppid() + ", getMch_id()=" + getMch_id()
-				+ ", getDevice_info()=" + getDevice_info()
-				+ ", getNonce_str()=" + getNonce_str() + ", getSign()="
-				+ getSign() + ", getTrade_type()=" + getTrade_type()
-				+ ", getOpenid()=" + getOpenid() + ", getProduct_id()="
-				+ getProduct_id() + "]";
+				+ openid + ", product_id=" + product_id + ", "
+				+ super.toString() + "]";
 	}
 }

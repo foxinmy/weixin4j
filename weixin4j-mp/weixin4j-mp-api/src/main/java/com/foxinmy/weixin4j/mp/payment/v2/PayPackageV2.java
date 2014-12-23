@@ -135,12 +135,6 @@ public class PayPackageV2 extends PayPackage {
 		return "PayPackageV2 [bank_type=" + bank_type + ", partner=" + partner
 				+ ", fee_type=" + fee_type + ", transport_fee=" + transport_fee
 				+ ", product_fee=" + product_fee + ", input_charset="
-				+ input_charset + ", goods_tag=" + getGoods_tag()
-				+ ", getBank_type()=" + getBank_type() + ", getPartner()="
-				+ getPartner() + ", getFee_type()=" + getFee_type()
-				+ ", getTransport_fee()=" + getTransport_fee()
-				+ ", getProduct_fee()=" + getProduct_fee()
-				+ ", getGoods_tag()=" + getGoods_tag()
-				+ ", getInput_charset()=" + getInput_charset() + "]";
+				+ input_charset + ", " + super.toString() + "]";
 	}
 }

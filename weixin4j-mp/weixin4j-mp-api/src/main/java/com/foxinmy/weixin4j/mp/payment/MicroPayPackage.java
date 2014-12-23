@@ -115,13 +115,7 @@ public class MicroPayPackage extends PayPackage {
 	public String toString() {
 		return "MicroPayPackage [appid=" + appid + ", mch_id=" + mch_id
 				+ ", device_info=" + device_info + ", nonce_str=" + nonce_str
-				+ ", sign=" + sign + ", auth_code=" + auth_code
-				+ ", getBody()=" + getBody() + ", getAttach()=" + getAttach()
-				+ ", getOut_trade_no()=" + getOut_trade_no()
-				+ ", getTotal_fee()=" + getTotal_fee()
-				+ ", getSpbill_create_ip()=" + getSpbill_create_ip()
-				+ ", getTime_start()=" + getTime_start()
-				+ ", getTime_expire()=" + getTime_expire()
-				+ ", getGoods_tag()=" + getGoods_tag() + "]";
+				+ ", sign=" + sign + ", auth_code=" + auth_code + ", "
+				+ super.toString() + "]";
 	}
 }

@@ -137,11 +137,11 @@ public class MediaApi extends QyApi {
 				os = new FileOutputStream(file);
 				os.write(datas);
 			} else {
-				throw new WeixinException("-1", String.format(
+				throw new WeixinException(String.format(
 						"create file fail:%s", file.getAbsolutePath()));
 			}
 		} catch (IOException e) {
-			throw new WeixinException("-1", e.getMessage());
+			throw new WeixinException(e.getMessage());
 		} finally {
 			try {
 				if (os != null) {

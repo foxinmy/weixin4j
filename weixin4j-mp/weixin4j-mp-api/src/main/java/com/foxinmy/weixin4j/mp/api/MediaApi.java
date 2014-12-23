@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
 
 /**
- * 媒体相关API
+ * 多媒体相关API
  * 
  * @className MediaApi
  * @author jy.hu
@@ -137,11 +137,11 @@ public class MediaApi extends MpApi {
 				os = new FileOutputStream(file);
 				os.write(datas);
 			} else {
-				throw new WeixinException("-1", String.format(
+				throw new WeixinException(String.format(
 						"create file fail:%s", file.getAbsolutePath()));
 			}
 		} catch (IOException e) {
-			throw new WeixinException("-1", e.getMessage());
+			throw new WeixinException(e.getMessage());
 		} finally {
 			try {
 				if (os != null) {

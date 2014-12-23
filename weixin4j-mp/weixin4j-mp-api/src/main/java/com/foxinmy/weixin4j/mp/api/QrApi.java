@@ -98,16 +98,16 @@ public class QrApi extends MpApi {
 		byte[] datas = getQRData(parameter);
 		OutputStream os = null;
 		try {
-			boolean flag = file.createNewFile();
+			boolean flag = file.exists() || file.createNewFile();
 			if (flag) {
 				os = new FileOutputStream(file);
 				os.write(datas);
 			} else {
-				throw new WeixinException("-1", String.format(
+				throw new WeixinException(String.format(
 						"create file fail:%s", file.getAbsolutePath()));
 			}
 		} catch (IOException e) {
-			throw new WeixinException("-1", e.getMessage());
+			throw new WeixinException(e.getMessage());
 		} finally {
 			try {
 				if (os != null) {

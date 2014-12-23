@@ -232,7 +232,7 @@ public class HttpRequest {
 				throw new WeixinException(response.getAsString());
 			}
 		} catch (IOException e) {
-			throw new WeixinException("-1", e.getMessage());
+			throw new WeixinException(e.getMessage());
 		} finally {
 			request.releaseConnection();
 		}

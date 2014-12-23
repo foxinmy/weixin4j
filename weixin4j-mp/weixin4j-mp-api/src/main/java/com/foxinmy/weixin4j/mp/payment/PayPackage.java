@@ -5,6 +5,14 @@ import java.util.Date;
 
 import com.foxinmy.weixin4j.util.DateUtil;
 
+/**
+ * 订单信息
+ * @className PayPackage
+ * @author jy
+ * @date 2014年12月18日
+ * @since JDK 1.7
+ * @see
+ */
 public class PayPackage implements Serializable {
 
 	private static final long serialVersionUID = 3450161267802545790L;
@@ -126,10 +134,10 @@ public class PayPackage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PayPackage [body=" + body + ", attach=" + attach
-				+ ", out_trade_no=" + out_trade_no + ", total_fee=" + total_fee
+		return "body=" + body + ", attach=" + attach + ", out_trade_no="
+				+ out_trade_no + ", total_fee=" + total_fee
 				+ ", spbill_create_ip=" + spbill_create_ip + ", time_start="
 				+ time_start + ", time_expire=" + time_expire + ", goods_tag="
-				+ goods_tag + ", notify_url=" + notify_url + "]";
+				+ goods_tag + ", notify_url=" + notify_url;
 	}
 }

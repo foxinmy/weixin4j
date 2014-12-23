@@ -118,7 +118,7 @@ public class MassApi extends MpApi {
 			}
 		}
 		if (!(box instanceof Massable)) {
-			throw new WeixinException("-1", String.format(
+			throw new WeixinException(String.format(
 					"%s not implement Massable", box.getClass()));
 		}
 		String msgtype = box.getMediaType().name();
@@ -187,7 +187,7 @@ public class MassApi extends MpApi {
 			}
 		}
 		if (!(box instanceof Massable)) {
-			throw new WeixinException("-1", String.format(
+			throw new WeixinException(String.format(
 					"%s not implement Massable", box.getClass()));
 		}
 		String msgtype = box.getMediaType().name();
