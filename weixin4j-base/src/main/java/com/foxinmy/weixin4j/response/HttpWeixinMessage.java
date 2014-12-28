@@ -15,7 +15,6 @@ public class HttpWeixinMessage implements Serializable {
 	@XStreamAlias("Encrypt")
 	private String encryptContent;
 	private EncryptType encryptType;
-	private String msgSignature;
 
 	// 以下字段每次被动消息时都会带上
 	private String echoStr;
@@ -23,10 +22,11 @@ public class HttpWeixinMessage implements Serializable {
 	private String nonce;
 	private String signature;
 
+	// 冗余字段
 	private String token;
 
-	// xml消息主体
-	private String xmlContent;
+	// xml消息明文主体
+	private String originalContent;
 
 	// request method
 	private String method;
@@ -53,14 +53,6 @@ public class HttpWeixinMessage implements Serializable {
 
 	public void setEncryptType(EncryptType encryptType) {
 		this.encryptType = encryptType;
-	}
-
-	public String getMsgSignature() {
-		return msgSignature;
-	}
-
-	public void setMsgSignature(String msgSignature) {
-		this.msgSignature = msgSignature;
 	}
 
 	public String getEchoStr() {
@@ -103,12 +95,12 @@ public class HttpWeixinMessage implements Serializable {
 		this.token = token;
 	}
 
-	public String getXmlContent() {
-		return xmlContent;
+	public String getOriginalContent() {
+		return originalContent;
 	}
 
-	public void setXmlContent(String xmlContent) {
-		this.xmlContent = xmlContent;
+	public void setOriginalContent(String originalContent) {
+		this.originalContent = originalContent;
 	}
 
 	public String getMethod() {
@@ -123,9 +115,9 @@ public class HttpWeixinMessage implements Serializable {
 	public String toString() {
 		return "HttpMessage [toUserName=" + toUserName + ", encryptContent="
 				+ encryptContent + ", encryptType=" + encryptType
-				+ ", msgSignature=" + msgSignature + ", echoStr=" + echoStr
-				+ ", timeStamp=" + timeStamp + ", nonce=" + nonce
-				+ ", signature=" + signature + ", token=" + token
-				+ ", xmlContent=" + xmlContent + ", method=" + method + "]";
+				+ ", echoStr=" + echoStr + ", timeStamp=" + timeStamp
+				+ ", nonce=" + nonce + ", signature=" + signature + ", token="
+				+ token + ", originalContent=" + originalContent + ", method="
+				+ method + "]";
 	}
 }

@@ -47,6 +47,7 @@ public class WeixinServerHandler extends
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		cause.printStackTrace();
 		ctx.close();
+		log.error("catch the exception:{}", cause.getMessage());
 	}
 
 	@Override
@@ -69,7 +70,7 @@ public class WeixinServerHandler extends
 			validate = MessageUtil.signature(httpMessage.getToken(),
 					httpMessage.getTimeStamp(), httpMessage.getNonce(),
 					httpMessage.getEncryptContent()).equals(
-					httpMessage.getMsgSignature());
+					httpMessage.getSignature());
 		}
 		if (!validate) {
 			ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
@@ -77,7 +78,7 @@ public class WeixinServerHandler extends
 			return;
 		}
 
-		String xmlContent = httpMessage.getXmlContent();
+		String xmlContent = httpMessage.getOriginalContent();
 		WeixinAction action = actionMapping.getAction(xmlContent);
 		if (action == null) {
 			ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,

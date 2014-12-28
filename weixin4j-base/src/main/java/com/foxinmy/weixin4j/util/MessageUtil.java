@@ -55,7 +55,7 @@ public class MessageUtil {
 	/**
 	 * 对xml消息加密
 	 * 
-	 * @param appId
+	 * @param appId 应用ID
 	 * @param encodingAesKey
 	 *            加密密钥
 	 * @param xmlContent
@@ -107,7 +107,7 @@ public class MessageUtil {
 			// 使用BASE64对加密后的字符串进行编码
 			return Base64.encodeBase64String(encrypted);
 		} catch (Exception e) {
-			throw new WeixinException("-40006", "AES加密失败");
+			throw new WeixinException("-40006", "AES加密失败:" + e.getMessage());
 		}
 	}
 
@@ -138,7 +138,7 @@ public class MessageUtil {
 			// 解密
 			original = cipher.doFinal(encrypted);
 		} catch (Exception e) {
-			throw new WeixinException("-40007", "AES解密失败");
+			throw new WeixinException("-40007", "AES解密失败:" + e.getMessage());
 		}
 		String xmlContent, fromAppId;
 		try {
@@ -156,7 +156,8 @@ public class MessageUtil {
 			fromAppId = new String(Arrays.copyOfRange(bytes, 20 + xmlLength,
 					bytes.length), org.apache.http.Consts.UTF_8);
 		} catch (Exception e) {
-			throw new WeixinException("-40008", "公众平台发送的xml不合法");
+			throw new WeixinException("-40008", "公众平台发送的xml不合法:"
+					+ e.getMessage());
 		}
 		// 校验appId是否一致
 		if (!fromAppId.trim().equals(appId)) {
@@ -198,8 +199,7 @@ public class MessageUtil {
 			return null;
 		}
 		MessageType messageType = MessageType.valueOf(type.toLowerCase());
-		Class<? extends BaseMsg> messageClass = messageType
-				.getMessageClass();
+		Class<? extends BaseMsg> messageClass = messageType.getMessageClass();
 		if (messageType == MessageType.event) {
 			type = doc.selectSingleNode("/xml/Event").getStringValue();
 			messageClass = EventType.valueOf(type.toLowerCase())

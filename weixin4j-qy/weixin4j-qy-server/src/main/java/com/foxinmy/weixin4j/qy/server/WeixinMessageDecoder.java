@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.qy.server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.QueryStringDecoder;
 
 import java.util.List;
@@ -38,13 +39,14 @@ public class WeixinMessageDecoder extends
 	protected void decode(ChannelHandlerContext ctx, FullHttpRequest req,
 			List<Object> out) throws Exception {
 		WeixinQyAccount qyAccount = ConfigUtil.getWeixinQyAccount();
-		String xmlContent = req.content().toString(Consts.UTF_8);
+		String content = req.content().toString(Consts.UTF_8);
 		HttpWeixinMessage message = new HttpWeixinMessage();
-		message.setXmlContent(xmlContent);
-		if (StringUtils.isNotBlank(xmlContent)) {
-			message = XmlStream.get(xmlContent, HttpWeixinMessage.class);
-			message.setXmlContent(MessageUtil.aesDecrypt(qyAccount.getId(),
-					qyAccount.getEncodingAesKey(), message.getEncryptContent()));
+		message.setOriginalContent(content);
+		if (StringUtils.isNotBlank(content)) {
+			message = XmlStream.get(content, HttpWeixinMessage.class);
+			message.setOriginalContent(MessageUtil.aesDecrypt(
+					qyAccount.getId(), qyAccount.getEncodingAesKey(),
+					message.getEncryptContent()));
 		}
 		message.setMethod(req.getMethod().name());
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
@@ -52,11 +54,11 @@ public class WeixinMessageDecoder extends
 		log.info("\n=================receive request=================");
 		log.info("{}", req.getMethod());
 		log.info("{}", req.getUri());
-		log.info("{}", xmlContent);
+		log.info("{}", content);
 		Map<String, List<String>> parameters = queryDecoder.parameters();
 		String msgSignature = parameters.containsKey("msg_signature") ? parameters
 				.get("msg_signature").get(0) : "";
-		message.setMsgSignature(msgSignature);
+		message.setSignature(msgSignature);
 		String echoStr = parameters.containsKey("echostr") ? parameters.get(
 				"echostr").get(0) : "";
 		message.setEchoStr(echoStr);
@@ -66,12 +68,16 @@ public class WeixinMessageDecoder extends
 		String nonce = parameters.containsKey("nonce") ? parameters
 				.get("nonce").get(0) : "";
 		message.setNonce(nonce);
-		String signature = parameters.containsKey("signature") ? parameters
-				.get("signature").get(0) : "";
-		message.setSignature(signature);
 
 		message.setToken(qyAccount.getToken());
 		message.setEncryptType(EncryptType.AES);
+
+		// 解密 echostr 20141228 added
+		if (message.getMethod().equals(HttpMethod.GET.name())
+				&& StringUtils.isNotBlank(echoStr)) {
+			message.setOriginalContent(MessageUtil.aesDecrypt(
+					qyAccount.getId(), qyAccount.getEncodingAesKey(), echoStr));
+		}
 		out.add(message);
 	}
 }

@@ -38,10 +38,10 @@ public class WeixinMessageDecoder extends
 	protected void decode(ChannelHandlerContext ctx, FullHttpRequest req,
 			List<Object> out) throws Exception {
 		WeixinMpAccount mpAccount = ConfigUtil.getWeixinMpAccount();
-		String xmlContent = req.content().toString(Consts.UTF_8);
+		String content = req.content().toString(Consts.UTF_8);
 		HttpWeixinMessage message = new HttpWeixinMessage();
-		if (StringUtils.isNotBlank(xmlContent)) {
-			message = XmlStream.get(xmlContent, HttpWeixinMessage.class);
+		if (StringUtils.isNotBlank(content)) {
+			message = XmlStream.get(content, HttpWeixinMessage.class);
 		}
 		message.setMethod(req.getMethod().name());
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
@@ -49,14 +49,11 @@ public class WeixinMessageDecoder extends
 		log.info("\n=================receive request=================");
 		log.info("{}", req.getMethod());
 		log.info("{}", req.getUri());
-		log.info("{}", xmlContent);
+		log.info("{}", content);
 		Map<String, List<String>> parameters = queryDecoder.parameters();
 		String encryptType = parameters.containsKey("encrypt_type") ? parameters
 				.get("encrypt_type").get(0) : EncryptType.RAW.name();
 		message.setEncryptType(EncryptType.valueOf(encryptType.toUpperCase()));
-		String msgSignature = parameters.containsKey("msg_signature") ? parameters
-				.get("msg_signature").get(0) : "";
-		message.setMsgSignature(msgSignature);
 		String echoStr = parameters.containsKey("echostr") ? parameters.get(
 				"echostr").get(0) : "";
 		message.setEchoStr(echoStr);
@@ -70,12 +67,12 @@ public class WeixinMessageDecoder extends
 				.get("signature").get(0) : "";
 		message.setSignature(signature);
 
-		message.setXmlContent(xmlContent);
+		message.setOriginalContent(content);
 		if (message.getEncryptType() == EncryptType.AES) {
-			message.setXmlContent(MessageUtil.aesDecrypt(mpAccount.getId(),
-					mpAccount.getEncodingAesKey(), message.getEncryptContent()));
+			message.setOriginalContent(MessageUtil.aesDecrypt(
+					mpAccount.getId(), mpAccount.getEncodingAesKey(),
+					message.getEncryptContent()));
 		}
-		message.setToken(mpAccount.getToken());
 		out.add(message);
 	}
 }
