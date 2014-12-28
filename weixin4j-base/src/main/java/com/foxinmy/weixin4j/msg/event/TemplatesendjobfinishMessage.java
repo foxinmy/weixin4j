@@ -4,7 +4,7 @@ import com.foxinmy.weixin4j.type.EventType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * 模板消息事件推送
+ * 模板消息事件推送(公众平台)
  * 
  * @className TemplatesendjobfinishMessage
  * @author jy

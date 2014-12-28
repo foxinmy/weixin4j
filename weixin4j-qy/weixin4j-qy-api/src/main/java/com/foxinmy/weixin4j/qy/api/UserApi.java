@@ -1,8 +1,10 @@
 package com.foxinmy.weixin4j.qy.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
@@ -132,6 +134,8 @@ public class UserApi extends QyApi {
 	 *            是否递归获取子部门下面的成员 非必须
 	 * @param userStatus
 	 *            成员状态 status可叠加 非必须
+	 * @param findDetail
+	 *            是否获取详细信息
 	 * @see com.foxinmy.weixin4j.qy.model.User
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E8.8E.B7.E5.8F.96.E9.83.A8.E9.97.A8.E6.88.90.E5.91.98">获取部门成员说明</a>
@@ -139,14 +143,30 @@ public class UserApi extends QyApi {
 	 * @throws WeixinException
 	 */
 	public List<User> listUser(int departId, boolean fetchChild,
-			UserStatus userStatus) throws WeixinException {
-		String user_list_uri = getRequestUri("user_list_uri");
+			UserStatus userStatus, boolean findDetail) throws WeixinException {
+		String user_list_uri = findDetail ? getRequestUri("user_list_uri")
+				: getRequestUri("user_slist_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(String.format(user_list_uri,
 				token.getAccessToken(), departId, fetchChild ? 1 : 0,
 				userStatus.getVal()));
-		return JSON.parseArray(response.getAsJson().getString("userlist"),
-				User.class);
+		List<User> list = null;
+		if (findDetail) {
+			JSONArray arrays = response.getAsJson().getJSONArray("userlist");
+			list = new ArrayList<User>(arrays.size());
+			for (int i = 0; i < arrays.size(); i++) {
+				JSONObject obj = arrays.getJSONObject(i);
+				Object attrs = obj.getJSONObject("extattr").remove("attrs");
+				if (attrs != null) {
+					obj.put("extattr", attrs);
+				}
+				list.add(JSON.toJavaObject(obj, User.class));
+			}
+		} else {
+			list = JSON.parseArray(response.getAsJson().getString("userlist"),
+					User.class);
+		}
+		return list;
 	}
 
 	/**
@@ -159,7 +179,7 @@ public class UserApi extends QyApi {
 	 * @throws WeixinException
 	 */
 	public List<User> listUser(int departId) throws WeixinException {
-		return listUser(departId, false, UserStatus.BOTH);
+		return listUser(departId, false, UserStatus.BOTH, false);
 	}
 
 	/**

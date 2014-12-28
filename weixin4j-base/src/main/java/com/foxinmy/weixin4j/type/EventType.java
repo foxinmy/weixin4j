@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.type;
 
+import com.foxinmy.weixin4j.msg.event.EnterAgentEventMessage;
 import com.foxinmy.weixin4j.msg.event.EventMessage;
 import com.foxinmy.weixin4j.msg.event.LocationEventMessage;
 import com.foxinmy.weixin4j.msg.event.MassEventMessage;
@@ -31,7 +32,7 @@ public enum EventType {
 			MenuLocationEventMessage.class), click(MenuEventMessage.class), location(
 			LocationEventMessage.class),masssendjobfinish(
 			MassEventMessage.class), templatesendjobfinish(
-			TemplatesendjobfinishMessage.class);
+			TemplatesendjobfinishMessage.class),enter_agent(EnterAgentEventMessage.class);
 
 	private Class<? extends EventMessage> eventClass;
 

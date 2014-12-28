@@ -10,6 +10,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.qy.api.UserApi;
 import com.foxinmy.weixin4j.qy.model.User;
+import com.foxinmy.weixin4j.qy.type.UserStatus;
 
 /**
  * 部门API测试
@@ -57,7 +58,10 @@ public class UserTest extends TokenTest {
 
 	@Test
 	public void list() throws WeixinException {
-		List<User> userList = userApi.listUser(1);
+		List<User> userList = userApi.listUser(1, true, UserStatus.BOTH, true);
+		Assert.assertFalse(userList.isEmpty());
+		System.out.println(userList);
+		userList = userApi.listUser(1);
 		Assert.assertFalse(userList.isEmpty());
 		System.out.println(userList);
 	}

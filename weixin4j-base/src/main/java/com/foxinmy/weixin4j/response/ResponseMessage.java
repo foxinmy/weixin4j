@@ -8,6 +8,7 @@ import com.foxinmy.weixin4j.msg.model.Base;
 import com.foxinmy.weixin4j.msg.model.News;
 import com.foxinmy.weixin4j.msg.model.Responseable;
 import com.foxinmy.weixin4j.util.ClassUtil;
+import com.foxinmy.weixin4j.xml.TextConverter;
 import com.foxinmy.weixin4j.xml.XmlStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -107,10 +108,7 @@ public class ResponseMessage extends BaseMsg {
 
 	@Override
 	public String toString() {
-		return "ResponseMessage [" + box.toString() + ", attach=" + attach
-				+ ", getToUserName()=" + getToUserName()
-				+ ", getFromUserName()=" + getFromUserName()
-				+ ", getCreateTime()=" + getCreateTime() + ", getMsgType()="
-				+ getMsgType() + "]";
+		return "ResponseMessage [ " + super.toString() + ", attach=" + attach
+				+ ", box=" + box + "]";
 	}
 }

@@ -88,3 +88,9 @@ weixin4j-qy
 * 2014-11-24
 
   + **weixin4j-qy-server**: 新增netty服务与消息分发
+  
+ * 2014-12-28
+
+  + **weixin4j-qy**:增加用户进入应用的callback事件
+
+  + **weixin4j-qy**:增加批量获取用户详情的接口

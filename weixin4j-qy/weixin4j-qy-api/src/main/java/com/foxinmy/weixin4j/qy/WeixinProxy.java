@@ -185,6 +185,8 @@ public class WeixinProxy {
 	 *            是否递归获取子部门下面的成员 非必须
 	 * @param userStatus
 	 *            成员状态 status可叠加 非必须
+	 * @param findDetail
+	 *            是否获取详细信息
 	 * @see com.foxinmy.weixin4j.qy.model.User
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E8.8E.B7.E5.8F.96.E9.83.A8.E9.97.A8.E6.88.90.E5.91.98">获取部门成员说明</a>
@@ -193,8 +195,8 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 */
 	public List<User> listUser(int departId, boolean fetchChild,
-			UserStatus userStatus) throws WeixinException {
-		return userApi.listUser(departId, fetchChild, userStatus);
+			UserStatus userStatus, boolean findDetail) throws WeixinException {
+		return userApi.listUser(departId, fetchChild, userStatus, findDetail);
 	}
 
 	/**
@@ -244,7 +246,8 @@ public class WeixinProxy {
 	/**
 	 * 更新标签(管理组必须是指定标签的创建者)
 	 * 
-	 * @param tag 标签信息
+	 * @param tag
+	 *            标签信息
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E6.9B.B4.E6.96.B0.E6.A0.87.E7.AD.BE.E5.90.8D.E5.AD.97"
 	 *      >更新标签说明</a>

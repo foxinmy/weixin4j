@@ -37,6 +37,7 @@ public class MenuEventMessage extends EventMessage {
 
 	@Override
 	public String toString() {
-		return "eventKey=" + eventKey + ", " + super.toString();
+		return "MenuEventMessage [eventKey=" + eventKey + ", "
+				+ super.toString() + "]";
 	}
 }

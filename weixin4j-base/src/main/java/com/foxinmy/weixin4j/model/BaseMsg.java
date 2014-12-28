@@ -34,7 +34,7 @@ public class BaseMsg implements Serializable {
 	}
 
 	public BaseMsg(String msgType) {
-		this(msgType, null, null);
+		this.msgType = msgType;
 	}
 
 	public BaseMsg(String toUserName, String fromUserName) {
