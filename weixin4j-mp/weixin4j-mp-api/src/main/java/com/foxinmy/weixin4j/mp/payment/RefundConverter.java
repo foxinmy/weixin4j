@@ -26,34 +26,39 @@ import com.thoughtworks.xstream.mapper.Mapper;
  * @author jy
  * @date 2014年11月2日
  * @since JDK 1.7
- * @see com.foxinmy.weixin4j.mp.payment.Refund
- * @see com.foxinmy.weixin4j.mp.payment.RefundDetail
+ * @see com.foxinmy.weixin4j.mp.payment.v2.RefundRecord
+ * @see com.foxinmy.weixin4j.mp.payment.v2.RefundDetail
+ * @see com.foxinmy.weixin4j.mp.payment.v3.RefundRecord
+ * @see com.foxinmy.weixin4j.mp.payment.v3.RefundDetail
  */
 public class RefundConverter {
 	private final static XmlStream xStream = XmlStream.get();
 	private final static Mapper mapper;
 	private final static ReflectionProvider reflectionProvider;
 	private final static Pattern pattern = Pattern.compile("(_\\d)$");
+	private static Class<?> clazz;
+	private final static Class<com.foxinmy.weixin4j.mp.payment.v2.RefundRecord> REFUNDRECORD2 = com.foxinmy.weixin4j.mp.payment.v2.RefundRecord.class;
+	private final static Class<com.foxinmy.weixin4j.mp.payment.v3.RefundRecord> REFUNDRECORD3 = com.foxinmy.weixin4j.mp.payment.v3.RefundRecord.class;
+
 	static {
-		xStream.processAnnotations(Refund.class);
-		xStream.processAnnotations(RefundDetail.class);
+		xStream.processAnnotations(new Class[] { REFUNDRECORD2, REFUNDRECORD3,
+				com.foxinmy.weixin4j.mp.payment.v2.RefundDetail.class,
+				com.foxinmy.weixin4j.mp.payment.v3.RefundDetail.class });
+		xStream.aliasField("refund_state", com.foxinmy.weixin4j.mp.payment.v2.RefundDetail.class, "refundStatus");
 		xStream.registerConverter(new $());
 		mapper = xStream.getMapper();
 		reflectionProvider = xStream.getReflectionProvider();
 	}
 
-	public static String toXML(Refund refund) {
-		return xStream.toXML(refund);
-	}
-
-	public static Refund fromXML(String xml) {
-		return xStream.fromXML(xml, Refund.class);
+	public static <T> T fromXML(String xml, Class<T> clazz) {
+		RefundConverter.clazz = clazz;
+		return xStream.fromXML(xml, clazz);
 	}
 
 	private static class $ implements Converter {
 		@Override
 		public boolean canConvert(@SuppressWarnings("rawtypes") Class clazz) {
-			return clazz.equals(Refund.class);
+			return clazz.equals(REFUNDRECORD2) || clazz.equals(REFUNDRECORD3);
 		}
 
 		@Override
@@ -63,18 +68,24 @@ public class RefundConverter {
 					writer, context);
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public Object unmarshal(HierarchicalStreamReader reader,
 				UnmarshallingContext context) {
-			Refund refund = new Refund();
+			Object refund = null;
+			try {
+				refund = clazz.newInstance();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 			Matcher matcher = null;
 			Map<String, Map<String, String>> outMap = new HashMap<String, Map<String, String>>();
 			while (reader.hasMoreChildren()) {
 				reader.moveDown();
 				String nodeName = reader.getNodeName();
-				String fieldName = mapper.realMember(Refund.class, nodeName);
-				Field field = reflectionProvider.getFieldOrNull(Refund.class,
+				String fieldName = mapper.realMember(clazz, nodeName);
+				Field field = reflectionProvider.getFieldOrNull(clazz,
 						fieldName);
 				if (field != null) {
 					Object value = context.convertAnother(refund,
@@ -94,7 +105,8 @@ public class RefundConverter {
 			}
 			StringBuilder detailXml = new StringBuilder();
 			detailXml.append("<list>");
-			String detailCanonicalName = RefundDetail.class.getCanonicalName();
+			String detailCanonicalName = clazz.getCanonicalName().replaceFirst(
+					"RefundRecord", "RefundDetail");
 			for (Iterator<Entry<String, Map<String, String>>> outIt = outMap
 					.entrySet().iterator(); outIt.hasNext();) {
 				detailXml.append("<").append(detailCanonicalName).append(">");
@@ -108,7 +120,9 @@ public class RefundConverter {
 				detailXml.append("</").append(detailCanonicalName).append(">");
 			}
 			detailXml.append("</list>");
-			refund.setDetails(xStream.fromXML(detailXml.toString(), List.class));
+			reflectionProvider.writeField(refund, "details",
+					xStream.fromXML(detailXml.toString(), List.class),
+					List.class.getDeclaringClass());
 			return refund;
 		}
 	}

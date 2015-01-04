@@ -65,6 +65,7 @@ weixin4j-mp
 	media_path=/tmp/weixin/media
 	bill_path=/tmp/weixin/bill
 	ca_file=/tmp/weixin/xxxxx.p12 | xxxx.pfx
+	#classpath路径下:ca_file=classpath:xxxxx.p12
 
 3.在项目根目录下执行`mvn package`命令后得到jar包,将`weixin4j-mp-full`包或者`weixin4j-base`和`weixin4j-mp-api`两个包引入到自己的工程.
 
@@ -151,3 +152,11 @@ weixin4j-mp
   + **weixin4j-mp-api**: 新增群发消息预览、状态查询接口
   
   + **weixin4j-mp-api**: 新增多客服添加账号、更新账号、上传头像、删除账号接口
+  
+* 2015-01-04
+  
+  + **weixin4j-mp-api**: 支付模块拆分为V2跟V3,新增WeixinPayProxy类
+  
+  + **weixin4j-mp-api**: 退款相关类拆分为V2跟V3
+  
+  + **weixin4j-mp-api**: 新增接口上报接口

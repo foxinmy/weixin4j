@@ -232,6 +232,23 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 批量删除成员
+	 * 
+	 * @param userIds
+	 *            成员列表
+	 * @see <a href=
+	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E6.89.B9.E9.87.8F.E5.88.A0.E9.99.A4.E6.88.90.E5.91.98"
+	 *      >批量删除成员说明</a
+	 * @see com.foxinmy.weixin4j.qy.api.UserApi
+	 * @return 处理结果
+	 * @throws WeixinException
+	 */
+	public JsonResult batchDeleteUser(List<String> userIds)
+			throws WeixinException {
+		return userApi.batchDeleteUser(userIds);
+	}
+
+	/**
 	 * 创建标签(创建的标签属于管理组;默认为未加锁状态)
 	 * 
 	 * @param tagName

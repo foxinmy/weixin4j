@@ -50,8 +50,8 @@ public class PayAction {
 		JSONObject obj = new JSONObject();
 		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		// V3 支付
-		PayPackage payPackage = new PayPackageV3(weixinAccount, "用户openid", "商品描述",
-				"系统内部订单号", 1d, "IP地址", TradeType.JSAPI);
+		PayPackage payPackage = new PayPackageV3(weixinAccount, "用户openid",
+				"商品描述", "系统内部订单号", 1d, "IP地址", TradeType.JSAPI);
 		// V2 支付
 		payPackage = new PayPackageV2("商品描述", weixinAccount.getPartnerId(),
 				"系统内部订单号", 1d, "回调地址", "IP地址");
@@ -163,7 +163,7 @@ public class PayAction {
 		if (!sign.equals(valid_sign)) {
 			return XmlStream.to(new XmlResult(Consts.FAIL, "签名错误"));
 		}
-		return XmlStream.to(new XmlResult());
+		return XmlStream.to(new XmlResult(Consts.SUCCESS, ""));
 	}
 
 	/**

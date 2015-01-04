@@ -3,14 +3,13 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
- * Native支付时的回调响应
+ * V3 Native支付时的回调响应
  * 
  * @className NativePayResponseV3
  * @author jy

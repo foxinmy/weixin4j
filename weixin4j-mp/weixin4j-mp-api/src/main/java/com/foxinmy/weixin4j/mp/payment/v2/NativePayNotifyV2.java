@@ -4,7 +4,7 @@ import com.foxinmy.weixin4j.mp.payment.JsPayNotify;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * Native支付回调时POST的信息
+ * V2 Native支付回调时POST的信息
  * 
  * @className PayNativeNotifyV2
  * @author jy

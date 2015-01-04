@@ -4,7 +4,7 @@ import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * Native支付时的回调响应
+ * V2 Native支付时的回调响应
  * 
  * @className NativePayResponseV2
  * @author jy

@@ -91,10 +91,14 @@ weixin4j-qy
   
  * 2014-12-28
 
-  + **weixin4j-qy**: 增加用户进入应用的callback事件
+  + **weixin4j-qy-api**: 增加用户进入应用的callback事件
 
-  + **weixin4j-qy**: 增加批量获取用户详情的接口
+  + **weixin4j-qy-api**: 增加批量获取用户详情的接口
   
-  + **weixin4j-qy**: 新增获取微信服务器IP接口
+  + **weixin4j-qy-api**: 新增获取微信服务器IP接口
   
-  + **weixin4j-qy**: 调整回调模式下的首次验证的签名方式
+  + **weixin4j-qy-server**: 调整回调模式下的首次验证的签名方式
+  
+* 2015-01-04
+  
+  + **weixin4j-qy-api**: 新增批量删除员工接口

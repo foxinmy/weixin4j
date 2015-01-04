@@ -4,7 +4,7 @@ import com.foxinmy.weixin4j.mp.payment.PayBaseInfo;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * 维权POST的数据
+ * V2维权POST的数据
  * 
  * @className PayFeedback
  * @author jy

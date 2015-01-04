@@ -60,6 +60,7 @@ weixin.properties说明
 	media_path=/tmp/weixin/media
 	bill_path=/tmp/weixin/bill
 	ca_file=/tmp/weixin/xxxxx.p12 | xxxx.pfx
+	#classpath路径下:ca_file=classpath:xxxxx.p12
 
 2.实例化一个`WeixinProxy`对象,调用API,需要强调的是如果只传入appid,appsecret两个参数将无法调用支付相关接口
 
@@ -132,3 +133,11 @@ weixin.properties说明
   + 新增群发消息预览、状态查询接口
   
   + 新增多客服添加账号、更新账号、上传头像、删除账号接口
+  
+* 2015-01-04
+
+  + 支付模块拆分为V2跟V3,新增WeixinPayProxy类
+  
+  + 退款相关类拆分为V2跟V3
+  
+  + 新增接口上报接口

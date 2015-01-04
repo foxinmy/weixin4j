@@ -38,3 +38,7 @@ weixin4j-base
 * 2014-11-24
 
   + 将Action跟Mapping基础类并入到项目
+
+* 2015-01-04
+
+  + ConfigUtil类新增获取classpath目录下的资源路径的方法

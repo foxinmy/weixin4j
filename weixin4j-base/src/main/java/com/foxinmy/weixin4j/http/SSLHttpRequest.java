@@ -1,8 +1,5 @@
 package com.foxinmy.weixin4j.http;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 
@@ -22,10 +19,6 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
  * @see
  */
 public class SSLHttpRequest extends HttpRequest {
-
-	public SSLHttpRequest(String password, File file) throws IOException {
-		this(password, new FileInputStream(file));
-	}
 
 	public SSLHttpRequest(String password, InputStream inputStream) {
 		super();

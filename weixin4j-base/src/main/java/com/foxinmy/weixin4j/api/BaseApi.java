@@ -13,6 +13,7 @@ import com.thoughtworks.xstream.mapper.DefaultMapper;
 
 /**
  * API基础
+ * 
  * @className BaseApi
  * @author jy.hu
  * @date 2014年9月26日
@@ -37,7 +38,9 @@ public abstract class BaseApi {
 	protected Map<String, String> xml2map(String xml) {
 		return mapXstream.fromXML(xml, Map.class);
 	}
+
 	protected abstract ResourceBundle getWeixinBundle();
+
 	protected String getRequestUri(String key) {
 		String url = getWeixinBundle().getString(key);
 		Pattern p = Pattern.compile("(\\{[^\\}]*\\})");

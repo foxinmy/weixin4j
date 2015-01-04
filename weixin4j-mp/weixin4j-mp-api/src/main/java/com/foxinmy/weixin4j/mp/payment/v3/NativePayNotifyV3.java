@@ -1,10 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
-import com.foxinmy.weixin4j.mp.payment.ApiResult;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * Native支付回调时POST的信息
+ * V3 Native支付回调时POST的信息
  * 
  * @className PayNativeNotifyV3
  * @author jy

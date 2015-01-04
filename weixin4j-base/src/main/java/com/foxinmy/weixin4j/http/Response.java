@@ -168,10 +168,9 @@ public class Response {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[Response text=").append(text);
-		sb.append(", statusCode=").append(statusCode);
-		sb.append(", statusText=").append(statusText).append("]");
-		return sb.toString();
+		return "Response [text=" + text + ", statusCode=" + statusCode
+				+ ", statusText=" + statusText + ", stream=" + stream
+				+ ", isJsonResult=" + isJsonResult + ", isXmlResult="
+				+ isXmlResult + "]";
 	}
 }

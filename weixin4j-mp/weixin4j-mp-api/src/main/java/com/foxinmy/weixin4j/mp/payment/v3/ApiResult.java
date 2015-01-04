@@ -1,5 +1,8 @@
-package com.foxinmy.weixin4j.mp.payment;
+package com.foxinmy.weixin4j.mp.payment.v3;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.XmlResult;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -17,15 +20,20 @@ public class ApiResult extends XmlResult {
 	private static final long serialVersionUID = -8430005768959715444L;
 
 	@XStreamAlias("appid")
+	@JSONField(name = "appid")
 	private String appId;// 微信分配的公众账号 ID商户号 非空
 	@XStreamAlias("mch_id")
+	@JSONField(name = "mch_id")
 	private String mchId;// 微信支付分配的商户号 非空
 	@XStreamAlias("sub_mch_id")
+	@JSONField(name = "sub_mch_id")
 	private String subMchId; // 未知 可能为空
 	@XStreamAlias("nonce_str")
+	@JSONField(name = "nonce_str")
 	private String nonceStr;// 随机字符串 非空
 	private String sign;// 签名 非空
 	@XStreamAlias("device_info")
+	@JSONField(name = "device_info")
 	private String deviceInfo;// 微信支付分配的终端设备号 可能为空
 	private String recall;// 是否需要继续调用接口 Y- 需要,N-不需要
 
@@ -54,7 +62,7 @@ public class ApiResult extends XmlResult {
 	}
 
 	public String getSubMchId() {
-		return subMchId;
+		return StringUtils.isNotBlank(subMchId) ? subMchId : null;
 	}
 
 	public void setSubMchId(String subMchId) {
@@ -89,8 +97,9 @@ public class ApiResult extends XmlResult {
 		return recall;
 	}
 
-	public void setRecall(String recall) {
-		this.recall = recall;
+	@JSONField(deserialize = false, serialize = false)
+	public boolean getFormatRecall() {
+		return recall != null && recall.equalsIgnoreCase("y");
 	}
 
 	@Override

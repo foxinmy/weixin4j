@@ -188,7 +188,6 @@ public class HttpRequest {
 			response.setStatusText(statusLine.getReasonPhrase());
 			response.setStream(new ByteArrayInputStream(data));
 			response.setText(new String(data, Consts.UTF_8));
-
 			EntityUtils.consume(httpEntity);
 			Header contentType = httpResponse
 					.getFirstHeader(HttpHeaders.CONTENT_TYPE);

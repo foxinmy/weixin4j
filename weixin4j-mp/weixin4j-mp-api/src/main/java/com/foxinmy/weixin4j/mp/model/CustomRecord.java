@@ -51,7 +51,7 @@ public class CustomRecord implements Serializable {
 	}
 
 	public void setTime(long time) {
-		this.time = new Date(time * 1000);
+		this.time = new Date(time * 1000l);
 	}
 
 	public String getText() {

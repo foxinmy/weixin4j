@@ -1,9 +1,11 @@
 package com.foxinmy.weixin4j.mp.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.Gender;
 import com.foxinmy.weixin4j.mp.type.FaceSize;
 import com.foxinmy.weixin4j.mp.type.Lang;
@@ -24,21 +26,19 @@ public class User implements Serializable {
 
 	private String openid; // 用户的唯一标识
 	private String nickname; // 用户昵称
-	private int sex; // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
+	@JSONField(name = "sex")
+	private Gender gender; // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
 	private String province; // 用户个人资料填写的省份
 	private String city; // 普通用户个人资料填写的城市
 	private String country; // 国家，如中国为CN
 	private String headimgurl; // 用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空
 	private String privilege; // 用户特权信息，json 数组，如微信沃卡用户为（chinaunicom）
-	private int subscribe; // 是否关注
-	private long subscribe_time; // 关注时间
+	@JSONField(name = "subscribe")
+	private boolean isSubscribe; // 用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。
+	@JSONField(name = "subscribe_time")
+	private Date subscribeTime; // 关注时间
 	private Lang language; // 使用语言
 	private String unionid; // 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段
-
-	public User() {
-		this.sex = 0;
-		this.language = Lang.zh_CN;
-	}
 
 	public String getOpenid() {
 		return openid;
@@ -56,22 +56,18 @@ public class User implements Serializable {
 		this.nickname = nickname;
 	}
 
-	public int getSex() {
-		return sex;
-	}
-
 	public Gender getGender() {
-		if (sex == 1) {
-			return Gender.male;
-		} else if (sex == 2) {
-			return Gender.female;
-		} else {
-			return Gender.unknown;
-		}
+		return gender;
 	}
 
-	public void setSex(int sex) {
-		this.sex = sex;
+	public void setGender(int sex) {
+		if (sex == 1) {
+			this.gender = Gender.male;
+		} else if (sex == 2) {
+			this.gender = Gender.female;
+		} else {
+			this.gender = Gender.unknown;
+		}
 	}
 
 	public String getProvince() {
@@ -123,14 +119,6 @@ public class User implements Serializable {
 		this.privilege = privilege;
 	}
 
-	public int getSubscribe() {
-		return subscribe;
-	}
-
-	public void setSubscribe(int subscribe) {
-		this.subscribe = subscribe;
-	}
-
 	public Lang getLanguage() {
 		return language;
 	}
@@ -139,12 +127,20 @@ public class User implements Serializable {
 		this.language = language;
 	}
 
-	public long getSubscribe_time() {
-		return subscribe_time;
+	public boolean isSubscribe() {
+		return isSubscribe;
 	}
 
-	public void setSubscribe_time(long subscribe_time) {
-		this.subscribe_time = subscribe_time;
+	public void setSubscribe(boolean isSubscribe) {
+		this.isSubscribe = isSubscribe;
+	}
+
+	public Date getSubscribeTime() {
+		return (Date) subscribeTime.clone();
+	}
+
+	public void setSubscribeTime(long subscribeTime) {
+		this.subscribeTime = new Date(subscribeTime * 1000l);
 	}
 
 	public String getUnionid() {
@@ -164,45 +160,20 @@ public class User implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((city == null) ? 0 : city.hashCode());
-		result = prime * result + ((country == null) ? 0 : country.hashCode());
-		result = prime * result
-				+ ((headimgurl == null) ? 0 : headimgurl.hashCode());
-		result = prime * result
-				+ ((language == null) ? 0 : language.hashCode());
-		result = prime * result
-				+ ((nickname == null) ? 0 : nickname.hashCode());
-		result = prime * result + ((openid == null) ? 0 : openid.hashCode());
-		result = prime * result
-				+ ((privilege == null) ? 0 : privilege.hashCode());
-		result = prime * result
-				+ ((province == null) ? 0 : province.hashCode());
-		result = prime * result + sex;
-		result = prime * result + subscribe;
-		result = prime * result
-				+ (int) (subscribe_time ^ (subscribe_time >>> 32));
-		result = prime * result + ((unionid == null) ? 0 : unionid.hashCode());
-		return result;
-	}
-
-	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[User openid=").append(openid);
 		sb.append(", nickname=").append(nickname);
-		sb.append(", sex=").append(sex);
+		sb.append(", gender=").append(gender);
 		sb.append(", province=").append(province);
 		sb.append(", city=").append(city);
 		sb.append(", country=").append(country);
 		sb.append(", headimgurl=").append(headimgurl);
 		sb.append(", privilege=").append(privilege);
 		sb.append(", language=").append(language);
-		sb.append(", subscribe_time=").append(subscribe_time);
+		sb.append(", subscribeTime=").append(subscribeTime);
 		sb.append(", unionid=").append(unionid);
-		sb.append(", subscribe=").append(subscribe).append("]");
+		sb.append(", isSubscribe=").append(isSubscribe).append("]");
 		return sb.toString();
 	}
 }

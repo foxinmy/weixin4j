@@ -10,7 +10,7 @@ package com.foxinmy.weixin4j.mp.type;
  * @see
  */
 public enum RefundStatus {
-	SUCCES, // 退款成功
+	SUCCESS, // 退款成功
 	FAIL, // 退款失败
 	PROCESSING, // 退款处理中
 	NOTSURE, // 未确定,需要商户 原退款单号重新发起

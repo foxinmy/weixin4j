@@ -2,13 +2,11 @@ package com.foxinmy.weixin4j.mp;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.XmlResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
@@ -18,7 +16,6 @@ import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.MenuApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
-import com.foxinmy.weixin4j.mp.api.PayApi;
 import com.foxinmy.weixin4j.mp.api.QrApi;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
 import com.foxinmy.weixin4j.mp.api.UserApi;
@@ -33,12 +30,6 @@ import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.User;
-import com.foxinmy.weixin4j.mp.payment.ApiResult;
-import com.foxinmy.weixin4j.mp.payment.Refund;
-import com.foxinmy.weixin4j.mp.payment.RefundResult;
-import com.foxinmy.weixin4j.mp.payment.v2.Order;
-import com.foxinmy.weixin4j.mp.type.BillType;
-import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.mp.type.Lang;
 import com.foxinmy.weixin4j.msg.model.Base;
@@ -70,7 +61,6 @@ public class WeixinProxy {
 	private final QrApi qrApi;
 	private final TmplApi tmplApi;
 	private final HelperApi helperApi;
-	private final PayApi payApi;
 
 	/**
 	 * 默认采用文件存放Token信息
@@ -116,7 +106,6 @@ public class WeixinProxy {
 		this.qrApi = new QrApi(tokenHolder);
 		this.tmplApi = new TmplApi(tokenHolder);
 		this.helperApi = new HelperApi(tokenHolder);
-		this.payApi = new PayApi(tokenHolder);
 	}
 
 	/**
@@ -502,8 +491,7 @@ public class WeixinProxy {
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E5.88.A0.E9.99.A4.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">删除群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByGroupId(Base, int)}
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(Base, String...)
-
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(Base, String...)
 	 */
 	public JsonResult deleteMassNews(String msgid) throws WeixinException {
 		return massApi.deleteMassNews(msgid);
@@ -756,7 +744,8 @@ public class WeixinProxy {
 	/**
 	 * 自定义菜单
 	 * 
-	 * @param btnList 菜单列表
+	 * @param btnList
+	 *            菜单列表
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">创建自定义菜单</a>
@@ -798,7 +787,8 @@ public class WeixinProxy {
 	/**
 	 * 生成带参数的二维码
 	 * 
-	 * @param parameter 二维码参数
+	 * @param parameter
+	 *            二维码参数
 	 * @return byte数据包
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.QrApi
@@ -900,7 +890,8 @@ public class WeixinProxy {
 	/**
 	 * 长链接转短链接
 	 * 
-	 * @param url 待转换的链接
+	 * @param url
+	 *            待转换的链接
 	 * @return 短链接
 	 * @throws WeixinException
 	 * @see <a
@@ -909,195 +900,6 @@ public class WeixinProxy {
 	 */
 	public String getShorturl(String url) throws WeixinException {
 		return helperApi.getShorturl(url);
-	}
-
-	/**
-	 * 发货通知
-	 * 
-	 * @param openId
-	 *            用户ID
-	 * @param transid
-	 *            交易单号
-	 * @param outTradeNo
-	 *            订单号
-	 * @param status
-	 *            成功|失败
-	 * @param statusMsg
-	 *            status为失败时携带的信息
-	 * @return 发货处理结果
-	 * @since V2 & V3
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
-	 * @throws WeixinException
-	 */
-	public JsonResult deliverNotify(String openId, String transid,
-			String outTradeNo, boolean status, String statusMsg)
-			throws WeixinException {
-		return payApi.deliverNotify(openId, transid, outTradeNo, status,
-				statusMsg);
-	}
-
-	/**
-	 * 订单查询
-	 * 
-	 * @param outTradeNo
-	 *            订单号
-	 * @return 订单信息
-	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
-	 */
-	public Order orderQueryV2(WeixinMpAccount weixinAccount, String outTradeNo)
-			throws WeixinException {
-		return payApi.orderQueryV2(outTradeNo);
-	}
-
-	/**
-	 * 维权处理
-	 * 
-	 * @param openId
-	 *            用户ID
-	 * @param feedbackId
-	 *            维权单号
-	 * @return 调用结果
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
-	 * @since V2 & V3
-	 * @throws WeixinException
-	 */
-	public JsonResult updateFeedback(String openId, String feedbackId)
-			throws WeixinException {
-		return payApi.updateFeedback(openId, feedbackId);
-	}
-
-	/**
-	 * V3订单查询
-	 * 
-	 * @param idQuery
-	 *            商户系统内部的订单号, transaction_id、out_trade_no 二 选一,如果同时存在优先级:
-	 *            transaction_id> out_trade_no
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
-	 * @throws WeixinException
-	 */
-	public com.foxinmy.weixin4j.mp.payment.v3.Order orderQueryV3(IdQuery idQuery)
-			throws WeixinException {
-		return payApi.orderQueryV3(idQuery);
-	}
-
-	/**
-	 * 下载对账单<br>
-	 * 1.微信侧未成功下单的交易不会出现在对账单中。支付成功后撤销的交易会出现在对账 单中,跟原支付单订单号一致,bill_type 为
-	 * REVOKED;<br>
-	 * 2.微信在次日 9 点启动生成前一天的对账单,建议商户 9 点半后再获取;<br>
-	 * 3.对账单中涉及金额的字段单位为“元”。<br>
-	 * 
-	 * @param billDate
-	 *            下载对账单的日期
-	 * @param billType
-	 *            下载对账单的类型 ALL,返回当日所有订单信息, 默认值 SUCCESS,返回当日成功支付的订单
-	 *            REFUND,返回当日退款订单
-	 * @return excel表格
-	 * @since V2 & V3
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
-	 * @throws WeixinException
-	 * @throws IOException
-	 */
-	public File downloadbill(Date billDate, BillType billType)
-			throws WeixinException, IOException {
-		return payApi.downloadbill(billDate, billType);
-	}
-
-	/**
-	 * 申请退款(V3请求需要双向证书)</br>
-	 * <p style="color:red">
-	 * 交易时间超过 1 年的订单无法提交退款; </br> 支持部分退款,部分退需要设置相同的订单号和不同的 out_refund_no。一笔退款失
-	 * 败后重新提交,要采用原来的 out_refund_no。总退款金额不能超过用户实际支付金额。</br>
-	 * </p>
-	 * 
-	 * @param ca
-	 *            证书文件<font color="red">V2版本时无需传入</font>
-	 * @param idQuery
-	 *            ) 商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
-	 *            transaction_id> out_trade_no
-	 * @param outRefundNo
-	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
-	 * @param totalFee
-	 *            订单总金额,单位为元
-	 * @param refundFee
-	 *            退款总金额,单位为元,可以做部分退款
-	 * @param opUserId
-	 *            操作员帐号, 默认为商户号
-	 * @param opUserPasswd
-	 *            <font color="red">V3版本留空,V2版本需传入值</font>
-	 * 
-	 * @return 退款申请结果
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
-	 * @see com.foxinmy.weixin4j.mp.payment.RefundResult
-	 * @since V2 & V3
-	 * @throws WeixinException
-	 * @throws IOException
-	 */
-	public RefundResult refund(InputStream ca, IdQuery idQuery,
-			String outRefundNo, double totalFee, double refundFee,
-			String opUserId, String opUserPasswd) throws WeixinException,
-			IOException {
-		return payApi.refund(ca, idQuery, outRefundNo, totalFee, refundFee,
-				opUserId, opUserPasswd);
-	}
-
-	/**
-	 * 不同的退款接口选择</br> V3支付则采用properties中配置的ca文件</br>
-	 * V2支付则需要传入opUserPasswd参数</br>
-	 * 
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#refund(InputStream, IdQuery, String, double, double, String,String)}
-	 */
-	public RefundResult refund(IdQuery idQuery, String outRefundNo,
-			double totalFee, double refundFee, String opUserId,
-			String opUserPasswd) throws WeixinException, IOException {
-		return payApi.refund(idQuery, outRefundNo, totalFee, refundFee,
-				opUserId, opUserPasswd);
-	}
-
-	/**
-	 * 退款查询</br> 退款有一定延时,用零钱支付的退款20分钟内到账,银行卡支付的退款 3 个工作日后重新查询退款状态
-	 * 
-	 * @param idQuery
-	 *            单号 refund_id、out_refund_no、 out_trade_no 、 transaction_id
-	 *            四个参数必填一个,优先级为:
-	 *            refund_id>out_refund_no>transaction_id>out_trade_no
-	 * @return 退款记录
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
-	 * @see com.foxinmy.weixin4j.mp.payment.Refund
-	 * @since V2 & V3
-	 * @throws WeixinException
-	 */
-	public Refund refundQuery(IdQuery idQuery) throws WeixinException {
-		return payApi.refundQuery(idQuery);
-	}
-
-	/**
-	 * 关闭订单</br> 当订单支付失败,调用关单接口后用新订单号重新发起支付,如果关单失败,返回已完
-	 * 成支付请按正常支付处理。如果出现银行掉单,调用关单成功后,微信后台会主动发起退款。
-	 * 
-	 * @param outTradeNo
-	 *            商户系统内部的订单号
-	 * @return 执行结果
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
-	 * @since V3
-	 * @throws WeixinException
-	 */
-	public XmlResult closeOrder(String outTradeNo) throws WeixinException {
-		return payApi.closeOrder(outTradeNo);
-	}
-
-	/**
-	 * native支付URL转短链接
-	 * 
-	 * @param url
-	 *            具有native标识的支付URL
-	 * @return 转换后的短链接
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
-	 * @throws WeixinException
-	 */
-	public String getPayShorturl(String url) throws WeixinException {
-		return payApi.getShorturl(url);
 	}
 
 	/**
@@ -1128,40 +930,5 @@ public class WeixinProxy {
 	 */
 	public List<String> getcallbackip() throws WeixinException {
 		return helperApi.getcallbackip();
-	}
-
-	/**
-	 * 冲正订单(需要证书)</br> 当支付返回失败,或收银系统超时需要取消交易,可以调用该接口</br> 接口逻辑:支
-	 * 付失败的关单,支付成功的撤销支付</br> <font color="red">7天以内的单可撤销,其他正常支付的单
-	 * 如需实现相同功能请调用退款接口</font></br> <font
-	 * color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font></br>
-	 * 
-	 * @param ca
-	 *            证书文件
-	 * @param idQuery
-	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
-	 *            transaction_id> out_trade_no
-	 * @return 撤销结果
-	 * @see com.foxinmy.weixin4j.mp.api.PayApi
-	 * @throws WeixinException
-	 */
-	public ApiResult reverse(InputStream ca, IdQuery idQuery)
-			throws WeixinException {
-		return payApi.reverse(ca, idQuery);
-	}
-
-	/**
-	 * 冲正撤销:默认采用properties中配置的ca文件
-	 * 
-	 * @param idQuery
-	 *            transaction_id、out_trade_no 二选一
-	 * @return 撤销结果
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#reverse(InputStream, IdQuery)}
-	 * @throws WeixinException
-	 * @throws IOException
-	 */
-	public ApiResult reverse(IdQuery idQuery) throws WeixinException,
-			IOException {
-		return payApi.reverse(idQuery);
 	}
 }

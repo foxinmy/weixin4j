@@ -19,16 +19,21 @@ import com.foxinmy.weixin4j.model.WeixinQyAccount;
  * @see
  */
 public class ConfigUtil {
+	private final static String CLASSPATH_PREFIX = "classpath:";
+	private final static String CLASSPATH_VALUE;
 	private final static ResourceBundle weixinBundle;
 	static {
 		weixinBundle = ResourceBundle.getBundle("weixin");
 		Set<String> keySet = weixinBundle.keySet();
 		File file = null;
+		CLASSPATH_VALUE = Thread.currentThread().getContextClassLoader()
+				.getResource("").getPath();
 		for (String key : keySet) {
 			if (!key.endsWith("_path")) {
 				continue;
 			}
-			file = new File(getValue(key));
+			file = new File(getValue(key).replaceFirst(CLASSPATH_PREFIX,
+					CLASSPATH_VALUE));
 			if (!file.exists() && !file.mkdirs()) {
 				System.err.append(String.format("%s create fail.%n",
 						file.getAbsolutePath()));
@@ -36,8 +41,25 @@ public class ConfigUtil {
 		}
 	}
 
+	/**
+	 * 获取weixin.properties文件中的key值
+	 * 
+	 * @param key
+	 * @return
+	 */
 	public static String getValue(String key) {
 		return weixinBundle.getString(key);
+	}
+
+	/**
+	 * 判断属性是否存在[classpath:]如果存在则拼接项目路径后返回 一般用于文件的绝对路径获取
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static String getClassPathValue(String key) {
+		return new File(getValue(key).replaceFirst(CLASSPATH_PREFIX,
+				CLASSPATH_VALUE)).getPath();
 	}
 
 	public static <T extends WeixinAccount> T getWeixinAccount(Class<T> clazz) {

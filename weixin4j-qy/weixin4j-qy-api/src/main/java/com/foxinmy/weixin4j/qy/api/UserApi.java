@@ -201,6 +201,28 @@ public class UserApi extends QyApi {
 	}
 
 	/**
+	 * 批量删除成员
+	 * 
+	 * @param userIds
+	 *            成员列表
+	 * @see <a href=
+	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E6.89.B9.E9.87.8F.E5.88.A0.E9.99.A4.E6.88.90.E5.91.98"
+	 *      >批量删除成员说明</a
+	 * @return 处理结果
+	 * @throws WeixinException
+	 */
+	public JsonResult batchDeleteUser(List<String> userIds)
+			throws WeixinException {
+		JSONObject obj = new JSONObject();
+		obj.put("useridlist", userIds);
+		String user_delete_uri = getRequestUri("user_batchdelete_uri");
+		Token token = tokenHolder.getToken();
+		Response response = request.post(String.format(user_delete_uri,
+				token.getAccessToken(), obj.toJSONString()));
+		return response.getAsJsonResult();
+	}
+
+	/**
 	 * 开启二次验证成功时调用(管理员须拥有userid对应员工的管理权限)
 	 * 
 	 * @param userid

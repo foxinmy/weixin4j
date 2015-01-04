@@ -37,4 +37,10 @@ public class IdQuery implements Serializable {
 		this.id = id;
 		this.type = idType;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("%s=%s", type.getName(), id);
+	}
+
 }

@@ -45,6 +45,7 @@ public class PayUtil {
 	 *            订单信息
 	 * @param WeixinMpAccount
 	 *            商户信息
+	 * @since V2 & V3
 	 * @return 支付json串
 	 * @throws PayException
 	 */
@@ -56,8 +57,9 @@ public class PayUtil {
 		} else if (payPackage instanceof PayPackageV3) {
 			return createPayJsRequestJsonV3((PayPackageV3) payPackage,
 					weixinAccount);
+		} else {
+			throw new PayException("unknown pay");
 		}
-		throw new PayException("unknown pay");
 	}
 
 	/**

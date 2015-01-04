@@ -207,6 +207,18 @@ netty的代码没有放到maven中心仓库,也没什么意义,因为最终需�
   + **weixin4j-qy**: 新增获取微信服务器IP接口
   
   + **weixin4j-qy**: 调整回调模式下的首次验证的签名方式
+
+* 2015-01-04
+
+  + **weixin4j-base**: 新增获取classpath目录下的资源路径的方法
+  
+  + **weixin4j-mp**: 支付模块拆分为V2跟V3,新增WeixinPayProxy类
+  
+  + **weixin4j-mp**: 退款相关类拆分V2跟V3
+  
+  + **weixin4j-mp**: 新增接口上报接口
+  
+  + **weixin4j-qy**: 新增批量删除员工接口
   
 接下来
 ------

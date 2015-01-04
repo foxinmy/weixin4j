@@ -1,4 +1,7 @@
 package com.foxinmy.weixin4j.model;
+
+import java.nio.charset.Charset;
+
 /**
  * 常量类
  * @className Consts
@@ -8,6 +11,8 @@ package com.foxinmy.weixin4j.model;
  * @see
  */
 public final class Consts {
+	public static final Charset UTF_8 = Charset.forName("UTF-8");
+	public static final Charset GBK = Charset.forName("GBK");
 	public static final String SUCCESS = "SUCCESS";
 	public static final String FAIL = "FAIL";
 	public static final String SunX509 = "SunX509";

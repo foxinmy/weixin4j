@@ -1,14 +1,14 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
 import java.util.Date;
-import java.util.Map;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.http.JsonResult;
+import com.foxinmy.weixin4j.mp.type.CurrencyType;
+import com.foxinmy.weixin4j.mp.type.TradeState;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
- * 订单信息
+ * V2订单信息
  * 
  * @className Order
  * @author jy
@@ -16,27 +16,16 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @since JDK 1.7
  * @see
  */
-public class Order extends JsonResult {
+public class Order extends ApiResult {
 
 	private static final long serialVersionUID = 4543552984506609920L;
 
-	// 是查询结果状态码,0 表明成功,其他表明错误;
-	@JSONField(name = "ret_code")
-	private int retCode;
-	// 是查询结果出错信息;
-	@JSONField(name = "ret_msg")
-	private String retMsg;
-	// 是返回信息中的编码方式;
-	@JSONField(name = "input_charset")
-	private String inputCharset;
 	// 是订单状态,0 为成功,其他为失败;
 	@JSONField(name = "trade_state")
 	private int tradeState;
 	// 是交易模式,1 为即时到帐,其他保留;
 	@JSONField(name = "trade_mode")
 	private int tradeMode;
-	// 是财付通商户号,即前文的 partnerid;
-	private String partner;
 	// 是银行类型;
 	@JSONField(name = "bank_type")
 	private String bankType;
@@ -48,7 +37,7 @@ public class Order extends JsonResult {
 	private int totalFee;
 	// 是币种,1 为人民币;
 	@JSONField(name = "fee_type")
-	private String feeType;
+	private int feeType;
 	// 是财付通订单号;
 	@JSONField(name = "transaction_id")
 	private String transactionId;
@@ -76,37 +65,18 @@ public class Order extends JsonResult {
 	private int discount;
 	// 换算成人民币之后的总金额,单位为分,一般看 total_fee 即可。
 	@JSONField(name = "rmb_total_fee")
-	private int rmbTotalFee;
-
-	@JSONField(serialize = false)
-	private Map<String, String> mapData;
-
-	public int getRetCode() {
-		return retCode;
-	}
-
-	public void setRetCode(int retCode) {
-		this.retCode = retCode;
-	}
-
-	public String getRetMsg() {
-		return retMsg;
-	}
-
-	public void setRetMsg(String retMsg) {
-		this.retMsg = retMsg;
-	}
-
-	public String getInputCharset() {
-		return inputCharset;
-	}
-
-	public void setInputCharset(String inputCharset) {
-		this.inputCharset = inputCharset;
-	}
+	private Integer rmbTotalFee;
 
 	public int getTradeState() {
 		return tradeState;
+	}
+
+	@JSONField(serialize = false, deserialize = false)
+	public TradeState getFormatTradeState() {
+		if (tradeState == 0) {
+			return TradeState.SUCCESS;
+		}
+		return null;
 	}
 
 	public void setTradeState(int tradeState) {
@@ -119,14 +89,6 @@ public class Order extends JsonResult {
 
 	public void setTradeMode(int tradeMode) {
 		this.tradeMode = tradeMode;
-	}
-
-	public String getPartner() {
-		return partner;
-	}
-
-	public void setPartner(String partner) {
-		this.partner = partner;
 	}
 
 	public String getBankType() {
@@ -145,12 +107,17 @@ public class Order extends JsonResult {
 		this.bankBillno = bankBillno;
 	}
 
+	public int getTotalFee() {
+		return totalFee;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
 	 * @return 元单位
 	 */
-	public double getTotalFee() {
+	@JSONField(serialize = false, deserialize = false)
+	public double getFormatTotalFee() {
 		return totalFee / 100d;
 	}
 
@@ -158,11 +125,19 @@ public class Order extends JsonResult {
 		this.totalFee = totalFee;
 	}
 
-	public String getFeeType() {
+	public int getFeeType() {
 		return feeType;
 	}
 
-	public void setFeeType(String feeType) {
+	@JSONField(serialize = false, deserialize = false)
+	public CurrencyType getFormatFeeType() {
+		if (feeType == 1) {
+			return CurrencyType.CNY;
+		}
+		return null;
+	}
+
+	public void setFeeType(int feeType) {
 		this.feeType = feeType;
 	}
 
@@ -206,7 +181,12 @@ public class Order extends JsonResult {
 		this.attach = attach;
 	}
 
-	public Date getTimeEnd() {
+	public String getTimeEnd() {
+		return timeEnd;
+	}
+
+	@JSONField(serialize = false, deserialize = false)
+	public Date getFormatTimeEnd() {
 		return DateUtil.parse2yyyyMMddHHmmss(timeEnd);
 	}
 
@@ -214,12 +194,17 @@ public class Order extends JsonResult {
 		this.timeEnd = timeEnd;
 	}
 
+	public int getTransportFee() {
+		return transportFee;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
 	 * @return 元单位
 	 */
-	public double getTransportFee() {
+	@JSONField(serialize = false, deserialize = false)
+	public double getFormatTransportFee() {
 		return transportFee / 100d;
 	}
 
@@ -227,12 +212,17 @@ public class Order extends JsonResult {
 		this.transportFee = transportFee;
 	}
 
+	public int getProductFee() {
+		return productFee;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
 	 * @return 元单位
 	 */
-	public double getProductFee() {
+	@JSONField(serialize = false, deserialize = false)
+	public double getFormatProductFee() {
 		return productFee / 100d;
 	}
 
@@ -240,12 +230,17 @@ public class Order extends JsonResult {
 		this.productFee = productFee;
 	}
 
+	public int getDiscount() {
+		return discount;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
 	 * @return 元单位
 	 */
-	public double getDiscount() {
+	@JSONField(serialize = false, deserialize = false)
+	public double getFormatDiscount() {
 		return discount / 100d;
 	}
 
@@ -253,39 +248,42 @@ public class Order extends JsonResult {
 		this.discount = discount;
 	}
 
+	public Integer getRmbTotalFee() {
+		return rmbTotalFee;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
 	 * @return 元单位
 	 */
-	public double getRmbTotalFee() {
-		return rmbTotalFee / 100d;
+	@JSONField(serialize = false, deserialize = false)
+	public double getFormatRmbTotalFee() {
+		return rmbTotalFee != null ? rmbTotalFee / 100d : 0d;
 	}
 
 	public void setRmbTotalFee(int rmbTotalFee) {
 		this.rmbTotalFee = rmbTotalFee;
 	}
 
-	public Map<String, String> getMapData() {
-		return mapData;
-	}
-
-	public void setMapData(Map<String, String> mapData) {
-		this.mapData = mapData;
-	}
-
 	@Override
 	public String toString() {
-		return "Order [retCode=" + retCode + ", retMsg=" + retMsg
-				+ ", inputCharset=" + inputCharset + ", tradeState="
-				+ tradeState + ", tradeMode=" + tradeMode + ", partner="
-				+ partner + ", bankType=" + bankType + ", bankBillno="
-				+ bankBillno + ", totalFee=" + totalFee + ", feeType="
-				+ feeType + ", transactionId=" + transactionId
-				+ ", outTradeNo=" + outTradeNo + ", isSplit=" + isSplit
-				+ ", isRefund=" + isRefund + ", attach=" + attach
-				+ ", timeEnd=" + timeEnd + ", transportFee=" + transportFee
-				+ ", productFee=" + productFee + ", discount=" + discount
-				+ ", rmbTotalFee=" + rmbTotalFee + ", mapData=" + mapData + "]";
+		return "Order [tradeState=" + tradeState + ", tradeMode=" + tradeMode
+				+ ", bankType=" + bankType + ", bankBillno=" + bankBillno
+				+ ", totalFee=" + totalFee + ", feeType=" + feeType
+				+ ", transactionId=" + transactionId + ", outTradeNo="
+				+ outTradeNo + ", isSplit=" + isSplit + ", isRefund="
+				+ isRefund + ", attach=" + attach + ", timeEnd=" + timeEnd
+				+ ", transportFee=" + transportFee + ", productFee="
+				+ productFee + ", discount=" + discount + ", rmbTotalFee="
+				+ rmbTotalFee + ", getFormatTradeState()="
+				+ getFormatTradeState() + ", getFormatTotalFee()="
+				+ getFormatTotalFee() + ", getFormatFeeType()="
+				+ getFormatFeeType() + ", getFormatTimeEnd()="
+				+ getFormatTimeEnd() + ", getFormatTransportFee()="
+				+ getFormatTransportFee() + ", getFormatProductFee()="
+				+ getFormatProductFee() + ", getFormatDiscount()="
+				+ getFormatDiscount() + ", getFormatRmbTotalFee()="
+				+ getFormatRmbTotalFee() + ", " + super.toString() + "]";
 	}
 }
