@@ -8,7 +8,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -33,7 +32,8 @@ public class HelperApi extends MpApi {
 	/**
 	 * 长链接转短链接
 	 * 
-	 * @param url 待转换的链接
+	 * @param url
+	 *            待转换的链接
 	 * @return 短链接
 	 * @throws WeixinException
 	 * @see <a
@@ -65,10 +65,8 @@ public class HelperApi extends MpApi {
 	 * @throws WeixinException
 	 */
 	public SemResult semantic(SemQuery semQuery) throws WeixinException {
-		WeixinMpAccount weixinAccount = (WeixinMpAccount) tokenHolder.getAccount();
 		String semantic_uri = getRequestUri("semantic_uri");
 		Token token = tokenHolder.getToken();
-		semQuery.appid(weixinAccount.getId());
 		Response response = request.post(
 				String.format(semantic_uri, token.getAccessToken()),
 				semQuery.toJson());

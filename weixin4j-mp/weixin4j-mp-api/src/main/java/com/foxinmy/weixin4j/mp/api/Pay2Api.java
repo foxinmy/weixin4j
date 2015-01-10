@@ -37,6 +37,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.http.SSLHttpRequest;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.RefundConverter;
 import com.foxinmy.weixin4j.mp.payment.v2.Order;
@@ -48,7 +49,6 @@ import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.RefundType;
 import com.foxinmy.weixin4j.mp.type.SignType;
 import com.foxinmy.weixin4j.mp.util.ExcelUtil;
-import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
@@ -66,8 +66,8 @@ public class Pay2Api extends PayApi {
 
 	private final HelperApi helperApi;
 
-	public Pay2Api(TokenHolder tokenHolder) {
-		super(tokenHolder);
+	public Pay2Api(WeixinMpAccount weixinAccount) {
+		super(weixinAccount);
 		this.helperApi = new HelperApi(tokenHolder);
 	}
 
@@ -180,7 +180,7 @@ public class Pay2Api extends PayApi {
 			}
 			String sign = PayUtil
 					.paysignMd5(map, weixinAccount.getPartnerKey());
-			map.put("sign", sign.toLowerCase());
+			map.put("sign", sign.toUpperCase());
 
 			SSLContext ctx = null;
 			KeyStore ks = null;
@@ -232,6 +232,7 @@ public class Pay2Api extends PayApi {
 				}
 			}
 		}
+		System.err.println(response.getAsString());
 		return response.getAsObject(new TypeReference<RefundResult>() {
 		});
 	}

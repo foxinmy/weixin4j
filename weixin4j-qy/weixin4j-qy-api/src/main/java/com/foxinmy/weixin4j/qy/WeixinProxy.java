@@ -15,6 +15,7 @@ import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.type.AccountType;
 
 /**
@@ -36,7 +37,7 @@ public class WeixinProxy {
 	 * 默认采用文件存放Token信息
 	 */
 	public WeixinProxy() {
-		this(new FileTokenHolder(AccountType.QY));
+		this(new FileTokenHolder(new WeixinTokenCreator(AccountType.QY)));
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class WeixinProxy {
 	 * @param weixinAccount
 	 */
 	public WeixinProxy(WeixinQyAccount weixinAccount) {
-		this(new FileTokenHolder(weixinAccount));
+		this(new FileTokenHolder(new WeixinTokenCreator(weixinAccount)));
 	}
 
 	/**

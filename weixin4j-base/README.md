@@ -42,3 +42,7 @@ weixin4j-base
 * 2015-01-04
 
   + ConfigUtil类新增获取classpath目录下的资源路径的方法
+  
+* 2015-01-10
+
+  + 重构token实现机制

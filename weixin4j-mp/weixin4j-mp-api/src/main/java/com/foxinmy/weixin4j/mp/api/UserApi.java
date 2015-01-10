@@ -10,7 +10,6 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.User;
@@ -39,17 +38,19 @@ public class UserApi extends MpApi {
 	 * 
 	 * @param code
 	 *            用户授权后返回的code
+	 * @param appid
+	 * @param appsecret
 	 * @return token对象
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">获取用户token</a>
 	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
 	 */
-	public OauthToken getOauthToken(String code) throws WeixinException {
-		WeixinAccount weixinAccount = tokenHolder.getAccount();
+	public OauthToken getOauthToken(String code, String appid, String appsecret)
+			throws WeixinException {
 		String user_token_uri = getRequestUri("sns_user_token_uri");
-		Response response = request.get(String.format(user_token_uri,
-				weixinAccount.getId(), weixinAccount.getSecret(), code));
+		Response response = request.get(String.format(user_token_uri, appid,
+				appsecret, code));
 
 		return response.getAsObject(new TypeReference<OauthToken>() {
 		});

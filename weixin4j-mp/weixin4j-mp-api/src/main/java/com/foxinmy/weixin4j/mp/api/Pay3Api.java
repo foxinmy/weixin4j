@@ -28,6 +28,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.http.SSLHttpRequest;
 import com.foxinmy.weixin4j.http.XmlResult;
+import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.RefundConverter;
 import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
@@ -38,7 +39,6 @@ import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.IdType;
 import com.foxinmy.weixin4j.mp.util.ExcelUtil;
-import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
@@ -54,8 +54,8 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  */
 public class Pay3Api extends PayApi {
 
-	public Pay3Api(TokenHolder tokenHolder) {
-		super(tokenHolder);
+	public Pay3Api(WeixinMpAccount weixinAccount) {
+		super(weixinAccount);
 	}
 
 	/**

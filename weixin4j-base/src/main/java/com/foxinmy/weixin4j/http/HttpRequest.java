@@ -100,11 +100,16 @@ public class HttpRequest {
 		StringBuilder sb = new StringBuilder(url);
 		if (parameters != null && parameters.length > 0) {
 			if (url.indexOf("?") < 0) {
-				sb.append(String.format("?%s=%s", parameters[0].getName(),
-						parameters[0].getValue()));
+				sb.append("?");
+			} else {
+				sb.append("&");
 			}
-			for (int i = 0; i < parameters.length; i++) {
-				sb.append(parameters[i].toGetPara());
+			sb.append(String.format("%s=%s", parameters[0].getName(),
+					parameters[0].getValue()));
+			if (parameters.length > 1) {
+				for (int i = 1; i < parameters.length; i++) {
+					sb.append(parameters[i].toGetPara());
+				}
 			}
 		}
 		return doRequest(new HttpGet(sb.toString()));

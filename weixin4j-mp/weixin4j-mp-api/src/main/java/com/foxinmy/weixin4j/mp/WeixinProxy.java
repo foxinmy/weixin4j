@@ -37,6 +37,7 @@ import com.foxinmy.weixin4j.msg.model.MpArticle;
 import com.foxinmy.weixin4j.msg.model.Video;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.type.MediaType;
 
@@ -66,7 +67,7 @@ public class WeixinProxy {
 	 * 默认采用文件存放Token信息
 	 */
 	public WeixinProxy() {
-		this(new FileTokenHolder(AccountType.MP));
+		this(new FileTokenHolder(new WeixinTokenCreator(AccountType.MP)));
 	}
 
 	/**
@@ -87,7 +88,7 @@ public class WeixinProxy {
 	 *            微信账户
 	 */
 	public WeixinProxy(WeixinMpAccount weixinAccount) {
-		this(new FileTokenHolder(weixinAccount));
+		this(new FileTokenHolder(new WeixinTokenCreator(weixinAccount)));
 	}
 
 	/**
@@ -544,8 +545,9 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
 	 */
-	public OauthToken getOauthToken(String code) throws WeixinException {
-		return userApi.getOauthToken(code);
+	public OauthToken getOauthToken(String code, String appid, String appsecret)
+			throws WeixinException {
+		return userApi.getOauthToken(code, appid, appsecret);
 	}
 
 	/**

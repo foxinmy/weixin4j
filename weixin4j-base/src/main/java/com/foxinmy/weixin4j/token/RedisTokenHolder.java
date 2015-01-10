@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.token;
 
-import java.util.Calendar;
-
 import org.apache.commons.lang3.StringUtils;
 
 import redis.clients.jedis.Jedis;
@@ -9,82 +7,69 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisException;
 
-import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.WeixinAccount;
-import com.foxinmy.weixin4j.type.AccountType;
 
 /**
- * 基于redis保存的Token获取类
+ * 用REDIS保存TOKEN
  * 
  * @className RedisTokenHolder
- * @author jy.hu
- * @date 2014年9月27日
+ * @author jy
+ * @date 2015年1月9日
  * @since JDK 1.7
- * @see <a
- *      href="http://mp.weixin.qq.com/wiki/11/0e4b294685f817b95cbed85ba5e82b8f.html">微信公众平台获取token说明</a>
- * @see <a href=
- *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%BB%E5%8A%A8%E8%B0%83%E7%94%A8"
- *      >微信企业号获取token说明</a>
- * @see com.foxinmy.weixin4j.model.Token
+ * @see com.foxinmy.weixin4j.token.TokenCreator
+ * @see com.foxinmy.weixin4j.token.WeixinTokenCreator
  */
-public class RedisTokenHolder extends AbstractTokenHolder {
+public class RedisTokenHolder implements TokenHolder {
 
 	private JedisPool jedisPool;
+	private final TokenCreator tokenCretor;
 
-	private void createPool(String host, int port) {
-		JedisPoolConfig poolConfig = new JedisPoolConfig();
-		poolConfig.setMaxTotal(50);
-		poolConfig.setMaxIdle(5);
-		poolConfig.setMaxWaitMillis(2000);
-		poolConfig.setTestOnBorrow(false);
-		poolConfig.setTestOnReturn(true);
-		this.jedisPool = new JedisPool(poolConfig, host, port);
+	public final static int MAX_TOTAL = 50;
+	public final static int MAX_IDLE = 5;
+	public final static int MAX_WAIT_MILLIS = 2000;
+	public final static boolean TEST_ON_BORROW = false;
+	public final static boolean TEST_ON_RETURN = true;
+
+	public RedisTokenHolder(TokenCreator tokenCretor) {
+		this("localhost", 6379, tokenCretor);
 	}
 
-	public RedisTokenHolder(String host, int port, AccountType accountType) {
-		super(accountType);
-		createPool(host, port);
+	public RedisTokenHolder(String host, int port, TokenCreator tokenCretor) {
+		JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+		jedisPoolConfig.setMaxTotal(MAX_TOTAL);
+		jedisPoolConfig.setMaxIdle(MAX_IDLE);
+		jedisPoolConfig.setMaxWaitMillis(MAX_WAIT_MILLIS);
+		jedisPoolConfig.setTestOnBorrow(TEST_ON_BORROW);
+		jedisPoolConfig.setTestOnReturn(TEST_ON_RETURN);
+		this.jedisPool = new JedisPool(jedisPoolConfig, host, port);
+		this.tokenCretor = tokenCretor;
 	}
 
-	public RedisTokenHolder(AccountType accountType) {
-		this("localhost", 6379, accountType);
+	public RedisTokenHolder(String host, int port,
+			JedisPoolConfig jedisPoolConfig, TokenCreator tokenCretor) {
+		this(new JedisPool(jedisPoolConfig, host, port), tokenCretor);
 	}
 
-	public RedisTokenHolder(WeixinAccount weixinAccount) {
-		this("localhost", 6379, weixinAccount);
-	}
-
-	public RedisTokenHolder(String host, int port, WeixinAccount weixinAccount) {
-		super(weixinAccount);
-		createPool(host, port);
+	public RedisTokenHolder(JedisPool jedisPool, TokenCreator tokenCretor) {
+		this.jedisPool = jedisPool;
+		this.tokenCretor = tokenCretor;
 	}
 
 	@Override
 	public Token getToken() throws WeixinException {
-		String id = weixinAccount.getId();
-		if (StringUtils.isBlank(id)
-				|| StringUtils.isBlank(weixinAccount.getSecret())) {
-			throw new IllegalArgumentException("id or secret not be null!");
-		}
 		Token token = null;
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
-			Calendar now = Calendar.getInstance();
-			String key = String.format("token:%s", id);
-			String accessToken = jedis.get(key);
+			String cacheKey = tokenCretor.getCacheKey();
+			String accessToken = jedis.get(cacheKey);
 			if (StringUtils.isBlank(accessToken)) {
-				token = request.get(weixinAccount.getTokenUrl()).getAsObject(
-						new TypeReference<Token>() {
-						});
-				jedis.setex(key, token.getExpiresIn(),
+				token = tokenCretor.createToken();
+				jedis.setex(cacheKey, (int) token.getExpiresIn(),
 						token.getAccessToken());
-				token.setTime(now.getTimeInMillis());
 			} else {
-				token = new Token();
-				token.setAccessToken(accessToken);
+				token = new Token(accessToken);
 			}
 		} catch (JedisException e) {
 			jedisPool.returnBrokenResource(jedis);
