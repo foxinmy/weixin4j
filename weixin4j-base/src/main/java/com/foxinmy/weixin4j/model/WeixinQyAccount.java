@@ -1,5 +1,8 @@
 package com.foxinmy.weixin4j.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.type.AccountType;
+
 /**
  * 微信企业号信息
  * 
@@ -8,8 +11,8 @@ package com.foxinmy.weixin4j.model;
  * @date 2014年11月18日
  * @since JDK 1.7
  * @see <a href=
- *        "https://qy.weixin.qq.com/cgi-bin/home?lang=zh_CN&token=685923034#setting"
- *        >企业号设置</a>
+ *      "https://qy.weixin.qq.com/cgi-bin/home?lang=zh_CN&token=685923034#setting"
+ *      >企业号设置</a>
  */
 public class WeixinQyAccount extends WeixinAccount {
 	private static final long serialVersionUID = 3689999353867189585L;
@@ -22,8 +25,9 @@ public class WeixinQyAccount extends WeixinAccount {
 	}
 
 	@Override
-	public String getTokenUrl() {
-		return String.format(Consts.QY_ASSESS_TOKEN_URL, getId(), getSecret());
+	@JSONField(deserialize = false)
+	public AccountType getAccountType() {
+		return AccountType.QY;
 	}
 
 	@Override

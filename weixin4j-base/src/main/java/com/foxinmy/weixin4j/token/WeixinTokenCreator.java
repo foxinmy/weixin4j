@@ -4,6 +4,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.type.AccountType;
@@ -25,25 +26,38 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
 public class WeixinTokenCreator implements TokenCreator {
 
 	private final HttpRequest request;
-	private final WeixinAccount weixinAccount;
+	private final String id;
+	private final String secret;
+	private final AccountType accountType;
 
 	public WeixinTokenCreator(AccountType accountType) {
-		this(ConfigUtil.getWeixinAccount(accountType.getClazz()));
+		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount(accountType
+				.getClazz());
+		this.id = weixinAccount.getId();
+		this.secret = weixinAccount.getSecret();
+		this.accountType = accountType;
+		this.request = new HttpRequest();
 	}
 
-	public WeixinTokenCreator(WeixinAccount weixinAccount) {
+	public WeixinTokenCreator(String id, String secret, AccountType accountType) {
+		this.id = id;
+		this.secret = secret;
+		this.accountType = accountType;
 		this.request = new HttpRequest();
-		this.weixinAccount = weixinAccount;
 	}
 
 	@Override
 	public String getCacheKey() {
-		return weixinAccount.getId();
+		return String.format("%s_%s", accountType.name(), id);
 	}
 
 	@Override
 	public Token createToken() throws WeixinException {
-		Response response = request.get(weixinAccount.getTokenUrl());
+		String tokenUrl = String.format(Consts.MP_ASSESS_TOKEN_URL, id, secret);
+		if (accountType == AccountType.QY) {
+			tokenUrl = String.format(Consts.QY_ASSESS_TOKEN_URL, id, secret);
+		}
+		Response response = request.get(tokenUrl);
 		Token token = response.getAsObject(new TypeReference<Token>() {
 		});
 		token.setTime(System.currentTimeMillis());

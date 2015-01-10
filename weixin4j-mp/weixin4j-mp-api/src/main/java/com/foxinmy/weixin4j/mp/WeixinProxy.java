@@ -8,7 +8,6 @@ import java.util.List;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.model.Button;
-import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
 import com.foxinmy.weixin4j.mp.api.HelperApi;
@@ -71,24 +70,13 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * appid,appsecret<br>
-	 * <font color="red">将无法调用支付相关接口</font>
 	 * 
 	 * @param appid
 	 * @param appsecret
 	 */
 	public WeixinProxy(String appid, String appsecret) {
-		this(new WeixinMpAccount(appid, appsecret));
-	}
-
-	/**
-	 * WeixinAccount对象
-	 * 
-	 * @param weixinAccount
-	 *            微信账户
-	 */
-	public WeixinProxy(WeixinMpAccount weixinAccount) {
-		this(new FileTokenHolder(new WeixinTokenCreator(weixinAccount)));
+		this(new FileTokenHolder(new WeixinTokenCreator(appid, appsecret,
+				AccountType.MP)));
 	}
 
 	/**

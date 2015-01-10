@@ -2,6 +2,9 @@ package com.foxinmy.weixin4j.model;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.type.AccountType;
+
 /**
  * 微信公众平台信息
  * 
@@ -30,11 +33,6 @@ public class WeixinMpAccount extends WeixinAccount {
 	private String deviceInfo;
 	// 微信支付版本号(如果无则按照mchId来做判断)
 	private int version;
-
-	@Override
-	public String getTokenUrl() {
-		return String.format(Consts.MP_ASSESS_TOKEN_URL, getId(), getSecret());
-	}
 
 	public String getOpenId() {
 		return openId;
@@ -133,6 +131,12 @@ public class WeixinMpAccount extends WeixinAccount {
 		this.paySignKey = paySignKey;
 		this.partnerId = partnerId;
 		this.partnerKey = partnerKey;
+	}
+
+	@Override
+	@JSONField(deserialize = false)
+	public AccountType getAccountType() {
+		return AccountType.MP;
 	}
 
 	@Override

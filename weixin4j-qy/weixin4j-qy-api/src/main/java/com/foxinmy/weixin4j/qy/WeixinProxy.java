@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.model.WeixinQyAccount;
 import com.foxinmy.weixin4j.qy.api.DepartApi;
 import com.foxinmy.weixin4j.qy.api.HelperApi;
 import com.foxinmy.weixin4j.qy.api.TagApi;
@@ -47,16 +46,8 @@ public class WeixinProxy {
 	 * @param corpsecret
 	 */
 	public WeixinProxy(String corpid, String corpsecret) {
-		this(new WeixinQyAccount(corpid, corpsecret));
-	}
-
-	/**
-	 * WeixinAccount对象
-	 * 
-	 * @param weixinAccount
-	 */
-	public WeixinProxy(WeixinQyAccount weixinAccount) {
-		this(new FileTokenHolder(new WeixinTokenCreator(weixinAccount)));
+		this(new FileTokenHolder(new WeixinTokenCreator(corpid, corpsecret,
+				AccountType.QY)));
 	}
 
 	/**

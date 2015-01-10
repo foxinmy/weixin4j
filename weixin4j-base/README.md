@@ -46,3 +46,5 @@ weixin4j-base
 * 2015-01-10
 
   + 重构token实现机制
+  
+  + 新增JSTICKET支持

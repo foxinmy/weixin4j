@@ -35,10 +35,11 @@ public abstract class PayApi extends MpApi {
 
 	protected final TokenHolder tokenHolder;
 	protected final WeixinMpAccount weixinAccount;
+
 	public PayApi(WeixinMpAccount weixinAccount) {
 		this.weixinAccount = weixinAccount;
 		this.tokenHolder = new FileTokenHolder(new WeixinTokenCreator(
-				weixinAccount));
+				weixinAccount.getAccountType()));
 	}
 
 	/**

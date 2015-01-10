@@ -224,6 +224,8 @@ netty的代码没有放到maven中心仓库,也没什么意义,因为最终需�
 
   + **weixin4j-base**: 重构token实现机制
   
+  + **weixin4j-base**: 新增JSTICKET支持
+  
 接下来
 ------
 * 公众号数据分析接口

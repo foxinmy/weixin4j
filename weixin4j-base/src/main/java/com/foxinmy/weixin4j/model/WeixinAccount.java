@@ -6,6 +6,8 @@ import java.net.URLEncoder;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.foxinmy.weixin4j.type.AccountType;
+
 /**
  * 微信账号信息
  * 
@@ -26,7 +28,7 @@ public abstract class WeixinAccount implements Serializable {
 	// 安全模式下的加密密钥
 	private String encodingAesKey;
 
-	public abstract String getTokenUrl();
+	public abstract AccountType getAccountType();
 
 	public WeixinAccount() {
 	}
