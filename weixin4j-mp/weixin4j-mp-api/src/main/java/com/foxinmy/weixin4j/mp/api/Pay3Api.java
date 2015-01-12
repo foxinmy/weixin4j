@@ -39,6 +39,7 @@ import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.IdType;
 import com.foxinmy.weixin4j.mp.util.ExcelUtil;
+import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
@@ -46,7 +47,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
 /**
  * V3支付API
  * 
- * @className PayApi
+ * @className Pay3Api
  * @author jy
  * @date 2014年10月28日
  * @since JDK 1.7
@@ -54,8 +55,8 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  */
 public class Pay3Api extends PayApi {
 
-	public Pay3Api(WeixinMpAccount weixinAccount) {
-		super(weixinAccount);
+	public Pay3Api(WeixinMpAccount weixinAccount, TokenHolder tokenHolder) {
+		super(weixinAccount, tokenHolder);
 	}
 
 	/**

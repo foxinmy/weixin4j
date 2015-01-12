@@ -16,9 +16,7 @@ import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
 import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.SignType;
-import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -33,13 +31,12 @@ import com.foxinmy.weixin4j.util.DateUtil;
  */
 public abstract class PayApi extends MpApi {
 
-	protected final TokenHolder tokenHolder;
 	protected final WeixinMpAccount weixinAccount;
+	protected final TokenHolder tokenHolder;
 
-	public PayApi(WeixinMpAccount weixinAccount) {
+	public PayApi(WeixinMpAccount weixinAccount, TokenHolder tokenHolder) {
 		this.weixinAccount = weixinAccount;
-		this.tokenHolder = new FileTokenHolder(new WeixinTokenCreator(
-				weixinAccount.getAccountType()));
+		this.tokenHolder = tokenHolder;
 	}
 
 	/**

@@ -27,6 +27,10 @@ weixin4j-mp
   + TmplApi `模板消息API`
 	
   + HelperApi `辅助API`
+  
+  + Pay2Api `V2支付API`
+  
+  + Pay3Api `V3支付API`
 
 * **weixin4j-mp-server**
 
@@ -67,7 +71,7 @@ weixin4j-mp
 	ca_file=/tmp/weixin/xxxxx.p12 | xxxx.pfx
 	#classpath路径下:ca_file=classpath:xxxxx.p12
 
-3.在项目根目录下执行`mvn package`命令后得到jar包,将`weixin4j-mp-full`包或者`weixin4j-base`和`weixin4j-mp-api`两个包引入到自己的工程.
+3.在项目根目录下执行`mvn package -Prelease`命令后得到jar包,将`weixin4j-mp-full`包或者`weixin4j-base`和`weixin4j-mp-api`两个包引入到自己的工程.
 
     WeixinProxy weixinProxy = new WeixinProxy();
     // weixinProxy = new WeixinProxy(appid,appsecret);

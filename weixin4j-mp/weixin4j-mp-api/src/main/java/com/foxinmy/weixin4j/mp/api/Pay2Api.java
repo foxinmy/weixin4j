@@ -49,6 +49,7 @@ import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.RefundType;
 import com.foxinmy.weixin4j.mp.type.SignType;
 import com.foxinmy.weixin4j.mp.util.ExcelUtil;
+import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
@@ -56,7 +57,7 @@ import com.foxinmy.weixin4j.util.MapUtil;
 /**
  * V2支付API
  * 
- * @className PayApi
+ * @className Pay2Api
  * @author jy
  * @date 2014年10月28日
  * @since JDK 1.7
@@ -66,8 +67,8 @@ public class Pay2Api extends PayApi {
 
 	private final HelperApi helperApi;
 
-	public Pay2Api(WeixinMpAccount weixinAccount) {
-		super(weixinAccount);
+	public Pay2Api(WeixinMpAccount weixinAccount, TokenHolder tokenHolder) {
+		super(weixinAccount, tokenHolder);
 		this.helperApi = new HelperApi(tokenHolder);
 	}
 

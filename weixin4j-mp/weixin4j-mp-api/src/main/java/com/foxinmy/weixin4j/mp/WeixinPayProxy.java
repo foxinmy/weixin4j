@@ -15,6 +15,10 @@ import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.IdType;
 import com.foxinmy.weixin4j.mp.type.RefundType;
+import com.foxinmy.weixin4j.token.FileTokenHolder;
+import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.WeixinTokenCreator;
+import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
@@ -33,7 +37,8 @@ public class WeixinPayProxy {
 	private final Pay3Api pay3Api;
 
 	public WeixinPayProxy() {
-		this(ConfigUtil.getWeixinMpAccount());
+		this(ConfigUtil.getWeixinMpAccount(), new FileTokenHolder(
+				new WeixinTokenCreator(AccountType.MP)));
 	}
 
 	/**
@@ -42,9 +47,9 @@ public class WeixinPayProxy {
 	 * @param weixinAccount
 	 *            微信账户
 	 */
-	public WeixinPayProxy(WeixinMpAccount weixinAccount) {
-		this.pay2Api = new Pay2Api(weixinAccount);
-		this.pay3Api = new Pay3Api(weixinAccount);
+	public WeixinPayProxy(WeixinMpAccount weixinAccount, TokenHolder tokenHolder) {
+		this.pay2Api = new Pay2Api(weixinAccount, tokenHolder);
+		this.pay3Api = new Pay3Api(weixinAccount, tokenHolder);
 		int version = weixinAccount.getVersion();
 		if (version == 2) {
 			this.payApi = this.pay2Api;

@@ -97,6 +97,10 @@ public class ApiResult extends XmlResult {
 		return recall;
 	}
 
+	public String setRecall() {
+		return recall;
+	}
+
 	@JSONField(deserialize = false, serialize = false)
 	public boolean getFormatRecall() {
 		return recall != null && recall.equalsIgnoreCase("y");

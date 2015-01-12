@@ -27,7 +27,9 @@ weixin4j-mp-api
 
 * HelperApi `辅助API`
 
-* PayApi `支付API`
+* Pay2Api `V2支付API`
+  
+* Pay3Api `V3支付API`
 
 如何使用
 --------
