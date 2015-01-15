@@ -71,4 +71,9 @@ public class UserTest extends TokenTest {
 		JsonResult result = userApi.deleteUser("u001");
 		Assert.assertEquals("deleted", result.getDesc());
 	}
+	
+	@Test
+	public void invite()throws WeixinException{
+		userApi.inviteUser("11", null);
+	}
 }

@@ -3,6 +3,8 @@ package com.foxinmy.weixin4j.qy.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -11,6 +13,7 @@ import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.User;
+import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
@@ -232,11 +235,45 @@ public class UserApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%85%B3%E6%B3%A8%E4%B8%8E%E5%8F%96%E6%B6%88%E5%85%B3%E6%B3%A8">二次验证说明</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult authsucc(String userid) throws WeixinException {
+	public JsonResult authsucc(String userId) throws WeixinException {
 		String user_authsucc_uri = getRequestUri("user_authsucc_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(String.format(user_authsucc_uri,
-				token.getAccessToken(), userid));
+				token.getAccessToken(), userId));
 		return response.getAsJsonResult();
+	}
+
+	/**
+	 * 邀请成员关注(管理员须拥有该成员的查看权限)
+	 * 
+	 * @param userId
+	 *            成员ID
+	 * @param tips
+	 *            推送到微信上的提示语（只有认证号可以使用）。当使用微信推送时，该字段默认为“请关注XXX企业号”，邮件邀请时，该字段无效。
+	 * @return 调用结果
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E9.82.80.E8.AF.B7.E6.88.90.E5.91.98.E5.85.B3.E6.B3.A8">邀请成员关注说明</a>
+	 * @throws WeixinException
+	 */
+	public InviteType inviteUser(String userId, String tips)
+			throws WeixinException {
+		JSONObject obj = new JSONObject();
+		obj.put("userid", userId);
+		if (StringUtils.isBlank(tips)) {
+			obj.put("invite_tips", tips);
+		}
+		String invite_user_uri = getRequestUri("invite_user_uri");
+		Token token = tokenHolder.getToken();
+		Response response = request.post(
+				String.format(invite_user_uri, token.getAccessToken()),
+				obj.toJSONString());
+		int type = response.getAsJson().getIntValue("type");
+		if (type == 1) {
+			return InviteType.WEIXIN;
+		} else if (type == 2) {
+			return InviteType.EMAIL;
+		} else {
+			return null;
+		}
 	}
 }

@@ -155,3 +155,7 @@
   + **weixin4j-base**: 重构token实现机制
   
   + **weixin4j-base**: 新增JSTICKET支持
+  
+* 2015-01-15
+  
+  + **weixin4j-qy**: 新增邀请成员关注接口

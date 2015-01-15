@@ -11,6 +11,7 @@ import com.foxinmy.weixin4j.qy.api.UserApi;
 import com.foxinmy.weixin4j.qy.model.Department;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
+import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -238,6 +239,24 @@ public class WeixinProxy {
 	public JsonResult batchDeleteUser(List<String> userIds)
 			throws WeixinException {
 		return userApi.batchDeleteUser(userIds);
+	}
+
+	/**
+	 * 邀请成员关注(管理员须拥有该成员的查看权限)
+	 * 
+	 * @param userId
+	 *            成员ID
+	 * @param tips
+	 *            推送到微信上的提示语（只有认证号可以使用）。当使用微信推送时，该字段默认为“请关注XXX企业号”，邮件邀请时，该字段无效。
+	 * @see com.foxinmy.weixin4j.qy.api.UserApi
+	 * @return 调用结果
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E9.82.80.E8.AF.B7.E6.88.90.E5.91.98.E5.85.B3.E6.B3.A8">邀请成员关注说明</a>
+	 * @throws WeixinException
+	 */
+	public InviteType inviteUser(String userId, String tips)
+			throws WeixinException {
+		return userApi.inviteUser(userId, tips);
 	}
 
 	/**
