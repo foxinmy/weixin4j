@@ -182,7 +182,7 @@ public class PayUtil {
 			WeixinMpAccount weixinAccount) throws PayException {
 		PayPackageV3 payPackage = new PayPackageV3(weixinAccount, openId, body,
 				orderNo, orderFee, ip, TradeType.JSAPI);
-		payPackage.setNotify_url(notifyUrl);
+		payPackage.setNotifyUrl(notifyUrl);
 		return createPayJsRequestJsonV3(payPackage, weixinAccount);
 	}
 
@@ -308,7 +308,7 @@ public class PayUtil {
 	/**
 	 * 创建V3.x NativePay支付链接
 	 * 
-	 * @param weixinConfig
+	 * @param weixinAccount
 	 *            支付配置信息
 	 * @param productId
 	 *            与订单ID等价

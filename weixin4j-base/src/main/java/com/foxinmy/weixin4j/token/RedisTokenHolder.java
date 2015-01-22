@@ -23,7 +23,7 @@ import com.foxinmy.weixin4j.model.Token;
 public class RedisTokenHolder implements TokenHolder {
 
 	private JedisPool jedisPool;
-	private final TokenCreator tokenCretor;
+	private final TokenCreator tokenCreator;
 
 	public final static int MAX_TOTAL = 50;
 	public final static int MAX_IDLE = 5;
@@ -31,11 +31,11 @@ public class RedisTokenHolder implements TokenHolder {
 	public final static boolean TEST_ON_BORROW = false;
 	public final static boolean TEST_ON_RETURN = true;
 
-	public RedisTokenHolder(TokenCreator tokenCretor) {
-		this("localhost", 6379, tokenCretor);
+	public RedisTokenHolder(TokenCreator tokenCreator) {
+		this("localhost", 6379, tokenCreator);
 	}
 
-	public RedisTokenHolder(String host, int port, TokenCreator tokenCretor) {
+	public RedisTokenHolder(String host, int port, TokenCreator tokenCreator) {
 		JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
 		jedisPoolConfig.setMaxTotal(MAX_TOTAL);
 		jedisPoolConfig.setMaxIdle(MAX_IDLE);
@@ -43,17 +43,17 @@ public class RedisTokenHolder implements TokenHolder {
 		jedisPoolConfig.setTestOnBorrow(TEST_ON_BORROW);
 		jedisPoolConfig.setTestOnReturn(TEST_ON_RETURN);
 		this.jedisPool = new JedisPool(jedisPoolConfig, host, port);
-		this.tokenCretor = tokenCretor;
+		this.tokenCreator = tokenCreator;
 	}
 
 	public RedisTokenHolder(String host, int port,
-			JedisPoolConfig jedisPoolConfig, TokenCreator tokenCretor) {
-		this(new JedisPool(jedisPoolConfig, host, port), tokenCretor);
+			JedisPoolConfig jedisPoolConfig, TokenCreator tokenCreator) {
+		this(new JedisPool(jedisPoolConfig, host, port), tokenCreator);
 	}
 
-	public RedisTokenHolder(JedisPool jedisPool, TokenCreator tokenCretor) {
+	public RedisTokenHolder(JedisPool jedisPool, TokenCreator tokenCreator) {
 		this.jedisPool = jedisPool;
-		this.tokenCretor = tokenCretor;
+		this.tokenCreator = tokenCreator;
 	}
 
 	@Override
@@ -62,10 +62,10 @@ public class RedisTokenHolder implements TokenHolder {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
-			String cacheKey = tokenCretor.getCacheKey();
+			String cacheKey = tokenCreator.getCacheKey();
 			String accessToken = jedis.get(cacheKey);
 			if (StringUtils.isBlank(accessToken)) {
-				token = tokenCretor.createToken();
+				token = tokenCreator.createToken();
 				jedis.setex(cacheKey, (int) token.getExpiresIn(),
 						token.getAccessToken());
 			} else {

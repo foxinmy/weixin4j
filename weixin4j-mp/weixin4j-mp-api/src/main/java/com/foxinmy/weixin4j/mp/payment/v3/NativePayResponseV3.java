@@ -55,7 +55,7 @@ public class NativePayResponseV3 extends ApiResult {
 			throws PayException {
 		super.setReturnCode(Consts.SUCCESS);
 		this.setResultCode(Consts.SUCCESS);
-		this.setMchId(payPackage.getMch_id());
+		this.setMchId(payPackage.getMchId());
 		this.setAppId(payPackage.getAppid());
 		this.setNonceStr(RandomUtil.generateString(16));
 		this.prePay = PayUtil.createPrePay(payPackage, paysignKey);

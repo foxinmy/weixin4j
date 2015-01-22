@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayPackage;
 import com.foxinmy.weixin4j.mp.type.TradeType;
@@ -11,7 +12,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * V3支付的订单详情</br> 注意: <font color="red">total_fee字段传入时单位为元,创建支付时会转换为分</font>
+ * V3支付的订单详情</br> 注意: <font color="red">totalFee字段传入时单位为元,创建支付时会转换为分</font>
  * 
  * @className PayPackageV3
  * @author jy
@@ -25,48 +26,58 @@ public class PayPackageV3 extends PayPackage {
 	private static final long serialVersionUID = 8944928173669656177L;
 
 	private String appid; // 微信分配的公众账号 必须
-	private String mch_id; // 微信支付分配的商户号 必须
-	private String device_info; // 微信支付分配的终端设备号 非必须
-	private String nonce_str; // 随机字符串,不长于 32 位 必须
+	@XStreamAlias("mch_id")
+	@JSONField(name = "mch_id")
+	private String mchId; // 微信支付分配的商户号 必须
+	@XStreamAlias("device_info")
+	@JSONField(name = "device_info")
+	private String deviceInfo; // 微信支付分配的终端设备号 非必须
+	@XStreamAlias("nonce_str")
+	@JSONField(name = "nonce_str")
+	private String nonceStr; // 随机字符串,不长于 32 位 必须
 	private String sign; // 签名 必须
-	private String trade_type; // 交易类型JSAPI、NATIVE、APP 必须
+	@XStreamAlias("trade_type")
+	@JSONField(name = "trade_type")
+	private String tradeType; // 交易类型JSAPI、NATIVE、APP 必须
 	private String openid; // 用户在商户 appid 下的唯一 标识, trade_type 为 JSAPI 时,此参数必传
-	private String product_id; // 只在 trade_type 为 NATIVE 时需要填写 非必须
+	@XStreamAlias("product_id")
+	@JSONField(name = "product_id")
+	private String productId; // 只在 trade_type 为 NATIVE 时需要填写 非必须
 
 	public PayPackageV3() {
 
 	}
 
 	public PayPackageV3(WeixinMpAccount weixinAccount, String openId,
-			String body, String out_trade_no, double total_fee,
-			String spbill_create_ip, TradeType tradeType) {
-		this(weixinAccount, openId, body, null, out_trade_no, total_fee, null,
-				spbill_create_ip, tradeType);
+			String body, String outTradeNo, double totalFee,
+			String spbillCreateIp, TradeType tradeType) {
+		this(weixinAccount, openId, body, null, outTradeNo, totalFee, null,
+				spbillCreateIp, tradeType);
 	}
 
 	public PayPackageV3(WeixinMpAccount weixinAccount, String openId,
-			String body, String attach, String out_trade_no, double total_fee,
-			String notify_url, String spbill_create_ip, TradeType tradeType) {
+			String body, String attach, String outTradeNo, double totalFee,
+			String notifyUrl, String spbillCreateIp, TradeType tradeType) {
 		this(weixinAccount.getId(), weixinAccount.getMchId(), weixinAccount
 				.getDeviceInfo(), RandomUtil.generateString(16), body, attach,
-				out_trade_no, total_fee, spbill_create_ip, null, null, null,
-				notify_url, tradeType, openId, null);
+				outTradeNo, totalFee, spbillCreateIp, null, null, null,
+				notifyUrl, tradeType, openId, null);
 	}
 
-	public PayPackageV3(String appid, String mch_id, String device_info,
-			String nonce_str, String body, String attach, String out_trade_no,
-			double total_fee, String spbill_create_ip, Date time_start,
-			Date time_expire, String goods_tag, String notify_url,
-			TradeType tradeType, String openid, String product_id) {
-		super(body, attach, out_trade_no, total_fee, spbill_create_ip,
-				time_start, time_expire, goods_tag, notify_url);
+	public PayPackageV3(String appid, String mchId, String deviceInfo,
+			String nonceStr, String body, String attach, String outTradeNo,
+			double totalFee, String spbillCreateIp, Date timeStart,
+			Date timeExpire, String goodsTag, String notifyUrl,
+			TradeType tradeType, String openid, String productId) {
+		super(body, attach, outTradeNo, totalFee, spbillCreateIp, timeStart,
+				timeExpire, goodsTag, notifyUrl);
 		this.appid = appid;
-		this.mch_id = mch_id;
-		this.device_info = device_info;
-		this.nonce_str = nonce_str;
-		this.trade_type = tradeType.name();
+		this.mchId = mchId;
+		this.deviceInfo = deviceInfo;
+		this.nonceStr = nonceStr;
+		this.tradeType = tradeType.name();
 		this.openid = openid;
-		this.product_id = product_id;
+		this.productId = productId;
 	}
 
 	public String getAppid() {
@@ -77,28 +88,28 @@ public class PayPackageV3 extends PayPackage {
 		this.appid = appid;
 	}
 
-	public String getMch_id() {
-		return mch_id;
+	public String getMchId() {
+		return mchId;
 	}
 
-	public void setMch_id(String mch_id) {
-		this.mch_id = mch_id;
+	public void setMchId(String mchId) {
+		this.mchId = mchId;
 	}
 
-	public String getDevice_info() {
-		return device_info;
+	public String getDeviceInfo() {
+		return deviceInfo;
 	}
 
-	public void setDevice_info(String device_info) {
-		this.device_info = device_info;
+	public void setDeviceInfo(String deviceInfo) {
+		this.deviceInfo = deviceInfo;
 	}
 
-	public String getNonce_str() {
-		return nonce_str;
+	public String getNonceStr() {
+		return nonceStr;
 	}
 
-	public void setNonce_str(String nonce_str) {
-		this.nonce_str = nonce_str;
+	public void setNonceStr(String nonceStr) {
+		this.nonceStr = nonceStr;
 	}
 
 	public String getSign() {
@@ -113,16 +124,12 @@ public class PayPackageV3 extends PayPackage {
 		super.setBody(StringUtils.isBlank(body) ? "服务费用" : body);
 	}
 
-	public void setNotify_url(String notify_url) {
-		super.setNotify_url(notify_url);
+	public String getTradeType() {
+		return tradeType;
 	}
 
-	public String getTrade_type() {
-		return trade_type;
-	}
-
-	public void setTrade_type(TradeType tradeType) {
-		this.trade_type = tradeType.name();
+	public void setTradeType(TradeType tradeType) {
+		this.tradeType = tradeType.name();
 	}
 
 	public String getOpenid() {
@@ -133,20 +140,20 @@ public class PayPackageV3 extends PayPackage {
 		this.openid = openid;
 	}
 
-	public String getProduct_id() {
-		return product_id;
+	public String getProductId() {
+		return productId;
 	}
 
-	public void setProduct_id(String product_id) {
-		this.product_id = product_id;
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}
 
 	@Override
 	public String toString() {
-		return "PayPackageV3 [appid=" + appid + ", mch_id=" + mch_id
-				+ ", device_info=" + device_info + ", nonce_str=" + nonce_str
-				+ ", sign=" + sign + ", trade_type=" + trade_type + ", openid="
-				+ openid + ", product_id=" + product_id + ", "
-				+ super.toString() + "]";
+		return "PayPackageV3 [appid=" + appid + ", mchId=" + mchId
+				+ ", deviceInfo=" + deviceInfo + ", nonceStr=" + nonceStr
+				+ ", sign=" + sign + ", tradeType=" + tradeType + ", openid="
+				+ openid + ", productId=" + productId + ", " + super.toString()
+				+ "]";
 	}
 }

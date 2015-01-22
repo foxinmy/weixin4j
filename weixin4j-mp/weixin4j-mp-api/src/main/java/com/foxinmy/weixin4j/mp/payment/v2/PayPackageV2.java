@@ -2,10 +2,10 @@ package com.foxinmy.weixin4j.mp.payment.v2;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.PayPackage;
 import com.foxinmy.weixin4j.util.DateUtil;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V2支付的订单详情
@@ -21,30 +21,36 @@ public class PayPackageV2 extends PayPackage {
 	private static final long serialVersionUID = 5557542103637795834L;
 
 	// 银行通道类型 固定为"WX" 非空
-	private String bank_type;
+	@XStreamAlias("bank_type")
+	@JSONField(name = "bank_type")
+	private String bankType;
 	// 商户号 注册时分配的财付通商户号 非空
 	private String partner;
 	// 支付币种 默认值是"1" 非空
-	private String fee_type;
+	@XStreamAlias("fee_type")
+	@JSONField(name = "fee_type")
+	private String feeType;
 	// 物流费用 可为空 如果有值,必须保 证 transport_fee + product_fee=total_fee【传进来的参数按照实际金额即可
 	// 也就是元为单位】
-	private String transport_fee;
+	@XStreamAlias("transport_fee")
+	@JSONField(name = "transport_fee")
+	private String transportFee;
 	// 商品费用 可为空 商品费用,单位为分。如果有值,必须保 证 transport_fee +
 	// product_fee=total_fee;【传进来的参数按照实际金额即可 也就是元为单位】
-	private String product_fee;
+	@XStreamAlias("product_fee")
+	@JSONField(name = "product_fee")
+	private String productFee;
 	// 传入参数字符编码 取值范围:"GBK"、"UTF-8",默认:"GBK" 可为空
-	private String input_charset;
+	@XStreamAlias("input_charset")
+	@JSONField(name = "input_charset")
+	private String inputCharset;
 
-	public String getBank_type() {
-		return bank_type;
+	public String getBankType() {
+		return bankType;
 	}
 
-	public void setBank_type(String bank_type) {
-		this.bank_type = bank_type;
-	}
-
-	public void setBody(String body) {
-		super.setBody(StringUtils.isBlank(body) ? "服务费用" : body);
+	public void setBank_type(String bankType) {
+		this.bankType = bankType;
 	}
 
 	public String getPartner() {
@@ -55,86 +61,82 @@ public class PayPackageV2 extends PayPackage {
 		this.partner = partner;
 	}
 
-	public String getFee_type() {
-		return fee_type;
+	public String getFeeType() {
+		return feeType;
 	}
 
-	public void setFee_type(String fee_type) {
-		this.fee_type = fee_type;
+	public void setFeeType(String feeType) {
+		this.feeType = feeType;
 	}
 
-	public void setNotify_url(String notify_url) {
-		super.setNotify_url(notify_url);
+	public String getTransportFee() {
+		return transportFee;
 	}
 
-	public String getTransport_fee() {
-		return transport_fee;
+	public void setTransportFee(double transportFee) {
+		this.transportFee = DateUtil.formaFee2Fen(transportFee);
 	}
 
-	public void setTransport_fee(double transport_fee) {
-		this.transport_fee = DateUtil.formaFee2Fen(transport_fee);
+	public String getProductFee() {
+		return productFee;
 	}
 
-	public String getProduct_fee() {
-		return product_fee;
+	public void setProductFee(double productFee) {
+		this.productFee = DateUtil.formaFee2Fen(productFee);
 	}
 
-	public void setProduct_fee(double product_fee) {
-		this.product_fee = DateUtil.formaFee2Fen(product_fee);
+	public String getInputCharset() {
+		return inputCharset;
 	}
 
-	public String getInput_charset() {
-		return input_charset;
-	}
-
-	public void setInput_charset(String input_charset) {
-		this.input_charset = input_charset;
+	public void setInput_charset(String inputCharset) {
+		this.inputCharset = inputCharset;
 	}
 
 	public PayPackageV2() {
-		this.bank_type = "WX";
-		this.fee_type = "1";
-		this.input_charset = "UTF-8";
+		this.bankType = "WX";
+		this.feeType = "1";
+		this.inputCharset = "UTF-8";
 	}
 
-	public PayPackageV2(String out_trade_no, double total_fee,
-			String spbill_create_ip) {
-		this(null, null, null, out_trade_no, total_fee, null, spbill_create_ip,
+	public PayPackageV2(String outTradeNo, double totalFee,
+			String spbillCreateIp) {
+		this(null, null, null, outTradeNo, totalFee, null, spbillCreateIp,
 				null, null, 0d, 0d, null);
 	}
 
-	public PayPackageV2(String body, String out_trade_no, double total_fee,
-			String notify_url, String spbill_create_ip) {
-		this(body, null, null, out_trade_no, total_fee, notify_url,
-				spbill_create_ip, null, null, 0d, 0d, null);
+	public PayPackageV2(String body, String outTradeNo, double totalFee,
+			String notifyUrl, String spbillCreateIp) {
+		this(body, null, null, outTradeNo, totalFee, notifyUrl, spbillCreateIp,
+				null, null, 0d, 0d, null);
 	}
 
-	public PayPackageV2(String body, String partner, String out_trade_no,
-			double total_fee, String notify_url, String spbill_create_ip) {
-		this(body, null, partner, out_trade_no, total_fee, notify_url,
-				spbill_create_ip, null, null, 0d, 0d, null);
+	public PayPackageV2(String body, String partner, String outTradeNo,
+			double totalFee, String notifyUrl, String spbillCreateIp) {
+		this(body, null, partner, outTradeNo, totalFee, notifyUrl,
+				spbillCreateIp, null, null, 0d, 0d, null);
 	}
 
 	public PayPackageV2(String body, String attach, String partner,
-			String out_trade_no, double total_fee, String notify_url,
-			String spbill_create_ip, Date time_start, Date time_expire,
-			double transport_fee, double product_fee, String goods_tag) {
-		super(body, attach, out_trade_no, total_fee, spbill_create_ip,
-				time_start, time_expire, goods_tag, notify_url);
-		this.bank_type = "WX";
-		this.fee_type = "1";
-		this.input_charset = "UTF-8";
-		this.transport_fee = transport_fee > 0d ? DateUtil
-				.formaFee2Fen(transport_fee) : null;
-		this.product_fee = product_fee > 0 ? DateUtil.formaFee2Fen(product_fee)
+			String outTradeNo, double totalFee, String notifyUrl,
+			String spbillCreateIp, Date timeStart, Date timeExpire,
+			double transportFee, double productFee, String goodsTag) {
+		super(body, attach, outTradeNo, totalFee, spbillCreateIp, timeStart,
+				timeExpire, goodsTag, notifyUrl);
+		this.bankType = "WX";
+		this.feeType = "1";
+		this.inputCharset = "UTF-8";
+		this.transportFee = transportFee > 0d ? DateUtil
+				.formaFee2Fen(transportFee) : null;
+		this.productFee = productFee > 0 ? DateUtil.formaFee2Fen(productFee)
 				: null;
 	}
 
 	@Override
 	public String toString() {
-		return "PayPackageV2 [bank_type=" + bank_type + ", partner=" + partner
-				+ ", fee_type=" + fee_type + ", transport_fee=" + transport_fee
-				+ ", product_fee=" + product_fee + ", input_charset="
-				+ input_charset + ", " + super.toString() + "]";
+		return "PayPackageV2 [bankType=" + bankType + ", partner=" + partner
+				+ ", feeType=" + feeType + ", transportFee=" + transportFee
+				+ ", productFee=" + productFee + ", inputCharset="
+				+ inputCharset + ", " + super.toString() + "]";
 	}
 }

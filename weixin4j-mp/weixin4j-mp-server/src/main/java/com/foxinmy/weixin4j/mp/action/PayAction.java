@@ -153,7 +153,7 @@ public class PayAction {
 	public String jsNotifyV3(InputStream inputStream) {
 		com.foxinmy.weixin4j.mp.payment.v3.Order order = XmlStream.get(
 				inputStream, com.foxinmy.weixin4j.mp.payment.v3.Order.class);
-		log.info("jaapi_notify_order_info:", order);
+		log.info("jsapi_notify_order_info:", order);
 		String sign = order.getSign();
 		order.setSign(null);
 		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
@@ -163,6 +163,7 @@ public class PayAction {
 		if (!sign.equals(valid_sign)) {
 			return XmlStream.to(new XmlResult(Consts.FAIL, "签名错误"));
 		}
+		// 处理业务逻辑
 		return XmlStream.to(new XmlResult(Consts.SUCCESS, ""));
 	}
 
@@ -233,7 +234,7 @@ public class PayAction {
 		// 生成Package
 		PayPackageV3 payPackage = new PayPackageV3(weixinAccount, "用户openid",
 				"商品描述", "系统内部订单号", 1d, "IP地址", TradeType.NATIVE);
-		payPackage.setProduct_id(payNotify.getProductId());
+		payPackage.setProductId(payNotify.getProductId());
 		if (!sign.equals(valid_sign)) {
 			// 校验失败
 			NativePayResponseV3 payReponse = new NativePayResponseV3("签名失败",
