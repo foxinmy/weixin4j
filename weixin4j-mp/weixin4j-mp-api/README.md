@@ -30,6 +30,7 @@ weixin4j-mp-api
 * Pay2Api `V2支付API`
   
 * Pay3Api `V3支付API`
+* DataApi `数据统计API`
 
 如何使用
 --------
@@ -145,6 +146,6 @@ weixin.properties说明
   
   + 新增接口上报接口
   
- * 2015-01-31
+* 2015-01-31
   
   + 新增数据分析接口

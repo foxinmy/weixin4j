@@ -31,6 +31,8 @@ weixin4j-mp
   + Pay2Api `V2支付API`
   
   + Pay3Api `V3支付API`
+  
+  + DataApi `数据统计API`
 
 * **weixin4j-mp-server**
 
@@ -166,6 +168,6 @@ weixin4j-mp
   
   + **weixin4j-mp-api**: 新增接口上报接口
   
- * 2015-01-31
+* 2015-01-31
   
   + **weixin4j-mp-api**: 新增数据分析接口
