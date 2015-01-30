@@ -2,8 +2,6 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayPackage;
@@ -118,10 +116,6 @@ public class PayPackageV3 extends PayPackage {
 
 	public void setSign(String sign) {
 		this.sign = sign;
-	}
-
-	public void setBody(String body) {
-		super.setBody(StringUtils.isBlank(body) ? "服务费用" : body);
 	}
 
 	public String getTradeType() {

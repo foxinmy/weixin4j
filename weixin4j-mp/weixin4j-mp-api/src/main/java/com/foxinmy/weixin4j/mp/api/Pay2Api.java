@@ -233,7 +233,6 @@ public class Pay2Api extends PayApi {
 				}
 			}
 		}
-		System.err.println(response.getAsString());
 		return response.getAsObject(new TypeReference<RefundResult>() {
 		});
 	}

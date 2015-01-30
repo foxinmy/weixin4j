@@ -24,15 +24,15 @@ import com.thoughtworks.xstream.XStream;
 public class FileTokenHolder implements TokenHolder {
 	private final XStream xstream;
 	private final String tokenPath;
-	private final TokenCreator tokenCretor;
+	private final TokenCreator tokenCreator;
 
-	public FileTokenHolder(TokenCreator tokenCretor) {
-		this(ConfigUtil.getValue("token_path"), tokenCretor);
+	public FileTokenHolder(TokenCreator tokenCreator) {
+		this(ConfigUtil.getValue("token_path"), tokenCreator);
 	}
 
-	public FileTokenHolder(String tokenPath, TokenCreator tokenCretor) {
+	public FileTokenHolder(String tokenPath, TokenCreator tokenCreator) {
 		this.tokenPath = tokenPath;
-		this.tokenCretor = tokenCretor;
+		this.tokenCreator = tokenCreator;
 		xstream = new XStream();
 		xstream.ignoreUnknownElements();
 		xstream.autodetectAnnotations(true);
@@ -43,7 +43,7 @@ public class FileTokenHolder implements TokenHolder {
 	@Override
 	public Token getToken() throws WeixinException {
 		File token_file = new File(String.format("%s/%s.xml", tokenPath,
-				tokenCretor.getCacheKey()));
+				tokenCreator.getCacheKey()));
 		Token token = null;
 		Calendar ca = Calendar.getInstance();
 		long now_time = ca.getTimeInMillis();
@@ -57,7 +57,7 @@ public class FileTokenHolder implements TokenHolder {
 					return token;
 				}
 			}
-			token = tokenCretor.createToken();
+			token = tokenCreator.createToken();
 			xstream.toXML(token, new FileOutputStream(token_file));
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());

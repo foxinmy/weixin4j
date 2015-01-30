@@ -165,3 +165,7 @@ weixin4j-mp
   + **weixin4j-mp-api**: 退款相关类拆分为V2跟V3
   
   + **weixin4j-mp-api**: 新增接口上报接口
+  
+ * 2015-01-31
+  
+  + **weixin4j-mp-api**: 新增数据分析接口

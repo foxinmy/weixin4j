@@ -212,7 +212,6 @@
 					<include>**/*.pem</include>
 					<include>**/*.p12</include>
 					<include>**/*.pfx</include>
-					<include>**/*.pem</include>
 				</includes>
 			</resource>
 			<resource>
