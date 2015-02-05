@@ -261,7 +261,7 @@ public class WeixinPayProxy {
 	 * @param caFile
 	 *            证书文件(后缀为*.p12)
 	 * @param idQuery
-	 *            ) 商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
+	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
 	 * @param outRefundNo
 	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔

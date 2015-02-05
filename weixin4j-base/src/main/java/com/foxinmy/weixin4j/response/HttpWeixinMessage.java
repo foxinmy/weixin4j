@@ -113,7 +113,7 @@ public class HttpWeixinMessage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "HttpMessage [toUserName=" + toUserName + ", encryptContent="
+		return "HttpWeixinMessage [toUserName=" + toUserName + ", encryptContent="
 				+ encryptContent + ", encryptType=" + encryptType
 				+ ", echoStr=" + echoStr + ", timeStamp=" + timeStamp
 				+ ", nonce=" + nonce + ", signature=" + signature + ", token="

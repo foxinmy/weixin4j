@@ -40,7 +40,7 @@ import com.foxinmy.weixin4j.util.MapUtil;
 import com.thoughtworks.xstream.mapper.CannotResolveClassException;
 
 /**
- * 调用微信相关接口的HttpRequest,对于其他请求可能并不试用
+ * 调用微信相关接口的HttpRequest,对于其他请求可能并不适用
  * 
  * @className HttpRequest
  * @author jy

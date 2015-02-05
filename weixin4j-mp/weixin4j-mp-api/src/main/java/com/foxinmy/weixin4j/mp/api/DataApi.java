@@ -16,8 +16,8 @@ import com.foxinmy.weixin4j.util.DateUtil;
 /**
  * 数据分析API
  * <p>
- * 1、接口侧的公众号数据的数据库中仅存储了2014年12月1日之后的数据，将查询不到在此之前的日期，即使有查到，也是不可信的脏数据；
- * 2、请开发者在调用接口获取数据后，将数据保存在自身数据库中，即加快下次用户的访问速度，也降低了微信侧接口调用的不必要损耗。
+ * 1、接口侧的公众号数据的数据库中仅存储了2014年12月1日之后的数据，将查询不到在此之前的日期，即使有查到，也是不可信的脏数据；<br/>
+ * 2、请开发者在调用接口获取数据后，将数据保存在自身数据库中，即加快下次用户的访问速度，也降低了微信侧接口调用的不必要损耗。<br/>
  * </p>
  * 
  * @className DataApi
@@ -42,7 +42,7 @@ public class DataApi extends MpApi {
 	 *            开始日期
 	 * @param offset
 	 *            增量 表示向前几天 比如 offset=1 则查询 beginDate的后一天之间的数据
-	 * @return
+	 * @see {@link com.foxinmy.weixin4j.mp.api.DataApi#datacube(DatacubeType, Date,Date)}
 	 * @throws WeixinException
 	 */
 	public List<?> datacube(DatacubeType datacubeType, Date beginDate,
@@ -62,7 +62,7 @@ public class DataApi extends MpApi {
 	 *            增量 表示向后几天 比如 offset=1 则查询 beginDate的前一天之间的数据
 	 * @param endDate
 	 *            截至日期
-	 * @return
+	 * @see {@link com.foxinmy.weixin4j.mp.api.DataApi#datacube(DatacubeType, Date,Date)}
 	 * @throws WeixinException
 	 */
 	public List<?> datacube(DatacubeType datacubeType, int offset, Date endDate)
@@ -74,13 +74,13 @@ public class DataApi extends MpApi {
 	}
 
 	/**
-	 * 查询日期跨度为1的统计数据
+	 * 查询日期跨度为0的统计数据(当天)
 	 * 
 	 * @param datacubeType
 	 *            统计类型
 	 * @param date
 	 *            统计日期
-	 * @return 统计结果
+	 * @see {@link com.foxinmy.weixin4j.mp.api.DataApi#datacube(DatacubeType, Date,Date)}
 	 * @throws WeixinException
 	 */
 	public List<?> datacube(DatacubeType datacubeType, Date date)

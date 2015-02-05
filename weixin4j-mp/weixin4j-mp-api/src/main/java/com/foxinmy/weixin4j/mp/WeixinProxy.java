@@ -9,6 +9,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
+import com.foxinmy.weixin4j.mp.api.DataApi;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
 import com.foxinmy.weixin4j.mp.api.HelperApi;
 import com.foxinmy.weixin4j.mp.api.MassApi;
@@ -29,6 +30,7 @@ import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.User;
+import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.mp.type.Lang;
 import com.foxinmy.weixin4j.msg.model.Base;
@@ -61,6 +63,7 @@ public class WeixinProxy {
 	private final QrApi qrApi;
 	private final TmplApi tmplApi;
 	private final HelperApi helperApi;
+	private final DataApi dataApi;
 
 	/**
 	 * 默认采用文件存放Token信息
@@ -95,6 +98,7 @@ public class WeixinProxy {
 		this.qrApi = new QrApi(tokenHolder);
 		this.tmplApi = new TmplApi(tokenHolder);
 		this.helperApi = new HelperApi(tokenHolder);
+		this.dataApi = new DataApi(tokenHolder);
 	}
 
 	/**
@@ -920,5 +924,91 @@ public class WeixinProxy {
 	 */
 	public List<String> getcallbackip() throws WeixinException {
 		return helperApi.getcallbackip();
+	}
+
+	/**
+	 * 数据统计
+	 * 
+	 * @param datacubeType
+	 *            数据统计类型
+	 * @param beginDate
+	 *            获取数据的起始日期，begin_date和end_date的差值需小于“最大时间跨度”（比如最大时间跨度为1时，
+	 *            begin_date和end_date的差值只能为0，才能小于1），否则会报错
+	 * @param endDate
+	 *            获取数据的结束日期，end_date允许设置的最大值为昨日
+	 * @see com.foxinmy.weixin4j.mp.api.DataApi
+	 * @see com.foxinmy.weixin4j.mp.datacube.UserSummary
+	 * @see com.foxinmy.weixin4j.mp.datacube.ArticleSummary
+	 * @see com.foxinmy.weixin4j.mp.datacube.ArticleTotal
+	 * @see com.foxinmy.weixin4j.mp.datacube.ArticleDatacubeShare
+	 * @see com.foxinmy.weixin4j.mp.datacube.UpstreamMsg
+	 * @see com.foxinmy.weixin4j.mp.datacube.UpstreamMsgDist
+	 * @see com.foxinmy.weixin4j.mp.datacube.InterfaceSummary
+	 * @return 统计结果
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/3/ecfed6e1a0a03b5f35e5efac98e864b7.html">用户分析</a>
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/8/c0453610fb5131d1fcb17b4e87c82050.html">图文分析</a>
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/12/32d42ad542f2e4fc8a8aa60e1bce9838.html">消息分析</a>
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/8/30ed81ae38cf4f977194bf1a5db73668.html">接口分析</a>
+	 * @throws WeixinException
+	 */
+	public List<?> datacube(DatacubeType datacubeType, Date beginDate,
+			Date endDate) throws WeixinException {
+		return dataApi.datacube(datacubeType, beginDate, endDate);
+	}
+
+	/**
+	 * 数据统计
+	 * 
+	 * @param datacubeType
+	 *            统计类型
+	 * @param beginDate
+	 *            开始日期
+	 * @param offset
+	 *            增量 表示向前几天 比如 offset=1 则查询 beginDate的后一天之间的数据
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#datacube(DatacubeType, Date,Date)}
+	 * @see com.foxinmy.weixin4j.mp.api.DataApi
+	 * @throws WeixinException
+	 */
+	public List<?> datacube(DatacubeType datacubeType, Date beginDate,
+			int offset) throws WeixinException {
+		return dataApi.datacube(datacubeType, beginDate, offset);
+	}
+
+	/**
+	 * 数据统计
+	 * 
+	 * @param datacubeType
+	 *            统计类型
+	 * @param offset
+	 *            增量 表示向后几天 比如 offset=1 则查询 beginDate的前一天之间的数据
+	 * @param endDate
+	 *            截至日期
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#datacube(DatacubeType, Date,Date)}
+	 * @see com.foxinmy.weixin4j.mp.api.DataApi
+	 * @throws WeixinException
+	 */
+	public List<?> datacube(DatacubeType datacubeType, int offset, Date endDate)
+			throws WeixinException {
+		return dataApi.datacube(datacubeType, offset, endDate);
+	}
+
+	/**
+	 * 查询日期跨度为0的统计数据(当天)
+	 * 
+	 * @param datacubeType
+	 *            统计类型
+	 * @param date
+	 *            统计日期
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#datacube(DatacubeType, Date,Date)}
+	 * @see com.foxinmy.weixin4j.mp.api.DataApi
+	 * @throws WeixinException
+	 */
+	public List<?> datacube(DatacubeType datacubeType, Date date)
+			throws WeixinException {
+		return dataApi.datacube(datacubeType, date);
 	}
 }

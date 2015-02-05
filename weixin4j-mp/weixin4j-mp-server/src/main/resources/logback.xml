@@ -12,6 +12,7 @@
 	<!-- 控制台输出日志 -->
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
+			<charset>UTF-8</charset>
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - %msg%n
 			</pattern>
 		</encoder>
@@ -31,6 +32,7 @@
 		</rollingPolicy>
 
 		<encoder>
+			<charset>UTF-8</charset>
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
 			</pattern>
 		</encoder>

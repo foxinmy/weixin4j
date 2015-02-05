@@ -31,16 +31,16 @@ public class PayTest {
 	private final static WeixinMpAccount ACCOUNT3;
 	static {
 		ACCOUNT2 = new WeixinMpAccount(
-				"appId",
-				"appSecret",
-				"paySignKey",
+				"appid",
+				"appsecret",
+				"paysignkey",
 				"partnerId", "partnerKey");
 		PAY2 = new WeixinPayProxy(ACCOUNT2, new FileTokenHolder(
 				new WeixinTokenCreator(ACCOUNT2.getId(), ACCOUNT2.getSecret(),
 						AccountType.MP)));
-		ACCOUNT3 = new WeixinMpAccount("appId",
-				"appSecret",
-				"paySignKey", "mchId");
+		ACCOUNT3 = new WeixinMpAccount("appid",
+				"appsecret",
+				"paysignkey", "mchId");
 		PAY3 = new WeixinPayProxy(ACCOUNT3, new FileTokenHolder(
 				new WeixinTokenCreator(ACCOUNT3.getId(), ACCOUNT3.getSecret(),
 						AccountType.MP)));
@@ -54,10 +54,10 @@ public class PayTest {
 	@Test
 	public void refundV2() throws WeixinException {
 		File caFile = new File(
-				"/Users/jy/download/1221928801.pfx");
-		IdQuery idQuery = new IdQuery("D15012400026", IdType.TRADENO);
-		System.err.println(PAY2.refundV2(caFile, idQuery, "R000000001", 2d, 2d,
-				"1221928801", "111111", null, null, null));
+				"/path/xxx.pfx");
+		IdQuery idQuery = new IdQuery("D15020300005", IdType.TRADENO);
+		System.err.println(PAY2.refundV2(caFile, idQuery, "1422925555037", 16d, 16d,
+				"partnerId", "password", null, null, null));
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class PayTest {
 	@Test
 	public void refundV3() throws WeixinException {
 		File caFile = new File(
-				"/Users/jy/download/10020674.p12");
+				"/path/xxx.p12");
 		IdQuery idQuery = new IdQuery("T00015", IdType.TRADENO);
 		com.foxinmy.weixin4j.mp.payment.v3.RefundResult result = PAY3.refundV3(
 				caFile, idQuery, "R0002", 1d, 1d, "10020674");

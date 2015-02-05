@@ -30,20 +30,20 @@ weixin4j
 
 如何获取API
 ----------
-###1.maven依赖(1.1,2014-12-18 released)
+###1.maven依赖(1.2,2015-02-05 released)
 微信公众平台API
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp-api</artifactId>
-	    <version>1.1</version>
+	    <version>1.2</version>
 	</dependency>
 微信企业号API
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-qy-api</artifactId>
-	    <version>1.1</version>
+	    <version>1.2</version>
 	</dependency>
 以上依赖如果出现Missing artifact错误 请尝试在eclipse里这么做
 

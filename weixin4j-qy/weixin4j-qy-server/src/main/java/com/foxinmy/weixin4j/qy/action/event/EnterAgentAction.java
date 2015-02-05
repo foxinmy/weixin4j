@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.type.MessageType;
 /**
  * 用户进入应用的事件推送
  * 
- * @className
+ * @className EnterAgentAction
  * @author jy
  * @date 2014年12月28日
  * @since JDK 1.7
