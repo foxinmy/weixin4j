@@ -70,6 +70,7 @@ weixin.properties说明
 	ca_file=/tmp/weixin/xxxxx.p12
 	#classpath路径下:ca_file=classpath:xxxxx.p12
 	
+	#微信登陆授权的重定向路径
 	redirect_uri=http://xxx
 
 2.实例化一个`WeixinProxy`对象,调用API,需要强调的是如果只传入appid,appsecret两个参数将无法调用支付相关接口
