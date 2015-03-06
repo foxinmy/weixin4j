@@ -11,7 +11,6 @@ import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Following;
-import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.type.Lang;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -31,51 +30,6 @@ public class UserApi extends MpApi {
 
 	public UserApi(TokenHolder tokenHolder) {
 		this.tokenHolder = tokenHolder;
-	}
-
-	/**
-	 * oauth授权code获取token
-	 * 
-	 * @param code
-	 *            用户授权后返回的code
-	 * @param appid
-	 * @param appsecret
-	 * @return token对象
-	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">获取用户token</a>
-	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
-	 */
-	public OauthToken getOauthToken(String code, String appid, String appsecret)
-			throws WeixinException {
-		String user_token_uri = getRequestUri("sns_user_token_uri");
-		Response response = request.get(String.format(user_token_uri, appid,
-				appsecret, code));
-
-		return response.getAsObject(new TypeReference<OauthToken>() {
-		});
-	}
-
-	/**
-	 * oauth获取用户信息
-	 * 
-	 * @param token
-	 *            授权票据
-	 * @return 用户对象
-	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">拉取用户信息</a>
-	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
-	 * @see {@link com.foxinmy.weixin4j.mp.api.UserApi#getOauthToken(String)}
-	 */
-	public User getUser(OauthToken token) throws WeixinException {
-		String user_info_uri = getRequestUri("sns_user_info_uri");
-		Response response = request.get(String.format(user_info_uri,
-				token.getAccessToken(), token.getOpenid()));
-
-		return response.getAsObject(new TypeReference<User>() {
-		});
 	}
 
 	/**

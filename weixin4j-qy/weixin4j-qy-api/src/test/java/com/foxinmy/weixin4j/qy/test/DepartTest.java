@@ -45,7 +45,7 @@ public class DepartTest extends TokenTest {
 
 	@Test
 	public void list() throws WeixinException {
-		List<Department> list = departApi.listDepart();
+		List<Department> list = departApi.listDepart(1);
 		Assert.assertFalse(list.isEmpty());
 		System.out.println(list);
 	}

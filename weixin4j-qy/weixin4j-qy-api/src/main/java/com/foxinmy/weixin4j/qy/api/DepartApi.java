@@ -75,13 +75,14 @@ public class DepartApi extends QyApi {
 	/**
 	 * 查询部门列表(以部门的order字段从小到大排列)
 	 * 
+	 * @param departId 部门ID。获取指定部门ID下的子部门
 	 * @see com.foxinmy.weixin4j.qy.model.Department
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E8.8E.B7.E5.8F.96.E9.83.A8.E9.97.A8.E5.88.97.E8.A1.A8">获取部门列表</a>
 	 * @return 部门列表
 	 * @throws WeixinException
 	 */
-	public List<Department> listDepart() throws WeixinException {
+	public List<Department> listDepart(int departId) throws WeixinException {
 		String department_list_uri = getRequestUri("department_list_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(String.format(department_list_uri,

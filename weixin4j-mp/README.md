@@ -171,3 +171,7 @@ weixin4j-mp
 * 2015-01-31
   
   + **weixin4j-mp-api**: 新增数据分析接口
+  
+* 2015-03-06
+  
+  + **weixin4j-mp-api**: 新增oauth授权接口

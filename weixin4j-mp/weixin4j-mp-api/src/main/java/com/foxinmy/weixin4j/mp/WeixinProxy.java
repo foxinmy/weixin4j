@@ -25,7 +25,6 @@ import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
-import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
@@ -523,40 +522,6 @@ public class WeixinProxy {
 	 */
 	public String getMassNews(String msgId) throws WeixinException {
 		return massApi.getMassNews(msgId);
-	}
-
-	/**
-	 * oauth授权code换取token
-	 * 
-	 * @param code
-	 *            用户授权后返回的code
-	 * @return token对象
-	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">获取用户token</a>
-	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
-	 * @see com.foxinmy.weixin4j.mp.api.UserApi
-	 */
-	public OauthToken getOauthToken(String code, String appid, String appsecret)
-			throws WeixinException {
-		return userApi.getOauthToken(code, appid, appsecret);
-	}
-
-	/**
-	 * ouath获取用户信息
-	 * 
-	 * @param token
-	 *            授权票据
-	 * @return 用户对象
-	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">拉取用户信息</a>
-	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
-	 * @see com.foxinmy.weixin4j.mp.api.UserApi
-	 */
-	public User getUser(OauthToken token) throws WeixinException {
-		return userApi.getUser(token);
 	}
 
 	/**
