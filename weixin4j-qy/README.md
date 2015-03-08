@@ -106,3 +106,7 @@ weixin4j-qy
 * 2015-01-15
   
   + **weixin4j-qy-api**: 新增邀请成员关注接口
+  
+* 2015-03-08
+  
+  + **weixin4j-qy-api**: 新增根据code获取成员信息接口
