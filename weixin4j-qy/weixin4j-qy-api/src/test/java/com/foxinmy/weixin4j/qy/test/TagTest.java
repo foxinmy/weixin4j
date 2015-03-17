@@ -14,9 +14,9 @@ import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
 
 /**
- * 部门API测试
+ * 标签API测试
  * 
- * @className DepartTest
+ * @className TagTest
  * @author jy
  * @date 2014年11月18日
  * @since JDK 1.7

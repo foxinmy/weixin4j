@@ -12,6 +12,14 @@ weixin4j-qy-api
   * UserApi `成员管理API`
   
   * TagApi `标签管理API`
+  
+  * MediaApi `多媒体管理API`
+  
+  * MenuApi `菜单管理API`
+  
+  * NotifyApi `消息发送API`
+  
+  * AgentApi `应用设置API`
 
 如何使用
 --------
@@ -75,3 +83,7 @@ weixin.properties说明
 * 2015-03-08
   
   + 新增根据code获取成员信息接口
+  
+* 2015-03-17
+  
+  + 新增企业应用设置接口

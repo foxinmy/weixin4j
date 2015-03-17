@@ -19,6 +19,8 @@ weixin4j-qy
   + MenuApi `菜单管理API`
   
   + NotifyApi `消息发送API`
+  
+  + AgentApi `应用设置API`
 
 * **weixin4j-qy-server**
 
@@ -110,3 +112,7 @@ weixin4j-qy
 * 2015-03-08
   
   + **weixin4j-qy-api**: 新增根据code获取成员信息接口
+  
+* 2015-03-17
+  
+  + **weixin4j-qy-api**: 新增企业应用设置接口

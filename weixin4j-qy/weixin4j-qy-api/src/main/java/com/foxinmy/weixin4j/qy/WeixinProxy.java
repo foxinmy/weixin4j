@@ -4,10 +4,13 @@ import java.util.List;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
+import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.DepartApi;
 import com.foxinmy.weixin4j.qy.api.HelperApi;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
+import com.foxinmy.weixin4j.qy.model.AgentInfo;
+import com.foxinmy.weixin4j.qy.model.AgentSetter;
 import com.foxinmy.weixin4j.qy.model.Department;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
@@ -32,6 +35,7 @@ public class WeixinProxy {
 	private final UserApi userApi;
 	private final TagApi tagApi;
 	private final HelperApi helperApi;
+	private final AgentApi agentApi;
 
 	/**
 	 * 默认采用文件存放Token信息
@@ -61,6 +65,7 @@ public class WeixinProxy {
 		this.userApi = new UserApi(tokenHolder);
 		this.tagApi = new TagApi(tokenHolder);
 		this.helperApi = new HelperApi(tokenHolder);
+		this.agentApi = new AgentApi(tokenHolder);
 	}
 
 	/**
@@ -407,5 +412,37 @@ public class WeixinProxy {
 	 */
 	public List<String> getcallbackip() throws WeixinException {
 		return helperApi.getcallbackip();
+	}
+
+	/**
+	 * 获取企业号某个应用的基本信息，包括头像、昵称、帐号类型、认证类型、可见范围等信息
+	 * 
+	 * @param agentid
+	 *            授权方应用id
+	 * @return 应用信息
+	 * @see com.foxinmy.weixin4j.qy.model.AgentInfo
+	 * @see com.foxinmy.weixin4j.qy.api.AgentApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%BA%94%E7%94%A8">企业号应用的信息</a>
+	 * @throws WeixinException
+	 */
+	public AgentInfo getAgent(int agentid) throws WeixinException {
+		return agentApi.getAgent(agentid);
+	}
+
+	/**
+	 * 设置企业应用的选项设置信息，如：地理位置上报等
+	 * 
+	 * @param agentSet
+	 *            设置参数
+	 * @see com.foxinmy.weixin4j.qy.model.AgentSetter
+	 * @see com.foxinmy.weixin4j.qy.api.AgentApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%AE%BE%E7%BD%AE%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%BA%94%E7%94%A8">设置企业号信息</a>
+	 * @return 处理结果
+	 * @throws WeixinException
+	 */
+	public JsonResult setAgent(AgentSetter agentSet) throws WeixinException {
+		return agentApi.setAgent(agentSet);
 	}
 }
