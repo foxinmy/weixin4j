@@ -63,9 +63,9 @@ public class MassEventMessage extends EventMessage {
 	}
 
 	/**
-	 * 发送状态描述<br/>
-	 * err(10001,涉嫌广告) err(20001,涉嫌政治) err(20004,涉嫌社会)<br/>
-	 * err(20002,涉嫌色情) err(20006,涉嫌违法犯罪) err(20008,涉嫌欺诈)<br/>
+	 * 发送状态描述</br>
+	 * err(10001,涉嫌广告) err(20001,涉嫌政治) err(20004,涉嫌社会)</br>
+	 * err(20002,涉嫌色情) err(20006,涉嫌违法犯罪) err(20008,涉嫌欺诈)</br>
 	 * err(20013,涉嫌版权) err(22000,涉嫌互推(互相宣传) err(21000,涉嫌其他)
 	 * 
 	 * @param status
@@ -76,9 +76,9 @@ public class MassEventMessage extends EventMessage {
 	}
 
 	/**
-	 * 发送状态描述<br/>
-	 * err(10001,涉嫌广告) err(20001,涉嫌政治) err(20004,涉嫌社会)<br/>
-	 * err(20002,涉嫌色情) err(20006,涉嫌违法犯罪) err(20008,涉嫌欺诈)<br/>
+	 * 发送状态描述</br>
+	 * err(10001,涉嫌广告) err(20001,涉嫌政治) err(20004,涉嫌社会)</br>
+	 * err(20002,涉嫌色情) err(20006,涉嫌违法犯罪) err(20008,涉嫌欺诈)</br>
 	 * err(20013,涉嫌版权) err(22000,涉嫌互推(互相宣传) err(21000,涉嫌其他)
 	 * 
 	 * @param status

@@ -580,6 +580,10 @@
 	</error>
 	<!-- 多客服API错误 -->
 	<error>
+		<code>61450</code>
+		<text>系统错误(system error)</text>
+	</error>
+	<error>
 		<code>61451</code>
 		<text>参数错误(invalid parameter)</text>
 	</error>
@@ -606,6 +610,22 @@
 	<error>
 		<code>61457</code>
 		<text>无效头像文件类型(invalid file type)</text>
+	</error>
+	<error>
+		<code>61458</code>
+		<text>客户正在被其他客服接待(customer accepted by xxx@xxxx)</text>
+	</error>
+	<error>
+		<code>61459</code>
+		<text>客服不在线(kf offline)</text>
+	</error>
+	<error>
+		<code>61500</code>
+		<text>日期格式错误</text>
+	</error>
+	<error>
+		<code>61501</code>
+		<text>日期范围错误</text>
 	</error>
 	<error>
 		<code>50001</code>

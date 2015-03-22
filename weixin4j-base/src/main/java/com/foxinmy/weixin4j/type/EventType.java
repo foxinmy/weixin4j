@@ -2,6 +2,9 @@ package com.foxinmy.weixin4j.type;
 
 import com.foxinmy.weixin4j.msg.event.EnterAgentEventMessage;
 import com.foxinmy.weixin4j.msg.event.EventMessage;
+import com.foxinmy.weixin4j.msg.event.KfCloseEventMessage;
+import com.foxinmy.weixin4j.msg.event.KfCreateEventMessage;
+import com.foxinmy.weixin4j.msg.event.KfSwitchEventMessage;
 import com.foxinmy.weixin4j.msg.event.LocationEventMessage;
 import com.foxinmy.weixin4j.msg.event.MassEventMessage;
 import com.foxinmy.weixin4j.msg.event.ScanEventMessage;
@@ -30,9 +33,13 @@ public enum EventType {
 			MenuPhotoEventMessage.class), pic_weixin(
 			MenuPhotoEventMessage.class), location_select(
 			MenuLocationEventMessage.class), click(MenuEventMessage.class), location(
-			LocationEventMessage.class),masssendjobfinish(
+			LocationEventMessage.class), masssendjobfinish(
 			MassEventMessage.class), templatesendjobfinish(
-			TemplatesendjobfinishMessage.class),enter_agent(EnterAgentEventMessage.class);
+			TemplatesendjobfinishMessage.class), enter_agent(
+			EnterAgentEventMessage.class), kf_create_session(
+			KfCreateEventMessage.class), kf_close_session(
+			KfCloseEventMessage.class), kf_switch_session(
+			KfSwitchEventMessage.class);
 
 	private Class<? extends EventMessage> eventClass;
 

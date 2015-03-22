@@ -44,7 +44,7 @@ public class MassMsgTest extends TokenTest {
 	public void uploadArticle() throws IOException, WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
 		String thumbMediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"),
-				MediaType.image);
+				MediaType.image, false);
 		articles.add(new MpArticle(thumbMediaId, "title", "content"));
 		massApi.uploadArticle(articles);
 	}
@@ -64,7 +64,8 @@ public class MassMsgTest extends TokenTest {
 
 	@Test
 	public void massByOpenIds() throws WeixinException {
-		String msgId = massApi.massByOpenIds(new Text("HI"), "oyFLst1bqtuTcxK-ojF8hOGtLQao");
+		String msgId = massApi.massByOpenIds(new Text("HI"),
+				"oyFLst1bqtuTcxK-ojF8hOGtLQao");
 		Assert.assertTrue(msgId != null);
 	}
 
@@ -72,7 +73,7 @@ public class MassMsgTest extends TokenTest {
 	public void massArticleByGroup() throws IOException, WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
 		String thumbMediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"),
-				MediaType.image);
+				MediaType.image, false);
 		articles.add(new MpArticle(thumbMediaId, "title", "content"));
 		String massId = massApi.massArticleByGroupId(articles, 0);
 		Assert.assertTrue(massId != null);
@@ -82,7 +83,7 @@ public class MassMsgTest extends TokenTest {
 	public void massArticleByOpenIds() throws IOException, WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
 		String thumbMediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"),
-				MediaType.image);
+				MediaType.image, false);
 		articles.add(new MpArticle(thumbMediaId, "title", "content"));
 		String massId = massApi.massArticleByOpenIds(articles,
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
@@ -97,10 +98,11 @@ public class MassMsgTest extends TokenTest {
 
 	@Test
 	public void previewMass() throws WeixinException {
-		JsonResult result = massApi.previewMassNews("oyFLst1bqtuTcxK-ojF8hOGtLQao", new Text("test"));
+		JsonResult result = massApi.previewMassNews(
+				"oyFLst1bqtuTcxK-ojF8hOGtLQao", new Text("test"));
 		Assert.assertEquals("0", result.getCode());
 	}
-	
+
 	@Test
 	public void getMassNews() throws WeixinException {
 		String status = massApi.getMassNews("82358");

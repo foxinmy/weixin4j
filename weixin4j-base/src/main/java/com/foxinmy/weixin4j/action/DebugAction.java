@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.response.ResponseMessage;
  * @since JDK 1.7
  * @see
  */
-public abstract class DebugAction<M extends BaseMsg> extends AbstractAction<M> {
+public class DebugAction<M extends BaseMsg> extends AbstractAction<M> {
 
 	@Override
 	public ResponseMessage execute(M message) {

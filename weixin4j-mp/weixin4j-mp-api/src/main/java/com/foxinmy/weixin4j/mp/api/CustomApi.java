@@ -11,6 +11,7 @@ import org.apache.http.entity.mime.content.ByteArrayBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.PartParameter;
@@ -18,6 +19,7 @@ import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
+import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.IOUtil;
 
@@ -222,5 +224,134 @@ public class CustomApi extends MpApi {
 				token.getAccessToken(), id));
 
 		return response.getAsJsonResult();
+	}
+
+	/**
+	 * 创建会话
+	 * <p>
+	 * 开发者可以使用本接口，为多客服的客服工号创建会话，将某个客户直接指定给客服工号接待，需要注意此接口不会受客服自动接入数以及自动接入开关限制。
+	 * 只能为在线的客服（PC客户端在线，或者已绑定多客服助手）创建会话。
+	 * </p>
+	 * 
+	 * @param userOpenId
+	 *            用户的userOpenId
+	 * @param kfAccount
+	 *            完整客服账号，格式为：账号前缀@公众号微信号
+	 * @param text
+	 *            附加信息，文本会展示在客服人员的多客服客户端
+	 * @return 处理结果
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.88.9B.E5.BB.BA.E4.BC.9A.E8.AF.9D">创建会话</a>
+	 */
+	public JsonResult createSession(String userOpenId, String kfAccount,
+			String text) throws WeixinException {
+		Token token = tokenHolder.getToken();
+		String kfsession_create_uri = getRequestUri("kfsession_create_uri");
+		JSONObject obj = new JSONObject();
+		obj.put("openid", userOpenId);
+		obj.put("kf_account", kfAccount);
+		obj.put("text", text);
+		Response response = request.post(
+				String.format(kfsession_create_uri, token.getAccessToken()),
+				obj.toJSONString());
+
+		return response.getAsJsonResult();
+	}
+
+	/**
+	 * 关闭会话
+	 * 
+	 * @param userOpenId
+	 *            用户的userOpenId
+	 * @param kfAccount
+	 *            完整客服账号，格式为：账号前缀@公众号微信号
+	 * @param text
+	 *            附加信息，文本会展示在客服人员的多客服客户端
+	 * @return 处理结果
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.85.B3.E9.97.AD.E4.BC.9A.E8.AF.9D">创建会话</a>
+	 */
+	public JsonResult closeSession(String userOpenId, String kfAccount,
+			String text) throws WeixinException {
+		Token token = tokenHolder.getToken();
+		String kfsession_close_uri = getRequestUri("kfsession_close_uri");
+		JSONObject obj = new JSONObject();
+		obj.put("openid", userOpenId);
+		obj.put("kf_account", kfAccount);
+		obj.put("text", text);
+		Response response = request.post(
+				String.format(kfsession_close_uri, token.getAccessToken()),
+				obj.toJSONString());
+
+		return response.getAsJsonResult();
+	}
+
+	/**
+	 * 获取客户的会话状态:获取客户当前的会话状态。
+	 * 
+	 * @param userOpenId
+	 *            用户的openid
+	 * @return 会话对象
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.model.KfSession
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.88.B7.E7.9A.84.E4.BC.9A.E8.AF.9D.E7.8A.B6.E6.80.81">获取会话状态</a>
+	 */
+	public KfSession getSession(String userOpenId) throws WeixinException {
+		Token token = tokenHolder.getToken();
+		String kfsession_get_uri = getRequestUri("kfsession_get_uri");
+		Response response = request.get(String.format(kfsession_get_uri,
+				token.getAccessToken(), userOpenId));
+
+		KfSession session = response
+				.getAsObject(new TypeReference<KfSession>() {
+				});
+		session.setUserOpenId(userOpenId);
+		return session;
+	}
+
+	/**
+	 * 获取客服的会话列表:获取某个客服正在接待的会话列表。
+	 * 
+	 * @param kfAccount
+	 *            完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符。
+	 * @return 会话列表
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.model.KfSession
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.9C.8D.E7.9A.84.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
+	 */
+	public List<KfSession> getSessionList(String kfAccount)
+			throws WeixinException {
+		Token token = tokenHolder.getToken();
+		String kfsession_list_uri = getRequestUri("kfsession_list_uri");
+		Response response = request.get(String.format(kfsession_list_uri,
+				token.getAccessToken(), kfAccount));
+
+		List<KfSession> sessionList = JSON.parseArray(response.getAsJson()
+				.getString("sessionlist"), KfSession.class);
+		return sessionList;
+	}
+
+	/**
+	 * 获取未接入会话列表:获取当前正在等待队列中的会话列表，此接口最多返回最早进入队列的100个未接入会话。</br>
+	 * <font color="red">缺陷：没有count字段</font>
+	 * @return 会话列表
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.model.KfSession
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E6.9C.AA.E6.8E.A5.E5.85.A5.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
+	 */
+	public List<KfSession> getSessionWaitList() throws WeixinException {
+		Token token = tokenHolder.getToken();
+		String kfsession_wait_uri = getRequestUri("kfsession_wait_uri");
+		Response response = request.get(String.format(kfsession_wait_uri,
+				token.getAccessToken()));
+
+		List<KfSession> sessionList = JSON.parseArray(response.getAsJson()
+				.getString("waitcaselist"), KfSession.class);
+		return sessionList;
 	}
 }

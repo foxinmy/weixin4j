@@ -92,7 +92,7 @@ public class NotifyMsgTest extends TokenTest {
 	@Test
 	public void send2() throws WeixinException, IOException {
 		String mediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"),
-				MediaType.image);
+				MediaType.image, false);
 		NotifyMessage imageNotify = new NotifyMessage(
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU", new Image(mediaId));
 		JsonResult result = notifyApi.sendNotify(imageNotify);

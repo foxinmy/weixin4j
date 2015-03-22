@@ -15,6 +15,7 @@ import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
+import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.mp.test.TokenTest;
 
 /**
@@ -61,27 +62,60 @@ public class CustomTest extends TokenTest {
 
 	@Test
 	public void addAccount() throws WeixinException {
-		JsonResult result = customApi.addAccount("temp1@canyidianzhang", "temp",
-				"123456");
+		JsonResult result = customApi.addAccount("test@test", "test", "123456");
 		Assert.assertEquals(0, result.getCode());
 	}
-	
+
 	@Test
 	public void updateAccount() throws WeixinException {
-		JsonResult result = customApi.updateAccount("temp1@canyidianzhang", "temp",
-				"123456");
+		JsonResult result = customApi.updateAccount("temp1@canyidianzhang",
+				"temp", "123456");
 		Assert.assertEquals(0, result.getCode());
 	}
-	
+
 	@Test
 	public void uploadAccountHeadimg() throws WeixinException, IOException {
-		JsonResult result = customApi.uploadAccountHeadimg("temp1@canyidianzhang", new File("/Users/jy/Music/简谱/风动草.jpg"));
+		JsonResult result = customApi.uploadAccountHeadimg(
+				"temp1@canyidianzhang", new File("/Users/jy/Music/简谱/风动草.jpg"));
 		Assert.assertEquals(0, result.getCode());
 	}
-	
+
 	@Test
 	public void deleteAccount() throws WeixinException, IOException {
 		JsonResult result = customApi.deleteAccount("temp@canyidianzhang");
 		Assert.assertEquals(0, result.getCode());
+	}
+
+	@Test
+	public void createSession() throws WeixinException {
+		JsonResult result = customApi.createSession(
+				"opKwyt6IhrqPmTTZshyqH5W9gIVo", "kfAccount", "text");
+		Assert.assertEquals(0, result.getCode());
+	}
+
+	@Test
+	public void closeSession() throws WeixinException {
+		JsonResult result = customApi.closeSession(
+				"opKwyt6IhrqPmTTZshyqH5W9gIVo", "kfAccount", "text");
+		Assert.assertEquals(0, result.getCode());
+	}
+
+	@Test
+	public void getSession() throws WeixinException {
+		KfSession session = customApi
+				.getSession("oz5axuNnJim8yTYs_jzE1bWFj9eA");
+		System.err.println(session);
+	}
+
+	@Test
+	public void getSessionList() throws WeixinException {
+		List<KfSession> sessionList = customApi.getSessionList("kfAccount");
+		System.err.println(sessionList);
+	}
+
+	@Test
+	public void getSessionWaitList() throws WeixinException {
+		List<KfSession> sessionList = customApi.getSessionWaitList();
+		System.err.println(sessionList);
 	}
 }

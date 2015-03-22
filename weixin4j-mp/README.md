@@ -181,3 +181,11 @@ weixin4j-mp
 * 2015-03-06
   
   + **weixin4j-mp-api**: 新增oauth授权接口
+  
+* 2015-03-21
+
+  + **weixin-mp-api**: 新增群发消息给所有人接口
+  
+  + **weixin-mp-api**: 新增素材管理多个接口
+  
+  + **weixin-mp-api**: 新增多客服会话管理多个接口

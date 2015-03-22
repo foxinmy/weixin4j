@@ -25,6 +25,9 @@ import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
+import com.foxinmy.weixin4j.mp.model.KfSession;
+import com.foxinmy.weixin4j.mp.model.MediaCounter;
+import com.foxinmy.weixin4j.mp.model.MediaRecord;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
@@ -105,13 +108,16 @@ public class WeixinProxy {
 	 * 
 	 * @param file
 	 *            媒体对象
+	 * @param isMaterial
+	 *            是否永久上传
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#uploadMedia(File, MediaType)}
 	 * @throws WeixinException
 	 * @throws IOException
 	 */
-	public String uploadMedia(File file) throws WeixinException, IOException {
-		return mediaApi.uploadMedia(file);
+	public String uploadMedia(File file, boolean isMaterial)
+			throws WeixinException, IOException {
+		return mediaApi.uploadMedia(file, isMaterial);
 	}
 
 	/**
@@ -121,15 +127,17 @@ public class WeixinProxy {
 	 *            文件对象
 	 * @param mediaType
 	 *            媒体类型
+	 * @param isMaterial
+	 *            是否永久上传
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @throws WeixinException
 	 * @throws IOException
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#uploadMedia(String, byte[],String)}
 	 */
-	public String uploadMedia(File file, MediaType mediaType)
+	public String uploadMedia(File file, MediaType mediaType, boolean isMaterial)
 			throws WeixinException, IOException {
-		return mediaApi.uploadMedia(file, mediaType);
+		return mediaApi.uploadMedia(file, mediaType, isMaterial);
 	}
 
 	/**
@@ -145,15 +153,17 @@ public class WeixinProxy {
 	 *            媒体数据包
 	 * @param mediaType
 	 *            媒体类型
+	 * @param isMaterial
+	 *            是否永久上传
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 */
-	public String uploadMedia(String fileName, byte[] data, String mediaType)
-			throws WeixinException {
-		return mediaApi.uploadMedia(fileName, data, mediaType);
+	public String uploadMedia(String fileName, byte[] data, String mediaType,
+			boolean isMaterial) throws WeixinException {
+		return mediaApi.uploadMedia(fileName, data, mediaType, isMaterial);
 	}
 
 	/**
@@ -166,6 +176,8 @@ public class WeixinProxy {
 	 *            存储在微信服务器上的媒体标识
 	 * @param mediaType
 	 *            媒体类型
+	 * @param isMaterial
+	 *            是否永久素材
 	 * @return 写入硬盘后的文件对象
 	 * @throws WeixinException
 	 * @see <a
@@ -174,9 +186,9 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#downloadMedia(String)}
 	 */
-	public File downloadMedia(String mediaId, MediaType mediaType)
-			throws WeixinException {
-		return mediaApi.downloadMedia(mediaId, mediaType);
+	public File downloadMedia(String mediaId, MediaType mediaType,
+			boolean isMaterial) throws WeixinException {
+		return mediaApi.downloadMedia(mediaId, mediaType, isMaterial);
 	}
 
 	/**
@@ -184,14 +196,150 @@ public class WeixinProxy {
 	 * 
 	 * @param mediaId
 	 *            媒体ID
+	 * @param isMaterial
+	 *            是否永久素材
 	 * @return 二进制数据包
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
 	 */
-	public byte[] downloadMedia(String mediaId) throws WeixinException {
-		return mediaApi.downloadMedia(mediaId);
+	public byte[] downloadMedia(String mediaId, boolean isMaterial)
+			throws WeixinException {
+		return mediaApi.downloadMedia(mediaId, isMaterial);
+	}
+
+	/**
+	 * 上传永久图文素材
+	 * <p>
+	 * 、新增的永久素材也可以在公众平台官网素材管理模块中看到,永久素材的数量是有上限的，请谨慎新增。图文消息素材和图片素材的上限为5000，
+	 * 其他类型为1000
+	 * </P>
+	 * 
+	 * @param articles
+	 *            图文列表
+	 * @return 上传到微信服务器返回的媒体标识
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
+	 */
+	public String uploadMaterialArticle(List<MpArticle> articles)
+			throws WeixinException {
+		return mediaApi.uploadMaterialArticle(articles);
+	}
+
+	/**
+	 * 下载永久图文素材
+	 * 
+	 * @param mediaId
+	 *            媒体ID
+	 * @return 图文列表
+	 * @throws WeixinException
+	 * @see <a href=
+	 *      "http://mp.weixin.qq.com/wiki/4/b3546879f07623cb30df9ca0e420a5d0.html">下载永久媒体素材</a>
+	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 */
+	public List<MpArticle> downloadArticle(String mediaId)
+			throws WeixinException {
+		return mediaApi.downloadArticle(mediaId);
+	}
+
+	/**
+	 * 更新永久图文素材
+	 * 
+	 * @param mediaId
+	 *            要修改的图文消息的id
+	 * @param index
+	 *            要更新的文章在图文消息中的位置（多图文消息时，此字段才有意义），第一篇为0
+	 * @param articles
+	 *            图文列表
+	 * @return 处理结果
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/4/19a59cba020d506e767360ca1be29450.html">更新永久图文素材</a>
+	 */
+	public JsonResult updateMaterialArticle(String mediaId, int index,
+			List<MpArticle> articles) throws WeixinException {
+		return mediaApi.updateMaterialArticle(mediaId, index, articles);
+	}
+
+	/**
+	 * 删除永久媒体素材
+	 * 
+	 * @param mediaId
+	 *            媒体素材的media_id
+	 * @return 处理结果
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/5/e66f61c303db51a6c0f90f46b15af5f5.html">删除永久媒体素材</a>
+	 */
+	public JsonResult deleteMaterialMedia(String mediaId)
+			throws WeixinException {
+		return mediaApi.deleteMaterialMedia(mediaId);
+	}
+
+	/**
+	 * 上传永久视频素材
+	 * 
+	 * @param file
+	 *            大小不超过1M且格式为MP4的视频文件
+	 * @param title
+	 *            视频标题
+	 * @param introduction
+	 *            视频描述
+	 * @return 上传到微信服务器返回的媒体标识
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @throws WeixinException
+	 * @throws IOException
+	 */
+	public String uploadMaterialVideo(File file, String title,
+			String introduction) throws WeixinException, IOException {
+		return mediaApi.uploadMaterialVideo(file, title, introduction);
+	}
+
+	/**
+	 * 获取永久媒体素材的总数</br> .图片和图文消息素材（包括单图文和多图文）的总数上限为5000，其他素材的总数上限为1000
+	 * 
+	 * @return 总数对象
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.model.MediaCounter
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/16/8cc64f8c189674b421bee3ed403993b8.html">获取素材总数</a>
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 */
+	public MediaCounter countMaterialMedia() throws WeixinException {
+		return mediaApi.countMaterialMedia();
+	}
+
+	/**
+	 * 获取媒体素材记录列表
+	 * 
+	 * @param mediaType
+	 *            素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
+	 * @param offset
+	 *            从全部素材的该偏移位置开始返回，0表示从第一个素材 返回
+	 * @param count
+	 *            返回素材的数量，取值在1到20之间
+	 * @return 媒体素材的记录对象
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.model.MediaRecord
+	 * @see com.foxinmy.weixin4j.type.MediaType
+	 * @see com.foxinmy.weixin4j.mp.model.MediaItem
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/12/2108cd7aafff7f388f41f37efa710204.html">获取素材列表</a>
+	 */
+	public MediaRecord listMaterialMedia(MediaType mediaType, int offset,
+			int count) throws WeixinException {
+		return mediaApi.listMaterialMedia(mediaType, offset, count);
 	}
 
 	/**
@@ -347,6 +495,98 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 创建会话
+	 * <p>
+	 * 开发者可以使用本接口，为多客服的客服工号创建会话，将某个客户直接指定给客服工号接待，需要注意此接口不会受客服自动接入数以及自动接入开关限制。
+	 * 只能为在线的客服（PC客户端在线，或者已绑定多客服助手）创建会话。
+	 * </p>
+	 * 
+	 * @param userOpenId
+	 *            用户的userOpenId
+	 * @param kfAccount
+	 *            完整客服账号，格式为：账号前缀@公众号微信号
+	 * @param text
+	 *            附加信息，文本会展示在客服人员的多客服客户端
+	 * @return 处理结果
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.88.9B.E5.BB.BA.E4.BC.9A.E8.AF.9D">创建会话</a>
+	 */
+	public JsonResult createSession(String userOpenId, String kfAccount,
+			String text) throws WeixinException {
+		return customApi.createSession(userOpenId, kfAccount, text);
+	}
+
+	/**
+	 * 关闭会话
+	 * 
+	 * @param userOpenId
+	 *            用户的userOpenId
+	 * @param kfAccount
+	 *            完整客服账号，格式为：账号前缀@公众号微信号
+	 * @param text
+	 *            附加信息，文本会展示在客服人员的多客服客户端
+	 * @return 处理结果
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.85.B3.E9.97.AD.E4.BC.9A.E8.AF.9D">创建会话</a>
+	 */
+	public JsonResult closeSession(String userOpenId, String kfAccount,
+			String text) throws WeixinException {
+		return customApi.closeSession(userOpenId, kfAccount, text);
+	}
+
+	/**
+	 * 获取客户的会话状态:获取客户当前的会话状态。
+	 * 
+	 * @param userOpenId
+	 *            用户的openid
+	 * @return 会话对象
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
+	 * @see com.foxinmy.weixin4j.mp.model.KfSession
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.88.B7.E7.9A.84.E4.BC.9A.E8.AF.9D.E7.8A.B6.E6.80.81">获取会话状态</a>
+	 */
+	public KfSession getSession(String userOpenId) throws WeixinException {
+		return customApi.getSession(userOpenId);
+	}
+
+	/**
+	 * 获取客服的会话列表:获取某个客服正在接待的会话列表。
+	 * 
+	 * @param kfAccount
+	 *            完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符。
+	 * @return 会话列表
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
+	 * @see com.foxinmy.weixin4j.mp.model.KfSession
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.9C.8D.E7.9A.84.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
+	 */
+	public List<KfSession> getSessionList(String kfAccount)
+			throws WeixinException {
+		return customApi.getSessionList(kfAccount);
+	}
+
+	/**
+	 * 获取未接入会话列表:获取当前正在等待队列中的会话列表，此接口最多返回最早进入队列的100个未接入会话。</br> <font
+	 * color="red">缺陷：没有count字段</font>
+	 * 
+	 * @return 会话列表
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
+	 * @see com.foxinmy.weixin4j.mp.model.KfSession
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E6.9C.AA.E6.8E.A5.E5.85.A5.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
+	 */
+	public List<KfSession> getSessionWaitList() throws WeixinException {
+		return customApi.getSessionWaitList();
+	}
+
+	/**
 	 * 上传图文消息,一个图文消息支持1到10条图文
 	 * 
 	 * @param articles
@@ -386,26 +626,47 @@ public class WeixinProxy {
 	 * 分组群发
 	 * 
 	 * @param box
-	 *            消息项
+	 *            消息对象
+	 * @param groupId
+	 *            分组ID
+	 * @return 群发后的消息ID
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massMessage(Base,boolean,int)}
+	 * @throws WeixinException
+	 */
+	public String massByGroupId(Base box, int groupId) throws WeixinException {
+		return massApi.massByGroupId(box, groupId);
+	}
+
+	/**
+	 * 群发消息
+	 * <p>
+	 * 在返回成功时,意味着群发任务提交成功,并不意味着此时群发已经结束,所以,仍有可能在后续的发送过程中出现异常情况导致用户未收到消息,
+	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
+	 * </p>
+	 * 
+	 * @param box
+	 *            消息对象
+	 * @param isToAll
+	 *            用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，
+	 *            选择false可根据group_id发送给指定群组的用户
 	 * @param groupId
 	 *            分组ID
 	 * @return 群发后的消息ID
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.Group
-	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see com.foxinmy.weixin4j.msg.model.Text
 	 * @see com.foxinmy.weixin4j.msg.model.Image
 	 * @see com.foxinmy.weixin4j.msg.model.Voice
 	 * @see com.foxinmy.weixin4j.msg.model.MpVideo
 	 * @see com.foxinmy.weixin4j.msg.model.MpNews
+	 * @see com.foxinmy.weixin4j.mp.api.MassApi
+	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroups()}
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroupByOpenId(String)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroups()}
 	 */
-	public String massByGroupId(Base box, int groupId) throws WeixinException {
-		return massApi.massByGroupId(box, groupId);
+	public String massMessage(Base box, boolean isToAll, int groupId)
+			throws WeixinException {
+		return massApi.massMessage(box, isToAll, groupId);
 	}
 
 	/**
@@ -419,6 +680,7 @@ public class WeixinProxy {
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByGroupId(Base,int)}
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
+	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
 	 * @throws WeixinException
 	 */
 	public String massArticleByGroupId(List<MpArticle> articles, int groupId)
@@ -429,19 +691,24 @@ public class WeixinProxy {
 	/**
 	 * openId群发
 	 * 
+	 * <p>
+	 * 在返回成功时,意味着群发任务提交成功,并不意味着此时群发已经结束,所以,仍有可能在后续的发送过程中出现异常情况导致用户未收到消息,
+	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
+	 * </p>
+	 * 
 	 * @param box
-	 *            消息项
+	 *            消息对象
 	 * @param openIds
 	 *            openId列表
 	 * @return 群发后的消息ID
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see com.foxinmy.weixin4j.msg.model.Text
 	 * @see com.foxinmy.weixin4j.msg.model.Image
 	 * @see com.foxinmy.weixin4j.msg.model.Voice
 	 * @see com.foxinmy.weixin4j.msg.model.MpVideo
 	 * @see com.foxinmy.weixin4j.msg.model.MpNews
+	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
 	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
@@ -463,6 +730,7 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#massByOpenIds(Base,String...)}
+	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
 	 * @throws WeixinException
 	 */
 	public String massArticleByOpenIds(List<MpArticle> articles,
@@ -490,8 +758,7 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 预览群发消息<br/>
-	 * 开发者可通过该接口发送消息给指定用户，在手机端查看消息的样式和排版
+	 * 预览群发消息</br> 开发者可通过该接口发送消息给指定用户，在手机端查看消息的样式和排版
 	 * 
 	 * @param openId
 	 *            接收用户的ID

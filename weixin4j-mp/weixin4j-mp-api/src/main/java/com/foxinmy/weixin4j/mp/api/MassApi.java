@@ -86,13 +86,31 @@ public class MassApi extends MpApi {
 
 	/**
 	 * 分组群发
+	 * 
+	 * @param box
+	 *            消息对象
+	 * @param groupId
+	 *            分组ID
+	 * @return 群发后的消息ID
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massMessage(Base,boolean,int)}
+	 * @throws WeixinException
+	 */
+	public String massByGroupId(Base box, int groupId) throws WeixinException {
+		return massMessage(box, false, groupId);
+	}
+
+	/**
+	 * 群发消息
 	 * <p>
 	 * 在返回成功时,意味着群发任务提交成功,并不意味着此时群发已经结束,所以,仍有可能在后续的发送过程中出现异常情况导致用户未收到消息,
 	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
 	 * </p>
 	 * 
 	 * @param box
-	 *            消息项
+	 *            消息对象
+	 * @param isToAll
+	 *            用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，
+	 *            选择false可根据group_id发送给指定群组的用户
 	 * @param groupId
 	 *            分组ID
 	 * @return 群发后的消息ID
@@ -103,19 +121,21 @@ public class MassApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.msg.model.Voice
 	 * @see com.foxinmy.weixin4j.msg.model.MpVideo
 	 * @see com.foxinmy.weixin4j.msg.model.MpNews
+	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroups()}
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroups()}
 	 */
-	public String massByGroupId(Base box, int groupId) throws WeixinException {
+	public String massMessage(Base box, boolean isToAll, int groupId)
+			throws WeixinException {
 		if (box instanceof MpNews) {
 			MpNews _news = (MpNews) box;
 			List<MpArticle> _articles = _news.getArticles();
-			if (StringUtils.isBlank(_news.getMediaId()) && _articles != null
-					&& !_articles.isEmpty()) {
-				return massArticleByGroupId(_articles, groupId);
+			if (StringUtils.isBlank(_news.getMediaId())
+					&& (_articles == null || _articles.isEmpty())) {
+				throw new WeixinException(
+						"mass fail:mediaId or articles is required");
 			}
+			box = new MpNews(uploadArticle(_articles));
 		}
 		if (!(box instanceof Massable)) {
 			throw new WeixinException(String.format(
@@ -124,7 +144,10 @@ public class MassApi extends MpApi {
 		String msgtype = box.getMediaType().name();
 		JSONObject obj = new JSONObject();
 		JSONObject item = new JSONObject();
-		item.put("group_id", groupId);
+		item.put("is_to_all", isToAll);
+		if (!isToAll) {
+			item.put("group_id", groupId);
+		}
 		obj.put("filter", item);
 		obj.put(msgtype, JSON.toJSON(box));
 		obj.put("msgtype", msgtype);
@@ -148,6 +171,7 @@ public class MassApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
 	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByGroupId(Base,int)}
+	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
 	 * @throws WeixinException
 	 */
 	public String massArticleByGroupId(List<MpArticle> articles, int groupId)
@@ -160,7 +184,7 @@ public class MassApi extends MpApi {
 	 * openId群发
 	 * 
 	 * @param box
-	 *            消息项
+	 *            消息对象
 	 * @param openIds
 	 *            openId列表
 	 * @return 群发后的消息ID
@@ -173,7 +197,6 @@ public class MassApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.msg.model.MpNews
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 * @see {@link com.foxinmy.weixin4j.mp.api.UserApi#getUser(String)}
 	 */
 	public String massByOpenIds(Base box, String... openIds)
@@ -181,10 +204,12 @@ public class MassApi extends MpApi {
 		if (box instanceof MpNews) {
 			MpNews _news = (MpNews) box;
 			List<MpArticle> _articles = _news.getArticles();
-			if (StringUtils.isBlank(_news.getMediaId()) && _articles != null
-					&& !_articles.isEmpty()) {
-				return massArticleByOpenIds(_articles, openIds);
+			if (StringUtils.isBlank(_news.getMediaId())
+					&& (_articles == null || _articles.isEmpty())) {
+				throw new WeixinException(
+						"mass fail:mediaId or articles is required");
 			}
+			box = new MpNews(uploadArticle(_articles));
 		}
 		if (!(box instanceof Massable)) {
 			throw new WeixinException(String.format(
@@ -215,6 +240,7 @@ public class MassApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
 	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByOpenIds(Base,String...)}
+	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
 	 * @throws WeixinException
 	 */
 	public String massArticleByOpenIds(List<MpArticle> articles,
@@ -250,8 +276,7 @@ public class MassApi extends MpApi {
 	}
 
 	/**
-	 * 预览群发消息<br/>
-	 * 开发者可通过该接口发送消息给指定用户，在手机端查看消息的样式和排版
+	 * 预览群发消息</br> 开发者可通过该接口发送消息给指定用户，在手机端查看消息的样式和排版
 	 * 
 	 * @param openId
 	 *            接收用户的ID
