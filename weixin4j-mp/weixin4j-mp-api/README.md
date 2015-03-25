@@ -168,3 +168,7 @@ weixin.properties说明
   + 新增素材管理多个接口
   
   + 新增多客服会话管理多个接口
+  
+* 2015-03-25
+
+  + 根据《微信商户平台文档》修缮[Pay3Api](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/Pay3Api.java)类

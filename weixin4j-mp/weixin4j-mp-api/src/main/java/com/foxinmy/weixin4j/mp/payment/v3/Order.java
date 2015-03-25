@@ -1,15 +1,16 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.util.Date;
-
-import org.apache.commons.lang3.StringUtils;
+import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.TradeState;
 import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * V3订单信息
@@ -54,6 +55,14 @@ public class Order extends ApiResult {
 	@XStreamAlias("coupon_fee")
 	@JSONField(name = "coupon_fee")
 	private Integer couponFee;
+	// 代金券或立减优惠使用数量
+	@XStreamAlias("coupon_count")
+	@JSONField(name = "coupon_count")
+	private Integer couponCount;
+	// 代金券信息
+	@XStreamOmitField
+	@JSONField(serialize = false)
+	private List<CouponInfo> couponList;
 	@XStreamAlias("cash_fee")
 	@JSONField(name = "cash_fee")
 	private int cashFee;
@@ -75,6 +84,10 @@ public class Order extends ApiResult {
 	@XStreamAlias("time_end")
 	@JSONField(name = "time_end")
 	private String timeEnd;
+	// 交易状态描述
+	@XStreamAlias("trade_state_desc")
+	@JSONField(name = "trade_state_desc")
+	private String tradeStateDesc;
 
 	public TradeState getTradeState() {
 		return tradeState;
@@ -86,6 +99,11 @@ public class Order extends ApiResult {
 
 	public String getIsSubscribe() {
 		return isSubscribe;
+	}
+
+	@JSONField(serialize = false, deserialize = false)
+	public boolean getFormatIsSubscribe() {
+		return isSubscribe != null && isSubscribe.equalsIgnoreCase("y");
 	}
 
 	public TradeType getTradeType() {
@@ -124,6 +142,15 @@ public class Order extends ApiResult {
 		return couponFee != null ? couponFee / 100d : 0d;
 	}
 
+	public Integer getCouponCount() {
+		return couponCount;
+	}
+
+	@JSONField(serialize = false, deserialize = false)
+	public int getFormatCouponCount() {
+		return couponCount != null ? couponCount.intValue() : 0;
+	}
+
 	public int getCashFee() {
 		return cashFee;
 	}
@@ -151,7 +178,7 @@ public class Order extends ApiResult {
 	}
 
 	public String getAttach() {
-		return StringUtils.isBlank(attach) ? null : attach;
+		return attach;
 	}
 
 	public String getTimeEnd() {
@@ -163,18 +190,30 @@ public class Order extends ApiResult {
 		return DateUtil.parse2yyyyMMddHHmmss(timeEnd);
 	}
 
+	public String getTradeStateDesc() {
+		return tradeStateDesc;
+	}
+
+	public List<CouponInfo> getCouponList() {
+		return couponList;
+	}
+
+	public void setCouponList(List<CouponInfo> couponList) {
+		this.couponList = couponList;
+	}
+
 	@Override
 	public String toString() {
 		return "Order [tradeState=" + tradeState + ", openId=" + openId
-				+ ", isSubscribe=" + isSubscribe + ", tradeType=" + tradeType
-				+ ", bankType=" + bankType + ", totalFee=" + totalFee
-				+ ", couponFee=" + couponFee + ", cashFee=" + cashFee
-				+ ", feeType=" + feeType + ", transactionId=" + transactionId
-				+ ", outTradeNo=" + outTradeNo + ", attach=" + attach
-				+ ", timeEnd=" + timeEnd + ", getFormatTotalFee()="
-				+ getFormatTotalFee() + ", getFormatCouponFee()="
-				+ getFormatCouponFee() + ", getFormatCashFee()="
-				+ getFormatCashFee() + ", getFormatTimeEnd()="
-				+ getFormatTimeEnd() + ", " + super.toString() + "]";
+				+ ", isSubscribe=" + getFormatIsSubscribe() + ", tradeType="
+				+ tradeType + ", bankType=" + bankType + ", feeType=" + feeType
+				+ ", transactionId=" + transactionId + ", outTradeNo="
+				+ outTradeNo + ", attach=" + attach + ", timeEnd=" + timeEnd
+				+ ", totalFee=" + getFormatTotalFee() + ", couponFee="
+				+ getFormatCouponFee() + ", couponCount="
+				+ getFormatCouponCount() + ", couponList=" + couponList
+				+ ", cashFee=" + getFormatCashFee() + ", timeEnd="
+				+ getFormatTimeEnd() + ", tradeStateDesc=" + tradeStateDesc
+				+ ", " + super.toString() + "]";
 	}
 }

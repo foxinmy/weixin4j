@@ -21,6 +21,7 @@ public class PayPackage implements Serializable {
 	private static final long serialVersionUID = 3450161267802545790L;
 
 	private String body; // 商品描述 必须
+	private String detail; // 商品详情 非必须
 	private String attach; // 附加数据,原样返回 非必须
 	@XStreamAlias("out_trade_no")
 	@JSONField(name = "out_trade_no")
@@ -54,6 +55,14 @@ public class PayPackage implements Serializable {
 
 	public void setBody(String body) {
 		this.body = body;
+	}
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
 
 	public String getAttach() {
@@ -151,10 +160,10 @@ public class PayPackage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PayPackage [body=" + body + ", attach=" + attach
-				+ ", outTradeNo=" + outTradeNo + ", totalFee=" + totalFee
-				+ ", spbillCreateIp=" + spbillCreateIp + ", timeStart="
-				+ timeStart + ", timeExpire=" + timeExpire + ", goodsTag="
-				+ goodsTag + ", notifyUrl=" + notifyUrl + "]";
+		return "PayPackage [body=" + body + ", detail=" + detail + ", attach="
+				+ attach + ", outTradeNo=" + outTradeNo + ", totalFee="
+				+ totalFee + ", spbillCreateIp=" + spbillCreateIp
+				+ ", timeStart=" + timeStart + ", timeExpire=" + timeExpire
+				+ ", goodsTag=" + goodsTag + ", notifyUrl=" + notifyUrl + "]";
 	}
 }

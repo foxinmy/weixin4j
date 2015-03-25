@@ -208,7 +208,9 @@ public class PayUtil {
 	}
 
 	/**
-	 * 创建预支付对象</br>
+	 * 统一下单接口</br>
+	 * 除被扫支付场景以外，商户系统先调用该接口在微信支付服务后台生成预支付交易单，返回正确的预支付交易回话标识后再按扫码、JSAPI
+	 * 、APP等不同场景生成交易串调起支付。
 	 * 
 	 * @param payPackage
 	 *            包含订单信息的对象
@@ -216,6 +218,8 @@ public class PayUtil {
 	 *            <font color="red">如果sign为空 则拿paysignkey进行签名</font>
 	 * @see com.foxinmy.weixin4j.mp.payment.v3.PayPackageV3
 	 * @see com.foxinmy.weixin4j.mp.payment.v3.PrePay
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1">统一下单接口</a>
 	 * @return 预支付对象
 	 */
 	public static PrePay createPrePay(PayPackageV3 payPackage, String paySignKey)
@@ -306,13 +310,14 @@ public class PayUtil {
 	}
 
 	/**
-	 * 创建V3.x NativePay支付链接
+	 * 创建V3.x NativePay支付(扫码支付)链接
 	 * 
 	 * @param weixinAccount
 	 *            支付配置信息
 	 * @param productId
 	 *            与订单ID等价
 	 * @return
+	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
 	 */
 	public static String createNativePayRequestURLV3(
 			WeixinMpAccount weixinAccount, String productId) {
@@ -330,7 +335,7 @@ public class PayUtil {
 	}
 
 	/**
-	 * NATIVE回调时的响应
+	 * 创建V2.x NATIVE回调时的响应字符串
 	 * 
 	 * @param weixinAccount
 	 *            商户信息
@@ -360,7 +365,7 @@ public class PayUtil {
 	 * 提交被扫支付
 	 * 
 	 * @param authCode
-	 *            扫码支付授权码 ,设备读取用 户微信中的条码或者二维码 信息
+	 *            扫码支付授权码 ,设备读取用户微信中的条码或者二维码信息
 	 * @param body
 	 *            商品描述
 	 * @param attach
@@ -373,7 +378,7 @@ public class PayUtil {
 	 *            订单生成的机器 IP
 	 * @param weixinAccount
 	 *            商户信息
-	 * @return 返回数据
+	 * @return 支付的订单信息
 	 * @see {@link com.foxinmy.weixin4j.mp.payment.PayUtil#createMicroPay(MicroPayPackage, WeixinMpAccount)}
 	 * @throws WeixinException
 	 */
@@ -387,14 +392,17 @@ public class PayUtil {
 	}
 
 	/**
-	 * 提交被扫支付
+	 * 提交被扫支付:收银员使用扫码设备读取微信用户刷卡授权码以后，二维码或条码信息传送至商户收银台，由商户收银台或者商户后台调用该接口发起支付.
 	 * 
 	 * @param payPackage
 	 *            订单信息
 	 * @param weixinAccount
 	 *            商户信息
-	 * @return 返回数据
+	 * @return 支付的订单信息
 	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.Order
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10">提交被扫支付API</a>
 	 */
 	public static com.foxinmy.weixin4j.mp.payment.v3.Order createMicroPay(
 			MicroPayPackage payPackage, WeixinMpAccount weixinAccount)

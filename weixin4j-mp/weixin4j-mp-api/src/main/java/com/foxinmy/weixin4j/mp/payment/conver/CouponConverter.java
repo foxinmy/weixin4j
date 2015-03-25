@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment;
+package com.foxinmy.weixin4j.mp.payment.conver;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -9,6 +9,9 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo;
+import com.foxinmy.weixin4j.mp.payment.v3.Order;
+import com.foxinmy.weixin4j.mp.payment.v3.RefundResult;
 import com.foxinmy.weixin4j.xml.XmlStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -20,45 +23,41 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
 /**
- * 退款查询接口调用结果转换类
+ * V3订单详情转换类
  * 
- * @className RefundConverter
+ * @className OrderConverter
  * @author jy
- * @date 2014年11月2日
+ * @date 2015年3月24日
  * @since JDK 1.7
- * @see com.foxinmy.weixin4j.mp.payment.v2.RefundRecord
- * @see com.foxinmy.weixin4j.mp.payment.v2.RefundDetail
- * @see com.foxinmy.weixin4j.mp.payment.v3.RefundRecord
- * @see com.foxinmy.weixin4j.mp.payment.v3.RefundDetail
+ * @see
  */
-public class RefundConverter {
+public class CouponConverter {
+
 	private final static XmlStream xStream = XmlStream.get();
 	private final static Mapper mapper;
 	private final static ReflectionProvider reflectionProvider;
 	private final static Pattern pattern = Pattern.compile("(_\\d)$");
+	private static Class<CouponInfo> COUPON_CLASS = CouponInfo.class;
 	private static Class<?> clazz;
-	private final static Class<com.foxinmy.weixin4j.mp.payment.v2.RefundRecord> REFUNDRECORD2 = com.foxinmy.weixin4j.mp.payment.v2.RefundRecord.class;
-	private final static Class<com.foxinmy.weixin4j.mp.payment.v3.RefundRecord> REFUNDRECORD3 = com.foxinmy.weixin4j.mp.payment.v3.RefundRecord.class;
 
 	static {
-		xStream.processAnnotations(new Class[] { REFUNDRECORD2, REFUNDRECORD3,
-				com.foxinmy.weixin4j.mp.payment.v2.RefundDetail.class,
-				com.foxinmy.weixin4j.mp.payment.v3.RefundDetail.class });
-		xStream.aliasField("refund_state", com.foxinmy.weixin4j.mp.payment.v2.RefundDetail.class, "refundStatus");
+		xStream.processAnnotations(new Class[] { COUPON_CLASS });
 		xStream.registerConverter(new $());
 		mapper = xStream.getMapper();
 		reflectionProvider = xStream.getReflectionProvider();
 	}
 
 	public static <T> T fromXML(String xml, Class<T> clazz) {
-		RefundConverter.clazz = clazz;
+		CouponConverter.clazz = clazz;
+		xStream.processAnnotations(clazz);
 		return xStream.fromXML(xml, clazz);
 	}
 
 	private static class $ implements Converter {
 		@Override
 		public boolean canConvert(@SuppressWarnings("rawtypes") Class clazz) {
-			return clazz.equals(REFUNDRECORD2) || clazz.equals(REFUNDRECORD3);
+			return clazz.equals(Order.class)
+					|| clazz.equals(RefundResult.class);
 		}
 
 		@Override
@@ -71,9 +70,9 @@ public class RefundConverter {
 		@Override
 		public Object unmarshal(HierarchicalStreamReader reader,
 				UnmarshallingContext context) {
-			Object refund = null;
+			Object object = null;
 			try {
-				refund = clazz.newInstance();
+				object = clazz.newInstance();
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -88,9 +87,9 @@ public class RefundConverter {
 				Field field = reflectionProvider.getFieldOrNull(clazz,
 						fieldName);
 				if (field != null) {
-					Object value = context.convertAnother(refund,
+					Object value = context.convertAnother(object,
 							field.getType());
-					reflectionProvider.writeField(refund, fieldName, value,
+					reflectionProvider.writeField(object, fieldName, value,
 							field.getDeclaringClass());
 				} else if ((matcher = pattern.matcher(nodeName)).find()) {
 					String key = matcher.group();
@@ -103,27 +102,34 @@ public class RefundConverter {
 				}
 				reader.moveUp();
 			}
-			StringBuilder detailXml = new StringBuilder();
-			detailXml.append("<list>");
-			String detailCanonicalName = clazz.getCanonicalName().replaceFirst(
-					"RefundRecord", "RefundDetail");
-			for (Iterator<Entry<String, Map<String, String>>> outIt = outMap
-					.entrySet().iterator(); outIt.hasNext();) {
-				detailXml.append("<").append(detailCanonicalName).append(">");
-				for (Iterator<Entry<String, String>> innerIt = outIt.next()
-						.getValue().entrySet().iterator(); innerIt.hasNext();) {
-					Entry<String, String> entry = innerIt.next();
-					detailXml.append("<").append(entry.getKey()).append(">");
-					detailXml.append(entry.getValue());
-					detailXml.append("</").append(entry.getKey()).append(">");
+			if (!outMap.isEmpty()) {
+				StringBuilder couponXml = new StringBuilder();
+				couponXml.append("<list>");
+				for (Iterator<Entry<String, Map<String, String>>> outIt = outMap
+						.entrySet().iterator(); outIt.hasNext();) {
+					couponXml.append("<")
+							.append(COUPON_CLASS.getCanonicalName())
+							.append(">");
+					for (Iterator<Entry<String, String>> innerIt = outIt.next()
+							.getValue().entrySet().iterator(); innerIt
+							.hasNext();) {
+						Entry<String, String> entry = innerIt.next();
+						couponXml.append("<").append(entry.getKey())
+								.append(">");
+						couponXml.append(entry.getValue());
+						couponXml.append("</").append(entry.getKey())
+								.append(">");
+					}
+					couponXml.append("</")
+							.append(COUPON_CLASS.getCanonicalName())
+							.append(">");
 				}
-				detailXml.append("</").append(detailCanonicalName).append(">");
+				couponXml.append("</list>");
+				reflectionProvider.writeField(object, "couponList",
+						xStream.fromXML(couponXml.toString(), List.class),
+						List.class.getDeclaringClass());
 			}
-			detailXml.append("</list>");
-			reflectionProvider.writeField(refund, "details",
-					xStream.fromXML(detailXml.toString(), List.class),
-					List.class.getDeclaringClass());
-			return refund;
+			return object;
 		}
 	}
 }

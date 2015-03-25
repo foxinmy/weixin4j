@@ -194,3 +194,9 @@
   
   + **weixin-mp**: 新增多客服会话管理多个接口
   
+* 2015-03-25
+
+  + **weixin-mp**: 根据《微信商户平台文档》修缮[Pay3Api](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/Pay3Api.java)类
+  
+  + **weixin-mp**: 新增客服创建、关闭、转接会话事件
+  

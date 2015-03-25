@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -26,9 +27,24 @@ public class RefundRecord extends ApiResult {
 	@XStreamAlias("out_trade_no")
 	@JSONField(name = "out_trade_no")
 	private String outTradeNo;// 商户订单号
+	@XStreamAlias("total_fee")
+	@JSONField(name = "total_fee")
+	private int totalFee; // 订单总金额
+	@XStreamAlias("fee_type")
+	@JSONField(name = "fee_type")
+	private CurrencyType feeType; // 订单金额货币种类
 	@XStreamAlias("cash_fee")
 	@JSONField(name = "cash_fee")
-	private int cashFee;
+	private int cashFee; // 现金支付金额
+	@XStreamAlias("cash_fee_type")
+	@JSONField(name = "cash_fee_type")
+	private CurrencyType cashFeeType; // 现金支付金额货币种类
+	@XStreamAlias("refund_fee")
+	@JSONField(name = "refund_fee")
+	private int refundFee; // 退款总金额
+	@XStreamAlias("coupon_refund_fee")
+	@JSONField(name = "coupon_refund_fee")
+	private Integer couponRefundFee; // 代金券或立减优惠退款金额=订单金额-现金退款金额，注意：满立减金额不会退回
 	@XStreamAlias("refund_count")
 	@JSONField(name = "refund_count")
 	private int count;// 退款笔数
@@ -58,6 +74,42 @@ public class RefundRecord extends ApiResult {
 		return cashFee;
 	}
 
+	public CurrencyType getFeeType() {
+		return feeType;
+	}
+
+	public CurrencyType getCashFeeType() {
+		return cashFeeType;
+	}
+
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	@JSONField(serialize = false, deserialize = false)
+	public double getFormatCouponRefundFee() {
+		return couponRefundFee != null ? couponRefundFee.intValue() / 100d : 0d;
+	}
+
+	public Integer getCouponRefundFee() {
+		return couponRefundFee;
+	}
+
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	@JSONField(serialize = false, deserialize = false)
+	public double getFormatTotalFee() {
+		return totalFee / 100d;
+	}
+
+	public int getTotalFee() {
+		return totalFee;
+	}
+
 	public int getCount() {
 		return count;
 	}
@@ -70,10 +122,28 @@ public class RefundRecord extends ApiResult {
 		this.details = details;
 	}
 
+	public int getRefundFee() {
+		return refundFee;
+	}
+
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	@JSONField(serialize = false, deserialize = false)
+	public double getFormatRefundFee() {
+		return refundFee / 100d;
+	}
+
 	@Override
 	public String toString() {
 		return "RefundRecord [transactionId=" + transactionId + ", outTradeNo="
-				+ outTradeNo + ", cashFee=" + cashFee + ", count=" + count
+				+ outTradeNo + ", totalFee=" + getFormatTotalFee()
+				+ ", feeType=" + feeType + ", cashFee=" + getFormatCashFee()
+				+ ", cashFeeType=" + cashFeeType + ", refundFee="
+				+ getFormatRefundFee() + ", couponRefundFee="
+				+ getFormatCouponRefundFee() + ", count=" + count
 				+ ", details=" + details + ", " + super.toString() + "]";
 	}
 }

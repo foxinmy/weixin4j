@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dom4j.DocumentException;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,7 @@ import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.JsPayNotify;
 import com.foxinmy.weixin4j.mp.payment.PayPackage;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
+import com.foxinmy.weixin4j.mp.payment.conver.CouponConverter;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayNotifyV2;
 import com.foxinmy.weixin4j.mp.payment.v2.NativePayResponseV2;
 import com.foxinmy.weixin4j.mp.payment.v2.PayFeedback;
@@ -149,16 +152,22 @@ public class PayAction {
 	 *         &ltreturn_code&gtSUCCESS/FAIL&lt/return_code&gt<br>
 	 *         &ltreturn_msg&gt如非空,为错误 原因签名失败参数格式校验错误&lt/return_msg&gt<br>
 	 *         &lt/xml&gt
+	 * @throws DocumentException
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7">支付结果通知</a>
 	 */
-	public String jsNotifyV3(InputStream inputStream) {
-		com.foxinmy.weixin4j.mp.payment.v3.Order order = XmlStream.get(
-				inputStream, com.foxinmy.weixin4j.mp.payment.v3.Order.class);
+	public String jsNotifyV3(InputStream inputStream) throws DocumentException {
+		SAXReader sax = new SAXReader();
+		String orderXml = sax.read(inputStream).asXML();
+		com.foxinmy.weixin4j.mp.payment.v3.Order order = CouponConverter
+				.fromXML(orderXml, com.foxinmy.weixin4j.mp.payment.v3.Order.class);
 		log.info("jsapi_notify_order_info:", order);
 		String sign = order.getSign();
 		order.setSign(null);
 		WeixinMpAccount weixinAccount = ConfigUtil.getWeixinMpAccount();
 		String valid_sign = PayUtil.paysignMd5(order,
 				weixinAccount.getPaySignKey());
+		// 如果订单中存在代金券的情况并不适用
 		log.info("微信签名----->sign={},vaild_sign={}", sign, valid_sign);
 		if (!sign.equals(valid_sign)) {
 			return XmlStream.to(new XmlResult(Consts.FAIL, "签名错误"));

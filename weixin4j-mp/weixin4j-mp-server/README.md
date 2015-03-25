@@ -68,3 +68,7 @@ weixin4j-mp-server
 * 2014-11-23
 
   + `WeixinServerBootstrap`重命名为`WeixinMpServerBootstrap`
+  
+* 2015-03-25
+
+  + 新增客服创建、关闭、转接会话事件

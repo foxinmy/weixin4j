@@ -110,6 +110,6 @@ public class ApiResult extends XmlResult {
 	public String toString() {
 		return "appId=" + appId + ", mchId=" + mchId + ", subMchId=" + subMchId
 				+ ", nonceStr=" + nonceStr + ", sign=" + sign + ", deviceInfo="
-				+ deviceInfo + ", recall=" + recall + ", " + super.toString();
+				+ deviceInfo + ", recall=" + getFormatRecall() + ", " + super.toString();
 	}
 }

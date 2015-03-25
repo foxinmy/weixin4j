@@ -39,7 +39,7 @@ import com.foxinmy.weixin4j.http.SSLHttpRequest;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
-import com.foxinmy.weixin4j.mp.payment.RefundConverter;
+import com.foxinmy.weixin4j.mp.payment.conver.RefundConverter;
 import com.foxinmy.weixin4j.mp.payment.v2.Order;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundRecord;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundResult;
