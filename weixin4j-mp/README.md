@@ -184,14 +184,16 @@ weixin4j-mp
   
 * 2015-03-21
 
-  + **weixin-mp-api**: 新增群发消息给所有人接口
+  + **weixin4j-mp-api**: 新增群发消息给所有人接口
   
-  + **weixin-mp-api**: 新增素材管理多个接口
+  + **weixin4j-mp-api**: 新增素材管理多个接口
   
-  + **weixin-mp-api**: 新增多客服会话管理多个接口
+  + **weixin4j-mp-api**: 新增多客服会话管理多个接口
   
 * 2015-03-25
 
-  + **weixin-mp-api**: 根据《微信商户平台文档》修缮[Pay3Api](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/Pay3Api.java)类
+  + **weixin4j-mp-api**: 根据《微信商户平台文档》修缮[Pay3Api](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/Pay3Api.java)类
   
-  + **weixin-mp-server**: 新增客服创建、关闭、转接会话事件
+  + **weixin4j-mp-server**: 新增客服创建、关闭、转接会话事件
+  
+  + **weixin4j-mp-server**: 新增deploy.xml远程部署ant脚本
