@@ -21,10 +21,19 @@ public class Token implements Serializable {
 
 	private static final long serialVersionUID = -7564855472419104084L;
 
+	/**
+	 * 获取到的凭证
+	 */
 	@JSONField(name = "access_token")
 	private String accessToken;
+	/**
+	 * 凭证有效时间，单位：秒
+	 */
 	@JSONField(name = "expires_in")
 	private int expiresIn;
+	/**
+	 * token创建的时间 只在FileTokenHolder模式下有效
+	 */
 	private long time;
 
 	public Token() {

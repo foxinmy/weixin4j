@@ -13,8 +13,17 @@ public class Group implements Serializable {
 
 	private static final long serialVersionUID = 6979565973974005954L;
 
+	/**
+	 * 分组id，由微信分配
+	 */
 	private int id;
+	/**
+	 * 分组名
+	 */
 	private String name;
+	/**
+	 * 分组内用户数量
+	 */
 	private int count;
 
 	public int getId() {

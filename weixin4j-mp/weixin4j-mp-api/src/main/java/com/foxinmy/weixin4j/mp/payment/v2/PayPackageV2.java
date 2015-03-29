@@ -20,27 +20,37 @@ public class PayPackageV2 extends PayPackage {
 
 	private static final long serialVersionUID = 5557542103637795834L;
 
-	// 银行通道类型 固定为"WX" 非空
+	/**
+	 * 银行通道类型 固定为"WX" 非空
+	 */
 	@XStreamAlias("bank_type")
 	@JSONField(name = "bank_type")
 	private String bankType;
-	// 商户号 注册时分配的财付通商户号 非空
+	/**
+	 * 商户号 注册时分配的财付通商户号 非空
+	 */
 	private String partner;
-	// 支付币种 默认值是"1" 非空
+	/**
+	 * 支付币种 默认值是"1" 非空
+	 */
 	@XStreamAlias("fee_type")
 	@JSONField(name = "fee_type")
 	private String feeType;
-	// 物流费用 可为空 如果有值,必须保 证 transport_fee + product_fee=total_fee【传进来的参数按照实际金额即可
-	// 也就是元为单位】
+	/**
+	 * 物流费用 可为空 如果有值,必须保 证 transport_fee + product_fee=total_fee
+	 */
 	@XStreamAlias("transport_fee")
 	@JSONField(name = "transport_fee")
 	private String transportFee;
-	// 商品费用 可为空 商品费用,单位为分。如果有值,必须保 证 transport_fee +
-	// product_fee=total_fee;【传进来的参数按照实际金额即可 也就是元为单位】
+	/**
+	 * 商品费用 可为空 商品费用,单位为分。如果有值,必须保 证 transport_fee +product_fee=total_fee;
+	 */
 	@XStreamAlias("product_fee")
 	@JSONField(name = "product_fee")
 	private String productFee;
-	// 传入参数字符编码 取值范围:"GBK"、"UTF-8",默认:"GBK" 可为空
+	/**
+	 * 传入参数字符编码 取值范围:"GBK"、"UTF-8",默认:"GBK" 可为空
+	 */
 	@XStreamAlias("input_charset")
 	@JSONField(name = "input_charset")
 	private String inputCharset;
@@ -49,7 +59,7 @@ public class PayPackageV2 extends PayPackage {
 		return bankType;
 	}
 
-	public void setBank_type(String bankType) {
+	public void setBankType(String bankType) {
 		this.bankType = bankType;
 	}
 
@@ -73,6 +83,12 @@ public class PayPackageV2 extends PayPackage {
 		return transportFee;
 	}
 
+	/**
+	 * <font color="red">单位为元,自动格式化为分</font>
+	 * 
+	 * @param transportFee
+	 *            物流费用 单位为元
+	 */
 	public void setTransportFee(double transportFee) {
 		this.transportFee = DateUtil.formaFee2Fen(transportFee);
 	}
@@ -81,6 +97,12 @@ public class PayPackageV2 extends PayPackage {
 		return productFee;
 	}
 
+	/**
+	 * <font color="red">单位为元,自动格式化为分</font>
+	 * 
+	 * @param productFee
+	 *            商品 单位为元
+	 */
 	public void setProductFee(double productFee) {
 		this.productFee = DateUtil.formaFee2Fen(productFee);
 	}
@@ -89,7 +111,7 @@ public class PayPackageV2 extends PayPackage {
 		return inputCharset;
 	}
 
-	public void setInput_charset(String inputCharset) {
+	public void setInputCharset(String inputCharset) {
 		this.inputCharset = inputCharset;
 	}
 

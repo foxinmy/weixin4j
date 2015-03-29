@@ -25,66 +25,103 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 public class Order extends ApiResult {
 
 	private static final long serialVersionUID = 5636828325595317079L;
-	// SUCCESS—支付成功 REFUND—转入退款 NOTPAY—未支付 CLOSED—已关闭 REVOKED—已撤销
-	// USERPAYING--用户支付中 NOPAY--未支付(输入密码或 确认支付超时) PAYERROR--支付失败(其他 原因,如银行返回失败)
-	// 以下字段在 return_code 和 result_code 都为 SUCCESS 的时候有返回
+	/**
+	 * 交易状态
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.type.TradeState
+	 */
 	@XStreamAlias("trade_state")
 	@JSONField(name = "trade_state")
 	private TradeState tradeState;
-	// 用户标识ID
+	/**
+	 * 用户的openid
+	 */
 	@XStreamAlias("openid")
 	@JSONField(name = "openid")
 	private String openId;
-	// 用户是否关注公众账号,Y- 关注,N-未关注,仅在公众 账号类型支付有效
+	/**
+	 * 用户是否关注公众账号,Y- 关注,N-未关注,仅在公众 账号类型支付有效
+	 */
 	@XStreamAlias("is_subscribe")
 	@JSONField(name = "is_subscribe")
 	private String isSubscribe;
-	// 交易类型
+	/**
+	 * 交易类型
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.type.TradeType
+	 */
 	@XStreamAlias("trade_type")
 	@JSONField(name = "trade_type")
 	private TradeType tradeType;
-	// 银行类型
+	/**
+	 * 银行类型
+	 */
 	@XStreamAlias("bank_type")
 	@JSONField(name = "bank_type")
 	private String bankType;
-	// 订单总金额,单位为分
+	/**
+	 * 订单总金额,单位为分
+	 */
 	@XStreamAlias("total_fee")
 	@JSONField(name = "total_fee")
 	private int totalFee;
-	// 现金券支付金额<=订单总金 额,订单总金额-现金券金额 为现金支付金额
+	/**
+	 * 现金券支付金额<=订单总金 额,订单总金额-现金券金额 为现金支付金额
+	 */
 	@XStreamAlias("coupon_fee")
 	@JSONField(name = "coupon_fee")
 	private Integer couponFee;
-	// 代金券或立减优惠使用数量
+	/**
+	 * 代金券或立减优惠使用数量
+	 */
 	@XStreamAlias("coupon_count")
 	@JSONField(name = "coupon_count")
 	private Integer couponCount;
-	// 代金券信息
+	/**
+	 * 代金券信息
+	 */
 	@XStreamOmitField
 	@JSONField(serialize = false)
 	private List<CouponInfo> couponList;
+	/**
+	 * 现金支付金额
+	 */
 	@XStreamAlias("cash_fee")
 	@JSONField(name = "cash_fee")
 	private int cashFee;
-	// 货币类型,符合 ISO 4217 标准的三位字母代码,默认人民币:CNY
+	/**
+	 * 货币类型,符合 ISO 4217 标准的三位字母代码,默认人民币:CNY
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
+	 */
 	@XStreamAlias("fee_type")
 	@JSONField(name = "fee_type")
 	private CurrencyType feeType;
-	// 微信支付订单号
+	/**
+	 * 微信支付订单号
+	 */
 	@XStreamAlias("transaction_id")
 	@JSONField(name = "transaction_id")
 	private String transactionId;
-	// 商户订单号
+	/**
+	 * 商户订单号
+	 */
 	@XStreamAlias("out_trade_no")
 	@JSONField(name = "out_trade_no")
 	private String outTradeNo;
-	// 商家数据包
+	/**
+	 * 商家数据包
+	 */
 	private String attach;
-	// 支付完成时间,格式为 yyyyMMddhhmmss
+	/**
+	 * 支付完成时间,格式为 yyyyMMddhhmmss
+	 */
 	@XStreamAlias("time_end")
 	@JSONField(name = "time_end")
 	private String timeEnd;
-	// 交易状态描述
+	/**
+	 * 交易状态描述
+	 */
 	@XStreamAlias("trade_state_desc")
 	@JSONField(name = "trade_state_desc")
 	private String tradeStateDesc;

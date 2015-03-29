@@ -20,6 +20,8 @@ weixin4j-qy-api
   * NotifyApi `消息发送API`
   
   * AgentApi `应用设置API`
+  
+  * BatchApi `批量操作API`
 
 如何使用
 --------
@@ -87,3 +89,7 @@ weixin.properties说明
 * 2015-03-17
   
   + 新增企业应用设置接口
+
+* 2015-03-29
+
+  + 单行注释调整为多行文档注释

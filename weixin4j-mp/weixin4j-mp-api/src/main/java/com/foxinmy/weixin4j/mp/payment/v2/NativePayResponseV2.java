@@ -16,8 +16,14 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class NativePayResponseV2 extends JsPayRequestV2 {
 
 	private static final long serialVersionUID = 6119895998783333012L;
+	/**
+	 * 返回码
+	 */
 	@XStreamAlias("RetCode")
 	private String retCode;
+	/**
+	 * 返回消息
+	 */
 	@XStreamAlias("RetErrMsg")
 	private String retMsg;
 

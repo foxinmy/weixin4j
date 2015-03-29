@@ -19,14 +19,26 @@ public class MediaRecord implements Serializable {
 
 	private static final long serialVersionUID = 7017503153256241457L;
 
+	/**
+	 * 该类型的素材的总数
+	 */
 	@JSONField(name = "total_count")
-	private int totalCount;// 该类型的素材的总数
+	private int totalCount;
+	/**
+	 * 本次调用获取的素材的数量
+	 */
 	@JSONField(name = "item_count")
-	private int itemCount;// 本次调用获取的素材的数量
+	private int itemCount;
+	/**
+	 * 媒体类型
+	 */
 	@JSONField(serialize = false)
-	private MediaType mediaType; // 媒体类型
+	private MediaType mediaType;
+	/**
+	 * 媒体信息
+	 */
 	@JSONField(name = "item")
-	private List<MediaItem> items; // 媒体信息
+	private List<MediaItem> items;
 
 	public int getTotalCount() {
 		return totalCount;

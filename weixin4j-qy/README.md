@@ -118,3 +118,7 @@ weixin4j-qy
   + **weixin4j-qy-api**: 新增企业应用设置接口
   
   + **weixin4j-qy-server**: 新增deploy.xml远程部署ant脚本
+  
+* 2015-03-29
+
+  + **weixin4j-qy-api**: 单行注释调整为多行文档注释

@@ -19,6 +19,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class File extends Base implements Notifyable {
 	private static final long serialVersionUID = -8149837316289636110L;
 
+	/**
+	 * 上传后的微信返回的媒体ID
+	 */
 	@JSONField(name = "media_id")
 	@XStreamAlias("MediaId")
 	private String mediaId;

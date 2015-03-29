@@ -17,17 +17,29 @@ import com.foxinmy.weixin4j.http.JsonResult;
 public class SemResult extends JsonResult {
 
 	private static final long serialVersionUID = 9051214458161068387L;
-	// 用户的输入字符串
+	/**
+	 * 用户的输入字符串
+	 */
 	private String query;
-	// 服务的全局类型id，详见协议文档中垂直服务协议定义
+	/**
+	 * 服务的全局类型id，详见协议文档中垂直服务协议定义
+	 */
 	private String type;
-	// 语义理解后的结构化标识，各服务不同
+	/**
+	 * 语义理解后的结构化标识，各服务不同
+	 */
 	private JSONObject semantic;
-	// 部分类别的结果
+	/**
+	 * 部分类别的结果
+	 */
 	private JSONArray result;
-	// 部分类别的结果html5展示，目前不支持
+	/**
+	 * 部分类别的结果html5展示，目前不支持
+	 */
 	private String answer;
-	// 特殊回复说明
+	/**
+	 * 特殊回复说明
+	 */
 	private String text;
 
 	public String getQuery() {

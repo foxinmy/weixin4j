@@ -18,16 +18,32 @@ import com.foxinmy.weixin4j.type.MessageType;
 public class UpstreamMsg implements Serializable {
 
 	private static final long serialVersionUID = -2605207523094962029L;
+
+	/**
+	 * 引用的日期
+	 */
 	@JSONField(name = "ref_date")
-	private Date refDate; // 引用的日期
+	private Date refDate;
+	/**
+	 * 数据的小时，包括从000到2300，分别代表的是[000,100)到[2300,2400)，即每日的第1小时和最后1小时
+	 */
 	@JSONField(name = "ref_hour")
-	private int refHour; // 数据的小时，包括从000到2300，分别代表的是[000,100)到[2300,2400)，即每日的第1小时和最后1小时
+	private int refHour;
+	/**
+	 * 消息类型
+	 */
 	@JSONField(name = "msg_type")
-	private int msgType; // 消息类型
+	private int msgType;
+	/**
+	 * 上行发送了（向公众号发送了）消息的用户数
+	 */
 	@JSONField(name = "msg_user")
-	private int msgUser; // 上行发送了（向公众号发送了）消息的用户数
+	private int msgUser;
+	/**
+	 * 上行发送了消息的消息总数
+	 */
 	@JSONField(name = "msg_count")
-	private int msgCount;// 上行发送了消息的消息总数
+	private int msgCount;
 
 	public Date getRefDate() {
 		return refDate;

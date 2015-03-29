@@ -15,12 +15,23 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ReflectionUtil {
 
-	// 获取包包名
+	/**
+	 * 获取包包名
+	 * 
+	 * @param obj
+	 * @return
+	 */
 	public static String getPackageName(Object obj) {
 		return obj.getClass().getPackage().getName();
 	}
 
-	// 获取字段的泛型参数类型
+	/**
+	 * 获取字段的泛型参数类型
+	 * 
+	 * @param obj
+	 * @param fieldName
+	 * @return
+	 */
 	public static Class<?> getFieldGenericType(Object obj, String fieldName) {
 		Field field = getAccessibleField(obj, fieldName);
 		Type type = field.getGenericType();

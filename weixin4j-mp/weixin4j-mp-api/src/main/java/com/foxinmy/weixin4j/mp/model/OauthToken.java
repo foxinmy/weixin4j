@@ -17,8 +17,14 @@ public class OauthToken extends Token {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 用户的openi
+	 */
 	private String openid;
 
+	/**
+	 * 刷新token时的凭证
+	 */
 	@JSONField(name = "refresh_token")
 	private String refreshToken;
 

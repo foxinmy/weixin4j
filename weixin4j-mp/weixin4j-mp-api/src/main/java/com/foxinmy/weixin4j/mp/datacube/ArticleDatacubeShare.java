@@ -1,12 +1,14 @@
 package com.foxinmy.weixin4j.mp.datacube;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.ShareSourceType;
 
 /**
  * 数据统计:图文分享数据
+ * 
  * @className ArticleDatacubeShare
  * @author jy
  * @date 2015年1月30日
@@ -16,22 +18,37 @@ import com.foxinmy.weixin4j.mp.type.ShareSourceType;
 public class ArticleDatacubeShare implements Serializable {
 	private static final long serialVersionUID = 3841239305410294553L;
 
+	/**
+	 * 数据的日期
+	 */
 	@JSONField(name = "ref_date")
-	private String refDate; // 数据的日期
+	private Date refDate;
+	/**
+	 * 数据的小时，包括从000到2300，分别代表的是[000,100)到[2300,2400)，即每日的第1小时和最后1小时
+	 */
 	@JSONField(name = "ref_hour")
-	private int refHour; // 数据的小时，包括从000到2300，分别代表的是[000,100)到[2300,2400)，即每日的第1小时和最后1小时
+	private int refHour;
+	/**
+	 * 分享的人数
+	 */
 	@JSONField(name = "shareUser")
-	private int shareUser; // 分享的人数
+	private int shareUser;
+	/**
+	 * 分享的次数
+	 */
 	@JSONField(name = "shareCount")
-	private int shareCount;// 分享的次数
+	private int shareCount;
+	/**
+	 * 分享的场景
+	 */
 	@JSONField(name = "share_scene")
-	private int shareScene;// 分享的场景
+	private int shareScene;
 
-	public String getRefDate() {
+	public Date getRefDate() {
 		return refDate;
 	}
 
-	public void setRefDate(String refDate) {
+	public void setRefDate(Date refDate) {
 		this.refDate = refDate;
 	}
 

@@ -14,7 +14,15 @@ import java.io.Serializable;
 public class IdQuery implements Serializable {
 
 	private static final long serialVersionUID = -5273675987521807370L;
+	/**
+	 * id值
+	 */
 	private String id;
+	/**
+	 * id类型
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.type.IdType
+	 */
 	private IdType type;
 
 	public String getId() {
@@ -42,5 +50,4 @@ public class IdQuery implements Serializable {
 	public String toString() {
 		return String.format("%s=%s", type.getName(), id);
 	}
-
 }

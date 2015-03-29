@@ -32,13 +32,31 @@ public class NotifyMessage implements Serializable {
 	private static final long serialVersionUID = 1219589414293000383L;
 	private static final String SEPARATOR = "|";
 
-	private String touser;// UserID列表（消息接收者，多个接收者用‘|’分隔）。特殊情况：指定为@all，则向关注该企业应用的全部成员发送
-	private String toparty;// PartyID列表，多个接受者用‘|’分隔。当touser为@all时忽略本参数
-	private String totag;// TagID列表，多个接受者用‘|’分隔。当touser为@all时忽略本参数
-	private int agentid;// 企业应用的id，整型。可在应用的设置页面查看
-	private int safe;// 表示是否是保密消息，0表示否，1表示是，默认0
+	/**
+	 * UserID列表（消息接收者，多个接收者用‘|’分隔）。特殊情况：指定为@all，则向关注该企业应用的全部成员发送
+	 */
+	private String touser;
+	/**
+	 * PartyID列表，多个接受者用‘|’分隔。当touser为@all时忽略本参数
+	 */
+	private String toparty;
+	/**
+	 * TagID列表，多个接受者用‘|’分隔。当touser为@all时忽略本参数
+	 */
+	private String totag;
+	/**
+	 * 企业应用的id，整型。可在应用的设置页面查看
+	 */
+	private int agentid;
+	/**
+	 * 表示是否是保密消息，0表示否，1表示是，默认0
+	 */
+	private int safe;
+	/**
+	 * 消息对象
+	 */
 	@JSONField(name = "%s")
-	private Base box;// 消息项
+	private Base box;
 
 	public NotifyMessage(Base box, int agentid) {
 		this(null, null, null, box, agentid, false);

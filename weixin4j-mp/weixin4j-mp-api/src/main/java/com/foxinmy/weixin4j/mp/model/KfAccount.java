@@ -18,22 +18,42 @@ public class KfAccount implements Serializable {
 
 	private static final long serialVersionUID = -4565570894727129245L;
 
+	/**
+	 * 客服账号@微信别名 微信别名如有修改，旧账号返回旧的微信别名，新增的账号返回新的微信别名
+	 */
 	@JSONField(name = "kf_account")
-	// 客服账号@微信别名 微信别名如有修改，旧账号返回旧的微信别名，新增的账号返回新的微信别名
 	private String account;
+	/**
+	 * 客服昵称
+	 */
 	@JSONField(name = "kf_nick")
-	private String nickName;// 客服昵称
+	private String nickName;
+	/**
+	 * 客服工号
+	 */
 	@JSONField(name = "kf_id")
-	private String id;// 客服工号
+	private String id;
+	/**
+	 * 客服头像
+	 */
 	@JSONField(name = "kf_headimg")
-	private String headImg; //客服头像
+	private String headImg;
 
 	// 以下字段是调用在线客服状态返回的字段
-	private KfOnlineStatus status; // 客服在线状态 1：pc在线，2：手机在线 若pc和手机同时在线则为 1+2=3
+	/**
+	 * 客服在线状态 1：pc在线，2：手机在线 若pc和手机同时在线则为 1+2=3
+	 */
+	private KfOnlineStatus status;
+	/**
+	 * 客服设置的最大自动接入数
+	 */
 	@JSONField(name = "auto_accept")
-	private int autoAccept;// 客服设置的最大自动接入数
+	private int autoAccept;
+	/**
+	 * 客服当前正在接待的会话数
+	 */
 	@JSONField(name = "accepted_case")
-	private int acceptedCase;// 客服当前正在接待的会话数
+	private int acceptedCase;
 
 	public String getAccount() {
 		return account;

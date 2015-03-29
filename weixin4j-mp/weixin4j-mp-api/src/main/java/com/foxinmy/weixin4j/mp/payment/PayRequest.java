@@ -9,7 +9,9 @@ public class PayRequest extends PayBaseInfo {
 
 	private static final long serialVersionUID = -453746488398523883L;
 
-	// 订单详情扩展 订单信息组成该字符串
+	/**
+	 * 订单详情扩展 订单信息组成该字符串
+	 */
 	@XStreamAlias("Package")
 	@JSONField(name = "package")
 	private String packageInfo;

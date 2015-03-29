@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.mp.type.DatacuteCountIntervalType;
 
 /**
  * 数据统计:消息发送分布数据
@@ -17,10 +18,16 @@ import com.alibaba.fastjson.annotation.JSONField;
 public class UpstreamMsgDist implements Serializable {
 
 	private static final long serialVersionUID = -2605207523094962029L;
+	/**
+	 * 引用的日期
+	 */
 	@JSONField(name = "ref_date")
-	private Date refDate; // 引用的日期
+	private Date refDate;
+	/**
+	 * 上行发送了（向公众号发送了）消息的用户数
+	 */
 	@JSONField(name = "msg_user")
-	private int msgUser; // 上行发送了（向公众号发送了）消息的用户数
+	private int msgUser;
 	/**
 	 * 当日发送消息量分布的区间，0代表 “0”，1代表“1-5”，2代表“6-10”，3代表“10次以上
 	 */
@@ -43,8 +50,8 @@ public class UpstreamMsgDist implements Serializable {
 		this.msgUser = msgUser;
 	}
 
-	public int getCountInterval() {
-		return countInterval;
+	public DatacuteCountIntervalType getCountInterval() {
+		return DatacuteCountIntervalType.values()[countInterval];
 	}
 
 	public void setCountInterval(int countInterval) {

@@ -10,12 +10,24 @@ package com.foxinmy.weixin4j.mp.type;
  * @see
  */
 public enum BillType {
-	ALL(0), SUCCESS(1), REFUND(2);
+	/**
+	 * 全部
+	 */
+	ALL(0),
+	/**
+	 * 成功订单
+	 */
+	SUCCESS(1),
+	/**
+	 * 退款订单
+	 */
+	REFUND(2);
 	private int val;
 
 	BillType(int val) {
 		this.val = val;
 	}
+
 	public int getVal() {
 		return val;
 	}

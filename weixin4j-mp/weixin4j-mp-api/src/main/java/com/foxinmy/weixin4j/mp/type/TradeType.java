@@ -10,5 +10,20 @@ package com.foxinmy.weixin4j.mp.type;
  * @see
  */
 public enum TradeType {
-	JSAPI, MICROPAY, NATIVE, APP;
+	/**
+	 * H5页面上的JSAPI支付
+	 */
+	JSAPI,
+	/**
+	 * 刷卡支付
+	 */
+	MICROPAY,
+	/**
+	 * 扫描支付
+	 */
+	NATIVE,
+	/**
+	 * APP支付
+	 */
+	APP;
 }

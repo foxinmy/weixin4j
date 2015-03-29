@@ -22,18 +22,54 @@ import com.foxinmy.weixin4j.qy.type.UserStatus;
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 4747301605060801611L;
-	private String userid;// 是 员工UserID。对应管理端的帐号，企业内必须唯一。长度为1~64个字符
-	private String name;// 是 成员名称。长度为1~64个字符
-	private List<Integer> department;// 否 成员所属部门id列表。注意，每个部门的直属员工上限为1000个
-	private String position;// 否 职位信息。长度为0~64个字符
-	private String mobile;// 否 手机号码。企业内必须唯一，mobile/weixinid/email三者不能同时为空
-	private int gender;// 否 性别。gender=0表示男，=1表示女。默认gender=0
-	private String tel;// 否 办公电话。长度为0~64个字符
-	private String email;// 否 邮箱。长度为0~64个字符。企业内必须唯一
-	private String weixinid;// 否 微信号。企业内必须唯一
-	private String avatar;// 头像url。注：如果要获取小图将url最后的"/0"改成"/64"即可
-	private int status;// 关注状态: 1=已关注，2=已冻结，4=未关注
-	private List<NameValue> extattr;// 否 扩展属性。扩展属性需要在WEB管理端创建后才生效，否则忽略未知属性的赋值
+	/**
+	 * 必须 员工UserID。对应管理端的帐号，企业内必须唯一。长度为1~64个字符
+	 */
+	private String userid;
+	/**
+	 * 必须 成员名称。长度为1~64个字符
+	 */
+	private String name;
+	/**
+	 * 非必须 成员所属部门id列表。注意，每个部门的直属员工上限为1000个
+	 */
+	private List<Integer> department;
+	/**
+	 * 非必须 职位信息。长度为0~64个字符
+	 */
+	private String position;
+	/**
+	 * 非必须 手机号码。企业内必须唯一，mobile/weixinid/email三者不能同时为空
+	 */
+	private String mobile;
+	/**
+	 * 非必须 性别。gender=0表示男，=1表示女。默认gender=0
+	 */
+	private int gender;
+	/**
+	 * 非必须 办公电话。长度为0~64个字符
+	 */
+	private String tel;
+	/**
+	 * 非必须 邮箱。长度为0~64个字符。企业内必须唯一
+	 */
+	private String email;
+	/**
+	 * 非必须 微信号。企业内必须唯一
+	 */
+	private String weixinid;
+	/**
+	 * 头像url。注：如果要获取小图将url最后的"/0"改成"/64"即可
+	 */
+	private String avatar;
+	/**
+	 * 关注状态: 1=已关注，2=已冻结，4=未关注
+	 */
+	private int status;
+	/**
+	 * 非必须 扩展属性。扩展属性需要在WEB管理端创建后才生效，否则忽略未知属性的赋值
+	 */
+	private List<NameValue> extattr;
 
 	public User() {
 		this.extattr = new ArrayList<NameValue>();
@@ -47,10 +83,15 @@ public class User implements Serializable {
 	 * mobile/weixinid/email三者不能同时为空
 	 * 
 	 * @param userid
+	 *            用户ID
 	 * @param name
+	 *            用户昵称
 	 * @param tel
+	 *            号码
 	 * @param email
+	 *            邮箱
 	 * @param weixinid
+	 *            微信ID
 	 */
 	public User(String userid, String name, String tel, String email,
 			String weixinid) {

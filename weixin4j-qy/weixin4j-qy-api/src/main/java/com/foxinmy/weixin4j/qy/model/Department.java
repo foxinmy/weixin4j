@@ -15,10 +15,22 @@ import java.io.Serializable;
 public class Department implements Serializable {
 
 	private static final long serialVersionUID = -2567893218591084288L;
-	private int id; // 部门ID
-	private String name; // 部门名称。长度限制为1~64个字符
-	private int parentid;// 父亲部门id。根部门id为1
-	private int order;// 在父部门中的次序。从1开始，数字越大排序越靠后
+	/**
+	 * 部门ID
+	 */
+	private int id;
+	/**
+	 * 部门名称。长度限制为1~64个字符
+	 */
+	private String name;
+	/**
+	 * 父亲部门id。根部门id为1
+	 */
+	private int parentid;
+	/**
+	 * 在父部门中的次序。从1开始，数字越大排序越靠后
+	 */
+	private int order;
 
 	public Department() {
 

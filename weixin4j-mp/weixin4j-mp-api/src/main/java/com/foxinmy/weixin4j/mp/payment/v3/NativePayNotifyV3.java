@@ -16,6 +16,9 @@ public class NativePayNotifyV3 extends ApiResult {
 
 	private static final long serialVersionUID = 4515471400239795492L;
 
+	/**
+	 * 产品ID 可视为订单ID
+	 */
 	@XStreamAlias("product_id")
 	private String productId;
 

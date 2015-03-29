@@ -24,10 +24,16 @@ public class ImageMessage extends BaseMsg {
 		super(MessageType.image.name());
 	}
 
+	/**
+	 * 图片链接
+	 */
 	@XStreamAlias("PicUrl")
-	private String picUrl; // 图片链接
+	private String picUrl;
+	/**
+	 * 图片消息媒体id，可以调用多媒体文件下载接口拉取数据。
+	 */
 	@XStreamAlias("MediaId")
-	private String mediaId; // 图片消息媒体id，可以调用多媒体文件下载接口拉取数据。
+	private String mediaId;
 
 	public String getPicUrl() {
 		return picUrl;

@@ -21,36 +21,70 @@ public class RefundRecord extends ApiResult {
 
 	private static final long serialVersionUID = -2971132874939642721L;
 
+	/**
+	 * 微信订单号
+	 */
 	@XStreamAlias("transaction_id")
 	@JSONField(name = "transaction_id")
-	private String transactionId;// 微信订单号
+	private String transactionId;
+	/**
+	 * 商户订单号
+	 */
 	@XStreamAlias("out_trade_no")
 	@JSONField(name = "out_trade_no")
-	private String outTradeNo;// 商户订单号
+	private String outTradeNo;
+	/**
+	 * 订单总金额
+	 */
 	@XStreamAlias("total_fee")
 	@JSONField(name = "total_fee")
-	private int totalFee; // 订单总金额
+	private int totalFee;
+	/**
+	 * 订单金额货币种类
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
+	 */
 	@XStreamAlias("fee_type")
 	@JSONField(name = "fee_type")
-	private CurrencyType feeType; // 订单金额货币种类
+	private CurrencyType feeType;
+	/**
+	 * 现金支付金额
+	 */
 	@XStreamAlias("cash_fee")
 	@JSONField(name = "cash_fee")
-	private int cashFee; // 现金支付金额
+	private int cashFee;
+	/**
+	 * 现金支付金额货币种类
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
+	 */
 	@XStreamAlias("cash_fee_type")
 	@JSONField(name = "cash_fee_type")
-	private CurrencyType cashFeeType; // 现金支付金额货币种类
+	private CurrencyType cashFeeType;
+	/**
+	 * 退款总金额
+	 */
 	@XStreamAlias("refund_fee")
 	@JSONField(name = "refund_fee")
-	private int refundFee; // 退款总金额
+	private int refundFee;
+	/**
+	 * 代金券或立减优惠退款金额=订单金额-现金退款金额，注意：满立减金额不会退回
+	 */
 	@XStreamAlias("coupon_refund_fee")
 	@JSONField(name = "coupon_refund_fee")
-	private Integer couponRefundFee; // 代金券或立减优惠退款金额=订单金额-现金退款金额，注意：满立减金额不会退回
+	private Integer couponRefundFee;
+	/**
+	 * 退款笔数
+	 */
 	@XStreamAlias("refund_count")
 	@JSONField(name = "refund_count")
-	private int count;// 退款笔数
+	private int count;
+	/**
+	 * 退款详情
+	 */
 	@XStreamOmitField
 	@JSONField(serialize = false, deserialize = false)
-	private List<RefundDetail> details; // 退款详情
+	private List<RefundDetail> details;
 
 	public String getTransactionId() {
 		return transactionId;

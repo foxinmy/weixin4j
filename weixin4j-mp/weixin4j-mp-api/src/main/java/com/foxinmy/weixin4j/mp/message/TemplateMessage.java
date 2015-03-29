@@ -12,16 +12,31 @@ import java.util.Map;
  * @date 2014年9月29日
  * @since JDK 1.7
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3">模板消息</a>
+ *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html">模板消息</a>
  */
 public class TemplateMessage implements Serializable {
 
 	private static final long serialVersionUID = 7950608393821661436L;
 
+	/**
+	 * 用户的openid
+	 */
 	private String touser;
+	/**
+	 * 模板ID
+	 */
 	private String template_id;
+	/**
+	 * 点击消息跳转的url
+	 */
 	private String url;
+	/**
+	 * 顶部的颜色值
+	 */
 	private String topcolor = "#FF0000";
+	/**
+	 * 数据项
+	 */
 	private Map<String, Item> data;
 
 	public void pushData(String key, String value) {
@@ -37,9 +52,24 @@ public class TemplateMessage implements Serializable {
 		pushData("first", title);
 	}
 
+	/**
+	 * 模板消息的数据项
+	 * 
+	 * @className Item
+	 * @author jy
+	 * @date 2015年3月29日
+	 * @since JDK 1.7
+	 * @see
+	 */
 	private static class Item implements Serializable {
 		private static final long serialVersionUID = 1L;
+		/**
+		 * 字段值
+		 */
 		private String value;
+		/**
+		 * 颜色值
+		 */
 		private String color;
 
 		public Item(String value) {

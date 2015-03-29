@@ -36,6 +36,11 @@ public class NotifyApi extends QyApi {
 
 	/**
 	 * 发送消息(需要管理员对应用有使用权限，对收件人touser、toparty、totag有查看权限，否则本次调用失败)
+	 * <p>
+	 * 1） 发送人员列表存在错误的userid：执行发送，开发者需注意返回结果说明</br>
+	 * 2）发送人员不在通讯录权限范围内：不执行发送任务，返回首个出错的userid</br>
+	 * 3）发送人员不在应用可见范围内：不执行发送任务，返回首个出错的userid</br>
+	 * </p>
 	 * 
 	 * @param notify
 	 *            客服消息对象

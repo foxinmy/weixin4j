@@ -28,8 +28,11 @@ public class MenuEventMessage extends EventMessage {
 		super(eventType);
 	}
 
+	/**
+	 * 事件KEY值，与自定义菜单接口中KEY值对应
+	 */
 	@XStreamAlias("EventKey")
-	private String eventKey; // 事件KEY值，与自定义菜单接口中KEY值对应
+	private String eventKey;
 
 	public String getEventKey() {
 		return eventKey;

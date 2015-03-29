@@ -10,8 +10,20 @@ package com.foxinmy.weixin4j.mp.type;
  * @see
  */
 public enum ShareSourceType {
-	FRIENDFORWARD, // 好友转发
-	FRIENDSCIRCLE, // 朋友圈
-	TENCENTWEIBO, // 腾讯微博
-	OTHER // 其它
+	/**
+	 * 好友转发
+	 */
+	FRIENDFORWARD,
+	/**
+	 * 朋友圈
+	 */
+	FRIENDSCIRCLE,
+	/**
+	 * 腾讯微博
+	 */
+	TENCENTWEIBO,
+	/**
+	 * 其它
+	 */
+	OTHER;
 }

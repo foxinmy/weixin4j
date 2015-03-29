@@ -20,6 +20,9 @@ public class MpVideo extends Base implements Massable {
 
 	private static final long serialVersionUID = 2167437425244069128L;
 
+	/**
+	 * 上传视频后微信返回的媒体ID
+	 */
 	@JSONField(name = "media_id")
 	@XStreamAlias("MediaId")
 	private String mediaId;

@@ -17,12 +17,18 @@ public class RefundResult extends RefundDetail {
 
 	private static final long serialVersionUID = -3687863914168618620L;
 
+	/**
+	 * 微信订单号
+	 */
 	@XStreamAlias("transaction_id")
 	@JSONField(name = "transaction_id")
-	private String transactionId; // 微信订单号
+	private String transactionId;
+	/**
+	 * 商户系统内部的订单号
+	 */
 	@XStreamAlias("out_trade_no")
 	@JSONField(name = "out_trade_no")
-	private String outTradeNo;// 商户系统内部的订单号
+	private String outTradeNo;
 
 	public String getTransactionId() {
 		return transactionId;

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 /**
  * 随机码工具类
+ * 
  * @className RandomUtil
  * @author jy
  * @date 2014年10月22日
@@ -17,7 +18,13 @@ public class RandomUtil {
 	private static final String LETTERCHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	private static final String NUMBERCHAR = "0123456789";
 
-	// 返回一个定长的随机字符串(包含数字和大小写字母)
+	/**
+	 * 返回一个定长的随机字符串(包含数字和大小写字母)
+	 * 
+	 * @param length
+	 *            随机数的长度
+	 * @return
+	 */
 	public static String generateString(int length) {
 		StringBuilder sb = new StringBuilder(length);
 		Random random = new Random();
@@ -27,7 +34,13 @@ public class RandomUtil {
 		return sb.toString();
 	}
 
-	// 返回一个定长的随机纯数字字符串(只包含数字)
+	/**
+	 * 返回一个定长的随机纯数字字符串(只包含数字)
+	 * 
+	 * @param length
+	 *            随机数的长度
+	 * @return
+	 */
 	public static String generateStringByNumberChar(int length) {
 		StringBuilder sb = new StringBuilder(length);
 		Random random = new Random();
@@ -37,7 +50,13 @@ public class RandomUtil {
 		return sb.toString();
 	}
 
-	// 返回一个定长的随机纯字母字符串(只包含大小写字母)
+	/**
+	 * 返回一个定长的随机纯字母字符串(只包含大小写字母)
+	 * 
+	 * @param length
+	 *            随机数的长度
+	 * @return
+	 */
 	public static String generateStringByLetterCharr(int length) {
 		StringBuilder sb = new StringBuilder(length);
 		Random random = new Random();
@@ -47,12 +66,24 @@ public class RandomUtil {
 		return sb.toString();
 	}
 
-	// 返回一个定长的随机纯大写字母字符串(只包含大小写字母)
+	/**
+	 * 返回一个定长的随机纯大写字母字符串(只包含大小写字母)
+	 * 
+	 * @param length
+	 *            随机数的长度
+	 * @return
+	 */
 	public static String generateLowerString(int length) {
 		return generateStringByLetterCharr(length).toLowerCase();
 	}
 
-	// 返回一个定长的随机纯小写字母字符串(只包含大小写字母)
+	/**
+	 * 返回一个定长的随机纯小写字母字符串(只包含大小写字母)
+	 * 
+	 * @param length
+	 *            随机数的长度
+	 * @return
+	 */
 	public static String generateUpperString(int length) {
 		return generateStringByLetterCharr(length).toUpperCase();
 	}

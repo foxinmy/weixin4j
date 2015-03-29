@@ -14,6 +14,15 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
+/**
+ * Map转换为实体对象
+ * 
+ * @className Map2ObjectConverter
+ * @author jy
+ * @date 2015年3月29日
+ * @since JDK 1.7
+ * @see
+ */
 public class Map2ObjectConverter extends MapConverter {
 
 	public Map2ObjectConverter(Mapper mapper) {

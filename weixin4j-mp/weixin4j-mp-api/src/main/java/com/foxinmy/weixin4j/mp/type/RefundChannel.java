@@ -10,9 +10,20 @@ package com.foxinmy.weixin4j.mp.type;
  * @see
  */
 public enum RefundChannel {
-	ORIGINAL, // 原路退款
-	BALANCE,// 退回到余额
-	
-	TENPAY, // 财付通
-	BANK; // 银行
+	/**
+	 * 原路退款
+	 */
+	ORIGINAL,
+	/**
+	 * 退回到余额
+	 */
+	BALANCE,
+	/**
+	 * 财付通
+	 */
+	TENPAY,
+	/**
+	 * 银行
+	 */
+	BANK;
 }

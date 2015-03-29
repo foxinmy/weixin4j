@@ -24,6 +24,11 @@ public class News extends Base implements Responseable, Notifyable {
 	private static final int MAX_ARTICLE_COUNT = 10;
 	private static final long serialVersionUID = 3348756809039388415L;
 
+	/**
+	 * 图文列表
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.model.Article
+	 */
 	@JSONField(name = "articles")
 	@XStreamAlias("Articles")
 	private List<Article> articles;

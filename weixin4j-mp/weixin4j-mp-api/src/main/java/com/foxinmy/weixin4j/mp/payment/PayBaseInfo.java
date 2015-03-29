@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.mp.payment;
 
 import java.io.Serializable;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.SignType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -17,20 +18,32 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class PayBaseInfo implements Serializable {
 
 	private static final long serialVersionUID = 1843024880782466990L;
+
+	/**
+	 * 公众号ID
+	 */
 	@XStreamAlias("AppId")
-	private String appId; // 公众号ID
-
+	private String appId;
+	/**
+	 * 时间戳
+	 */
 	@XStreamAlias("TimeStamp")
-	private String timeStamp; // 时间戳
-
+	private String timeStamp;
+	/**
+	 * 随机字符串
+	 */
 	@XStreamAlias("NonceStr")
-	private String nonceStr; // 随机字符串
-
+	private String nonceStr;
+	/**
+	 * 签名结果
+	 */
 	@XStreamAlias("AppSignature")
-	private String paySign; // 签名结果
-
+	private String paySign;
+	/**
+	 * 签名方式
+	 */
 	@XStreamAlias("SignMethod")
-	private String signType; // 签名方式
+	private String signType;
 
 	public String getAppId() {
 		return appId;
@@ -68,6 +81,11 @@ public class PayBaseInfo implements Serializable {
 		return signType;
 	}
 
+	@JSONField(serialize = false, deserialize = false)
+	public SignType getFormatSignType() {
+		return SignType.valueOf(signType.toUpperCase());
+	}
+
 	public void setSignType(SignType signType) {
 		if (signType != null) {
 			this.signType = signType.name();
@@ -87,8 +105,7 @@ public class PayBaseInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		return "appId=" + appId + ", timeStamp=" + timeStamp
-				+ ", nonceStr=" + nonceStr + ", paySign=" + paySign
-				+ ", signType=" + signType;
+		return "appId=" + appId + ", timeStamp=" + timeStamp + ", nonceStr="
+				+ nonceStr + ", paySign=" + paySign + ", signType=" + signType;
 	}
 }

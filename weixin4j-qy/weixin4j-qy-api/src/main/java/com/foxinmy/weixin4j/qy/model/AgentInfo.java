@@ -17,17 +17,35 @@ public class AgentInfo extends AgentSetter {
 
 	private static final long serialVersionUID = -8975132919768696174L;
 
+	/**
+	 * 企业应用方形头像
+	 */
 	@JSONField(name = "square_logo_url")
-	private String squareLogoUrl;// 企业应用方形头像
+	private String squareLogoUrl;
+	/**
+	 * 企业应用圆形头像
+	 */
 	@JSONField(name = "round_logo_url")
-	private String roundLogoUrl;// 企业应用圆形头像
+	private String roundLogoUrl;
+	/**
+	 * 企业应用可见范围（人员），其中包括userid和关注状态state
+	 */
 	@JSONField(serialize = false)
-	private List<User> allowUsers;// 企业应用可见范围（人员），其中包括userid和关注状态state
+	private List<User> allowUsers;
+	/**
+	 * 企业应用可见范围（部门）
+	 */
 	@JSONField(serialize = false)
-	private List<Integer> allowPartys; // 企业应用可见范围（部门）
+	private List<Integer> allowPartys;
+	/**
+	 * 企业应用可见范围（标签）
+	 */
 	@JSONField(serialize = false)
-	private List<Integer> allowTags; // 企业应用可见范围（标签）
-	private boolean close; // 企业应用是否被禁用
+	private List<Integer> allowTags;
+	/**
+	 * 企业应用是否被禁用
+	 */
+	private boolean close;
 
 	public AgentInfo() {
 		super(0);

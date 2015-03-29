@@ -17,14 +17,26 @@ public class MediaCounter implements Serializable {
 
 	private static final long serialVersionUID = -1752502821323552783L;
 
+	/**
+	 * 语音总数量
+	 */
 	@JSONField(name = "voice_count")
-	private long voiceCount;// 语音总数量
+	private long voiceCount;
+	/**
+	 * 视频总数量
+	 */
 	@JSONField(name = "video_count")
-	private long videoCount;// 视频总数量
+	private long videoCount;
+	/**
+	 * 图片总数量
+	 */
 	@JSONField(name = "image_count")
-	private long imageCount; // 图片总数量
+	private long imageCount;
+	/**
+	 * 图文总数量
+	 */
 	@JSONField(name = "news_count")
-	private long newsCount; // 图文总数量
+	private long newsCount;
 
 	public long getVoiceCount() {
 		return voiceCount;

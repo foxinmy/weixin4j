@@ -20,6 +20,9 @@ public class Image extends Base implements Responseable, Notifyable, Massable {
 
 	private static final long serialVersionUID = 6928681900960656161L;
 
+	/**
+	 * 上传后的微信返回的媒体ID
+	 */
 	@JSONField(name = "media_id")
 	@XStreamAlias("MediaId")
 	private String mediaId;

@@ -20,15 +20,21 @@ import com.foxinmy.weixin4j.msg.model.Base;
  * @see com.foxinmy.weixin4j.msg.model.Music
  * @see com.foxinmy.weixin4j.msg.model.News
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/index.php?title=%E5%8F%91%E9%80%81%E5%AE%A2%E6%9C%8D%E6%B6%88%E6%81%AF">发送客服消息</a>
+ *      href="http://mp.weixin.qq.com/wiki/1/70a29afed17f56d537c833f89be979c9.html#.E5.AE.A2.E6.9C.8D.E6.8E.A5.E5.8F.A3-.E5.8F.91.E6.B6.88.E6.81.AF">发送客服消息</a>
  */
 public class NotifyMessage implements Serializable {
 
 	private static final long serialVersionUID = 7190233634431087729L;
 
+	/**
+	 * 用户的openid
+	 */
 	private String touser;
+	/**
+	 * 消息对象
+	 */
 	@JSONField(name = "%s")
-	private Base box;// 消息项
+	private Base box;
 
 	public NotifyMessage(Base box) {
 		this(null, box);

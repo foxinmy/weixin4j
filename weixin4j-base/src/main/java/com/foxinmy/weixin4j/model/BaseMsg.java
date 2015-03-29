@@ -16,18 +16,38 @@ public class BaseMsg implements Serializable {
 
 	private static final long serialVersionUID = 7761192742840031607L;
 
+	/**
+	 * 开发者微信号
+	 */
 	@XStreamAlias("ToUserName")
-	private String toUserName; // 开发者微信号
+	private String toUserName;
+	/**
+	 * 发送方账号 即用户的openid
+	 */
 	@XStreamAlias("FromUserName")
-	private String fromUserName; // 发送方帐号（一个OpenID）
+	private String fromUserName;
+	/**
+	 * 消息创建时间 系统毫秒数
+	 */
 	@XStreamAlias("CreateTime")
-	private long createTime = System.currentTimeMillis(); // 消息创建时间 （整型）
+	private long createTime = System.currentTimeMillis();
+	/**
+	 * 消息类型
+	 * 
+	 * @see com.foxinmy.weixin4j.type.MessageType
+	 */
 	@XStreamAlias("MsgType")
-	private String msgType; // 消息类型
+	private String msgType;
+	/**
+	 * 消息ID 可用于排重
+	 */
 	@XStreamAlias("MsgId")
-	private long msgId; // 消息ID
+	private long msgId;
 	@XStreamAlias("AgentID")
-	private String agentId; // 企业号独有的应用ID
+	/**
+	 * 企业号独有的应用ID
+	 */
+	private String agentId;
 
 	public BaseMsg() {
 

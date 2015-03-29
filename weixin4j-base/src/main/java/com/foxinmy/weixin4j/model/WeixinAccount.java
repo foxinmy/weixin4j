@@ -20,14 +20,23 @@ import com.foxinmy.weixin4j.type.AccountType;
 public abstract class WeixinAccount implements Serializable {
 	private static final long serialVersionUID = -6001008896414323534L;
 
-	// 唯一的身份标识
+	/**
+	 * 唯一的身份标识
+	 */
 	private String id;
-	// 调用接口的密钥
+	/**
+	 * 调用接口的密钥
+	 */
 	private String secret;
 	private String token;
-	// 安全模式下的加密密钥
+	/**
+	 * 安全模式下的加密密钥
+	 */
 	private String encodingAesKey;
-
+	/**
+	 * 账号类型
+	 * @return
+	 */
 	public abstract AccountType getAccountType();
 
 	public WeixinAccount() {

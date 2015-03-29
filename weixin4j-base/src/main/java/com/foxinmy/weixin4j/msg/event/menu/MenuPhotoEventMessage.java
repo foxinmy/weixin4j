@@ -21,6 +21,9 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 
 	private static final long serialVersionUID = 3142350663022709730L;
 
+	/**
+	 * 发送的图片信息
+	 */
 	@XStreamAlias("SendPicsInfo")
 	private PictureInfo pictureInfo;
 
@@ -28,12 +31,27 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 		return pictureInfo;
 	}
 
+	/**
+	 * 图片信息
+	 * 
+	 * @className PictureInfo
+	 * @author jy
+	 * @date 2015年3月29日
+	 * @since JDK 1.7
+	 * @see
+	 */
 	public static class PictureInfo implements Serializable {
 
 		private static final long serialVersionUID = -3361375879168233258L;
 
+		/**
+		 * 发送的图片数量
+		 */
 		@XStreamAlias("Count")
 		private int count;
+		/**
+		 * 图片列表
+		 */
 		@XStreamAlias("PicList")
 		private List<PictureItem> items;
 
@@ -51,11 +69,23 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 		}
 	}
 
+	/**
+	 * 图片
+	 * 
+	 * @className PictureItem
+	 * @author jy
+	 * @date 2015年3月29日
+	 * @since JDK 1.7
+	 * @see
+	 */
 	@XStreamAlias("item")
 	public static class PictureItem implements Serializable {
 
 		private static final long serialVersionUID = -7636697449096645590L;
 
+		/**
+		 * 图片的MD5值，开发者若需要，可用于验证接收到图片
+		 */
 		@XStreamAlias("PicMd5Sum")
 		private String md5;
 

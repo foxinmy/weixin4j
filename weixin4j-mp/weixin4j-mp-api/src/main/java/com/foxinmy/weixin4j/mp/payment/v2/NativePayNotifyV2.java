@@ -15,6 +15,10 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class NativePayNotifyV2 extends JsPayNotify {
 
 	private static final long serialVersionUID = 1868431159301749988L;
+	
+	/**
+	 * 产品ID 可视为订单ID
+	 */
 	@XStreamAlias("ProductId")
 	private String productId;
 

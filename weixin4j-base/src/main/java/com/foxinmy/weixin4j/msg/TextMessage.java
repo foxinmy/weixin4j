@@ -24,8 +24,11 @@ public class TextMessage extends BaseMsg {
 		super(MessageType.text.name());
 	}
 
+	/**
+	 * 消息内容
+	 */
 	@XStreamAlias("Content")
-	private String content; // 消息内容
+	private String content;
 
 	public String getContent() {
 		return content;

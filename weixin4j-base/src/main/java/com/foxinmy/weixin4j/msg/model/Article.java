@@ -17,17 +17,29 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class Article implements Serializable {
 
 	private static final long serialVersionUID = -1231352700301456395L;
-	
+
+	/**
+	 * 图文消息标题
+	 */
 	@XStreamAlias("Title")
-	private String title; // 图文消息标题
+	private String title;
+	/**
+	 * 图文消息描述
+	 */
 	@JSONField(name = "description")
 	@XStreamAlias("Description")
-	private String desc; // 图文消息描述
+	private String desc;
+	/**
+	 * 图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+	 */
 	@JSONField(name = "picurl")
 	@XStreamAlias("PicUrl")
-	private String picUrl; // 图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+	private String picUrl;
+	/**
+	 *  点击图文消息跳转链接
+	 */
 	@XStreamAlias("Url")
-	private String url; // 点击图文消息跳转链接
+	private String url;
 
 	public Article(String title, String desc, String picUrl, String url) {
 		this.title = title;

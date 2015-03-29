@@ -15,16 +15,37 @@ public class MpArticle implements Serializable {
 
 	private static final long serialVersionUID = 5583479943661639234L;
 
+	/**
+	 * 图文消息缩略图的media_id，可以在基础支持-上传多媒体文件接口中获得 非空
+	 */
 	@JSONField(name = "thumb_media_id")
-	private String thumbMediaId; // 图文消息缩略图的media_id，可以在基础支持-上传多媒体文件接口中获得 非空
-	private String author;// 图文消息的作者 可为空
-	private String title;// 图文消息的标题 非空
+	private String thumbMediaId;
+	/**
+	 * 图文消息的作者 可为空
+	 */
+	private String author;
+	/**
+	 * 图文消息的标题 非空
+	 */
+	private String title;
+	/**
+	 * 在图文消息页面点击“阅读原文”后的页面 可为空
+	 */
 	@JSONField(name = "content_source_url")
-	private String url;// 在图文消息页面点击“阅读原文”后的页面 可为空
-	private String content;// 图文消息页面的内容，支持HTML标签 非空
-	private String digest;// 图文消息的描述 可为空
+	private String url;
+	/**
+	 * 图文消息页面的内容，支持HTML标签 非空
+	 */
+	private String content;
+	/**
+	 * 图文消息的描述 可为空
+	 */
+	private String digest;
+	/**
+	 * 是否显示封面，1为显示，0为不显示 可为空
+	 */
 	@JSONField(name = "show_cover_pic")
-	private String showCoverPic; // 是否显示封面，1为显示，0为不显示 可为空
+	private String showCoverPic;
 
 	public MpArticle(String thumbMediaId, String title, String content) {
 		this.thumbMediaId = thumbMediaId;

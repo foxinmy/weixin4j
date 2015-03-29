@@ -19,19 +19,33 @@ public class SemQuery implements Serializable {
 	private static final long serialVersionUID = 679548284525912436L;
 	private JSONObject jsonObj;
 
-	// 输入文本串
+	/**
+	 * 输入文本串
+	 * 
+	 * @param query
+	 */
 	public SemQuery(String query) {
 		jsonObj = new JSONObject();
 		jsonObj.put("query", query);
 	}
 
-	// 城市名称,与经纬度二选一传入
+	/**
+	 * 城市名称,与经纬度二选一传入
+	 * 
+	 * @param city
+	 * @return
+	 */
 	public SemQuery city(String city) {
 		jsonObj.put("city", city);
 		return this;
 	}
 
-	// 需要使用的服务类别,多个用,隔开,不能为空
+	/**
+	 * 需要使用的服务类别,多个用,隔开,不能为空
+	 * 
+	 * @param categorys
+	 * @return
+	 */
 	public SemQuery category(SemCategory... categorys) {
 		StringBuilder category = new StringBuilder();
 		if (categorys.length == 1) {
@@ -46,33 +60,59 @@ public class SemQuery implements Serializable {
 		return this;
 	}
 
-	// ￼App id,开发者的唯一标识,用于区分开放者, 如果为空,则没法使用上下文理解功能。
+	/**
+	 * ￼App id,开发者的唯一标识,用于区分开放者, 如果为空,则没法使用上下文理解功能。
+	 * 
+	 * @param appid
+	 * @return
+	 */
 	public SemQuery appid(String appid) {
 		jsonObj.put("appid", appid);
 		return this;
 	}
 
-	// 用户唯一 id(并非开发者 id),用于区分该开发者下不同用户,如果为空,则没法使用上下文理解功能。appid 和 uid
-	// 同时存在的情况下,才可以使用上下文理解功能。
+	/**
+	 * 用户唯一 id(并非开发者 id),用于区分该开发者下不同用户,如果为空,则没法使用上下文理解功能。appid 和
+	 * uid同时存在的情况下,才可以使用上下文理解功能。
+	 * 
+	 * @param uid
+	 * @return
+	 */
 	public SemQuery uid(String uid) {
 		jsonObj.put("uid", uid);
 		return this;
 	}
 
-	// 区域名称,在城市存在的情况下可省;与经纬度 二选一传入
+	/**
+	 * 区域名称,在城市存在的情况下可省;与经纬度 二选一传入
+	 * 
+	 * @param region
+	 * @return
+	 */
 	public SemQuery region(String region) {
 		jsonObj.put("region", region);
 		return this;
 	}
 
-	// 纬度经度;与城市二选一传入
+	/**
+	 * 纬度经度;与城市二选一传入
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 * @return
+	 */
 	public SemQuery location(float latitude, float longitude) {
 		jsonObj.put("latitude", latitude);
 		jsonObj.put("longitude", longitude);
 		return this;
 	}
 
-	// 输入文本串
+	/**
+	 * 输入文本串
+	 * 
+	 * @param query
+	 * @return
+	 */
 	public static SemQuery build(String query) {
 		return new SemQuery(query);
 	}

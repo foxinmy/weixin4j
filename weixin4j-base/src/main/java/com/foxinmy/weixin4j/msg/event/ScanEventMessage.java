@@ -15,6 +15,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 public class ScanEventMessage extends EventMessage {
 
+	private static final long serialVersionUID = 8078674062833071562L;
+
 	public ScanEventMessage() {
 		super(EventType.scan);
 	}
@@ -23,12 +25,16 @@ public class ScanEventMessage extends EventMessage {
 		super(eventType);
 	}
 
-	private static final long serialVersionUID = 8078674062833071562L;
-
+	/**
+	 * 事件KEY值，是一个32位无符号整数，即创建二维码时的二维码scene_id
+	 */
 	@XStreamAlias("EventKey")
-	private String eventKey; // 事件KEY值，是一个32位无符号整数，即创建二维码时的二维码scene_id
+	private String eventKey;
+	/**
+	 * 二维码的ticket，可用来换取二维码图片
+	 */
 	@XStreamAlias("Ticket")
-	private String ticket; // 二维码的ticket，可用来换取二维码图片
+	private String ticket;
 
 	public String getEventKey() {
 		return eventKey;

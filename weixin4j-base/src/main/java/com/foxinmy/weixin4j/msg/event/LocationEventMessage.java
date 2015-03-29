@@ -22,13 +22,21 @@ public class LocationEventMessage extends EventMessage {
 	public LocationEventMessage() {
 		super(EventType.location);
 	}
-
+	/**
+	 * 地理位置纬度
+	 */
 	@XStreamAlias("Latitude")
-	private String latitude;// 地理位置纬度
+	private String latitude;
+	/**
+	 * 地理位置经度
+	 */
 	@XStreamAlias("Longitude")
-	private String longitude;// 地理位置经度
+	private String longitude;
+	/**
+	 * 地理位置精度
+	 */
 	@XStreamAlias("Precision")
-	private String precision;// 地理位置精度
+	private String precision;
 
 	public String getLatitude() {
 		return latitude;

@@ -17,8 +17,14 @@ public class Tag implements Serializable {
 
 	private static final long serialVersionUID = 5204620476267654921L;
 
+	/**
+	 * 标签ID
+	 */
 	@JSONField(name = "tagid")
 	private int id;
+	/**
+	 * 标签名称
+	 */
 	@JSONField(name = "tagname")
 	private String name;
 

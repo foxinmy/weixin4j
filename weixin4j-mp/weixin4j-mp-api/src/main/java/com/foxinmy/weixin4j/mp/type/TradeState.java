@@ -10,12 +10,36 @@ package com.foxinmy.weixin4j.mp.type;
  * @see
  */
 public enum TradeState {
-	SUCCESS, // 支付成功
-	REFUND, // 转入退款
-	NOTPAY, // 未支付
-	CLOSED, // 已关闭
-	REVOKED, // 已撤销
-	USERPAYING, // 用户支付中
-	NOPAY, // 未支付(输入密码或 确认支付超时)
-	PAYERROR;// 支付失败(其他 原因,如银行返回失败)
+	/**
+	 * 支付成功
+	 */
+	SUCCESS,
+	/**
+	 * 转入退款
+	 */
+	REFUND,
+	/**
+	 * 未支付
+	 */
+	NOTPAY,
+	/**
+	 * 已关闭
+	 */
+	CLOSED,
+	/**
+	 * 已撤销
+	 */
+	REVOKED,
+	/**
+	 * 用户支付中
+	 */
+	USERPAYING,
+	/**
+	 * 未支付(输入密码或 确认支付超时)
+	 */
+	NOPAY,
+	/**
+	 * 支付失败(其他 原因,如银行返回失败)
+	 */
+	PAYERROR;
 }

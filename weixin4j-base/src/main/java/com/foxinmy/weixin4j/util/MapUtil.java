@@ -23,6 +23,14 @@ import com.alibaba.fastjson.TypeReference;
  * @see
  */
 public class MapUtil {
+	/**
+	 * 连接字符串
+	 * @param object 对象
+	 * @param encoder 是否编码
+	 * @param lowerCase 是否转换小写
+	 * @param extra 附加对象
+	 * @return
+	 */
 	public static String toJoinString(Object object, boolean encoder,
 			boolean lowerCase, Map<String, String> extra) {
 		String text = JSON.toJSONString(object);
@@ -43,6 +51,13 @@ public class MapUtil {
 		return toJoinString(map, encoder, lowerCase);
 	}
 
+	/**
+	 * 连接字符串
+	 * @param map 对象
+	 * @param encoder 是否编码
+	 * @param lowerCase 是否转换小写
+	 * @return
+	 */
 	public static String toJoinString(Map<String, String> map, boolean encoder,
 			boolean lowerCase) {
 		StringBuilder sb = new StringBuilder();

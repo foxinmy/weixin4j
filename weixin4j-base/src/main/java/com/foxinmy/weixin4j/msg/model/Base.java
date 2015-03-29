@@ -19,6 +19,9 @@ public class Base implements Serializable {
 
 	private static final long serialVersionUID = 8487251213352068227L;
 
+	/**
+	 * 媒体类型
+	 */
 	@JSONField(serialize = false)
 	@XStreamOmitField
 	private MediaType mediaType;

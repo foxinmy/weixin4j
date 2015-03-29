@@ -55,7 +55,15 @@ public class ResponseMessage extends BaseMsg {
 		xmlStream.addImplicitCollection(News.class, "articles");
 		xmlStream.aliasSystemAttribute(null, "class");
 	}
-	private String attach; // 附加数据
+	/**
+	 * 附加数据
+	 */
+	private String attach;
+	/**
+	 * 消息对象
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.model.Responseable
+	 */
 	private final Base box;
 
 	public ResponseMessage(Base box) {

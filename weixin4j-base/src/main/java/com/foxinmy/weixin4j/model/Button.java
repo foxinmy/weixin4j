@@ -24,17 +24,39 @@ public class Button implements Serializable {
 
 	private static final long serialVersionUID = -6422234732203854866L;
 
+	/**
+	 * 菜单标题，不超过16个字节，子菜单不超过40个字节
+	 */
 	private String name;
-	private ButtonType type; // 菜单的响应动作类型
-	private String key; // click等点击类型必须
-	private String url; // view类型必须
-
+	/**
+	 * 菜单的响应动作类型
+	 * 
+	 * @see com.foxinmy.weixin4j.type.ButtonType
+	 */
+	private ButtonType type;
+	/**
+	 * 菜单KEY值，用于消息接口推送，不超过128字节
+	 */
+	private String key;
+	/**
+	 * view类型必须 网页链接，用户点击菜单可打开链接，不超过256字节
+	 */
+	private String url;
+	/**
+	 * 二级菜单数组，个数应为1~5个
+	 */
 	@JSONField(name = "sub_button")
 	private List<Button> subs;
 
 	public Button() {
 	}
 
+	/**
+	 * 创建一个菜单
+	 * @param name 菜单显示的名称
+	 * @param value 当buttonType为view时value设置为url,否则为key.
+	 * @param buttonType 按钮类型
+	 */
 	public Button(String name, String value, ButtonType buttonType) {
 		this.name = name;
 		this.type = buttonType;

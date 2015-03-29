@@ -20,17 +20,32 @@ public class Music extends Base implements Responseable, Notifyable {
 
 	private static final long serialVersionUID = -5952134916367253297L;
 
+	/**
+	 * 音乐标题
+	 */
 	@XStreamAlias("Title")
 	private String title;
+	/**
+	 * 音乐描述
+	 */
 	@JSONField(name = "description")
 	@XStreamAlias("Description")
 	private String desc;
+	/**
+	 * 音乐链接
+	 */
 	@JSONField(name = "musicurl")
 	@XStreamAlias("MusicUrl")
 	private String musicUrl;
+	/**
+	 * 高质量音乐链接，WIFI环境优先使用该链接播放音乐
+	 */
 	@JSONField(name = "hqmusicurl")
 	@XStreamAlias("HQMusicUrl")
 	private String hqMusicUrl;
+	/**
+	 * 缩略图的媒体id，通过上传多媒体文件，得到的id
+	 */
 	@JSONField(name = "thumb_media_id")
 	@XStreamAlias("ThumbMediaId")
 	private String thumbMediaId;

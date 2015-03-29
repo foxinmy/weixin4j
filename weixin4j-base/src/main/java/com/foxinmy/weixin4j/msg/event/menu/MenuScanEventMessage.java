@@ -20,6 +20,9 @@ public class MenuScanEventMessage extends MenuEventMessage {
 
 	private static final long serialVersionUID = 3142350663022709730L;
 
+	/**
+	 * 扫描信息
+	 */
 	@XStreamAlias("ScanCodeInfo")
 	private ScanInfo scanInfo;
 
@@ -27,12 +30,26 @@ public class MenuScanEventMessage extends MenuEventMessage {
 		return scanInfo;
 	}
 
+	/**
+	 * 扫描信息
+	 * 
+	 * @className ScanInfo
+	 * @author jy
+	 * @date 2015年3月29日
+	 * @since JDK 1.7
+	 * @see
+	 */
 	public static class ScanInfo implements Serializable {
-	
+
 		private static final long serialVersionUID = 2237570238164900421L;
-		
+		/**
+		 * 扫描类型，一般是qrcode
+		 */
 		@XStreamAlias("ScanType")
 		private String type;
+		/**
+		 * 扫描结果，即二维码对应的字符串信息
+		 */
 		@XStreamAlias("ScanResult")
 		private String result;
 

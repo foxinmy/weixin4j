@@ -20,27 +20,44 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class ApiResult implements Serializable {
 
 	private static final long serialVersionUID = -2876899595643466203L;
-	// 是查询结果状态码,0 表明成功,其他表明错误;
+	/**
+	 * 是查询结果状态码,0 表明成功,其他表明错误;
+	 */
 	@JSONField(name = "ret_code")
 	@XStreamAlias("retcode")
 	private int retCode;
-	// 是查询结果出错信息;
+	/**
+	 * 是查询结果出错信息;
+	 */
 	@JSONField(name = "ret_msg")
 	@XStreamAlias("retmsg")
 	private String retMsg;
-	// 是返回信息中的编码方式;
+	/**
+	 * 是返回信息中的编码方式;
+	 */
 	@JSONField(name = "input_charset")
 	@XStreamAlias("input_charset")
 	private String inputCharset;
-	// 是财付通商户号,即前文的 partnerid;
+	/**
+	 * 是财付通商户号,即前文的 partnerid;
+	 */
 	private String partner;
+	/**
+	 * 多密钥支持的密钥序号,默认 1
+	 */
 	@XStreamAlias("sign_key_index")
 	@JSONField(name = "sign_key_index")
-	private Integer signKeyIndex; // 多密钥支持的密钥序号,默认 1
-	private String sign;// 签名
+	private Integer signKeyIndex;
+	/**
+	 * 签名 <font color="red">调用者无需关注</font>
+	 */
+	private String sign;
+	/**
+	 * 签名类型,取值:MD5、RSA
+	 */
 	@JSONField(name = "sign_type")
 	@XStreamAlias("sign_type")
-	private SignType signType; // 签名类型,取值:MD5、RSA
+	private SignType signType;
 
 	public int getRetCode() {
 		return retCode;

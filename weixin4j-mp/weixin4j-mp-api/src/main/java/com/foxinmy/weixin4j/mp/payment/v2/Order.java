@@ -20,50 +20,82 @@ public class Order extends ApiResult {
 
 	private static final long serialVersionUID = 4543552984506609920L;
 
-	// 是订单状态,0 为成功,其他为失败;
+	/**
+	 * 是订单状态,0 为成功,其他为失败;
+	 */
 	@JSONField(name = "trade_state")
 	private int tradeState;
-	// 是交易模式,1 为即时到帐,其他保留;
+	/**
+	 * 是交易模式,1 为即时到帐,其他保留;
+	 */
 	@JSONField(name = "trade_mode")
 	private int tradeMode;
-	// 是银行类型;
+	/**
+	 * 是银行类型;
+	 */
 	@JSONField(name = "bank_type")
 	private String bankType;
-	// 是银行订单号;
+	/**
+	 * 是银行订单号;
+	 */
 	@JSONField(name = "bank_billno")
 	private String bankBillno;
-	// 是总金额,单位为分;
+	/**
+	 * 是总金额,单位为分;
+	 */
 	@JSONField(name = "total_fee")
 	private int totalFee;
-	// 是币种,1 为人民币;
+	/**
+	 * 是币种,1 为人民币;
+	 */
 	@JSONField(name = "fee_type")
 	private int feeType;
-	// 是财付通订单号;
+	/**
+	 * 是财付通订单号;
+	 */
 	@JSONField(name = "transaction_id")
 	private String transactionId;
-	// 是第三方订单号;
+	/**
+	 * 是第三方订单号;
+	 */
 	@JSONField(name = "out_trade_no")
 	private String outTradeNo;
-	// 表明是否分账,false 为无分账,true 为有分账;
+	/**
+	 * 表明是否分账,false 为无分账,true 为有分账;
+	 */
 	@JSONField(name = "is_split")
 	private boolean isSplit;
-	// 表明是否退款,false 为无退款,ture 为退款;
+	/**
+	 * 表明是否退款,false 为无退款,ture 为退款;
+	 */
 	@JSONField(name = "is_refund")
 	private boolean isRefund;
-	// attach 是商户数据包,即生成订单package 时商户填入的 attach;
+	/**
+	 * attach 是商户数据包,即生成订单package 时商户填入的 attach;
+	 */
 	private String attach;
-	// 支付完成时间;
+	/**
+	 * 支付完成时间;
+	 */
 	@JSONField(name = "time_end")
 	private String timeEnd;
-	// 物流费用,单位为分;
+	/**
+	 * 物流费用,单位为分;
+	 */
 	@JSONField(name = "transport_fee")
 	private int transportFee;
-	// 物品费用,单位为分;
+	/**
+	 * 物品费用,单位为分;
+	 */
 	@JSONField(name = "product_fee")
 	private int productFee;
-	// 折扣价格,单位为分;
+	/**
+	 * 折扣价格,单位为分;
+	 */
 	private int discount;
-	// 换算成人民币之后的总金额,单位为分,一般看 total_fee 即可。
+	/**
+	 * 换算成人民币之后的总金额,单位为分,一般看 total_fee 即可。
+	 */
 	@JSONField(name = "rmb_total_fee")
 	private Integer rmbTotalFee;
 
@@ -276,14 +308,12 @@ public class Order extends ApiResult {
 				+ isRefund + ", attach=" + attach + ", timeEnd=" + timeEnd
 				+ ", transportFee=" + transportFee + ", productFee="
 				+ productFee + ", discount=" + discount + ", rmbTotalFee="
-				+ rmbTotalFee + ", getFormatTradeState()="
-				+ getFormatTradeState() + ", getFormatTotalFee()="
-				+ getFormatTotalFee() + ", getFormatFeeType()="
-				+ getFormatFeeType() + ", getFormatTimeEnd()="
-				+ getFormatTimeEnd() + ", getFormatTransportFee()="
-				+ getFormatTransportFee() + ", getFormatProductFee()="
-				+ getFormatProductFee() + ", getFormatDiscount()="
-				+ getFormatDiscount() + ", getFormatRmbTotalFee()="
-				+ getFormatRmbTotalFee() + ", " + super.toString() + "]";
+				+ rmbTotalFee + ", tradeState=" + getFormatTradeState()
+				+ ", totalFee=" + getFormatTotalFee() + ", feeType="
+				+ getFormatFeeType() + ", timeEnd=" + getFormatTimeEnd()
+				+ ", transportFee=" + getFormatTransportFee() + ", productFee="
+				+ getFormatProductFee() + ", discount=" + getFormatDiscount()
+				+ ", rmbTotalFee=" + getFormatRmbTotalFee() + ", "
+				+ super.toString() + "]";
 	}
 }

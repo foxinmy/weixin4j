@@ -25,21 +25,114 @@ import com.foxinmy.weixin4j.msg.event.menu.MenuScanEventMessage;
  * @see
  */
 public enum EventType {
-	subscribe(ScribeEventMessage.class), unsubscribe(ScribeEventMessage.class), scan(
-			ScanEventMessage.class), scancode_push(MenuScanEventMessage.class), view(
-			MenuEventMessage.class), scancode_waitmsg(
-			MenuScanEventMessage.class), pic_sysphoto(
-			MenuPhotoEventMessage.class), pic_photo_or_album(
-			MenuPhotoEventMessage.class), pic_weixin(
-			MenuPhotoEventMessage.class), location_select(
-			MenuLocationEventMessage.class), click(MenuEventMessage.class), location(
-			LocationEventMessage.class), masssendjobfinish(
-			MassEventMessage.class), templatesendjobfinish(
-			TemplatesendjobfinishMessage.class), enter_agent(
-			EnterAgentEventMessage.class), kf_create_session(
-			KfCreateEventMessage.class), kf_close_session(
-			KfCloseEventMessage.class), kf_switch_session(
-			KfSwitchEventMessage.class);
+	/**
+	 * 关注事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.ScribeEventMessage
+	 */
+	subscribe(ScribeEventMessage.class),
+	/**
+	 * 取消关注事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.ScribeEventMessage
+	 */
+	unsubscribe(ScribeEventMessage.class),
+	/**
+	 * 二维码扫描事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.ScanEventMessage
+	 */
+	scan(ScanEventMessage.class),
+	/**
+	 * 上报地理位置事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.LocationEventMessage
+	 */
+	location(LocationEventMessage.class),
+	/**
+	 * 菜单扫描事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuScanEventMessage
+	 */
+	scancode_push(MenuScanEventMessage.class),
+	/**
+	 * 菜单点击关键字事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuEventMessage
+	 */
+	view(MenuEventMessage.class),
+	/**
+	 * 菜单点击链接事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuEventMessage
+	 */
+	click(MenuEventMessage.class),
+	/**
+	 * 菜单扫描并调出等待界面事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuScanEventMessage
+	 */
+	scancode_waitmsg(MenuScanEventMessage.class),
+	/**
+	 * 菜单弹出拍照事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuPhotoEventMessage
+	 */
+	pic_sysphoto(MenuPhotoEventMessage.class),
+	/**
+	 * 菜单弹出发图事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuPhotoEventMessage
+	 */
+	pic_photo_or_album(MenuPhotoEventMessage.class),
+	/**
+	 * 菜单弹出发图事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuPhotoEventMessage
+	 */
+	pic_weixin(MenuPhotoEventMessage.class),
+	/**
+	 * 菜单发送地理位置事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuLocationEventMessage
+	 */
+	location_select(MenuLocationEventMessage.class),
+	/**
+	 * 群发消息事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.MassEventMessage
+	 */
+	masssendjobfinish(MassEventMessage.class),
+	/**
+	 * 模板消息事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
+	 */
+	templatesendjobfinish(TemplatesendjobfinishMessage.class),
+	/**
+	 * 进入企业号应用事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.EnterAgentEventMessage
+	 */
+	enter_agent(EnterAgentEventMessage.class),
+	/**
+	 * 客服接入会话事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.KfCreateEventMessage
+	 */
+	kf_create_session(KfCreateEventMessage.class),
+	/**
+	 * 客服关闭会话事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.KfCloseEventMessage
+	 */
+	kf_close_session(KfCloseEventMessage.class),
+	/**
+	 * 客服转接会话事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.KfSwitchEventMessage
+	 */
+	kf_switch_session(KfSwitchEventMessage.class);
 
 	private Class<? extends EventMessage> eventClass;
 

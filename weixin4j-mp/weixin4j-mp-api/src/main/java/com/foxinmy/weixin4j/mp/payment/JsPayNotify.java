@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.mp.payment;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -15,9 +16,14 @@ public class JsPayNotify extends PayBaseInfo {
 
 	private static final long serialVersionUID = -4659030958445259803L;
 
+	/**
+	 * 用户的openid
+	 */
 	@XStreamAlias("OpenId")
-	private String openid; // 用户ID
-
+	private String openid;
+	/**
+	 * 是否关注公众号
+	 */
 	@XStreamAlias("IsSubscribe")
 	private int issubscribe;
 
@@ -37,9 +43,14 @@ public class JsPayNotify extends PayBaseInfo {
 		this.issubscribe = issubscribe;
 	}
 
+	@JSONField(serialize = false, deserialize = false)
+	public boolean getFormatIssubscribe() {
+		return issubscribe == 1;
+	}
+
 	@Override
 	public String toString() {
-		return "openid=" + openid + ", issubscribe=" + issubscribe
+		return "openid=" + openid + ", issubscribe=" + getFormatIssubscribe()
 				+ ", " + super.toString();
 	}
 }

@@ -7,9 +7,13 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.XmlResult;
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
+import com.foxinmy.weixin4j.mp.api.CouponApi;
 import com.foxinmy.weixin4j.mp.api.Pay2Api;
 import com.foxinmy.weixin4j.mp.api.Pay3Api;
 import com.foxinmy.weixin4j.mp.api.PayApi;
+import com.foxinmy.weixin4j.mp.payment.coupon.CouponDetail;
+import com.foxinmy.weixin4j.mp.payment.coupon.CouponResult;
+import com.foxinmy.weixin4j.mp.payment.coupon.CouponStock;
 import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
 import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
@@ -34,9 +38,11 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台支付API</a>
  */
 public class WeixinPayProxy {
+
 	private final PayApi payApi;
 	private final Pay2Api pay2Api;
 	private final Pay3Api pay3Api;
+	private final CouponApi couponApi;
 
 	public WeixinPayProxy() {
 		this(ConfigUtil.getWeixinMpAccount(), new FileTokenHolder(
@@ -60,6 +66,7 @@ public class WeixinPayProxy {
 		} else {
 			this.payApi = this.pay3Api;
 		}
+		this.couponApi = new CouponApi(weixinAccount);
 	}
 
 	/**
@@ -293,7 +300,7 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.Pay3Api
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4">申请退款API</a>
-	 * @since V3 TODO
+	 * @since V3
 	 * @throws WeixinException
 	 */
 	public com.foxinmy.weixin4j.mp.payment.v3.RefundResult refundV3(
@@ -470,5 +477,78 @@ public class WeixinPayProxy {
 			throws WeixinException {
 		return pay3Api.interfaceReport(interfaceUrl, executeTime, outTradeNo,
 				ip, time, returnXml);
+	}
+
+	/**
+	 * 发放代金券(需要证书)
+	 * 
+	 * @param caFile
+	 *            证书文件(后缀为*.p12)
+	 * @param couponStockId
+	 *            代金券批次id
+	 * @param partnerTradeNo
+	 *            商户发放凭据号（格式：商户id+日期+流水号），商户侧需保持唯一性
+	 * @param openId
+	 *            用户的openid
+	 * @param opUserId
+	 *            操作员帐号, 默认为商户号 可在商户平台配置操作员对应的api权限 可为空
+	 * @return 发放结果
+	 * @see com.foxinmy.weixin4j.mp.api.CouponApi
+	 * @see com.foxinmy.weixin4j.mp.payment.coupon.CouponResult
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/sp_coupon.php?chapter=12_3">发放代金券接口</a>
+	 * @throws WeixinException
+	 */
+	public CouponResult sendCoupon(File caFile, String couponStockId,
+			String partnerTradeNo, String openId, String opUserId)
+			throws WeixinException {
+		return couponApi.sendCoupon(caFile, couponStockId, partnerTradeNo,
+				openId, opUserId);
+	}
+
+	/**
+	 * 发放代金券采用properties中配置的ca文件
+	 * 
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinPayProxy#sendCoupon(File, String, String, String, String)}
+	 */
+	public CouponResult sendCoupon(String couponStockId, String partnerTradeNo,
+			String openId) throws WeixinException {
+		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
+		return couponApi.sendCoupon(caFile, couponStockId, partnerTradeNo,
+				openId, null);
+	}
+
+	/**
+	 * 查询代金券批次
+	 * 
+	 * @param couponStockId
+	 *            代金券批次ID
+	 * @return 代金券批次信息
+	 * @see com.foxinmy.weixin4j.mp.api.CouponApi
+	 * @see com.foxinmy.weixin4j.mp.payment.coupon.CouponStock
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/sp_coupon.php?chapter=12_4">查询代金券信息</a>
+	 * @throws WeixinException
+	 */
+	public CouponStock queryCouponStock(String couponStockId)
+			throws WeixinException {
+		return couponApi.queryCouponStock(couponStockId);
+	}
+
+	/**
+	 * 查询代金券详细
+	 * 
+	 * @param couponId
+	 *            代金券ID
+	 * @return 代金券详细信息
+	 * @see com.foxinmy.weixin4j.mp.api.CouponApi
+	 * @see com.foxinmy.weixin4j.mp.payment.coupon.CouponDetail
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/sp_coupon.php?chapter=12_5">查询代金券详细信息</a>
+	 * @throws WeixinException
+	 */
+	public CouponDetail queryCouponDetail(String couponId)
+			throws WeixinException {
+		return couponApi.queryCouponDetail(couponId);
 	}
 }

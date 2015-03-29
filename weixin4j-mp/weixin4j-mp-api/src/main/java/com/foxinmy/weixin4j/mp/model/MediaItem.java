@@ -20,13 +20,25 @@ public class MediaItem implements Serializable {
 
 	private static final long serialVersionUID = -2923028664954250134L;
 
+	/**
+	 * 媒体素材ID
+	 */
 	@JSONField(name = "media_id")
-	private String mediaId; // 媒体素材ID
-	private String name; // 媒体素材名称
+	private String mediaId;
+	/**
+	 * 媒体素材名称
+	 */
+	private String name;
+	/**
+	 * 媒体素材最后更新时间
+	 */
 	@JSONField(name = "update_time")
-	private Date updateTime; // 媒体素材最后更新时间
+	private Date updateTime;
+	/**
+	 * 图文素材列表
+	 */
 	@JSONField(name = "news_item")
-	private List<MpArticle> articles; // 图文素材列表
+	private List<MpArticle> articles;
 
 	public String getMediaId() {
 		return mediaId;

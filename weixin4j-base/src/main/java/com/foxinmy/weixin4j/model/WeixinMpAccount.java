@@ -12,26 +12,44 @@ import com.foxinmy.weixin4j.type.AccountType;
  * @author jy
  * @date 2014年8月17日
  * @since JDK 1.7
- * @see<a href=
- *        "https://mp.weixin.qq.com/advanced/advanced?action=dev&t=advanced/dev&token=836970804&lang=zh_CN"
- *        >开发者模式</a>
+ * @see <a href=
+ *      "https://mp.weixin.qq.com/advanced/advanced?action=dev&t=advanced/dev&token=836970804&lang=zh_CN"
+ *      >开发者模式</a>
  */
 public class WeixinMpAccount extends WeixinAccount {
 	private static final long serialVersionUID = 3689999353867189585L;
 
-	// 支付场景下为用户的openid 其余情况可能是公众号的原始ID
+	/**
+	 * 支付场景下为用户的openid 其余情况可能是公众号的原始ID
+	 */
 	private String openId;
-	// 公众号支付请求中用于加密的密钥 Key,可验证商户唯一身份,PaySignKey 对应于支付场景中的 appKey 值
+	/**
+	 * 公众号支付请求中用于加密的密钥 Key,可验证商户唯一身份,PaySignKey 对应于支付场景中的 appKey 值
+	 */
 	private String paySignKey;
-	// 财付通商户身份的标识
+	/**
+	 * 财付通商户身份的标识
+	 */
 	private String partnerId;
-	// 财付通商户权限密钥Key
+	/**
+	 * 财付通商户权限密钥Key
+	 */
 	private String partnerKey;
-	// 微信支付商户号V3.x版本
+	/**
+	 * 微信支付分配的商户号(商户平台版)
+	 */
 	private String mchId;
-	// 微信支付分配的设备号
+	/**
+	 * 微信支付分配的子商户号，受理模式下必填(商户平台版)
+	 */
+	private String subMchId;
+	/**
+	 * 微信支付分配的设备号(商户平台版)
+	 */
 	private String deviceInfo;
-	// 微信支付版本号(如果无则按照mchId来做判断)
+	/**
+	 * 微信支付版本号(如果无则按照mchId来做判断)
+	 */
 	private int version;
 
 	public String getOpenId() {
@@ -93,6 +111,14 @@ public class WeixinMpAccount extends WeixinAccount {
 		this.version = version;
 	}
 
+	public String getSubMchId() {
+		return subMchId;
+	}
+
+	public void setSubMchId(String subMchId) {
+		this.subMchId = subMchId;
+	}
+
 	public WeixinMpAccount() {
 
 	}
@@ -102,12 +128,12 @@ public class WeixinMpAccount extends WeixinAccount {
 	}
 
 	/**
-	 * V3版本字段
+	 * 商户平台版本(V3)字段
 	 * 
-	 * @param appId
-	 * @param appSecret
-	 * @param paySignKey
-	 * @param mchId
+	 * @param appId 公众号唯一的身份ID
+	 * @param appSecret 调用接口的凭证
+	 * @param paySignKey 支付密钥字符串
+	 * @param mchId 微信支付分配的商户号
 	 */
 	public WeixinMpAccount(String appId, String appSecret, String paySignKey,
 			String mchId) {
@@ -119,11 +145,11 @@ public class WeixinMpAccount extends WeixinAccount {
 	/**
 	 * V2版本字段
 	 * 
-	 * @param appId
-	 * @param appSecret
-	 * @param paySignKey
-	 * @param partnerId
-	 * @param partnerKey
+	 * @param appId 公众号唯一的身份ID
+	 * @param appSecret 调用接口的凭证
+	 * @param paySignKey 支付密钥字符串
+	 * @param partnerId 财付通账号的ID
+	 * @param partnerKey 财付通账号的key
 	 */
 	public WeixinMpAccount(String appId, String appSecret, String paySignKey,
 			String partnerId, String partnerKey) {

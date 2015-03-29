@@ -5,30 +5,65 @@ import java.io.Serializable;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+/**
+ * 微信的被动消息
+ * 
+ * @className HttpWeixinMessage
+ * @author jy
+ * @date 2015年3月29日
+ * @since JDK 1.7
+ * @see
+ */
 @XStreamAlias("xml")
 public class HttpWeixinMessage implements Serializable {
 	private static final long serialVersionUID = -9157395300510879866L;
 
 	// 以下字段是加密方式为「安全模式」时的参数
+	/**
+	 * 公众号的唯一ID
+	 */
 	@XStreamAlias("ToUserName")
 	private String toUserName;
+	/**
+	 * 加密后的内容
+	 */
 	@XStreamAlias("Encrypt")
 	private String encryptContent;
+	/**
+	 * 加密类型
+	 * 
+	 * @see com.foxinmy.weixin4j.type.EncryptType
+	 */
 	private EncryptType encryptType;
 
 	// 以下字段每次被动消息时都会带上
+	/**
+	 * 随机字符串
+	 */
 	private String echoStr;
+	/**
+	 * 时间戳
+	 */
 	private String timeStamp;
+	/**
+	 * 随机数
+	 */
 	private String nonce;
+	/**
+	 * 参数签名
+	 */
 	private String signature;
-
-	// 冗余字段
+	/**
+	 * 设置的token
+	 */
 	private String token;
-
-	// xml消息明文主体
+	/**
+	 * xml消息明文主体
+	 */
 	private String originalContent;
-
-	// request method
+	/**
+	 * 请求的方式
+	 */
 	private String method;
 
 	public String getToUserName() {
@@ -113,11 +148,11 @@ public class HttpWeixinMessage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "HttpWeixinMessage [toUserName=" + toUserName + ", encryptContent="
-				+ encryptContent + ", encryptType=" + encryptType
-				+ ", echoStr=" + echoStr + ", timeStamp=" + timeStamp
-				+ ", nonce=" + nonce + ", signature=" + signature + ", token="
-				+ token + ", originalContent=" + originalContent + ", method="
-				+ method + "]";
+		return "HttpWeixinMessage [toUserName=" + toUserName
+				+ ", encryptContent=" + encryptContent + ", encryptType="
+				+ encryptType + ", echoStr=" + echoStr + ", timeStamp="
+				+ timeStamp + ", nonce=" + nonce + ", signature=" + signature
+				+ ", token=" + token + ", originalContent=" + originalContent
+				+ ", method=" + method + "]";
 	}
 }

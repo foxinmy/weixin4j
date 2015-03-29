@@ -22,12 +22,21 @@ public class LinkMessage extends BaseMsg {
 		super(MessageType.link.name());
 	}
 
+	/**
+	 * 消息标题
+	 */
 	@XStreamAlias("Title")
-	private String title; // 消息标题
+	private String title;
+	/**
+	 * 消息描述
+	 */
 	@XStreamAlias("Description")
-	private String description; // 消息描述
-	@XStreamAlias("url")
-	private String url; // 消息链接
+	private String description;
+	/**
+	 * 消息链接
+	 */
+	@XStreamAlias("Url")
+	private String url;
 
 	public String getTitle() {
 		return title;

@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.msg.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * 视频对象
@@ -20,13 +21,26 @@ public class Video extends Base implements Responseable, Notifyable {
 
 	private static final long serialVersionUID = 2167437425244069128L;
 
+	/**
+	 * 上传视频微信返回的媒体ID
+	 */
 	@JSONField(name = "media_id")
 	@XStreamAlias("MediaId")
 	private String mediaId;
+	/**
+	 * 缩略图的媒体ID(客服消息)
+	 */
+	@XStreamOmitField
 	@JSONField(name = "thumb_media_id")
 	private String thumbMediaId;
+	/**
+	 * 视频标题
+	 */
 	@XStreamAlias("Title")
 	private String title;
+	/**
+	 * 视频描述
+	 */
 	@JSONField(name = "description")
 	@XStreamAlias("Description")
 	private String desc;

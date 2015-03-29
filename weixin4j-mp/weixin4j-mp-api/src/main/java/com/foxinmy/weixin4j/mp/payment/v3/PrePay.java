@@ -17,20 +17,22 @@ public class PrePay extends ApiResult {
 
 	private static final long serialVersionUID = -8430005768959715444L;
 
-	@XStreamAlias("trade_type")
 	/**
 	 * 调用接口提交的交易类型，取值如下：JSAPI，NATIVE，APP，
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.type.TradeType
 	 */
+	@XStreamAlias("trade_type")
 	private TradeType tradeType;
-	@XStreamAlias("prepay_id")
 	/**
 	 * 微信生成的预支付回话标识，用于后续接口调用中使用，该值有效期为2小时
 	 */
+	@XStreamAlias("prepay_id")
 	private String prepayId;
-	@XStreamAlias("code_url")
 	/**
 	 * trade_type 为 NATIVE 是有 返回,此参数可直接生成二 维码展示出来进行扫码支付 可能为空
 	 */
+	@XStreamAlias("code_url")
 	private String codeUrl;
 
 	public PrePay() {

@@ -24,14 +24,26 @@ public class LocationMessage extends BaseMsg {
 		super(MessageType.location.name());
 	}
 
+	/**
+	 * 地理位置维度
+	 */
 	@XStreamAlias("Location_X")
-	private double x; // 地理位置维度
+	private double x;
+	/**
+	 * 地理位置经度
+	 */
 	@XStreamAlias("Location_Y")
-	private double y; // 地理位置经度
+	private double y;
+	/**
+	 * 地图缩放大小
+	 */
 	@XStreamAlias("Scale")
-	private double scale; // 地图缩放大小
+	private double scale;
+	/**
+	 * 地理位置信息
+	 */
 	@XStreamAlias("Label")
-	private String label; // 地理位置信息
+	private String label;
 
 	public double getX() {
 		return x;
@@ -47,10 +59,6 @@ public class LocationMessage extends BaseMsg {
 
 	public String getLabel() {
 		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
 	}
 
 	@Override

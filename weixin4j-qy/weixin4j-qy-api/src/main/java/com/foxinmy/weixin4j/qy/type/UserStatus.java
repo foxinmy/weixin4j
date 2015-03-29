@@ -10,10 +10,22 @@ package com.foxinmy.weixin4j.qy.type;
  * @see
  */
 public enum UserStatus {
-	BOTH(0), // 0=全部
-	FOLLOW(1), // 1=已关注
-	FROZEN(2), // 2=已冻结
-	UNFOLLOW(4);// 4=未关注
+	/**
+	 * 0=全部
+	 */
+	BOTH(0),
+	/**
+	 * 1=已关注
+	 */
+	FOLLOW(1),
+	/**
+	 * 2=已冻结
+	 */
+	FROZEN(2),
+	/**
+	 * 4=未关注
+	 */
+	UNFOLLOW(4);
 	private int val;
 
 	UserStatus(int val) {

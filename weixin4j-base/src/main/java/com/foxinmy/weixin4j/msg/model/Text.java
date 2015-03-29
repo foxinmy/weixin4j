@@ -20,6 +20,9 @@ public class Text extends Base implements Responseable, Notifyable, Massable {
 
 	private static final long serialVersionUID = 520050144519064503L;
 
+	/**
+	 * 内容
+	 */
 	private String content;
 
 	public Text(String content) {

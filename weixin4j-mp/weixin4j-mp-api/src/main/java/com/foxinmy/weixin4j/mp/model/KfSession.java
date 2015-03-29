@@ -18,12 +18,21 @@ public class KfSession implements Serializable {
 
 	private static final long serialVersionUID = 7236468333492555458L;
 
+	/**
+	 * 客服账号
+	 */
 	@JSONField(name = "kf_account")
-	private String kfAccount; // 客服账号
+	private String kfAccount;
+	/**
+	 * 用户ID
+	 */
 	@JSONField(name = "openid")
-	private String userOpenId; // 用户ID
+	private String userOpenId;
+	/**
+	 * 创建时间
+	 */
 	@JSONField(name = "createtime")
-	private Date createTime; // 创建时间
+	private Date createTime;
 
 	public String getKfAccount() {
 		return kfAccount;

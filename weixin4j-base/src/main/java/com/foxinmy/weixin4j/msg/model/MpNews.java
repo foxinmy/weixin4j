@@ -24,9 +24,15 @@ public class MpNews extends Base implements Massable, Notifyable {
 
 	private static final long serialVersionUID = 8853054484809101524L;
 
+	/**
+	 * 上传图文列表后微信返回的媒体ID
+	 */
 	@JSONField(name = "media_id")
 	@XStreamAlias("MediaId")
 	private String mediaId;
+	/**
+	 * 图文列表
+	 */
 	@JSONField(name = "articles")
 	@XStreamOmitField
 	private List<MpArticle> articles;

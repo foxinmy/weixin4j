@@ -32,6 +32,8 @@ weixin4j-mp
   
   + Pay3Api `V3支付API`
   
+  + CouponApi `代金券API`
+  
   + DataApi `数据统计API`
   
   + OauthApi `oauth授权API`
@@ -197,3 +199,9 @@ weixin4j-mp
   + **weixin4j-mp-server**: 新增客服创建、关闭、转接会话事件
   
   + **weixin4j-mp-server**: 新增deploy.xml远程部署ant脚本
+  
+* 2015-03-29
+
+  + **weixin4j-mp-api**: 单行注释调整为多行文档注释
+  
+  + **weixin4j-mp-api**: 新增(CouponApi)[./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java]代金券接口

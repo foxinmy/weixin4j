@@ -2,6 +2,14 @@ package com.foxinmy.weixin4j.qy.model;
 
 import java.io.Serializable;
 
+/**
+ * name-value
+ * @className NameValue
+ * @author jy
+ * @date 2015年3月29日
+ * @since JDK 1.7
+ * @see
+ */
 public class NameValue implements Serializable {
 
 	private static final long serialVersionUID = -348620146718819093L;

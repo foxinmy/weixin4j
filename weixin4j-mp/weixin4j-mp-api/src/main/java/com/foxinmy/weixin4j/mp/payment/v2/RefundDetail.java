@@ -20,27 +20,48 @@ public class RefundDetail extends ApiResult {
 
 	private static final long serialVersionUID = -3687863914168618620L;
 
+	/**
+	 * 商户退款单号
+	 */
 	@XStreamAlias("out_refund_no")
 	@JSONField(name = "out_refund_no")
-	private String outRefundNo; // 商户退款单号
+	private String outRefundNo;
+	/**
+	 * 微信退款单号
+	 */
 	@XStreamAlias("refund_id")
 	@JSONField(name = "refund_id")
-	private String refundId; // 微信退款单号
+	private String refundId;
+	/**
+	 * 退款渠道 0:退到财付通、1:退到银行;
+	 */
 	@XStreamAlias("refund_channel")
 	@JSONField(name = "refund_channel")
-	private int refundChannel; // 退款渠道 0:退到财付通、1:退到银行;
+	private int refundChannel;
+	/**
+	 * 退款总金额,单位为分,可以做部分退款
+	 */
 	@XStreamAlias("refund_fee")
 	@JSONField(name = "refund_fee")
-	private int refundFee; // 退款总金额,单位为分,可以做部分退款
+	private int refundFee;
+	/**
+	 * 退款状态
+	 */
 	@XStreamAlias("refund_status")
 	@JSONField(name = "refund_status")
-	private int refundStatus; // 退款状态
+	private int refundStatus;
+	/**
+	 * 转账退款接收退款的财付通帐号
+	 */
 	@XStreamAlias("recv_user_id")
 	@JSONField(name = "recv_user_id")
-	private String recvUserId;// 转账退款接收退款的财付通帐号
+	private String recvUserId;
+	/**
+	 * 转账退款接收退款的姓名(需与接收退款的财付通帐号绑定的姓名一致)
+	 */
 	@XStreamAlias("reccv_user_name")
 	@JSONField(name = "reccv_user_name")
-	private String reccvUserName;// 转账退款接收退款的姓名(需与接收退款的财 付通帐号绑定的姓名一致)
+	private String reccvUserName;
 
 	public String getOutRefundNo() {
 		return outRefundNo;
@@ -115,9 +136,9 @@ public class RefundDetail extends ApiResult {
 				+ ", refundChannel=" + refundChannel + ", refundFee="
 				+ refundFee + ", refundStatus=" + refundStatus
 				+ ", recvUserId=" + recvUserId + ", reccvUserName="
-				+ reccvUserName + ", getFormatRefundChannel()="
-				+ getFormatRefundChannel() + ", getFormatRefundFee()="
-				+ getFormatRefundFee() + ", getFormatRefundStatus()="
+				+ reccvUserName + ", refundChannel="
+				+ getFormatRefundChannel() + ", refundFee="
+				+ getFormatRefundFee() + ", refundStatus="
 				+ getFormatRefundStatus();
 	}
 }

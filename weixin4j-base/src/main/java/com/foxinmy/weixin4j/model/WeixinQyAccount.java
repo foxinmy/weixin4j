@@ -20,6 +20,13 @@ public class WeixinQyAccount extends WeixinAccount {
 	public WeixinQyAccount() {
 	}
 
+	/**
+	 * 
+	 * @param corpid
+	 *            企业ID
+	 * @param corpsecret
+	 *            管理组的凭证密钥
+	 */
 	public WeixinQyAccount(String corpid, String corpsecret) {
 		super(corpid, corpsecret);
 	}

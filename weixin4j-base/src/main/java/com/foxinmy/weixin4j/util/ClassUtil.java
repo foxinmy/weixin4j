@@ -25,6 +25,12 @@ import com.foxinmy.weixin4j.model.Consts;
  */
 public class ClassUtil {
 
+	/**
+	 * 获取某个包下所有的class信息
+	 * 
+	 * @param _package 包对象
+	 * @return
+	 */
 	public static Set<Class<?>> getClasses(Package _package) {
 		String packageName = _package.getName();
 		String packageFileName = packageName.replace(".", File.separator);
@@ -47,6 +53,13 @@ public class ClassUtil {
 		return null;
 	}
 
+	/**
+	 * 实例化目录下所有的class对象
+	 * 
+	 * @param dir 文件目录
+	 * @param packageName 包的全限类名
+	 * @return
+	 */
 	private static Set<Class<?>> findClassesByFile(File dir, String packageName) {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
 		File[] files = dir.listFiles(new FilenameFilter() {
@@ -75,6 +88,13 @@ public class ClassUtil {
 		return classes;
 	}
 
+	/**
+	 * 实例化jar包下所有的class对象
+	 * 
+	 * @param jar jar包对象
+	 * @param packageName 包的全限类名
+	 * @return
+	 */
 	private static Set<Class<?>> findClassesByJar(JarFile jar,
 			String packageName) {
 		Set<Class<?>> classes = new HashSet<Class<?>>();

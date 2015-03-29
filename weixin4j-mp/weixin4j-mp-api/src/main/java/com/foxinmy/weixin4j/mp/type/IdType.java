@@ -10,10 +10,22 @@ package com.foxinmy.weixin4j.mp.type;
  * @see
  */
 public enum IdType {
-	REFUNDID("refund_id"), // 微信退款单号
-	TRANSACTIONID("transaction_id"), // 微信订单号
-	TRADENO("out_trade_no"), // 商户订单号
-	REFUNDNO("out_refund_no"); // 商户退款号
+	/**
+	 * 微信退款单号
+	 */
+	REFUNDID("refund_id"),
+	/**
+	 * 微信订单号
+	 */
+	TRANSACTIONID("transaction_id"),
+	/**
+	 * 商户订单号
+	 */
+	TRADENO("out_trade_no"),
+	/**
+	 * 商户退款号
+	 */
+	REFUNDNO("out_refund_no");
 	private String name;
 
 	IdType(String name) {

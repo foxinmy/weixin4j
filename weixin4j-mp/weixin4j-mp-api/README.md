@@ -31,6 +31,8 @@ weixin4j-mp-api
   
 * Pay3Api `V3支付API`
 
+* CouponApi `代金券API`
+
 * DataApi `数据统计API`
 
 * OauthApi `oauth授权API`
@@ -172,3 +174,9 @@ weixin.properties说明
 * 2015-03-25
 
   + 根据《微信商户平台文档》修缮[Pay3Api](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/Pay3Api.java)类
+  
+* 2015-03-29
+
+  + 单行注释调整为多行文档注释
+  
+  + 新增(CouponApi)[./src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java]代金券接口

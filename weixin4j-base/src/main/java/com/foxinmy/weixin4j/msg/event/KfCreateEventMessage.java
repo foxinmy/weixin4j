@@ -14,22 +14,21 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E4.BC.9A.E8.AF.9D.E7.8A.B6.E6.80.81.E9.80.9A.E7.9F.A5.E4.BA.8B.E4.BB.B6">会话状态通知事件</a>
  */
 public class KfCreateEventMessage extends EventMessage {
-	
+
 	private static final long serialVersionUID = -8968189700999202108L;
 
 	public KfCreateEventMessage() {
 		super(EventType.kf_create_session);
 	}
 
+	/**
+	 * 客服账号
+	 */
 	@XStreamAlias("KfAccount")
-	private String kfAccount; // 客服账号
+	private String kfAccount;
 
 	public String getKfAccount() {
 		return kfAccount;
-	}
-
-	public void setKfAccount(String kfAccount) {
-		this.kfAccount = kfAccount;
 	}
 
 	@Override

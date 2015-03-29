@@ -20,27 +20,23 @@ public class KfSwitchEventMessage extends EventMessage {
 	public KfSwitchEventMessage() {
 		super(EventType.kf_switch_session);
 	}
-
+	/**
+	 * 来自的客服账号
+	 */
 	@XStreamAlias("FromKfAccount")
-	private String fromKfAccount; // 来自的客服账号
-
+	private String fromKfAccount;
+	/**
+	 * 转移给客服账号
+	 */
 	@XStreamAlias("ToKfAccount")
-	private String toKfAccount; // 转移给客服账号
+	private String toKfAccount;
 
 	public String getFromKfAccount() {
 		return fromKfAccount;
 	}
 
-	public void setFromKfAccount(String fromKfAccount) {
-		this.fromKfAccount = fromKfAccount;
-	}
-
 	public String getToKfAccount() {
 		return toKfAccount;
-	}
-
-	public void setToKfAccount(String toKfAccount) {
-		this.toKfAccount = toKfAccount;
 	}
 
 	@Override

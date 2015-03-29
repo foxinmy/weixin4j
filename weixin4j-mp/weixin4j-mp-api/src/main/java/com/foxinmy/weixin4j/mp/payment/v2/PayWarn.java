@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V2告警通知
+ * 
  * @className PayWarn
  * @author jy
  * @date 2014年12月31日
@@ -16,12 +17,19 @@ public class PayWarn extends PayBaseInfo {
 
 	private static final long serialVersionUID = 2334592957844332640L;
 
+	/**
+	 * 错误代号 1001=发货超时
+	 */
 	@XStreamAlias("ErrorType")
 	private String errortype;
-
+	/**
+	 * 错误描述
+	 */
 	@XStreamAlias("Description")
 	private String description;
-
+	/**
+	 * 错误详情
+	 */
 	@XStreamAlias("AlarmContent")
 	private String alarmcontent;
 

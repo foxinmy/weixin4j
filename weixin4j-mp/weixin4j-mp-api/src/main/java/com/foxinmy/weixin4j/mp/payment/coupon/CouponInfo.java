@@ -6,9 +6,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * 代金券信息
+ * 代金券信息(订单,退款中体现)
  * 
- * @className CouponBase
+ * @className CouponInfo
  * @author jy
  * @date 2015年3月24日
  * @since JDK 1.7
@@ -18,15 +18,21 @@ public class CouponInfo implements Serializable {
 
 	private static final long serialVersionUID = -8744999305258786901L;
 
-	// 代金券或立减优惠批次ID
+	/**
+	 * 代金券或立减优惠批次ID
+	 */
 	@XStreamAlias("coupon_batch_id")
 	@JSONField(name = "coupon_batch_id")
 	private String couponBatchId;
-	// 代金券或立减优惠ID
+	/**
+	 * 代金券或立减优惠ID
+	 */
 	@XStreamAlias("coupon_id")
 	@JSONField(name = "coupon_id")
 	private String couponId;
-	// 单个代金券或立减优惠支付金额
+	/**
+	 * 单个代金券或立减优惠支付金额
+	 */
 	@XStreamAlias("coupon_fee")
 	@JSONField(name = "coupon_fee")
 	private Integer couponFee;

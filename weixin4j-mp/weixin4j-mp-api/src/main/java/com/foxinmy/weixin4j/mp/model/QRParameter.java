@@ -22,9 +22,18 @@ public class QRParameter implements Serializable {
 
 	private static final long serialVersionUID = 6611187606558274253L;
 
-	private int expireSeconds; // 该二维码有效时间，以秒为单位。 最大不超过1800。
-	private QRType qrType; // 二维码类型，QR_SCENE为临时,QR_LIMIT_SCENE为永久
-	private int sceneId; // 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000）
+	/**
+	 * 该二维码有效时间，以秒为单位。 最大不超过1800。
+	 */
+	private int expireSeconds;
+	/**
+	 * 二维码类型，QR_SCENE为临时,QR_LIMIT_SCENE为永久
+	 */
+	private QRType qrType;
+	/**
+	 * 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000）
+	 */
+	private int sceneId;
 
 	public int getExpireSeconds() {
 		return expireSeconds;

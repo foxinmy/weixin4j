@@ -22,18 +22,30 @@ public class RefundRecord extends ApiResult {
 
 	private static final long serialVersionUID = -2971132874939642721L;
 
+	/**
+	 * 微信订单号
+	 */
 	@XStreamAlias("transaction_id")
 	@JSONField(name = "transaction_id")
-	private String transactionId;// 微信订单号
+	private String transactionId;
+	/**
+	 * 商户订单号
+	 */
 	@XStreamAlias("out_trade_no")
 	@JSONField(name = "out_trade_no")
-	private String outTradeNo;// 商户订单号
+	private String outTradeNo;
+	/**
+	 * 退款笔数
+	 */
 	@XStreamAlias("refund_count")
 	@JSONField(name = "refund_count")
-	private int count;// 退款笔数
+	private int count;
+	/**
+	 * 退款详情
+	 */
 	@XStreamOmitField
 	@JSONField(serialize = false, deserialize = false)
-	private List<RefundDetail> details; // 退款详情
+	private List<RefundDetail> details;
 
 	public String getTransactionId() {
 		return transactionId;

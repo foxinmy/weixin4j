@@ -16,11 +16,27 @@ import com.foxinmy.weixin4j.mp.type.CustomRecordOperCode;
 public class CustomRecord implements Serializable {
 
 	private static final long serialVersionUID = -4024147769411601325L;
-	private String worker;// 客服账号
-	private String openid;// 用户的标识
-	private CustomRecordOperCode opercode;// 操作ID（会话状态）
-	private Date time;// 操作时间
-	private String text;// 聊天记录
+
+	/**
+	 * 客服账号
+	 */
+	private String worker;
+	/**
+	 * 用户的标识
+	 */
+	private String openid;
+	/**
+	 * 操作ID（会话状态）
+	 */
+	private CustomRecordOperCode opercode;
+	/**
+	 * 操作时间
+	 */
+	private Date time;
+	/**
+	 * 聊天记录
+	 */
+	private String text;
 
 	public String getWorker() {
 		return worker;

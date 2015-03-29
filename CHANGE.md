@@ -204,4 +204,13 @@
   
   + **weixin4j-qy**: 新增deploy.xml远程部署ant脚本
   
+* 2015-03-29
+
+  + **weixin4j-base**: 单行注释调整为多行文档注释
+  
+  + **weixin4j-mp**: 单行注释调整为多行文档注释
+  
+  + **weixin4j-mp**: 新增(CouponApi)[./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java]代金券接口
+  
+  + **weixin4j-qy**: 单行注释调整为多行文档注释
   

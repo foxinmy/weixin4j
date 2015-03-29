@@ -25,6 +25,9 @@ public class MenuLocationEventMessage extends MenuEventMessage {
 		super(EventType.location_select);
 	}
 
+	/**
+	 * 发送的位置消息
+	 */
 	@XStreamAlias("SendLocationInfo")
 	private LocationInfo locationInfo;
 
@@ -32,18 +35,41 @@ public class MenuLocationEventMessage extends MenuEventMessage {
 		return locationInfo;
 	}
 
+	/**
+	 * 地理位置信息
+	 * @className LocationInfo
+	 * @author jy
+	 * @date 2015年3月29日
+	 * @since JDK 1.7
+	 * @see
+	 */
 	public static class LocationInfo implements Serializable {
-		
+
 		private static final long serialVersionUID = 4904181780216819965L;
-		
+
+		/**
+		 * 地理位置维度
+		 */
 		@XStreamAlias("Location_X")
-		private double x; // 地理位置维度
+		private double x;
+		/**
+		 * 地理位置经度
+		 */
 		@XStreamAlias("Location_Y")
-		private double y; // 地理位置经度
+		private double y;
+		/**
+		 * 地图缩放大小
+		 */
 		@XStreamAlias("Scale")
-		private double scale; // 地图缩放大小
+		private double scale;
+		/**
+		 * 地理位置信息
+		 */
 		@XStreamAlias("Label")
-		private String label; // 地理位置信息
+		private String label;
+		/**
+		 * 朋友圈POI的名字，可能为空
+		 */
 		@XStreamAlias("Poiname")
 		private String poiname;
 

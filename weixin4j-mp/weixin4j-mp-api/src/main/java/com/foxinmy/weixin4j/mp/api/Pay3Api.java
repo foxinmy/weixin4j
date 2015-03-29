@@ -47,7 +47,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
- * V3支付API
+ * V3(商户平台版)支付API
  * 
  * @className Pay3Api
  * @author jy

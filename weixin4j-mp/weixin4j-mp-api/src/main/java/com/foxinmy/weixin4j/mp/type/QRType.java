@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.mp.type;
 
 /**
  * 二维码类型
+ * 
  * @className QRType
  * @author jy
  * @date 2014年11月4日
@@ -9,8 +10,14 @@ package com.foxinmy.weixin4j.mp.type;
  * @see
  */
 public enum QRType {
-	TEMPORARY("QR_SCENE"), // 临时
-	PERMANENCE("QR_LIMIT_SCENE"); // 永久
+	/**
+	 * 临时二维码
+	 */
+	TEMPORARY("QR_SCENE"),
+	/**
+	 * 永久二维码
+	 */
+	PERMANENCE("QR_LIMIT_SCENE");
 	private String name;
 
 	QRType(String name) {

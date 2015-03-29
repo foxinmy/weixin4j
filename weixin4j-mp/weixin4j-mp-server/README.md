@@ -55,7 +55,7 @@ weixin4j-mp-server
  
  > 1.服务的启动脚本[startup.sh](./src/main/startup.sh)需要被注意到,有`JAVA_HOME`和`APP_HOME`两个参数.
  
- > 2.其中`JAVA_HOME`参数值指的是java运行环境(jre|jdk)的安装根目录,如果与脚本中的值不一致,可以改更为实际的路径或者使用`ln -s target /usr/local/java`软链接命令创建期望的链接.
+ > 2.其中`JAVA_HOME`参数值指的是java运行环境(jre|jdk)的安装根目录,如果与脚本中的值不一致,可以改更为实际的路径或者使用`ln -s t/usr/local/java target`软链接命令创建期望的链接.
  
  > 3.其中`APP_HOME`参数值指的是本服务的启动目录,此目录需要被正确事先创建好,同时[`deploy.xml`](./deploy.xml)远程部署命令也依赖于此.
  

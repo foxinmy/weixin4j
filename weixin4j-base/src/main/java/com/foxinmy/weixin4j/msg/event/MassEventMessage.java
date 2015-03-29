@@ -25,14 +25,30 @@ public class MassEventMessage extends EventMessage {
 		super(EventType.masssendjobfinish);
 	}
 
+	/**
+	 * 群发后的状态信息 为“send success”或“send fail”或“err(num)
+	 */
 	@XStreamAlias("Status")
 	private String status;
+	/**
+	 * group_id下粉丝数；或者openid_list中的粉丝数
+	 */
 	@XStreamAlias("TotalCount")
 	private int totalCount;
+	/**
+	 * 过滤（过滤是指特定地区、性别的过滤、用户设置拒收的过滤，用户接收已超4条的过滤）后，准备发送的粉丝数，原则上，FilterCount =
+	 * SentCount + ErrorCount
+	 */
 	@XStreamAlias("FilterCount")
 	private int filterCount;
+	/**
+	 * 发送成功的粉丝数
+	 */
 	@XStreamAlias("SentCount")
 	private int sentCount;
+	/**
+	 * 发送失败的粉丝数
+	 */
 	@XStreamAlias("ErrorCount")
 	private int errorCount;
 
@@ -63,10 +79,9 @@ public class MassEventMessage extends EventMessage {
 	}
 
 	/**
-	 * 发送状态描述</br>
-	 * err(10001,涉嫌广告) err(20001,涉嫌政治) err(20004,涉嫌社会)</br>
-	 * err(20002,涉嫌色情) err(20006,涉嫌违法犯罪) err(20008,涉嫌欺诈)</br>
-	 * err(20013,涉嫌版权) err(22000,涉嫌互推(互相宣传) err(21000,涉嫌其他)
+	 * 发送状态描述</br> err(10001,涉嫌广告) err(20001,涉嫌政治) err(20004,涉嫌社会)</br>
+	 * err(20002,涉嫌色情) err(20006,涉嫌违法犯罪) err(20008,涉嫌欺诈)</br> err(20013,涉嫌版权)
+	 * err(22000,涉嫌互推(互相宣传) err(21000,涉嫌其他)
 	 * 
 	 * @param status
 	 * @return 中文描述
@@ -76,10 +91,9 @@ public class MassEventMessage extends EventMessage {
 	}
 
 	/**
-	 * 发送状态描述</br>
-	 * err(10001,涉嫌广告) err(20001,涉嫌政治) err(20004,涉嫌社会)</br>
-	 * err(20002,涉嫌色情) err(20006,涉嫌违法犯罪) err(20008,涉嫌欺诈)</br>
-	 * err(20013,涉嫌版权) err(22000,涉嫌互推(互相宣传) err(21000,涉嫌其他)
+	 * 发送状态描述</br> err(10001,涉嫌广告) err(20001,涉嫌政治) err(20004,涉嫌社会)</br>
+	 * err(20002,涉嫌色情) err(20006,涉嫌违法犯罪) err(20008,涉嫌欺诈)</br> err(20013,涉嫌版权)
+	 * err(22000,涉嫌互推(互相宣传) err(21000,涉嫌其他)
 	 * 
 	 * @param status
 	 * @return 中文描述
@@ -106,7 +120,7 @@ public class MassEventMessage extends EventMessage {
 
 	@Override
 	public String toString() {
-		return "MassEventMessage [status=" + status + ", totalCount="
+		return "MassEventMessage [status=" + getStatusDesc() + ", totalCount="
 				+ totalCount + ", filterCount=" + filterCount + ", sentCount="
 				+ sentCount + ", errorCount=" + errorCount + ", "
 				+ super.toString() + "]";

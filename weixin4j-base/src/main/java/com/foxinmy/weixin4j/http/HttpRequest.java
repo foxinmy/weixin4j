@@ -196,10 +196,11 @@ public class HttpRequest {
 			EntityUtils.consume(httpEntity);
 			Header contentType = httpResponse
 					.getFirstHeader(HttpHeaders.CONTENT_TYPE);
+			System.err.println(response.getAsString());
 			// error with html
 			if (contentType.getValue().contains(
 					ContentType.TEXT_HTML.getMimeType())) {
-				response.setText(new String(data, "gbk"));
+				// response.setText(new String(data, "gbk"));
 				try {
 					checkJson(response);
 					return response;

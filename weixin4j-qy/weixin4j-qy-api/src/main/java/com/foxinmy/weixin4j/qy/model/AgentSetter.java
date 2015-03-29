@@ -18,19 +18,43 @@ import com.foxinmy.weixin4j.qy.type.ReportLocationType;
 public class AgentSetter implements Serializable {
 	private static final long serialVersionUID = 5420335232308079801L;
 
-	private int agentid; // 企业应用的id
+	/**
+	 * 企业应用的id
+	 */
+	private int agentid;
+	/**
+	 * 企业应用是否打开地理位置上报
+	 */
 	@JSONField(name = "report_location_flag")
-	private ReportLocationType reportLocationType; // 企业应用是否打开地理位置上报
+	private ReportLocationType reportLocationType;
+	/**
+	 * 企业应用头像的mediaid，通过多媒体接口上传图片获得mediaid，上传后会自动裁剪成方形和圆形两个头像
+	 */
 	@JSONField(name = "logo_mediaid")
-	private String logoMediaid; // 企业应用头像的mediaid，通过多媒体接口上传图片获得mediaid，上传后会自动裁剪成方形和圆形两个头像
-	private String name; // 企业应用名称
-	private String description; // 企业应用详情
+	private String logoMediaid;
+	/**
+	 * 企业应用名称
+	 */
+	private String name;
+	/**
+	 * 企业应用详情
+	 */
+	private String description;
+	/**
+	 * 企业应用可信域名
+	 */
 	@JSONField(name = "redirect_domain")
-	private String redirectDomain; // 企业应用可信域名
+	private String redirectDomain;
+	/**
+	 * 是否接收用户变更通知。0：不接收；1：接收
+	 */
 	@JSONField(name = "isreportuser")
-	private int isReportUser; // 是否接收用户变更通知。0：不接收；1：接收
+	private int isReportUser;
+	/**
+	 * 是否上报用户进入应用事件。0：不接收；1：接收
+	 */
 	@JSONField(name = "isreportenter")
-	private int isReportEnter; // 是否上报用户进入应用事件。0：不接收；1：接收
+	private int isReportEnter;
 
 	public AgentSetter(int agentid) {
 		this.agentid = agentid;

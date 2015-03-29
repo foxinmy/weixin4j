@@ -23,24 +23,48 @@ public class PayPackageV3 extends PayPackage {
 
 	private static final long serialVersionUID = 8944928173669656177L;
 
-	private String appid; // 微信分配的公众账号 必须
+	/**
+	 * 微信分配的公众账号 必须
+	 */
+	private String appid;
+	/**
+	 * 微信支付分配的商户号 必须
+	 */
 	@XStreamAlias("mch_id")
 	@JSONField(name = "mch_id")
-	private String mchId; // 微信支付分配的商户号 必须
+	private String mchId;
+	/**
+	 * 微信支付分配的终端设备号 非必须
+	 */
 	@XStreamAlias("device_info")
 	@JSONField(name = "device_info")
-	private String deviceInfo; // 微信支付分配的终端设备号 非必须
+	private String deviceInfo;
+	/**
+	 * 随机字符串,不长于 32 位 必须
+	 */
 	@XStreamAlias("nonce_str")
 	@JSONField(name = "nonce_str")
-	private String nonceStr; // 随机字符串,不长于 32 位 必须
-	private String sign; // 签名 必须
+	private String nonceStr;
+	/**
+	 * 签名 <font color="red">调用者无需关心</font>
+	 */
+	private String sign;
+	/**
+	 * 交易类型JSAPI、NATIVE、APP 必须
+	 */
 	@XStreamAlias("trade_type")
 	@JSONField(name = "trade_type")
-	private String tradeType; // 交易类型JSAPI、NATIVE、APP 必须
-	private String openid; // 用户在商户 appid 下的唯一 标识, trade_type 为 JSAPI 时,此参数必传
+	private String tradeType;
+	/**
+	 * 用户在商户 appid 下的唯一 标识, trade_type 为 JSAPI 时,此参数必传
+	 */
+	private String openid;
+	/**
+	 * 只在 trade_type 为 NATIVE 时需要填写 非必须
+	 */
 	@XStreamAlias("product_id")
 	@JSONField(name = "product_id")
-	private String productId; // 只在 trade_type 为 NATIVE 时需要填写 非必须
+	private String productId;
 
 	public PayPackageV3() {
 

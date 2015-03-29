@@ -18,17 +18,31 @@ import com.foxinmy.weixin4j.mp.type.UserSourceType;
 public class UserSummary implements Serializable {
 
 	private static final long serialVersionUID = 5303181828798568052L;
+	/**
+	 * 数据的日期
+	 */
 	@JSONField(name = "ref_date")
-	private Date refDate; // 数据的日期
+	private Date refDate;
+	/**
+	 * 用户的渠道
+	 */
 	@JSONField(name = "user_source")
-	private int userSource; // 用户的渠道，数值代表的含义如下：0代表其他 30代表扫二维码 17代表名片分享
-							// 35代表搜号码（即微信添加朋友页的搜索） 39代表查询微信公众帐号 43代表图文页右上角菜单
+	private int userSource;
+	/**
+	 * 新增的用户数量
+	 */
 	@JSONField(name = "new_user")
-	private int newUser; // 新增的用户数量
+	private int newUser;
+	/**
+	 * 取消关注的用户数量，new_user减去cancel_user即为净增用户数量
+	 */
 	@JSONField(name = "cancel_user")
-	private int cancelUser; // 取消关注的用户数量，new_user减去cancel_user即为净增用户数量
+	private int cancelUser;
+	/**
+	 * 总用户量
+	 */
 	@JSONField(name = "cumulate_user")
-	private int cumulateUser; // 总用户量
+	private int cumulateUser;
 
 	public Date getRefDate() {
 		return refDate;

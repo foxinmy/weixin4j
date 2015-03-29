@@ -10,5 +10,16 @@ package com.foxinmy.weixin4j.model;
  * @see
  */
 public enum Gender {
-	male, female, unknown;
+	/**
+	 * 男
+	 */
+	male,
+	/**
+	 * 女
+	 */
+	female,
+	/**
+	 * 未知
+	 */
+	unknown;
 }

@@ -19,23 +19,44 @@ public class ApiResult extends XmlResult {
 
 	private static final long serialVersionUID = -8430005768959715444L;
 
+	/**
+	 * 微信分配的公众账号 ID商户号 非空
+	 */
 	@XStreamAlias("appid")
 	@JSONField(name = "appid")
-	private String appId;// 微信分配的公众账号 ID商户号 非空
+	private String appId;
+	/**
+	 * 微信支付分配的商户号 非空
+	 */
 	@XStreamAlias("mch_id")
 	@JSONField(name = "mch_id")
-	private String mchId;// 微信支付分配的商户号 非空
+	private String mchId;
+	/**
+	 * 代理模式下分配的商户号 可能为空
+	 */
 	@XStreamAlias("sub_mch_id")
 	@JSONField(name = "sub_mch_id")
-	private String subMchId; // 未知 可能为空
+	private String subMchId;
+	/**
+	 * 随机字符串 非空
+	 */
 	@XStreamAlias("nonce_str")
 	@JSONField(name = "nonce_str")
-	private String nonceStr;// 随机字符串 非空
-	private String sign;// 签名 非空
+	private String nonceStr;
+	/**
+	 * 签名 <font color="red">调用者无需关心</font>
+	 */
+	private String sign;
+	/**
+	 * 微信支付分配的终端设备号 可能为空
+	 */
 	@XStreamAlias("device_info")
 	@JSONField(name = "device_info")
-	private String deviceInfo;// 微信支付分配的终端设备号 可能为空
-	private String recall;// 是否需要继续调用接口 Y- 需要,N-不需要
+	private String deviceInfo;
+	/**
+	 * 是否需要继续调用接口 Y- 需要,N-不需要
+	 */
+	private String recall;
 
 	public ApiResult() {
 
@@ -110,6 +131,7 @@ public class ApiResult extends XmlResult {
 	public String toString() {
 		return "appId=" + appId + ", mchId=" + mchId + ", subMchId=" + subMchId
 				+ ", nonceStr=" + nonceStr + ", sign=" + sign + ", deviceInfo="
-				+ deviceInfo + ", recall=" + getFormatRecall() + ", " + super.toString();
+				+ deviceInfo + ", recall=" + getFormatRecall() + ", "
+				+ super.toString();
 	}
 }

@@ -20,7 +20,9 @@ public class Trans extends Base implements Responseable {
 
 	private static final long serialVersionUID = -214711609286629729L;
 
-	// 指定会话接入的客服账号
+	/**
+	 * 指定会话接入的客服账号
+	 */
 	@XStreamAlias("KfAccount")
 	private String kfAccount;
 

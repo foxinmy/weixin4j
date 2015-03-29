@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.qy.type;
 
 /**
  * 上报策略
+ * 
  * @className ReportLocationType
  * @author jy
  * @date 2015年3月16日
@@ -9,7 +10,16 @@ package com.foxinmy.weixin4j.qy.type;
  * @see
  */
 public enum ReportLocationType {
-	NOT, // 不上报
-	DIALOG, // 进入回话上报
-	PERSIST; // 持续上报
+	/**
+	 * 不上报
+	 */
+	NOT,
+	/**
+	 * 进入回话上报
+	 */
+	DIALOG,
+	/**
+	 * 持续上报
+	 */
+	PERSIST;
 }

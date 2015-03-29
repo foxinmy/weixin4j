@@ -26,6 +26,11 @@ public class EventMessage extends BaseMsg {
 		this.eventType = eventType;
 	}
 
+	/**
+	 * 事件类型
+	 * 
+	 * @see com.foxinmy.weixin4j.type.EventType
+	 */
 	@XStreamAlias("Event")
 	private EventType eventType;
 

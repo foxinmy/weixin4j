@@ -20,21 +20,38 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class MicroPayPackage extends PayPackage {
 
 	private static final long serialVersionUID = 8944928173669656177L;
-
-	private String appid; // 微信分配的公众账号 必须
+	/**
+	 * 微信分配的公众账号 必须
+	 */
+	private String appid;
+	/**
+	 * 微信支付分配的商户号 必须
+	 */
 	@XStreamAlias("mch_id")
 	@JSONField(name = "mch_id")
-	private String mchId; // 微信支付分配的商户号 必须
+	private String mchId;
+	/**
+	 * 微信支付分配的终端设备号 非必须
+	 */
 	@XStreamAlias("device_info")
 	@JSONField(name = "device_info")
-	private String deviceInfo; // 微信支付分配的终端设备号 非必须
+	private String deviceInfo;
+	/**
+	 * 随机字符串,不长于 32 位 必须
+	 */
 	@XStreamAlias("nonce_str")
 	@JSONField(name = "nonce_str")
-	private String nonceStr; // 随机字符串,不长于 32 位 必须
-	private String sign; // 签名 必须
+	private String nonceStr;
+	/**
+	 * 签名 <font color="red">调用者不必关注</font>
+	 */
+	private String sign;
+	/**
+	 * 扫码支付授权码 ,设备读取用户微信中的条码或者二维码信息
+	 */
 	@XStreamAlias("auth_code")
 	@JSONField(name = "auth_code")
-	private String authCode; // 扫码支付授权码 ,设备读取用 户微信中的条码或者二维码 信息
+	private String authCode;
 
 	public MicroPayPackage() {
 
@@ -82,7 +99,7 @@ public class MicroPayPackage extends PayPackage {
 		return deviceInfo;
 	}
 
-	public void setDevice_info(String deviceInfo) {
+	public void setDeviceInfo(String deviceInfo) {
 		this.deviceInfo = deviceInfo;
 	}
 

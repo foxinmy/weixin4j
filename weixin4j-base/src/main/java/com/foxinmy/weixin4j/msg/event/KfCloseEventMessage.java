@@ -21,15 +21,14 @@ public class KfCloseEventMessage extends EventMessage {
 		super(EventType.kf_close_session);
 	}
 
+	/**
+	 * 客服账号
+	 */
 	@XStreamAlias("KfAccount")
-	private String kfAccount; // 客服账号
+	private String kfAccount;
 
 	public String getKfAccount() {
 		return kfAccount;
-	}
-
-	public void setKfAccount(String kfAccount) {
-		this.kfAccount = kfAccount;
 	}
 
 	@Override

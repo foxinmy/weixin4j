@@ -21,8 +21,11 @@ public class TemplatesendjobfinishMessage extends EventMessage {
 		super(EventType.templatesendjobfinish);
 	}
 
+	/**
+	 * 推送状态 如failed: system failed
+	 */
 	@XStreamAlias("Status")
-	private String status; // 推送状态
+	private String status;
 
 	public String getStatus() {
 		return status;
