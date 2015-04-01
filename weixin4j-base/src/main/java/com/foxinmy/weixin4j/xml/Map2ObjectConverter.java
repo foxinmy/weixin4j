@@ -46,7 +46,10 @@ public class Map2ObjectConverter extends MapConverter {
 			MarshallingContext context) {
 		Map<?, ?> map = (Map<?, ?>) source;
 		for (Entry<?, ?> entry : map.entrySet()) {
-			String value = (String) entry.getValue();
+			if (entry.getValue() == null) {
+				continue;
+			}
+			String value = entry.getValue().toString();
 			if (StringUtils.isBlank(value)) {
 				continue;
 			}
@@ -54,6 +57,7 @@ public class Map2ObjectConverter extends MapConverter {
 					.getKey().toString(), entry.getClass());
 			writer.setValue(value);
 			writer.endNode();
+
 		}
 	}
 }

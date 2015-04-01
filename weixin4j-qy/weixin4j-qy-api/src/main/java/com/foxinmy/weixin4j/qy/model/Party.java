@@ -5,14 +5,14 @@ import java.io.Serializable;
 /**
  * 部门对象
  * 
- * @className Department
+ * @className Party
  * @author jy
  * @date 2014年11月18日
  * @since JDK 1.7
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8">管理部门说明</a>
  */
-public class Department implements Serializable {
+public class Party implements Serializable {
 
 	private static final long serialVersionUID = -2567893218591084288L;
 	/**
@@ -32,15 +32,15 @@ public class Department implements Serializable {
 	 */
 	private int order;
 
-	public Department() {
+	public Party() {
 
 	}
 
-	public Department(String name) {
+	public Party(String name) {
 		this(name, 1, 1);
 	}
 
-	public Department(String name, int parentid, int order) {
+	public Party(String name, int parentid, int order) {
 		this.name = name;
 		this.parentid = parentid;
 		this.order = order;
@@ -80,7 +80,7 @@ public class Department implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Department [id=" + id + ", name=" + name + ", parentid="
+		return "Party [id=" + id + ", name=" + name + ", parentid="
 				+ parentid + ", order=" + order + "]";
 	}
 }

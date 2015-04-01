@@ -8,51 +8,51 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.qy.api.DepartApi;
-import com.foxinmy.weixin4j.qy.model.Department;
+import com.foxinmy.weixin4j.qy.api.PartyApi;
+import com.foxinmy.weixin4j.qy.model.Party;
 
 /**
  * 部门API测试
  * 
- * @className DepartTest
+ * @className PartyTest
  * @author jy
  * @date 2014年11月18日
  * @since JDK 1.7
  * @see
  */
-public class DepartTest extends TokenTest {
-	public DepartApi departApi;
+public class PartyTest extends TokenTest {
+	public PartyApi partyApi;
 
 	@Before
 	public void init() {
-		this.departApi = new DepartApi(tokenHolder);
+		this.partyApi = new PartyApi(tokenHolder);
 	}
 
 	@Test
 	public void create() throws WeixinException {
-		Department depart = new Department("苦逼组");
-		int id = departApi.createDepart(depart);
+		Party Party = new Party("苦逼组");
+		int id = partyApi.createParty(Party);
 		Assert.assertTrue(id > 0);
 	}
 
 	@Test
 	public void update() throws WeixinException {
-		Department depart = new Department("苦逼组111");
-		depart.setId(2);
-		JsonResult result = departApi.updateDepart(depart);
+		Party Party = new Party("苦逼组111");
+		Party.setId(2);
+		JsonResult result = partyApi.updateParty(Party);
 		Assert.assertEquals("updated", result.getDesc());
 	}
 
 	@Test
 	public void list() throws WeixinException {
-		List<Department> list = departApi.listDepart(1);
+		List<Party> list = partyApi.listParty(1);
 		Assert.assertFalse(list.isEmpty());
 		System.out.println(list);
 	}
 	
 	@Test
 	public void delete() throws WeixinException {
-		JsonResult result = departApi.deleteDepart(2);
+		JsonResult result = partyApi.deleteParty(2);
 		Assert.assertEquals("deleted", result.getDesc());
 	}
 }

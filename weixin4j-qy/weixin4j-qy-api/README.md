@@ -7,7 +7,7 @@ weixin4j-qy-api
 功能列表
 -------
 
-  * DepartApi `部门管理API`
+  * PartyApi `部门管理API`
 	
   * UserApi `成员管理API`
   
@@ -93,3 +93,9 @@ weixin.properties说明
 * 2015-03-29
 
   + 单行注释调整为多行文档注释
+  
+* 2015-04-01
+
+  + 新增[BatchApi](./src/main/java/com/foxinmy/weixin4j/qy/api/BatchApi.java)批量异步执行任务接口
+  
+  + <font color="red">DepartApi命名为[PartyApi](./src/main/java/com/foxinmy/weixin4j/qy/api/PartyApi.java)</font>

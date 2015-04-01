@@ -55,12 +55,41 @@ public class PayPackageV2 extends PayPackage {
 	@JSONField(name = "input_charset")
 	private String inputCharset;
 
-	public String getBankType() {
-		return bankType;
+	public PayPackageV2(String outTradeNo, double totalFee,
+			String spbillCreateIp) {
+		this(null, null, null, outTradeNo, totalFee, null, spbillCreateIp,
+				null, null, 0d, 0d, null);
 	}
 
-	public void setBankType(String bankType) {
-		this.bankType = bankType;
+	public PayPackageV2(String body, String outTradeNo, double totalFee,
+			String notifyUrl, String spbillCreateIp) {
+		this(body, null, null, outTradeNo, totalFee, notifyUrl, spbillCreateIp,
+				null, null, 0d, 0d, null);
+	}
+
+	public PayPackageV2(String body, String partner, String outTradeNo,
+			double totalFee, String notifyUrl, String spbillCreateIp) {
+		this(body, null, partner, outTradeNo, totalFee, notifyUrl,
+				spbillCreateIp, null, null, 0d, 0d, null);
+	}
+
+	public PayPackageV2(String body, String attach, String partner,
+			String outTradeNo, double totalFee, String notifyUrl,
+			String spbillCreateIp, Date timeStart, Date timeExpire,
+			double transportFee, double productFee, String goodsTag) {
+		super(body, attach, outTradeNo, totalFee, spbillCreateIp, timeStart,
+				timeExpire, goodsTag, notifyUrl);
+		this.bankType = "WX";
+		this.feeType = "1";
+		this.inputCharset = "UTF-8";
+		this.transportFee = transportFee > 0d ? DateUtil
+				.formaFee2Fen(transportFee) : null;
+		this.productFee = productFee > 0 ? DateUtil.formaFee2Fen(productFee)
+				: null;
+	}
+
+	public String getBankType() {
+		return bankType;
 	}
 
 	public String getPartner() {
@@ -73,10 +102,6 @@ public class PayPackageV2 extends PayPackage {
 
 	public String getFeeType() {
 		return feeType;
-	}
-
-	public void setFeeType(String feeType) {
-		this.feeType = feeType;
 	}
 
 	public String getTransportFee() {
@@ -109,49 +134,6 @@ public class PayPackageV2 extends PayPackage {
 
 	public String getInputCharset() {
 		return inputCharset;
-	}
-
-	public void setInputCharset(String inputCharset) {
-		this.inputCharset = inputCharset;
-	}
-
-	public PayPackageV2() {
-		this.bankType = "WX";
-		this.feeType = "1";
-		this.inputCharset = "UTF-8";
-	}
-
-	public PayPackageV2(String outTradeNo, double totalFee,
-			String spbillCreateIp) {
-		this(null, null, null, outTradeNo, totalFee, null, spbillCreateIp,
-				null, null, 0d, 0d, null);
-	}
-
-	public PayPackageV2(String body, String outTradeNo, double totalFee,
-			String notifyUrl, String spbillCreateIp) {
-		this(body, null, null, outTradeNo, totalFee, notifyUrl, spbillCreateIp,
-				null, null, 0d, 0d, null);
-	}
-
-	public PayPackageV2(String body, String partner, String outTradeNo,
-			double totalFee, String notifyUrl, String spbillCreateIp) {
-		this(body, null, partner, outTradeNo, totalFee, notifyUrl,
-				spbillCreateIp, null, null, 0d, 0d, null);
-	}
-
-	public PayPackageV2(String body, String attach, String partner,
-			String outTradeNo, double totalFee, String notifyUrl,
-			String spbillCreateIp, Date timeStart, Date timeExpire,
-			double transportFee, double productFee, String goodsTag) {
-		super(body, attach, outTradeNo, totalFee, spbillCreateIp, timeStart,
-				timeExpire, goodsTag, notifyUrl);
-		this.bankType = "WX";
-		this.feeType = "1";
-		this.inputCharset = "UTF-8";
-		this.transportFee = transportFee > 0d ? DateUtil
-				.formaFee2Fen(transportFee) : null;
-		this.productFee = productFee > 0 ? DateUtil.formaFee2Fen(productFee)
-				: null;
 	}
 
 	@Override

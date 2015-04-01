@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * V3支付的订单详情</br> 注意: <font color="red">totalFee字段传入时单位为元,创建支付时会转换为分</font>
+ * V3支付的订单详情
  * 
  * @className PayPackageV3
  * @author jy
@@ -66,10 +66,6 @@ public class PayPackageV3 extends PayPackage {
 	@JSONField(name = "product_id")
 	private String productId;
 
-	public PayPackageV3() {
-
-	}
-
 	public PayPackageV3(WeixinMpAccount weixinAccount, String openId,
 			String body, String outTradeNo, double totalFee,
 			String spbillCreateIp, TradeType tradeType) {
@@ -106,32 +102,16 @@ public class PayPackageV3 extends PayPackage {
 		return appid;
 	}
 
-	public void setAppid(String appid) {
-		this.appid = appid;
-	}
-
 	public String getMchId() {
 		return mchId;
-	}
-
-	public void setMchId(String mchId) {
-		this.mchId = mchId;
 	}
 
 	public String getDeviceInfo() {
 		return deviceInfo;
 	}
 
-	public void setDeviceInfo(String deviceInfo) {
-		this.deviceInfo = deviceInfo;
-	}
-
 	public String getNonceStr() {
 		return nonceStr;
-	}
-
-	public void setNonceStr(String nonceStr) {
-		this.nonceStr = nonceStr;
 	}
 
 	public String getSign() {
@@ -146,16 +126,8 @@ public class PayPackageV3 extends PayPackage {
 		return tradeType;
 	}
 
-	public void setTradeType(TradeType tradeType) {
-		this.tradeType = tradeType.name();
-	}
-
 	public String getOpenid() {
 		return openid;
-	}
-
-	public void setOpenid(String openid) {
-		this.openid = openid;
 	}
 
 	public String getProductId() {

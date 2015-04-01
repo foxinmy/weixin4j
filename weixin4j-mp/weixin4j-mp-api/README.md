@@ -37,6 +37,8 @@ weixin4j-mp-api
 
 * OauthApi `oauth授权API`
 
+* CashApi `现金API`
+
 如何使用
 --------
 1.API工程可以单独打包到其他项目中使用,需新增或拷贝`weixin.properties`文件到项目的`classpath`中
@@ -179,4 +181,8 @@ weixin.properties说明
 
   + 单行注释调整为多行文档注释
   
-  + 新增(CouponApi)[./src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java]代金券接口
+  + 新增[CouponApi](./src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java)代金券接口
+  
+* 2015-04-01
+
+  + 新增[CashApi](./src/main/java/com/foxinmy/weixin4j/mp/api/CashApi.java)发红包、企业付款接口

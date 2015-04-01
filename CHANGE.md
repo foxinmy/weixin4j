@@ -210,7 +210,14 @@
   
   + **weixin4j-mp**: 单行注释调整为多行文档注释
   
-  + **weixin4j-mp**: 新增(CouponApi)[./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java]代金券接口
+  + **weixin4j-mp**: 新增[CouponApi](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java)代金券接口
   
   + **weixin4j-qy**: 单行注释调整为多行文档注释
   
+* 2015-04-01
+
+  + **weixin4j-mp**: 新增[CashApi](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CashApi.java)发红包、企业付款接口
+  
+  + **weixin4j-qy**: 新增[BatchApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/BatchApi.java)批量异步执行任务接口
+  
+  + **weixin4j-qy**: <font color="red">DepartApi命名为[PartyApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/PartyApi.java)</font>

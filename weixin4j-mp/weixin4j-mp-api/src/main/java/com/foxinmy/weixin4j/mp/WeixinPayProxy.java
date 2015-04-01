@@ -7,6 +7,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.XmlResult;
 import com.foxinmy.weixin4j.model.WeixinMpAccount;
+import com.foxinmy.weixin4j.mp.api.CashApi;
 import com.foxinmy.weixin4j.mp.api.CouponApi;
 import com.foxinmy.weixin4j.mp.api.Pay2Api;
 import com.foxinmy.weixin4j.mp.api.Pay3Api;
@@ -15,6 +16,10 @@ import com.foxinmy.weixin4j.mp.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponStock;
 import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
+import com.foxinmy.weixin4j.mp.payment.v3.MPPayment;
+import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentResult;
+import com.foxinmy.weixin4j.mp.payment.v3.Redpacket;
+import com.foxinmy.weixin4j.mp.payment.v3.RedpacketSendResult;
 import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
@@ -43,6 +48,7 @@ public class WeixinPayProxy {
 	private final Pay2Api pay2Api;
 	private final Pay3Api pay3Api;
 	private final CouponApi couponApi;
+	private final CashApi cashApi;
 
 	public WeixinPayProxy() {
 		this(ConfigUtil.getWeixinMpAccount(), new FileTokenHolder(
@@ -67,6 +73,7 @@ public class WeixinPayProxy {
 			this.payApi = this.pay3Api;
 		}
 		this.couponApi = new CouponApi(weixinAccount);
+		this.cashApi = new CashApi(weixinAccount);
 	}
 
 	/**
@@ -550,5 +557,67 @@ public class WeixinPayProxy {
 	public CouponDetail queryCouponDetail(String couponId)
 			throws WeixinException {
 		return couponApi.queryCouponDetail(couponId);
+	}
+
+	/**
+	 * 发放红包 企业向微信用户个人发现金红包
+	 * 
+	 * @param caFile
+	 *            证书文件(V3版本后缀为*.p12)
+	 * @param redpacket
+	 *            红包信息
+	 * @return 发放结果
+	 * @see com.foxinmy.weixin4j.mp.api.CashApi
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.Redpacket
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.RedpacketSendResult
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_5">红包接口说明</a>
+	 * @throws WeixinException
+	 */
+	public RedpacketSendResult sendRedpack(File caFile, Redpacket redpacket)
+			throws WeixinException {
+		return cashApi.sendRedpack(caFile, redpacket);
+	}
+
+	/**
+	 * 发放红包采用properties中配置的ca文件
+	 * 
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinPayProxy#sendRedpack(File, Redpacket)}
+	 */
+	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+			throws WeixinException {
+		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
+		return cashApi.sendRedpack(caFile, redpacket);
+	}
+
+	/**
+	 * 企业付款 实现企业向个人付款，针对部分有开发能力的商户， 提供通过API完成企业付款的功能。 比如目前的保险行业向客户退保、给付、理赔。
+	 * 
+	 * @param caFile
+	 *            证书文件(V3版本后缀为*.p12)
+	 * @param mpPayment
+	 *            付款信息
+	 * @return 付款结果
+	 * @see com.foxinmy.weixin4j.mp.api.CashApi
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.MPPayment
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.MPPaymentResult
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/mch_pay.php?chapter=14_1">企业付款</a>
+	 * @throws WeixinException
+	 */
+	public MPPaymentResult mpPayment(File caFile, MPPayment mpPayment)
+			throws WeixinException {
+		return cashApi.mpPayment(caFile, mpPayment);
+	}
+
+	/**
+	 * 企业付款采用properties中配置的ca文件
+	 * 
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinPayProxy#mpPayment(File, MPPayment)}
+	 */
+	public MPPaymentResult mpPayment(MPPayment mpPayment)
+			throws WeixinException {
+		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
+		return cashApi.mpPayment(caFile, mpPayment);
 	}
 }

@@ -8,7 +8,7 @@ weixin4j-qy
 -------
 * **weixin4j-qy-api**
 
-  + DepartApi `部门管理API`
+  + PartyApi `部门管理API`
 	
   + UserApi `成员管理API`
   
@@ -21,6 +21,8 @@ weixin4j-qy
   + NotifyApi `消息发送API`
   
   + AgentApi `应用设置API`
+  
+  + BatchApi `批量任务API`
 
 * **weixin4j-qy-server**
 
@@ -122,3 +124,9 @@ weixin4j-qy
 * 2015-03-29
 
   + **weixin4j-qy-api**: 单行注释调整为多行文档注释
+  
+* 2015-04-01
+
+  + **weixin4j-qy-api**: 新增[BatchApi](./weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/BatchApi.java)批量异步执行任务接口
+  
+  + **weixin4j-qy-api**: <font color="red">DepartApi命名为[PartyApi](./weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/PartyApi.java)</font>

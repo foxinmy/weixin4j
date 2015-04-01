@@ -28,18 +28,18 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @see
  */
 public class CouponTest {
-	private final static WeixinPayProxy WEIXINPAY;
-	private final static WeixinMpAccount ACCOUNT;
+	protected final static WeixinPayProxy WEIXINPAY;
+	protected final static WeixinMpAccount ACCOUNT;
 	static {
-		ACCOUNT = new WeixinMpAccount("wx0d1d598c0c03c999",
-				"2513ac683f1beabdb6b98d9ddd9e5755",
-				"GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ", "10020674");
+		ACCOUNT = new WeixinMpAccount("公众号的id",
+				"公众号的secret",
+				"公众号的支付密钥", "商户平台的id");
 		WEIXINPAY = new WeixinPayProxy(ACCOUNT, new FileTokenHolder(
 				new WeixinTokenCreator(ACCOUNT.getId(), ACCOUNT.getSecret(),
 						AccountType.MP)));
 	}
-	private final File caFile = new File(
-			"/Users/jy/workspace/feican/canyi-weixin-parent/canyi-weixin-service/src/main/resources/10020674.p12");
+	protected final File caFile = new File(
+			"证书文件的路径(*.p12)");
 
 	@Test
 	public void sendCoupon() throws WeixinException {

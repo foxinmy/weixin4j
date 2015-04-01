@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.type;
 
+import com.foxinmy.weixin4j.msg.event.BatchjobresultMessage;
 import com.foxinmy.weixin4j.msg.event.EnterAgentEventMessage;
 import com.foxinmy.weixin4j.msg.event.EventMessage;
 import com.foxinmy.weixin4j.msg.event.KfCloseEventMessage;
@@ -132,7 +133,13 @@ public enum EventType {
 	 * 
 	 * @see com.foxinmy.weixin4j.msg.event.KfSwitchEventMessage
 	 */
-	kf_switch_session(KfSwitchEventMessage.class);
+	kf_switch_session(KfSwitchEventMessage.class),
+	/**
+	 * 异步任务完成事件
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.event.BatchjobresultMessage
+	 */
+	batch_job_result(BatchjobresultMessage.class);
 
 	private Class<? extends EventMessage> eventClass;
 

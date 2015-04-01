@@ -53,10 +53,6 @@ public class MicroPayPackage extends PayPackage {
 	@JSONField(name = "auth_code")
 	private String authCode;
 
-	public MicroPayPackage() {
-
-	}
-
 	public MicroPayPackage(WeixinMpAccount weixinAccount, String body,
 			String attach, String outTradeNo, double totalFee,
 			String spbillCreateIp, String authCode) {
@@ -83,32 +79,16 @@ public class MicroPayPackage extends PayPackage {
 		return appid;
 	}
 
-	public void setAppid(String appid) {
-		this.appid = appid;
-	}
-
 	public String getMchId() {
 		return mchId;
-	}
-
-	public void setMchId(String mchId) {
-		this.mchId = mchId;
 	}
 
 	public String getDeviceInfo() {
 		return deviceInfo;
 	}
 
-	public void setDeviceInfo(String deviceInfo) {
-		this.deviceInfo = deviceInfo;
-	}
-
 	public String getNonceStr() {
 		return nonceStr;
-	}
-
-	public void setNonceStr(String nonceStr) {
-		this.nonceStr = nonceStr;
 	}
 
 	public String getSign() {

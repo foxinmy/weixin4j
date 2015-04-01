@@ -5,13 +5,17 @@ import java.util.List;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
-import com.foxinmy.weixin4j.qy.api.DepartApi;
+import com.foxinmy.weixin4j.qy.api.BatchApi;
 import com.foxinmy.weixin4j.qy.api.HelperApi;
+import com.foxinmy.weixin4j.qy.api.PartyApi;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentSetter;
-import com.foxinmy.weixin4j.qy.model.Department;
+import com.foxinmy.weixin4j.qy.model.BatchResult;
+import com.foxinmy.weixin4j.qy.model.Callback;
+import com.foxinmy.weixin4j.qy.model.IdParameter;
+import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.type.InviteType;
@@ -31,11 +35,12 @@ import com.foxinmy.weixin4j.type.AccountType;
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">api文档</a>
  */
 public class WeixinProxy {
-	private final DepartApi departApi;
+	private final PartyApi partyApi;
 	private final UserApi userApi;
 	private final TagApi tagApi;
 	private final HelperApi helperApi;
 	private final AgentApi agentApi;
+	private final BatchApi batchApi;
 
 	/**
 	 * 默认采用文件存放Token信息
@@ -61,74 +66,75 @@ public class WeixinProxy {
 	 * @param tokenHolder
 	 */
 	public WeixinProxy(TokenHolder tokenHolder) {
-		this.departApi = new DepartApi(tokenHolder);
+		this.partyApi = new PartyApi(tokenHolder);
 		this.userApi = new UserApi(tokenHolder);
 		this.tagApi = new TagApi(tokenHolder);
 		this.helperApi = new HelperApi(tokenHolder);
 		this.agentApi = new AgentApi(tokenHolder);
+		this.batchApi = new BatchApi(tokenHolder);
 	}
 
 	/**
 	 * 创建部门(根部门的parentid为1)
 	 * 
-	 * @param depart
+	 * @param party
 	 *            部门对象
-	 * @see com.foxinmy.weixin4j.qy.model.Department
+	 * @see com.foxinmy.weixin4j.qy.model.Party
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E5.88.9B.E5.BB.BA.E9.83.A8.E9.97.A8">创建部门说明</a>
-	 * @see com.foxinmy.weixin4j.qy.api.DepartApi
+	 * @see com.foxinmy.weixin4j.qy.api.PartyApi
 	 * @return 部门ID
 	 * @throws WeixinException
 	 */
-	public int createDepart(Department depart) throws WeixinException {
-		return departApi.createDepart(depart);
+	public int createParty(Party party) throws WeixinException {
+		return partyApi.createParty(party);
 	}
 
 	/**
 	 * 更新部门(如果非必须的字段未指定 则不更新该字段之前的设置值)
 	 * 
-	 * @param depart
+	 * @param party
 	 *            部门对象
-	 * @see com.foxinmy.weixin4j.qy.model.Department
+	 * @see com.foxinmy.weixin4j.qy.model.Party
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E6.9B.B4.E6.96.B0.E9.83.A8.E9.97.A8">更新部门说明</a>
-	 * @see com.foxinmy.weixin4j.qy.api.DepartApi
+	 * @see com.foxinmy.weixin4j.qy.api.PartyApi
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateDepart(Department depart) throws WeixinException {
-		return departApi.updateDepart(depart);
+	public JsonResult updateParty(Party party) throws WeixinException {
+		return partyApi.updateParty(party);
 	}
 
 	/**
 	 * 查询部门列表(以部门的order字段从小到大排列)
 	 * 
-	 * @param departId
+	 * @param partyId
 	 *            部门ID。获取指定部门ID下的子部门
-	 * @see com.foxinmy.weixin4j.qy.model.Department
+	 * @see com.foxinmy.weixin4j.qy.model.Party
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E8.8E.B7.E5.8F.96.E9.83.A8.E9.97.A8.E5.88.97.E8.A1.A8">获取部门列表</a>
-	 * @see com.foxinmy.weixin4j.qy.api.DepartApi
+	 * @see com.foxinmy.weixin4j.qy.api.PartyApi
 	 * @return 部门列表
 	 * @throws WeixinException
 	 */
-	public List<Department> listDepart(int departId) throws WeixinException {
-		return departApi.listDepart(departId);
+	public List<Party> listParty(int partyId) throws WeixinException {
+		return partyApi.listParty(partyId);
 	}
 
 	/**
 	 * 删除部门(不能删除根部门；不能删除含有子部门、成员的部门)
 	 * 
-	 * @param departId
+	 * @param partyId
 	 *            部门ID
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E5.88.A0.E9.99.A4.E9.83.A8.E9.97.A8">删除部门说明</a>
-	 * @see com.foxinmy.weixin4j.qy.api.DepartApi
+	 * @see com.foxinmy.weixin4j.qy.api.PartyApi
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteDepart(int departId) throws WeixinException {
-		return departApi.deleteDepart(departId);
+	public JsonResult deleteParty(int partyId) throws WeixinException {
+		return partyApi.deleteParty(partyId);
 	}
 
 	/**
@@ -202,7 +208,7 @@ public class WeixinProxy {
 	/**
 	 * 获取部门成员
 	 * 
-	 * @param departId
+	 * @param partyId
 	 *            部门ID 必须
 	 * @param fetchChild
 	 *            是否递归获取子部门下面的成员 非必须
@@ -217,9 +223,9 @@ public class WeixinProxy {
 	 * @return 成员列表
 	 * @throws WeixinException
 	 */
-	public List<User> listUser(int departId, boolean fetchChild,
+	public List<User> listUser(int partyId, boolean fetchChild,
 			UserStatus userStatus, boolean findDetail) throws WeixinException {
-		return userApi.listUser(departId, fetchChild, userStatus, findDetail);
+		return userApi.listUser(partyId, fetchChild, userStatus, findDetail);
 	}
 
 	/**
@@ -444,5 +450,115 @@ public class WeixinProxy {
 	 */
 	public JsonResult setAgent(AgentSetter agentSet) throws WeixinException {
 		return agentApi.setAgent(agentSet);
+	}
+	
+	/**
+	 * 批量邀请成员关注
+	 * 
+	 * @param parameter
+	 *            成员ID,标签ID,部门ID
+	 * @param callback
+	 *            接收任务执行结果的回调地址等信息
+	 * @param tips
+	 *            推送到微信上的提示语（只有认证号可以使用）。当使用微信推送时，该字段默认为“请关注XXX企业号”，邮件邀请时，该字段无效。
+	 * @return 异步任务id，最大长度为64字符
+	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
+	 * @see com.foxinmy.weixin4j.qy.model.Callback
+	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.82.80.E8.AF.B7.E6.88.90.E5.91.98.E5.85.B3.E6.B3.A8">邀请成员关注</a>
+	 * @throws WeixinException
+	 */
+	public String inviteuser(IdParameter parameter, Callback callback,
+			String tips) throws WeixinException {
+		return batchApi.inviteuser(parameter, callback, tips);
+	}
+	
+	/**
+	 * 批量更新成员,本接口以userid为主键，增量更新企业号通讯录成员。
+	 * <p>
+	 * 1.模板中的部门需填写部门ID，多个部门用分号分隔，部门ID必须为数字</br>
+	 * 2.文件中存在、通讯录中也存在的成员，更新成员在文件中指定的字段值 </br> 3.文件中存在、通讯录中不存在的成员，执行添加操作</br>
+	 * 4.通讯录中存在、文件中不存在的成员，保持不变</br>
+	 * </p>
+	 * 
+	 * @param mediaId
+	 *            带user信息的cvs文件上传后的media_id
+	 * @param callback
+	 *            接收任务执行结果的回调地址等信息
+	 * @return 异步任务id，最大长度为64字符
+	 * @see com.foxinmy.weixin4j.qy.model.Callback
+	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.A2.9E.E9.87.8F.E6.9B.B4.E6.96.B0.E6.88.90.E5.91.98">批量更新成员</a>
+	 * @throws WeixinException
+	 */
+	public String syncuser(String mediaId, Callback callback)
+			throws WeixinException {
+		return batchApi.syncuser(mediaId, callback);
+	}
+	
+	/**
+	 * 批量覆盖成员,本接口以userid为主键，全量覆盖企业号通讯录成员，任务完成后企业号通讯录成员与提交的文件完全保持一致。
+	 * <p>
+	 * 1.模板中的部门需填写部门ID，多个部门用分号分隔，部门ID必须为数字</br> 2.文件中存在、通讯录中也存在的成员，完全以文件为准</br>
+	 * 3.文件中存在、通讯录中不存在的成员，执行添加操作</br>
+	 * 4.通讯录中存在、文件中不存在的成员，执行删除操作。出于安全考虑，如果需要删除的成员多于50人，
+	 * 且多于现有人数的20%以上，系统将中止导入并返回相应的错误码
+	 * </p>
+	 * 
+	 * @param mediaId
+	 *            带userid信息的cvs文件上传后的media_id
+	 * @param callback
+	 *            接收任务执行结果的回调地址等信息
+	 * @return 异步任务id，最大长度为64字符
+	 * @see com.foxinmy.weixin4j.qy.model.Callback
+	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E6.88.90.E5.91.98">批量覆盖成员</a>
+	 * @throws WeixinException
+	 */
+	public String replaceuser(String mediaId, Callback callback)
+			throws WeixinException {
+		return batchApi.replaceuser(mediaId, callback);
+	}
+	/**
+	 * 批量覆盖部门,本接口以partyid为键，全量覆盖企业号通讯录组织架构，任务完成后企业号通讯录组织架构与提交的文件完全保持一致。
+	 * <p>
+	 * 1.文件中存在、通讯录中也存在的部门，执行修改操作</br> 2.文件中存在、通讯录中不存在的部门，执行添加操作</br>
+	 * 3.文件中不存在、通讯录中存在的部门，当部门为空时，执行删除操作</br>
+	 * 4.CSV文件中，部门名称、部门ID、父部门ID为必填字段，部门ID必须为数字；排序为可选字段，置空或填0不修改排序
+	 * </p>
+	 * 
+	 * @param mediaId
+	 *            带partyid信息的cvs文件上传后的media_id
+	 * @param callback
+	 *            接收任务执行结果的回调地址等信息
+	 * @return 异步任务id，最大长度为64字符
+	 * @see com.foxinmy.weixin4j.qy.model.Callback
+	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E9.83.A8.E9.97.A8">批量覆盖部门</a>
+	 * @throws WeixinException
+	 */
+	public String replaceparty(String mediaId, Callback callback)
+			throws WeixinException {
+		return batchApi.replaceparty(mediaId, callback);
+	}
+	
+	/**
+	 * 获取异步任务执行的结果
+	 * 
+	 * @param jobId
+	 *            任务ID
+	 * @return 效果信息
+	 * @see com.foxinmy.weixin4j.qy.model.BatchResult
+	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E8.8E.B7.E5.8F.96.E5.BC.82.E6.AD.A5.E4.BB.BB.E5.8A.A1.E7.BB.93.E6.9E.9C">获取异步任务执行结果</a>
+	 * @throws WeixinException
+	 */
+	public BatchResult getresult(String jobId) throws WeixinException {
+		return batchApi.getresult(jobId);
 	}
 }

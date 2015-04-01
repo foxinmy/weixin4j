@@ -37,6 +37,8 @@ weixin4j-mp
   + DataApi `数据统计API`
   
   + OauthApi `oauth授权API`
+  
+  + CashApi `现金API`
 
 * **weixin4j-mp-server**
 
@@ -204,4 +206,8 @@ weixin4j-mp
 
   + **weixin4j-mp-api**: 单行注释调整为多行文档注释
   
-  + **weixin4j-mp-api**: 新增(CouponApi)[./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java]代金券接口
+  + **weixin4j-mp-api**: 新增[CouponApi](./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java)代金券接口
+  
+* 2015-04-01
+
+  + **weixin4j-mp-api**: 新增[CashApi](./src/main/java/com/foxinmy/weixin4j/mp/api/CashApi.java)发红包、企业付款接口

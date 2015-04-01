@@ -53,7 +53,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * @author jy
  * @date 2014年10月28日
  * @since JDK 1.7
- * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php">公众号支付API</a>
+ * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台API</a>
  */
 public class Pay3Api extends PayApi {
 
