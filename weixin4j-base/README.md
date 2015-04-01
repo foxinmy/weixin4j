@@ -55,4 +55,4 @@ weixin4j-base
   
 * 2015-04-01
 
-  + 新增异步消息事件BatchjobresultMessage(./src/main/java/com/foxinmy/weixin4j/msg/event/BatchjobresultMessage.java)
+  + 新增异步消息事件[BatchjobresultMessage](./src/main/java/com/foxinmy/weixin4j/msg/event/BatchjobresultMessage.java)
