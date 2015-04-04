@@ -36,14 +36,14 @@ weixin4j
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp-api</artifactId>
-	    <version>1.2</version>
+	    <version>1.3</version>
 	</dependency>
 微信企业号API
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-qy-api</artifactId>
-	    <version>1.2</version>
+	    <version>1.3</version>
 	</dependency>
 以上依赖如果出现Missing artifact错误 请尝试在eclipse里这么做
 
