@@ -30,7 +30,7 @@ weixin4j
 
 如何获取API
 ----------
-###1.maven依赖(1.2,2015-02-05 released)
+###1.maven依赖(1.3,2015-04-04 released)
 微信公众平台API
 
 	<dependency>
