@@ -5,14 +5,26 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.PropertyFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.PartParameter;
 import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.qy.model.Callback;
+import com.foxinmy.weixin4j.qy.model.Party;
+import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
@@ -137,8 +149,8 @@ public class MediaApi extends QyApi {
 				os = new FileOutputStream(file);
 				os.write(datas);
 			} else {
-				throw new WeixinException(String.format(
-						"create file fail:%s", file.getAbsolutePath()));
+				throw new WeixinException(String.format("create file fail:%s",
+						file.getAbsolutePath()));
 			}
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
@@ -170,5 +182,71 @@ public class MediaApi extends QyApi {
 		Response response = request.get(String.format(file_download_uri,
 				token.getAccessToken(), mediaId));
 		return response.getBody();
+	}
+
+	/**
+	 * 批量上传成员
+	 * 
+	 * @param users
+	 *            成员列表
+	 * @see {@link com.foxinmy.weixin4j.qy.api.BatchApi#syncuser(String,Callback)}
+	 * @see {@link com.foxinmy.weixin4j.qy.api.BatchApi#replaceuser(String,Callback)}
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
+	 * @return 上传后的mediaId
+	 * @throws WeixinException
+	 */
+	public String batchUploadUsers(List<User> users) throws WeixinException {
+		return batchUpload("batch_syncuser.cvs", users);
+	}
+
+	/**
+	 * 批量上传部门
+	 * 
+	 * @param parties
+	 *            部门列表
+	 * @see {@link com.foxinmy.weixin4j.qy.api.BatchApi#replaceparty(String,Callback)}
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
+	 * @return 上传后的mediaId
+	 * @throws WeixinException
+	 */
+	public String batchUploadParties(List<Party> parties)
+			throws WeixinException {
+		return batchUpload("batch_replaceparty.cvs", parties);
+	}
+
+	private <T> String batchUpload(String batchName, List<T> models)
+			throws WeixinException {
+		JSONObject csvObj = JSON.parseObject(getConfigValue(batchName));
+		JSONArray columns = csvObj.getJSONArray("column");
+		StringWriter writer = new StringWriter();
+		writer.write(csvObj.getString("header"));
+		final Map<String, Object> column = new LinkedHashMap<String, Object>();
+		for (Object col : columns) {
+			column.put(col.toString(), "");
+		}
+		writer.write("\r\n");
+		for (T model : models) {
+			JSON.toJSONString(model, new PropertyFilter() {
+				@Override
+				public boolean apply(Object object, String name, Object value) {
+					if (column.containsKey(name)) {
+						column.put(name, value);
+					}
+					return true;
+				}
+			});
+			writer.write(StringUtils.join(column.values(), ","));
+			writer.write("\r\n");
+		}
+		String mediaId = uploadMedia(batchName,
+				writer.toString().getBytes(Consts.UTF_8), MediaType.file.name());
+		try {
+			writer.close();
+		} catch (IOException e) {
+			;
+		}
+		return mediaId;
 	}
 }

@@ -99,3 +99,7 @@ weixin.properties说明
   + 新增[BatchApi](./src/main/java/com/foxinmy/weixin4j/qy/api/BatchApi.java)批量异步执行任务接口
   
   + <font color="red">DepartApi命名为[PartyApi](./src/main/java/com/foxinmy/weixin4j/qy/api/PartyApi.java)</font>
+
+* 2015-04-04
+
+  + [MediaApi](./src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)新增批量上传成员和部门接口

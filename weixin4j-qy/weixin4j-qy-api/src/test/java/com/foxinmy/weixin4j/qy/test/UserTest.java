@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.qy.test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -8,14 +9,15 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
+import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
 import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 
 /**
- * 部门API测试
+ * 用户API测试
  * 
- * @className DepartTest
+ * @className UserTest
  * @author jy
  * @date 2014年11月18日
  * @since JDK 1.7
@@ -23,10 +25,12 @@ import com.foxinmy.weixin4j.qy.type.UserStatus;
  */
 public class UserTest extends TokenTest {
 	public UserApi userApi;
+	public MediaApi mediaApi;
 
 	@Before
 	public void init() {
 		this.userApi = new UserApi(tokenHolder);
+		this.mediaApi = new MediaApi(tokenHolder);
 	}
 
 	@Test
@@ -37,6 +41,15 @@ public class UserTest extends TokenTest {
 		user.pushExattr("爱好", "code");
 		JsonResult result = userApi.createUser(user);
 		Assert.assertEquals("created", result.getDesc());
+	}
+
+	@Test
+	public void batchUpload() throws WeixinException {
+		User user = new User("u001", "jack");
+		user.setMobile("13500000000");
+		user.setDepartment(1);
+		String mediaId = mediaApi.batchUploadUsers(Arrays.asList(user));
+		System.err.println(mediaId);
 	}
 
 	@Test
@@ -71,9 +84,9 @@ public class UserTest extends TokenTest {
 		JsonResult result = userApi.deleteUser("u001");
 		Assert.assertEquals("deleted", result.getDesc());
 	}
-	
+
 	@Test
-	public void invite()throws WeixinException{
+	public void invite() throws WeixinException {
 		userApi.inviteUser("11", null);
 	}
 }

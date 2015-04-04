@@ -251,7 +251,7 @@ public class UserApi extends QyApi {
 	 *            成员ID
 	 * @param tips
 	 *            推送到微信上的提示语（只有认证号可以使用）。当使用微信推送时，该字段默认为“请关注XXX企业号”，邮件邀请时，该字段无效。
-	 * @return 调用结果
+	 * @return 邀请类型
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E9.82.80.E8.AF.B7.E6.88.90.E5.91.98.E5.85.B3.E6.B3.A8">邀请成员关注说明</a>
 	 * @throws WeixinException

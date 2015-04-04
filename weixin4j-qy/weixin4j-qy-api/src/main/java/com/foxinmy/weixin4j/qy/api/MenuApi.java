@@ -32,6 +32,9 @@ public class MenuApi extends QyApi {
 	 * 自定义菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
 	 * 
 	 * @param btnList
+	 *            菜单列表
+	 * @param agentid
+	 *            应用ID
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8%E8%8F%9C%E5%8D%95">创建自定义菜单</a>
@@ -53,6 +56,8 @@ public class MenuApi extends QyApi {
 	/**
 	 * 查询菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式。)
 	 * 
+	 * @param agentid
+	 *            应用ID
 	 * @return 菜单集合
 	 * @throws WeixinException
 	 * @see <a
@@ -73,6 +78,8 @@ public class MenuApi extends QyApi {
 	/**
 	 * 删除菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
 	 * 
+	 * @param agentid
+	 *            应用ID
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%88%A0%E9%99%A4%E8%8F%9C%E5%8D%95">删除菜单</a>

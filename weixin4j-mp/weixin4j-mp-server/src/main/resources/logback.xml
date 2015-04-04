@@ -26,7 +26,7 @@
 		<!--for further documentation -->
 
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>/tmp/weixin/log/weixin.mp.%d{yyyy-MM-dd}.log
+			<fileNamePattern>/tmp/weixin/log/mp/weixin.mp.%d{yyyy-MM-dd}.log
 			</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>

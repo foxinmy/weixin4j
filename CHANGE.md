@@ -221,3 +221,9 @@
   + **weixin4j-qy**: 新增[BatchApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/BatchApi.java)批量异步执行任务接口
   
   + **weixin4j-qy**: <font color="red">DepartApi命名为[PartyApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/PartyApi.java)</font>
+  
+* 2015-04-04
+
+  + **weixin4j-qy**: [MediaApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)新增批量上传成员和部门接口
+  
+  <font color="red">released 1.3</font>

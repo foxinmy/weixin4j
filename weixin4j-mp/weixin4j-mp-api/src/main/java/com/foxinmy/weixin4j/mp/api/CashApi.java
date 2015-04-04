@@ -19,6 +19,7 @@ import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentResult;
 import com.foxinmy.weixin4j.mp.payment.v3.Redpacket;
 import com.foxinmy.weixin4j.mp.payment.v3.RedpacketSendResult;
 import com.foxinmy.weixin4j.util.RandomUtil;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 现金API
@@ -135,7 +136,11 @@ public class CashApi extends MpApi {
 				}
 			}
 		}
-		return response.getAsObject(new TypeReference<MPPaymentResult>() {
-		});
+		String text = response.getAsString()
+				.replaceFirst("<mch_appid>", "<appid>")
+				.replaceFirst("</mch_appid>", "</appid>")
+				.replaceFirst("<mchid>", "<mch_id>")
+				.replaceFirst("</mchid>", "</mch_id>");
+		return XmlStream.get(text, MPPaymentResult.class);
 	}
 }

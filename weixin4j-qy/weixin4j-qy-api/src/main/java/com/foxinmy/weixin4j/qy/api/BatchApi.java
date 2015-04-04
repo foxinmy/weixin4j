@@ -63,6 +63,7 @@ public class BatchApi extends QyApi {
 
 	/**
 	 * 批量更新成员,本接口以userid为主键，增量更新企业号通讯录成员。
+	 * 
 	 * <p>
 	 * 1.模板中的部门需填写部门ID，多个部门用分号分隔，部门ID必须为数字</br>
 	 * 2.文件中存在、通讯录中也存在的成员，更新成员在文件中指定的字段值 </br> 3.文件中存在、通讯录中不存在的成员，执行添加操作</br>
@@ -70,10 +71,11 @@ public class BatchApi extends QyApi {
 	 * </p>
 	 * 
 	 * @param mediaId
-	 *            带user信息的cvs文件上传后的media_id TODO
+	 *            带user信息的cvs文件上传后的media_id
 	 * @param callback
 	 *            接收任务执行结果的回调地址等信息
 	 * @return 异步任务id，最大长度为64字符
+	 * @see {@link com.foxinmy.weixin4j.qy.api.UserApi#batchUploadUsers(List)}
 	 * @see com.foxinmy.weixin4j.qy.model.Callback
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.A2.9E.E9.87.8F.E6.9B.B4.E6.96.B0.E6.88.90.E5.91.98">批量更新成员</a>
@@ -111,6 +113,7 @@ public class BatchApi extends QyApi {
 	 * @param callback
 	 *            接收任务执行结果的回调地址等信息
 	 * @return 异步任务id，最大长度为64字符
+	 * @see {@link com.foxinmy.weixin4j.qy.api.UserApi#batchUploadUsers(List)}
 	 * @see com.foxinmy.weixin4j.qy.model.Callback
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E6.88.90.E5.91.98">批量覆盖成员</a>

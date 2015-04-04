@@ -42,7 +42,7 @@ public abstract class BaseApi {
 	protected abstract ResourceBundle getWeixinBundle();
 
 	protected String getRequestUri(String key) {
-		String url = getWeixinBundle().getString(key);
+		String url = getConfigValue(key);
 		Pattern p = Pattern.compile("(\\{[^\\}]*\\})");
 		Matcher m = p.matcher(url);
 		StringBuffer sb = new StringBuffer();
@@ -54,5 +54,9 @@ public abstract class BaseApi {
 		}
 		m.appendTail(sb);
 		return sb.toString();
+	}
+	
+	protected String getConfigValue(String key) {
+		return getWeixinBundle().getString(key);
 	}
 }

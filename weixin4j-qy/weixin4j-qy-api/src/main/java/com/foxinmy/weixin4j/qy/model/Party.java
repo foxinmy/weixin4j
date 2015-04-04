@@ -37,10 +37,11 @@ public class Party implements Serializable {
 	}
 
 	public Party(String name) {
-		this(name, 1, 1);
+		this(0, name, 1, 1);
 	}
 
-	public Party(String name, int parentid, int order) {
+	public Party(int id, String name, int parentid, int order) {
+		this.id = id;
 		this.name = name;
 		this.parentid = parentid;
 		this.order = order;
@@ -80,7 +81,7 @@ public class Party implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Party [id=" + id + ", name=" + name + ", parentid="
-				+ parentid + ", order=" + order + "]";
+		return "Party [id=" + id + ", name=" + name + ", parentid=" + parentid
+				+ ", order=" + order + "]";
 	}
 }

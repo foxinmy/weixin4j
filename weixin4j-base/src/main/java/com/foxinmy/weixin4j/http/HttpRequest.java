@@ -196,32 +196,22 @@ public class HttpRequest {
 			EntityUtils.consume(httpEntity);
 			Header contentType = httpResponse
 					.getFirstHeader(HttpHeaders.CONTENT_TYPE);
+			Header disposition = httpResponse
+					.getFirstHeader("Content-disposition");
 			System.err.println(response.getAsString());
-			// error with html
+			// json
 			if (contentType.getValue().contains(
-					ContentType.TEXT_HTML.getMimeType())) {
-				// response.setText(new String(data, "gbk"));
-				try {
-					checkJson(response);
-					return response;
-				} catch (JSONException e) {
-					;
-				}
-				try {
-					checkXml(response);
-					return response;
-				} catch (CannotResolveClassException ex) {
-					;
-				}
-				throw new WeixinException(response.getAsString());
-			} else if (contentType.getValue().contains(
-					ContentType.APPLICATION_JSON.getMimeType())) {
+					ContentType.APPLICATION_JSON.getMimeType())
+					|| (disposition != null && disposition.getValue().indexOf(
+							".json") > 0)) {
 				checkJson(response);
 			} else if (contentType.getValue().contains(
 					ContentType.TEXT_XML.getMimeType())) {
 				checkXml(response);
 			} else if (contentType.getValue().contains(
-					ContentType.TEXT_PLAIN.getMimeType())) {
+					ContentType.TEXT_PLAIN.getMimeType())
+					|| contentType.getValue().contains(
+							ContentType.TEXT_HTML.getMimeType())) {
 				try {
 					checkJson(response);
 					return response;

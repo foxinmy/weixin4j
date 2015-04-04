@@ -1,15 +1,23 @@
 package com.foxinmy.weixin4j.qy;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
+import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.BatchApi;
 import com.foxinmy.weixin4j.qy.api.HelperApi;
+import com.foxinmy.weixin4j.qy.api.MediaApi;
+import com.foxinmy.weixin4j.qy.api.MenuApi;
+import com.foxinmy.weixin4j.qy.api.NotifyApi;
 import com.foxinmy.weixin4j.qy.api.PartyApi;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
+import com.foxinmy.weixin4j.qy.message.NotifyMessage;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentSetter;
 import com.foxinmy.weixin4j.qy.model.BatchResult;
@@ -24,6 +32,7 @@ import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.type.AccountType;
+import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 微信企业号接口实现
@@ -35,6 +44,9 @@ import com.foxinmy.weixin4j.type.AccountType;
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">api文档</a>
  */
 public class WeixinProxy {
+	private final MediaApi mediaApi;
+	private final MenuApi menuApi;
+	private final NotifyApi notifyApi;
 	private final PartyApi partyApi;
 	private final UserApi userApi;
 	private final TagApi tagApi;
@@ -72,6 +84,186 @@ public class WeixinProxy {
 		this.helperApi = new HelperApi(tokenHolder);
 		this.agentApi = new AgentApi(tokenHolder);
 		this.batchApi = new BatchApi(tokenHolder);
+		this.notifyApi = new NotifyApi(tokenHolder);
+		this.menuApi = new MenuApi(tokenHolder);
+		this.mediaApi = new MediaApi(tokenHolder);
+	}
+
+	/**
+	 * 发送消息(需要管理员对应用有使用权限，对收件人touser、toparty、totag有查看权限，否则本次调用失败)
+	 * <p>
+	 * 1） 发送人员列表存在错误的userid：执行发送，开发者需注意返回结果说明</br>
+	 * 2）发送人员不在通讯录权限范围内：不执行发送任务，返回首个出错的userid</br>
+	 * 3）发送人员不在应用可见范围内：不执行发送任务，返回首个出错的userid</br>
+	 * </p>
+	 * 
+	 * @param notify
+	 *            客服消息对象
+	 * @return 
+	 *         如果对应用或收件人、部门、标签任何一个无权限，则本次发送失败；如果收件人、部门或标签不存在，发送仍然执行，但返回无效的部分</br>
+	 *         { "errcode": 0, "errmsg": "ok", "invaliduser": "UserID1",
+	 *         "invalidparty":"PartyID1", "invalidtag":"TagID1" }
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.NotifyApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%8F%91%E9%80%81%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E">发送接口说明</a>
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F">发送格式说明</a>
+	 * @see com.foxinmy.weixin4j.msg.model.Text
+	 * @see com.foxinmy.weixin4j.msg.model.Image
+	 * @see com.foxinmy.weixin4j.msg.model.Voice
+	 * @see com.foxinmy.weixin4j.msg.model.Video
+	 * @see com.foxinmy.weixin4j.msg.model.File
+	 * @see com.foxinmy.weixin4j.msg.model.News
+	 * @see com.foxinmy.weixin4j.msg.model.MpNews
+	 * @see com.foxinmy.weixin4j.qy.message.NotifyMessage
+	 */
+	public JSONObject sendNotify(NotifyMessage notify) throws WeixinException {
+		return notifyApi.sendNotify(notify);
+	}
+
+	/**
+	 * 自定义菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
+	 * 
+	 * @param btnList
+	 *            菜单列表
+	 * @param agentid
+	 *            应用ID
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.MenuApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8%E8%8F%9C%E5%8D%95">创建自定义菜单</a>
+	 * @see com.foxinmy.weixin4j.model.Button
+	 */
+	public JsonResult createMenu(List<Button> btnList, int agentid)
+			throws WeixinException {
+		return menuApi.createMenu(btnList, agentid);
+	}
+
+	/**
+	 * 查询菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式。)
+	 * 
+	 * @param agentid
+	 *            应用ID
+	 * @return 菜单集合
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.MenuApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E8%8F%9C%E5%8D%95%E5%88%97%E8%A1%A8">查询菜单</a>
+	 * @see com.foxinmy.weixin4j.model.Button
+	 */
+	public List<Button> getMenu(int agentid) throws WeixinException {
+		return menuApi.getMenu(agentid);
+	}
+
+	/**
+	 * 删除菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
+	 * 
+	 * @param agentid
+	 *            应用ID
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.MenuApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%88%A0%E9%99%A4%E8%8F%9C%E5%8D%95">删除菜单</a>
+	 * @return 处理结果
+	 */
+	public JsonResult deleteMenu(int agentid) throws WeixinException {
+		return menuApi.deleteMenu(agentid);
+	}
+
+	/**
+	 * 上传媒体文件
+	 * 
+	 * @param file
+	 *            媒体对象
+	 * @return 上传到微信服务器返回的媒体标识
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy.MediaApi#uploadMedia(File, MediaType)}
+	 * @throws WeixinException
+	 * @throws IOException
+	 */
+	public String uploadMedia(File file) throws WeixinException, IOException {
+		return mediaApi.uploadMedia(file);
+	}
+
+	/**
+	 * 上传媒体文件
+	 * 
+	 * @param file
+	 *            文件对象
+	 * @param mediaType
+	 *            媒体类型
+	 * @return 上传到微信服务器返回的媒体标识
+	 * @throws WeixinException
+	 * @throws IOException
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see com.foxinmy.weixin4j.type.MediaType
+	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#uploadMedia(String, byte[],String)}
+	 */
+	public String uploadMedia(File file, MediaType mediaType)
+			throws WeixinException, IOException {
+		return mediaApi.uploadMedia(file, mediaType);
+	}
+
+	/**
+	 * 上传媒体文件(完全公开。所有管理员均可调用，media_id可以共享)
+	 * <p>
+	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
+	 * 否则抛出异常.
+	 * </p>
+	 * 
+	 * @param bytes
+	 *            媒体数据包
+	 * @param mediaType
+	 *            媒体类型
+	 * @return 上传到微信服务器返回的媒体标识
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传媒体文件说明</a>
+	 * @throws WeixinException
+	 */
+	public String uploadMedia(String fileName, byte[] bytes, String mediaType)
+			throws WeixinException {
+		return mediaApi.uploadMedia(fileName, bytes, mediaType);
+	}
+
+	/**
+	 * 下载媒体文件(完全公开。所有管理员均可调用，media_id可以共享)
+	 * 
+	 * @param mediaId
+	 *            媒体ID
+	 * @return 二进制数据包
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">获取媒体说明</a>
+	 * @throws WeixinException
+	 */
+	public byte[] downloadMedia(String mediaId) throws WeixinException {
+		return mediaApi.downloadMedia(mediaId);
+	}
+
+	/**
+	 * 下载媒体文件(完全公开。所有管理员均可调用，media_id可以共享)
+	 * <p>
+	 * 正常情况下返回表头如Content-Type: image/jpeg,否则抛出异常.
+	 * </p>
+	 * 
+	 * @param mediaId
+	 *            存储在微信服务器上的媒体标识
+	 * @param extension
+	 *            媒体后缀名
+	 * @return 写入硬盘后的文件对象
+	 * @throws WeixinException
+	 * @throws IOException
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">获取媒体说明</a>
+	 * @see com.foxinmy.weixin4j.type.MediaType
+	 * @see {@link com.foxinmy.weixin4j.WeixinProxy.MediaApi#downloadMedia(String)}
+	 */
+	public File downloadMedia(String mediaId, String extension)
+			throws WeixinException {
+		return mediaApi.downloadMedia(mediaId, extension);
 	}
 
 	/**
@@ -135,6 +327,24 @@ public class WeixinProxy {
 	 */
 	public JsonResult deleteParty(int partyId) throws WeixinException {
 		return partyApi.deleteParty(partyId);
+	}
+
+	/**
+	 * 批量上传部门
+	 * 
+	 * @param parties
+	 *            部门列表
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
+	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#replaceparty(String,Callback)}
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
+	 * @return 上传后的mediaId
+	 * @throws WeixinException
+	 */
+	public String batchUploadParties(List<Party> parties)
+			throws WeixinException {
+		return mediaApi.batchUploadParties(parties);
 	}
 
 	/**
@@ -451,7 +661,7 @@ public class WeixinProxy {
 	public JsonResult setAgent(AgentSetter agentSet) throws WeixinException {
 		return agentApi.setAgent(agentSet);
 	}
-	
+
 	/**
 	 * 批量邀请成员关注
 	 * 
@@ -473,7 +683,7 @@ public class WeixinProxy {
 			String tips) throws WeixinException {
 		return batchApi.inviteuser(parameter, callback, tips);
 	}
-	
+
 	/**
 	 * 批量更新成员,本接口以userid为主键，增量更新企业号通讯录成员。
 	 * <p>
@@ -497,7 +707,7 @@ public class WeixinProxy {
 			throws WeixinException {
 		return batchApi.syncuser(mediaId, callback);
 	}
-	
+
 	/**
 	 * 批量覆盖成员,本接口以userid为主键，全量覆盖企业号通讯录成员，任务完成后企业号通讯录成员与提交的文件完全保持一致。
 	 * <p>
@@ -522,6 +732,25 @@ public class WeixinProxy {
 			throws WeixinException {
 		return batchApi.replaceuser(mediaId, callback);
 	}
+
+	/**
+	 * 批量上传成员
+	 * 
+	 * @param users
+	 *            成员列表
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
+	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#syncuser(String,Callback)}
+	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#replaceuser(String,Callback)}
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
+	 * @return 上传后的mediaId
+	 * @throws WeixinException
+	 */
+	public String batchUploadUsers(List<User> users) throws WeixinException {
+		return mediaApi.batchUploadUsers(users);
+	}
+
 	/**
 	 * 批量覆盖部门,本接口以partyid为键，全量覆盖企业号通讯录组织架构，任务完成后企业号通讯录组织架构与提交的文件完全保持一致。
 	 * <p>
@@ -545,7 +774,7 @@ public class WeixinProxy {
 			throws WeixinException {
 		return batchApi.replaceparty(mediaId, callback);
 	}
-	
+
 	/**
 	 * 获取异步任务执行的结果
 	 * 

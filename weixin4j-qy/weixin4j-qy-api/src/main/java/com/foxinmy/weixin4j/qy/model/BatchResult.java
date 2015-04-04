@@ -51,7 +51,7 @@ public class BatchResult extends JsonResult {
 	}
 
 	public BatchType getType() {
-		return BatchType.valueOf(type);
+		return BatchType.valueOf(type.toUpperCase());
 	}
 
 	public void setType(String type) {
@@ -92,7 +92,7 @@ public class BatchResult extends JsonResult {
 
 	@Override
 	public String toString() {
-		return "BatchResult [status=" + status + ", type=" + type + ", total="
+		return "BatchResult [status=" + getStatus() + ", type=" + getType() + ", total="
 				+ total + ", percentage=" + percentage + ", remaintime="
 				+ remaintime + ", result=" + result + "]";
 	}

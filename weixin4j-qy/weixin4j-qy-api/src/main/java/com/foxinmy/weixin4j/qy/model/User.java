@@ -67,6 +67,10 @@ public class User implements Serializable {
 	 */
 	private int status;
 	/**
+	 * 启用/禁用成员。1表示启用成员，0表示禁用成员
+	 */
+	private int enable;
+	/**
 	 * 非必须 扩展属性。扩展属性需要在WEB管理端创建后才生效，否则忽略未知属性的赋值
 	 */
 	private List<NameValue> extattr;
@@ -152,7 +156,7 @@ public class User implements Serializable {
 	}
 
 	@JSONField(serialize = false)
-	public Gender getEnumGender() {
+	public Gender getFormatGender() {
 		if (gender == 0) {
 			return Gender.male;
 		} else if (gender == 1) {
@@ -199,8 +203,8 @@ public class User implements Serializable {
 		this.avatar = avatar;
 	}
 
-	@JSONField(serialize = false)
-	public UserStatus getStatus() {
+	@JSONField(serialize = false, deserialize = false)
+	public UserStatus getFormatStatus() {
 		for (UserStatus userStatus : UserStatus.values()) {
 			if (userStatus.getVal() == status) {
 				return userStatus;
@@ -211,6 +215,19 @@ public class User implements Serializable {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public int getEnable() {
+		return enable;
+	}
+
+	@JSONField(serialize = false, deserialize = false)
+	public boolean getFormatEnable() {
+		return enable == 1;
+	}
+
+	public void setEnable(int enable) {
+		this.enable = enable;
 	}
 
 	public List<NameValue> getExtattr() {
@@ -237,8 +254,9 @@ public class User implements Serializable {
 	public String toString() {
 		return "User [userid=" + userid + ", name=" + name + ", department="
 				+ department + ", position=" + position + ", mobile=" + mobile
-				+ ", gender=" + gender + ", tel=" + tel + ", email=" + email
-				+ ", weixinid=" + weixinid + ", avatar=" + avatar + ", status="
-				+ status + ", extattr=" + extattr + "]";
+				+ ", gender=" + getFormatGender() + ", tel=" + tel + ", email="
+				+ email + ", weixinid=" + weixinid + ", avatar=" + avatar
+				+ ", status=" + getFormatStatus() + ", enable="
+				+ getFormatEnable() + ", extattr=" + extattr + "]";
 	}
 }
