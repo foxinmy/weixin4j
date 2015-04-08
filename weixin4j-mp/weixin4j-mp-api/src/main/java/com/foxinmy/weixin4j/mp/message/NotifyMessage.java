@@ -2,9 +2,6 @@ package com.foxinmy.weixin4j.mp.message;
 
 import java.io.Serializable;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.msg.model.Base;
 
 /**
@@ -33,12 +30,7 @@ public class NotifyMessage implements Serializable {
 	/**
 	 * 消息对象
 	 */
-	@JSONField(name = "%s")
 	private Base box;
-
-	public NotifyMessage(Base box) {
-		this(null, box);
-	}
 
 	public NotifyMessage(String touser, Base box) {
 		this.touser = touser;
@@ -59,18 +51,6 @@ public class NotifyMessage implements Serializable {
 
 	public void setBox(Base box) {
 		this.box = box;
-	}
-
-	/**
-	 * 客服消息json化
-	 * 
-	 * @return {"touser": "to","msgtype": "text","text": {"content": "123"}}
-	 */
-	public String toJson() {
-		String msgtype = box.getMediaType().name();
-		JSONObject obj = (JSONObject) JSON.toJSON(this);
-		obj.put("msgtype", msgtype);
-		return String.format(obj.toJSONString(), msgtype);
 	}
 
 	@Override

@@ -27,3 +27,5 @@
 * DataApi `数据统计API`
 
 * OauthApi `oauth授权API`
+
+* CashApi `现金API`

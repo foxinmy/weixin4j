@@ -226,4 +226,4 @@
 
   + **weixin4j-qy**: [MediaApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)新增批量上传成员和部门接口
   
-  <font color="red">released 1.3</font>
+  + <font color="red">released 1.3</font>

@@ -16,12 +16,14 @@ import com.foxinmy.weixin4j.type.MessageType;
  * @see
  */
 public abstract class AbstractActionMapping implements ActionMapping {
+	
+	protected final static String DECOLLATOR = ":";
 
 	protected String getMappingKey(String xmlMsg) throws DocumentException {
 		Document doc = DocumentHelper.parseText(xmlMsg);
 		String msgType = doc.selectSingleNode("/xml/MsgType").getStringValue();
 		if (msgType.equalsIgnoreCase(MessageType.event.name())) {
-			msgType += "_"
+			msgType += DECOLLATOR
 					+ doc.selectSingleNode("/xml/Event").getStringValue();
 		}
 		return msgType.toLowerCase();

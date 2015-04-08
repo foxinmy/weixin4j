@@ -1,9 +1,12 @@
 package com.foxinmy.weixin4j.qy.api;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.msg.model.Base;
+import com.foxinmy.weixin4j.msg.model.Notifyable;
 import com.foxinmy.weixin4j.qy.message.NotifyMessage;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
@@ -63,11 +66,20 @@ public class NotifyApi extends QyApi {
 	 * @see com.foxinmy.weixin4j.qy.message.NotifyMessage
 	 */
 	public JSONObject sendNotify(NotifyMessage notify) throws WeixinException {
+		Base box = notify.getBox();
+		if (!(box instanceof Notifyable)) {
+			throw new WeixinException(String.format(
+					"%s not implement Notifyable", box.getClass()));
+		}
+		String msgtype = box.getMediaType().name();
+		JSONObject obj = (JSONObject) JSON.toJSON(notify);
+		obj.put("msgtype", msgtype);
+		obj.put(msgtype, box);
 		String message_send_uri = getRequestUri("message_send_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(
 				String.format(message_send_uri, token.getAccessToken()),
-				notify.toJson());
+				obj.toJSONString());
 
 		return response.getAsJson();
 	}

@@ -43,10 +43,10 @@ public class BaseMsg implements Serializable {
 	 */
 	@XStreamAlias("MsgId")
 	private long msgId;
-	@XStreamAlias("AgentID")
 	/**
 	 * 企业号独有的应用ID
 	 */
+	@XStreamAlias("AgentID")
 	private String agentId;
 
 	public BaseMsg() {

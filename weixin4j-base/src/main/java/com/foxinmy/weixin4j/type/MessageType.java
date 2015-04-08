@@ -42,6 +42,12 @@ public enum MessageType {
 	 */
 	video(VideoMessage.class),
 	/**
+	 * 小视频消息
+	 * 
+	 * @see com.foxinmy.weixin4j.msg.VideoMessage
+	 */
+	shortvideo(VideoMessage.class),
+	/**
 	 * 位置消息
 	 * 
 	 * @see com.foxinmy.weixin4j.msg.LocationMessage

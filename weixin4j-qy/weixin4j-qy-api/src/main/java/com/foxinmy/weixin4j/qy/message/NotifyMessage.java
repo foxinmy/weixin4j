@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.msg.model.Base;
 
@@ -55,7 +53,7 @@ public class NotifyMessage implements Serializable {
 	/**
 	 * 消息对象
 	 */
-	@JSONField(name = "%s")
+	@JSONField(serialize = false)
 	private Base box;
 
 	public NotifyMessage(Base box, int agentid) {
@@ -147,20 +145,6 @@ public class NotifyMessage implements Serializable {
 
 	public void setBox(Base box) {
 		this.box = box;
-	}
-
-	/**
-	 * 消息json化
-	 * 
-	 * @return 
-	 *         {"image":{"media_id":"123"},"agentid":0,"msgtype":"image","safe":0
-	 *         ,"touser":"@all"}
-	 */
-	public String toJson() {
-		String msgtype = box.getMediaType().name();
-		JSONObject obj = (JSONObject) JSON.toJSON(this);
-		obj.put("msgtype", msgtype);
-		return String.format(obj.toJSONString(), msgtype);
 	}
 
 	@Override

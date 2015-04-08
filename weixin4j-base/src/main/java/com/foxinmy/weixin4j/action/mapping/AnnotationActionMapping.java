@@ -27,7 +27,8 @@ public class AnnotationActionMapping extends AbstractActionMapping {
 		actionMap = new HashMap<String, WeixinAction>();
 		Set<Class<?>> weixinActions = ClassUtil.getClasses(actionPackage);
 		for (Class<?> clazz : weixinActions) {
-			ActionAnnotation action = clazz.getAnnotation(ActionAnnotation.class);
+			ActionAnnotation action = clazz
+					.getAnnotation(ActionAnnotation.class);
 			if (action == null) {
 				continue;
 			}
@@ -41,9 +42,8 @@ public class AnnotationActionMapping extends AbstractActionMapping {
 			EventType[] eventTypes = action.eventType();
 			if (eventTypes != null && eventTypes.length > 0) {
 				for (EventType e : eventTypes) {
-					actionMap.put(
-							(msgType.name() + "_" + e.name()).toLowerCase(),
-							weixinAction);
+					actionMap.put((msgType.name() + DECOLLATOR + e.name())
+							.toLowerCase(), weixinAction);
 				}
 				continue;
 			}

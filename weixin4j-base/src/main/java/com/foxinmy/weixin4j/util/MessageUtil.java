@@ -178,7 +178,7 @@ public class MessageUtil {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/10/79502792eef98d6e0c6e1739da387346.html">普通消息</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/5baf56ce4947d35003b86a9805634b1e.html">事件触发</a>
+	 *      href="http://mp.weixin.qq.com/wiki/2/5baf56ce4947d35003b86a9805634b1e.html">事件消息</a>
 	 * @see com.foxinmy.weixin4j.type.MessageType
 	 * @see com.feican.weixin.msg.BaeMessage
 	 * @see com.foxinmy.weixin4j.msg.TextMessage

@@ -198,7 +198,6 @@ public class HttpRequest {
 					.getFirstHeader(HttpHeaders.CONTENT_TYPE);
 			Header disposition = httpResponse
 					.getFirstHeader("Content-disposition");
-			System.err.println(response.getAsString());
 			// json
 			if (contentType.getValue().contains(
 					ContentType.APPLICATION_JSON.getMimeType())

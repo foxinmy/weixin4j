@@ -347,7 +347,23 @@ public class WeixinProxy {
 	 * 
 	 * @param notify
 	 *            客服消息对象
+	 * @return 处理结果
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#sendNotify(NotifyMessage,String) }
 	 * @throws WeixinException
+	 */
+	public JsonResult sendNotify(NotifyMessage notify) throws WeixinException {
+		return notifyApi.sendNotify(notify);
+	}
+
+	/**
+	 * 发送客服消息(在48小时内不限制发送次数)
+	 * 
+	 * @param notify
+	 *            客服消息对象
+	 * @param kfAccount
+	 *            客服账号 可为空
+	 * @throws WeixinException
+	 * @return 处理结果
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/1/70a29afed17f56d537c833f89be979c9.html#.E5.AE.A2.E6.9C.8D.E6.8E.A5.E5.8F.A3-.E5.8F.91.E6.B6.88.E6.81.AF">发送客服消息</a>
 	 * @see com.foxinmy.weixin4j.msg.model.Text
@@ -358,8 +374,9 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.msg.model.News
 	 * @see com.foxinmy.weixin4j.mp.api.NotifyApi
 	 */
-	public JsonResult sendNotify(NotifyMessage notify) throws WeixinException {
-		return notifyApi.sendNotify(notify);
+	public JsonResult sendNotify(NotifyMessage notify, String kfAccount)
+			throws WeixinException {
+		return notifyApi.sendNotify(notify, kfAccount);
 	}
 
 	/**
