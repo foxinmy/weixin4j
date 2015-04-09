@@ -5,7 +5,7 @@ import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
- * 企业号应用的基本信息
+ * 企业号应用的设置信息
  * 
  * @className AgentInfo
  * @author jy

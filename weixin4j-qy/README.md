@@ -134,3 +134,7 @@ weixin4j-qy
 * 2015-04-04
 
   + **weixin4j-qy-api**: [MediaApi](./weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)新增批量上传成员和部门接口
+  
+* 2015-04-09
+
+  + **weixin4j-qy-api**: [AgentApi](./weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/AgentApi.java)新增获取应用列表概况接口

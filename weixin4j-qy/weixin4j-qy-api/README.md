@@ -103,3 +103,7 @@ weixin.properties说明
 * 2015-04-04
 
   + [MediaApi](./src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)新增批量上传成员和部门接口
+  
+* 2015-04-09
+
+  + [AgentApi](./src/main/java/com/foxinmy/weixin4j/qy/api/AgentApi.java)新增获取应用列表概况接口

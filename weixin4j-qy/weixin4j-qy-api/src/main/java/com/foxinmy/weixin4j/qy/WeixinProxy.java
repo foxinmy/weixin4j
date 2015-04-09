@@ -19,6 +19,7 @@ import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
 import com.foxinmy.weixin4j.qy.message.NotifyMessage;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
+import com.foxinmy.weixin4j.qy.model.AgentOverview;
 import com.foxinmy.weixin4j.qy.model.AgentSetter;
 import com.foxinmy.weixin4j.qy.model.BatchResult;
 import com.foxinmy.weixin4j.qy.model.Callback;
@@ -660,6 +661,20 @@ public class WeixinProxy {
 	 */
 	public JsonResult setAgent(AgentSetter agentSet) throws WeixinException {
 		return agentApi.setAgent(agentSet);
+	}
+
+	/**
+	 * 获取应用概况列表
+	 * 
+	 * @see com.foxinmy.weixin4j.qy.model.AgentOverview
+	 * @see com.foxinmy.weixin4j.qy.api.AgentApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%BA%94%E7%94%A8%E6%A6%82%E5%86%B5%E5%88%97%E8%A1%A8">获取应用概况</a>
+	 * @return 应用概况列表
+	 * @throws WeixinException
+	 */
+	public List<AgentOverview> listAgentOverview() throws WeixinException {
+		return agentApi.listAgentOverview();
 	}
 
 	/**

@@ -227,3 +227,7 @@
   + **weixin4j-qy**: [MediaApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)新增批量上传成员和部门接口
   
   + <font color="red">released 1.3</font>
+  
+* 2015-04-09
+
+  + **weixin4j-qy**: [AgentApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/AgentApi.java)新增获取应用列表概况接口

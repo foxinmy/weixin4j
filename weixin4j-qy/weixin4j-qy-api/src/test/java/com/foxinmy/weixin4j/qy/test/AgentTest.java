@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.qy.test;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +10,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
+import com.foxinmy.weixin4j.qy.model.AgentOverview;
 import com.foxinmy.weixin4j.qy.model.AgentSetter;
 import com.foxinmy.weixin4j.qy.type.ReportLocationType;
 
@@ -43,5 +46,11 @@ public class AgentTest extends TokenTest {
 		agentSet.setReportLocationType(ReportLocationType.DIALOG);
 		JsonResult result = agentApi.setAgent(agentSet);
 		Assert.assertTrue(result.getCode() == 0);
+	}
+	
+	@Test
+	public void list() throws WeixinException {
+		List<AgentOverview> list = agentApi.listAgentOverview();
+		System.err.println(list);
 	}
 }
