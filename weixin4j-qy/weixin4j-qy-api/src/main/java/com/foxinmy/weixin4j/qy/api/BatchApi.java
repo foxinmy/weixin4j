@@ -75,7 +75,7 @@ public class BatchApi extends QyApi {
 	 * @param callback
 	 *            接收任务执行结果的回调地址等信息
 	 * @return 异步任务id，最大长度为64字符
-	 * @see {@link com.foxinmy.weixin4j.qy.api.UserApi#batchUploadUsers(List)}
+	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#batchUploadUsers(List)}
 	 * @see com.foxinmy.weixin4j.qy.model.Callback
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.A2.9E.E9.87.8F.E6.9B.B4.E6.96.B0.E6.88.90.E5.91.98">批量更新成员</a>
@@ -113,7 +113,7 @@ public class BatchApi extends QyApi {
 	 * @param callback
 	 *            接收任务执行结果的回调地址等信息
 	 * @return 异步任务id，最大长度为64字符
-	 * @see {@link com.foxinmy.weixin4j.qy.api.UserApi#batchUploadUsers(List)}
+	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#batchUploadUsers(List)}
 	 * @see com.foxinmy.weixin4j.qy.model.Callback
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E6.88.90.E5.91.98">批量覆盖成员</a>
@@ -138,6 +138,7 @@ public class BatchApi extends QyApi {
 	 * @param callback
 	 *            接收任务执行结果的回调地址等信息
 	 * @return 异步任务id，最大长度为64字符
+	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#batchUploadParties(List)}
 	 * @see com.foxinmy.weixin4j.qy.model.Callback
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E9.83.A8.E9.97.A8">批量覆盖部门</a>

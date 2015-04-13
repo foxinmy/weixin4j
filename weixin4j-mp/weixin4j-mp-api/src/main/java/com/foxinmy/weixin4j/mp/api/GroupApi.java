@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.mp.api;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
@@ -118,24 +119,70 @@ public class GroupApi extends MpApi {
 	}
 
 	/**
-	 * 移动分组
+	 * 移动用户到分组
 	 * 
-	 * @param openId
-	 *            用户对应的ID
 	 * @param groupId
 	 *            组ID
+	 * @param openId
+	 *            用户对应的ID
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/13/be5272dc4930300ba561d927aead2569.html#.E7.A7.BB.E5.8A.A8.E7.94.A8.E6.88.B7.E5.88.86.E7.BB.84">移动分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
-	public JsonResult moveGroup(String openId, int groupId)
+	public JsonResult moveGroup(int groupId, String openId)
 			throws WeixinException {
 		String group_move_uri = getRequestUri("group_move_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(String.format(group_move_uri,
 				token.getAccessToken()), String.format(
 				"{\"openid\":\"%s\",\"to_groupid\":%d}", openId, groupId));
+
+		return response.getAsJsonResult();
+	}
+
+	/**
+	 * 批量移动分组
+	 * 
+	 * @param groupId
+	 *            组ID
+	 * @param openIds
+	 *            用户ID列表(不能超过50个)
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/0/56d992c605a97245eb7e617854b169fc.html#.E6.89.B9.E9.87.8F.E7.A7.BB.E5.8A.A8.E7.94.A8.E6.88.B7.E5.88.86.E7.BB.84">批量移动分组</a>
+	 * @see com.foxinmy.weixin4j.mp.model.Group
+	 */
+	public JsonResult moveGroup(int groupId, String... openIds)
+			throws WeixinException {
+		String group_batchmove_uri = getRequestUri("group_batchmove_uri");
+		Token token = tokenHolder.getToken();
+		JSONObject obj = new JSONObject();
+		obj.put("to_groupid", groupId);
+		obj.put("openid_list", openIds);
+		Response response = request.post(
+				String.format(group_batchmove_uri, token.getAccessToken()),
+				obj.toJSONString());
+
+		return response.getAsJsonResult();
+	}
+
+	/**
+	 * 删除用户分组,所有该分组内的用户自动进入默认分组.
+	 * 
+	 * @param groupId
+	 *            组ID
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/0/56d992c605a97245eb7e617854b169fc.html#.E5.88.A0.E9.99.A4.E5.88.86.E7.BB.84">删除用户分组</a>
+	 * @see com.foxinmy.weixin4j.mp.model.Group
+	 */
+	public JsonResult deleteGroup(int groupId) throws WeixinException {
+		String group_delete_uri = getRequestUri("group_delete_uri");
+		Token token = tokenHolder.getToken();
+		Response response = request.post(
+				String.format(group_delete_uri, token.getAccessToken()),
+				String.format("{\"group\":{\"id\":%d}}", groupId));
 
 		return response.getAsJsonResult();
 	}

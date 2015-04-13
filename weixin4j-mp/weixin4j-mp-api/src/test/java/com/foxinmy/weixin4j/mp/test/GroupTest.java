@@ -56,8 +56,21 @@ public class GroupTest extends TokenTest {
 
 	@Test
 	public void move() throws WeixinException {
-		JsonResult result = groupApi.moveGroup("owGBft_vbBbOaQOmpEUE4xDLeRSU",
-				100);
+		JsonResult result = groupApi.moveGroup(100,
+				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
+		Assert.assertEquals(0, result.getCode());
+	}
+
+	@Test
+	public void batchMove() throws WeixinException {
+		JsonResult result = groupApi.moveGroup(100,
+				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
+		Assert.assertEquals(0, result.getCode());
+	}
+
+	@Test
+	public void delete() throws WeixinException {
+		JsonResult result = groupApi.deleteGroup(100);
 		Assert.assertEquals(0, result.getCode());
 	}
 }

@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.token;
+package com.foxinmy.weixin4j.mp.token;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -6,9 +6,11 @@ import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.token.TokenCreator;
+import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
- * 微信JSTICKET创建者
+ * 微信公众平台JSTICKET创建者
  * 
  * @className WeixinJSTicketCreator
  * @author jy
@@ -37,12 +39,12 @@ public class WeixinJSTicketCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("%s_jskey", appid);
+		return String.format("mp_jsticket_%s", appid);
 	}
 
 	@Override
 	public Token createToken() throws WeixinException {
-		Response response = request.get(String.format(Consts.JS_TICKET_URL,
+		Response response = request.get(String.format(Consts.MP_JS_TICKET_URL,
 				weixinTokenHolder.getToken().getAccessToken()));
 		JSONObject result = response.getAsJson();
 		Token token = new Token(result.getString("ticket"));

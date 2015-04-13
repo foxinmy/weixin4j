@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 
 /**
  * 常量类
+ * 
  * @className Consts
  * @author jy
  * @date 2014年12月3日
@@ -37,9 +38,13 @@ public final class Consts {
 	 */
 	public static final String QY_ASSESS_TOKEN_URL = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s";
 	/**
-	 * jssdk获取token的url
+	 * 公众平台jssdk获取token的url
 	 */
-	public static final String JS_TICKET_URL = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi";
+	public static final String MP_JS_TICKET_URL = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi";
+	/**
+	 * 企业号jssdk获取token的url
+	 */
+	public static final String QY_JS_TICKET_URL = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=%s";
 	/**
 	 * 商户平台下统一订单生成的url
 	 */

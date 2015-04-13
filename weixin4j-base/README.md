@@ -56,3 +56,7 @@ weixin4j-base
 * 2015-04-01
 
   + 新增异步消息事件[BatchjobresultMessage](./src/main/java/com/foxinmy/weixin4j/msg/event/BatchjobresultMessage.java)
+  
+* 2015-04-13
+
+  + 删除WeixinTokenCreator与WeixinJSTicketCreator类

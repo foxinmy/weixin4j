@@ -13,9 +13,8 @@ import com.foxinmy.weixin4j.mp.WeixinPayProxy;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponStock;
+import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
-import com.foxinmy.weixin4j.token.WeixinTokenCreator;
-import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -31,15 +30,12 @@ public class CouponTest {
 	protected final static WeixinPayProxy WEIXINPAY;
 	protected final static WeixinMpAccount ACCOUNT;
 	static {
-		ACCOUNT = new WeixinMpAccount("公众号的id",
-				"公众号的secret",
-				"公众号的支付密钥", "商户平台的id");
+		ACCOUNT = new WeixinMpAccount("公众号的id", "公众号的secret", "公众号的支付密钥",
+				"商户平台的id");
 		WEIXINPAY = new WeixinPayProxy(ACCOUNT, new FileTokenHolder(
-				new WeixinTokenCreator(ACCOUNT.getId(), ACCOUNT.getSecret(),
-						AccountType.MP)));
+				new WeixinTokenCreator(ACCOUNT.getId(), ACCOUNT.getSecret())));
 	}
-	protected final File caFile = new File(
-			"证书文件的路径(*.p12)");
+	protected final File caFile = new File("证书文件的路径(*.p12)");
 
 	@Test
 	public void sendCoupon() throws WeixinException {
@@ -55,7 +51,7 @@ public class CouponTest {
 		CouponStock couponStock = WEIXINPAY.queryCouponStock("couponStockId");
 		System.err.println(couponStock);
 	}
-	
+
 	@Test
 	public void queryCouponDetail() throws WeixinException {
 		CouponDetail couponDetail = WEIXINPAY.queryCouponDetail("couponId");

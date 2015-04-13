@@ -32,6 +32,7 @@ import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.User;
+import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.mp.type.Lang;
@@ -40,8 +41,6 @@ import com.foxinmy.weixin4j.msg.model.MpArticle;
 import com.foxinmy.weixin4j.msg.model.Video;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.token.WeixinTokenCreator;
-import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.type.MediaType;
 
 /**
@@ -71,7 +70,7 @@ public class WeixinProxy {
 	 * 默认采用文件存放Token信息
 	 */
 	public WeixinProxy() {
-		this(new FileTokenHolder(new WeixinTokenCreator(AccountType.MP)));
+		this(new FileTokenHolder(new WeixinTokenCreator()));
 	}
 
 	/**
@@ -80,8 +79,7 @@ public class WeixinProxy {
 	 * @param appsecret
 	 */
 	public WeixinProxy(String appid, String appsecret) {
-		this(new FileTokenHolder(new WeixinTokenCreator(appid, appsecret,
-				AccountType.MP)));
+		this(new FileTokenHolder(new WeixinTokenCreator(appid, appsecret)));
 	}
 
 	/**
@@ -967,21 +965,54 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 移动分组
+	 * 移动用户到分组
 	 * 
-	 * @param openId
-	 *            用户对应的ID
 	 * @param groupId
 	 *            组ID
+	 * @param openId
+	 *            用户对应的ID
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/13/be5272dc4930300ba561d927aead2569.html#.E7.A7.BB.E5.8A.A8.E7.94.A8.E6.88.B7.E5.88.86.E7.BB.84">移动分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 * @see com.foxinmy.weixin4j.mp.api.GroupApi
 	 */
-	public JsonResult moveGroup(String openId, int groupId)
+	public JsonResult moveGroup(int groupId, String openId)
 			throws WeixinException {
-		return groupApi.moveGroup(openId, groupId);
+		return groupApi.moveGroup(groupId, openId);
+	}
+
+	/**
+	 * 批量移动分组
+	 * 
+	 * @param groupId
+	 *            组ID
+	 * @param openIds
+	 *            用户ID列表(不能超过50个)
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/0/56d992c605a97245eb7e617854b169fc.html#.E6.89.B9.E9.87.8F.E7.A7.BB.E5.8A.A8.E7.94.A8.E6.88.B7.E5.88.86.E7.BB.84">批量移动分组</a>
+	 * @see com.foxinmy.weixin4j.mp.model.Group
+	 * @see com.foxinmy.weixin4j.mp.api.GroupApi
+	 */
+	public JsonResult moveGroup(int groupId, String... openIds)
+			throws WeixinException {
+		return groupApi.moveGroup(groupId, openIds);
+	}
+
+	/**
+	 * 删除用户分组,所有该分组内的用户自动进入默认分组.
+	 * 
+	 * @param groupId
+	 *            组ID
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/0/56d992c605a97245eb7e617854b169fc.html#.E5.88.A0.E9.99.A4.E5.88.86.E7.BB.84">删除用户分组</a>
+	 * @see com.foxinmy.weixin4j.mp.model.Group
+	 * @see com.foxinmy.weixin4j.mp.api.GroupApi
+	 */
+	public JsonResult deleteGroup(int groupId) throws WeixinException {
+		return groupApi.deleteGroup(groupId);
 	}
 
 	/**

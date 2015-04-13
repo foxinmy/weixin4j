@@ -20,6 +20,7 @@ import com.foxinmy.weixin4j.mp.payment.v3.MPPayment;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentResult;
 import com.foxinmy.weixin4j.mp.payment.v3.Redpacket;
 import com.foxinmy.weixin4j.mp.payment.v3.RedpacketSendResult;
+import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
@@ -27,8 +28,6 @@ import com.foxinmy.weixin4j.mp.type.IdType;
 import com.foxinmy.weixin4j.mp.type.RefundType;
 import com.foxinmy.weixin4j.token.FileTokenHolder;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.token.WeixinTokenCreator;
-import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
@@ -52,7 +51,7 @@ public class WeixinPayProxy {
 
 	public WeixinPayProxy() {
 		this(ConfigUtil.getWeixinMpAccount(), new FileTokenHolder(
-				new WeixinTokenCreator(AccountType.MP)));
+				new WeixinTokenCreator()));
 	}
 
 	/**

@@ -211,3 +211,9 @@ weixin4j-mp
 * 2015-04-01
 
   + **weixin4j-mp-api**: 新增[CashApi](./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CashApi.java)发红包、企业付款接口
+  
+* 2015-04-13
+
+  + **weixin4j-mp-api**: 新增WeixinTokenCreator与WeixinJSTicketCreator类
+  
+  + **weixin4j-mp-api**: 新增用户分组批量移动、删除组别接口

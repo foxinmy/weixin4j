@@ -186,3 +186,9 @@ weixin.properties说明
 * 2015-04-01
 
   + 新增[CashApi](./src/main/java/com/foxinmy/weixin4j/mp/api/CashApi.java)发红包、企业付款接口
+  
+* 2015-04-13
+
+  + 新增WeixinTokenCreator与WeixinJSTicketCreator类
+  
+  + 新增用户分组批量移动、删除组别接口

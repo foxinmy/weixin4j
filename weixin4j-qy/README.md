@@ -138,3 +138,7 @@ weixin4j-qy
 * 2015-04-09
 
   + **weixin4j-qy-api**: [AgentApi](./weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/AgentApi.java)新增获取应用列表概况接口
+  
+* 2015-04-13
+
+  + **weixin4j-qy-api**: 新增WeixinTokenCreator与WeixinJSTicketCreator类

@@ -19,7 +19,7 @@ import com.thoughtworks.xstream.XStream;
  * @date 2015年1月9日
  * @since JDK 1.7
  * @see com.foxinmy.weixin4j.token.TokenCreator
- * @see com.foxinmy.weixin4j.token.WeixinTokenCreator
+ * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator
  */
 public class FileTokenHolder implements TokenHolder {
 	private final XStream xstream;

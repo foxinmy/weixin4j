@@ -231,3 +231,14 @@
 * 2015-04-09
 
   + **weixin4j-qy**: [AgentApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/AgentApi.java)新增获取应用列表概况接口
+  
+* 2015-04-13
+
+  + **weixin4j-base**: <font color="red">删除WeixinTokenCreator与WeixinJSTicketCreator类</font>
+  
+  + **weixin4j-mp**: 新增WeixinTokenCreator与WeixinJSTicketCreator类
+  
+  + **weixin4j-mp**: 新增用户分组批量移动、删除组别接口
+  
+  + **weixin4j-qy**: 新增WeixinTokenCreator与WeixinJSTicketCreator类
+  
