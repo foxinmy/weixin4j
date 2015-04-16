@@ -22,4 +22,14 @@ public class HelpTest extends TokenTest {
 		List<String> ipList = helperApi.getcallbackip();
 		Assert.assertFalse(ipList.isEmpty());
 	}
+
+	@Test
+	public void getMenuSetting() throws WeixinException {
+		System.err.println(helperApi.getMenuSetting());
+	}
+
+	@Test
+	public void getAutoReplySetting() throws WeixinException {
+		System.err.println(helperApi.getAutoReplySetting());
+	}
 }

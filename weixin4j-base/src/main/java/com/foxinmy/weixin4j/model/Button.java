@@ -29,19 +29,25 @@ public class Button implements Serializable {
 	 */
 	private String name;
 	/**
-	 * 菜单的响应动作类型
+	 * 菜单类型 </br> <font color="red">
+	 * 公众平台官网上能够设置的菜单类型有view、text、img、photo、video、voice </font>
 	 * 
 	 * @see com.foxinmy.weixin4j.type.ButtonType
 	 */
-	private ButtonType type;
+	private String type;
 	/**
-	 * 菜单KEY值，用于消息接口推送，不超过128字节
+	 * 菜单KEY值,根据type的类型而定,用于消息接口推送,不超过128字节.
+	 * <p>
+	 * 官网上设置的自定义菜单：</br> Text:保存文字到value； Img、voice：保存mediaID到value；
+	 * Video：保存视频下载链接到value；</br> News：保存图文消息到news_info； View：保存链接到url。</br>
+	 * <p>
+	 * 使用API设置的自定义菜单：</br>
+	 * click、scancode_push、scancode_waitmsg、pic_sysphoto、pic_photo_or_album
+	 * 、</br> pic_weixin、location_select：保存值到key；view：保存链接到url
+	 * </p>
+	 * </p>
 	 */
-	private String key;
-	/**
-	 * view类型必须 网页链接，用户点击菜单可打开链接，不超过256字节
-	 */
-	private String url;
+	private Serializable content;
 	/**
 	 * 二级菜单数组，个数应为1~5个
 	 */
@@ -53,18 +59,18 @@ public class Button implements Serializable {
 
 	/**
 	 * 创建一个菜单
-	 * @param name 菜单显示的名称
-	 * @param value 当buttonType为view时value设置为url,否则为key.
-	 * @param buttonType 按钮类型
+	 * 
+	 * @param name
+	 *            菜单显示的名称
+	 * @param content
+	 *            当buttonType为view时content设置为url,否则为key.
+	 * @param buttonType
+	 *            按钮类型
 	 */
-	public Button(String name, String value, ButtonType buttonType) {
+	public Button(String name, String content, ButtonType buttonType) {
 		this.name = name;
-		this.type = buttonType;
-		if (buttonType == ButtonType.view) {
-			this.url = value;
-		} else {
-			this.key = value;
-		}
+		this.content = content;
+		this.type = buttonType.name();
 	}
 
 	public String getName() {
@@ -75,28 +81,25 @@ public class Button implements Serializable {
 		this.name = name;
 	}
 
-	public ButtonType getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(ButtonType type) {
+	@JSONField(serialize = false, deserialize = false)
+	public ButtonType getFormatType() {
+		return ButtonType.valueOf(type);
+	}
+
+	public void setType(String type) {
 		this.type = type;
 	}
 
-	public String getKey() {
-		return key;
+	public Serializable getContent() {
+		return content;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
+	public void setContent(Serializable content) {
+		this.content = content;
 	}
 
 	public List<Button> getSubs() {
@@ -117,19 +120,7 @@ public class Button implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[Button name=").append(name);
-		sb.append(" ,type=").append(type);
-		sb.append(" ,key=").append(key);
-		sb.append(" ,url=").append(url);
-		if (subs != null && !subs.isEmpty()) {
-			sb.append("{");
-			for (Button sub : subs) {
-				sb.append(sub.toString());
-			}
-			sb.append("}");
-		}
-		sb.append("]");
-		return sb.toString();
+		return "Button [name=" + name + ", type=" + type + ", content="
+				+ content + ", subs=" + subs + "]";
 	}
 }

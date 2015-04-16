@@ -242,3 +242,8 @@
   
   + **weixin4j-qy**: 新增WeixinTokenCreator与WeixinJSTicketCreator类
   
+* 2015-04-16
+
+  + **weixin4j-mp**: <font color="red">调整[二维码参数](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/model/QRParameter.java)类</font>
+  
+  + **weixin4j-mp**: 新增获取[自定义菜单配置、自动回复配置](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/HelperApi.java)接口

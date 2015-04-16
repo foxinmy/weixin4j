@@ -150,7 +150,7 @@ public class OauthApi extends MpApi {
 	}
 
 	/**
-	 * oauth获取用户信息
+	 * oauth获取用户信息(需scope为 snsapi_userinfo)
 	 * 
 	 * @param token
 	 *            授权票据

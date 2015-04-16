@@ -32,7 +32,7 @@ public class MpArticle implements Serializable {
 	 * 在图文消息页面点击“阅读原文”后的页面 可为空
 	 */
 	@JSONField(name = "content_source_url")
-	private String url;
+	private String sourceUrl;
 	/**
 	 * 图文消息页面的内容，支持HTML标签 非空
 	 */
@@ -46,6 +46,18 @@ public class MpArticle implements Serializable {
 	 */
 	@JSONField(name = "show_cover_pic")
 	private String showCoverPic;
+	
+	/**
+	 * 正文的URL 可为空
+	 */
+	@JSONField(name = "content_url")
+	private String contentUrl;
+	
+	/**
+	 * 封面图片的URL 可为空
+	 */
+	@JSONField(name = "cover_url")
+	private String coverUrl;
 
 	public MpArticle(String thumbMediaId, String title, String content) {
 		this.thumbMediaId = thumbMediaId;
@@ -81,12 +93,12 @@ public class MpArticle implements Serializable {
 		this.title = title;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getSourceUrl() {
+		return sourceUrl;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setSourceUrl(String sourceUrl) {
+		this.sourceUrl = sourceUrl;
 	}
 
 	public String getContent() {
@@ -113,16 +125,28 @@ public class MpArticle implements Serializable {
 		this.showCoverPic = showCoverPic ? "1" : "0";
 	}
 
+	public String getContentUrl() {
+		return contentUrl;
+	}
+
+	public void setContentUrl(String contentUrl) {
+		this.contentUrl = contentUrl;
+	}
+
+	public String getCoverUrl() {
+		return coverUrl;
+	}
+
+	public void setCoverUrl(String coverUrl) {
+		this.coverUrl = coverUrl;
+	}
+
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[MpArticle thumbMediaId=").append(thumbMediaId);
-		sb.append(", author=").append(author);
-		sb.append(", title=").append(title);
-		sb.append(", url=").append(url);
-		sb.append(", content=").append(content);
-		sb.append(", digest=").append(digest);
-		sb.append(", showCoverPic=").append(showCoverPic).append("]");
-		return sb.toString();
+		return "MpArticle [thumbMediaId=" + thumbMediaId + ", author=" + author
+				+ ", title=" + title + ", sourceUrl=" + sourceUrl
+				+ ", content=" + content + ", digest=" + digest
+				+ ", showCoverPic=" + showCoverPic + ", contentUrl="
+				+ contentUrl + ", coverUrl=" + coverUrl + "]";
 	}
 }

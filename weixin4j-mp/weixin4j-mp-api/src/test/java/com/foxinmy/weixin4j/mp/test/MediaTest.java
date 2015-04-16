@@ -75,9 +75,7 @@ public class MediaTest extends TokenTest {
 	@Test
 	public void uploadMaterialArticle() throws WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
-		articles.add(new MpArticle(
-				"8790403529",
-				"title", "content"));
+		articles.add(new MpArticle("8790403529", "title", "content"));
 		String mediaId = mediaApi.uploadMaterialArticle(articles);
 		// 17385064953
 		Assert.assertNotNull(mediaId);
@@ -86,43 +84,34 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void download2() throws WeixinException, IOException {
-		File file = mediaApi
-				.downloadMedia(
-						"8790403529",
-						MediaType.image, true);
+		File file = mediaApi.downloadMedia("8790403529", MediaType.image, true);
 		Assert.assertTrue(file.exists());
 	}
 
 	@Test
 	public void downloadArticle() throws WeixinException {
-		List<MpArticle> articles = mediaApi
-				.downloadArticle("17385064953");
+		List<MpArticle> articles = mediaApi.downloadArticle("17385064953");
 		Assert.assertTrue(articles != null && !articles.isEmpty());
 		System.err.println(articles);
 	}
 
 	@Test
 	public void deleteMaterialMedia() throws WeixinException {
-		JsonResult result = mediaApi
-				.deleteMaterialMedia("17385064953");
+		JsonResult result = mediaApi.deleteMaterialMedia("17385064953");
 		System.err.println(result);
 	}
 
 	@Test
 	public void updateMaterialArticle() throws WeixinException {
-		MpArticle mpArticle = new MpArticle(
-				"8790403529",
-				"title", "content");
+		MpArticle mpArticle = new MpArticle("8790403529", "title", "content");
 		mpArticle.setAuthor("author_update");
 		mpArticle.setDigest("digest_update");
 		mpArticle.setShowCoverPic(false);
-		mpArticle.setUrl("http://www.baidu.com");
+		mpArticle.setSourceUrl("http://www.baidu.com");
 		List<MpArticle> articles = new ArrayList<MpArticle>();
 		articles.add(mpArticle);
-		JsonResult result = mediaApi
-				.updateMaterialArticle(
-						"17385064953",
-						0, articles);
+		JsonResult result = mediaApi.updateMaterialArticle("17385064953", 0,
+				articles);
 		System.err.println(result);
 		// 17385065153
 	}
@@ -132,10 +121,11 @@ public class MediaTest extends TokenTest {
 		MediaCounter counter = mediaApi.countMaterialMedia();
 		System.err.println(counter);
 	}
-	
+
 	@Test
 	public void listMaterialMedia() throws WeixinException {
-		MediaRecord mediaRecord = mediaApi.listMaterialMedia(MediaType.news, 0, 20);
+		MediaRecord mediaRecord = mediaApi.listMaterialMedia(MediaType.news, 0,
+				20);
 		System.err.println(mediaRecord);
 	}
 }

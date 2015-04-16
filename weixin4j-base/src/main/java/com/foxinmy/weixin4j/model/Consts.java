@@ -54,11 +54,11 @@ public final class Consts {
 	 */
 	public static final String MICROPAYURL = "https://api.mch.weixin.qq.com/pay/micropay";
 	/**
-	 * 商户平台下native支付的url
+	 * V2支付下natvie支付的url
 	 */
 	public static final String NATIVEURLV2 = "weixin://wxpay/bizpayurl?sign=%s&appid=%s&productid=%s&timestamp=%s&noncestr=%s";
 	/**
-	 * V2支付下natvie支付的url
+	 * 商户平台(V3)下native支付的url
 	 */
 	public static final String NATIVEURLV3 = "weixin://wxpay/bizpayurl?sign=%s&appid=%s&mch_id=%s&product_id=%s&time_stamp=%s&nonce_str=%s";
 }

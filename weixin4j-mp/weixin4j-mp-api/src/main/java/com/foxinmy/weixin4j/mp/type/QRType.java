@@ -13,18 +13,13 @@ public enum QRType {
 	/**
 	 * 临时二维码
 	 */
-	TEMPORARY("QR_SCENE"),
+	QR_SCENE,
 	/**
-	 * 永久二维码
+	 * 永久二维码(场景值为数字范围在1-100000之间)
 	 */
-	PERMANENCE("QR_LIMIT_SCENE");
-	private String name;
-
-	QRType(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
+	QR_LIMIT_SCENE,
+	/**
+	 * 永久二维码(场景值为字符串长度在1-64之间)
+	 */
+	QR_LIMIT_STR_SCENE;
 }

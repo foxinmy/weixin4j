@@ -292,7 +292,7 @@ public class PayUtil {
 	 *            商户信息
 	 * @param productId
 	 *            与订单ID等价
-	 * @return
+	 * @return 支付链接
 	 */
 	public static String createNativePayRequestURLV2(
 			WeixinMpAccount weixinAccount, String productId) {
@@ -316,7 +316,7 @@ public class PayUtil {
 	 *            支付配置信息
 	 * @param productId
 	 *            与订单ID等价
-	 * @return
+	 * @return 支付链接
 	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
 	 */
 	public static String createNativePayRequestURLV3(

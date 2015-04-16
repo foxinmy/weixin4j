@@ -21,6 +21,7 @@ import com.foxinmy.weixin4j.mp.api.TmplApi;
 import com.foxinmy.weixin4j.mp.api.UserApi;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;
 import com.foxinmy.weixin4j.mp.message.TemplateMessage;
+import com.foxinmy.weixin4j.mp.model.AutoReplySetting;
 import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
@@ -28,6 +29,7 @@ import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.mp.model.MediaCounter;
 import com.foxinmy.weixin4j.mp.model.MediaRecord;
+import com.foxinmy.weixin4j.mp.model.MenuSetting;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
@@ -1075,25 +1077,6 @@ public class WeixinProxy {
 
 	/**
 	 * 生成带参数的二维码
-	 * 
-	 * @param sceneId
-	 *            场景值
-	 * @param expireSeconds
-	 *            过期秒数 如果小于等于0则 视为永久二维码
-	 * @return byte数据包
-	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.api.QrApi
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#getQR(QRParameter)}
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">生成二维码</a>
-	 */
-	public byte[] getQRData(int sceneId, int expireSeconds)
-			throws WeixinException {
-		return qrApi.getQRData(sceneId, expireSeconds);
-	}
-
-	/**
-	 * 生成带参数的二维码
 	 * <p>
 	 * 二维码分为临时跟永久两种,扫描时触发推送带参数事件
 	 * </p>
@@ -1204,6 +1187,37 @@ public class WeixinProxy {
 	 */
 	public List<String> getcallbackip() throws WeixinException {
 		return helperApi.getcallbackip();
+	}
+
+	/**
+	 * 获取公众号当前使用的自定义菜单的配置，如果公众号是通过API调用设置的菜单，则返回菜单的开发配置，
+	 * 而如果公众号是在公众平台官网通过网站功能发布菜单，则本接口返回运营者设置的菜单配置。
+	 * 
+	 * @return 菜单集合
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#getMenu()}
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/17/4dc4b0514fdad7a5fbbd477aa9aab5ed.html">获取自定义菜单配置</a>
+	 * @see com.foxinmy.weixin4j.model.Button
+	 * @se com.foxinmy.weixin4j.mp.model.MenuSetting
+	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
+	 * @see com.foxinmy.weixin4j.mp.api.HelperApi
+	 * @throws WeixinException
+	 */
+	public MenuSetting getMenuSetting() throws WeixinException {
+		return helperApi.getMenuSetting();
+	}
+
+	/**
+	 * 获取公众号当前使用的自动回复规则，包括关注后自动回复、消息自动回复（60分钟内触发一次）、关键词自动回复。
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.model.AutoReplySetting
+	 * @see com.foxinmy.weixin4j.mp.api.HelperApi
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/7/7b5789bb1262fb866d01b4b40b0efecb.html">获取自动回复规则</a>
+	 * @throws WeixinException
+	 */
+	public AutoReplySetting getAutoReplySetting() throws WeixinException {
+		return helperApi.getAutoReplySetting();
 	}
 
 	/**

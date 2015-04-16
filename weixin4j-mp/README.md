@@ -68,8 +68,8 @@ weixin4j-mp
 		"token":"开放者的token",\
 		"encodingAesKey":"公众号设置了加密方式且为「安全模式」时需要填入",\
 		"mchId":"V3.x版本下的微信商户号",\
-		"partnerId":"财付通的商户号",\
-		"partnerKey":"财付通商户权限密钥Key",\
+		"partnerId":"V2版本下的财付通的商户号",\
+		"partnerKey":"V2版本下的财付通商户权限密钥Key",\
 		"version":"针对微信支付的版本号(2,3),如果不填则按照mchId非空与否来判断",\
 		"paySignKey":"微信支付中调用API的密钥"}
 	
@@ -217,3 +217,9 @@ weixin4j-mp
   + **weixin4j-mp-api**: 新增WeixinTokenCreator与WeixinJSTicketCreator类
   
   + **weixin4j-mp-api**: 新增用户分组批量移动、删除组别接口
+  
+* 2015-04-16
+
+  + **weixin4j-mp**: <font color="red">调整[二维码参数](./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/model/QRParameter.java)类</font>
+  
+  + **weixin4j-mp**: 新增获取[自定义菜单配置、自动回复配置](./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/HelperApi.java)接口

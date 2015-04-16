@@ -53,7 +53,7 @@ public class CustomApi extends MpApi {
 	 * @param endtime
 	 *            查询结束时间 每次查询不能跨日查询
 	 * @param pagesize
-	 *            每页大小 每页最多拉取1000条
+	 *            每页大小 每页最多拉取50条
 	 * @param pageindex
 	 *            查询第几页 从1开始
 	 * @throws WeixinException

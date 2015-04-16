@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.NameFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
  * 菜单相关API
@@ -31,7 +33,8 @@ public class MenuApi extends MpApi {
 	/**
 	 * 自定义菜单
 	 * 
-	 * @param btnList 菜单列表
+	 * @param btnList
+	 *            菜单列表
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">创建自定义菜单</a>
@@ -44,7 +47,20 @@ public class MenuApi extends MpApi {
 		obj.put("button", btnList);
 		Response response = request.post(
 				String.format(menu_create_uri, token.getAccessToken()),
-				obj.toJSONString());
+				JSON.toJSONString(obj, new NameFilter() {
+					@Override
+					public String process(Object object, String name,
+							Object value) {
+						if (object instanceof Button && name.equals("content")) {
+							if (((Button) object).getFormatType() == ButtonType.view) {
+								return "url";
+							} else {
+								return "key";
+							}
+						}
+						return name;
+					}
+				}));
 
 		return response.getAsJsonResult();
 	}
@@ -64,8 +80,18 @@ public class MenuApi extends MpApi {
 		Response response = request.get(String.format(menu_get_uri,
 				token.getAccessToken()));
 
-		String text = response.getAsJson().getJSONObject("menu")
-				.getString("button");
+		String text = JSON.toJSONString(
+				response.getAsJson().getJSONObject("menu")
+						.getJSONArray("button"), new NameFilter() {
+					@Override
+					public String process(Object object, String name,
+							Object value) {
+						if (name.equals("url") || name.equals("key")) {
+							return "content";
+						}
+						return name;
+					}
+				});
 		return JSON.parseArray(text, Button.class);
 	}
 

@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.NameFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
  * 菜单相关API
@@ -48,7 +50,20 @@ public class MenuApi extends QyApi {
 		obj.put("button", btnList);
 		Response response = request
 				.post(String.format(menu_create_uri, token.getAccessToken(),
-						agentid), obj.toJSONString());
+						agentid), JSON.toJSONString(obj, new NameFilter() {
+					@Override
+					public String process(Object object, String name,
+							Object value) {
+						if (object instanceof Button && name.equals("content")) {
+							if (((Button) object).getFormatType() == ButtonType.view) {
+								return "url";
+							} else {
+								return "key";
+							}
+						}
+						return name;
+					}
+				}));
 
 		return response.getAsJsonResult();
 	}
@@ -70,8 +85,18 @@ public class MenuApi extends QyApi {
 		Response response = request.get(String.format(menu_get_uri,
 				token.getAccessToken(), agentid));
 
-		String text = response.getAsJson().getJSONObject("menu")
-				.getString("button");
+		String text = JSON.toJSONString(
+				response.getAsJson().getJSONObject("menu")
+						.getJSONArray("button"), new NameFilter() {
+					@Override
+					public String process(Object object, String name,
+							Object value) {
+						if (name.equals("url") || name.equals("key")) {
+							return "content";
+						}
+						return name;
+					}
+				});
 		return JSON.parseArray(text, Button.class);
 	}
 

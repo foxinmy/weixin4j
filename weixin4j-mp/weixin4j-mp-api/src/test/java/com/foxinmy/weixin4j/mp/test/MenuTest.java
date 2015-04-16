@@ -35,22 +35,18 @@ public class MenuTest extends TokenTest {
 	public void create() throws WeixinException {
 		btnList = new ArrayList<Button>();
 
-		Button b1 = new Button("我要订餐", "ORDERING", ButtonType.click);
+		Button b1 = new Button("会员中心", "", ButtonType.click);
+		b1.pushSub(new Button("我的信息", "U:INFO", ButtonType.click));
+		b1.pushSub(new Button("修改信息", "U:UP:INFO", ButtonType.click));
 		btnList.add(b1);
 
-		Button b2 = new Button("我", "", ButtonType.click);
-		b2.pushSub(new Button("个人中心", "MINE", ButtonType.click));
-		b2.pushSub(new Button("会员中心", "MEMRBER", ButtonType.click));
-		b2.pushSub(new Button("我的积分", "SCORE", ButtonType.click));
-		b2.pushSub(new Button("我的优惠券", "COUPON", ButtonType.click));
-		b2.pushSub(new Button("我的订单", "MYORDER", ButtonType.click));
+		Button b2 = new Button("最新兼职", "PART:NEWEST", ButtonType.click);
 		btnList.add(b2);
 
-		Button b3 = new Button("商家功能", "", ButtonType.click);
-		b3.pushSub(new Button("商家主页", "SHOPLIST", ButtonType.click));
-		b3.pushSub(new Button("大转盘", "WHEEL", ButtonType.click));
-		b3.pushSub(new Button("店铺区域", "SHOPAREA", ButtonType.click));
-		b3.pushSub(new Button("店铺口味", "SHOPTASTE", ButtonType.click));
+		Button b3 = new Button("功能", "", ButtonType.click);
+		b3.pushSub(new Button("附近兼职", "PART:NEAR", ButtonType.click));
+		b3.pushSub(new Button("搜索兼职", "PART:SO", ButtonType.click));
+		b3.pushSub(new Button("公交查询", "BUS:SO", ButtonType.click));
 		btnList.add(b3);
 
 		JsonResult result = menuApi.createMenu(btnList);

@@ -9,7 +9,6 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
-import com.foxinmy.weixin4j.mp.type.QRType;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
@@ -46,31 +45,12 @@ public class QrApi extends MpApi {
 		String qr_uri = getRequestUri("qr_ticket_uri");
 		Response response = request.post(
 				String.format(qr_uri, token.getAccessToken()),
-				parameter.toJson());
+				parameter.getContent());
 		String ticket = response.getAsJson().getString("ticket");
 		qr_uri = getRequestUri("qr_image_uri");
 		response = request.get(String.format(qr_uri, ticket));
 
 		return response.getBody();
-	}
-
-	/**
-	 * 生成带参数的二维码
-	 * 
-	 * @param sceneId
-	 *            场景值
-	 * @param expireSeconds
-	 *            过期秒数 如果小于等于0则 视为永久二维码
-	 * @return byte数据包
-	 * @throws WeixinException
-	 * @see {@link com.foxinmy.weixin4j.mp.api.QrApi#getQR(QRParameter)}
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">生成二维码</a>
-	 */
-	public byte[] getQRData(int sceneId, int expireSeconds)
-			throws WeixinException {
-		QRParameter parameter = new QRParameter(sceneId, expireSeconds);
-		return getQRData(parameter);
 	}
 
 	/**
@@ -89,22 +69,22 @@ public class QrApi extends MpApi {
 	 */
 	public File getQR(QRParameter parameter) throws WeixinException {
 		String qr_path = ConfigUtil.getValue("qr_path");
-		String filename = String.format("%s_%d_%d.jpg", parameter.getQrType()
-				.name(), parameter.getSceneId(), parameter.getExpireSeconds());
+		String filename = String.format("%s_%s_%d.jpg", parameter.getQrType()
+				.name(), parameter.getSceneValue(), parameter
+				.getExpireSeconds());
 		File file = new File(qr_path + File.separator + filename);
-		if (parameter.getQrType() == QRType.PERMANENCE && file.exists()) {
+		if (parameter.getQrType().ordinal() > 0 && file.exists()) {
 			return file;
 		}
 		byte[] datas = getQRData(parameter);
 		OutputStream os = null;
 		try {
-			boolean flag = file.exists() || file.createNewFile();
-			if (flag) {
+			if (file.createNewFile()) {
 				os = new FileOutputStream(file);
 				os.write(datas);
 			} else {
-				throw new WeixinException(String.format(
-						"create file fail:%s", file.getAbsolutePath()));
+				throw new WeixinException(String.format("create file fail:%s",
+						file.getAbsolutePath()));
 			}
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());

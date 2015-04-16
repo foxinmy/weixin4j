@@ -27,9 +27,12 @@ public class WeixinJSTicketCreator implements TokenCreator {
 	private final HttpRequest request;
 
 	/**
-	 * <font color="red">公众平台的access_token</font>
+	 * jssdk
 	 * 
+	 * @param appid
+	 *            appid
 	 * @param weixinTokenHolder
+	 *            <font color="red">公众平台的access_token</font>
 	 */
 	public WeixinJSTicketCreator(String appid, TokenHolder weixinTokenHolder) {
 		this.appid = appid;

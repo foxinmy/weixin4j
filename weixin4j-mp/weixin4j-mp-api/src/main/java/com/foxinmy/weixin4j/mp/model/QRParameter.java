@@ -16,87 +16,104 @@ import com.foxinmy.weixin4j.mp.type.QRType;
  * @date 2014年4月8日
  * @since JDK 1.7
  * 
- * @see com.foxinmy.weixin4j.mp.type.QRType
  */
 public class QRParameter implements Serializable {
 
 	private static final long serialVersionUID = 6611187606558274253L;
 
 	/**
-	 * 该二维码有效时间，以秒为单位。 最大不超过1800。
+	 * 临时二维码的有效时间，以秒为单位。 最大不超过1800。
 	 */
 	private int expireSeconds;
 	/**
-	 * 二维码类型，QR_SCENE为临时,QR_LIMIT_SCENE为永久
+	 * 二维码类型
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.type.QRType
 	 */
 	private QRType qrType;
 	/**
-	 * 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000）
+	 * 场景值I 根据qrType参数而定
 	 */
-	private int sceneId;
+	private String sceneValue;
+
+	private QRParameter() {
+	}
 
 	public int getExpireSeconds() {
 		return expireSeconds;
-	}
-
-	public void setExpireSeconds(int expireSeconds) {
-		this.expireSeconds = expireSeconds;
 	}
 
 	public QRType getQrType() {
 		return qrType;
 	}
 
-	public void setQrType(QRType qrType) {
-		this.qrType = qrType;
+	public String getSceneValue() {
+		return sceneValue;
 	}
 
-	public int getSceneId() {
-		return sceneId;
+	private String content;
+
+	public String getContent() {
+		return content;
 	}
 
-	public void setSceneId(int sceneId) {
-		this.sceneId = sceneId;
+	/**
+	 * 创建临时二维码
+	 * 
+	 * @param expireSeconds
+	 *            有效时间
+	 * @param sceneValue
+	 *            二维码的场景值
+	 * @return 二维码参数
+	 */
+	public static QRParameter createTemporary(int expireSeconds, int sceneValue) {
+		QRParameter qr = new QRParameter();
+		qr.qrType = QRType.QR_SCENE;
+		qr.expireSeconds = expireSeconds;
+		qr.sceneValue = Integer.toString(sceneValue);
+		qr.content = String
+				.format("{\"expire_seconds\": %s, \"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_id\": %s}}}",
+						expireSeconds, QRType.QR_SCENE.name(), sceneValue);
+		return qr;
 	}
 
-	public QRParameter(int sceneId, int expireSeconds) {
-		this(sceneId, expireSeconds, QRType.TEMPORARY);
-		if (expireSeconds <= 0) {
-			this.qrType = QRType.PERMANENCE;
-		}
+	/**
+	 * 创建永久二维码(场景值为int)
+	 * 
+	 * @param sceneValue
+	 *            场景值
+	 * @return 二维码参数
+	 */
+	public static QRParameter createPermanenceInt(int sceneValue) {
+		QRParameter qr = new QRParameter();
+		qr.qrType = QRType.QR_LIMIT_SCENE;
+		qr.sceneValue = Integer.toString(sceneValue);
+		qr.content = String
+				.format("{\"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_id\": %s}}}",
+						QRType.QR_LIMIT_SCENE.name(), sceneValue);
+		return qr;
 	}
 
-	public QRParameter(int sceneId, int expireSeconds, QRType qrType) {
-		this.expireSeconds = expireSeconds;
-		this.qrType = qrType;
-		this.sceneId = sceneId;
-	}
-
-	public String toJson() {
-		/*
-		 * XStream xstream = new XStream(new JsonHierarchicalStreamDriver() {
-		 * public HierarchicalStreamWriter createWriter(Writer writer) { return
-		 * new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE); } });
-		 * xstream.setMode(XStream.NO_REFERENCES);
-		 * xstream.autodetectAnnotations(true); if (this.qrType ==
-		 * QRType.QR_LIMIT_SCENE) { xstream.omitField(QRParameter.class,
-		 * "expire_seconds"); } return xstream.toXML(this);
-		 */
-		StringBuilder jsonBuilder = new StringBuilder("{");
-		jsonBuilder.append("\"action_name\":\"").append(qrType.getName())
-				.append("\"");
-		if (this.qrType == QRType.TEMPORARY) {
-			jsonBuilder.append(",\"expire_seconds\":").append(expireSeconds);
-		}
-		jsonBuilder.append(",\"action_info\":").append(
-				String.format("{\"scene\": {\"scene_id\": %d}}", sceneId));
-		jsonBuilder.append("}");
-		return jsonBuilder.toString();
+	/**
+	 * 创建永久二维码(场景值为string)
+	 * 
+	 * @param sceneValue
+	 *            场景值
+	 * @return 二维码参数
+	 */
+	public static QRParameter createPermanenceStr(String sceneValue) {
+		QRParameter qr = new QRParameter();
+		qr.qrType = QRType.QR_LIMIT_STR_SCENE;
+		qr.sceneValue = sceneValue;
+		qr.content = String
+				.format("{\"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_str\": \"%s\"}}}",
+						QRType.QR_LIMIT_STR_SCENE, sceneValue);
+		return qr;
 	}
 
 	@Override
 	public String toString() {
 		return "QRParameter [expireSeconds=" + expireSeconds + ", qrType="
-				+ qrType + ", sceneId=" + sceneId + "]";
+				+ qrType + ", sceneValue=" + sceneValue + "]";
 	}
 }
