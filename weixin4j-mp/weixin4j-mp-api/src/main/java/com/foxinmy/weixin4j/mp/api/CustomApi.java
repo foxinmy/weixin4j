@@ -244,7 +244,7 @@ public class CustomApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.88.9B.E5.BB.BA.E4.BC.9A.E8.AF.9D">创建会话</a>
 	 */
-	public JsonResult createSession(String userOpenId, String kfAccount,
+	public JsonResult createKfSession(String userOpenId, String kfAccount,
 			String text) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_create_uri = getRequestUri("kfsession_create_uri");
@@ -273,7 +273,7 @@ public class CustomApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.85.B3.E9.97.AD.E4.BC.9A.E8.AF.9D">创建会话</a>
 	 */
-	public JsonResult closeSession(String userOpenId, String kfAccount,
+	public JsonResult closeKfSession(String userOpenId, String kfAccount,
 			String text) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_close_uri = getRequestUri("kfsession_close_uri");
@@ -299,7 +299,7 @@ public class CustomApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.88.B7.E7.9A.84.E4.BC.9A.E8.AF.9D.E7.8A.B6.E6.80.81">获取会话状态</a>
 	 */
-	public KfSession getSession(String userOpenId) throws WeixinException {
+	public KfSession getKfSession(String userOpenId) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_get_uri = getRequestUri("kfsession_get_uri");
 		Response response = request.get(String.format(kfsession_get_uri,
@@ -323,7 +323,7 @@ public class CustomApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.9C.8D.E7.9A.84.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
 	 */
-	public List<KfSession> getSessionList(String kfAccount)
+	public List<KfSession> getKfSessionList(String kfAccount)
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_list_uri = getRequestUri("kfsession_list_uri");
@@ -344,7 +344,7 @@ public class CustomApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E6.9C.AA.E6.8E.A5.E5.85.A5.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
 	 */
-	public List<KfSession> getSessionWaitList() throws WeixinException {
+	public List<KfSession> getKfSessionWaitList() throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_wait_uri = getRequestUri("kfsession_wait_uri");
 		Response response = request.get(String.format(kfsession_wait_uri,

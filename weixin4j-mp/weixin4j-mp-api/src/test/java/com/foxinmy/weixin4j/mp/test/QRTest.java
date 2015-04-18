@@ -29,19 +29,19 @@ public class QRTest extends TokenTest {
 
 	@Test
 	public void temp_qr() throws WeixinException, IOException {
-		File file = qrApi.getQR(QRParameter.createTemporary(1200, 1200));
+		File file = qrApi.getQRFile(QRParameter.createTemporary(1200, 1200));
 		Assert.assertTrue(file.exists());
 	}
 
 	@Test
 	public void forever_qr_int() throws WeixinException, IOException {
-		File file = qrApi.getQR(QRParameter.createPermanenceInt(1200));
+		File file = qrApi.getQRFile(QRParameter.createPermanenceInt(1200));
 		Assert.assertTrue(file.exists());
 	}
 
 	@Test
 	public void forever_qr_str() throws WeixinException, IOException {
-		File file = qrApi.getQR(QRParameter.createPermanenceStr("1200中文"));
+		File file = qrApi.getQRFile(QRParameter.createPermanenceStr("1200中文"));
 		Assert.assertTrue(file.exists());
 	}
 }

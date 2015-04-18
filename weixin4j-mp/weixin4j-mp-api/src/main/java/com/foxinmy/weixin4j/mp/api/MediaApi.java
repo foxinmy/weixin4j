@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -423,8 +424,8 @@ public class MediaApi extends MpApi {
 				obj.toJSONString());
 		MediaRecord mediaRecord = null;
 		if (mediaType == MediaType.news) {
-			mediaRecord = JSON.parseObject(response.getAsString(), MediaRecord.class,
-					new ExtraProcessor() {
+			mediaRecord = JSON.parseObject(response.getAsString(),
+					MediaRecord.class, new ExtraProcessor() {
 						@Override
 						public void processExtra(Object object, String key,
 								Object value) {
@@ -443,5 +444,31 @@ public class MediaApi extends MpApi {
 		}
 		mediaRecord.setMediaType(mediaType);
 		return mediaRecord;
+	}
+
+	/**
+	 * 获取全部的媒体素材
+	 * 
+	 * @param mediaType
+	 *            媒体类型
+	 * @return 素材列表
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#listMaterialMedia(MediaType, int, int)}
+	 * @throws WeixinException
+	 */
+	public List<MediaItem> listAllMaterialMedia(MediaType mediaType)
+			throws WeixinException {
+		int offset = 0;
+		int count = 20;
+		List<MediaItem> mediaList = new ArrayList<MediaItem>();
+		MediaRecord mediaRecord = null;
+		for (;;) {
+			mediaRecord = listMaterialMedia(mediaType, offset, count);
+			mediaList.addAll(mediaRecord.getItems());
+			if (offset >= mediaRecord.getTotalCount()) {
+				break;
+			}
+			offset += count;
+		}
+		return mediaList;
 	}
 }

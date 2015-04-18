@@ -198,3 +198,9 @@ weixin.properties说明
   + **weixin4j-mp-api**: <font color="red">调整[二维码参数](./src/main/java/com/foxinmy/weixin4j/mp/model/QRParameter.java)类</font>
   
   + **weixin4j-mp-api**: 新增获取[自定义菜单配置、自动回复配置](./src/main/java/com/foxinmy/weixin4j/mp/api/HelperApi.java)接口
+  
+* 2015-04-18
+
+  + <font color="red">调整[客服接口](./src/main/java/com/foxinmy/weixin4j/mp/api/CustomApi.java)类的方法名</font>
+  
+   + <font color="red">在[二维码接口](./src/main/java/com/foxinmy/weixin4j/mp/api/QRApi.java)类新增获取二维码url方法</font>

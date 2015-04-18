@@ -28,6 +28,7 @@ import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.mp.model.MediaCounter;
+import com.foxinmy.weixin4j.mp.model.MediaItem;
 import com.foxinmy.weixin4j.mp.model.MediaRecord;
 import com.foxinmy.weixin4j.mp.model.MenuSetting;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
@@ -87,6 +88,7 @@ public class WeixinProxy {
 	/**
 	 * TokenHolder对象
 	 * 
+	 * @see com.foxinmy.weixin4j.token.TokenHolder
 	 * @param tokenHolder
 	 */
 	public WeixinProxy(TokenHolder tokenHolder) {
@@ -343,6 +345,21 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 获取全部的媒体素材
+	 * 
+	 * @param mediaType
+	 *            媒体类型
+	 * @return 素材列表
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#listMaterialMedia(MediaType, int, int)}
+	 * @throws WeixinException
+	 */
+	public List<MediaItem> listAllMaterialMedia(MediaType mediaType)
+			throws WeixinException {
+		return mediaApi.listAllMaterialMedia(mediaType);
+	}
+
+	/**
 	 * 发送客服消息(在48小时内不限制发送次数)
 	 * 
 	 * @param notify
@@ -389,7 +406,7 @@ public class WeixinProxy {
 	 * @param endtime
 	 *            查询结束时间 每次查询不能跨日查询
 	 * @param pagesize
-	 *            每页大小 每页最多拉取1000条
+	 *            每页大小 每页最多拉取50条
 	 * @param pageindex
 	 *            查询第几页 从1开始
 	 * @see com.foxinmy.weixin4j.mp.model.CustomRecord
@@ -512,7 +529,7 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 创建会话
+	 * 创建客服会话
 	 * <p>
 	 * 开发者可以使用本接口，为多客服的客服工号创建会话，将某个客户直接指定给客服工号接待，需要注意此接口不会受客服自动接入数以及自动接入开关限制。
 	 * 只能为在线的客服（PC客户端在线，或者已绑定多客服助手）创建会话。
@@ -530,13 +547,13 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.88.9B.E5.BB.BA.E4.BC.9A.E8.AF.9D">创建会话</a>
 	 */
-	public JsonResult createSession(String userOpenId, String kfAccount,
+	public JsonResult createKfSession(String userOpenId, String kfAccount,
 			String text) throws WeixinException {
-		return customApi.createSession(userOpenId, kfAccount, text);
+		return customApi.createKfSession(userOpenId, kfAccount, text);
 	}
 
 	/**
-	 * 关闭会话
+	 * 关闭客服会话
 	 * 
 	 * @param userOpenId
 	 *            用户的userOpenId
@@ -550,9 +567,9 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.85.B3.E9.97.AD.E4.BC.9A.E8.AF.9D">创建会话</a>
 	 */
-	public JsonResult closeSession(String userOpenId, String kfAccount,
+	public JsonResult closeKfSession(String userOpenId, String kfAccount,
 			String text) throws WeixinException {
-		return customApi.closeSession(userOpenId, kfAccount, text);
+		return customApi.closeKfSession(userOpenId, kfAccount, text);
 	}
 
 	/**
@@ -567,8 +584,8 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.88.B7.E7.9A.84.E4.BC.9A.E8.AF.9D.E7.8A.B6.E6.80.81">获取会话状态</a>
 	 */
-	public KfSession getSession(String userOpenId) throws WeixinException {
-		return customApi.getSession(userOpenId);
+	public KfSession getKfSession(String userOpenId) throws WeixinException {
+		return customApi.getKfSession(userOpenId);
 	}
 
 	/**
@@ -583,9 +600,9 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.9C.8D.E7.9A.84.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
 	 */
-	public List<KfSession> getSessionList(String kfAccount)
+	public List<KfSession> getKfSessionList(String kfAccount)
 			throws WeixinException {
-		return customApi.getSessionList(kfAccount);
+		return customApi.getKfSessionList(kfAccount);
 	}
 
 	/**
@@ -599,12 +616,12 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E6.9C.AA.E6.8E.A5.E5.85.A5.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
 	 */
-	public List<KfSession> getSessionWaitList() throws WeixinException {
-		return customApi.getSessionWaitList();
+	public List<KfSession> getKfSessionWaitList() throws WeixinException {
+		return customApi.getKfSessionWaitList();
 	}
 
 	/**
-	 * 上传图文消息,一个图文消息支持1到10条图文
+	 * 上传群发的图文消息,一个图文消息支持1到10条图文
 	 * 
 	 * @param articles
 	 *            图片消息
@@ -615,7 +632,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.msg.model.MpArticle
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 */
-	public String uploadArticle(List<MpArticle> articles)
+	public String uploadMassArticle(List<MpArticle> articles)
 			throws WeixinException {
 		return massApi.uploadArticle(articles);
 	}
@@ -635,7 +652,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.msg.model.MpVideo
 	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 */
-	public String uploadVideo(Video video) throws WeixinException {
+	public String uploadMassVideo(Video video) throws WeixinException {
 		return massApi.uploadVideo(video);
 	}
 
@@ -958,7 +975,6 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/13/be5272dc4930300ba561d927aead2569.html#.E4.BF.AE.E6.94.B9.E5.88.86.E7.BB.84.E5.90.8D">修改分组名</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
-	 * @see com.foxinmy.weixin4j.mp.model.Group#toModifyJson()
 	 * @see com.foxinmy.weixin4j.mp.api.GroupApi
 	 */
 	public JsonResult modifyGroup(int groupId, String name)
@@ -1067,6 +1083,7 @@ public class WeixinProxy {
 	 *            二维码参数
 	 * @return byte数据包
 	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 * @see com.foxinmy.weixin4j.mp.api.QrApi
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">生成二维码</a>
@@ -1077,21 +1094,24 @@ public class WeixinProxy {
 
 	/**
 	 * 生成带参数的二维码
-	 * <p>
-	 * 二维码分为临时跟永久两种,扫描时触发推送带参数事件
-	 * </p>
 	 * 
-	 * @param parameter
-	 *            二维码参数
+	 * @return 二维码图片解析后的地址 开发者可根据该地址自行生成需要的二维码图片
+	 * @throws WeixinException
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#getQRData(QRParameter)}
+	 */
+	public String getQRUrl(QRParameter parameter) throws WeixinException {
+		return qrApi.getQRUrl(parameter);
+	}
+
+	/**
+	 * 生成带参数的二维码
+	 * 
 	 * @return 硬盘存储的文件对象
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">二维码</a>
-	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
-	 * @see com.foxinmy.weixin4j.mp.api.QrApi
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#getQRData(QRParameter)}
 	 */
-	public File getQR(QRParameter parameter) throws WeixinException {
-		return qrApi.getQR(parameter);
+	public File getQRFile(QRParameter parameter) throws WeixinException {
+		return qrApi.getQRFile(parameter);
 	}
 
 	/**

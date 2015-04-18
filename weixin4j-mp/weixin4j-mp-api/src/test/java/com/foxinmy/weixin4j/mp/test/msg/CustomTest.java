@@ -88,14 +88,14 @@ public class CustomTest extends TokenTest {
 
 	@Test
 	public void createSession() throws WeixinException {
-		JsonResult result = customApi.createSession(
+		JsonResult result = customApi.createKfSession(
 				"opKwyt6IhrqPmTTZshyqH5W9gIVo", "kfAccount", "text");
 		Assert.assertEquals(0, result.getCode());
 	}
 
 	@Test
 	public void closeSession() throws WeixinException {
-		JsonResult result = customApi.closeSession(
+		JsonResult result = customApi.closeKfSession(
 				"opKwyt6IhrqPmTTZshyqH5W9gIVo", "kfAccount", "text");
 		Assert.assertEquals(0, result.getCode());
 	}
@@ -103,19 +103,19 @@ public class CustomTest extends TokenTest {
 	@Test
 	public void getSession() throws WeixinException {
 		KfSession session = customApi
-				.getSession("oz5axuNnJim8yTYs_jzE1bWFj9eA");
+				.getKfSession("oz5axuNnJim8yTYs_jzE1bWFj9eA");
 		System.err.println(session);
 	}
 
 	@Test
 	public void getSessionList() throws WeixinException {
-		List<KfSession> sessionList = customApi.getSessionList("kfAccount");
+		List<KfSession> sessionList = customApi.getKfSessionList("kfAccount");
 		System.err.println(sessionList);
 	}
 
 	@Test
 	public void getSessionWaitList() throws WeixinException {
-		List<KfSession> sessionList = customApi.getSessionWaitList();
+		List<KfSession> sessionList = customApi.getKfSessionWaitList();
 		System.err.println(sessionList);
 	}
 }

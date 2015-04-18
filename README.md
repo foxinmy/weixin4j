@@ -71,6 +71,10 @@ netty的代码没有放到maven中心仓库,也没什么意义,因为最终需�
   
 接下来
 ------
+* 被动消息服务重构
+
+![消息分发](http://7mj4zs.com1.z0.glb.clouddn.com/weixin4j.png)
+
 * 公众号第三方服务应用
 
 * 企业号第三方应用 & 企业号登陆授权
@@ -80,5 +84,3 @@ netty的代码没有放到maven中心仓库,也没什么意义,因为最终需�
 * 微信小店
 
 * 微信卡券
-
-![消息分发](http://7mj4zs.com1.z0.glb.clouddn.com/weixin4j.png)

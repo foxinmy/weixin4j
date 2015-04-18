@@ -13,6 +13,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.model.MediaCounter;
+import com.foxinmy.weixin4j.mp.model.MediaItem;
 import com.foxinmy.weixin4j.mp.model.MediaRecord;
 import com.foxinmy.weixin4j.msg.model.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
@@ -127,5 +128,11 @@ public class MediaTest extends TokenTest {
 		MediaRecord mediaRecord = mediaApi.listMaterialMedia(MediaType.news, 0,
 				20);
 		System.err.println(mediaRecord);
+	}
+	
+	@Test
+	public void listAllMaterialMedia() throws WeixinException {
+		List<MediaItem> mediaList = mediaApi.listAllMaterialMedia(MediaType.image);
+		System.err.println(mediaList);
 	}
 }

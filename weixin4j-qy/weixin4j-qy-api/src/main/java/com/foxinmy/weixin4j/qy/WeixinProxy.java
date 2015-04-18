@@ -74,6 +74,7 @@ public class WeixinProxy {
 	/**
 	 * TokenHolder对象
 	 * 
+	 * @see com.foxinmy.weixin4j.token.TokenHolder
 	 * @param tokenHolder
 	 */
 	public WeixinProxy(TokenHolder tokenHolder) {
