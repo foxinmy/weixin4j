@@ -6,55 +6,48 @@ weixin4j-mp
 
 功能列表
 -------
-* **weixin4j-mp-api**
 
-  + MediaApi `上传/下载媒体文件API`
-	
-  + NotifyApi `客服消息API`
-  
-  + CustomApi `多客服API`
-	
-  + MassApi `群发消息API`
-	
-  + UserApi `用户管理API`
-	
-  + GroupApi `分组管理API`
-	
-  + MenuApi `底部菜单API`
-	
-  + QrApi `二维码API`
-	
-  + TmplApi `模板消息API`
-	
-  + HelperApi `辅助API`
-  
-  + Pay2Api `V2支付API`
-  
-  + Pay3Api `V3支付API`
-  
-  + CouponApi `代金券API`
-  
-  + DataApi `数据统计API`
-  
-  + OauthApi `oauth授权API`
-  
-  + CashApi `现金API`
+* MediaApi `上传/下载媒体文件API`
 
-* **weixin4j-mp-server**
+* NotifyApi `客服消息API`
 
-  + `netty服务器` & `消息分发`
+* CustomApi `多客服API`
+
+* MassApi `群发消息API`
+
+* UserApi `用户管理API`
+
+* GroupApi `分组管理API`
+
+* MenuApi `底部菜单API`
+
+* QrApi `二维码API`
+
+* TmplApi `模板消息API`
+
+* HelperApi `辅助API`
+
+* Pay2Api `V2支付API`
   
-  + 被动消息`AES`加密、解密
+* Pay3Api `V3支付API`
 
-项目说明
--------
-1.`weixin4j-mp`包含「微信公众平台」的API封装以及一个半成品的netty服务实现.
+* CouponApi `代金券API`
 
-2.API的成功调用依赖于正确的appid等数据,创建(或者copy项目里面的)一个名为**weixin.properties**的资源文件放在自己工程中的classpath下.
+* DataApi `数据统计API`
 
-| 属性名       	|       说明      |
-| :---------- 	| :-------------- |
-| account    	| 微信公众号信息 `json格式`  |
+* OauthApi `oauth授权API`
+
+* CashApi `现金API`
+
+如何使用
+--------
+1.API工程可以单独打包到其他项目中使用,需新增或拷贝`weixin.properties`文件到项目的`classpath`中
+
+weixin.properties说明
+
+| 属性名         |       说明      |
+| :----------	| :-------------- |
+| account     	| 微信公众号信息 `json格式`  |
 | token_path  	| 使用FileTokenHolder时token保存的物理路径 |
 | qr_path     	| 调用二维码接口时保存二维码图片的物理路径 |
 | media_path  	| 调用媒体接口时保存媒体文件的物理路径 |
@@ -84,148 +77,19 @@ weixin4j-mp
 	#微信登陆授权的重定向路径
 	redirect_uri=http://xxx
 
-3.在项目根目录下执行`mvn package -Prelease`命令后得到jar包,将`weixin4j-mp-full`包或者`weixin4j-base`和`weixin4j-mp-api`两个包引入到自己的工程.
+2.实例化一个`WeixinProxy`对象,调用API,需要强调的是如果只传入appid,appsecret两个参数将无法调用支付相关接口
 
     WeixinProxy weixinProxy = new WeixinProxy();
     // weixinProxy = new WeixinProxy(appid,appsecret);
     // weixinProxy = new WeixinProxy(weixinAccount);
     weixinProxy.getUser(openId);
 
-4.如需使用netty服务,则可以在相应的action中实现自己的业务处理,打包后放到`正确的目录`下解压`weixin-*-server-bin.zip`执行`sh startup.sh start`便可启动服务.
+3.针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenHolder`,默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用`RedisTokenHolder`.
 
-	@ActionAnnotation(msgType = MessageType.text)
-	public class TextAction extends AbstractAction<TextMessage> {
+    WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenHolder());
+    // weixinProxy = new WeixinProxy(new RedisTokenHolder(weixinAccount));
+    
+4.`mvn package`.
 	
-		@Override
-		public ResponseMessage execute(TextMessage inMessage) {
-			return new ResponseMessage(new Text("Hello World!"), inMessage);
-		}
-	}
-
-更新LOG
--------
-* 2014-10-27
-
-  + 用netty构建http服务器&消息分发
-
-* 2014-10-28
-   
-  + 调整`ActionMapping`抽象化
-   
-* 2014-10-31
-
-  + `weixin.properties`切分为API调用地址和公众号appid等信息两部分
-   
-* 2014-11-03
-
-  + `weixin-mp`分离为`weixin4j-mp-api`和`weixin4j-mp-server`两个工程
-   
-  + **weixin4j-mp**: 新增`支付`模块
-
-* 2014-11-06
-  
-  + **weixin4j-mp-api**: 新增V3版本`退款接口`
-
-* 2014-11-08
- 
-  + **weixin4j-mp-api**: 新增V2版本`退款申请`、`退款查询`、`对账单下载`三个接口
-  
-  + **weixin4j-mp-api**: 新增一个简单的`语义理解`接口
-
-* 2014-11-11
-
-  + **weixin4j-mp-api**: 自定义`assembly`将`weixin4j-base`工程也一起打包(`weixin4j-mp-api-full.jar`)
- 
-* 2014-11-15
-
-  + **weixin4j-mp-api**: 新增获取`微信服务器IP地址接口`
-  
-  + **weixin4j-mp-server**: 解决`server工程`打包后不能运行问题(`ClassUtil`无法获取jar包里面的类)
-  
-  + **weixin4j-mp-server**: 新增被动消息的`加密`以及回复消息的`解密`
-  
-* 2014-11-16
-
-  + **weixin4j-mp-api**: 新增`多客服`接口
-  
-* 2014-11-17
-
-  + **weixin4j-mp-api**: 新增`冲正`和`被扫支付`接口
-  
-* 2014-11-23
-
-  + **weixin4j-mp-api**: 重新定义(手贱)了「被动消息」「客服消息」「群发消息」的传输实体
-  
-  + **weixin4j-mp-server**: `WeixinServerBootstrap`重命名为`WeixinMpServerBootstrap`
-  
-* 2014-12-12
-
-  + **weixin4j-mp-api**: 新增设置`模板消息所处行业`、`获取模板消息ID`接口
-  
-* 2014-12-16
-
-  + **weixin4j-mp-api**: 调整方法上@see注解的文档说明接口url
-  
-  + **weixin4j-mp-api**: 新增群发消息预览、状态查询接口
-  
-  + **weixin4j-mp-api**: 新增多客服添加账号、更新账号、上传头像、删除账号接口
-  
-* 2015-01-04
-  
-  + **weixin4j-mp-api**: 支付模块拆分为V2跟V3,新增WeixinPayProxy类
-  
-  + **weixin4j-mp-api**: 退款相关类拆分为V2跟V3
-  
-  + **weixin4j-mp-api**: 新增接口上报接口
-  
-* 2015-01-31
-  
-  + **weixin4j-mp-api**: 新增数据分析接口
-  
-* 2015-03-06
-  
-  + **weixin4j-mp-api**: 新增oauth授权接口
-  
-* 2015-03-21
-
-  + **weixin4j-mp-api**: 新增群发消息给所有人接口
-  
-  + **weixin4j-mp-api**: 新增素材管理多个接口
-  
-  + **weixin4j-mp-api**: 新增多客服会话管理多个接口
-  
-* 2015-03-25
-
-  + **weixin4j-mp-api**: 根据《微信商户平台文档》修缮[Pay3Api](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/Pay3Api.java)类
-  
-  + **weixin4j-mp-server**: 新增客服创建、关闭、转接会话事件
-  
-  + **weixin4j-mp-server**: 新增deploy.xml远程部署ant脚本
-  
-* 2015-03-29
-
-  + **weixin4j-mp-api**: 单行注释调整为多行文档注释
-  
-  + **weixin4j-mp-api**: 新增[CouponApi](./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java)代金券接口
-  
-* 2015-04-01
-
-  + **weixin4j-mp-api**: 新增[CashApi](./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CashApi.java)发红包、企业付款接口
-  
-* 2015-04-13
-
-  + **weixin4j-mp-api**: 新增WeixinTokenCreator与WeixinJSTicketCreator类
-  
-  + **weixin4j-mp-api**: 新增用户分组批量移动、删除组别接口
-  
-* 2015-04-16
-
-  + **weixin4j-mp-api**: <font color="red">调整[二维码参数](./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/model/QRParameter.java)类</font>
-  
-  + **weixin4j-mp-api**: 新增获取[自定义菜单配置、自动回复配置](./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/HelperApi.java)接口
-  
-* 2015-04-18
-
-  + **weixin4j-mp-api**: <font color="red">调整[客服接口](./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CustomApi.java)类的方法名</font>
-  
-   + **weixin4j-mp-api**: <font color="red">在[二维码接口](./weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/QRApi.java)类新增获取二维码url方法</font>
+[更新LOG](./CHANGE.md)
+----------------------

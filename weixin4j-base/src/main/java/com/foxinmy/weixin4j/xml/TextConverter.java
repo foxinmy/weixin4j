@@ -1,6 +1,6 @@
 package com.foxinmy.weixin4j.xml;
 
-import com.foxinmy.weixin4j.msg.model.Text;
+import com.foxinmy.weixin4j.tuple.Text;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
 
 /**

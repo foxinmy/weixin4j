@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.util;
 
-import java.io.InputStream;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
@@ -9,18 +8,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.io.SAXReader;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.model.BaseMsg;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.type.EventType;
-import com.foxinmy.weixin4j.type.MessageType;
-import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 消息工具类
@@ -164,63 +154,5 @@ public class MessageUtil {
 			throw new WeixinException("-40005", "校验AppID失败");
 		}
 		return xmlContent;
-	}
-
-	/**
-	 * xml消息转换为消息对象
-	 * 
-	 * @param xmlMsg
-	 *            消息字符串
-	 * @return 消息对象
-	 * @throws DocumentException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/4/2ccadaef44fe1e4b0322355c2312bfa8.html">验证消息的合法性</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/10/79502792eef98d6e0c6e1739da387346.html">普通消息</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/5baf56ce4947d35003b86a9805634b1e.html">事件消息</a>
-	 * @see com.foxinmy.weixin4j.type.MessageType
-	 * @see com.feican.weixin.msg.BaeMessage
-	 * @see com.foxinmy.weixin4j.msg.TextMessage
-	 * @see com.foxinmy.weixin4j.msg.ImageMessage
-	 * @see com.foxinmy.weixin4j.msg.VoiceMessage
-	 * @see com.foxinmy.weixin4j.msg.VideoMessage
-	 * @see com.foxinmy.weixin4j.msg.LocationMessage
-	 * @see com.foxinmy.weixin4j.msg.LinkMessage
-	 * @see com.foxinmy.weixin4j.msg.event.ScribeEventMessage
-	 * @see com.foxinmy.weixin4j.msg.event.ScanEventMessage
-	 * @see com.foxinmy.weixin4j.msg.event.LocationEventMessage
-	 * @see com.foxinmy.weixin4j.msg.event.menu.MenuEventMessage
-	 */
-	public static BaseMsg xml2msg(String xmlMsg) throws DocumentException {
-		Document doc = DocumentHelper.parseText(xmlMsg);
-		String type = doc.selectSingleNode("/xml/MsgType").getStringValue();
-		if (StringUtils.isBlank(type)) {
-			return null;
-		}
-		MessageType messageType = MessageType.valueOf(type.toLowerCase());
-		Class<? extends BaseMsg> messageClass = messageType.getMessageClass();
-		if (messageType == MessageType.event) {
-			type = doc.selectSingleNode("/xml/Event").getStringValue();
-			messageClass = EventType.valueOf(type.toLowerCase())
-					.getEventClass();
-		}
-		return XmlStream.get(xmlMsg, messageClass);
-	}
-
-	/**
-	 * xml消息转换为消息对象
-	 * 
-	 * @param inputStream
-	 *            带消息字符串的输入流
-	 * @return 消息对象
-	 * @throws DocumentException
-	 * @see {@link com.foxinmy.weixin4j.util.MessageUtil#xml2msg(String)}
-	 */
-	public static BaseMsg xml2msg(InputStream inputStream)
-			throws DocumentException {
-		SAXReader reader = new SAXReader();
-		Document doc = reader.read(inputStream);
-		return xml2msg(doc.asXML());
 	}
 }

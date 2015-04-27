@@ -43,6 +43,7 @@
 		<module>weixin4j-base</module>
 		<module>weixin4j-mp</module>
 		<module>weixin4j-qy</module>
+		<module>weixin4j-server</module>
 	</modules>
 	<properties>
 		<jdk.version>1.7</jdk.version>

@@ -1,0 +1,18 @@
+package com.foxinmy.weixin4j.tuple;
+
+/**
+ * 群发消息元件
+ * 
+ * @className MassTuple
+ * @author jy
+ * @date 2014年11月22日
+ * @since JDK 1.7
+ * @see com.foxinmy.weixin4j.tuple.Text
+ * @see com.foxinmy.weixin4j.tuple.Image
+ * @see com.foxinmy.weixin4j.tuple.Voice
+ * @see com.foxinmy.weixin4j.tuple.MpVideo
+ * @see com.foxinmy.weixin4j.tuple.MpNews
+ */
+public interface MassTuple extends Tuple {
+
+}

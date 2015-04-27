@@ -196,7 +196,7 @@
   
 * 2015-03-25
 
-  + **weixin4j-mp**: 根据《微信商户平台文档》修缮[Pay3Api](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/Pay3Api.java)类
+  + **weixin4j-mp**: 根据《微信商户平台文档》修缮[Pay3Api](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/Pay3Api.java)类
   
   + **weixin4j-mp**: 新增客服创建、关闭、转接会话事件
   
@@ -210,27 +210,27 @@
   
   + **weixin4j-mp**: 单行注释调整为多行文档注释
   
-  + **weixin4j-mp**: 新增[CouponApi](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java)代金券接口
+  + **weixin4j-mp**: 新增[CouponApi](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/CouponApi.java)代金券接口
   
   + **weixin4j-qy**: 单行注释调整为多行文档注释
   
 * 2015-04-01
 
-  + **weixin4j-mp**: 新增[CashApi](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CashApi.java)发红包、企业付款接口
+  + **weixin4j-mp**: 新增[CashApi](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/CashApi.java)发红包、企业付款接口
   
-  + **weixin4j-qy**: 新增[BatchApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/BatchApi.java)批量异步执行任务接口
+  + **weixin4j-qy**: 新增[BatchApi](./weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/api/BatchApi.java)批量异步执行任务接口
   
   + **weixin4j-qy**: <font color="red">DepartApi命名为[PartyApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/PartyApi.java)</font>
   
 * 2015-04-04
 
-  + **weixin4j-qy**: [MediaApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)新增批量上传成员和部门接口
+  + **weixin4j-qy**: [MediaApi](./weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)新增批量上传成员和部门接口
   
   + <font color="red">released 1.3</font>
   
 * 2015-04-09
 
-  + **weixin4j-qy**: [AgentApi](./weixin4j-qy/weixin4j-qy-api/src/main/java/com/foxinmy/weixin4j/qy/api/AgentApi.java)新增获取应用列表概况接口
+  + **weixin4j-qy**: [AgentApi](./weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/api/AgentApi.java)新增获取应用列表概况接口
   
 * 2015-04-13
 
@@ -244,12 +244,19 @@
   
 * 2015-04-16
 
-  + **weixin4j-mp**: <font color="red">调整[二维码参数](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/model/QRParameter.java)类</font>
+  + **weixin4j-mp**: <font color="red">调整[二维码参数](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/model/QRParameter.java)类</font>
   
-  + **weixin4j-mp**: 新增获取[自定义菜单配置、自动回复配置](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/HelperApi.java)接口
+  + **weixin4j-mp**: 新增获取[自定义菜单配置、自动回复配置](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/HelperApi.java)接口
   
 * 2015-04-18
 
-  + **weixin4j-mp**: <font color="red">调整[客服接口](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/CustomApi.java)类的方法名</font>
+  + **weixin4j-mp**: <font color="red">调整[客服接口](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/CustomApi.java)类的方法名</font>
   
-   + **weixin4j-mp**: <font color="red">在[二维码接口](./weixin4j-mp/weixin4j-mp-api/src/main/java/com/foxinmy/weixin4j/mp/api/QRApi.java)类新增获取二维码url方法</font>
+   + **weixin4j-mp**: <font color="red">在[二维码接口](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/QRApi.java)类新增获取二维码url方法</font>
+   
+   
+ * 2015-04-19
+
+  + <font color="red">调整聚合方式,去除原先的weixin4j-mp和weixin4j-qy模块,相应的api模块直接继承weixin4j父模块</font>
+  
+  + **weixin4j-base**: <font color="red">删除ActionMapping相关类</font>

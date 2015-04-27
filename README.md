@@ -11,12 +11,12 @@ weixin4j
   `公众平台API封装`
 	
   `微信支付(刷卡/扫码/公众号)`
-  
-  `netty服务器&消息分发`
 	
 * **weixin4j-qy**
 
   `企业号API封装`
+  
+* **weixin4j-server**
   
   `netty服务器&消息分发`
   
@@ -58,13 +58,11 @@ https://github.com/foxinmy/weixin4j/releases
 
 ###3.从源码打包
 
-`git clone`&`mvn package -Prelease`,到相应的target目录下将`weixin4j-[mp|qy]-full`包或者`weixin4j-base`和`weixin4j-[mp|qy]-api`引入到自己的工程.
+`git clone`&`mvn package -Prelease`,到相应的target目录下将`weixin4j-[mp|qy]-full`包或者`weixin4j-base`和`weixin4j-[mp|qy]`引入到自己的工程.
 
 如何获取netty部分
 ---------------
-netty的代码没有放到maven中心仓库,也没什么意义,因为最终需要自己去实现具体的业务逻辑,
-
-下载winxin4j-[mp|qy]-server项目的源代码复制到自己的工程内,当然也可以在上面直接开发.
+正在构思中...
 
 [更新LOG](./CHANGE.md)
 ----------------------

@@ -298,6 +298,26 @@
 		<text>news消息不支持指定为高保密消息</text>
 	</error>
 	<error>
+		<code>40117</code>
+		<text>分组名字不合法</text>
+	</error>
+	<error>
+		<code>40118</code>
+		<text>media_id大小不合法</text>
+	</error>
+	<error>
+		<code>40119</code>
+		<text>button类型错误</text>
+	</error>
+	<error>
+		<code>40120</code>
+		<text>button类型错误</text>
+	</error>
+	<error>
+		<code>40121</code>
+		<text>不合法的media_id类型</text>
+	</error>
+	<error>
 		<code>41001</code>
 		<desc>access_token missing</desc>
 		<text>缺失access_token参数</text>

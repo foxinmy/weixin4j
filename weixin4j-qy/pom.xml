@@ -8,11 +8,33 @@
 	</parent>
 	<artifactId>weixin4j-qy</artifactId>
 	<name>weixin4j-qy</name>
-	<packaging>pom</packaging>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-qy</url>
-	<description>微信企业号工具包</description>
-	<modules>
-		<module>weixin4j-qy-api</module>
-		<module>weixin4j-qy-server</module>
-	</modules>
+	<description>微信企业号API</description>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<finalName>weixin4j-qy-${project.version}</finalName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>com.foxinmy</groupId>
+			<artifactId>weixin4j-base</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>${jaxen.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+	</dependencies>
 </project>

@@ -26,10 +26,6 @@ public final class Consts {
 	public static final String PROTOCOL_JAR = "jar";
 
 	/**
-	 * oauth验证url
-	 */
-	public static final String OAUTH_AUTHORIZE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s#wechat_redirect";
-	/**
 	 * 公众平台获取token的url
 	 */
 	public static final String MP_ASSESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
