@@ -12,11 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.message.HttpWeixinMessage;
-import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.type.EncryptType;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.Consts;
-import com.foxinmy.weixin4j.util.MessageUtil;
 
 /**
  * 微信消息解码类
@@ -66,10 +63,10 @@ public class WeixinMessageDecoder extends
 
 		message.setOriginalContent(content);
 		if (message.getEncryptType() == EncryptType.AES) {
-			WeixinAccount mpAccount = ConfigUtil.getWeixinAccount();
+			/*WeixinAccount mpAccount = ConfigUtil.getWeixinAccount();
 			message.setOriginalContent(MessageUtil.aesDecrypt(
 					mpAccount.getId(), mpAccount.getEncodingAesKey(),
-					message.getEncryptContent()));
+					message.getEncryptContent()));*/
 		}
 		out.add(message);
 	}

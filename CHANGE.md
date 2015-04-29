@@ -260,3 +260,7 @@
   + <font color="red">调整聚合方式,去除原先的weixin4j-mp和weixin4j-qy模块,相应的api模块直接继承weixin4j父模块</font>
   
   + **weixin4j-base**: <font color="red">删除ActionMapping相关类</font>
+  
+* 2015-04-29
+
+  + <font color="red">released 1.4</font>
