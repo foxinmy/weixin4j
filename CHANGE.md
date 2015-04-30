@@ -264,3 +264,7 @@
 * 2015-04-29
 
   + <font color="red">released 1.4</font>
+  
+* 2015-04-30
+
+  + 新增`media_id`和`view_limited`两种菜单类型

@@ -1,10 +1,11 @@
 package com.foxinmy.weixin4j.type;
 
 /**
- * 自定义菜单类型 </br>
- * <font color="red">scancode_push 到 location_selec
- * 仅支持微信iPhone5.4.1以上版本，和Android5 .4以上版本的微信用户 旧版本微信用户点击后将没有回应
- * 开发者也不能正常接收到事件推送。</font>
+ * 自定义菜单类型 </br> <font
+ * color="red">请注意，scancode_push到location_select的所有事件，仅支持微信iPhone5.4.1以上版本，和Android5.4以上版本的微信用户
+ * ，旧版本微信用户点击后将没有回应
+ * ，开发者也不能正常接收到事件推送。media_id和view_limited，是专门给第三方平台旗下未微信认证（具体而言，是资质认证未通过）的订阅号准备的事件类型
+ * ，它们是没有事件推送的，能力相对受限，其他类型的公众号不必使用。</font>
  * 
  * @className ButtonType
  * @author jy
@@ -51,5 +52,15 @@ public enum ButtonType {
 	 * 弹出地理位置选择器用户点击按钮后，微信客户端将调起地理位置选择工具，完成选择操作后，将选择的地理位置发送给开发者的服务器，同时收起位置选择工具，
 	 * 随后可能会收到开发者下发的消息。
 	 */
-	location_select;
+	location_select,
+	/**
+	 * 下发消息（除文本消息）:用户点击media_id类型按钮后，微信服务器会将开发者填写的永久素材id对应的素材下发给用户，永久素材类型可以是图片、
+	 * 音频、视频、图文消息。 请注意：永久素材id必须是在“素材管理/新增永久素材”接口上传后获得的合法id。
+	 */
+	media_id,
+	/**
+	 * 跳转图文消息URL:用户点击view_limited类型按钮后，微信客户端将打开开发者在按钮中填写的永久素材id对应的图文消息URL，
+	 * 永久素材类型只支持图文消息。 请注意：永久素材id必须是在“素材管理/新增永久素材”接口上传后获得的合法id。
+	 */
+	view_limited;
 }

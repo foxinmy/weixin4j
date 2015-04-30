@@ -9,7 +9,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
-import com.alibaba.fastjson.serializer.NameFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
 import com.foxinmy.weixin4j.model.Button;
@@ -118,65 +117,63 @@ public class HelperApi extends MpApi {
 		Token token = tokenHolder.getToken();
 		Response response = request.get(String.format(menu_get_selfmenu_uri,
 				token.getAccessToken()));
-
 		JSONObject result = response.getAsJson();
+
 		JSONArray buttons = result.getJSONObject("selfmenu_info").getJSONArray(
 				"button");
-		List<Button> _buttons = new ArrayList<Button>();
-
+		List<Button> buttonList = new ArrayList<Button>(buttons.size());
 		JSONObject buttonObj = null;
-		Object subButton = null;
 		for (int i = 0; i < buttons.size(); i++) {
 			buttonObj = buttons.getJSONObject(i);
-			subButton = buttonObj.remove("sub_button");
-			if (subButton != null) {
-				buttonObj.put("sub_button",
-						((JSONObject) subButton).getJSONArray("list"));
+			if (buttonObj.containsKey("sub_button")) {
+				JSONPath.set(buttonObj, "$.sub_button", buttonObj
+						.getJSONObject("sub_button").getJSONArray("list"));
 			}
-			Button button = JSON.parseObject(
-					JSON.toJSONString(buttonObj, ArticleNameFilter.global),
-					Button.class, NewsExtraProcessor.global);
-			_buttons.add(button);
+			buttonList.add(JSON.parseObject(buttonObj.toJSONString(),
+					Button.class, ButtonExtraProcessor.global));
 		}
-		return new MenuSetting(result.getBooleanValue("is_menu_open"), _buttons);
+		return new MenuSetting(result.getBooleanValue("is_menu_open"),
+				buttonList);
 	}
 
-	private static final class NewsExtraProcessor implements ExtraProcessor {
-		private static NewsExtraProcessor global = new NewsExtraProcessor();
+	private static final class ButtonExtraProcessor implements ExtraProcessor {
+		private static ButtonExtraProcessor global = new ButtonExtraProcessor();
 
-		private NewsExtraProcessor() {
+		private ButtonExtraProcessor() {
 		}
 
 		@Override
 		public void processExtra(Object object, String key, Object value) {
 			if (key.equals("news_info")) {
-				List<MpArticle> news = JSON
-						.parseArray(((JSONObject) value).getString("list"),
-								MpArticle.class);
-				JSONPath.set(object, "$.content", news);
+				JSONArray news = ((JSONObject) value).getJSONArray("list");
+				List<MpArticle> newsList = new ArrayList<MpArticle>(news.size());
+				for (int i = 0; i < news.size(); i++) {
+					newsList.add(JSON.parseObject(news.getString(i),
+							MpArticle.class, ArticleExtraProcessor.global));
+				}
+				JSONPath.set(object, "$.content", newsList);
+			} else {
+				JSONPath.set(object, "$.content", value);
 			}
 		}
 	};
 
-	private static final class ArticleNameFilter implements NameFilter {
-		private static final ArticleNameFilter global = new ArticleNameFilter();
+	private static final class ArticleExtraProcessor implements ExtraProcessor {
+		private static final ArticleExtraProcessor global = new ArticleExtraProcessor();
 
-		private ArticleNameFilter() {
+		private ArticleExtraProcessor() {
 
 		}
 
 		@Override
-		public String process(Object object, String name, Object value) {
-			if (name.equals("url") || name.equals("key")) {
-				return "content";
+		public void processExtra(Object object, String key, Object value) {
+			MpArticle mpArticle = (MpArticle) object;
+			if (key.equals("show_cover")) {
+				mpArticle.setShowCoverPic(value.equals("1"));
 			}
-			if (name.equals("show_cover")) {
-				return "show_cover_pic";
+			if (key.equals("source_url")) {
+				mpArticle.setSourceUrl(value.toString());
 			}
-			if (name.equals("source_url")) {
-				return "content_source_url";
-			}
-			return name;
 		}
 	}
 
@@ -194,13 +191,13 @@ public class HelperApi extends MpApi {
 		Response response = request.get(String.format(
 				autoreply_setting_get_uri, token.getAccessToken()));
 
-		JSONObject obj = response.getAsJson();
-		AutoReplySetting replySetting = JSON.toJavaObject(obj,
+		JSONObject result = response.getAsJson();
+		AutoReplySetting replySetting = JSON.toJavaObject(result,
 				AutoReplySetting.class);
 		List<AutoReplySetting.Rule> ruleList = null;
-		if (obj.containsKey("keyword_autoreply_info")) {
-			JSONArray keywordList = obj.getJSONObject("keyword_autoreply_info")
-					.getJSONArray("list");
+		if (result.containsKey("keyword_autoreply_info")) {
+			JSONArray keywordList = result.getJSONObject(
+					"keyword_autoreply_info").getJSONArray("list");
 			ruleList = new ArrayList<AutoReplySetting.Rule>(keywordList.size());
 			JSONObject keywordObj = null;
 			JSONArray replyList = null;
@@ -215,10 +212,9 @@ public class HelperApi extends MpApi {
 				for (int j = 0; j < replyList.size(); j++) {
 					replyObj = replyList.getJSONObject(j);
 					if (replyObj.getString("type").equals("news")) {
-						entryList.add(JSON.parseObject(JSON.toJSONString(
-								replyObj, ArticleNameFilter.global),
+						entryList.add(JSON.parseObject(replyObj.toJSONString(),
 								AutoReplySetting.Entry.class,
-								NewsExtraProcessor.global));
+								ButtonExtraProcessor.global));
 					} else {
 						entryList.add(JSON.toJavaObject(replyObj,
 								AutoReplySetting.Entry.class));

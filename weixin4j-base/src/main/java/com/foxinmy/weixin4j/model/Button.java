@@ -43,7 +43,7 @@ public class Button implements Serializable {
 	 * <p>
 	 * 使用API设置的自定义菜单：</br>
 	 * click、scancode_push、scancode_waitmsg、pic_sysphoto、pic_photo_or_album
-	 * 、</br> pic_weixin、location_select：保存值到key；view：保存链接到url
+	 * 、</br> pic_weixin、location_select：保存为key；view：保存为url;media_id、view_limited：保存为media_id
 	 * </p>
 	 * </p>
 	 */

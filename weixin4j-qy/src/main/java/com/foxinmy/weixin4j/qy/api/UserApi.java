@@ -112,9 +112,11 @@ public class UserApi extends QyApi {
 	 *            通过员工授权获取到的code，每次员工授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期
 	 * @param agentid
 	 *            跳转链接时所在的企业应用ID
+	 * @see com.foxinmy.weixin4j.qy.model.User
 	 * @see com.foxinmy.weixin4j.qy.api.UserApi
 	 * @return 成员对象
 	 * @see {@link com.foxinmy.weixin4j.qy.api.UserApi#getUser(String)}
+	 * @see {@link com.foxinmy.weixin4j.qy.api.UserApi#getUserIdByCode(String,int)}
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E8%8E%B7%E5%8F%96code">企业获取code</a>
 	 * @see <a
@@ -122,11 +124,30 @@ public class UserApi extends QyApi {
 	 * @throws WeixinException
 	 */
 	public User getUserByCode(String code, int agentid) throws WeixinException {
+		return getUser(getUserIdByCode(code, agentid).getString("UserId"));
+	}
+
+	/**
+	 * 根据code获取成员信息
+	 * 
+	 * @param code
+	 *            通过员工授权获取到的code，每次员工授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期
+	 * @param agentid
+	 *            跳转链接时所在的企业应用ID
+	 * @return { "UserId":"USERID", "DeviceId":"DEVICEID" }
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E8%8E%B7%E5%8F%96code">企业获取code</a>
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E6%A0%B9%E6%8D%AEcode%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E4%BF%A1%E6%81%AF">根据code获取成员信息</a>
+	 * @throws WeixinException
+	 */
+	public JSONObject getUserIdByCode(String code, int agentid)
+			throws WeixinException {
 		String user_getid_uri = getRequestUri("user_getid_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(String.format(user_getid_uri,
 				token.getAccessToken(), code, agentid));
-		return getUser(response.getAsJson().getString("UserId"));
+		return response.getAsJson();
 	}
 
 	/**

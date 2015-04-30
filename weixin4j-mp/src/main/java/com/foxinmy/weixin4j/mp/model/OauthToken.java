@@ -18,9 +18,13 @@ public class OauthToken extends Token {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 用户的openi
+	 * 用户的openid
 	 */
 	private String openid;
+	/**
+	 * 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段
+	 */
+	private String unionid;
 
 	/**
 	 * 刷新token时的凭证
@@ -36,6 +40,14 @@ public class OauthToken extends Token {
 
 	public void setOpenid(String openid) {
 		this.openid = openid;
+	}
+
+	public String getUnionid() {
+		return unionid;
+	}
+
+	public void setUnionid(String unionid) {
+		this.unionid = unionid;
 	}
 
 	public String getRefreshToken() {
@@ -56,9 +68,10 @@ public class OauthToken extends Token {
 
 	@Override
 	public String toString() {
-		return "OauthToken [openid=" + openid + ", refreshToken="
-				+ refreshToken + ", scope=" + scope + ", getAccessToken()="
-				+ getAccessToken() + ", getExpiresIn()=" + getExpiresIn()
-				+ ", getTime()=" + getTime() + "]";
+		return "OauthToken [openid=" + openid + ", unionid=" + unionid
+				+ ", refreshToken=" + refreshToken + ", scope=" + scope
+				+ ", getAccessToken()=" + getAccessToken()
+				+ ", getExpiresIn()=" + getExpiresIn() + ", getTime()="
+				+ getTime() + "]";
 	}
 }
