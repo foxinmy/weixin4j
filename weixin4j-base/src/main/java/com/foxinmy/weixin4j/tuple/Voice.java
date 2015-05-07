@@ -1,10 +1,9 @@
 package com.foxinmy.weixin4j.tuple;
 
-
 /**
  * 语音对象
  * <p>
- * <font color="red">可用于「被动消息」「客服消息」「群发消息」</font>
+ * <font color="red">可用于「客服消息」「群发消息」</font>
  * </p>
  * 
  * @className Voice
@@ -13,7 +12,7 @@ package com.foxinmy.weixin4j.tuple;
  * @since JDK 1.7
  * @see
  */
-public class Voice extends Image implements ResponseTuple, NotifyTuple {
+public class Voice extends Image implements NotifyTuple {
 
 	private static final long serialVersionUID = 8853054484809101524L;
 

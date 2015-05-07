@@ -16,7 +16,7 @@ public class Party implements Serializable {
 
 	private static final long serialVersionUID = -2567893218591084288L;
 	/**
-	 * 部门ID
+	 * 部门ID,指定时必须大于1,不指定时则自动生成.
 	 */
 	private int id;
 	/**

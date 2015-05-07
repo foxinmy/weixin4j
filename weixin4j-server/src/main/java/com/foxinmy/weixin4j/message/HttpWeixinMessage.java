@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.foxinmy.weixin4j.type.EncryptType;
 
 /**
- * 微信的被动消息
+ * 请求消息
  * 
  * @className HttpWeixinMessage
  * @author jy
@@ -14,14 +14,10 @@ import com.foxinmy.weixin4j.type.EncryptType;
  * @see
  */
 public class HttpWeixinMessage implements Serializable {
-	
+
 	private static final long serialVersionUID = -9157395300510879866L;
 
 	// 以下字段是加密方式为「安全模式」时的参数
-	/**
-	 * 公众号的唯一ID
-	 */
-	private String toUserName;
 	/**
 	 * 加密后的内容
 	 */
@@ -51,9 +47,9 @@ public class HttpWeixinMessage implements Serializable {
 	 */
 	private String signature;
 	/**
-	 * 设置的token
+	 * AES模式下消息签名
 	 */
-	private String token;
+	private String msgSignature;
 	/**
 	 * xml消息明文主体
 	 */
@@ -62,14 +58,6 @@ public class HttpWeixinMessage implements Serializable {
 	 * 请求的方式
 	 */
 	private String method;
-
-	public String getToUserName() {
-		return toUserName;
-	}
-
-	public void setToUserName(String toUserName) {
-		this.toUserName = toUserName;
-	}
 
 	public String getEncryptContent() {
 		return encryptContent;
@@ -119,12 +107,12 @@ public class HttpWeixinMessage implements Serializable {
 		this.signature = signature;
 	}
 
-	public String getToken() {
-		return token;
+	public String getMsgSignature() {
+		return msgSignature;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
+	public void setMsgSignature(String msgSignature) {
+		this.msgSignature = msgSignature;
 	}
 
 	public String getOriginalContent() {
@@ -145,11 +133,10 @@ public class HttpWeixinMessage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "HttpWeixinMessage [toUserName=" + toUserName
-				+ ", encryptContent=" + encryptContent + ", encryptType="
-				+ encryptType + ", echoStr=" + echoStr + ", timeStamp="
-				+ timeStamp + ", nonce=" + nonce + ", signature=" + signature
-				+ ", token=" + token + ", originalContent=" + originalContent
-				+ ", method=" + method + "]";
+		return "HttpWeixinMessage [encryptContent=" + encryptContent
+				+ ", encryptType=" + encryptType + ", echoStr=" + echoStr
+				+ ", timeStamp=" + timeStamp + ", nonce=" + nonce
+				+ ", signature=" + signature + ", originalContent="
+				+ originalContent + ", method=" + method + "]";
 	}
 }

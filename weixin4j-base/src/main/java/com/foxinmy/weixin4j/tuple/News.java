@@ -9,7 +9,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 /**
  * 图文对象
  * <p>
- * <font color="red">可用于「被动消息」「客服消息」</font>
+ * <font color="red">可用于「客服消息」</font>
  * </p>
  * 
  * @className News
@@ -19,7 +19,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see
  */
 @XStreamAlias("Articles")
-public class News implements ResponseTuple, NotifyTuple {
+public class News implements NotifyTuple {
 
 	private static final long serialVersionUID = 3348756809039388415L;
 

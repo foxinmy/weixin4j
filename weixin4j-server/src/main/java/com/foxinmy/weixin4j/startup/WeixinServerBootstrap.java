@@ -8,8 +8,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
 
-import java.util.ResourceBundle;
-
+import com.foxinmy.weixin4j.model.AesToken;
 import com.foxinmy.weixin4j.server.WeixinServerInitializer;
 
 /**
@@ -23,16 +22,48 @@ import com.foxinmy.weixin4j.server.WeixinServerInitializer;
  */
 public final class WeixinServerBootstrap {
 
-	private final static int port;
-	private final static int workerThreads;
-	static {
-		ResourceBundle netty = ResourceBundle.getBundle("netty");
-		port = Integer.parseInt(netty.getString("port"));
-		workerThreads = Integer.parseInt(netty.getString("workerThreads"));
+	/**
+	 * 默认boss线程数,一般设置为cpu的核数
+	 */
+	public final static int DEFAULT_BOSSTHREADS = 1;
+	/**
+	 * 默认worker线程数
+	 */
+	public final static int DEFAULT_WORKERTHREADS = 20;
+	/**
+	 * 默认服务启动端口
+	 */
+	public final static int DEFAULT_SERVERPORT = 30000;
+
+	/**
+	 * 明文模式
+	 * 
+	 * @param token
+	 *            开发者填写的token
+	 */
+	public static void startup(String token) {
+		startup(DEFAULT_BOSSTHREADS, DEFAULT_WORKERTHREADS, DEFAULT_SERVERPORT,
+				new AesToken(token));
 	}
 
-	public static void main(String[] args) {
-		EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+	/**
+	 * 兼容模式 & 密文模式
+	 * 
+	 * @param appid
+	 *            公众号的唯一ID
+	 * @param token
+	 *            开发者填写的token
+	 * @param aesKey
+	 *            消息加密的密钥
+	 */
+	public static void startup(String appid, String token, String aesKey) {
+		startup(DEFAULT_BOSSTHREADS, DEFAULT_WORKERTHREADS, DEFAULT_SERVERPORT,
+				new AesToken(appid, token, aesKey));
+	}
+
+	public static void startup(int bossThreads, int workerThreads,
+			int serverPort, AesToken aesToken) {
+		EventLoopGroup bossGroup = new NioEventLoopGroup(bossThreads);
 		EventLoopGroup workerGroup = new NioEventLoopGroup(workerThreads);
 		try {
 			ServerBootstrap b = new ServerBootstrap();
@@ -40,9 +71,9 @@ public final class WeixinServerBootstrap {
 			b.group(bossGroup, workerGroup)
 					.channel(NioServerSocketChannel.class)
 					.handler(new LoggingHandler())
-					.childHandler(new WeixinServerInitializer());
-			Channel ch = b.bind(port).sync().channel();
-			System.err.println("weixin server startup OK:" + port);
+					.childHandler(new WeixinServerInitializer(aesToken));
+			Channel ch = b.bind(serverPort).sync().channel();
+			System.err.println("weixin server startup OK:" + serverPort);
 			ch.closeFuture().sync();
 		} catch (Exception e) {
 			e.printStackTrace();

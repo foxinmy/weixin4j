@@ -30,7 +30,7 @@ public class TagApi extends QyApi {
 	}
 
 	/**
-	 * 创建标签(创建的标签属于管理组;默认为未加锁状态)
+	 * 创建标签(创建的标签属于管理组；默认为加锁状态。)
 	 * 
 	 * @param tagName
 	 *            标签名称
@@ -69,7 +69,7 @@ public class TagApi extends QyApi {
 	}
 
 	/**
-	 * 删除标签(管理组必须是指定标签的创建者 并且标签的成员列表为空)
+	 * 删除标签(管理组必须是指定标签的创建者，并且标签的成员列表为空。)
 	 * 
 	 * @param tagId
 	 *            标签ID
@@ -105,7 +105,7 @@ public class TagApi extends QyApi {
 	}
 
 	/**
-	 * 获取标签成员(管理组须拥有“获取标签成员”的接口权限，标签须对管理组可见；返回列表仅包含管理组管辖范围的成员)
+	 * 获取标签成员(管理组须拥有“获取标签成员”的接口权限，返回列表仅包含管理组管辖范围的成员。)
 	 * 
 	 * @param tagId
 	 *            标签ID
@@ -125,7 +125,7 @@ public class TagApi extends QyApi {
 	}
 
 	/**
-	 * 新增标签成员(标签对管理组可见且未加锁，成员属于管理组管辖范围)<br>
+	 * 新增标签成员(标签对管理组可见且未加锁，成员属于管理组管辖范围。)<br>
 	 * <font color="red">若部分userid非法，则在text中体现</font>
 	 * 
 	 * @param tagId
@@ -144,7 +144,7 @@ public class TagApi extends QyApi {
 	}
 
 	/**
-	 * 删除标签成员(标签对管理组可见且未加锁，成员属于管理组管辖范围)<br>
+	 * 删除标签成员(标签对管理组未加锁，成员属于管理组管辖范围)<br>
 	 * <font color="red">若部分userid非法，则在text中体现</font>
 	 * 
 	 * @param tagId

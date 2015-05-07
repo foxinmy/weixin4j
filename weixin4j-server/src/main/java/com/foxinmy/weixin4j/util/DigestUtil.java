@@ -3,78 +3,58 @@ package com.foxinmy.weixin4j.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * 签名工具类
+ * 
+ * @className DigestUtil
+ * @author jy
+ * @date 2015年5月6日
+ * @since JDK 1.7
+ * @see
+ */
 public final class DigestUtil {
 
-	public static String SHA1(String decript) {
+	private static MessageDigest getDigest(final String algorithm) {
 		try {
-			MessageDigest digest = java.security.MessageDigest
-					.getInstance("SHA-1");
-			digest.update(decript.getBytes());
-			byte messageDigest[] = digest.digest();
-			// Create Hex String
-			StringBuffer hexString = new StringBuffer();
-			// 字节数组转换为 十六进制 数
-			for (int i = 0; i < messageDigest.length; i++) {
-				String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
-				if (shaHex.length() < 2) {
-					hexString.append(0);
-				}
-				hexString.append(shaHex);
-			}
-			return hexString.toString();
-
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			return MessageDigest.getInstance(algorithm);
+		} catch (final NoSuchAlgorithmException e) {
+			throw new IllegalArgumentException(e);
 		}
-		return "";
 	}
 
-	public static String SHA(String decript) {
-		try {
-			MessageDigest digest = java.security.MessageDigest
-					.getInstance("SHA");
-			digest.update(decript.getBytes());
-			byte messageDigest[] = digest.digest();
-			// Create Hex String
-			StringBuffer hexString = new StringBuffer();
-			// 字节数组转换为 十六进制 数
-			for (int i = 0; i < messageDigest.length; i++) {
-				String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
-				if (shaHex.length() < 2) {
-					hexString.append(0);
-				}
-				hexString.append(shaHex);
-			}
-			return hexString.toString();
-
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return "";
+	/**
+	 * SHA1签名
+	 * 
+	 * @param content
+	 *            待签名字符串
+	 * @return 签名后的字符串
+	 */
+	public static String SHA1(String content) {
+		byte[] data = StringUtil.getBytesUtf8(content);
+		return HexUtil.encodeHexString(getDigest(Consts.SHA1).digest(data));
 	}
 
-	public static String MD5(String input) {
-		try {
-			// 获得MD5摘要算法的 MessageDigest 对象
-			MessageDigest mdInst = MessageDigest.getInstance("MD5");
-			// 使用指定的字节更新摘要
-			mdInst.update(input.getBytes());
-			// 获得密文
-			byte[] md = mdInst.digest();
-			// 把密文转换成十六进制的字符串形式
-			StringBuffer hexString = new StringBuffer();
-			// 字节数组转换为 十六进制 数
-			for (int i = 0; i < md.length; i++) {
-				String shaHex = Integer.toHexString(md[i] & 0xFF);
-				if (shaHex.length() < 2) {
-					hexString.append(0);
-				}
-				hexString.append(shaHex);
-			}
-			return hexString.toString();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return "";
+	/**
+	 * SHA签名
+	 * 
+	 * @param content
+	 *            待签名字符串
+	 * @return 签名后的字符串
+	 */
+	public static String SHA(String content) {
+		byte[] data = StringUtil.getBytesUtf8(content);
+		return HexUtil.encodeHexString(getDigest(Consts.SHA).digest(data));
+	}
+
+	/**
+	 * MD5签名
+	 * 
+	 * @param content
+	 *            待签名字符串
+	 * @return 签名后的字符串
+	 */
+	public static String MD5(String content) {
+		byte[] data = StringUtil.getBytesUtf8(content);
+		return HexUtil.encodeHexString(getDigest(Consts.MD5).digest(data));
 	}
 }

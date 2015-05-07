@@ -1,0 +1,43 @@
+package com.foxinmy.weixin4j.response;
+
+/**
+ * 消息转移到客服
+ * 
+ * @className TransferCustomerResponse
+ * @author jy
+ * @date 2015年5月5日
+ * @since JDK 1.7
+ * @see <a
+ *      href="http://mp.weixin.qq.com/wiki/5/ae230189c9bd07a6b221f48619aeef35.html">转移消息到多客服</a>
+ */
+public class TransferCustomerResponse implements WeixinResponse {
+
+	/**
+	 * 指定会话接入的客服账号
+	 */
+	private String kfAccount;
+
+	public String getKfAccount() {
+		return kfAccount;
+	}
+
+	public void setKfAccount(String kfAccount) {
+		this.kfAccount = kfAccount;
+	}
+
+	@Override
+	public String toContent() {
+		StringBuilder content = new StringBuilder();
+		if (kfAccount != null) {
+			content.append(String
+					.format("<TransInfo><KfAccount><![CDATA[%s]]></KfAccount></TransInfo>",
+							kfAccount));
+		}
+		return content.toString();
+	}
+
+	@Override
+	public String getMsgType() {
+		return "transfer_customer_service";
+	}
+}

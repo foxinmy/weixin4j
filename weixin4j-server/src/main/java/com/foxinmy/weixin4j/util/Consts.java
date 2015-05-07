@@ -23,6 +23,9 @@ public final class Consts {
 	public static final String TLS = "TLS";
 	public static final String X509 = "X.509";
 	public static final String AES = "AES";
+	public static final String MD5 = "MD5";
+	public static final String SHA = "SHA";
+	public static final String SHA1 = "SHA-1";
 	public static final String CONTENTTYPE$APPLICATION_XML = "application/xml";
-
+	public static final String CONTENTTYPE$TEXT_PLAIN = "text/plain";
 }

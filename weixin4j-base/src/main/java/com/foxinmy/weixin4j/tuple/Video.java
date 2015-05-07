@@ -7,7 +7,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 /**
  * 视频对象
  * <p>
- * <font color="red">可用于「被动消息」「客服消息」</font>
+ * <font color="red">可用于「客服消息」</font>
  * </p>
  * 
  * @className Video
@@ -16,7 +16,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @since JDK 1.7
  * @see
  */
-public class Video implements ResponseTuple, NotifyTuple {
+public class Video implements NotifyTuple {
 
 	private static final long serialVersionUID = 2167437425244069128L;
 

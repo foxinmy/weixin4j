@@ -49,3 +49,7 @@
 * 2015-04-19
 
   + 删除ActionMapping相关类
+  
+* 2015-05-07
+
+  + 删除ResponseTuple接口

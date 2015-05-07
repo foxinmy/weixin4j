@@ -6,7 +6,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 /**
  * 音乐对象
  * <p>
- * <font color="red">可用于「被动消息」「客服消息」</font>
+ * <font color="red">可用于「客服消息」</font>
  * </p>
  * 
  * @className Music
@@ -15,7 +15,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
-public class Music implements ResponseTuple, NotifyTuple {
+public class Music implements NotifyTuple {
 
 	private static final long serialVersionUID = -5952134916367253297L;
 
@@ -23,7 +23,7 @@ public class Music implements ResponseTuple, NotifyTuple {
 	public String getMessageType() {
 		return "music";
 	}
-	
+
 	/**
 	 * 音乐标题
 	 */

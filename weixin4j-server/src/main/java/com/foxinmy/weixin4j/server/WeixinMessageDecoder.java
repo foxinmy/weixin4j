@@ -12,8 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.message.HttpWeixinMessage;
+import com.foxinmy.weixin4j.model.AesToken;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.MessageUtil;
+import com.foxinmy.weixin4j.xml.EncryptMessageHandler;
 
 /**
  * 微信消息解码类
@@ -29,14 +32,17 @@ public class WeixinMessageDecoder extends
 		MessageToMessageDecoder<FullHttpRequest> {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
+	private AesToken aesToken;
+
+	public WeixinMessageDecoder(AesToken aesToken) {
+		this.aesToken = aesToken;
+	}
+
 	@Override
 	protected void decode(ChannelHandlerContext ctx, FullHttpRequest req,
-			List<Object> out) throws Exception {
+			List<Object> out) throws RuntimeException {
 		String content = req.content().toString(Consts.UTF_8);
 		HttpWeixinMessage message = new HttpWeixinMessage();
-		if (!content.isEmpty()) {
-			// TODO
-		}
 		message.setMethod(req.getMethod().name());
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
 				true);
@@ -60,13 +66,24 @@ public class WeixinMessageDecoder extends
 		String signature = parameters.containsKey("signature") ? parameters
 				.get("signature").get(0) : "";
 		message.setSignature(signature);
+		String msgSignature = parameters.containsKey("msg_signature") ? parameters
+				.get("msg_signature").get(0) : "";
+		message.setMsgSignature(msgSignature);
 
-		message.setOriginalContent(content);
-		if (message.getEncryptType() == EncryptType.AES) {
-			/*WeixinAccount mpAccount = ConfigUtil.getWeixinAccount();
-			message.setOriginalContent(MessageUtil.aesDecrypt(
-					mpAccount.getId(), mpAccount.getEncodingAesKey(),
-					message.getEncryptContent()));*/
+		if (!content.isEmpty()) {
+			if (message.getEncryptType() == EncryptType.AES) {
+				if (aesToken.getAesKey() == null || aesToken.getAppid() == null) {
+					throw new IllegalArgumentException(
+							"AESEncodingKey or AppId not be null in AES mode");
+				}
+				String encryptContent = EncryptMessageHandler.parser(content);
+				message.setEncryptContent(encryptContent);
+				message.setOriginalContent(MessageUtil.aesDecrypt(
+						aesToken.getAppid(), aesToken.getAesKey(),
+						encryptContent));
+			} else {
+				message.setOriginalContent(content);
+			}
 		}
 		out.add(message);
 	}

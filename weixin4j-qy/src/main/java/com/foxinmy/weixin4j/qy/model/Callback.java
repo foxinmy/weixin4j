@@ -49,4 +49,9 @@ public class Callback implements Serializable {
 		return aesKey;
 	}
 
+	@Override
+	public String toString() {
+		return "Callback [url=" + url + ", token=" + token + ", aesKey="
+				+ aesKey + "]";
+	}
 }

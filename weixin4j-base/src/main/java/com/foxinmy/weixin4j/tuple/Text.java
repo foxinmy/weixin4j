@@ -5,7 +5,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 /**
  * 文本对象
  * <p>
- * <font color="red">可用于「被动消息」「客服消息」「群发消息」</font>
+ * <font color="red">可用于「客服消息」「群发消息」</font>
  * </p>
  * 
  * @className Text
@@ -15,7 +15,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see
  */
 @XStreamAlias("Content")
-public class Text implements ResponseTuple, MassTuple, NotifyTuple {
+public class Text implements MassTuple, NotifyTuple {
 
 	private static final long serialVersionUID = 520050144519064503L;
 
