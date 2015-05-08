@@ -11,7 +11,7 @@ weixin4j-server
 
 * `消息分发`
 
-* `消息拦截`
+* `消息拦截`(待测试)
 
 如何使用
 -------
@@ -62,9 +62,9 @@ weixin4j-server
 
 assembly打包(辅助)
 -----------------
-[assembly](http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html)是maven的一个打包插件,它可以创建一个包含脚本、配置文件以及所有运行时所依赖的元素(jar)Assembly插件能帮你构建一个完整的发布包.
+[assembly](http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html)是maven的一个打包插件,它可以创建一个包含脚本、配置文件以及所有运行时所依赖的元素(jar)assembly插件能帮你构建一个完整的发布包.
 
-1.复制[assembly描述](./src/main/assembly.xml)和[启动脚本](./src/main/startup.sh)到自己工程的src/main目录下.
+1.复制[assembly.xml](./src/main/assembly.xml)和[startup.sh](./src/main/startup.sh)到自己工程的src/main目录下.
 
 2.在项目pom.xml中的/bulid/plugins节点新增如下配置
 
@@ -90,13 +90,13 @@ assembly打包(辅助)
 	</plugin>
 `descriptor`表示[assembly](./src/main/assembly.xml)文件的位置.
 
-`finalName`表示打包(zip)后的文件名,需配合启动脚本中`APP_HOME`的值使用.
+`finalName`表示打包(zip)后的文件名,需配合[startup.sh](./src/main/startup.sh)中`APP_HOME`的值使用.
 
-3.[启动脚本](./src/main/startup.sh)中`JAVA_HOME`为java运行环境(jre|jdk)的安装根目录,如果与脚本中的值不一致,可使用`ln -s t/usr/local/java 实际的目录`.
+3.[startup.sh](./src/main/startup.sh)中`JAVA_HOME`为java运行环境(jre|jdk)的安装根目录,如果与脚本中的值不一致,可使用`ln -s t/usr/local/java 实际的目录`.
 
-4.[启动脚本](./src/main/startup.sh)中`APP_HOME`的值为服务的启动目录,相当于运行服务时的classpath目录.
+4.[startup.sh](./src/main/startup.sh)中`APP_HOME`为服务的启动目录,相当于运行服务时的classpath目录.
 
-5.修改[启动脚本](./src/main/startup.sh)中`APP_MAINCLASS`的值为上述编写的netty服务启动类.
+5.修改[startup.sh](./src/main/startup.sh)中`APP_MAINCLASS`为上述编写的netty服务启动类的全限定名.
 
 6.执行`mvn package`命令后在target目录下得到一个zip的压缩包,在7或者8中选择一种方式启动服务.
 
