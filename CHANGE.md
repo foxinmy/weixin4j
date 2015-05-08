@@ -267,4 +267,12 @@
   
 * 2015-04-30
 
-  + 新增`media_id`和`view_limited`两种菜单类型
+  + **weixin4j-mp**: 新增`media_id`和`view_limited`两种菜单类型
+  
+* 2015-05-07
+
+  +**weixin4j-server**: 完成基本骨架
+  
+* 2015-05-08
+
+  +**weixin4j-server**: 完成消息分发器、消息处理器、消息拦截器的骨架

@@ -5,29 +5,27 @@ import io.netty.buffer.Unpooled;
 
 public final class Base64 {
 
+	private static byte[] byteBuf2Array(ByteBuf byteBuf) {
+		if (byteBuf.hasArray()) {
+			return byteBuf.array();
+		} else {
+			byte[] desArray = new byte[byteBuf.readableBytes()];
+			byteBuf.readBytes(desArray);
+			return desArray;
+		}
+	}
+
 	public static byte[] decodeBase64(final String content) {
 		byte[] data = StringUtil.getBytesUtf8(content);
 		ByteBuf des = io.netty.handler.codec.base64.Base64.decode(Unpooled
 				.copiedBuffer(data));
-		if (des.hasArray()) {
-			return des.array();
-		} else {
-			byte[] desArray = new byte[des.readableBytes()];
-			des.readBytes(desArray);
-			return desArray;
-		}
+		return byteBuf2Array(des);
 	}
 
 	public static byte[] encodeBase64(final byte[] bytes) {
 		ByteBuf des = io.netty.handler.codec.base64.Base64.encode(Unpooled
 				.copiedBuffer(bytes));
-		if (des.hasArray()) {
-			return des.array();
-		} else {
-			byte[] desArray = new byte[des.readableBytes()];
-			des.readBytes(desArray);
-			return desArray;
-		}
+		return byteBuf2Array(des);
 	}
 
 	public static String encodeBase64String(final byte[] bytes) {

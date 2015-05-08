@@ -15,7 +15,6 @@ package com.foxinmy.weixin4j.response;
  * @see NewsResponse
  * @see TransferCustomerResponse
  * @see BlankResponse
- * @see DebugResponse
  * @see <a href=
  *      "http://mp.weixin.qq.com/wiki/9/2c15b20a16019ae613d413e30cac8ea1.html">订阅号、服务号的被动响应消息</a>
  * @see <a

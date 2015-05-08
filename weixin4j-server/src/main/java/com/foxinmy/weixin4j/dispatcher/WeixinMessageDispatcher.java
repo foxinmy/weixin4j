@@ -1,0 +1,241 @@
+package com.foxinmy.weixin4j.dispatcher;
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.foxinmy.weixin4j.bean.BeanFactory;
+import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
+import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
+import com.foxinmy.weixin4j.request.ResponseMessage;
+import com.foxinmy.weixin4j.request.WeixinMessage;
+import com.foxinmy.weixin4j.request.WeixinRequest;
+import com.foxinmy.weixin4j.response.WeixinResponse;
+import com.foxinmy.weixin4j.type.EncryptType;
+import com.foxinmy.weixin4j.util.ClassUtil;
+import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.HttpUtil;
+
+/**
+ * 微信消息分发器
+ * 
+ * @className WeixinMessageDispatcher
+ * @author jy
+ * @date 2015年5月7日
+ * @since JDK 1.7
+ * @see
+ */
+public class WeixinMessageDispatcher {
+
+	private final Logger log = LoggerFactory.getLogger(getClass());
+
+	/**
+	 * 消息处理器
+	 */
+	private List<WeixinMessageHandler> messageHandlerList;
+	private WeixinMessageHandler[] messageHandlers;
+	/**
+	 * 消息处理器所在的包
+	 */
+	private String[] messageHandlerPackages;
+
+	/**
+	 * 消息拦截器
+	 */
+	private List<WeixinMessageInterceptor> messageInterceptorList;
+	private WeixinMessageInterceptor[] messageInterceptors;
+	/**
+	 * 消息拦截器所在的包
+	 */
+	private String[] messageInterceptorPackages;
+
+	/**
+	 * Bean构造
+	 */
+	private BeanFactory beanFactory;
+
+	public WeixinMessageDispatcher() {
+	}
+
+	public void doDispatch(final ChannelHandlerContext context,
+			final WeixinRequest request, final WeixinMessage message)
+			throws WeixinException {
+		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(request,
+				message);
+		if (handlerExecutor == null
+				|| handlerExecutor.getMessageHandler() == null) {
+			noHandlerFound(context, request, message);
+			return;
+		}
+		if (!handlerExecutor.applyPreHandle(context, request, message)) {
+			return;
+		}
+		WeixinException dispatchException = null;
+		try {
+			WeixinResponse _response = handlerExecutor.getMessageHandler()
+					.doHandle(request, message);
+			log.info(
+					"\n=================message response=================\n{}",
+					_response);
+			handlerExecutor.applyPostHandle(context, request, _response,
+					message);
+			ResponseMessage response = new ResponseMessage(message, _response);
+			if (request.getEncryptType() == EncryptType.RAW) {
+				context.write(HttpUtil.createWeixinMessageResponse(
+						response.toXml(), Consts.CONTENTTYPE$APPLICATION_XML));
+			} else {
+				context.write(response);
+			}
+		} catch (WeixinException e) {
+			dispatchException = e;
+		}
+		handlerExecutor.triggerAfterCompletion(context, request, message,
+				dispatchException);
+	}
+
+	protected void noHandlerFound(ChannelHandlerContext ctx,
+			WeixinRequest request, WeixinMessage message) {
+		ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
+				HttpResponseStatus.NOT_FOUND));
+	}
+
+	protected MessageHandlerExecutor getHandlerExecutor(WeixinRequest request,
+			WeixinMessage message) throws WeixinException {
+		WeixinMessageHandler messageHandler = null;
+		WeixinMessageHandler[] messageHandlers = getMessageHandlers();
+		if (messageHandlers == null) {
+			return null;
+		}
+		for (WeixinMessageHandler handler : messageHandlers) {
+			if (handler.canHandle(request, message)) {
+				messageHandler = handler;
+				break;
+			}
+		}
+		return new MessageHandlerExecutor(messageHandler, messageInterceptors);
+	}
+
+	public WeixinMessageHandler[] getMessageHandlers() throws WeixinException {
+		if (this.messageHandlers == null) {
+			if (messageHandlerPackages != null) {
+				List<Class<?>> messageHandlerClass = new LinkedList<Class<?>>();
+				for (String packageName : messageHandlerPackages) {
+					messageHandlerClass.addAll(ClassUtil
+							.getClasses(packageName));
+				}
+				if (beanFactory != null) {
+					for (Class<?> clazz : messageHandlerClass) {
+						messageHandlerList
+								.add((WeixinMessageHandler) beanFactory
+										.getBean(clazz));
+					}
+				} else {
+					for (Class<?> clazz : messageHandlerClass) {
+						try {
+							messageHandlerList.add((WeixinMessageHandler) clazz
+									.newInstance());
+						} catch (InstantiationException ex) {
+							throw new WeixinException(clazz.getName()
+									+ " Is it an abstract class?", ex);
+						} catch (IllegalAccessException ex) {
+							throw new WeixinException(clazz.getName()
+									+ " Is the constructor accessible?", ex);
+						}
+					}
+				}
+			}
+			if (messageHandlerList != null
+					&& !this.messageHandlerList.isEmpty()) {
+				this.messageHandlers = this.messageHandlerList
+						.toArray(new WeixinMessageHandler[this.messageHandlerList
+								.size()]);
+			}
+		}
+		return this.messageHandlers;
+
+	}
+
+	public WeixinMessageInterceptor[] getMessageInterceptors()
+			throws WeixinException {
+		if (this.messageInterceptors == null) {
+			if (this.messageInterceptorList != null) {
+				List<Class<?>> messageInterceptorClass = new LinkedList<Class<?>>();
+				for (String packageName : messageInterceptorPackages) {
+					messageInterceptorClass.addAll(ClassUtil
+							.getClasses(packageName));
+				}
+				if (beanFactory != null) {
+					for (Class<?> clazz : messageInterceptorClass) {
+						messageInterceptorList
+								.add((WeixinMessageInterceptor) beanFactory
+										.getBean(clazz));
+					}
+				} else {
+					for (Class<?> clazz : messageInterceptorClass) {
+						try {
+							messageInterceptorList
+									.add((WeixinMessageInterceptor) clazz
+											.newInstance());
+						} catch (InstantiationException ex) {
+							throw new WeixinException(clazz.getName()
+									+ " Is it an abstract class?", ex);
+						} catch (IllegalAccessException ex) {
+							throw new WeixinException(clazz.getName()
+									+ " Is the constructor accessible?", ex);
+						}
+					}
+				}
+			}
+			if (this.messageInterceptorList != null
+					&& !this.messageInterceptorList.isEmpty()) {
+				this.messageInterceptors = this.messageInterceptorList
+						.toArray(new WeixinMessageInterceptor[this.messageInterceptorList
+								.size()]);
+			}
+		}
+		return this.messageInterceptors;
+	}
+
+	public void setMessageHandlerList(
+			List<WeixinMessageHandler> messageHandlerList) {
+		this.messageHandlerList = messageHandlerList;
+	}
+
+	public void setMessageInterceptorList(
+			List<WeixinMessageInterceptor> messageInterceptorList) {
+		this.messageInterceptorList = messageInterceptorList;
+	}
+
+	public String[] getMessageHandlerPackages() {
+		return messageHandlerPackages;
+	}
+
+	public String[] getMessageInterceptorPackages() {
+		return messageInterceptorPackages;
+	}
+
+	public void setMessageHandlerPackages(String... messageHandlerPackages) {
+		this.messageHandlerPackages = messageHandlerPackages;
+	}
+
+	public void setMessageInterceptorPackages(
+			String... messageInterceptorPackages) {
+		this.messageInterceptorPackages = messageInterceptorPackages;
+	}
+
+	public BeanFactory getBeanFactory() {
+		return beanFactory;
+	}
+
+	public void setBeanFactory(BeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+}

@@ -26,6 +26,8 @@ public final class Consts {
 	public static final String MD5 = "MD5";
 	public static final String SHA = "SHA";
 	public static final String SHA1 = "SHA-1";
+	public static final String PROTOCOL_FILE = "file";
+	public static final String PROTOCOL_JAR = "jar";
 	public static final String CONTENTTYPE$APPLICATION_XML = "application/xml";
 	public static final String CONTENTTYPE$TEXT_PLAIN = "text/plain";
 }

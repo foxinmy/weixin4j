@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.message;
+package com.foxinmy.weixin4j.request;
 
 import java.io.Serializable;
 
@@ -36,10 +36,6 @@ public class WeixinMessage implements Serializable {
 	 * 
 	 */
 	private String msgType;
-	/**
-	 * 消息ID 可用于排重
-	 */
-	private long msgId;
 
 	public String getToUserName() {
 		return toUserName;
@@ -77,28 +73,12 @@ public class WeixinMessage implements Serializable {
 		this.msgType = msgType;
 	}
 
-	public long getMsgId() {
-		return msgId;
-	}
-
-	@XmlElement(name = "MsgId")
-	public void setMsgId(long msgId) {
-		this.msgId = msgId;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof WeixinMessage) {
-			return ((WeixinMessage) obj).getMsgId() == msgId
-					&& ((WeixinMessage) obj).getCreateTime() == createTime;
-		}
-		return false;
-	}
+	//@Override
+	//public abstract boolean equals(Object obj) ;
 
 	@Override
 	public String toString() {
 		return " toUserName=" + toUserName + ", fromUserName=" + fromUserName
-				+ ", createTime=" + createTime + ", msgType=" + msgType
-				+ ", msgId=" + msgId;
+				+ ", createTime=" + createTime + ", msgType=" + msgType;
 	}
 }

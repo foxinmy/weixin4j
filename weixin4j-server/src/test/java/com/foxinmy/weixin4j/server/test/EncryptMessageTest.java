@@ -5,9 +5,23 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AesMsgTest extends MessagePush {
+/**
+ * 消息验证测试
+ * 
+ * @className EncryptMessageTest
+ * @author jy
+ * @date 2015年5月8日
+ * @since JDK 1.7
+ * @see
+ */
+public class EncryptMessageTest extends MessagePush {
 	StringBuilder xmlSb = new StringBuilder();
 
+	/**
+	 * 验证是否服务器配置是否正常
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testValidate() throws IOException {
 		String echostr = "2143641595566077626";
@@ -18,6 +32,11 @@ public class AesMsgTest extends MessagePush {
 		Assert.assertEquals(echostr, response);
 	}
 
+	/**
+	 * 验证明文模式
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testType1() throws IOException {
 		String para = "?signature=6dd806a20a314723e78bc58742a1b98a7adfd151&timestamp=1415979366&nonce=1865915590";
@@ -35,6 +54,11 @@ public class AesMsgTest extends MessagePush {
 		System.err.println(response);
 	}
 
+	/**
+	 * 验证兼容模式
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testType2() throws IOException {
 		String para = "/?signature=b4343f727d6e9b1072f6f72d28b0d0cf38986dce&timestamp=1430926116&nonce=1801492986&encrypt_type=aes&msg_signature=af1868ffe3058db89643c6c546e49cd40d717ac9";
@@ -53,6 +77,11 @@ public class AesMsgTest extends MessagePush {
 		System.err.println(response);
 	}
 
+	/**
+	 * 验证密文模式
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testType3() throws IOException {
 		String para = "?signature=ad05f836772d1cbba1ff2edb7be4b9c9fb3a43d5&timestamp=1415980001&nonce=1803216865&encrypt_type=aes&msg_signature=c0d38e9ca00548f7142627ec2908a4fe8481025e";

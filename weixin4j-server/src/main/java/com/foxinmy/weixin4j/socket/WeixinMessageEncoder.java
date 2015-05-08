@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.server;
+package com.foxinmy.weixin4j.socket;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
@@ -8,8 +8,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foxinmy.weixin4j.message.ResponseMessage;
-import com.foxinmy.weixin4j.model.AesToken;
+import com.foxinmy.weixin4j.bean.AesToken;
+import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.request.ResponseMessage;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
@@ -36,9 +37,9 @@ public class WeixinMessageEncoder extends
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, ResponseMessage response,
-			List<Object> out) throws RuntimeException {
+			List<Object> out) throws WeixinException {
 		if (aesToken.getAesKey() == null || aesToken.getAppid() == null) {
-			throw new IllegalArgumentException(
+			throw new WeixinException(
 					"AESEncodingKey or AppId not be null in AES mode");
 		}
 		String nonce = RandomUtil.generateString(32);

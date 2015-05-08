@@ -14,6 +14,15 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+/**
+ * 发送消息请求到服务器
+ * 
+ * @className MessagePush
+ * @author jy
+ * @date 2015年5月8日
+ * @since JDK 1.7
+ * @see
+ */
 public class MessagePush {
 
 	private final String server = "http://localhost:30000";

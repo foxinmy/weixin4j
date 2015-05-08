@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.server;
+package com.foxinmy.weixin4j.socket;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
@@ -11,8 +11,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foxinmy.weixin4j.message.HttpWeixinMessage;
-import com.foxinmy.weixin4j.model.AesToken;
+import com.foxinmy.weixin4j.bean.AesToken;
+import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.MessageUtil;
@@ -40,9 +41,9 @@ public class WeixinMessageDecoder extends
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, FullHttpRequest req,
-			List<Object> out) throws RuntimeException {
+			List<Object> out) throws WeixinException {
 		String content = req.content().toString(Consts.UTF_8);
-		HttpWeixinMessage message = new HttpWeixinMessage();
+		WeixinRequest message = new WeixinRequest();
 		message.setMethod(req.getMethod().name());
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
 				true);
@@ -73,7 +74,7 @@ public class WeixinMessageDecoder extends
 		if (!content.isEmpty()) {
 			if (message.getEncryptType() == EncryptType.AES) {
 				if (aesToken.getAesKey() == null || aesToken.getAppid() == null) {
-					throw new IllegalArgumentException(
+					throw new WeixinException(
 							"AESEncodingKey or AppId not be null in AES mode");
 				}
 				String encryptContent = EncryptMessageHandler.parser(content);

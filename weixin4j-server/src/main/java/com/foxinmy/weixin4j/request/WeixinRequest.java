@@ -1,19 +1,19 @@
-package com.foxinmy.weixin4j.message;
+package com.foxinmy.weixin4j.request;
 
 import java.io.Serializable;
 
 import com.foxinmy.weixin4j.type.EncryptType;
 
 /**
- * 请求消息
+ * 微信请求
  * 
- * @className HttpWeixinMessage
+ * @className WeixinRequest
  * @author jy
  * @date 2015年3月29日
  * @since JDK 1.7
  * @see
  */
-public class HttpWeixinMessage implements Serializable {
+public class WeixinRequest implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -9157395300510879866L;
 
@@ -133,7 +133,7 @@ public class HttpWeixinMessage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "HttpWeixinMessage [encryptContent=" + encryptContent
+		return "WeixinRequest [encryptContent=" + encryptContent
 				+ ", encryptType=" + encryptType + ", echoStr=" + echoStr
 				+ ", timeStamp=" + timeStamp + ", nonce=" + nonce
 				+ ", signature=" + signature + ", originalContent="

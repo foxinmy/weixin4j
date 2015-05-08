@@ -12,7 +12,7 @@ import org.junit.Test;
  * @date 2014年3月24日
  * @since JDK 1.7
  */
-public class EventMsgTest extends MessagePush {
+public class EventMessageRequestTest extends MessagePush {
 
 	private StringBuilder xmlSb = new StringBuilder();
 

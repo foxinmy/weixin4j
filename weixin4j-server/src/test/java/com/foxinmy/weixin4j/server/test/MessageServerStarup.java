@@ -1,0 +1,77 @@
+package com.foxinmy.weixin4j.server.test;
+
+import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.handler.DebugMessageHandler;
+import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
+import com.foxinmy.weixin4j.request.WeixinMessage;
+import com.foxinmy.weixin4j.request.WeixinRequest;
+import com.foxinmy.weixin4j.response.TextResponse;
+import com.foxinmy.weixin4j.response.WeixinResponse;
+import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
+
+/**
+ * 服务启动
+ * 
+ * @className ServerStarup
+ * @author jy
+ * @date 2015年5月7日
+ * @since JDK 1.7
+ * @see
+ */
+public class MessageServerStarup {
+
+	final String appid = "appid";
+	final String token = "token";
+	final String aesKey = "aeskey";
+
+	/**
+	 * 明文模式
+	 * 
+	 * @throws WeixinException
+	 */
+	public void test1() throws WeixinException {
+		// 所有请求都回复调试的文本消息
+		new WeixinServerBootstrap(token).pushMessageHandler(
+				DebugMessageHandler.global).startup();
+	}
+
+	/**
+	 * 密文模式
+	 * 
+	 * @throws WeixinException
+	 */
+	public void test2() throws WeixinException {
+		// 所有请求都回复调试的文本消息
+		new WeixinServerBootstrap(appid, token, aesKey).pushMessageHandler(
+				DebugMessageHandler.global).startup();
+	}
+
+	/**
+	 * 针对特定消息回复
+	 * 
+	 * @throws WeixinException
+	 */
+	public void test3() throws WeixinException {
+		// 回复文本消息
+		WeixinMessageHandler messageHandler = new WeixinMessageHandler() {
+			@Override
+			public WeixinResponse doHandle(WeixinRequest request,
+					WeixinMessage message) throws WeixinException {
+				return new TextResponse("HelloWorld!");
+			}
+
+			@Override
+			public boolean canHandle(WeixinRequest request,
+					WeixinMessage message) {
+				return message.getMsgType().equals("text");
+			}
+		};
+		// 当消息类型为文本(text)时回复「HelloWorld」, 否则回复调试消息
+		new WeixinServerBootstrap(appid, token, aesKey).pushMessageHandler(
+				messageHandler, DebugMessageHandler.global).startup();
+	}
+
+	public static void main(String[] args) throws WeixinException {
+		
+	}
+}

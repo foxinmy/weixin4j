@@ -6,6 +6,8 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.foxinmy.weixin4j.exception.WeixinException;
+
 /**
  * 消息工具类
  * 
@@ -49,7 +51,7 @@ public final class MessageUtil {
 	 * @throws WeixinException
 	 */
 	public static String aesEncrypt(String appId, String encodingAesKey,
-			String xmlContent) throws RuntimeException {
+			String xmlContent) throws WeixinException {
 		byte[] randomBytes = StringUtil.getBytesUtf8(RandomUtil
 				.generateString(16));
 		byte[] xmlBytes = StringUtil.getBytesUtf8(xmlContent);
@@ -92,7 +94,7 @@ public final class MessageUtil {
 			// 使用BASE64对加密后的字符串进行编码
 			return Base64.encodeBase64String(encrypted);
 		} catch (Exception e) {
-			throw new RuntimeException("-40006,AES加密失败:", e);
+			throw new WeixinException("-40006", "AES加密失败:" + e.getMessage());
 		}
 	}
 
@@ -108,7 +110,7 @@ public final class MessageUtil {
 	 * @throws WeixinException
 	 */
 	public static String aesDecrypt(String appId, String encodingAesKey,
-			String encryptContent) throws RuntimeException {
+			String encryptContent) throws WeixinException {
 		byte[] aesKey = Base64.decodeBase64(encodingAesKey + "=");
 		byte[] original;
 		try {
@@ -123,7 +125,7 @@ public final class MessageUtil {
 			// 解密
 			original = cipher.doFinal(encrypted);
 		} catch (Exception e) {
-			throw new RuntimeException("-40007,AES解密失败", e);
+			throw new WeixinException("-40007", "AES解密失败" + e.getMessage());
 		}
 		String xmlContent, fromAppId;
 		try {
@@ -141,11 +143,13 @@ public final class MessageUtil {
 			fromAppId = StringUtil.newStringUtf8(Arrays.copyOfRange(bytes,
 					20 + xmlLength, bytes.length));
 		} catch (Exception e) {
-			throw new RuntimeException("-40008,公众平台发送的xml不合法", e);
+			throw new WeixinException("-40008", "公众平台发送的xml不合法"
+					+ e.getMessage());
 		}
 		// 校验appId是否一致
 		if (!fromAppId.trim().equals(appId)) {
-			throw new RuntimeException("-40005,校验AppID失败");
+			throw new WeixinException("-40005", "校验AppID失败,expect " + appId
+					+ ",but actual is " + fromAppId);
 		}
 		return xmlContent;
 	}
