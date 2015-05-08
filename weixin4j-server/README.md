@@ -34,7 +34,7 @@ weixin4j-server
 		}
 	}
 
-只回复文本消息的服务启动类
+只针对文本消息的服务启动类
 
 	public class MessageServerStartup{
 		public static void main(String[] args) {
