@@ -142,56 +142,92 @@ public final class WeixinServerBootstrap {
 		}
 	}
 
-	public WeixinServerBootstrap pushMessageHandler(
+	/**
+	 * 添加一个或者多个消息处理器
+	 * 
+	 * @param messageHandler
+	 *            消息处理器
+	 * @return
+	 */
+	public WeixinServerBootstrap addHandler(
 			WeixinMessageHandler... messageHandler) {
 		messageHandlerList.addAll(Arrays.asList(messageHandler));
 		return this;
 	}
 
-	public WeixinServerBootstrap pushFirstMessageHandler(
+	/**
+	 * 将某个消息处理器插入到头部
+	 * 
+	 * @param messageHandler
+	 *            消息处理器
+	 * @return
+	 */
+	public WeixinServerBootstrap insertFirstHandler(
 			WeixinMessageHandler messageHandler) {
 		messageHandlerList.add(0, messageHandler);
 		return this;
 	}
 
-	public WeixinServerBootstrap pushLastMessageHandler(
-			WeixinMessageHandler messageHandler) {
-		messageHandlerList.add(messageHandlerList.size(), messageHandler);
-		return this;
-	}
-
-	public WeixinServerBootstrap pushMessageInterceptor(
+	/**
+	 * 插入一个或多个消息拦截器
+	 * 
+	 * @param messageInterceptor
+	 *            消息拦截器
+	 * @return
+	 */
+	public WeixinServerBootstrap addInterceptor(
 			WeixinMessageInterceptor... messageInterceptor) {
 		messageInterceptorList.addAll(Arrays.asList(messageInterceptor));
 		return this;
 	}
 
-	public WeixinServerBootstrap pushFirstMessageInterceptor(
+	/**
+	 * 将某个消息拦截器插入到头部
+	 * 
+	 * @param messageInterceptor
+	 *            消息拦截器
+	 * @return
+	 */
+	public WeixinServerBootstrap insertFirstInterceptor(
 			WeixinMessageInterceptor messageInterceptor) {
 		messageInterceptorList.add(0, messageInterceptor);
 		return this;
 	}
 
-	public WeixinServerBootstrap pushLastMessageInterceptor(
-			WeixinMessageInterceptor messageInterceptor) {
-		messageInterceptorList.add(messageInterceptorList.size(),
-				messageInterceptor);
-		return this;
-	}
-
-	public WeixinServerBootstrap messageHandlerPackagesToScan(
+	/**
+	 * 按照包名去添加消息处理器
+	 * 
+	 * @param messageHandlerPackages
+	 *            消息处理器所在的包名
+	 * @return
+	 */
+	public WeixinServerBootstrap handlerPackagesToScan(
 			String... messageHandlerPackages) {
 		messageDispatcher.setMessageHandlerPackages(messageHandlerPackages);
 		return this;
 	}
 
-	public WeixinServerBootstrap messageInterceptorPackagesToScan(
+	/**
+	 * 按照包名去添加消息拦截器
+	 * 
+	 * @param messageInterceptorPackages
+	 *            消息拦截器所在的包名
+	 * @return
+	 */
+	public WeixinServerBootstrap interceptorPackagesToScan(
 			String... messageInterceptorPackages) {
 		messageDispatcher
 				.setMessageInterceptorPackages(messageInterceptorPackages);
 		return this;
 	}
 
+	/**
+	 * 声明处理器跟拦截器类实例化的构造工厂,否则通过Class.newInstance的方式构造
+	 * 
+	 * @param beanFactory
+	 *            Bean构造工厂
+	 * @return
+	 */
 	public WeixinServerBootstrap resolveBeanFactory(BeanFactory beanFactory) {
 		messageDispatcher.setBeanFactory(beanFactory);
 		return this;

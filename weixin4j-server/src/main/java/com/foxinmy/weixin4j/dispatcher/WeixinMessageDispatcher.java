@@ -5,6 +5,8 @@ import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
+import com.foxinmy.weixin4j.util.ReflectionUtil;
 
 /**
  * 微信消息分发器
@@ -139,15 +142,19 @@ public class WeixinMessageDispatcher {
 					}
 				} else {
 					for (Class<?> clazz : messageHandlerClass) {
+						if (clazz.isInterface()
+								|| Modifier.isAbstract(clazz.getModifiers())) {
+							continue;
+						}
 						try {
-							messageHandlerList.add((WeixinMessageHandler) clazz
-									.newInstance());
-						} catch (InstantiationException ex) {
+							Constructor<?> ctor = clazz
+									.getDeclaredConstructor();
+							ReflectionUtil.makeAccessible(ctor);
+							messageHandlerList.add((WeixinMessageHandler) ctor
+									.newInstance((Object[]) null));
+						} catch (Exception ex) {
 							throw new WeixinException(clazz.getName()
-									+ " Is it an abstract class?", ex);
-						} catch (IllegalAccessException ex) {
-							throw new WeixinException(clazz.getName()
-									+ " Is the constructor accessible?", ex);
+									+ " instantiate fail", ex);
 						}
 					}
 				}
@@ -180,16 +187,20 @@ public class WeixinMessageDispatcher {
 					}
 				} else {
 					for (Class<?> clazz : messageInterceptorClass) {
+						if (clazz.isInterface()
+								|| Modifier.isAbstract(clazz.getModifiers())) {
+							continue;
+						}
 						try {
+							Constructor<?> ctor = clazz
+									.getDeclaredConstructor();
+							ReflectionUtil.makeAccessible(ctor);
 							messageInterceptorList
-									.add((WeixinMessageInterceptor) clazz
-											.newInstance());
-						} catch (InstantiationException ex) {
+									.add((WeixinMessageInterceptor) ctor
+											.newInstance((Object[]) null));
+						} catch (Exception ex) {
 							throw new WeixinException(clazz.getName()
-									+ " Is it an abstract class?", ex);
-						} catch (IllegalAccessException ex) {
-							throw new WeixinException(clazz.getName()
-									+ " Is the constructor accessible?", ex);
+									+ " instantiate fail", ex);
 						}
 					}
 				}

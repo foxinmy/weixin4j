@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 public class MessageServerStarup {
 
 	final String appid = "appid";
-	final String token = "token";
+	final String token = "carsonliu13450438112";
 	final String aesKey = "aeskey";
 
 	/**
@@ -31,8 +31,8 @@ public class MessageServerStarup {
 	 */
 	public void test1() throws WeixinException {
 		// 所有请求都回复调试的文本消息
-		new WeixinServerBootstrap(token).pushMessageHandler(
-				DebugMessageHandler.global).startup();
+		new WeixinServerBootstrap(token).addHandler(DebugMessageHandler.global)
+				.startup();
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class MessageServerStarup {
 	 */
 	public void test2() throws WeixinException {
 		// 所有请求都回复调试的文本消息
-		new WeixinServerBootstrap(appid, token, aesKey).pushMessageHandler(
+		new WeixinServerBootstrap(appid, token, aesKey).addHandler(
 				DebugMessageHandler.global).startup();
 	}
 
@@ -67,11 +67,18 @@ public class MessageServerStarup {
 			}
 		};
 		// 当消息类型为文本(text)时回复「HelloWorld」, 否则回复调试消息
-		new WeixinServerBootstrap(appid, token, aesKey).pushMessageHandler(
+		new WeixinServerBootstrap(appid, token, aesKey).addHandler(
 				messageHandler, DebugMessageHandler.global).startup();
 	}
 
+	public void test4() throws WeixinException {
+		// 扫描包加载消息处理器
+		String packageToScan = "com.foxinmy.weixin4j.handler";
+		new WeixinServerBootstrap(token).handlerPackagesToScan(packageToScan)
+				.startup();
+	}
+
 	public static void main(String[] args) throws WeixinException {
-		
+		new MessageServerStarup().test4();
 	}
 }

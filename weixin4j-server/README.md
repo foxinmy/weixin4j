@@ -19,7 +19,7 @@ weixin4j-server
 
 	public class MessageServerStartup{
 		public static void main(String[] args) {
-			new WeixinServerBootstrap("开发者token").pushMessageHandler(
+			new WeixinServerBootstrap("开发者token").addHandler(
 					DebugMessageHandler.global).startup();
 		}
 	}
@@ -29,7 +29,7 @@ weixin4j-server
 
 	public class MessageServerStartup{
 		public static void main(String[] args) {
-			new WeixinServerBootstrap("appid","开发者token","加密密钥").pushMessageHandler(
+			new WeixinServerBootstrap("appid","开发者token","加密密钥").addHandler(
 					DebugMessageHandler.global).startup();
 		}
 	}
@@ -53,7 +53,7 @@ weixin4j-server
 				}
 			};
 			// 当消息类型为文本(text)时回复「HelloWorld」, 否则回复调试消息
-			new WeixinServerBootstrap("appid","开发者token","加密密钥").pushMessageHandler(messageHandler,
+			new WeixinServerBootstrap("appid","开发者token","加密密钥").addHandler(messageHandler,
 					DebugMessageHandler.global).startup();
 		}
 	}

@@ -79,12 +79,8 @@ public final class ClassUtil {
 						packageName + "." + file.getName()));
 			} else {
 				try {
-					Class<?> clazz = Class.forName(packageName + "."
-							+ file.getName().replace(".class", ""));
-					if (clazz.isInterface()) {
-						continue;
-					}
-					classes.add(clazz);
+					classes.add(Class.forName(packageName + "."
+							+ file.getName().replace(".class", "")));
 				} catch (ClassNotFoundException e) {
 					;
 				}
@@ -119,12 +115,8 @@ public final class ClassUtil {
 				continue;
 			}
 			try {
-				Class<?> clazz = Class.forName(entryName.replaceAll("/", ".")
-						.replace(".class", ""));
-				if (clazz.isInterface()) {
-					continue;
-				}
-				classes.add(clazz);
+				classes.add(Class.forName(entryName.replaceAll("/", ".")
+						.replace(".class", "")));
 			} catch (ClassNotFoundException e) {
 				;
 			}
