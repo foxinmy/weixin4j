@@ -6,7 +6,7 @@ weixin4j
 
 项目说明
 -------
-`weixin4j`是一个用java编写针对微信开发的工具包,包含`weixin4j-mp`(微信公众平台)、`weixin4j-qy`(微信企业号)和`weixin4j-netty`(微信被动消息服务器)三个工程
+`weixin4j`是一个用java编写针对微信开发的工具包,包含`weixin4j-mp`(微信公众平台)、`weixin4j-qy`(微信企业号)和`weixin4j-server`(微信被动消息服务器)三个工程
 
 功能列表
 -------

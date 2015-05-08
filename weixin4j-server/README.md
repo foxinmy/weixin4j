@@ -120,7 +120,7 @@ assembly打包(辅助)
 相关参考
 -------
 
-![消息分发时序图](http://7mj4zs.com1.z0.glb.clouddn.com/weixin4j.png)
+![消息服务时序图](http://7mj4zs.com1.z0.glb.clouddn.com/weixin4j.png)
 
 [spring-webmvc:DispatcherServlet](https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/DispatcherServlet.java)
 
