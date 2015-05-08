@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${jcl.over.version}</version>
+			<version>${jcl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>jaxen</groupId>

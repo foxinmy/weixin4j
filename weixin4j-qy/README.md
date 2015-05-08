@@ -25,7 +25,7 @@ weixin4j-qy
 
 如何使用
 --------
-1.API工程可以单独打包到其他项目中使用,需新增或拷贝`weixin.properties`文件到项目的`classpath`中
+1.需新增或拷贝`weixin.properties`文件到项目的`classpath`中
 
 weixin.properties说明
 

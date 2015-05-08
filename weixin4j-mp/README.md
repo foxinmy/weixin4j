@@ -41,7 +41,7 @@ weixin4j-mp
 
 如何使用
 --------
-1.API工程可以单独打包到其他项目中使用,需新增或拷贝`weixin.properties`文件到项目的`classpath`中
+1.需新增或拷贝`weixin.properties`文件到项目的`classpath`中
 
 weixin.properties说明
 
@@ -74,7 +74,7 @@ weixin.properties说明
 	ca_file=/tmp/weixin/xxxxx.p12
 	#classpath路径下:ca_file=classpath:xxxxx.p12
 	
-	#微信登陆授权的重定向路径
+	#微信登陆授权的重定向路径(使用OauthApi时需要填写)
 	redirect_uri=http://xxx
 
 2.实例化一个`WeixinProxy`对象,调用API,需要强调的是如果只传入appid,appsecret两个参数将无法调用支付相关接口

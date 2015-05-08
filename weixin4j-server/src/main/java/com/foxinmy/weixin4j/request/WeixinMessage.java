@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * 被动消息
+ * 被动消息(待完善)
  * 
  * @className WeixinMessage
  * @author jy

@@ -4,6 +4,10 @@ weixin4j
 微信开发工具包
 -------------
 
+项目说明
+-------
+`weixin4j`是一个用java编写针对微信开发的工具包,包含`weixin4j-mp`(微信公众平台)、`weixin4j-qy`(微信企业号)和`weixin4j-netty`(微信被动消息服务器)三个工程
+
 功能列表
 -------
 * **weixin4j-mp**
@@ -19,14 +23,6 @@ weixin4j
 * **weixin4j-server**
   
   `netty服务器&消息分发`
-  
-项目说明
--------
-+ `weixin4j`包含「微信公众平台」和「微信企业号」的API封装.
-
-+ API的成功调用依赖于正确的appid等数据,填写格式说明见API工程下的README.md文件.
-
-+ netty服务正在重构中
 
 如何获取
 ----------
@@ -45,9 +41,13 @@ weixin4j
 	    <artifactId>weixin4j-qy</artifactId>
 	    <version>1.4</version>
 	</dependency>
-微信被动消息服务器
+微信被动消息服务器(本周内部署到中央库)
 
- `正在重构中..`
+	<dependency>
+	    <groupId>com.foxinmy</groupId>
+	    <artifactId>weixin4j-server</artifactId>
+	    <version>0.0.1</version>
+	</dependency>
 
 以上依赖如果出现Missing artifact错误 请尝试在eclipse里这么做
 
@@ -69,10 +69,6 @@ https://github.com/foxinmy/weixin4j/releases
   
 接下来
 ------
-* 被动消息服务重构
-
-![消息分发](http://7mj4zs.com1.z0.glb.clouddn.com/weixin4j.png)
-
 * 公众号第三方服务应用
 
 * 企业号第三方应用 & 企业号登陆授权

@@ -7,61 +7,123 @@ weixin4j-server
 功能列表
 -------
 
-* `netty构建服务器`
+* `netty服务器`
 
 * `消息分发`
 
+* `消息拦截`
+
 如何使用
---------
-1.正确填写`weixin.properties`中的属性值
+-------
+编写一个简单的服务启动类
 
-| 属性名       |       说明      |
-| :---------- | :-------------- |
-| account     | 微信公众号信息 `json格式`  |
-| token_path  | 使用FileTokenHolder时token保存的物理路径 |
-| qr_path     | 调用二维码接口时保存二维码图片的物理路径 |
-| media_path  | 调用媒体接口时保存媒体文件的物理路径 |
-| bill_path   | 调用下载对账单接口保存excel文件的物理路径 |
-| ca_file     | 调用某些接口(支付相关)强制需要auth的ca授权文件 |
-
-示例(properties中换行用右斜杆\\)
-
-	account={"id":"appId","secret":"appSecret",\\
-		"token":"开放者的token","openId":"公众号的openid 非必须",\\
-		"encodingAesKey":"公众号设置了加密方式且为「安全模式」时需要填入",\\
-		"mchId":"V3.x版本下的微信商户号",\\
-		"partnerId":"V2版本下的财付通的商户号","partnerKey":"V2版本下的财付通商户权限密钥Key",\\
-		"version":"针对微信支付的版本号(目前可能为2,3),如果不填则按照mchId非空与否来做判断",\\
-		"paySignKey":"微信支付中调用API的密钥"}
-	
-	token_path=/tmp/weixin/token
-	qr_path=/tmp/weixin/qr
-	media_path=/tmp/weixin/media
-	bill_path=/tmp/weixin/bill
-	ca_file=/tmp/weixin/xxxxx.p12 | xxxxx.pfx
-
-2.在对应的action中实现自己的具体业务 如 TextAction 则表示收到文本消息
-
-	@Override
-	public ResponseMessage execute(TextMessage inMessage) {
-		return new ResponseMessage(new Text("Hello World!"), inMessage);
+	public class MessageServerStartup{
+		public static void main(String[] args) {
+			new WeixinServerBootstrap("开发者token").pushMessageHandler(
+					DebugMessageHandler.global).startup();
+		}
 	}
-	
-3.`mvn package`,得到一个zip的压缩包,解压(也可使用deploy.xml部署到远程服务器)到`启动目录`
+以上代码就会启动一个适用于`明文模式`并总是调试输出微信请求信息的消息服务.
 
-4.启动netty服务(`com.foxinmy.weixin4j.mp.startup.WeixinMpServerBootstrap`)
+密文模式的服务启动类
+
+	public class MessageServerStartup{
+		public static void main(String[] args) {
+			new WeixinServerBootstrap("appid","开发者token","加密密钥").pushMessageHandler(
+					DebugMessageHandler.global).startup();
+		}
+	}
+
+只回复文本消息的服务启动类
+
+	public class MessageServerStartup{
+		public static void main(String[] args) {
+			// 需要一个文本消息的handler
+			WeixinMessageHandler messageHandler = new WeixinMessageHandler() {
+				@Override
+				public WeixinResponse doHandle(WeixinRequest request,
+						WeixinMessage message) throws WeixinException {
+					return new TextResponse("HelloWorld!");
+				}
+	
+				@Override
+				public boolean canHandle(WeixinRequest request,
+						WeixinMessage message) {
+					return message.getMsgType().equals("text");
+				}
+			};
+			// 当消息类型为文本(text)时回复「HelloWorld」, 否则回复调试消息
+			new WeixinServerBootstrap("appid","开发者token","加密密钥").pushMessageHandler(messageHandler,
+					DebugMessageHandler.global).startup();
+		}
+	}
+
+更多内容将会写在wiki里
+
+assembly打包(辅助)
+-----------------
+[assembly](http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html)是maven的一个打包插件,它可以创建一个包含脚本、配置文件以及所有运行时所依赖的元素(jar)Assembly插件能帮你构建一个完整的发布包.
+
+1.复制[assembly描述](./src/main/assembly.xml)和[启动脚本](./src/main/startup.sh)到自己工程的src/main目录下.
+
+2.在项目pom.xml中的/bulid/plugins节点新增如下配置
+
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-assembly-plugin</artifactId>
+		<version>2.5.1</version>
+		<configuration>
+			<descriptors>
+				<descriptor>src/main/assembly.xml</descriptor>
+			</descriptors>
+			<finalName>weixin-server</finalName>
+		</configuration>
+		<executions>
+			<execution>
+				<id>make-assembly</id>
+				<phase>package</phase>
+				<goals>
+					<goal>single</goal>
+				</goals>
+			</execution>
+		</executions>
+	</plugin>
+`descriptor`表示[assembly](./src/main/assembly.xml)文件的位置.
+
+`finalName`表示打包(zip)后的文件名,需配合启动脚本中`APP_HOME`的值使用.
+
+3.[启动脚本](./src/main/startup.sh)中`JAVA_HOME`为java运行环境(jre|jdk)的安装根目录,如果与脚本中的值不一致,可使用`ln -s t/usr/local/java 实际的目录`.
+
+4.[启动脚本](./src/main/startup.sh)中`APP_HOME`的值为服务的启动目录,相当于运行服务时的classpath目录.
+
+5.修改[启动脚本](./src/main/startup.sh)中`APP_MAINCLASS`的值为上述编写的netty服务启动类.
+
+6.执行`mvn package`命令后在target目录下得到一个zip的压缩包,在7或者8中选择一种方式启动服务.
+
+7.[上传zip包到服务器],解压包到启动目录(`APP_HOME`)的`上一级目录`后运行startup.sh脚本.
     
     sh startup.sh start
- 
- > 1.服务的启动脚本[startup.sh](./src/main/startup.sh)需要被注意到,有`JAVA_HOME`和`APP_HOME`两个参数.
- 
- > 2.其中`JAVA_HOME`参数值指的是java运行环境(jre|jdk)的安装根目录,如果与脚本中的值不一致,可以改更为实际的路径或者使用`ln -s t/usr/local/java target`软链接命令创建期望的链接.
- 
- > 3.其中`APP_HOME`参数值指的是本服务的启动目录,此目录需要被正确事先创建好,同时[`deploy.xml`](./deploy.xml)远程部署命令也依赖于此.
- 
- > 4.Ant远程部署[`deploy.xml`](./deploy.xml)的正确执行需要[`jsch`](http://www.jcraft.com/jsch/)包的支持,下载jar包将其引入执行Ant命令时的`classpath`中.
- 
- > 5.一般来说*Action事件处理类中应该有自己的实际业务类(`service`)需要被注入,可以使用org.springframework.context.ApplicationContext#getBeansWithAnnotation(ActionAnnotation.class)函数获取Action集合后再来实现[`AbstractActionMapping`](https://github.com/foxinmy/weixin4j/blob/master/weixin4j-base/src/main/java/com/foxinmy/weixin4j/action/mapping/AbstractActionMapping.java).
     
+8.ant远程部署
+
+ > 复制[`deploy.xml`](./deploy.xml)到自己工程的根目录下.
+ 
+ > Ant远程部署[`deploy.xml`](./deploy.xml)的正确执行需要[`jsch`](http://www.jcraft.com/jsch/)包的支持,下载jar包将其引入执行Ant命令时的`classpath`中.
+ 
+ > 正确填写`zip.name`、`host`、`pwd`、`main.dir`、`sub.dir`五个属性值.
+ 
+ > 右键 Run as -> Ant Build
+ 
 [更新LOG](./CHANGE.md)
 ----------------------
+
+相关参考
+-------
+
+![消息分发时序图](http://7mj4zs.com1.z0.glb.clouddn.com/weixin4j.png)
+
+[spring-webmvc:DispatcherServlet](https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/DispatcherServlet.java)
+
+[spring-webmvc:HandlerAdapter](https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/HandlerAdapter.java)
+
+[spring-webmvc:HandlerInterceptor](https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/HandlerInterceptor.java)

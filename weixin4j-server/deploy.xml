@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="mp-server" default="deploy" basedir=".">
+<project name="weixin-server" default="deploy" basedir=".">
 	<property name="app.home" value="." />
 	<property name="target.home" value="${app.home}/target" />
-	<property name="zip.name" value="weixin-mp-server-bin.zip" />
+	<property name="zip.name" value="assembly打包后的文件名,如weixin-server-bin.zip" />
 	<property name="host" value="服务器IP" />
 	<property name="pwd" value="服务器口令" />
 	<property name="main.dir" value="服务部署的主目录,如/usr/local/weixin" />
-	<property name="sub.dir" value="服务部署的子目录,如weixin-mp-server" />
+	<property name="sub.dir" value="服务部署的子目录,如weixin-server" />
 
 	<target name="removeZip">
 		<echo>
@@ -22,28 +22,28 @@
 		<scp file="${target.home}/${zip.name}" todir="root:${pwd}@${host}:${main.dir}" trust="true" />
 	</target>
 
-	<target name="shutdownService" depends="uploadZip">
+	<target name="shutdownServer" depends="uploadZip">
 		<echo>
 			${host}：停止[${sub.dir}]...
 		</echo>
 		<sshexec host="${host}" username="root" password="${pwd}" trust="true" command="cd ${main.dir}/${sub.dir};pwd;sh startup.sh stop;rm -rf ${main.dir}/${sub.dir};" />
 	</target>
 
-	<target name="unzipProject" depends="shutdownService">
+	<target name="unzipProject" depends="shutdownServer">
 		<echo>
 				${host}：解压${zip.name}...
 			</echo>
 		<sshexec host="${host}" username="root" password="${pwd}" trust="true" command="cd ${main.dir};pwd;unzip ${zip.name};" />
 	</target>
 
-	<target name="startupService" depends="unzipProject">
+	<target name="startupServer" depends="unzipProject">
 		<echo>
 			${host}：启动服务...
 		</echo>
 		<sshexec host="${host}" username="root" password="${pwd}" trust="true" command="cd ${main.dir}/${sub.dir};pwd;sh startup.sh start;" />
 	</target>
 
-	<target name="build" depends="startupService">
+	<target name="build" depends="startupServer">
 		<echo>
 			target.home = ${target.home}
 			file.zip = ${target.home}/${zip.name}

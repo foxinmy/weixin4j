@@ -9,7 +9,7 @@ RUNNING_USER=root
 APP_HOME="/usr/local/weixin/weixin-server"
  
 #main class
-APP_MAINCLASS=com.foxinmy.weixin4j.startup.WeixinServerBootstrap
+APP_MAINCLASS=netty服务启动类
  
 #classpath
 CLASSPATH=$APP_HOME/classes
