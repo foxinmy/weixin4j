@@ -1,8 +1,8 @@
 weixin4j-server
 ===============
 
-微信netty服务
-------------
+微信消息netty服务器
+------------------
 
 功能列表
 -------
@@ -114,9 +114,6 @@ assembly打包(辅助)
  
  > 右键 Run as -> Ant Build
  
-[更新LOG](./CHANGE.md)
-----------------------
-
 相关参考
 -------
 
@@ -127,3 +124,7 @@ assembly打包(辅助)
 [spring-webmvc:HandlerAdapter](https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/HandlerAdapter.java)
 
 [spring-webmvc:HandlerInterceptor](https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/HandlerInterceptor.java)
+
+
+[更新LOG](./CHANGE.md)
+----------------------
