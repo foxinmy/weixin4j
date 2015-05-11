@@ -6,7 +6,6 @@ weixin4j-server
 
 功能列表
 -------
-
 * `netty服务器`
 
 * `消息分发`
