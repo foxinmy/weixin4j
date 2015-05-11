@@ -31,7 +31,7 @@ public class AesToken implements Serializable {
 	public AesToken(String token) {
 		this.token = token;
 	}
-	
+
 	public AesToken(String appid, String token, String aesKey) {
 		this.appid = appid;
 		this.token = token;

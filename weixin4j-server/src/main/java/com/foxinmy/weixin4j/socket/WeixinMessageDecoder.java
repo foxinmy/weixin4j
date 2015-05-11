@@ -17,6 +17,7 @@ import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.MessageUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.EncryptMessageHandler;
 
 /**
@@ -70,10 +71,10 @@ public class WeixinMessageDecoder extends
 		String msgSignature = parameters.containsKey("msg_signature") ? parameters
 				.get("msg_signature").get(0) : "";
 		message.setMsgSignature(msgSignature);
-
 		if (!content.isEmpty()) {
 			if (message.getEncryptType() == EncryptType.AES) {
-				if (aesToken.getAesKey() == null || aesToken.getAppid() == null) {
+				if (StringUtil.isBlank(aesToken.getAesKey())
+						|| StringUtil.isBlank(aesToken.getAppid())) {
 					throw new WeixinException(
 							"AESEncodingKey or AppId not be null in AES mode");
 				}

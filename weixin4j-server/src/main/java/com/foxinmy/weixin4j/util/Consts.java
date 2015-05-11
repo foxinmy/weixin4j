@@ -1,6 +1,10 @@
 package com.foxinmy.weixin4j.util;
 
+import io.netty.util.AttributeKey;
+
 import java.nio.charset.Charset;
+
+import com.foxinmy.weixin4j.type.EncryptType;
 
 /**
  * 常量类
@@ -30,4 +34,11 @@ public final class Consts {
 	public static final String PROTOCOL_JAR = "jar";
 	public static final String CONTENTTYPE$APPLICATION_XML = "application/xml";
 	public static final String CONTENTTYPE$TEXT_PLAIN = "text/plain";
+
+	public static final AttributeKey<EncryptType> ENCRYPTTYPE_KEY = AttributeKey
+			.valueOf("ENCRYPTTYPE");
+	public static final AttributeKey<String> ACCOUNTOPENID_KEY = AttributeKey
+			.valueOf("ACCOUNTOPENID");
+	public static final AttributeKey<String> USEROPENID_KEY = AttributeKey
+			.valueOf("USEROPENID");
 }

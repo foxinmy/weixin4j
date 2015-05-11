@@ -66,8 +66,8 @@ public final class WeixinServerBootstrap {
 	/**
 	 * 明文模式
 	 * 
-	 * @param token
-	 *            开发者填写的token
+	 * * @param appid 公众号的唯一ID
+	 * 
 	 */
 	public WeixinServerBootstrap(String token) {
 		this(new AesToken(token));

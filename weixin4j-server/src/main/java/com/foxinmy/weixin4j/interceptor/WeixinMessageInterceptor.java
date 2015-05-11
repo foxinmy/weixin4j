@@ -30,7 +30,7 @@ public interface WeixinMessageInterceptor {
 	 *            微信消息
 	 * @param handler
 	 *            消息处理器
-	 * @return
+	 * @return 返回true执行下一个拦截器
 	 * @throws WeixinException
 	 */
 	boolean preHandle(ChannelHandlerContext ctx, WeixinRequest request,

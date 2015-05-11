@@ -1,8 +1,8 @@
 weixin4j-server
 ===============
 
-微信消息netty服务器
-------------------
+微信消息服务器
+-------------
 
 功能列表
 -------
@@ -11,7 +11,7 @@ weixin4j-server
 
 * `消息分发`
 
-* `消息拦截`(待测试)
+* `消息拦截`
 
 如何使用
 -------
@@ -56,6 +56,37 @@ weixin4j-server
 			new WeixinServerBootstrap("appid","开发者token","加密密钥").addHandler(messageHandler,
 					DebugMessageHandler.global).startup();
 		}
+	}
+编写一个拦截器
+
+	public static void main(String[] args) {
+		// 拦截所有请求
+		WeixinMessageInterceptor interceptor = new MessageInterceptorAdapter() {
+			@Override
+			public boolean preHandle(ChannelHandlerContext context,
+					WeixinRequest request, WeixinMessage message,
+					WeixinMessageHandler handler) throws WeixinException {
+				context.write(new TextResponse("所有消息被拦截了！"));
+				return false;
+			}
+
+			@Override
+			public void postHandle(ChannelHandlerContext context,
+					WeixinRequest request, WeixinResponse response,
+					WeixinMessage message, WeixinMessageHandler handler)
+					throws WeixinException {
+				System.err.println("preHandle返回为true,执行handler后");
+			}
+			@Override
+			public void afterCompletion(ChannelHandlerContext context,
+					WeixinRequest request, WeixinMessage message,
+					WeixinMessageHandler handler, WeixinException exception)
+					throws WeixinException {
+				System.err.println("请求处理完毕");
+			}
+		};
+		new WeixinServerBootstrap("token").addInterceptor(interceptor)
+				.addHandler(BlankMessageHandler.global).startup();
 	}
 
 更多内容将会写在wiki里
@@ -124,7 +155,6 @@ assembly打包(辅助)
 [spring-webmvc:HandlerAdapter](https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/HandlerAdapter.java)
 
 [spring-webmvc:HandlerInterceptor](https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/HandlerInterceptor.java)
-
 
 [更新LOG](./CHANGE.md)
 ----------------------

@@ -1,8 +1,13 @@
 package com.foxinmy.weixin4j.server.test;
 
+import io.netty.channel.ChannelHandlerContext;
+
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.handler.BlankMessageHandler;
 import com.foxinmy.weixin4j.handler.DebugMessageHandler;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
+import com.foxinmy.weixin4j.interceptor.MessageInterceptorAdapter;
+import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.TextResponse;
@@ -20,9 +25,9 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
  */
 public class MessageServerStarup {
 
-	final String appid = "appid";
-	final String token = "carsonliu13450438112";
-	final String aesKey = "aeskey";
+	final String appid = "公众号appid";
+	final String token = "开发者token";
+	final String aesKey = "aes加密密钥";
 
 	/**
 	 * 明文模式
@@ -78,7 +83,38 @@ public class MessageServerStarup {
 				.startup();
 	}
 
+	public void test5() throws WeixinException {
+		// 拦截所有请求
+		WeixinMessageInterceptor interceptor = new MessageInterceptorAdapter() {
+			@Override
+			public boolean preHandle(ChannelHandlerContext context,
+					WeixinRequest request, WeixinMessage message,
+					WeixinMessageHandler handler) throws WeixinException {
+				context.write(new TextResponse("所有消息被拦截了！"));
+				return false;
+			}
+
+			@Override
+			public void postHandle(ChannelHandlerContext context,
+					WeixinRequest request, WeixinResponse response,
+					WeixinMessage message, WeixinMessageHandler handler)
+					throws WeixinException {
+				System.err.println("preHandle返回为true,执行handler后");
+			}
+
+			@Override
+			public void afterCompletion(ChannelHandlerContext context,
+					WeixinRequest request, WeixinMessage message,
+					WeixinMessageHandler handler, WeixinException exception)
+					throws WeixinException {
+				System.err.println("请求处理完毕");
+			}
+		};
+		new WeixinServerBootstrap(token).addInterceptor(interceptor)
+				.addHandler(BlankMessageHandler.global).startup();
+	}
+
 	public static void main(String[] args) throws WeixinException {
-		new MessageServerStarup().test4();
+		new MessageServerStarup().test5();
 	}
 }

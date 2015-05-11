@@ -1,9 +1,8 @@
 package com.foxinmy.weixin4j.dispatcher;
 
+import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
@@ -17,13 +16,10 @@ import com.foxinmy.weixin4j.bean.BeanFactory;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
-import com.foxinmy.weixin4j.request.ResponseMessage;
 import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
-import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.ClassUtil;
-import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.ReflectionUtil;
 
@@ -71,46 +67,40 @@ public class WeixinMessageDispatcher {
 	public void doDispatch(final ChannelHandlerContext context,
 			final WeixinRequest request, final WeixinMessage message)
 			throws WeixinException {
-		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(request,
-				message);
+		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(context,
+				request, message);
 		if (handlerExecutor == null
 				|| handlerExecutor.getMessageHandler() == null) {
 			noHandlerFound(context, request, message);
 			return;
 		}
-		if (!handlerExecutor.applyPreHandle(context, request, message)) {
+		if (!handlerExecutor.applyPreHandle(request, message)) {
 			return;
 		}
 		WeixinException dispatchException = null;
 		try {
-			WeixinResponse _response = handlerExecutor.getMessageHandler()
+			WeixinResponse response = handlerExecutor.getMessageHandler()
 					.doHandle(request, message);
 			log.info(
 					"\n=================message response=================\n{}",
-					_response);
-			handlerExecutor.applyPostHandle(context, request, _response,
-					message);
-			ResponseMessage response = new ResponseMessage(message, _response);
-			if (request.getEncryptType() == EncryptType.RAW) {
-				context.write(HttpUtil.createWeixinMessageResponse(
-						response.toXml(), Consts.CONTENTTYPE$APPLICATION_XML));
-			} else {
-				context.write(response);
-			}
+					response);
+			handlerExecutor.applyPostHandle(request, response, message);
+			context.write(response);
 		} catch (WeixinException e) {
 			dispatchException = e;
 		}
-		handlerExecutor.triggerAfterCompletion(context, request, message,
+		handlerExecutor.triggerAfterCompletion(request, message,
 				dispatchException);
 	}
 
 	protected void noHandlerFound(ChannelHandlerContext ctx,
 			WeixinRequest request, WeixinMessage message) {
-		ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-				HttpResponseStatus.NOT_FOUND));
+		ctx.writeAndFlush(HttpUtil.createHttpResponse(null, NOT_FOUND, null))
+				.addListener(ChannelFutureListener.CLOSE);
 	}
 
-	protected MessageHandlerExecutor getHandlerExecutor(WeixinRequest request,
+	protected MessageHandlerExecutor getHandlerExecutor(
+			ChannelHandlerContext context, WeixinRequest request,
 			WeixinMessage message) throws WeixinException {
 		WeixinMessageHandler messageHandler = null;
 		WeixinMessageHandler[] messageHandlers = getMessageHandlers();
@@ -123,7 +113,8 @@ public class WeixinMessageDispatcher {
 				break;
 			}
 		}
-		return new MessageHandlerExecutor(messageHandler, messageInterceptors);
+		return new MessageHandlerExecutor(context, messageHandler,
+				getMessageInterceptors());
 	}
 
 	public WeixinMessageHandler[] getMessageHandlers() throws WeixinException {
@@ -173,7 +164,7 @@ public class WeixinMessageDispatcher {
 	public WeixinMessageInterceptor[] getMessageInterceptors()
 			throws WeixinException {
 		if (this.messageInterceptors == null) {
-			if (this.messageInterceptorList != null) {
+			if (this.messageInterceptorPackages != null) {
 				List<Class<?>> messageInterceptorClass = new LinkedList<Class<?>>();
 				for (String packageName : messageInterceptorPackages) {
 					messageInterceptorClass.addAll(ClassUtil

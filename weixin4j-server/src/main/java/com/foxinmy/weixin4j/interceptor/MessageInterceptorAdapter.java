@@ -12,20 +12,21 @@ public abstract class MessageInterceptorAdapter implements
 		WeixinMessageInterceptor {
 
 	@Override
-	public boolean preHandle(ChannelHandlerContext ctx, WeixinRequest request,
-			WeixinMessage message, WeixinMessageHandler handler)
-			throws WeixinException {
+	public boolean preHandle(ChannelHandlerContext context,
+			WeixinRequest request, WeixinMessage message,
+			WeixinMessageHandler handler) throws WeixinException {
 		return true;
 	}
 
 	@Override
-	public void postHandle(ChannelHandlerContext ctx, WeixinRequest request,
-			WeixinResponse response, WeixinMessage message,
-			WeixinMessageHandler handler) throws WeixinException {
+	public void postHandle(ChannelHandlerContext context,
+			WeixinRequest request, WeixinResponse response,
+			WeixinMessage message, WeixinMessageHandler handler)
+			throws WeixinException {
 	}
 
 	@Override
-	public void afterCompletion(ChannelHandlerContext ctx,
+	public void afterCompletion(ChannelHandlerContext context,
 			WeixinRequest request, WeixinMessage message,
 			WeixinMessageHandler handler, WeixinException exception)
 			throws WeixinException {

@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.socket;
 
+import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 
@@ -10,11 +11,14 @@ import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.bean.AesToken;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.request.ResponseMessage;
+import com.foxinmy.weixin4j.response.BlankResponse;
+import com.foxinmy.weixin4j.response.WeixinResponse;
+import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 微信消息编码类
@@ -27,8 +31,10 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  *      href="http://mp.weixin.qq.com/wiki/0/61c3a8b9d50ac74f18bdf2e54ddfc4e0.html">加密接入指引</a>
  */
 public class WeixinMessageEncoder extends
-		MessageToMessageEncoder<ResponseMessage> {
+		MessageToMessageEncoder<WeixinResponse> {
+
 	private final Logger log = LoggerFactory.getLogger(getClass());
+
 	private final AesToken aesToken;
 
 	public WeixinMessageEncoder(AesToken aesToken) {
@@ -36,34 +42,58 @@ public class WeixinMessageEncoder extends
 	}
 
 	@Override
-	protected void encode(ChannelHandlerContext ctx, ResponseMessage response,
+	protected void encode(ChannelHandlerContext ctx, WeixinResponse response,
 			List<Object> out) throws WeixinException {
-		if (aesToken.getAesKey() == null || aesToken.getAppid() == null) {
-			throw new WeixinException(
-					"AESEncodingKey or AppId not be null in AES mode");
+		EncryptType encryptType = ctx.channel().attr(Consts.ENCRYPTTYPE_KEY)
+				.get();
+		String userOpenId = ctx.channel().attr(Consts.USEROPENID_KEY).get();
+		String accountOpenId = ctx.channel().attr(Consts.ACCOUNTOPENID_KEY)
+				.get();
+		if (StringUtil.isBlank(accountOpenId)) {
+			accountOpenId = aesToken.getAppid();
 		}
-		String nonce = RandomUtil.generateString(32);
-		String timestamp = String.valueOf(System.currentTimeMillis() / 1000l);
-		String encrtypt = MessageUtil.aesEncrypt(aesToken.getAppid(),
-				aesToken.getAesKey(), response.toXml());
-		String msgSignature = MessageUtil.signature(aesToken.getToken(), nonce,
-				timestamp, encrtypt);
-
 		StringBuilder content = new StringBuilder();
-		content.append("<xml>");
-		content.append(String.format("<Nonce><![CDATA[%s]]></Nonce>", nonce));
-		content.append(String.format("<TimeStamp><![CDATA[%s]]></TimeStamp>",
-				timestamp));
-		content.append(String.format(
-				"<MsgSignature><![CDATA[%s]]></MsgSignature>", msgSignature));
-		content.append(String.format("<Encrypt><![CDATA[%s]]></Encrypt>",
-				encrtypt));
-		content.append("</xml>");
-
-		out.add(HttpUtil.createWeixinMessageResponse(content.toString(),
+		if (response instanceof BlankResponse) {
+			content.append(response.toContent());
+		} else {
+			content.append("<xml>");
+			content.append(String.format(
+					"<ToUserName><![CDATA[%s]]></ToUserName>", userOpenId));
+			content.append(String.format(
+					"<FromUserName><![CDATA[%s]]></FromUserName>",
+					accountOpenId));
+			content.append(String.format(
+					"<CreateTime><![CDATA[%d]]></CreateTime>",
+					System.currentTimeMillis() / 1000l));
+			content.append(String.format("<MsgType><![CDATA[%s]]></MsgType>",
+					response.getMsgType()));
+			content.append(response.toContent());
+			content.append("</xml>");
+			if (encryptType == EncryptType.AES) {
+				String nonce = RandomUtil.generateString(32);
+				String timestamp = String
+						.valueOf(System.currentTimeMillis() / 1000l);
+				String encrtypt = MessageUtil.aesEncrypt(accountOpenId,
+						aesToken.getAesKey(), content.toString());
+				String msgSignature = MessageUtil.signature(
+						aesToken.getToken(), nonce, timestamp, encrtypt);
+				content.delete(0, content.length() - 1);
+				content.append("<xml>");
+				content.append(String.format("<Nonce><![CDATA[%s]]></Nonce>",
+						nonce));
+				content.append(String.format(
+						"<TimeStamp><![CDATA[%s]]></TimeStamp>", timestamp));
+				content.append(String.format(
+						"<MsgSignature><![CDATA[%s]]></MsgSignature>",
+						msgSignature));
+				content.append(String.format(
+						"<Encrypt><![CDATA[%s]]></Encrypt>", encrtypt));
+				content.append("</xml>");
+			}
+		}
+		ctx.writeAndFlush(HttpUtil.createHttpResponse(content.toString(), OK,
 				Consts.CONTENTTYPE$APPLICATION_XML));
-
-		log.info("\n=================aes encrtypt out=================");
+		log.info("\n=================response message=================");
 		log.info("{}", content);
 	}
 }

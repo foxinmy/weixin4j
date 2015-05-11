@@ -12,6 +12,7 @@ import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders.Values;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.Date;
 
@@ -26,10 +27,19 @@ import java.util.Date;
  */
 public class HttpUtil {
 
-	public static HttpResponse createWeixinMessageResponse(String content,
-			String contentType) {
+	public static HttpResponse createHttpResponse(String content,
+			HttpResponseStatus status, String contentType) {
+		if (content == null) {
+			content = "";
+		}
+		if (StringUtil.isBlank(contentType)) {
+			contentType = Consts.CONTENTTYPE$TEXT_PLAIN;
+		}
+		if (status == null) {
+			status = OK;
+		}
 		FullHttpResponse httpResponse = new DefaultFullHttpResponse(HTTP_1_1,
-				OK, Unpooled.copiedBuffer(content, Consts.UTF_8));
+				status, Unpooled.copiedBuffer(content, Consts.UTF_8));
 		httpResponse.headers().set(
 				CONTENT_TYPE,
 				String.format("%s;encoding=%s", contentType,

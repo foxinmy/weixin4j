@@ -1,11 +1,12 @@
 package com.foxinmy.weixin4j.socket;
 
+import static io.netty.handler.codec.http.HttpResponseStatus.FORBIDDEN;
+import static io.netty.handler.codec.http.HttpResponseStatus.METHOD_NOT_ALLOWED;
+import static io.netty.handler.codec.http.HttpResponseStatus.OK;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
 
 import java.io.ByteArrayInputStream;
 
@@ -26,6 +27,7 @@ import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 微信被动消息处理类
@@ -74,19 +76,23 @@ public class WeixinMessageHandler extends
 			if (MessageUtil.signature(aesToken.getToken(),
 					request.getTimeStamp(), request.getNonce()).equals(
 					request.getSignature())) {
-				ctx.write(HttpUtil.createWeixinMessageResponse(
-						request.getEchoStr(), Consts.CONTENTTYPE$TEXT_PLAIN));
+				ctx.writeAndFlush(
+						HttpUtil.createHttpResponse(request.getEchoStr(), OK,
+								Consts.CONTENTTYPE$TEXT_PLAIN)).addListener(
+						ChannelFutureListener.CLOSE);
 				return;
 			}
-			ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-					HttpResponseStatus.FORBIDDEN));
+			ctx.writeAndFlush(
+					HttpUtil.createHttpResponse(null, FORBIDDEN, null))
+					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		} else if (request.getMethod().equals(HttpMethod.POST.name())) {
 			if (!MessageUtil.signature(aesToken.getToken(),
 					request.getTimeStamp(), request.getNonce()).equals(
 					request.getSignature())) {
-				ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-						HttpResponseStatus.FORBIDDEN));
+				ctx.writeAndFlush(
+						HttpUtil.createHttpResponse(null, FORBIDDEN, null))
+						.addListener(ChannelFutureListener.CLOSE);
 				return;
 			}
 			if (request.getEncryptType() == EncryptType.AES) {
@@ -94,14 +100,16 @@ public class WeixinMessageHandler extends
 						request.getTimeStamp(), request.getNonce(),
 						request.getEncryptContent()).equals(
 						request.getMsgSignature())) {
-					ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-							HttpResponseStatus.FORBIDDEN));
+					ctx.writeAndFlush(
+							HttpUtil.createHttpResponse(null, FORBIDDEN, null))
+							.addListener(ChannelFutureListener.CLOSE);
 					return;
 				}
 			}
 		} else {
-			ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-					HttpResponseStatus.METHOD_NOT_ALLOWED));
+			ctx.writeAndFlush(
+					HttpUtil.createHttpResponse(null, METHOD_NOT_ALLOWED, null))
+					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		}
 		WeixinMessage weixinMessage = null;
@@ -112,6 +120,14 @@ public class WeixinMessageHandler extends
 							.getOriginalContent().getBytes(Consts.UTF_8)));
 		} catch (JAXBException e) {
 			throw new WeixinException(e);
+		}
+		ctx.channel().attr(Consts.ENCRYPTTYPE_KEY)
+				.set(request.getEncryptType());
+		ctx.channel().attr(Consts.USEROPENID_KEY)
+				.set(weixinMessage.getFromUserName());
+		if (StringUtil.isBlank(aesToken.getAppid())) {
+			ctx.channel().attr(Consts.ACCOUNTOPENID_KEY)
+					.set(weixinMessage.getToUserName());
 		}
 		final WeixinRequest cloneRequest = (WeixinRequest) ClassUtil
 				.deepClone(request);

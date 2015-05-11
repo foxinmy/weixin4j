@@ -34,10 +34,13 @@ public class MessageHandlerExecutor {
 	 */
 	private final WeixinMessageInterceptor[] messageInterceptors;
 
+	private final ChannelHandlerContext context;
 	private int interceptorIndex = -1;
 
-	public MessageHandlerExecutor(WeixinMessageHandler messageHandler,
+	public MessageHandlerExecutor(ChannelHandlerContext context,
+			WeixinMessageHandler messageHandler,
 			WeixinMessageInterceptor[] messageInterceptors) {
+		this.context = context;
 		this.messageHandler = messageHandler;
 		this.messageInterceptors = messageInterceptors;
 	}
@@ -46,15 +49,14 @@ public class MessageHandlerExecutor {
 		return messageHandler;
 	}
 
-	public boolean applyPreHandle(ChannelHandlerContext ctx,
-			WeixinRequest request, WeixinMessage message)
+	public boolean applyPreHandle(WeixinRequest request, WeixinMessage message)
 			throws WeixinException {
 		if (messageInterceptors != null) {
 			for (int i = 0; i < messageInterceptors.length; i++) {
 				WeixinMessageInterceptor interceptor = messageInterceptors[i];
-				if (!interceptor.preHandle(ctx, request, message,
+				if (!interceptor.preHandle(context, request, message,
 						messageHandler)) {
-					triggerAfterCompletion(ctx, request, message, null);
+					triggerAfterCompletion(request, message, null);
 					return false;
 				}
 				this.interceptorIndex = i;
@@ -63,29 +65,27 @@ public class MessageHandlerExecutor {
 		return true;
 	}
 
-	public void applyPostHandle(ChannelHandlerContext ctx,
-			WeixinRequest request, WeixinResponse response,
+	public void applyPostHandle(WeixinRequest request, WeixinResponse response,
 			WeixinMessage message) throws WeixinException {
 		if (messageInterceptors == null) {
 			return;
 		}
 		for (int i = messageInterceptors.length - 1; i >= 0; i--) {
 			WeixinMessageInterceptor interceptor = messageInterceptors[i];
-			interceptor.postHandle(ctx, request, response, message,
+			interceptor.postHandle(context, request, response, message,
 					messageHandler);
 		}
 	}
 
-	public void triggerAfterCompletion(ChannelHandlerContext ctx,
-			WeixinRequest request, WeixinMessage message, WeixinException ex)
-			throws WeixinException {
+	public void triggerAfterCompletion(WeixinRequest request,
+			WeixinMessage message, WeixinException ex) throws WeixinException {
 		if (messageInterceptors == null) {
 			return;
 		}
 		for (int i = this.interceptorIndex; i >= 0; i--) {
 			WeixinMessageInterceptor interceptor = messageInterceptors[i];
 			try {
-				interceptor.afterCompletion(ctx, request, message,
+				interceptor.afterCompletion(context, request, message,
 						messageHandler, ex);
 			} catch (WeixinException e) {
 				logger.error(
