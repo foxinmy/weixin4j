@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.collections.MapConverter;
@@ -50,7 +49,7 @@ public class Map2ObjectConverter extends MapConverter {
 				continue;
 			}
 			String value = entry.getValue().toString();
-			if (StringUtils.isBlank(value)) {
+			if (StringUtil.isBlank(value)) {
 				continue;
 			}
 			ExtendedHierarchicalStreamWriterHelper.startNode(writer, entry

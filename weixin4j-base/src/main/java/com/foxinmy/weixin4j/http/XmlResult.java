@@ -2,9 +2,8 @@ package com.foxinmy.weixin4j.http;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -53,7 +52,7 @@ public class XmlResult implements Serializable {
 	}
 
 	public String getReturnMsg() {
-		return StringUtils.isNotBlank(returnMsg) ? returnMsg : null;
+		return StringUtil.isNotBlank(returnMsg) ? returnMsg : null;
 	}
 
 	public void setReturnMsg(String returnMsg) {
@@ -77,7 +76,7 @@ public class XmlResult implements Serializable {
 	}
 
 	public String getErrCodeDes() {
-		return StringUtils.isNotBlank(errCodeDes) ? errCodeDes : null;
+		return StringUtil.isNotBlank(errCodeDes) ? errCodeDes : null;
 	}
 
 	public void setErrCodeDes(String errCodeDes) {

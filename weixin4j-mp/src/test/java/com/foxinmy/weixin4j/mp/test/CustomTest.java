@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.test.msg;
+package com.foxinmy.weixin4j.mp.test;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,6 @@ import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
-import com.foxinmy.weixin4j.mp.test.TokenTest;
 
 /**
  * 客服消息测试

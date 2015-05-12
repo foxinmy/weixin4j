@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.token;
 
-import org.apache.commons.lang3.StringUtils;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -9,6 +7,7 @@ import redis.clients.jedis.exceptions.JedisException;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 用REDIS保存TOKEN
@@ -64,7 +63,7 @@ public class RedisTokenHolder implements TokenHolder {
 			jedis = jedisPool.getResource();
 			String cacheKey = tokenCreator.getCacheKey();
 			String accessToken = jedis.get(cacheKey);
-			if (StringUtils.isBlank(accessToken)) {
+			if (StringUtil.isBlank(accessToken)) {
 				token = tokenCreator.createToken();
 				jedis.setex(cacheKey, (int) token.getExpiresIn(),
 						token.getAccessToken());

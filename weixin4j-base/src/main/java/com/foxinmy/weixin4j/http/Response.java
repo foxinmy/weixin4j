@@ -1,13 +1,6 @@
 package com.foxinmy.weixin4j.http;
 
-import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.commons.lang3.StringUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Node;
-import org.dom4j.io.SAXReader;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -65,65 +58,6 @@ public class Response {
 
 	public XmlResult getAsXmlResult() {
 		return XmlStream.get(text, XmlResult.class);
-	}
-
-	/**
-	 * <a href=
-	 * "http://mp.weixin.qq.com/wiki/17/fa4e1434e57290788bde25603fa2fcbd.html"
-	 * >全局返回码</a> {"errcode":45009,"errmsg":"api freq out of limit"}
-	 * 
-	 * @return
-	 * @throws DocumentException
-	 */
-	public JsonResult getTextError(int code) {
-		JsonResult result = new JsonResult();
-		result.setCode(code);
-		SAXReader reader = new SAXReader();
-		Document doc = null;
-		InputStream is = null;
-		try {
-			is = Response.class.getResourceAsStream("error.xml");
-			doc = reader.read(is);
-			Node node = doc.getRootElement().selectSingleNode(
-					String.format("error/code[text()=%d]", code));
-			if (node != null) {
-				node = node.getParent();
-				String desc = null;
-				Node _node = node.selectSingleNode("desc");
-				if (_node != null) {
-					desc = _node.getStringValue();
-				}
-				String text = null;
-				_node = node.selectSingleNode("text");
-				if (_node != null) {
-					text = _node.getStringValue();
-				}
-				if (StringUtils.isBlank(desc) && StringUtils.isNotBlank(text)) {
-					desc = text;
-				}
-				if (StringUtils.isBlank(text) && StringUtils.isNotBlank(desc)) {
-					text = desc;
-				}
-				result.setDesc(desc);
-				result.setText(text);
-			} else {
-				result.setDesc("unknown error");
-				result.setText("未知错误");
-			}
-		} catch (DocumentException e) {
-			result.setDesc("unknown error");
-			result.setText("未知错误");
-			e.printStackTrace();
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					;
-				}
-			}
-		}
-		return result;
 	}
 
 	public void setText(String text) {

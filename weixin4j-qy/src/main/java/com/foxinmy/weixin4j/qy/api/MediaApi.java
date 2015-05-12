@@ -10,7 +10,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 
 import com.alibaba.fastjson.JSON;
@@ -30,6 +29,7 @@ import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 媒体相关API
@@ -62,7 +62,7 @@ public class MediaApi extends QyApi {
 	 */
 	public String uploadMedia(File file) throws WeixinException, IOException {
 		String mediaTypeKey = IOUtil.getExtension(file.getName());
-		if (StringUtils.isBlank(mediaTypeKey)) {
+		if (StringUtil.isBlank(mediaTypeKey)) {
 			mediaTypeKey = FileUtil.getFileType(file);
 		}
 		MediaType mediaType = MediaType.getMediaType(mediaTypeKey);
@@ -237,7 +237,7 @@ public class MediaApi extends QyApi {
 					return true;
 				}
 			});
-			writer.write(StringUtils.join(column.values(), ","));
+			writer.write(StringUtil.join(column.values(), ','));
 			writer.write("\r\n");
 		}
 		String mediaId = uploadMedia(batchName,

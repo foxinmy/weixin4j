@@ -3,8 +3,6 @@ package com.foxinmy.weixin4j.mp.api;
 import java.io.File;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -17,6 +15,7 @@ import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpNews;
 import com.foxinmy.weixin4j.tuple.Tuple;
 import com.foxinmy.weixin4j.tuple.Video;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 群发相关API
@@ -132,7 +131,7 @@ public class MassApi extends MpApi {
 		if (tuple instanceof MpNews) {
 			MpNews _news = (MpNews) tuple;
 			List<MpArticle> _articles = _news.getArticles();
-			if (StringUtils.isBlank(_news.getMediaId())
+			if (StringUtil.isBlank(_news.getMediaId())
 					&& (_articles == null || _articles.isEmpty())) {
 				throw new WeixinException(
 						"mass fail:mediaId or articles is required");
@@ -203,7 +202,7 @@ public class MassApi extends MpApi {
 		if (tuple instanceof MpNews) {
 			MpNews _news = (MpNews) tuple;
 			List<MpArticle> _articles = _news.getArticles();
-			if (StringUtils.isBlank(_news.getMediaId())
+			if (StringUtil.isBlank(_news.getMediaId())
 					&& (_articles == null || _articles.isEmpty())) {
 				throw new WeixinException(
 						"mass fail:mediaId or articles is required");

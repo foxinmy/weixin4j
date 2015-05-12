@@ -3,12 +3,11 @@ package com.foxinmy.weixin4j.mp.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.Gender;
 import com.foxinmy.weixin4j.mp.type.FaceSize;
 import com.foxinmy.weixin4j.mp.type.Lang;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 用户对象
@@ -135,7 +134,7 @@ public class User implements Serializable {
 	}
 
 	public String getHeadimgurl(FaceSize size) {
-		if (StringUtils.isNotBlank(headimgurl)) {
+		if (StringUtil.isNotBlank(headimgurl)) {
 			StringBuilder sb = new StringBuilder(headimgurl);
 			return sb.replace(0, (headimgurl.length() - 1), size.getInt() + "")
 					.toString();

@@ -2,14 +2,13 @@ package com.foxinmy.weixin4j.mp.payment.coupon;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
 import com.foxinmy.weixin4j.mp.type.CouponStatus;
 import com.foxinmy.weixin4j.mp.type.CouponStockType;
 import com.foxinmy.weixin4j.mp.type.CouponType;
 import com.foxinmy.weixin4j.util.DateUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -315,7 +314,7 @@ public class CouponDetail extends ApiResult {
 
 	@JSONField(deserialize = false, serialize = false)
 	public Date getFormatUseTime() {
-		return StringUtils.isNotBlank(useTime) ? DateUtil
+		return StringUtil.isNotBlank(useTime) ? DateUtil
 				.parse2yyyyMMddHHmmss(useTime) : null;
 	}
 

@@ -24,8 +24,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -52,7 +50,9 @@ import com.foxinmy.weixin4j.mp.util.ExcelUtil;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
+import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * V2支付API
@@ -91,7 +91,7 @@ public class Pay2Api extends PayApi {
 		sb.append("&partner=").append(weixinAccount.getPartnerId());
 		String part = sb.toString();
 		sb.append("&key=").append(weixinAccount.getPartnerKey());
-		String sign = DigestUtils.md5Hex(sb.toString()).toUpperCase();
+		String sign = DigestUtil.MD5(sb.toString()).toUpperCase();
 		sb.delete(0, sb.length());
 		sb.append(part).append("&sign=").append(sign);
 
@@ -172,7 +172,7 @@ public class Pay2Api extends PayApi {
 			map.put("total_fee", DateUtil.formaFee2Fen(totalFee));
 			map.put("refund_fee", DateUtil.formaFee2Fen(refundFee));
 			map.put(idQuery.getType().getName(), idQuery.getId());
-			if (StringUtils.isBlank(opUserId)) {
+			if (StringUtil.isBlank(opUserId)) {
 				opUserId = weixinAccount.getPartnerId();
 			}
 			map.put("op_user_id", opUserId);
@@ -261,7 +261,7 @@ public class Pay2Api extends PayApi {
 			String outRefundNo, double totalFee, double refundFee,
 			String opUserId, String opUserPasswd) throws WeixinException {
 		Map<String, String> mopara = new HashMap<String, String>();
-		mopara.put("op_user_passwd", DigestUtils.md5Hex(opUserPasswd));
+		mopara.put("op_user_passwd", DigestUtil.MD5(opUserPasswd));
 		return refund(caFile, idQuery, outRefundNo, totalFee, refundFee,
 				opUserId, mopara);
 	}
@@ -301,11 +301,11 @@ public class Pay2Api extends PayApi {
 			String opUserId, String opUserPasswd, String recvUserId,
 			String reccvUserName, RefundType refundType) throws WeixinException {
 		Map<String, String> mopara = new HashMap<String, String>();
-		mopara.put("op_user_passwd", DigestUtils.md5Hex(opUserPasswd));
-		if (StringUtils.isNotBlank(recvUserId)) {
+		mopara.put("op_user_passwd", DigestUtil.MD5(opUserPasswd));
+		if (StringUtil.isNotBlank(recvUserId)) {
 			mopara.put("recv_user_id", recvUserId);
 		}
-		if (StringUtils.isNotBlank(reccvUserName)) {
+		if (StringUtil.isNotBlank(reccvUserName)) {
 			mopara.put("reccv_user_name", reccvUserName);
 		}
 		if (refundType != null) {
@@ -389,7 +389,7 @@ public class Pay2Api extends PayApi {
 		map.put("cft_signtype", "0");
 		map.put("mchtype", Integer.toString(billType.getVal()));
 		map.put("key", weixinAccount.getPartnerKey());
-		String sign = DigestUtils.md5Hex(MapUtil
+		String sign = DigestUtil.MD5(MapUtil
 				.toJoinString(map, false, false));
 		map.put("sign", sign.toLowerCase());
 		Response response = request.get(downloadbill_uri, map);

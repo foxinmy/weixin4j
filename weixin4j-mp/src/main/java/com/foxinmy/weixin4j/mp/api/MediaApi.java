@@ -9,7 +9,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
 
@@ -32,6 +31,7 @@ import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 素材相关API
@@ -65,7 +65,7 @@ public class MediaApi extends MpApi {
 	public String uploadMedia(File file, boolean isMaterial)
 			throws WeixinException, IOException {
 		String mediaTypeKey = IOUtil.getExtension(file.getName());
-		if (StringUtils.isBlank(mediaTypeKey)) {
+		if (StringUtil.isBlank(mediaTypeKey)) {
 			mediaTypeKey = FileUtil.getFileType(file);
 		}
 		MediaType mediaType = MediaType.getMediaType(mediaTypeKey);

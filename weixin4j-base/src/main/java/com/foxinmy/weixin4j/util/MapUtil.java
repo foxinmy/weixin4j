@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
 
 import com.alibaba.fastjson.JSON;
@@ -65,7 +64,7 @@ public class MapUtil {
 		try {
 			if (encoder && lowerCase) {
 				for (Map.Entry<String, String> entry : set) {
-					if (StringUtils.isBlank(entry.getValue())) {
+					if (StringUtil.isBlank(entry.getValue())) {
 						continue;
 					}
 					sb.append(entry.getKey().toLowerCase())
@@ -75,7 +74,7 @@ public class MapUtil {
 				}
 			} else if (encoder) {
 				for (Map.Entry<String, String> entry : set) {
-					if (StringUtils.isBlank(entry.getValue())) {
+					if (StringUtil.isBlank(entry.getValue())) {
 						continue;
 					}
 					sb.append(entry.getKey())
@@ -85,7 +84,7 @@ public class MapUtil {
 				}
 			} else if (lowerCase) {
 				for (Map.Entry<String, String> entry : set) {
-					if (StringUtils.isBlank(entry.getValue())) {
+					if (StringUtil.isBlank(entry.getValue())) {
 						continue;
 					}
 					sb.append(entry.getKey().toLowerCase()).append("=")
@@ -93,7 +92,7 @@ public class MapUtil {
 				}
 			} else {
 				for (Map.Entry<String, String> entry : set) {
-					if (StringUtils.isBlank(entry.getValue())) {
+					if (StringUtil.isBlank(entry.getValue())) {
 						continue;
 					}
 					sb.append(entry.getKey()).append("=")

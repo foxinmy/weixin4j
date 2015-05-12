@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 
 import com.alibaba.fastjson.JSON;
@@ -21,6 +20,7 @@ import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
 
 /**
@@ -136,7 +136,7 @@ public class CustomApi extends MpApi {
 		JSONObject obj = new JSONObject();
 		obj.put("kf_account", id);
 		obj.put("nickname", name);
-		obj.put("password", DigestUtils.md5Hex(pwd));
+		obj.put("password", DigestUtil.MD5(pwd));
 		String custom_add_uri = getRequestUri("custom_add_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(
@@ -167,7 +167,7 @@ public class CustomApi extends MpApi {
 		JSONObject obj = new JSONObject();
 		obj.put("kf_account", id);
 		obj.put("nickname", name);
-		obj.put("password", DigestUtils.md5Hex(pwd));
+		obj.put("password", DigestUtil.MD5(pwd));
 		String custom_update_uri = getRequestUri("custom_update_uri");
 		Token token = tokenHolder.getToken();
 		Response response = request.post(

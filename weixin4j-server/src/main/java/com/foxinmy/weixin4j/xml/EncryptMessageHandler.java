@@ -16,32 +16,28 @@ public class EncryptMessageHandler extends DefaultHandler {
 
 	private String encryptContent;
 
-	private String currentQName;
-
 	@Override
 	public void startDocument() throws SAXException {
 		encryptContent = null;
-		currentQName = null;
 	}
 
 	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		this.currentQName = qName;
+		if (qName.equalsIgnoreCase("encrypt")) {
+			return;
+		}
 	}
 
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
-		this.currentQName = null;
 	}
 
 	@Override
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
-		if (currentQName.equalsIgnoreCase("encrypt")) {
 			this.encryptContent = new String(ch, start, length);
-		}
 	}
 
 	public String getEncryptContent() {

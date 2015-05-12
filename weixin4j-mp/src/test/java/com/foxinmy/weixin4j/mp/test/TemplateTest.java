@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.test.msg;
+package com.foxinmy.weixin4j.mp.test;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,10 +8,9 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
 import com.foxinmy.weixin4j.mp.message.TemplateMessage;
-import com.foxinmy.weixin4j.mp.test.TokenTest;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 
-public class TemplateMsgTest extends TokenTest {
+public class TemplateTest extends TokenTest {
 	private TmplApi tmplApi;
 
 	@Before

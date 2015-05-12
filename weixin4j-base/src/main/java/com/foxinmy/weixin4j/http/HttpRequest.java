@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -36,7 +35,9 @@ import org.apache.http.util.EntityUtils;
 
 import com.alibaba.fastjson.JSONException;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.util.ErrorUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.thoughtworks.xstream.mapper.CannotResolveClassException;
 
 /**
@@ -237,8 +238,9 @@ public class HttpRequest {
 		JsonResult jsonResult = response.getAsJsonResult();
 		response.setJsonResult(true);
 		if (jsonResult.getCode() != 0) {
-			if (StringUtils.isBlank(jsonResult.getDesc())) {
-				jsonResult = response.getTextError(jsonResult.getCode());
+			if (StringUtil.isBlank(jsonResult.getDesc())) {
+				jsonResult.setDesc(ErrorUtil.getText(Integer
+						.toString(jsonResult.getCode())));
 			}
 			throw new WeixinException(Integer.toString(jsonResult.getCode()),
 					jsonResult.getDesc());

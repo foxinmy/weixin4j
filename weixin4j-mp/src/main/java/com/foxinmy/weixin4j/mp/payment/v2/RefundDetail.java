@@ -1,10 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.RefundChannel;
 import com.foxinmy.weixin4j.mp.type.RefundStatus;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -123,11 +122,11 @@ public class RefundDetail extends ApiResult {
 	}
 
 	public String getRecvUserId() {
-		return StringUtils.isNotBlank(recvUserId) ? recvUserId : null;
+		return StringUtil.isNotBlank(recvUserId) ? recvUserId : null;
 	}
 
 	public String getReccvUserName() {
-		return StringUtils.isNotBlank(reccvUserName) ? reccvUserName : null;
+		return StringUtil.isNotBlank(reccvUserName) ? reccvUserName : null;
 	}
 
 	@Override

@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.Response;
@@ -19,6 +17,7 @@ import com.foxinmy.weixin4j.mp.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponStock;
 import com.foxinmy.weixin4j.util.RandomUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 代金券API
@@ -66,7 +65,7 @@ public class CouponApi extends MpApi {
 		// openid记录数（目前支持num=1）
 		map.put("openid_count", "1");
 		// 操作员帐号, 默认为商户号 可在商户平台配置操作员对应的api权限
-		if (StringUtils.isBlank(opUserId)) {
+		if (StringUtil.isBlank(opUserId)) {
 			opUserId = weixinAccount.getMchId();
 		}
 		map.put("op_user_id", opUserId);
@@ -158,10 +157,10 @@ public class CouponApi extends MpApi {
 		map.put("appid", weixinAccount.getId());
 		map.put("mch_id", weixinAccount.getMchId());
 		map.put("nonce_str", RandomUtil.generateString(16));
-		if (StringUtils.isNotBlank(weixinAccount.getDeviceInfo())) {
+		if (StringUtil.isNotBlank(weixinAccount.getDeviceInfo())) {
 			map.put("device_info", weixinAccount.getDeviceInfo());
 		}
-		if (StringUtils.isNotBlank(weixinAccount.getSubMchId())) {
+		if (StringUtil.isNotBlank(weixinAccount.getSubMchId())) {
 			map.put("sub_mch_id", weixinAccount.getSubMchId());
 		}
 		return map;

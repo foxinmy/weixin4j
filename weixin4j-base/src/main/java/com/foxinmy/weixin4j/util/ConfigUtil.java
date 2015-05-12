@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 
 /**
- * 商户配置工具类
+ * 公众号配置
  * 
  * @className ConfigUtil
  * @author jy

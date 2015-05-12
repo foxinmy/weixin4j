@@ -18,7 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -45,6 +44,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * V3(商户平台版)支付API
@@ -134,7 +134,7 @@ public class Pay3Api extends PayApi {
 			map.put("out_refund_no", outRefundNo);
 			map.put("total_fee", DateUtil.formaFee2Fen(totalFee));
 			map.put("refund_fee", DateUtil.formaFee2Fen(refundFee));
-			if (StringUtils.isBlank(opUserId)) {
+			if (StringUtil.isBlank(opUserId)) {
 				opUserId = weixinAccount.getMchId();
 			}
 			map.put("op_user_id", opUserId);
@@ -459,7 +459,7 @@ public class Pay3Api extends PayApi {
 		map.put("appid", weixinAccount.getId());
 		map.put("mch_id", weixinAccount.getMchId());
 		map.put("nonce_str", RandomUtil.generateString(16));
-		if (StringUtils.isNotBlank(weixinAccount.getDeviceInfo())) {
+		if (StringUtil.isNotBlank(weixinAccount.getDeviceInfo())) {
 			map.put("device_info", weixinAccount.getDeviceInfo());
 		}
 		if (idQuery != null) {

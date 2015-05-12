@@ -16,7 +16,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-					<finalName>weixin4j-mp-${project.version}</finalName>
+					<finalName>${project.name}-${project.version}</finalName>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -41,11 +41,6 @@
 					<artifactId>dom4j</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>${jsoup.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

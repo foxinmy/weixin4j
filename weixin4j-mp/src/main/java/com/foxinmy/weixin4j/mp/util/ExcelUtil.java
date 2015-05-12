@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -32,6 +31,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * excel工具类
@@ -55,7 +55,7 @@ public class ExcelUtil {
 	 */
 	public static String[][] read(File file) throws Exception {
 		String fileExt = getExtension(file.getName());
-		if (StringUtils.isNotBlank(fileExt)) {
+		if (StringUtil.isNotBlank(fileExt)) {
 			if (fileExt.toLowerCase().equals("xls")) {// 2003
 				BufferedInputStream in = new BufferedInputStream(
 						new FileInputStream(file));
@@ -75,7 +75,7 @@ public class ExcelUtil {
 	public static String[][] read4Special(File file, String fileName,
 			int columnSize) throws Exception {
 		String fileExt = getExtension(fileName);
-		if (StringUtils.isNotBlank(fileExt)) {
+		if (StringUtil.isNotBlank(fileExt)) {
 			if (fileExt.toLowerCase().equals("xls")) {// 2003
 				BufferedInputStream in = new BufferedInputStream(
 						new FileInputStream(file));

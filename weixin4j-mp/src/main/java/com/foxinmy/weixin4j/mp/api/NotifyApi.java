@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.mp.api;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
@@ -10,6 +8,7 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.NotifyTuple;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 客服消息API
@@ -70,7 +69,7 @@ public class NotifyApi extends MpApi {
 		obj.put("touser", notify.getTouser());
 		obj.put("msgtype", msgtype);
 		obj.put(msgtype, tuple);
-		if (StringUtils.isNotBlank(kfAccount)) {
+		if (StringUtil.isNotBlank(kfAccount)) {
 			JSONObject kf = new JSONObject();
 			kf.put("kf_account", kfAccount);
 			obj.put("customservice", kf);

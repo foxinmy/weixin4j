@@ -3,9 +3,6 @@ package com.foxinmy.weixin4j.mp.payment;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.PayException;
@@ -24,8 +21,10 @@ import com.foxinmy.weixin4j.mp.type.SignType;
 import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
+import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
@@ -73,7 +72,7 @@ public class PayUtil {
 	 */
 	public static String createPayJsRequestJsonV2(PayPackageV2 payPackage,
 			WeixinMpAccount weixinAccount) {
-		if (StringUtils.isBlank(payPackage.getPartner())) {
+		if (StringUtil.isBlank(payPackage.getPartner())) {
 			payPackage.setPartner(weixinAccount.getPartnerId());
 		}
 		JsPayRequestV2 jsPayRequest = new JsPayRequestV2(weixinAccount,
@@ -115,8 +114,7 @@ public class PayUtil {
 	 * @return
 	 */
 	public static String paysignSha(Object obj) {
-		return DigestUtils
-				.sha1Hex(MapUtil.toJoinString(obj, false, true, null));
+		return DigestUtil.SHA1(MapUtil.toJoinString(obj, false, true, null));
 	}
 
 	/**
@@ -132,8 +130,7 @@ public class PayUtil {
 	public static String paysignSha(Object obj, String paySignKey) {
 		Map<String, String> extra = new HashMap<String, String>();
 		extra.put("appKey", paySignKey);
-		return DigestUtils.sha1Hex(MapUtil
-				.toJoinString(obj, false, true, extra));
+		return DigestUtil.SHA1(MapUtil.toJoinString(obj, false, true, extra));
 	}
 
 	/**
@@ -154,7 +151,7 @@ public class PayUtil {
 		// stringSignTemp 进行 md5 运算
 		// 再将得到的 字符串所有字符转换为大写 ,得到 sign 值 signValue。
 		sb.append("&key=").append(paySignKey);
-		return DigestUtils.md5Hex(sb.toString()).toUpperCase();
+		return DigestUtil.SHA1(sb.toString()).toUpperCase();
 	}
 
 	/**
@@ -224,7 +221,7 @@ public class PayUtil {
 	 */
 	public static PrePay createPrePay(PayPackageV3 payPackage, String paySignKey)
 			throws PayException {
-		if (StringUtils.isBlank(payPackage.getSign())) {
+		if (StringUtil.isBlank(payPackage.getSign())) {
 			payPackage.setSign(paysignMd5(payPackage, paySignKey));
 		}
 		String payJsRequestXml = XmlStream.to(payPackage).replaceAll("__", "_");

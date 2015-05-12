@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.test.msg;
+package com.foxinmy.weixin4j.mp.test;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,6 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
-import com.foxinmy.weixin4j.mp.event.MassEventMessage;
-import com.foxinmy.weixin4j.mp.test.TokenTest;
 import com.foxinmy.weixin4j.tuple.Image;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.Text;
@@ -30,7 +28,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * @since JDK 1.7
  * @see
  */
-public class MassMsgTest extends TokenTest {
+public class MassTest extends TokenTest {
 	private MassApi massApi;
 	private MediaApi mediaApi;
 
@@ -107,7 +105,6 @@ public class MassMsgTest extends TokenTest {
 	public void getMassNews() throws WeixinException {
 		String status = massApi.getMassNews("82358");
 		System.out.println(status);
-		System.out.println(MassEventMessage.getStatusDesc(status));
 		Assert.assertNotNull(status);
 	}
 }

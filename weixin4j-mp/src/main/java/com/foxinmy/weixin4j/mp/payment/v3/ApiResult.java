@@ -1,9 +1,8 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.XmlResult;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -83,7 +82,7 @@ public class ApiResult extends XmlResult {
 	}
 
 	public String getSubMchId() {
-		return StringUtils.isNotBlank(subMchId) ? subMchId : null;
+		return StringUtil.isNotBlank(subMchId) ? subMchId : null;
 	}
 
 	public void setSubMchId(String subMchId) {

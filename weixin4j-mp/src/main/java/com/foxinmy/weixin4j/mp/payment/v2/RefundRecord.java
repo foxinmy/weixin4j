@@ -2,9 +2,8 @@ package com.foxinmy.weixin4j.mp.payment.v2;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -52,7 +51,7 @@ public class RefundRecord extends ApiResult {
 	}
 
 	public String getOutTradeNo() {
-		return StringUtils.isNotBlank(outTradeNo) ? outTradeNo : null;
+		return StringUtil.isNotBlank(outTradeNo) ? outTradeNo : null;
 	}
 
 	public int getCount() {

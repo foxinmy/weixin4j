@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.test.msg;
+package com.foxinmy.weixin4j.mp.test;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,6 @@ import com.foxinmy.weixin4j.http.JsonResult;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;
-import com.foxinmy.weixin4j.mp.test.TokenTest;
 import com.foxinmy.weixin4j.tuple.Image;
 import com.foxinmy.weixin4j.tuple.Music;
 import com.foxinmy.weixin4j.tuple.News;
@@ -30,7 +29,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * @since JDK 1.7
  * @see
  */
-public class NotifyMsgTest extends TokenTest {
+public class NotifyTest extends TokenTest {
 
 	private NotifyApi notifyApi;
 	private MediaApi mediaApi;

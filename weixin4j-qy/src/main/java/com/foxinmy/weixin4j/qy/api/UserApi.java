@@ -3,8 +3,6 @@ package com.foxinmy.weixin4j.qy.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -16,6 +14,7 @@ import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 成员API
@@ -282,7 +281,7 @@ public class UserApi extends QyApi {
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("userid", userId);
-		if (StringUtils.isBlank(tips)) {
+		if (StringUtil.isBlank(tips)) {
 			obj.put("invite_tips", tips);
 		}
 		String invite_user_uri = getRequestUri("invite_user_uri");

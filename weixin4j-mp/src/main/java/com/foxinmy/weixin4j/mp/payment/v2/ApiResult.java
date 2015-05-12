@@ -2,10 +2,9 @@ package com.foxinmy.weixin4j.mp.payment.v2;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.SignType;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -68,7 +67,7 @@ public class ApiResult implements Serializable {
 	}
 
 	public String getRetMsg() {
-		return StringUtils.isNotBlank(retMsg) ? retMsg : null;
+		return StringUtil.isNotBlank(retMsg) ? retMsg : null;
 	}
 
 	public void setRetMsg(String retMsg) {

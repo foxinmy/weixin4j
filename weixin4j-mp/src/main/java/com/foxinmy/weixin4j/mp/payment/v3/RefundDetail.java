@@ -2,13 +2,12 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.RefundChannel;
 import com.foxinmy.weixin4j.mp.type.RefundStatus;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -140,7 +139,7 @@ public class RefundDetail extends ApiResult {
 
 	@JSONField(deserialize = false, serialize = false)
 	public RefundChannel getFormatRefundChannel() {
-		if (StringUtils.isNotBlank(refundChannel)) {
+		if (StringUtil.isNotBlank(refundChannel)) {
 			return RefundChannel.valueOf(refundChannel.toUpperCase());
 		}
 		return null;
@@ -170,7 +169,7 @@ public class RefundDetail extends ApiResult {
 
 	@JSONField(deserialize = false, serialize = false)
 	public RefundStatus getFormatRefundStatus() {
-		if (StringUtils.isNotBlank(refundStatus)) {
+		if (StringUtil.isNotBlank(refundStatus)) {
 			return RefundStatus.valueOf(refundStatus);
 		}
 		return null;

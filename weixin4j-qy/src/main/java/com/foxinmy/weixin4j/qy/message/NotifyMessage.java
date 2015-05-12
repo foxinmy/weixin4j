@@ -3,10 +3,9 @@ package com.foxinmy.weixin4j.qy.message;
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.tuple.NotifyTuple;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 发送消息对象
@@ -29,7 +28,7 @@ public class NotifyMessage implements Serializable {
 
 	private static final long serialVersionUID = 1219589414293000383L;
 	
-	private static final String SEPARATOR = "|";
+	private static final char SEPARATOR = '|';
 
 	/**
 	 * UserID列表（消息接收者，多个接收者用‘|’分隔）。特殊情况：指定为@all，则向关注该企业应用的全部成员发送
@@ -65,13 +64,13 @@ public class NotifyMessage implements Serializable {
 	public NotifyMessage(List<String> tousers, List<String> topartys,
 			List<String> totags, NotifyTuple tuple, int agentid, boolean isSafe) {
 		if (tousers != null && !tousers.isEmpty()) {
-			this.touser = StringUtils.join(tousers, SEPARATOR);
+			this.touser = StringUtil.join(tousers, SEPARATOR);
 		}
 		if (topartys != null && !topartys.isEmpty()) {
-			this.toparty = StringUtils.join(topartys, SEPARATOR);
+			this.toparty = StringUtil.join(topartys, SEPARATOR);
 		}
 		if (totags != null && !totags.isEmpty()) {
-			this.totag = StringUtils.join(totags, SEPARATOR);
+			this.totag = StringUtil.join(totags, SEPARATOR);
 		}
 		this.agentid = agentid;
 		this.safe = isSafe ? 1 : 0;
@@ -88,7 +87,7 @@ public class NotifyMessage implements Serializable {
 
 	public void setTouser(List<String> tousers) {
 		if (tousers != null && !tousers.isEmpty()) {
-			this.touser = StringUtils.join(tousers, SEPARATOR);
+			this.touser = StringUtil.join(tousers, SEPARATOR);
 		}
 	}
 
@@ -102,7 +101,7 @@ public class NotifyMessage implements Serializable {
 
 	public void setToparty(List<String> topartys) {
 		if (topartys != null && !topartys.isEmpty()) {
-			this.toparty = StringUtils.join(topartys, SEPARATOR);
+			this.toparty = StringUtil.join(topartys, SEPARATOR);
 		}
 	}
 
@@ -116,7 +115,7 @@ public class NotifyMessage implements Serializable {
 
 	public void setTotag(List<String> totags) {
 		if (totags != null && !totags.isEmpty()) {
-			this.totag = StringUtils.join(totags, SEPARATOR);
+			this.totag = StringUtil.join(totags, SEPARATOR);
 		}
 	}
 

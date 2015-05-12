@@ -6,8 +6,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * @title 反射工具类
  * @description 提供对类,字段的反射调用
@@ -92,13 +90,13 @@ public class ReflectionUtil {
 		Method getterMethod = null;
 		String propertyNa = null;
 		if (propertyName.contains(".")) {
-			propertyNa = StringUtils.substringBefore(propertyName, ".");
-			getterMethodName = "get" + StringUtils.capitalize(propertyNa);
+			propertyNa = StringUtil.substringBefore(propertyName, ".");
+			getterMethodName = "get" + StringUtil.capitalize(propertyNa);
 			getterMethod = object.getClass().getMethod(getterMethodName);
 			return invokeGetterMethod(getterMethod.invoke(object),
-					StringUtils.substringAfter(propertyName, "."));
+					StringUtil.substringAfter(propertyName, "."));
 		} else {
-			getterMethodName = "get" + StringUtils.capitalize(propertyName);
+			getterMethodName = "get" + StringUtil.capitalize(propertyName);
 			getterMethod = object.getClass().getMethod(getterMethodName);
 			return getterMethod.invoke(object);
 		}
@@ -140,7 +138,7 @@ public class ReflectionUtil {
 	 */
 	public static void invokeSetterMethod(Object object, String propertyName,
 			Object propertyValue, Class<?> setterMethodClass) {
-		String setterMethodName = "set" + StringUtils.capitalize(propertyName);
+		String setterMethodName = "set" + StringUtil.capitalize(propertyName);
 		try {
 			Method setterMethod = object.getClass().getMethod(setterMethodName,
 					setterMethodClass);

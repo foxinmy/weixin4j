@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * id参数集
@@ -19,6 +19,8 @@ public class IdParameter implements Serializable {
 
 	private static final long serialVersionUID = -2689758682205591133L;
 
+	private static final char SEPARATOR = '|';
+	
 	private Map<String, String> parameterMap;
 
 	public IdParameter() {
@@ -32,7 +34,7 @@ public class IdParameter implements Serializable {
 	 * @return
 	 */
 	public IdParameter putUseIds(String... userIds) {
-		parameterMap.put("touser", StringUtils.join(userIds, '|'));
+		parameterMap.put("touser", StringUtil.join(userIds, SEPARATOR));
 		return this;
 	}
 
@@ -43,7 +45,7 @@ public class IdParameter implements Serializable {
 	 * @return
 	 */
 	public IdParameter putUseIds(int... partyIds) {
-		parameterMap.put("toparty", StringUtils.join(partyIds, '|'));
+		parameterMap.put("toparty", StringUtil.join(partyIds, SEPARATOR));
 		return this;
 	}
 
@@ -54,7 +56,7 @@ public class IdParameter implements Serializable {
 	 * @return
 	 */
 	public IdParameter putTagIds(int... tagIds) {
-		parameterMap.put("totag", StringUtils.join(tagIds, '|'));
+		parameterMap.put("totag", StringUtil.join(tagIds, SEPARATOR));
 		return this;
 	}
 

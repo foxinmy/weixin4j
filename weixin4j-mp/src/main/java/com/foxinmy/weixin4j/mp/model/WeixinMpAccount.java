@@ -1,8 +1,7 @@
 package com.foxinmy.weixin4j.mp.model;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 微信公众平台信息
@@ -101,7 +100,7 @@ public class WeixinMpAccount extends WeixinAccount {
 
 	public int getVersion() {
 		if (version == 0) {
-			return StringUtils.isNotBlank(mchId) ? 3 : 2;
+			return StringUtil.isNotBlank(mchId) ? 3 : 2;
 		}
 		return version;
 	}

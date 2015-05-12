@@ -2,11 +2,10 @@ package com.foxinmy.weixin4j.mp.payment.v2;
 
 import java.beans.Transient;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayRequest;
+import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 
 /**
@@ -48,7 +47,7 @@ public class JsPayRequestV2 extends PayRequest {
 		// 再将得到的 字符串所有字符转换为大写 ,得到 sign 值 signValue。
 		sb.append("&key=").append(partnerKey);
 		// c---> & d---->
-		String sign = DigestUtils.md5Hex(sb.toString()).toUpperCase();
+		String sign = DigestUtil.MD5(sb.toString()).toUpperCase();
 		sb.delete(0, sb.length());
 		// c.对传入参数中所有键值对的 value 进行 urlencode 转码后重新拼接成字符串 string2
 		sb.append(MapUtil.toJoinString(payPackage, true, false, null))
