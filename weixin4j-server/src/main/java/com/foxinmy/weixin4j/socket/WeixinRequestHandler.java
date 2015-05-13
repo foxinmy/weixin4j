@@ -38,7 +38,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @since JDK 1.7
  * @see
  */
-public class WeixinMessageHandler extends
+public class WeixinRequestHandler extends
 		SimpleChannelInboundHandler<WeixinRequest> {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -46,7 +46,7 @@ public class WeixinMessageHandler extends
 	private final WeixinMessageDispatcher messageDispatcher;
 	private final JAXBContext jaxbContext;
 
-	public WeixinMessageHandler(AesToken aesToken,
+	public WeixinRequestHandler(AesToken aesToken,
 			WeixinMessageDispatcher messageDispatcher) throws WeixinException {
 		this.aesToken = aesToken;
 		this.messageDispatcher = messageDispatcher;
