@@ -21,9 +21,9 @@ import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
- * 微信消息编码类
+ * 微信回复编码类
  * 
- * @className WeixinMessageEncoder
+ * @className WeixinResponseEncoder
  * @author jy
  * @date 2014年11月13日
  * @since JDK 1.7

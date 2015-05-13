@@ -30,9 +30,9 @@ import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
- * 微信被动消息处理类
+ * 微信请求处理类
  * 
- * @className WeixinMessageHandler
+ * @className WeixinRequestHandler
  * @author jy
  * @date 2014年11月16日
  * @since JDK 1.7

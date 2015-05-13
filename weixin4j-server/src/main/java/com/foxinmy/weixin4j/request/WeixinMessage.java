@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * 被动消息(待完善)
+ * 基本被动消息
  * 
  * @className WeixinMessage
  * @author jy
@@ -36,6 +36,22 @@ public class WeixinMessage implements Serializable {
 	 * 
 	 */
 	private String msgType;
+	/**
+	 * 消息ID 可用于排重
+	 */
+	private long msgId;
+	/**
+	 * 企业号独有的应用ID
+	 */
+	private String agentId;
+
+	public WeixinMessage() {
+
+	}
+
+	public WeixinMessage(String msgType) {
+		this.msgType = msgType;
+	}
 
 	public String getToUserName() {
 		return toUserName;
@@ -73,12 +89,66 @@ public class WeixinMessage implements Serializable {
 		this.msgType = msgType;
 	}
 
-	//@Override
-	//public abstract boolean equals(Object obj) ;
+	public long getMsgId() {
+		return msgId;
+	}
+
+	@XmlElement(name = "MsgId")
+	public void setMsgId(long msgId) {
+		this.msgId = msgId;
+	}
+
+	public String getAgentId() {
+		return agentId;
+	}
+
+	@XmlElement(name = "AgentID")
+	public void setAgentId(String agentId) {
+		this.agentId = agentId;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((agentId == null) ? 0 : agentId.hashCode());
+		result = prime * result + (int) (createTime ^ (createTime >>> 32));
+		result = prime * result
+				+ ((fromUserName == null) ? 0 : fromUserName.hashCode());
+		result = prime * result + (int) (msgId ^ (msgId >>> 32));
+		result = prime * result + ((msgType == null) ? 0 : msgType.hashCode());
+		result = prime * result
+				+ ((toUserName == null) ? 0 : toUserName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WeixinMessage other = (WeixinMessage) obj;
+		if (msgId > 0l && other.getMsgId() > 0l) {
+			return msgId == other.getMsgId();
+		}
+		return fromUserName.equals(other.getFromUserName())
+				&& createTime == other.getCreateTime();
+	}
 
 	@Override
 	public String toString() {
-		return " toUserName=" + toUserName + ", fromUserName=" + fromUserName
-				+ ", createTime=" + createTime + ", msgType=" + msgType;
+		String toString = " toUserName=" + toUserName + ", fromUserName="
+				+ fromUserName + ", createTime=" + createTime + ", msgType="
+				+ msgType;
+		if (msgId > 0l) {
+			toString += ", msgId=" + msgId;
+		}
+		if (agentId != null) {
+			toString += ", agentId=" + agentId;
+		}
+		return toString;
 	}
 }
