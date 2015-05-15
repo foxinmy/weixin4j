@@ -44,8 +44,6 @@ public class WeixinMessageDecoder extends
 	protected void decode(ChannelHandlerContext ctx, FullHttpRequest req,
 			List<Object> out) throws WeixinException {
 		String content = req.content().toString(Consts.UTF_8);
-		WeixinRequest message = new WeixinRequest();
-		message.setMethod(req.getMethod().name());
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
 				true);
 		log.info("\n=================receive request=================");
@@ -53,40 +51,35 @@ public class WeixinMessageDecoder extends
 		log.info("{}", req.getUri());
 		log.info("{}", content);
 		Map<String, List<String>> parameters = queryDecoder.parameters();
-		String encryptType = parameters.containsKey("encrypt_type") ? parameters
-				.get("encrypt_type").get(0) : EncryptType.RAW.name();
-		message.setEncryptType(EncryptType.valueOf(encryptType.toUpperCase()));
+		EncryptType encryptType = parameters.containsKey("encrypt_type") ? EncryptType
+				.valueOf(parameters.get("encrypt_type").get(0).toUpperCase())
+				: EncryptType.RAW;
 		String echoStr = parameters.containsKey("echostr") ? parameters.get(
 				"echostr").get(0) : "";
-		message.setEchoStr(echoStr);
 		String timeStamp = parameters.containsKey("timestamp") ? parameters
 				.get("timestamp").get(0) : "";
-		message.setTimeStamp(timeStamp);
 		String nonce = parameters.containsKey("nonce") ? parameters
 				.get("nonce").get(0) : "";
-		message.setNonce(nonce);
 		String signature = parameters.containsKey("signature") ? parameters
 				.get("signature").get(0) : "";
-		message.setSignature(signature);
 		String msgSignature = parameters.containsKey("msg_signature") ? parameters
 				.get("msg_signature").get(0) : "";
-		message.setMsgSignature(msgSignature);
+		String originalContent = content;
+		String encryptContent = null;
 		if (!content.isEmpty()) {
-			if (message.getEncryptType() == EncryptType.AES) {
+			if (encryptType == EncryptType.AES) {
 				if (StringUtil.isBlank(aesToken.getAesKey())
 						|| StringUtil.isBlank(aesToken.getAppid())) {
 					throw new WeixinException(
 							"AESEncodingKey or AppId not be null in AES mode");
 				}
-				String encryptContent = EncryptMessageHandler.parser(content);
-				message.setEncryptContent(encryptContent);
-				message.setOriginalContent(MessageUtil.aesDecrypt(
-						aesToken.getAppid(), aesToken.getAesKey(),
-						encryptContent));
-			} else {
-				message.setOriginalContent(content);
+				encryptContent = EncryptMessageHandler.parser(content);
+				originalContent = MessageUtil.aesDecrypt(aesToken.getAppid(),
+						aesToken.getAesKey(), encryptContent);
 			}
 		}
-		out.add(message);
+		out.add(new WeixinRequest(req.getMethod().name(), encryptType, echoStr,
+				timeStamp, nonce, signature, msgSignature, originalContent,
+				encryptContent));
 	}
 }

@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.handler;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 
@@ -25,7 +24,8 @@ public interface WeixinMessageHandler {
 	 *            微信消息
 	 * @return
 	 */
-	public boolean canHandle(WeixinRequest request, WeixinMessage message);
+	public boolean canHandle(WeixinRequest request, String message)
+			throws WeixinException;
 
 	/**
 	 * 处理请求
@@ -36,6 +36,6 @@ public interface WeixinMessageHandler {
 	 *            微信消息
 	 * @return
 	 */
-	public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message)
+	public WeixinResponse doHandle(WeixinRequest request, String message)
 			throws WeixinException;
 }

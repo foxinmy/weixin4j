@@ -17,17 +17,10 @@ public class WeixinRequest implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -9157395300510879866L;
 
-	// 以下字段是加密方式为「安全模式」时的参数
 	/**
-	 * 加密后的内容
+	 * 请求的方式
 	 */
-	private String encryptContent;
-	/**
-	 * 加密类型
-	 * 
-	 * @see com.foxinmy.weixin4j.type.EncryptType
-	 */
-	private EncryptType encryptType;
+	private String method;
 
 	// 以下字段每次被动消息时都会带上
 	/**
@@ -50,85 +43,72 @@ public class WeixinRequest implements Serializable, Cloneable {
 	 * AES模式下消息签名
 	 */
 	private String msgSignature;
+
+	/**
+	 * 加密类型(POST时存在)
+	 * 
+	 * @see com.foxinmy.weixin4j.type.EncryptType
+	 */
+	private EncryptType encryptType;
+
 	/**
 	 * xml消息明文主体
 	 */
 	private String originalContent;
+
 	/**
-	 * 请求的方式
+	 * xml消息密文主体(AES时存在)
 	 */
-	private String method;
+	private String encryptContent;
 
-	public String getEncryptContent() {
-		return encryptContent;
-	}
-
-	public void setEncryptContent(String encryptContent) {
-		this.encryptContent = encryptContent;
-	}
-
-	public EncryptType getEncryptType() {
-		return encryptType;
-	}
-
-	public void setEncryptType(EncryptType encryptType) {
+	public WeixinRequest(String method, EncryptType encryptType,
+			String echoStr, String timeStamp, String nonce, String signature,
+			String msgSignature, String originalContent, String encryptContent) {
+		this.method = method;
 		this.encryptType = encryptType;
-	}
-
-	public String getEchoStr() {
-		return echoStr;
-	}
-
-	public void setEchoStr(String echoStr) {
 		this.echoStr = echoStr;
-	}
-
-	public String getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
-	}
-
-	public String getNonce() {
-		return nonce;
-	}
-
-	public void setNonce(String nonce) {
 		this.nonce = nonce;
-	}
-
-	public String getSignature() {
-		return signature;
-	}
-
-	public void setSignature(String signature) {
 		this.signature = signature;
-	}
-
-	public String getMsgSignature() {
-		return msgSignature;
-	}
-
-	public void setMsgSignature(String msgSignature) {
 		this.msgSignature = msgSignature;
-	}
-
-	public String getOriginalContent() {
-		return originalContent;
-	}
-
-	public void setOriginalContent(String originalContent) {
 		this.originalContent = originalContent;
+		this.encryptContent = encryptContent;
 	}
 
 	public String getMethod() {
 		return method;
 	}
 
-	public void setMethod(String method) {
-		this.method = method;
+	public String getEchoStr() {
+		return echoStr;
+	}
+
+	public String getTimeStamp() {
+		return timeStamp;
+	}
+
+	public String getNonce() {
+		return nonce;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public String getMsgSignature() {
+		return msgSignature;
+	}
+
+	public EncryptType getEncryptType() {
+		return encryptType;
+	}
+
+	public String getOriginalContent() {
+		return originalContent;
+	}
+
+	public String getEncryptContent() {
+		return encryptContent;
 	}
 
 	@Override

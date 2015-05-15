@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.request;
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 基本被动消息
@@ -14,7 +13,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @since JDK 1.7
  * @see
  */
-@XmlRootElement(name = "xml")
 public class WeixinMessage implements Serializable {
 
 	private static final long serialVersionUID = 7761192742840031607L;
@@ -22,27 +20,33 @@ public class WeixinMessage implements Serializable {
 	/**
 	 * 开发者微信号
 	 */
+	@XmlElement(name = "ToUserName")
 	private String toUserName;
 	/**
 	 * 发送方账号 即用户的openid
 	 */
+	@XmlElement(name = "FromUserName")
 	private String fromUserName;
 	/**
 	 * 消息创建时间 系统毫秒数
 	 */
+	@XmlElement(name = "CreateTime")
 	private long createTime;
 	/**
 	 * 消息类型
 	 * 
 	 */
+	@XmlElement(name = "MsgType")
 	private String msgType;
 	/**
 	 * 消息ID 可用于排重
 	 */
+	@XmlElement(name = "MsgId")
 	private long msgId;
 	/**
 	 * 企业号独有的应用ID
 	 */
+	@XmlElement(name = "AgentID")
 	private String agentId;
 
 	public WeixinMessage() {
@@ -57,54 +61,24 @@ public class WeixinMessage implements Serializable {
 		return toUserName;
 	}
 
-	@XmlElement(name = "ToUserName")
-	public void setToUserName(String toUserName) {
-		this.toUserName = toUserName;
-	}
-
 	public String getFromUserName() {
 		return fromUserName;
-	}
-
-	@XmlElement(name = "FromUserName")
-	public void setFromUserName(String fromUserName) {
-		this.fromUserName = fromUserName;
 	}
 
 	public long getCreateTime() {
 		return createTime;
 	}
 
-	@XmlElement(name = "CreateTime")
-	public void setCreateTime(long createTime) {
-		this.createTime = createTime;
-	}
-
 	public String getMsgType() {
 		return msgType;
-	}
-
-	@XmlElement(name = "MsgType")
-	public void setMsgType(String msgType) {
-		this.msgType = msgType;
 	}
 
 	public long getMsgId() {
 		return msgId;
 	}
 
-	@XmlElement(name = "MsgId")
-	public void setMsgId(long msgId) {
-		this.msgId = msgId;
-	}
-
 	public String getAgentId() {
 		return agentId;
-	}
-
-	@XmlElement(name = "AgentID")
-	public void setAgentId(String agentId) {
-		this.agentId = agentId;
 	}
 
 	@Override

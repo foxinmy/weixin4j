@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
-import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 
@@ -49,7 +48,7 @@ public class MessageHandlerExecutor {
 		return messageHandler;
 	}
 
-	public boolean applyPreHandle(WeixinRequest request, WeixinMessage message)
+	public boolean applyPreHandle(WeixinRequest request, String message)
 			throws WeixinException {
 		if (messageInterceptors != null) {
 			for (int i = 0; i < messageInterceptors.length; i++) {
@@ -66,7 +65,7 @@ public class MessageHandlerExecutor {
 	}
 
 	public void applyPostHandle(WeixinRequest request, WeixinResponse response,
-			WeixinMessage message) throws WeixinException {
+			String message) throws WeixinException {
 		if (messageInterceptors == null) {
 			return;
 		}
@@ -77,8 +76,8 @@ public class MessageHandlerExecutor {
 		}
 	}
 
-	public void triggerAfterCompletion(WeixinRequest request,
-			WeixinMessage message, WeixinException ex) throws WeixinException {
+	public void triggerAfterCompletion(WeixinRequest request, String message,
+			WeixinException exception) throws WeixinException {
 		if (messageInterceptors == null) {
 			return;
 		}
@@ -86,7 +85,7 @@ public class MessageHandlerExecutor {
 			WeixinMessageInterceptor interceptor = messageInterceptors[i];
 			try {
 				interceptor.afterCompletion(context, request, message,
-						messageHandler, ex);
+						messageHandler, exception);
 			} catch (WeixinException e) {
 				logger.error(
 						"MessageInterceptor.afterCompletion threw exception", e);

@@ -11,8 +11,11 @@ import io.netty.handler.codec.http.HttpMethod;
 import java.io.ByteArrayInputStream;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +26,6 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.type.EncryptType;
-import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
@@ -44,17 +46,11 @@ public class WeixinRequestHandler extends
 
 	private final AesToken aesToken;
 	private final WeixinMessageDispatcher messageDispatcher;
-	private final JAXBContext jaxbContext;
 
 	public WeixinRequestHandler(AesToken aesToken,
 			WeixinMessageDispatcher messageDispatcher) throws WeixinException {
 		this.aesToken = aesToken;
 		this.messageDispatcher = messageDispatcher;
-		try {
-			jaxbContext = JAXBContext.newInstance(WeixinMessage.class);
-		} catch (JAXBException e) {
-			throw new WeixinException(e);
-		}
 	}
 
 	public void channelReadComplete(ChannelHandlerContext ctx) {
@@ -112,12 +108,16 @@ public class WeixinRequestHandler extends
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		}
-		WeixinMessage weixinMessage = null;
+		final String message = request.getOriginalContent();
+		WeixinMessage weixinMessage;
 		try {
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			weixinMessage = (WeixinMessage) jaxbUnmarshaller
-					.unmarshal(new ByteArrayInputStream(request
-							.getOriginalContent().getBytes(Consts.UTF_8)));
+			Unmarshaller unmarshaller = JAXBContext.newInstance(
+					WeixinMessage.class).createUnmarshaller();
+			Source source = new StreamSource(new ByteArrayInputStream(
+					message.getBytes()));
+			JAXBElement<WeixinMessage> jaxbElement = unmarshaller.unmarshal(
+					source, WeixinMessage.class);
+			weixinMessage = jaxbElement.getValue();
 		} catch (JAXBException e) {
 			throw new WeixinException(e);
 		}
@@ -129,10 +129,6 @@ public class WeixinRequestHandler extends
 			ctx.channel().attr(Consts.ACCOUNTOPENID_KEY)
 					.set(weixinMessage.getToUserName());
 		}
-		final WeixinRequest cloneRequest = (WeixinRequest) ClassUtil
-				.deepClone(request);
-		final WeixinMessage cloneMessage = (WeixinMessage) ClassUtil
-				.deepClone(weixinMessage);
-		messageDispatcher.doDispatch(ctx, cloneRequest, cloneMessage);
+		messageDispatcher.doDispatch(ctx, request, message);
 	}
 }

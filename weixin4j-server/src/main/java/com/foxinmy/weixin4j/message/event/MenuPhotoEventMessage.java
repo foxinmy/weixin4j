@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * 弹出拍照或者相册发图的事件推送(pic_sysphoto|pic_photo_or_album|pic_weixin)
@@ -53,7 +53,8 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 		/**
 		 * 图片列表
 		 */
-		@XmlElement(name = "PicList")
+		@XmlElementWrapper(name = "PicList")
+		@XmlElement(name = "item")
 		private List<PictureItem> items;
 
 		public int getCount() {
@@ -79,7 +80,6 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 	 * @since JDK 1.7
 	 * @see
 	 */
-	@XmlRootElement(name = "item")
 	public static class PictureItem implements Serializable {
 
 		private static final long serialVersionUID = -7636697449096645590L;
@@ -89,6 +89,10 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 		 */
 		@XmlElement(name = "PicMd5Sum")
 		private String md5;
+
+		public String getMd5() {
+			return md5;
+		}
 
 		@Override
 		public String toString() {

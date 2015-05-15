@@ -77,7 +77,7 @@ public class WeixinResponseEncoder extends
 						aesToken.getAesKey(), content.toString());
 				String msgSignature = MessageUtil.signature(
 						aesToken.getToken(), nonce, timestamp, encrtypt);
-				content.delete(0, content.length() - 1);
+				content.delete(0, content.length());
 				content.append("<xml>");
 				content.append(String.format("<Nonce><![CDATA[%s]]></Nonce>",
 						nonce));

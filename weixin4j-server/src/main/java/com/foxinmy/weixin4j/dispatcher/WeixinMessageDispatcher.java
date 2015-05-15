@@ -16,7 +16,6 @@ import com.foxinmy.weixin4j.bean.BeanFactory;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
-import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.util.ClassUtil;
@@ -65,7 +64,7 @@ public class WeixinMessageDispatcher {
 	}
 
 	public void doDispatch(final ChannelHandlerContext context,
-			final WeixinRequest request, final WeixinMessage message)
+			final WeixinRequest request, final String message)
 			throws WeixinException {
 		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(context,
 				request, message);
@@ -94,14 +93,14 @@ public class WeixinMessageDispatcher {
 	}
 
 	protected void noHandlerFound(ChannelHandlerContext ctx,
-			WeixinRequest request, WeixinMessage message) {
+			WeixinRequest request, String message) {
 		ctx.writeAndFlush(HttpUtil.createHttpResponse(null, NOT_FOUND, null))
 				.addListener(ChannelFutureListener.CLOSE);
 	}
 
 	protected MessageHandlerExecutor getHandlerExecutor(
-			ChannelHandlerContext context, WeixinRequest request,
-			WeixinMessage message) throws WeixinException {
+			ChannelHandlerContext context, WeixinRequest request, String message)
+			throws WeixinException {
 		WeixinMessageHandler messageHandler = null;
 		WeixinMessageHandler[] messageHandlers = getMessageHandlers();
 		if (messageHandlers == null) {

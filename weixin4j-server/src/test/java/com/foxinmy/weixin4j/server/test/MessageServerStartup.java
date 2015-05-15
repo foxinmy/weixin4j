@@ -5,10 +5,10 @@ import io.netty.channel.ChannelHandlerContext;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.BlankMessageHandler;
 import com.foxinmy.weixin4j.handler.DebugMessageHandler;
+import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
-import com.foxinmy.weixin4j.interceptor.MessageInterceptorAdapter;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
-import com.foxinmy.weixin4j.request.WeixinMessage;
+import com.foxinmy.weixin4j.message.TextMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.TextResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
@@ -57,18 +57,18 @@ public class MessageServerStartup {
 	 * @throws WeixinException
 	 */
 	public void test3() throws WeixinException {
-		// 回复文本消息
-		WeixinMessageHandler messageHandler = new WeixinMessageHandler() {
+		// 文本消息回复
+		WeixinMessageHandler messageHandler = new MessageHandlerAdapter<TextMessage>() {
 			@Override
-			public WeixinResponse doHandle(WeixinRequest request,
-					WeixinMessage message) throws WeixinException {
-				return new TextResponse("HelloWorld!");
+			public boolean canHandle0(WeixinRequest request, String message,
+					TextMessage m) throws WeixinException {
+				return true;
 			}
 
 			@Override
-			public boolean canHandle(WeixinRequest request,
-					WeixinMessage message) {
-				return message.getMsgType().equals("text");
+			public WeixinResponse doHandle0(WeixinRequest request,
+					String message, TextMessage m) throws WeixinException {
+				return new TextResponse("HelloWorld!");
 			}
 		};
 		// 当消息类型为文本(text)时回复「HelloWorld」, 否则回复调试消息
@@ -85,26 +85,26 @@ public class MessageServerStartup {
 
 	public void test5() throws WeixinException {
 		// 拦截所有请求
-		WeixinMessageInterceptor interceptor = new MessageInterceptorAdapter() {
+		WeixinMessageInterceptor interceptor = new WeixinMessageInterceptor() {
 			@Override
 			public boolean preHandle(ChannelHandlerContext context,
-					WeixinRequest request, WeixinMessage message,
+					WeixinRequest request, String message,
 					WeixinMessageHandler handler) throws WeixinException {
-				context.write(new TextResponse("所有消息被拦截了！"));
+				context.writeAndFlush(new TextResponse("所有消息被拦截了！"));
 				return false;
 			}
 
 			@Override
 			public void postHandle(ChannelHandlerContext context,
 					WeixinRequest request, WeixinResponse response,
-					WeixinMessage message, WeixinMessageHandler handler)
+					String message, WeixinMessageHandler handler)
 					throws WeixinException {
 				System.err.println("preHandle返回为true,执行handler后");
 			}
 
 			@Override
 			public void afterCompletion(ChannelHandlerContext context,
-					WeixinRequest request, WeixinMessage message,
+					WeixinRequest request, String message,
 					WeixinMessageHandler handler, WeixinException exception)
 					throws WeixinException {
 				System.err.println("请求处理完毕");
@@ -115,6 +115,6 @@ public class MessageServerStartup {
 	}
 
 	public static void main(String[] args) throws WeixinException {
-		new MessageServerStartup().test5();
+		new MessageServerStartup().test1();
 	}
 }
