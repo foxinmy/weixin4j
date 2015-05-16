@@ -3,6 +3,8 @@ package com.foxinmy.weixin4j.dispatcher;
 import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
@@ -20,9 +22,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.bean.BeanFactory;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -47,7 +46,8 @@ import com.foxinmy.weixin4j.util.ReflectionUtil;
  */
 public class WeixinMessageDispatcher {
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+	private final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 
 	/**
 	 * 消息处理器
@@ -110,7 +110,7 @@ public class WeixinMessageDispatcher {
 		try {
 			WeixinResponse response = handlerExecutor.getMessageHandler()
 					.doHandle(request, message);
-			log.info(
+			logger.info(
 					"\n=================message response=================\n{}",
 					response);
 			handlerExecutor.applyPostHandle(request, response, message);

@@ -3,11 +3,10 @@ package com.foxinmy.weixin4j.socket;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.bean.AesToken;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -33,7 +32,8 @@ import com.foxinmy.weixin4j.util.StringUtil;
 public class WeixinResponseEncoder extends
 		MessageToMessageEncoder<WeixinResponse> {
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+	private final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 
 	private final AesToken aesToken;
 
@@ -93,7 +93,7 @@ public class WeixinResponseEncoder extends
 		}
 		ctx.writeAndFlush(HttpUtil.createHttpResponse(content.toString(), OK,
 				Consts.CONTENTTYPE$APPLICATION_XML));
-		log.info("\n=================response message=================");
-		log.info("{}", content);
+		logger.info("\n=================response message=================");
+		logger.info("{}", content);
 	}
 }

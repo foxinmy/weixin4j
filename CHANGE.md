@@ -288,3 +288,7 @@
 * 2015-05-16
 
   + **weixin4j-server**: 实现消息处理器的泛型自动匹配
+  
+  + **weixin4j-server**: 去掉SLF4J-API依赖
+  
+  + **weixin4j-server**: released 1.0.0!

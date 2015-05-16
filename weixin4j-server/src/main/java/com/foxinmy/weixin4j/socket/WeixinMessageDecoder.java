@@ -4,12 +4,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.bean.AesToken;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -32,7 +31,8 @@ import com.foxinmy.weixin4j.xml.EncryptMessageHandler;
  */
 public class WeixinMessageDecoder extends
 		MessageToMessageDecoder<FullHttpRequest> {
-	private final Logger log = LoggerFactory.getLogger(getClass());
+	private final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 
 	private AesToken aesToken;
 
@@ -46,10 +46,10 @@ public class WeixinMessageDecoder extends
 		String content = req.content().toString(Consts.UTF_8);
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
 				true);
-		log.info("\n=================receive request=================");
-		log.info("{}", req.getMethod());
-		log.info("{}", req.getUri());
-		log.info("{}", content);
+		logger.info("\n=================receive request=================");
+		logger.info("{}", req.getMethod());
+		logger.info("{}", req.getUri());
+		logger.info("{}", content);
 		Map<String, List<String>> parameters = queryDecoder.parameters();
 		EncryptType encryptType = parameters.containsKey("encrypt_type") ? EncryptType
 				.valueOf(parameters.get("encrypt_type").get(0).toUpperCase())

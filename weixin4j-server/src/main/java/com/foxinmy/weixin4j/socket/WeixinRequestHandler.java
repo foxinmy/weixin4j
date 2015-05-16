@@ -7,9 +7,8 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.HttpMethod;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import com.foxinmy.weixin4j.bean.AesToken;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
@@ -33,8 +32,8 @@ import com.foxinmy.weixin4j.xml.CruxMessageHandler;
  */
 public class WeixinRequestHandler extends
 		SimpleChannelInboundHandler<WeixinRequest> {
-	private final Logger log = LoggerFactory.getLogger(getClass());
-
+	private final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 	private final AesToken aesToken;
 	private final WeixinMessageDispatcher messageDispatcher;
 
@@ -51,13 +50,13 @@ public class WeixinRequestHandler extends
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		ctx.close();
-		log.error("catch the exception:{}", cause.getMessage());
+		logger.error("catch the exception:{}", cause.getMessage());
 	}
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, WeixinRequest request)
 			throws WeixinException {
-		log.info("\n=================message request=================\n{}",
+		logger.info("\n=================message request=================\n{}",
 				request);
 		if (request.getMethod().equals(HttpMethod.GET.name())) {
 			if (MessageUtil.signature(aesToken.getToken(),

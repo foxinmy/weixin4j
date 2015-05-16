@@ -1,10 +1,10 @@
 package com.foxinmy.weixin4j.dispatcher;
 
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.message.ImageMessage;
 import com.foxinmy.weixin4j.message.LocationMessage;
@@ -25,7 +25,7 @@ import com.foxinmy.weixin4j.type.MessageType;
 
 public class WeixinMessageMatcher {
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+	private final InternalLogger logger = InternalLoggerFactory.getInstance(getClass());
 
 	public static final String MESSAGEKEY_MP_TAG = "mp";
 	public static final String MESSAGEKEY_SEPARATOR = ":";
@@ -45,7 +45,7 @@ public class WeixinMessageMatcher {
 		init1();
 		init2();
 		init3();
-		log.info("detected message for events: {}", key2ClassMap.keySet());
+		logger.info("detected message for events: {}", key2ClassMap.keySet());
 	}
 
 	private void init0() {

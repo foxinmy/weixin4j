@@ -41,7 +41,7 @@ weixin4j
 	    <artifactId>weixin4j-qy</artifactId>
 	    <version>1.4</version>
 	</dependency>
-微信被动消息服务器(本周内部署到中央库)
+微信被动消息服务器
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>

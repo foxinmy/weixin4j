@@ -1,9 +1,8 @@
 package com.foxinmy.weixin4j.dispatcher;
 
 import io.netty.channel.ChannelHandlerContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
@@ -22,7 +21,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  */
 public class MessageHandlerExecutor {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final InternalLogger logger = InternalLoggerFactory.getInstance(getClass());
 	/**
 	 * 消息处理器
 	 */
