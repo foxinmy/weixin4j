@@ -9,6 +9,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher;
 import com.foxinmy.weixin4j.type.MessageType;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
@@ -54,18 +55,21 @@ public class CruxMessageHandler extends DefaultHandler {
 		this.content = new String(ch, start, length);
 	}
 
-	public String getUniqueKey() {
+	public String getMessageKey() {
 		StringBuilder uniqueKey = new StringBuilder();
 		uniqueKey.append(msgType);
 		if (msgType.equals(MessageType.event.name())) {
 			if (StringUtil.isBlank(agentId)) {
-				uniqueKey.insert(0, "mp:");
+				uniqueKey.insert(0,
+						WeixinMessageMatcher.MESSAGEKEY_MP_SEPARATOR);
 			} else {
-				uniqueKey.insert(0, "qy:");
+				uniqueKey.insert(0,
+						WeixinMessageMatcher.MESSAGEKEY_QY_SEPARATOR);
 			}
-			uniqueKey.append(":").append(eventType);
+			uniqueKey.append(WeixinMessageMatcher.MESSAGEKEY_SEPARATOR).append(
+					eventType);
 		}
-		return uniqueKey.toString();
+		return uniqueKey.toString().toLowerCase();
 	}
 
 	public String getFromUserName() {

@@ -46,7 +46,7 @@ weixin4j
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>0.0.1</version>
+	    <version>1.0.0</version>
 	</dependency>
 
 以上依赖如果出现Missing artifact错误 请尝试在eclipse里这么做

@@ -16,6 +16,7 @@ public class DebugMessageHandler implements WeixinMessageHandler {
 	@Override
 	public boolean canHandle(WeixinRequest request, Object message)
 			throws WeixinException {
+		System.err.println(message.getClass());
 		return true;
 	}
 

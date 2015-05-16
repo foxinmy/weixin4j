@@ -110,6 +110,6 @@ public class WeixinRequestHandler extends
 					.set(messageHandler.getToUserName());
 		}
 		messageDispatcher.doDispatch(ctx, request,
-				messageHandler.getUniqueKey());
+				messageHandler.getMessageKey());
 	}
 }

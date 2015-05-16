@@ -27,8 +27,13 @@ public class WeixinMessageMatcher {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private final String MP_TAG = "mp";
-	private final String QY_TAG = "qy";
+	public static final String MESSAGEKEY_MP_TAG = "mp";
+	public static final String MESSAGEKEY_SEPARATOR = ":";
+	public static final String MESSAGEKEY_MP_SEPARATOR = MESSAGEKEY_MP_TAG
+			+ MESSAGEKEY_SEPARATOR;
+	public static final String MESSAGEKEY_QY_TAG = "qy";
+	public static final String MESSAGEKEY_QY_SEPARATOR = MESSAGEKEY_QY_TAG
+			+ MESSAGEKEY_SEPARATOR;
 
 	private final Map<String, Class<?>> key2ClassMap;
 	private final Map<Class<?>, String> class2KeyMap;
@@ -47,123 +52,107 @@ public class WeixinMessageMatcher {
 		// /////////////////////////////////////////////////
 		/******************** 普通消息 ********************/
 		// /////////////////////////////////////////////////
-		String uniqueKey = MessageType.text.name();
+		String messageKey = MessageType.text.name();
 		Class<?> clazz = TextMessage.class;
-		regist(uniqueKey, clazz);
-		uniqueKey = MessageType.image.name();
+		regist(messageKey, clazz);
+		messageKey = MessageType.image.name();
 		clazz = ImageMessage.class;
-		regist(uniqueKey, clazz);
-		uniqueKey = MessageType.voice.name();
+		regist(messageKey, clazz);
+		messageKey = MessageType.voice.name();
 		clazz = VoiceMessage.class;
-		regist(uniqueKey, clazz);
-		uniqueKey = MessageType.video.name();
+		regist(messageKey, clazz);
+		messageKey = MessageType.video.name();
 		clazz = VideoMessage.class;
-		regist(uniqueKey, clazz);
-		uniqueKey = MessageType.shortvideo.name();
-		regist(uniqueKey, clazz);
-		uniqueKey = MessageType.location.name();
+		regist(messageKey, clazz);
+		messageKey = MessageType.shortvideo.name();
+		regist(messageKey, clazz);
+		messageKey = MessageType.location.name();
 		clazz = LocationMessage.class;
-		regist(uniqueKey, clazz);
+		regist(messageKey, clazz);
 	}
 
 	private void init1() {
 		// /////////////////////////////////////////////////
 		/******************** 事件消息 ********************/
 		// /////////////////////////////////////////////////
-		String uniqueKey;
-		Class<?> clazz;
 		for (EventType eventType : new EventType[] { EventType.subscribe,
 				EventType.unsubscribe }) {
-			uniqueKey = String.format("%s:%s", MessageType.event.name(),
-					eventType.name());
-			clazz = com.foxinmy.weixin4j.mp.event.ScribeEventMessage.class;
-			regist(String.format("%s:%s", MP_TAG, uniqueKey), clazz);
+			regist(mpEventMessagKey(eventType),
+					com.foxinmy.weixin4j.mp.event.ScribeEventMessage.class);
 		}
 		for (EventType eventType : new EventType[] { EventType.subscribe,
 				EventType.unsubscribe }) {
-			uniqueKey = String.format("%s:%s", MessageType.event.name(),
-					eventType.name());
-			clazz = com.foxinmy.weixin4j.qy.event.ScribeEventMessage.class;
-			regist(String.format("%s:%s", QY_TAG, uniqueKey), clazz);
+			regist(qyEventMessagKey(eventType),
+					com.foxinmy.weixin4j.qy.event.ScribeEventMessage.class);
 		}
-		uniqueKey = String.format("%s:%s", MessageType.event.name(),
-				EventType.location.name());
-		clazz = LocationEventMessage.class;
-		regist(uniqueKey, clazz);
+		Class<?> clazz = LocationEventMessage.class;
+		regist(mpEventMessagKey(EventType.location), clazz);
+		regist(qyEventMessagKey(EventType.location), clazz);
 		for (EventType eventType : new EventType[] { EventType.click,
 				EventType.view }) {
-			uniqueKey = String.format("%s:%s", MessageType.event.name(),
-					eventType.name());
 			clazz = com.foxinmy.weixin4j.message.event.MenuEventMessage.class;
-			regist(uniqueKey, clazz);
+			regist(mpEventMessagKey(eventType), clazz);
+			regist(qyEventMessagKey(eventType), clazz);
 		}
 		for (EventType eventType : new EventType[] { EventType.scancode_push,
 				EventType.scancode_waitmsg }) {
-			uniqueKey = String.format("%s:%s", MessageType.event.name(),
-					eventType.name());
 			clazz = com.foxinmy.weixin4j.message.event.MenuScanEventMessage.class;
-			regist(uniqueKey, clazz);
+			regist(mpEventMessagKey(eventType), clazz);
+			regist(qyEventMessagKey(eventType), clazz);
 		}
 		for (EventType eventType : new EventType[] { EventType.pic_sysphoto,
 				EventType.pic_photo_or_album, EventType.pic_weixin }) {
-			uniqueKey = String.format("%s:%s", MessageType.event.name(),
-					eventType.name());
 			clazz = com.foxinmy.weixin4j.message.event.MenuPhotoEventMessage.class;
-			regist(uniqueKey, clazz);
+			regist(mpEventMessagKey(eventType), clazz);
+			regist(qyEventMessagKey(eventType), clazz);
 		}
-		uniqueKey = String.format("%s:%s", MessageType.event.name(),
-				EventType.location_select.name());
 		clazz = com.foxinmy.weixin4j.message.event.MenuLocationEventMessage.class;
-		regist(uniqueKey, clazz);
+		regist(mpEventMessagKey(EventType.location_select), clazz);
+		regist(qyEventMessagKey(EventType.location_select), clazz);
 	}
 
 	private void init2() {
 		// /////////////////////////////////////////////////
 		/******************** 公众平台事件消息 ********************/
 		// /////////////////////////////////////////////////
-		String uniqueKey = String.format("%s:%s:%s", MP_TAG,
-				MessageType.event.name(), EventType.scan.name());
-		Class<?> clazz = ScanEventMessage.class;
-		regist(uniqueKey, clazz);
-		uniqueKey = String.format("%s:%s:%s", MP_TAG, MessageType.event.name(),
-				EventType.masssendjobfinish.name());
-		clazz = MassEventMessage.class;
-		regist(uniqueKey, clazz);
-		uniqueKey = String.format("%s:%s:%s", MP_TAG, MessageType.event.name(),
-				EventType.templatesendjobfinish.name());
-		clazz = TemplatesendjobfinishMessage.class;
-		regist(uniqueKey, clazz);
-		uniqueKey = String.format("%s:%s:%s", MP_TAG, MessageType.event.name(),
-				EventType.kf_create_session.name());
-		clazz = KfCreateEventMessage.class;
-		regist(uniqueKey, clazz);
-		uniqueKey = String.format("%s:%s:%s", MP_TAG, MessageType.event.name(),
-				EventType.kf_close_session.name());
-		clazz = KfCloseEventMessage.class;
-		regist(uniqueKey, clazz);
-		uniqueKey = String.format("%s:%s:%s", MP_TAG, MessageType.event.name(),
-				EventType.kf_switch_session.name());
-		clazz = KfSwitchEventMessage.class;
-		regist(uniqueKey, clazz);
+		regist(mpEventMessagKey(EventType.scan), ScanEventMessage.class);
+		regist(mpEventMessagKey(EventType.masssendjobfinish),
+				MassEventMessage.class);
+		regist(mpEventMessagKey(EventType.templatesendjobfinish),
+				TemplatesendjobfinishMessage.class);
+		regist(mpEventMessagKey(EventType.kf_create_session),
+				KfCreateEventMessage.class);
+		regist(mpEventMessagKey(EventType.kf_close_session),
+				KfCloseEventMessage.class);
+		regist(mpEventMessagKey(EventType.kf_switch_session),
+				KfSwitchEventMessage.class);
 	}
 
 	private void init3() {
 		// /////////////////////////////////////////////////
 		/******************** 企业号事件消息 ********************/
 		// /////////////////////////////////////////////////
-		String uniqueKey = String.format("%s:%s:%s", QY_TAG,
-				MessageType.event.name(), EventType.batch_job_result.name());
-		Class<?> clazz = BatchjobresultMessage.class;
-		regist(uniqueKey, clazz);
-		uniqueKey = String.format("%s:%s:%s", QY_TAG, MessageType.event.name(),
-				EventType.enter_agent.name());
-		clazz = EnterAgentEventMessage.class;
-		regist(uniqueKey, clazz);
+		regist(qyEventMessagKey(EventType.batch_job_result),
+				BatchjobresultMessage.class);
+		regist(qyEventMessagKey(EventType.enter_agent),
+				EnterAgentEventMessage.class);
 	}
 
-	public void regist(String uniqueKey, Class<?> clazz) {
-		key2ClassMap.put(uniqueKey, clazz);
-		class2KeyMap.put(clazz, uniqueKey);
+	private String mpEventMessagKey(EventType eventType) {
+		return String.format("%s%s%s%s", MESSAGEKEY_MP_SEPARATOR,
+				MessageType.event.name(), MESSAGEKEY_SEPARATOR,
+				eventType.name());
+	}
+
+	private String qyEventMessagKey(EventType eventType) {
+		return String.format("%s%s%s%s", MESSAGEKEY_QY_SEPARATOR,
+				MessageType.event.name(), MESSAGEKEY_SEPARATOR,
+				eventType.name());
+	}
+
+	public void regist(String messageKey, Class<?> clazz) {
+		key2ClassMap.put(messageKey, clazz);
+		class2KeyMap.put(clazz, messageKey);
 	}
 
 	public boolean match(Object keyOrClass) {
@@ -171,7 +160,7 @@ public class WeixinMessageMatcher {
 				|| class2KeyMap.containsKey(keyOrClass);
 	}
 
-	public Class<?> find(String uniqueKey) {
-		return key2ClassMap.get(uniqueKey);
+	public Class<?> find(String messageKey) {
+		return key2ClassMap.get(messageKey);
 	}
 }

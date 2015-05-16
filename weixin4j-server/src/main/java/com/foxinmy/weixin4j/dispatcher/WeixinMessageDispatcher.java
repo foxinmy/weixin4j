@@ -89,15 +89,15 @@ public class WeixinMessageDispatcher {
 	}
 
 	public void doDispatch(final ChannelHandlerContext context,
-			final WeixinRequest request, final String uniqueKey)
+			final WeixinRequest request, final String messageKey)
 			throws WeixinException {
-		Class<?> targetClass = messageMatcher.find(uniqueKey);
+		Class<?> targetClass = messageMatcher.find(messageKey);
 		Object message = request.getOriginalContent();
 		if (targetClass != null) {
 			message = messageRead(request.getOriginalContent(), targetClass);
 		}
 		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(context,
-				request, uniqueKey, message);
+				request, messageKey, message);
 		if (handlerExecutor == null
 				|| handlerExecutor.getMessageHandler() == null) {
 			noHandlerFound(context, request, message);
@@ -130,7 +130,7 @@ public class WeixinMessageDispatcher {
 
 	protected MessageHandlerExecutor getHandlerExecutor(
 			ChannelHandlerContext context, WeixinRequest request,
-			String uniqueKey, Object message) throws WeixinException {
+			String messageKey, Object message) throws WeixinException {
 		WeixinMessageHandler messageHandler = null;
 		WeixinMessageHandler[] messageHandlers = getMessageHandlers();
 		if (messageHandlers == null) {
@@ -142,7 +142,7 @@ public class WeixinMessageDispatcher {
 				if (!messageMatcher.match(genericType)) {
 					message = messageRead(request.getOriginalContent(),
 							genericType);
-					messageMatcher.regist(uniqueKey, genericType);
+					messageMatcher.regist(messageKey, genericType);
 				}
 				if (genericType == message.getClass()
 						&& handler.canHandle(request, message)) {
