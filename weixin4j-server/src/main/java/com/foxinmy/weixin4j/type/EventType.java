@@ -27,56 +27,55 @@ public enum EventType {
 	 */
 	location,
 	/**
-	 * 菜单扫描事件
-	 * 
-	 * @see com.foxinmy.weixin4j.message.event.menu.MenuScanEventMessage
-	 */
-	scancode_push,
-	/**
 	 * 菜单点击关键字事件
 	 * 
-	 * @see com.foxinmy.weixin4j.message.event.menu.MenuEventMessage
+	 * @see com.foxinmy.weixin4j.message.event.MenuEventMessage
 	 */
 	view,
 	/**
 	 * 菜单点击链接事件
 	 * 
-	 * @see com.foxinmy.weixin4j.message.event.menu.MenuEventMessage
+	 * @see com.foxinmy.weixin4j.message.event.MenuEventMessage
 	 */
 	click,
 	/**
+	 * 菜单扫描事件
+	 * 
+	 * @see com.foxinmy.weixin4j.message.event.MenuScanEventMessage
+	 */
+	scancode_push,
+	/**
 	 * 菜单扫描并调出等待界面事件
 	 * 
-	 * @see com.foxinmy.weixin4j.message.event.menu.MenuScanEventMessage
+	 * @see com.foxinmy.weixin4j.message.event.MenuScanEventMessage
 	 */
 	scancode_waitmsg,
 	/**
 	 * 菜单弹出拍照事件
 	 * 
-	 * @see com.foxinmy.weixin4j.message.event.menu.MenuPhotoEventMessage
+	 * @see com.foxinmy.weixin4j.message.event.MenuPhotoEventMessage
 	 */
 	pic_sysphoto,
 	/**
 	 * 菜单弹出发图事件
 	 * 
-	 * @see com.foxinmy.weixin4j.message.event.menu.MenuPhotoEventMessage
+	 * @see com.foxinmy.weixin4j.message.event.MenuPhotoEventMessage
 	 */
 	pic_photo_or_album,
 	/**
 	 * 菜单弹出发图事件
 	 * 
-	 * @see com.foxinmy.weixin4j.message.event.menu.MenuPhotoEventMessage
+	 * @see com.foxinmy.weixin4j.message.event.MenuPhotoEventMessage
 	 */
 	pic_weixin,
 	/**
 	 * 菜单发送地理位置事件
 	 * 
-	 * @see com.foxinmy.weixin4j.message.event.menu.MenuLocationEventMessage
+	 * @see com.foxinmy.weixin4j.message.event.MenuLocationEventMessage
 	 */
 	location_select,
 
 	// ------------------------------公众平台特有------------------------------
-	//
 
 	/**
 	 * 二维码扫描事件
@@ -114,6 +113,8 @@ public enum EventType {
 	 * @see com.foxinmy.weixin4j.mp.event.KfSwitchEventMessage
 	 */
 	kf_switch_session,
+	
+	// ------------------------------企业号特有------------------------------
 	/**
 	 * 异步任务完成事件
 	 * 

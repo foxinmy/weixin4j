@@ -8,28 +8,19 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.HttpMethod;
 
-import java.io.ByteArrayInputStream;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foxinmy.weixin4j.bean.AesToken;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.xml.CruxMessageHandler;
 
 /**
  * 微信请求处理类
@@ -108,27 +99,17 @@ public class WeixinRequestHandler extends
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		}
-		final String message = request.getOriginalContent();
-		WeixinMessage weixinMessage;
-		try {
-			Unmarshaller unmarshaller = JAXBContext.newInstance(
-					WeixinMessage.class).createUnmarshaller();
-			Source source = new StreamSource(new ByteArrayInputStream(
-					message.getBytes()));
-			JAXBElement<WeixinMessage> jaxbElement = unmarshaller.unmarshal(
-					source, WeixinMessage.class);
-			weixinMessage = jaxbElement.getValue();
-		} catch (JAXBException e) {
-			throw new WeixinException(e);
-		}
+		CruxMessageHandler messageHandler = CruxMessageHandler.parser(request
+				.getOriginalContent());
 		ctx.channel().attr(Consts.ENCRYPTTYPE_KEY)
 				.set(request.getEncryptType());
 		ctx.channel().attr(Consts.USEROPENID_KEY)
-				.set(weixinMessage.getFromUserName());
+				.set(messageHandler.getFromUserName());
 		if (StringUtil.isBlank(aesToken.getAppid())) {
 			ctx.channel().attr(Consts.ACCOUNTOPENID_KEY)
-					.set(weixinMessage.getToUserName());
+					.set(messageHandler.getToUserName());
 		}
-		messageDispatcher.doDispatch(ctx, request, message);
+		messageDispatcher.doDispatch(ctx, request,
+				messageHandler.getUniqueKey());
 	}
 }

@@ -33,7 +33,7 @@ public interface WeixinMessageInterceptor {
 	 * @throws WeixinException
 	 */
 	boolean preHandle(ChannelHandlerContext context, WeixinRequest request,
-			String message, WeixinMessageHandler handler)
+			Object message, WeixinMessageHandler handler)
 			throws WeixinException;
 
 	/**
@@ -52,7 +52,7 @@ public interface WeixinMessageInterceptor {
 	 * @throws WeixinException
 	 */
 	void postHandle(ChannelHandlerContext context, WeixinRequest request,
-			WeixinResponse response, String message,
+			WeixinResponse response, Object message,
 			WeixinMessageHandler handler) throws WeixinException;
 
 	/**
@@ -71,6 +71,6 @@ public interface WeixinMessageInterceptor {
 	 * @throws WeixinException
 	 */
 	void afterCompletion(ChannelHandlerContext context, WeixinRequest request,
-			String message, WeixinMessageHandler handler,
+			Object message, WeixinMessageHandler handler,
 			WeixinException exception) throws WeixinException;
 }

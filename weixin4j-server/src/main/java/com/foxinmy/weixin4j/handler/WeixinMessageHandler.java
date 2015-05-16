@@ -24,7 +24,7 @@ public interface WeixinMessageHandler {
 	 *            微信消息
 	 * @return
 	 */
-	public boolean canHandle(WeixinRequest request, String message)
+	public boolean canHandle(WeixinRequest request, Object message)
 			throws WeixinException;
 
 	/**
@@ -36,6 +36,6 @@ public interface WeixinMessageHandler {
 	 *            微信消息
 	 * @return
 	 */
-	public WeixinResponse doHandle(WeixinRequest request, String message)
+	public WeixinResponse doHandle(WeixinRequest request, Object message)
 			throws WeixinException;
 }

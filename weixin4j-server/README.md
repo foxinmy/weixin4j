@@ -37,23 +37,18 @@ weixin4j-server
 
 	public class MessageServerStartup{
 		public static void main(String[] args) {
-			// 需要一个文本消息的handler
-			WeixinMessageHandler messageHandler = new WeixinMessageHandler() {
+			// 针对文本消息回复
+			WeixinMessageHandler messageHandler = new MessageHandlerAdapter<TextMessage>() {
 				@Override
-				public WeixinResponse doHandle(WeixinRequest request,
-						WeixinMessage message) throws WeixinException {
-					return new TextResponse("HelloWorld!");
-				}
-	
-				@Override
-				public boolean canHandle(WeixinRequest request,
-						WeixinMessage message) {
-					return message.getMsgType().equals("text");
+				public WeixinResponse doHandle0(WeixinRequest request,
+					TextMessage message) throws WeixinException {
+						return new TextResponse("HelloWorld!");
 				}
 			};
 			// 当消息类型为文本(text)时回复「HelloWorld」, 否则回复调试消息
-			new WeixinServerBootstrap("appid","开发者token","加密密钥").addHandler(messageHandler,
-					DebugMessageHandler.global).startup();
+			new WeixinServerBootstrap(appid, token, aesKey).addHandler(
+					messageHandler, DebugMessageHandler.global).startup();
+			}
 		}
 	}
 编写一个拦截器
@@ -63,22 +58,21 @@ weixin4j-server
 		WeixinMessageInterceptor interceptor = new MessageInterceptorAdapter() {
 			@Override
 			public boolean preHandle(ChannelHandlerContext context,
-					WeixinRequest request, WeixinMessage message,
+					WeixinRequest request, Object message,
 					WeixinMessageHandler handler) throws WeixinException {
 				context.write(new TextResponse("所有消息被拦截了！"));
 				return false;
 			}
-
 			@Override
 			public void postHandle(ChannelHandlerContext context,
 					WeixinRequest request, WeixinResponse response,
-					WeixinMessage message, WeixinMessageHandler handler)
+					Object message, WeixinMessageHandler handler)
 					throws WeixinException {
 				System.err.println("preHandle返回为true,执行handler后");
 			}
 			@Override
 			public void afterCompletion(ChannelHandlerContext context,
-					WeixinRequest request, WeixinMessage message,
+					WeixinRequest request, Object message,
 					WeixinMessageHandler handler, WeixinException exception)
 					throws WeixinException {
 				System.err.println("请求处理完毕");

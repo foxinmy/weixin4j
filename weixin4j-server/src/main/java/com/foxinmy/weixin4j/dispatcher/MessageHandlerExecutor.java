@@ -48,7 +48,7 @@ public class MessageHandlerExecutor {
 		return messageHandler;
 	}
 
-	public boolean applyPreHandle(WeixinRequest request, String message)
+	public boolean applyPreHandle(WeixinRequest request, Object message)
 			throws WeixinException {
 		if (messageInterceptors != null) {
 			for (int i = 0; i < messageInterceptors.length; i++) {
@@ -65,7 +65,7 @@ public class MessageHandlerExecutor {
 	}
 
 	public void applyPostHandle(WeixinRequest request, WeixinResponse response,
-			String message) throws WeixinException {
+			Object message) throws WeixinException {
 		if (messageInterceptors == null) {
 			return;
 		}
@@ -76,7 +76,7 @@ public class MessageHandlerExecutor {
 		}
 	}
 
-	public void triggerAfterCompletion(WeixinRequest request, String message,
+	public void triggerAfterCompletion(WeixinRequest request, Object message,
 			WeixinException exception) throws WeixinException {
 		if (messageInterceptors == null) {
 			return;

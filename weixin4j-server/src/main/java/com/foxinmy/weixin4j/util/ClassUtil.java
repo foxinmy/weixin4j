@@ -52,8 +52,7 @@ public final class ClassUtil {
 				throw new RuntimeException(e);
 			}
 		}
-		throw new UnsupportedOperationException(String.format(
-				"unknow protocol:", protocol));
+		return null;
 	}
 
 	/**

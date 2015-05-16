@@ -57,17 +57,11 @@ public class MessageServerStartup {
 	 * @throws WeixinException
 	 */
 	public void test3() throws WeixinException {
-		// 文本消息回复
+		// 针对文本消息回复
 		WeixinMessageHandler messageHandler = new MessageHandlerAdapter<TextMessage>() {
 			@Override
-			public boolean canHandle0(WeixinRequest request, String message,
-					TextMessage m) throws WeixinException {
-				return true;
-			}
-
-			@Override
 			public WeixinResponse doHandle0(WeixinRequest request,
-					String message, TextMessage m) throws WeixinException {
+					TextMessage message) throws WeixinException {
 				return new TextResponse("HelloWorld!");
 			}
 		};
@@ -88,7 +82,7 @@ public class MessageServerStartup {
 		WeixinMessageInterceptor interceptor = new WeixinMessageInterceptor() {
 			@Override
 			public boolean preHandle(ChannelHandlerContext context,
-					WeixinRequest request, String message,
+					WeixinRequest request, Object message,
 					WeixinMessageHandler handler) throws WeixinException {
 				context.writeAndFlush(new TextResponse("所有消息被拦截了！"));
 				return false;
@@ -97,14 +91,14 @@ public class MessageServerStartup {
 			@Override
 			public void postHandle(ChannelHandlerContext context,
 					WeixinRequest request, WeixinResponse response,
-					String message, WeixinMessageHandler handler)
+					Object message, WeixinMessageHandler handler)
 					throws WeixinException {
 				System.err.println("preHandle返回为true,执行handler后");
 			}
 
 			@Override
 			public void afterCompletion(ChannelHandlerContext context,
-					WeixinRequest request, String message,
+					WeixinRequest request, Object message,
 					WeixinMessageHandler handler, WeixinException exception)
 					throws WeixinException {
 				System.err.println("请求处理完毕");
@@ -115,6 +109,6 @@ public class MessageServerStartup {
 	}
 
 	public static void main(String[] args) throws WeixinException {
-		new MessageServerStartup().test1();
+		new MessageServerStartup().test5();
 	}
 }

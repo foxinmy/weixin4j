@@ -14,14 +14,14 @@ public class DebugMessageHandler implements WeixinMessageHandler {
 	}
 
 	@Override
-	public boolean canHandle(WeixinRequest request, String message)
+	public boolean canHandle(WeixinRequest request, Object message)
 			throws WeixinException {
 		return true;
 	}
 
 	@Override
-	public WeixinResponse doHandle(WeixinRequest request, String message)
+	public WeixinResponse doHandle(WeixinRequest request, Object message)
 			throws WeixinException {
-		return new TextResponse(message);
+		return new TextResponse(message.toString());
 	}
 }

@@ -1,32 +1,30 @@
 package com.foxinmy.weixin4j.handler;
 
-import com.foxinmy.weixin4j.dispatcher.WeixinMessageAdapter;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 
-public abstract class MessageHandlerAdapter<M> extends WeixinMessageAdapter<M>
-		implements WeixinMessageHandler {
-
-	private M message;
+@SuppressWarnings("unchecked")
+public abstract class MessageHandlerAdapter<M> implements WeixinMessageHandler {
 
 	@Override
-	public boolean canHandle(WeixinRequest request, String message)
+	public boolean canHandle(WeixinRequest request, Object message)
 			throws WeixinException {
-		this.message = super.messageRead(message);
-		return canHandle0(request, message, this.message);
+		return canHandle0(request, (M) message);
 	}
 
-	public abstract boolean canHandle0(WeixinRequest request, String message,
-			M m) throws WeixinException;
+	public boolean canHandle0(WeixinRequest request, M message)
+			throws WeixinException {
+		return true;
+	}
 
 	@Override
-	public WeixinResponse doHandle(WeixinRequest request, String message)
+	public WeixinResponse doHandle(WeixinRequest request, Object message)
 			throws WeixinException {
-		return doHandle0(request, message, this.message);
+		return doHandle0(request, (M) message);
 	}
 
-	public abstract WeixinResponse doHandle0(WeixinRequest request,
-			String message, M m) throws WeixinException;
+	public abstract WeixinResponse doHandle0(WeixinRequest request, M message)
+			throws WeixinException;
 
 }

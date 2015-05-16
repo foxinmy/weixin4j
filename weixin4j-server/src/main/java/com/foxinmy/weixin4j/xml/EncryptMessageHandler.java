@@ -15,6 +15,7 @@ import com.foxinmy.weixin4j.util.Consts;
 public class EncryptMessageHandler extends DefaultHandler {
 
 	private String encryptContent;
+	private String content;
 
 	@Override
 	public void startDocument() throws SAXException {
@@ -24,28 +25,30 @@ public class EncryptMessageHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		if (qName.equalsIgnoreCase("encrypt")) {
-			return;
-		}
+
 	}
 
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
+		if (localName.equalsIgnoreCase("encrypt")) {
+			encryptContent = content;
+		}
 	}
 
 	@Override
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
-			this.encryptContent = new String(ch, start, length);
+		this.content = new String(ch, start, length);
 	}
 
 	public String getEncryptContent() {
 		return encryptContent;
 	}
 
+	private final static EncryptMessageHandler messageHandler = new EncryptMessageHandler();
+
 	public static String parser(String xmlContent) throws RuntimeException {
-		EncryptMessageHandler messageHandler = new EncryptMessageHandler();
 		try {
 			XMLReader xmlReader = XMLReaderFactory.createXMLReader();
 			xmlReader.setContentHandler(messageHandler);
