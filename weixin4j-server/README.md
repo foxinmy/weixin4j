@@ -58,7 +58,7 @@ weixin4j-server
 			}
 		}
 	}
-编写一个拦截器
+使用拦截器处理消息请求的启动类
 
 	public static void main(String[] args) {
 		// 拦截所有请求
