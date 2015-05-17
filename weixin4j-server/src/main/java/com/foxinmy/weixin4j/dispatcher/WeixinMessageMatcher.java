@@ -23,9 +23,19 @@ import com.foxinmy.weixin4j.qy.event.EnterAgentEventMessage;
 import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
 
+/**
+ * 微信消息匹配
+ * 
+ * @className WeixinMessageMatcher
+ * @author jy
+ * @date 2015年5月17日
+ * @since JDK 1.7
+ * @see
+ */
 public class WeixinMessageMatcher {
 
-	private final InternalLogger logger = InternalLoggerFactory.getInstance(getClass());
+	private final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 
 	public static final String MESSAGEKEY_MP_TAG = "mp";
 	public static final String MESSAGEKEY_SEPARATOR = ":";
@@ -138,28 +148,62 @@ public class WeixinMessageMatcher {
 				EnterAgentEventMessage.class);
 	}
 
-	private String mpEventMessagKey(EventType eventType) {
+	/**
+	 * 公众平台事件消息的唯一messageKey
+	 * 
+	 * @param eventType
+	 * @return
+	 */
+	protected String mpEventMessagKey(EventType eventType) {
 		return String.format("%s%s%s%s", MESSAGEKEY_MP_SEPARATOR,
 				MessageType.event.name(), MESSAGEKEY_SEPARATOR,
 				eventType.name());
 	}
 
-	private String qyEventMessagKey(EventType eventType) {
+	/**
+	 * 企业号事件消息的唯一messageKey
+	 * 
+	 * @param eventType
+	 * @return
+	 */
+	protected String qyEventMessagKey(EventType eventType) {
 		return String.format("%s%s%s%s", MESSAGEKEY_QY_SEPARATOR,
 				MessageType.event.name(), MESSAGEKEY_SEPARATOR,
 				eventType.name());
 	}
 
+	/**
+	 * 注册一个消息类型
+	 * 
+	 * @param messageKey
+	 *            消息的key
+	 * @param clazz
+	 *            消息类型
+	 */
 	public void regist(String messageKey, Class<?> clazz) {
 		key2ClassMap.put(messageKey, clazz);
 		class2KeyMap.put(clazz, messageKey);
 	}
 
+	/**
+	 * 匹配到消息
+	 * 
+	 * @param keyOrClass
+	 *            消息key或者消息类型
+	 * @return 匹配结果
+	 */
 	public boolean match(Object keyOrClass) {
 		return key2ClassMap.containsKey(keyOrClass)
 				|| class2KeyMap.containsKey(keyOrClass);
 	}
 
+	/**
+	 * 消息key找到消息类型
+	 * 
+	 * @param messageKey
+	 *            消息key
+	 * @return 消息类型
+	 */
 	public Class<?> find(String messageKey) {
 		return key2ClassMap.get(messageKey);
 	}

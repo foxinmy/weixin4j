@@ -42,7 +42,11 @@ import com.foxinmy.weixin4j.util.ReflectionUtil;
  * @author jy
  * @date 2015年5月7日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
+ * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
+ * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher
+ * @see com.foxinmy.weixin4j.dispatcher.MessageHandlerExecutor
+ * @see com.foxinmy.weixin4j.bean.BeanFactory
  */
 public class WeixinMessageDispatcher {
 
@@ -88,6 +92,17 @@ public class WeixinMessageDispatcher {
 		messageUnmarshaller = new HashMap<Class<?>, Unmarshaller>();
 	}
 
+	/**
+	 * 对消息进行一系列的处理,包括 拦截、匹配、分发等动作
+	 * 
+	 * @param context
+	 *            上下文环境
+	 * @param request
+	 *            微信请求
+	 * @param messageKey
+	 *            消息的key
+	 * @throws WeixinException
+	 */
 	public void doDispatch(final ChannelHandlerContext context,
 			final WeixinRequest request, final String messageKey)
 			throws WeixinException {
@@ -122,12 +137,38 @@ public class WeixinMessageDispatcher {
 				dispatchException);
 	}
 
-	protected void noHandlerFound(ChannelHandlerContext ctx,
+	/**
+	 * 未匹配到handler时触发
+	 * 
+	 * @param context
+	 *            上下文环境
+	 * @param request
+	 *            微信请求
+	 * @param message
+	 *            微信消息
+	 */
+	protected void noHandlerFound(ChannelHandlerContext context,
 			WeixinRequest request, Object message) {
-		ctx.writeAndFlush(HttpUtil.createHttpResponse(null, NOT_FOUND, null))
+		context.writeAndFlush(
+				HttpUtil.createHttpResponse(null, NOT_FOUND, null))
 				.addListener(ChannelFutureListener.CLOSE);
 	}
 
+	/**
+	 * MessageHandlerExecutor
+	 * 
+	 * @param context
+	 *            上下文环境
+	 * @param request
+	 *            微信请求
+	 * @param messageKey
+	 *            消息的key
+	 * @param message
+	 *            微信消息
+	 * @return MessageHandlerExecutor
+	 * @see com.foxinmy.weixin4j.dispatcher.MessageHandlerExecutor
+	 * @throws WeixinException
+	 */
 	protected MessageHandlerExecutor getHandlerExecutor(
 			ChannelHandlerContext context, WeixinRequest request,
 			String messageKey, Object message) throws WeixinException {
@@ -164,6 +205,13 @@ public class WeixinMessageDispatcher {
 				getMessageInterceptors());
 	}
 
+	/**
+	 * 获取所有的handler
+	 * 
+	 * @return handler集合
+	 * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
+	 * @throws WeixinException
+	 */
 	public WeixinMessageHandler[] getMessageHandlers() throws WeixinException {
 		if (this.messageHandlers == null) {
 			if (messageHandlerPackages != null) {
@@ -208,6 +256,13 @@ public class WeixinMessageDispatcher {
 
 	}
 
+	/**
+	 * 获取所有的interceptor
+	 * 
+	 * @return interceptor集合
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
+	 */
 	public WeixinMessageInterceptor[] getMessageInterceptors()
 			throws WeixinException {
 		if (this.messageInterceptors == null) {
@@ -253,6 +308,16 @@ public class WeixinMessageDispatcher {
 		return this.messageInterceptors;
 	}
 
+	/**
+	 * jaxb读取微信消息
+	 * 
+	 * @param message
+	 *            xml消息
+	 * @param clazz
+	 *            消息类型
+	 * @return 消息对象
+	 * @throws WeixinException
+	 */
 	protected Object messageRead(String message, Class<?> clazz)
 			throws WeixinException {
 		try {
@@ -266,6 +331,14 @@ public class WeixinMessageDispatcher {
 		}
 	}
 
+	/**
+	 * xml消息转换器
+	 * 
+	 * @param clazz
+	 *            消息类型
+	 * @return 消息转换器
+	 * @throws WeixinException
+	 */
 	protected Unmarshaller getUnmarshaller(Class<?> clazz)
 			throws WeixinException {
 		Unmarshaller unmarshaller = messageUnmarshaller.get(clazz);
@@ -281,6 +354,12 @@ public class WeixinMessageDispatcher {
 		return unmarshaller;
 	}
 
+	/**
+	 * 获得泛型类型
+	 * 
+	 * @param object
+	 * @return
+	 */
 	private Class<?> genericTypeRead(Object object) {
 		Class<?> clazz = null;
 		Type type = object.getClass().getGenericSuperclass();

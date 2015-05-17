@@ -5,6 +5,15 @@ import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.TextResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 
+/**
+ * 调试消息处理器
+ * 
+ * @className DebugMessageHandler
+ * @author jy
+ * @date 2015年5月17日
+ * @since JDK 1.7
+ * @see
+ */
 public class DebugMessageHandler implements WeixinMessageHandler {
 
 	public static final DebugMessageHandler global = new DebugMessageHandler();
@@ -16,7 +25,6 @@ public class DebugMessageHandler implements WeixinMessageHandler {
 	@Override
 	public boolean canHandle(WeixinRequest request, Object message)
 			throws WeixinException {
-		System.err.println(message.getClass());
 		return true;
 	}
 

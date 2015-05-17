@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * @author jy
  * @date 2015年5月7日
  * @since JDK 1.7
- * @see
+ * @see MessageHandlerAdapter
  */
 public interface WeixinMessageHandler {
 
@@ -22,7 +22,7 @@ public interface WeixinMessageHandler {
 	 *            微信请求
 	 * @param message
 	 *            微信消息
-	 * @return
+	 * @return true则执行doHandle
 	 */
 	public boolean canHandle(WeixinRequest request, Object message)
 			throws WeixinException;

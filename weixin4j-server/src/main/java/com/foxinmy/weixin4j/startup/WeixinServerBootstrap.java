@@ -27,7 +27,10 @@ import com.foxinmy.weixin4j.socket.WeixinServerInitializer;
  * @author jy
  * @date 2014年10月12日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
+ * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
+ * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher
+ * @see com.foxinmy.weixin4j.bean.BeanFactory
  */
 public final class WeixinServerBootstrap {
 

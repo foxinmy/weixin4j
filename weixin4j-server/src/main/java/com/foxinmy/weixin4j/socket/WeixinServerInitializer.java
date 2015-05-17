@@ -10,6 +10,15 @@ import com.foxinmy.weixin4j.bean.AesToken;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
 
+/**
+ * 微信消息服务器初始化
+ * 
+ * @className WeixinServerInitializer
+ * @author jy
+ * @date 2015年5月17日
+ * @since JDK 1.7
+ * @see
+ */
 public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 
 	private final AesToken aesToken;

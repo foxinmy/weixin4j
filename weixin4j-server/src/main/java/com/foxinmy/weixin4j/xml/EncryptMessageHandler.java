@@ -12,6 +12,15 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import com.foxinmy.weixin4j.util.Consts;
 
+/**
+ * 获取加密的密文内容
+ * 
+ * @className EncryptMessageHandler
+ * @author jy
+ * @date 2015年5月17日
+ * @since JDK 1.7
+ * @see
+ */
 public class EncryptMessageHandler extends DefaultHandler {
 
 	private String encryptContent;

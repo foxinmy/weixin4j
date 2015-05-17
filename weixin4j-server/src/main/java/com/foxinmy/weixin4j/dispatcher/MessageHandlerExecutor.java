@@ -21,7 +21,8 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  */
 public class MessageHandlerExecutor {
 
-	private final InternalLogger logger = InternalLoggerFactory.getInstance(getClass());
+	private final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 	/**
 	 * 消息处理器
 	 */
@@ -47,6 +48,16 @@ public class MessageHandlerExecutor {
 		return messageHandler;
 	}
 
+	/**
+	 * 执行预拦截动作
+	 * 
+	 * @param request
+	 *            微信请求信息
+	 * @param message
+	 *            微信消息
+	 * @return true则继续执行往下执行
+	 * @throws WeixinException
+	 */
 	public boolean applyPreHandle(WeixinRequest request, Object message)
 			throws WeixinException {
 		if (messageInterceptors != null) {
@@ -63,6 +74,17 @@ public class MessageHandlerExecutor {
 		return true;
 	}
 
+	/**
+	 * MessageHandler处理玩请求后的动作
+	 * 
+	 * @param request
+	 *            微信请求
+	 * @param response
+	 *            处理后的响应
+	 * @param message
+	 *            微信消息
+	 * @throws WeixinException
+	 */
 	public void applyPostHandle(WeixinRequest request, WeixinResponse response,
 			Object message) throws WeixinException {
 		if (messageInterceptors == null) {
@@ -75,6 +97,17 @@ public class MessageHandlerExecutor {
 		}
 	}
 
+	/**
+	 * 全部执行完毕后触发
+	 * 
+	 * @param request
+	 *            微信请求
+	 * @param message
+	 *            微信消息
+	 * @param exception
+	 *            处理时可能的异常
+	 * @throws WeixinException
+	 */
 	public void triggerAfterCompletion(WeixinRequest request, Object message,
 			WeixinException exception) throws WeixinException {
 		if (messageInterceptors == null) {

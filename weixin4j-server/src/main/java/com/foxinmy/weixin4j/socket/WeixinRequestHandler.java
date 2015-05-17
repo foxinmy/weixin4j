@@ -28,7 +28,7 @@ import com.foxinmy.weixin4j.xml.CruxMessageHandler;
  * @author jy
  * @date 2014年11月16日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher
  */
 public class WeixinRequestHandler extends
 		SimpleChannelInboundHandler<WeixinRequest> {

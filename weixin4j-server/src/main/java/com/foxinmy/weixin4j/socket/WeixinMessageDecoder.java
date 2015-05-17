@@ -28,6 +28,7 @@ import com.foxinmy.weixin4j.xml.EncryptMessageHandler;
  * @since JDK 1.7
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/0/61c3a8b9d50ac74f18bdf2e54ddfc4e0.html">加密接入指引</a>
+ * @see com.foxinmy.weixin4j.request.WeixinRequest
  */
 public class WeixinMessageDecoder extends
 		MessageToMessageDecoder<FullHttpRequest> {

@@ -14,6 +14,15 @@ import com.foxinmy.weixin4j.type.MessageType;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 
+/**
+ * 获取微信消息的关键信息
+ * 
+ * @className CruxMessageHandler
+ * @author jy
+ * @date 2015年5月17日
+ * @since JDK 1.7
+ * @see
+ */
 public class CruxMessageHandler extends DefaultHandler {
 
 	private String fromUserName;

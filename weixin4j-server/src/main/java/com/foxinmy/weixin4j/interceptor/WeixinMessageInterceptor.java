@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * @author jy
  * @date 2015年5月7日
  * @since JDK 1.7
- * @see
+ * @see MessageInterceptorAdapter
  */
 public interface WeixinMessageInterceptor {
 
