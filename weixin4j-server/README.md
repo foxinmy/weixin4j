@@ -14,7 +14,16 @@ weixin4j-server
 
 如何使用
 -------
-编写一个简单的服务启动类
+###maven依赖
+微信公众平台API(1.0.0,2015-05-16 released)
+
+	<dependency>
+	    <groupId>com.foxinmy</groupId>
+	    <artifactId>weixin4j-server</artifactId>
+	    <version>1.0.0</version>
+	</dependency>
+###编写服务启动类
+明文模式并总是调试输出微信请求信息的服务启动类.
 
 	public class MessageServerStartup{
 		public static void main(String[] args) {
@@ -22,7 +31,6 @@ weixin4j-server
 					DebugMessageHandler.global).startup();
 		}
 	}
-以上代码就会启动一个适用于`明文模式`并总是调试输出微信请求信息的消息服务.
 
 密文模式的服务启动类
 

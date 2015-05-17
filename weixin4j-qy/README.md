@@ -25,6 +25,13 @@ weixin4j-qy
 
 如何使用
 --------
+0.maven依赖(1.4,2015-04-29 released)
+
+	<dependency>
+	    <groupId>com.foxinmy</groupId>
+	    <artifactId>weixin4j-qy</artifactId>
+	    <version>1.4</version>
+	</dependency>
 1.需新增或拷贝`weixin.properties`文件到项目的`classpath`中
 
 weixin.properties说明
