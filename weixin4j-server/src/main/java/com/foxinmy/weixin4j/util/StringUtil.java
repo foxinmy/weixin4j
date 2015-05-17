@@ -2,6 +2,15 @@ package com.foxinmy.weixin4j.util;
 
 import java.nio.charset.Charset;
 
+/**
+ * 字符串工具类
+ * 
+ * @className StringUtil
+ * @author jy
+ * @date 2015年5月17日
+ * @since JDK 1.7
+ * @see
+ */
 public final class StringUtil {
 
 	public static final String EMPTY = "";

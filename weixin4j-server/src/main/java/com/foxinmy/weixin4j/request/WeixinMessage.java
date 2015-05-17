@@ -5,13 +5,34 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * 基本被动消息
+ * 微信消息基类
  * 
  * @className WeixinMessage
  * @author jy
  * @date 2015年5月6日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.message.ImageMessage
+ * @see com.foxinmy.weixin4j.message.LinkMessage
+ * @see com.foxinmy.weixin4j.message.LocationMessage
+ * @see com.foxinmy.weixin4j.message.TextMessage
+ * @see com.foxinmy.weixin4j.message.VideoMessage
+ * @see com.foxinmy.weixin4j.message.VoiceMessage
+ * @see com.foxinmy.weixin4j.message.event.EventMessage
+ * @see com.foxinmy.weixin4j.message.event.LocationEventMessage
+ * @see com.foxinmy.weixin4j.message.event.MenuEventMessage
+ * @see com.foxinmy.weixin4j.message.event.MenuLocationEventMessage
+ * @see com.foxinmy.weixin4j.message.event.MenuPhotoEventMessage
+ * @see com.foxinmy.weixin4j.message.event.MenuScanEventMessage
+ * @see com.foxinmy.weixin4j.mp.event.KfCloseEventMessage
+ * @see com.foxinmy.weixin4j.mp.event.KfCreateEventMessage
+ * @see com.foxinmy.weixin4j.mp.event.KfSwitchEventMessage
+ * @see com.foxinmy.weixin4j.mp.event.MassEventMessage
+ * @see com.foxinmy.weixin4j.mp.event.ScanEventMessage
+ * @see com.foxinmy.weixin4j.mp.event.ScribeEventMessage
+ * @see com.foxinmy.weixin4j.mp.event.TemplatesendjobfinishMessage
+ * @see com.foxinmy.weixin4j.qy.event.BatchjobresultMessage
+ * @see com.foxinmy.weixin4j.qy.event.EnterAgentEventMessage
+ * @see com.foxinmy.weixin4j.qy.event.ScribeEventMessage
  */
 public class WeixinMessage implements Serializable {
 

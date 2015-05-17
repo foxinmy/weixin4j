@@ -3,6 +3,15 @@ package com.foxinmy.weixin4j.util;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+/**
+ * Base64
+ * 
+ * @className Base64
+ * @author jy
+ * @date 2015年5月17日
+ * @since JDK 1.7
+ * @see
+ */
 public final class Base64 {
 
 	private static byte[] byteBuf2Array(ByteBuf byteBuf) {

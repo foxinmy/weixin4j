@@ -1,5 +1,14 @@
 package com.foxinmy.weixin4j.util;
 
+/**
+ * Hex工具类
+ * 
+ * @className HexUtil
+ * @author jy
+ * @date 2015年5月17日
+ * @since JDK 1.7
+ * @see
+ */
 public final class HexUtil {
 	/**
 	 * Used to build output as Hex

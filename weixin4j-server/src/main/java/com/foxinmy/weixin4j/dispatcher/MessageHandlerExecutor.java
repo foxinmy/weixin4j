@@ -11,13 +11,14 @@ import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 
 /**
- * 微信消息分发器
+ * 微信消息的处理执行
  * 
  * @className MessageHandlerExecutor
  * @author jy
  * @date 2015年5月7日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
+ * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
  */
 public class MessageHandlerExecutor {
 

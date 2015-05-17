@@ -30,7 +30,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * @author jy
  * @date 2015年5月17日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.request.WeixinMessage
  */
 public class WeixinMessageMatcher {
 
