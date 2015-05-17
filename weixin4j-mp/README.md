@@ -7,7 +7,7 @@ weixin4j-mp
 功能列表
 -------
 
-* MediaApi `上传/下载媒体文件API`
+* MediaApi `媒体素材API`
 
 * NotifyApi `客服消息API`
 

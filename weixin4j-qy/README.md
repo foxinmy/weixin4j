@@ -13,7 +13,7 @@ weixin4j-qy
   
   * TagApi `标签管理API`
   
-  * MediaApi `多媒体管理API`
+  * MediaApi `媒体素材API`
   
   * MenuApi `菜单管理API`
   
