@@ -61,6 +61,7 @@ weixin.properties说明
 > 针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenHolder`,默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用`RedisTokenHolder`.
 >
 >   WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenHolder());
+
 >   // weixinProxy = new WeixinProxy(new RedisTokenHolder(weixinAccount));
 
 [更新LOG](./CHANGE.md)
