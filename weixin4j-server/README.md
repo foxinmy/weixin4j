@@ -14,8 +14,7 @@ weixin4j-server
 
 如何使用
 -------
-###maven依赖
-微信公众平台API(1.0.0,2015-05-16 released)
+###maven依赖(1.0.0,2015-05-16 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
