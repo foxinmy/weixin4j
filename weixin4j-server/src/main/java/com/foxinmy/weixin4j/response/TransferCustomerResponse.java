@@ -27,13 +27,13 @@ public class TransferCustomerResponse implements WeixinResponse {
 
 	@Override
 	public String toContent() {
-		StringBuilder content = new StringBuilder();
-		if (kfAccount != null) {
-			content.append(String
+		String content = "";
+		if (kfAccount != null && !kfAccount.trim().isEmpty()) {
+			content = String
 					.format("<TransInfo><KfAccount><![CDATA[%s]]></KfAccount></TransInfo>",
-							kfAccount));
+							kfAccount);
 		}
-		return content.toString();
+		return content;
 	}
 
 	@Override

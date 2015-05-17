@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 public class MessageServerStartup {
 
 	final String appid = "appid";
-	final String token = "carsonliu13450438112";
+	final String token = "开发者token";
 	final String aesKey = "AES密钥";
 
 	/**
