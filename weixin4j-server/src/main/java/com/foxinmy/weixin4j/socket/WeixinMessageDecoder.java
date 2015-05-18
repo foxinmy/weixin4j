@@ -10,10 +10,10 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import java.util.List;
 import java.util.Map;
 
-import com.foxinmy.weixin4j.bean.AesToken;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.type.EncryptType;
+import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.StringUtil;

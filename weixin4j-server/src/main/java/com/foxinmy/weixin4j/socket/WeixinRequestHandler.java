@@ -10,11 +10,11 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
-import com.foxinmy.weixin4j.bean.AesToken;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.type.EncryptType;
+import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
@@ -108,7 +108,6 @@ public class WeixinRequestHandler extends
 			ctx.channel().attr(Consts.ACCOUNTOPENID_KEY)
 					.set(messageHandler.getToUserName());
 		}
-		messageDispatcher.doDispatch(ctx, request,
-				messageHandler.getMessageKey());
+		messageDispatcher.doDispatch(ctx, request, messageHandler);
 	}
 }

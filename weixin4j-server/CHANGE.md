@@ -41,3 +41,7 @@
   + 去掉SLF4J-API依赖
   
   + released 1.0.0!
+  
+* 2015-05-18
+
+  + 新增WeixinMessageKeyDefiner类

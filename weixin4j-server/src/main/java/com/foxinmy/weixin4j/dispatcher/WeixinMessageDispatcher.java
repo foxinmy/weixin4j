@@ -23,17 +23,20 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-import com.foxinmy.weixin4j.bean.BeanFactory;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
+import com.foxinmy.weixin4j.messagekey.DefaultMessageKeyDefiner;
+import com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
+import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.ReflectionUtil;
+import com.foxinmy.weixin4j.xml.CruxMessageHandler;
 
 /**
  * 微信消息分发器
@@ -45,8 +48,9 @@ import com.foxinmy.weixin4j.util.ReflectionUtil;
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
  * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher
+ * @see com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner
  * @see com.foxinmy.weixin4j.dispatcher.MessageHandlerExecutor
- * @see com.foxinmy.weixin4j.bean.BeanFactory
+ * @see com.foxinmy.weixin4j.dispatcher.BeanFactory
  */
 public class WeixinMessageDispatcher {
 
@@ -83,13 +87,22 @@ public class WeixinMessageDispatcher {
 	 */
 	private WeixinMessageMatcher messageMatcher;
 	/**
+	 * 消息key
+	 */
+	private WeixinMessageKeyDefiner messageKeyDefiner;
+	/**
 	 * 消息转换
 	 */
 	private Map<Class<?>, Unmarshaller> messageUnmarshaller;
 
 	public WeixinMessageDispatcher() {
-		messageMatcher = new WeixinMessageMatcher();
+		this(new DefaultMessageKeyDefiner());
+	}
+
+	public WeixinMessageDispatcher(WeixinMessageKeyDefiner messageKeyDefiner) {
+		messageMatcher = new WeixinMessageMatcher(messageKeyDefiner);
 		messageUnmarshaller = new HashMap<Class<?>, Unmarshaller>();
+		this.messageKeyDefiner = messageKeyDefiner;
 	}
 
 	/**
@@ -104,8 +117,11 @@ public class WeixinMessageDispatcher {
 	 * @throws WeixinException
 	 */
 	public void doDispatch(final ChannelHandlerContext context,
-			final WeixinRequest request, final String messageKey)
+			final WeixinRequest request, final CruxMessageHandler messageHandler)
 			throws WeixinException {
+		String messageKey = messageKeyDefiner.defineMessageKey(
+				messageHandler.getMsgType(), messageHandler.getEventType(),
+				messageHandler.getAccountType());
 		Class<?> targetClass = messageMatcher.find(messageKey);
 		Object message = request.getOriginalContent();
 		if (targetClass != null) {
@@ -404,5 +420,23 @@ public class WeixinMessageDispatcher {
 
 	public void setBeanFactory(BeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
+	}
+
+	public void registMessageMatch(String messageType, String eventType,
+			AccountType accountType, Class<?> messageClass) {
+		registMessageMatch(messageKeyDefiner.defineMessageKey(messageType,
+				eventType, accountType), messageClass);
+	}
+
+	public void registMessageMatch(String messageKey, Class<?> messageClass) {
+		messageMatcher.regist(messageKey, messageClass);
+	}
+
+	public WeixinMessageMatcher getMessageMatcher() {
+		return this.messageMatcher;
+	}
+
+	public WeixinMessageKeyDefiner getMessageKeyDefiner() {
+		return this.messageKeyDefiner;
 	}
 }

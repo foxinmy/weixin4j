@@ -6,9 +6,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
-import com.foxinmy.weixin4j.bean.AesToken;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.util.AesToken;
 
 /**
  * 微信消息服务器初始化

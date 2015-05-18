@@ -12,13 +12,15 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.foxinmy.weixin4j.bean.AesToken;
-import com.foxinmy.weixin4j.bean.BeanFactory;
+import com.foxinmy.weixin4j.dispatcher.BeanFactory;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
+import com.foxinmy.weixin4j.messagekey.DefaultMessageKeyDefiner;
+import com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner;
 import com.foxinmy.weixin4j.socket.WeixinServerInitializer;
+import com.foxinmy.weixin4j.util.AesToken;
 
 /**
  * 微信netty服务启动程序
@@ -30,7 +32,7 @@ import com.foxinmy.weixin4j.socket.WeixinServerInitializer;
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
  * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher
- * @see com.foxinmy.weixin4j.bean.BeanFactory
+ * @see com.foxinmy.weixin4j.dispatcher.BeanFactory
  */
 public final class WeixinServerBootstrap {
 
@@ -91,10 +93,15 @@ public final class WeixinServerBootstrap {
 	}
 
 	public WeixinServerBootstrap(AesToken aesToken) {
+		this(aesToken, new DefaultMessageKeyDefiner());
+	}
+
+	public WeixinServerBootstrap(AesToken aesToken,
+			WeixinMessageKeyDefiner messageKeyDefiner) {
 		this.aesToken = aesToken;
 		this.messageHandlerList = new LinkedList<WeixinMessageHandler>();
 		this.messageInterceptorList = new LinkedList<WeixinMessageInterceptor>();
-		this.messageDispatcher = new WeixinMessageDispatcher();
+		this.messageDispatcher = new WeixinMessageDispatcher(messageKeyDefiner);
 	}
 
 	/**

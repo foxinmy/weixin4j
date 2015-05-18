@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.bean;
+package com.foxinmy.weixin4j.dispatcher;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 

@@ -8,11 +8,11 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.List;
 
-import com.foxinmy.weixin4j.bean.AesToken;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.response.BlankResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.type.EncryptType;
+import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;

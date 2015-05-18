@@ -292,3 +292,7 @@
   + **weixin4j-server**: 去掉SLF4J-API依赖
   
   + **weixin4j-server**: released 1.0.0!
+  
+* 2015-05-18
+
+  + **weixin4j-server**: 新增WeixinMessageKeyDefiner类
