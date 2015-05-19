@@ -7,6 +7,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -35,6 +37,9 @@ import com.foxinmy.weixin4j.util.AesToken;
  * @see com.foxinmy.weixin4j.dispatcher.BeanFactory
  */
 public final class WeixinServerBootstrap {
+
+	private final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 
 	/**
 	 * 默认boss线程数,一般设置为cpu的核数
@@ -141,6 +146,7 @@ public final class WeixinServerBootstrap {
 									messageDispatcher));
 			Channel ch = b.bind(serverPort).sync().channel();
 			System.err.println("weixin4j server startup OK:" + serverPort);
+			logger.info("weixin4j server startup OK:{}", serverPort);
 			ch.closeFuture().sync();
 		} catch (WeixinException e) {
 			throw e;

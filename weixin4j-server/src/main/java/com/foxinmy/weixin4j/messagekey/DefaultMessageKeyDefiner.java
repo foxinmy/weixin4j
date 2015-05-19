@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.messagekey;
 
 import com.foxinmy.weixin4j.type.AccountType;
+import com.foxinmy.weixin4j.type.MessageType;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
@@ -22,6 +23,9 @@ public class DefaultMessageKeyDefiner implements WeixinMessageKeyDefiner {
 		StringBuilder messageKey = new StringBuilder();
 		if (!StringUtil.isBlank(messageType)) {
 			messageKey.append(messageType.toLowerCase());
+			if (!messageType.trim().equalsIgnoreCase(MessageType.event.name())) {
+				return messageKey.toString();
+			}
 		}
 		if (accountType != null) {
 			messageKey.insert(0, String.format("%s%s", accountType.name()

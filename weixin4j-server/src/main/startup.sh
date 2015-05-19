@@ -6,10 +6,10 @@ JAVA_HOME="/usr/local/java/"
 RUNNING_USER=root
  
 #Run home
-APP_HOME="/usr/local/weixin/weixin-server"
+APP_HOME="/usr/local/weixin/weixin4j-server"
  
 #main class
-APP_MAINCLASS=netty服务启动类
+APP_MAINCLASS=微信服务启动类
  
 #classpath
 CLASSPATH=$APP_HOME/classes

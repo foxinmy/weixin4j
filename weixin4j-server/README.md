@@ -107,7 +107,7 @@ assembly打包(辅助)
 			<descriptors>
 				<descriptor>src/main/assembly.xml</descriptor>
 			</descriptors>
-			<finalName>weixin-server</finalName>
+			<finalName>weixin4j-server</finalName>
 		</configuration>
 		<executions>
 			<execution>

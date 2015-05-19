@@ -56,8 +56,6 @@ public class WeixinRequestHandler extends
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, WeixinRequest request)
 			throws WeixinException {
-		logger.info("\n=================message request=================\n{}",
-				request);
 		if (request.getMethod().equals(HttpMethod.GET.name())) {
 			if (MessageUtil.signature(aesToken.getToken(),
 					request.getTimeStamp(), request.getNonce()).equals(

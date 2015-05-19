@@ -47,10 +47,8 @@ public class WeixinMessageDecoder extends
 		String content = req.content().toString(Consts.UTF_8);
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
 				true);
-		logger.info("\n=================receive request=================");
-		logger.info("{}", req.getMethod());
-		logger.info("{}", req.getUri());
-		logger.info("{}", content);
+		logger.info("decode request:{} use {} method invoking", req.getUri(),
+				req.getMethod().name());
 		Map<String, List<String>> parameters = queryDecoder.parameters();
 		EncryptType encryptType = parameters.containsKey("encrypt_type") ? EncryptType
 				.valueOf(parameters.get("encrypt_type").get(0).toUpperCase())

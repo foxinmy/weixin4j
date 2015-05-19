@@ -127,6 +127,8 @@ public class WeixinMessageDispatcher {
 		if (targetClass != null) {
 			message = messageRead(request.getOriginalContent(), targetClass);
 		}
+		logger.info("define [{}] messageKey matched [{}] unmarshal to {}",
+				messageKey, targetClass, message);
 		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(context,
 				request, messageKey, message);
 		if (handlerExecutor == null
@@ -141,9 +143,6 @@ public class WeixinMessageDispatcher {
 		try {
 			WeixinResponse response = handlerExecutor.getMessageHandler()
 					.doHandle(request, message);
-			logger.info(
-					"\n=================message response=================\n{}",
-					response);
 			handlerExecutor.applyPostHandle(request, response, message);
 			context.write(response);
 		} catch (WeixinException e) {

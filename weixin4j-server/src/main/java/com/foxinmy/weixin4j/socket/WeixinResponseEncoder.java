@@ -94,7 +94,6 @@ public class WeixinResponseEncoder extends
 		}
 		ctx.writeAndFlush(HttpUtil.createHttpResponse(content.toString(), OK,
 				Consts.CONTENTTYPE$APPLICATION_XML));
-		logger.info("\n=================response message=================");
-		logger.info("{}", content);
+		logger.info("{} encode response:{}", encryptType, content);
 	}
 }
