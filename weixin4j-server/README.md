@@ -3,6 +3,7 @@ weixin4j-server
 
 微信消息服务器
 -------------
+base on netty.
 
 功能列表
 -------
