@@ -41,12 +41,12 @@ weixin4j
 	    <artifactId>weixin4j-qy</artifactId>
 	    <version>1.4</version>
 	</dependency>
-微信被动消息服务器(1.0.0,2015-05-16 released)
+微信被动消息服务器(1.0.1,2015-05-20 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.0.0</version>
+	    <version>1.0.1</version>
 	</dependency>
 
 以上依赖如果出现Missing artifact错误 请尝试在eclipse里这么做

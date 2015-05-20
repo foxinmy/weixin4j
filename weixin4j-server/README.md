@@ -15,12 +15,12 @@ base on netty.
 
 如何使用
 -------
-###maven依赖(1.0.0,2015-05-16 released)
+###maven依赖(1.0.1,2015-05-20 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.0.0</version>
+	    <version>1.0.1</version>
 	</dependency>
 ###编写服务启动类
 明文模式并总是调试输出微信请求信息的服务启动类.
@@ -94,7 +94,7 @@ base on netty.
 
 assembly打包(辅助)
 -----------------
-[assembly](http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html)是maven的一个打包插件,它可以创建一个包含脚本、配置文件以及所有运行时所依赖的元素(jar)assembly插件能帮你构建一个完整的发布包.
+> [assembly](http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html)是maven的一个打包插件,它可以创建一> 个包含脚本、配置文件以及所有运行时所依赖的元素(jar)assembly插件能帮你构建一个完整的发布包.
 
 1.复制[assembly.xml](./src/main/assembly.xml)和[startup.sh](./src/main/startup.sh)到自己工程的src/main目录下.
 

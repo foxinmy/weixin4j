@@ -296,3 +296,7 @@
 * 2015-05-18
 
   + **weixin4j-server**: 新增WeixinMessageKeyDefiner类
+  
+* 2015-05-20
+
+  + **weixin4j-server**: released 1.0.1

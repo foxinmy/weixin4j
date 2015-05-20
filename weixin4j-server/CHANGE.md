@@ -45,3 +45,7 @@
 * 2015-05-18
 
   + 新增WeixinMessageKeyDefiner类
+  
+* 2015-05-20
+
+  + released 1.0.1
