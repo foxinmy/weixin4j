@@ -94,7 +94,7 @@ base on netty.
 
 assembly打包(辅助)
 -----------------
-> [assembly](http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html)是maven的一个打包插件,它可以创建一> 个包含脚本、配置文件以及所有运行时所依赖的元素(jar)assembly插件能帮你构建一个完整的发布包.
+> [assembly](http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html)是maven的一个打包插件,它可以创建一个包含脚本、配置文件以及所有运行时所依赖的元素(jar)assembly插件能帮你构建一个完整的发布包.
 
 1.复制[assembly.xml](./src/main/assembly.xml)和[startup.sh](./src/main/startup.sh)到自己工程的src/main目录下.
 

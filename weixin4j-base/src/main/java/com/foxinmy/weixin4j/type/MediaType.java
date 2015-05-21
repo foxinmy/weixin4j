@@ -3,7 +3,7 @@ package com.foxinmy.weixin4j.type;
 /**
  * 上传的媒体类型</br>
  * <p>
- * 公众平台上传限制:</br> 图片(image): 128K,支持JPG格式</br>
+ * 公众平台上传限制:</br> 图片(image): 128K,支持JPG,PNG格式</br>
  * 语音(voice):256K,播放长度不超过60s,支持AMR\MP3格式</br> 视频(video):1MB,支持MP4格式</br>
  * 缩略图(thumb):64KB,支持JPG格式</br>
  * </p>
