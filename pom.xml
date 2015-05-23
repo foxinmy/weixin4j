@@ -45,19 +45,6 @@
 		<module>weixin4j-qy</module>
 	</modules>
 	<properties>
-		<junit.version>4.8.2</junit.version>
-		<dom4j.version>1.6.1</dom4j.version>
-		<jcl.version>1.7.6</jcl.version>
-		<xstream.version>1.4.7</xstream.version>
-		<httpclient.version>4.2.5</httpclient.version>
-		<commons.codec.version>1.9</commons.codec.version>
-		<fastjson.version>1.2.3</fastjson.version>
-		<jsoup.version>1.7.3</jsoup.version>
-		<jaxen.version>1.1.6</jaxen.version>
-		<jedis.version>2.6.0</jedis.version>
-		<poi.version>3.9</poi.version>
-		<commons.lang.version>3.3.2</commons.lang.version>
-		<commons.codec.version>1.9</commons.codec.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<build>
@@ -223,7 +210,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
+				<version>4.8.2</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>

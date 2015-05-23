@@ -28,11 +28,6 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-			<version>${jaxen.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
