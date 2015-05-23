@@ -76,7 +76,7 @@ public final class WeixinServerBootstrap {
 	/**
 	 * 明文模式
 	 * 
-	 * * @param appid 公众号的唯一ID
+	 * * @param token 开发者token
 	 * 
 	 */
 	public WeixinServerBootstrap(String token) {

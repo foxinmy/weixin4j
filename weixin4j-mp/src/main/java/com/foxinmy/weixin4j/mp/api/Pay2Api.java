@@ -1,23 +1,21 @@
 package com.foxinmy.weixin4j.mp.api;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -25,7 +23,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
 import org.apache.http.Consts;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -46,7 +43,6 @@ import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.RefundType;
 import com.foxinmy.weixin4j.mp.type.SignType;
-import com.foxinmy.weixin4j.mp.util.ExcelUtil;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
@@ -374,7 +370,7 @@ public class Pay2Api extends PayApi {
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
 		String bill_path = ConfigUtil.getValue("bill_path");
-		String fileName = String.format("%s_%s_%s.xls", formatBillDate,
+		String fileName = String.format("%s_%s_%s.txt", formatBillDate,
 				billType.name().toLowerCase(), weixinAccount.getId());
 		File file = new File(String.format("%s/%s", bill_path, fileName));
 		if (file.exists()) {
@@ -394,28 +390,19 @@ public class Pay2Api extends PayApi {
 		map.put("sign", sign.toLowerCase());
 		Response response = request.get(downloadbill_uri, map);
 		BufferedReader reader = null;
-		OutputStream os = null;
+		BufferedWriter writer = null;
+		FileWriter fw = null;
 		try {
+			fw = new FileWriter(file);
+			writer = new BufferedWriter(fw);
 			reader = new BufferedReader(
 					new InputStreamReader(response.getStream(),
 							com.foxinmy.weixin4j.model.Consts.GBK));
 			String line = null;
-			List<String[]> bills = new LinkedList<String[]>();
 			while ((line = reader.readLine()) != null) {
-				bills.add(line.replaceAll("`", "").split(","));
+				writer.write(line);
+				writer.newLine();
 			}
-
-			List<String> headers = Arrays.asList(bills.remove(0));
-			List<String> totalDatas = Arrays
-					.asList(bills.remove(bills.size() - 1));
-			List<String> totalHeaders = Arrays
-					.asList(bills.remove(bills.size() - 1));
-			HSSFWorkbook wb = new HSSFWorkbook();
-			wb.createSheet(formatBillDate + "对账单");
-			ExcelUtil.list2excel(wb, headers, bills);
-			ExcelUtil.list2excel(wb, totalHeaders, totalDatas);
-			os = new FileOutputStream(file);
-			wb.write(os);
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		} finally {
@@ -423,8 +410,9 @@ public class Pay2Api extends PayApi {
 				if (reader != null) {
 					reader.close();
 				}
-				if (os != null) {
-					os.close();
+				if (writer != null) {
+					writer.close();
+					fw.close();
 				}
 			} catch (IOException ignore) {
 				;
