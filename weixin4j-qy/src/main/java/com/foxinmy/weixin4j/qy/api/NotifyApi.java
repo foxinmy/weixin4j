@@ -47,7 +47,7 @@ public class NotifyApi extends QyApi {
 	 * @param notify
 	 *            客服消息对象
 	 * @return 
-	 *         如果对应用或收件人、部门、标签任何一个无权限，则本次发送失败；如果收件人、部门或标签不存在，发送仍然执行，但返回无效的部分</br>
+	 *         如果无权限，则本次发送失败；如果收件人不存在或未关注，发送仍然执行。两种情况下均返回无效的部分</br>
 	 *         { "errcode": 0, "errmsg": "ok", "invaliduser": "UserID1",
 	 *         "invalidparty":"PartyID1", "invalidtag":"TagID1" }
 	 * @throws WeixinException

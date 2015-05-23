@@ -575,6 +575,10 @@
 		<text>账号数量超过上限</text>
 	</error>
 	<error>
+		<code>45027</code>
+		<text>mpnews每天只能发送100次</text>
+	</error>
+	<error>
 		<code>46001</code>
 		<text>不存在媒体数据</text>
 	</error>
