@@ -7,8 +7,8 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
@@ -73,7 +73,7 @@ public abstract class PayApi extends MpApi {
 		map.put("app_signature", PayUtil.paysignSha(map));
 		map.put("sign_method", SignType.SHA1.name().toLowerCase());
 
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(delivernotify_uri, token.getAccessToken()),
 				JSON.toJSONString(map));
 		return response.getAsJsonResult();
@@ -93,7 +93,7 @@ public abstract class PayApi extends MpApi {
 			throws WeixinException {
 		String payfeedback_update_uri = getRequestUri("payfeedback_update_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.get(String.format(payfeedback_update_uri,
+		WeixinResponse response = weixinClient.get(String.format(payfeedback_update_uri,
 				token.getAccessToken(), openId, feedbackId));
 		return response.getAsJsonResult();
 	}

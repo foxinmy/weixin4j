@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;

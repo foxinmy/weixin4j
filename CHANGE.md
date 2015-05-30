@@ -300,3 +300,7 @@
 * 2015-05-20
 
   + **weixin4j-server**: released 1.0.1
+  
+* 2015-05-30
+
+  **大的调整：去掉httpclient依赖**

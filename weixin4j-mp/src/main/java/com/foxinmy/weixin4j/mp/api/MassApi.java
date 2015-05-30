@@ -6,8 +6,8 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.MassTuple;
@@ -53,7 +53,7 @@ public class MassApi extends MpApi {
 		Token token = tokenHolder.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("articles", articles);
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(article_upload_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -76,7 +76,7 @@ public class MassApi extends MpApi {
 	public String uploadVideo(Video video) throws WeixinException {
 		String video_upload_uri = getRequestUri("video_upload_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(video_upload_uri, token.getAccessToken()),
 				JSON.toJSONString(video));
 
@@ -150,7 +150,7 @@ public class MassApi extends MpApi {
 		obj.put("msgtype", msgtype);
 		String mass_group_uri = getRequestUri("mass_group_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(mass_group_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -216,7 +216,7 @@ public class MassApi extends MpApi {
 		obj.put("msgtype", msgtype);
 		String mass_openid_uri = getRequestUri("mass_openid_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(mass_openid_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -262,7 +262,7 @@ public class MassApi extends MpApi {
 		obj.put("msgid", msgid);
 		String mass_delete_uri = getRequestUri("mass_delete_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(mass_delete_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -291,7 +291,7 @@ public class MassApi extends MpApi {
 		obj.put("msgtype", msgtype);
 		String mass_preview_uri = getRequestUri("mass_preview_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(mass_preview_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -314,7 +314,7 @@ public class MassApi extends MpApi {
 		obj.put("msg_id", msgId);
 		String mass_get_uri = getRequestUri("mass_get_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(mass_get_uri, token.getAccessToken()),
 				obj.toJSONString());
 

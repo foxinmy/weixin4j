@@ -1,15 +1,15 @@
-package com.foxinmy.weixin4j.util;
+package com.foxinmy.weixin4j.page;
 
 import java.io.Serializable;
 
-import com.foxinmy.weixin4j.util.Sort.Direction;
+import com.foxinmy.weixin4j.page.Sort.Direction;
 
 /**
  * @className Pageable
  * @author jy
  * @date 2014年12月27日
  * @since JDK 1.7
- * @see org.springframework.data.domain.Pageable
+ * @see com.foxinmy.weixin4j.page.springframework.data.domain.Pageable
  */
 public class Pageable implements Serializable {
 

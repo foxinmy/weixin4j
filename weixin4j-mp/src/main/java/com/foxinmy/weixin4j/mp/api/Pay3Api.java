@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.mp.api;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -15,14 +16,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.Consts;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.Response;
-import com.foxinmy.weixin4j.http.SSLHttpRequest;
-import com.foxinmy.weixin4j.http.XmlResult;
+import com.foxinmy.weixin4j.http.weixin.SSLHttpClinet;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
+import com.foxinmy.weixin4j.http.weixin.XmlResult;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.conver.CouponConverter;
@@ -79,7 +79,7 @@ public class Pay3Api extends PayApi {
 		map.put("sign", sign);
 		String param = map2xml(map);
 		String orderquery_uri = getRequestUri("orderquery_v3_uri");
-		Response response = request.post(orderquery_uri, param);
+		WeixinResponse response = weixinClient.post(orderquery_uri, param);
 		return CouponConverter.fromXML(response.getAsString(), Order.class);
 	}
 
@@ -120,7 +120,7 @@ public class Pay3Api extends PayApi {
 			String outRefundNo, double totalFee, double refundFee,
 			String opUserId, Map<String, String> mopara) throws WeixinException {
 		String refund_uri = getRequestUri("refund_v3_uri");
-		Response response = null;
+		WeixinResponse response = null;
 		InputStream ca = null;
 		try {
 			ca = new FileInputStream(caFile);
@@ -140,8 +140,8 @@ public class Pay3Api extends PayApi {
 					.paysignMd5(map, weixinAccount.getPaySignKey());
 			map.put("sign", sign);
 			String param = map2xml(map);
-			SSLHttpRequest request = new SSLHttpRequest(
-					weixinAccount.getMchId(), ca);
+			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
+					ca);
 			response = request.post(refund_uri, param);
 		} catch (WeixinException e) {
 			throw e;
@@ -212,15 +212,15 @@ public class Pay3Api extends PayApi {
 		InputStream ca = null;
 		try {
 			ca = new FileInputStream(caFile);
-			SSLHttpRequest request = new SSLHttpRequest(
-					weixinAccount.getMchId(), ca);
+			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
+					ca);
 			String reverse_uri = getRequestUri("reverse_uri");
 			Map<String, String> map = baseMap(idQuery);
 			String sign = PayUtil
 					.paysignMd5(map, weixinAccount.getPaySignKey());
 			map.put("sign", sign);
 			String param = map2xml(map);
-			Response response = request.post(reverse_uri, param);
+			WeixinResponse response = request.post(reverse_uri, param);
 			return response.getAsObject(new TypeReference<ApiResult>() {
 			});
 		} catch (IOException e) {
@@ -258,7 +258,7 @@ public class Pay3Api extends PayApi {
 		map.put("sign", sign);
 		String param = map2xml(map);
 		String shorturl_uri = getRequestUri("p_shorturl_uri");
-		Response response = request.post(shorturl_uri, param);
+		WeixinResponse response = weixinClient.post(shorturl_uri, param);
 		map = xml2map(response.getAsString());
 		return map.get("short_url");
 	}
@@ -285,7 +285,7 @@ public class Pay3Api extends PayApi {
 		map.put("sign", sign);
 		String param = map2xml(map);
 		String closeorder_uri = getRequestUri("closeorder_uri");
-		Response response = request.post(closeorder_uri, param);
+		WeixinResponse response = weixinClient.post(closeorder_uri, param);
 		return response.getAsObject(new TypeReference<ApiResult>() {
 		});
 	}
@@ -333,7 +333,7 @@ public class Pay3Api extends PayApi {
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = map2xml(map);
-		Response response = request.post(downloadbill_uri, param);
+		WeixinResponse response = weixinClient.post(downloadbill_uri, param);
 
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
@@ -341,9 +341,9 @@ public class Pay3Api extends PayApi {
 		try {
 			fw = new FileWriter(file);
 			writer = new BufferedWriter(fw);
-			reader = new BufferedReader(
-					new InputStreamReader(response.getStream(),
-							com.foxinmy.weixin4j.model.Consts.GBK));
+			reader = new BufferedReader(new InputStreamReader(
+					new ByteArrayInputStream(response.getContent()),
+					com.foxinmy.weixin4j.model.Consts.GBK));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				writer.write(line);
@@ -392,7 +392,7 @@ public class Pay3Api extends PayApi {
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = map2xml(map);
-		Response response = request.post(refundquery_uri, param);
+		WeixinResponse response = weixinClient.post(refundquery_uri, param);
 		return RefundConverter.fromXML(response.getAsString(),
 				RefundRecord.class);
 	}
@@ -433,7 +433,7 @@ public class Pay3Api extends PayApi {
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = map2xml(map);
-		Response response = request.post(pay_report_uri, param);
+		WeixinResponse response = weixinClient.post(pay_report_uri, param);
 		return response.getAsXmlResult();
 	}
 

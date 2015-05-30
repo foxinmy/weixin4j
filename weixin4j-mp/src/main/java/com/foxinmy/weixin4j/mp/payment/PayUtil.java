@@ -7,8 +7,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.HttpRequest;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.v2.JsPayRequestV2;
@@ -151,7 +151,7 @@ public class PayUtil {
 		// stringSignTemp 进行 md5 运算
 		// 再将得到的 字符串所有字符转换为大写 ,得到 sign 值 signValue。
 		sb.append("&key=").append(paySignKey);
-		return DigestUtil.SHA1(sb.toString()).toUpperCase();
+		return DigestUtil.MD5(sb.toString()).toUpperCase();
 	}
 
 	/**
@@ -219,15 +219,15 @@ public class PayUtil {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1">统一下单接口</a>
 	 * @return 预支付对象
 	 */
+	private final static WeixinHttpClient httpClient = new WeixinHttpClient();
 	public static PrePay createPrePay(PayPackageV3 payPackage, String paySignKey)
 			throws PayException {
 		if (StringUtil.isBlank(payPackage.getSign())) {
 			payPackage.setSign(paysignMd5(payPackage, paySignKey));
 		}
 		String payJsRequestXml = XmlStream.to(payPackage).replaceAll("__", "_");
-		HttpRequest request = new HttpRequest();
 		try {
-			Response response = request.post(Consts.UNIFIEDORDER,
+			WeixinResponse response = httpClient.post(Consts.UNIFIEDORDER,
 					payJsRequestXml);
 			PrePay prePay = response.getAsObject(new TypeReference<PrePay>() {
 			});
@@ -407,8 +407,7 @@ public class PayUtil {
 		String sign = paysignMd5(payPackage, weixinAccount.getPaySignKey());
 		payPackage.setSign(sign);
 		String para = XmlStream.to(payPackage).replaceAll("__", "_");
-		HttpRequest request = new HttpRequest();
-		Response response = request.post(Consts.MICROPAYURL, para);
+		WeixinResponse response = httpClient.post(Consts.MICROPAYURL, para);
 		return response
 				.getAsObject(new TypeReference<com.foxinmy.weixin4j.mp.payment.v3.Order>() {
 				});

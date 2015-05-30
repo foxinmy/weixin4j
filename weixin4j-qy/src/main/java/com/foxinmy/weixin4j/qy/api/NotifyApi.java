@@ -3,7 +3,7 @@ package com.foxinmy.weixin4j.qy.api;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.message.NotifyMessage;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -72,7 +72,7 @@ public class NotifyApi extends QyApi {
 		obj.put(msgtype, tuple);
 		String message_send_uri = getRequestUri("message_send_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(message_send_uri, token.getAccessToken()),
 				obj.toJSONString());
 

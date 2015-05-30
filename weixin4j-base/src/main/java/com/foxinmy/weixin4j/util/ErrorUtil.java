@@ -12,7 +12,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 
 /**
  * 接口调用错误获取
@@ -29,7 +29,7 @@ public final class ErrorUtil {
 	static {
 		errorCacheMap = new HashMap<String, String>();
 		try {
-			errorXmlByteArray = IOUtil.toByteArray(Response.class
+			errorXmlByteArray = IOUtil.toByteArray(WeixinResponse.class
 					.getResourceAsStream("error.xml"));
 		} catch (IOException e) {
 			;

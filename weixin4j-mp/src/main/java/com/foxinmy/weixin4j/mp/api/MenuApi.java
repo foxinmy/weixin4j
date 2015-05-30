@@ -11,8 +11,8 @@ import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.alibaba.fastjson.parser.deserializer.ParseProcess;
 import com.alibaba.fastjson.serializer.NameFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -50,7 +50,7 @@ public class MenuApi extends MpApi {
 		Token token = tokenHolder.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("button", btnList);
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(menu_create_uri, token.getAccessToken()),
 				JSON.toJSONString(obj, new NameFilter() {
 					@Override
@@ -87,7 +87,7 @@ public class MenuApi extends MpApi {
 	public List<Button> getMenu() throws WeixinException {
 		String menu_get_uri = getRequestUri("menu_get_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.get(String.format(menu_get_uri,
+		WeixinResponse response = weixinClient.get(String.format(menu_get_uri,
 				token.getAccessToken()));
 
 		JSONArray buttons = response.getAsJson().getJSONObject("menu")
@@ -117,7 +117,7 @@ public class MenuApi extends MpApi {
 	public JsonResult deleteMenu() throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.get(String.format(menu_delete_uri,
+		WeixinResponse response = weixinClient.get(String.format(menu_delete_uri,
 				token.getAccessToken()));
 
 		return response.getAsJsonResult();

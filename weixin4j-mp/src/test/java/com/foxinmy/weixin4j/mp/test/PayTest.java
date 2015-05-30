@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.XmlResult;
+import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.mp.WeixinPayProxy;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
@@ -29,8 +29,8 @@ public class PayTest {
 	private final static WeixinMpAccount ACCOUNT2;
 	private final static WeixinMpAccount ACCOUNT3;
 	static {
-		ACCOUNT2 = new WeixinMpAccount("请填入v2版本的appid", "请填入v2版本的appsecret",
-				"请填入v2版本的paysignkey", "请填入v2版本的partnerId", "请填入v2版本的partnerKey");
+		ACCOUNT2 = new WeixinMpAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
+				"请填入v3版本的paysignkey", "请填入v2版本的partnerId", "请填入v2版本的partnerKey");
 		PAY2 = new WeixinPayProxy(ACCOUNT2, new FileTokenHolder(
 				new WeixinTokenCreator(ACCOUNT2.getId(), ACCOUNT2.getSecret())));
 		ACCOUNT3 = new WeixinMpAccount("请填入v3版本的appid", "请填入v3版本的appSecret",

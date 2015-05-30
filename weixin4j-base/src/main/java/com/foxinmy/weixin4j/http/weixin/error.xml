@@ -529,7 +529,7 @@
 	<error>
 		<code>45008</code>
 		<desc>article size out of limit</desc>
-		<text>article参数超过限制</text>
+		<text>图文消息的文章数量不能超过10条</text>
 	</error>
 	<error>
 		<code>45009</code>
@@ -860,6 +860,10 @@
 	<error>
 		<code>82003</code>
 		<text>不合法的TagID列表长度</text>
+	</error>
+	<error>
+		<code>82004</code>
+		<text>微信版本号过低</text>
 	</error>
 	<!-- 语义理解API错误 -->
 	<error>

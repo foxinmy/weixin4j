@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.qy.model;
 
 import com.alibaba.fastjson.JSONArray;
-import com.foxinmy.weixin4j.http.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.qy.type.BatchStatus;
 import com.foxinmy.weixin4j.qy.type.BatchType;
 

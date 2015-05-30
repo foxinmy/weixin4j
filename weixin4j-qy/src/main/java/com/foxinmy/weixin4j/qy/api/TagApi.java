@@ -5,8 +5,8 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
@@ -42,7 +42,7 @@ public class TagApi extends QyApi {
 	public int createTag(String tagName) throws WeixinException {
 		String tag_create_uri = getRequestUri("tag_create_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(tag_create_uri, token.getAccessToken()),
 				String.format("{\"tagname\":\"%s\"}", tagName));
 		return response.getAsJson().getIntValue("tagid");
@@ -62,7 +62,7 @@ public class TagApi extends QyApi {
 	public JsonResult updateTag(Tag tag) throws WeixinException {
 		String tag_update_uri = getRequestUri("tag_update_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(tag_update_uri, token.getAccessToken()),
 				JSON.toJSONString(tag));
 		return response.getAsJsonResult();
@@ -81,7 +81,7 @@ public class TagApi extends QyApi {
 	public JsonResult deleteTag(int tagId) throws WeixinException {
 		String tag_delete_uri = getRequestUri("tag_delete_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(String.format(tag_delete_uri,
+		WeixinResponse response = weixinClient.post(String.format(tag_delete_uri,
 				token.getAccessToken(), tagId));
 		return response.getAsJsonResult();
 	}
@@ -98,7 +98,7 @@ public class TagApi extends QyApi {
 	public List<Tag> listTag() throws WeixinException {
 		String tag_list_uri = getRequestUri("tag_list_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(String.format(tag_list_uri,
+		WeixinResponse response = weixinClient.post(String.format(tag_list_uri,
 				token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("taglist"),
 				Tag.class);
@@ -118,7 +118,7 @@ public class TagApi extends QyApi {
 	public List<User> getTagUsers(int tagId) throws WeixinException {
 		String tag_get_user_uri = getRequestUri("tag_get_user_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(String.format(tag_get_user_uri,
+		WeixinResponse response = weixinClient.post(String.format(tag_get_user_uri,
 				token.getAccessToken(), tagId));
 		return JSON.parseArray(response.getAsJson().getString("userlist"),
 				User.class);
@@ -168,7 +168,7 @@ public class TagApi extends QyApi {
 		obj.put("tagid", tagId);
 		obj.put("userlist", userIds);
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(uri, token.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
 		JsonResult result = JSON.toJavaObject(obj, JsonResult.class);

@@ -9,17 +9,16 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.StringBody;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.PartParameter;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
+import com.foxinmy.weixin4j.http.apache.FormBodyPart;
+import com.foxinmy.weixin4j.http.apache.StringBody;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.MediaCounter;
@@ -126,22 +125,22 @@ public class MediaApi extends MpApi {
 					"please invoke uploadMaterialVideo method");
 		}
 		Token token = tokenHolder.getToken();
-		Response response = null;
+		WeixinResponse response = null;
 		if (isMaterial) {
 			String material_media_upload_uri = getRequestUri("material_media_upload_uri");
 			try {
-				response = request.post(String.format(
+				response = weixinClient.post(String.format(
 						material_media_upload_uri, token.getAccessToken()),
-						new PartParameter("media", new ByteArrayBody(bytes,
-								fileName)), new PartParameter("type",
+						new FormBodyPart("media", new ByteArrayBody(bytes,
+								fileName)), new FormBodyPart("type",
 								new StringBody(mediaType, Consts.UTF_8)));
 			} catch (UnsupportedEncodingException e) {
 				; // ignore
 			}
 		} else {
 			String file_upload_uri = getRequestUri("file_upload_uri");
-			response = request.post(String.format(file_upload_uri,
-					token.getAccessToken(), mediaType), new PartParameter(
+			response = weixinClient.post(String.format(file_upload_uri,
+					token.getAccessToken(), mediaType), new FormBodyPart(
 					"media", new ByteArrayBody(bytes, fileName)));
 		}
 		return response.getAsJson().getString("media_id");
@@ -220,20 +219,20 @@ public class MediaApi extends MpApi {
 	public byte[] downloadMedia(String mediaId, boolean isMaterial)
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
-		Response response = null;
+		WeixinResponse response = null;
 		if (isMaterial) {
 			JSONObject media = new JSONObject();
 			media.put("media_id", mediaId);
 			String material_media_download_uri = getRequestUri("material_media_download_uri");
-			response = request.post(
+			response = weixinClient.post(
 					String.format(material_media_download_uri,
 							token.getAccessToken()), media.toJSONString());
 		} else {
 			String file_download_uri = getRequestUri("file_download_uri");
-			response = request.get(String.format(file_download_uri,
+			response = weixinClient.get(String.format(file_download_uri,
 					token.getAccessToken(), mediaId));
 		}
-		return response.getBody();
+		return response.getContent();
 	}
 
 	/**
@@ -257,7 +256,7 @@ public class MediaApi extends MpApi {
 		String material_article_upload_uri = getRequestUri("material_article_upload_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("articles", articles);
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(material_article_upload_uri,
 						token.getAccessToken()), obj.toJSONString());
 
@@ -306,7 +305,7 @@ public class MediaApi extends MpApi {
 		obj.put("articles", articles);
 		obj.put("media_id", mediaId);
 		obj.put("index", index);
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(material_article_update_uri,
 						token.getAccessToken()), obj.toJSONString());
 
@@ -329,7 +328,7 @@ public class MediaApi extends MpApi {
 		String material_media_del_uri = getRequestUri("material_media_del_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("media_id", mediaId);
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(material_media_del_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -360,14 +359,14 @@ public class MediaApi extends MpApi {
 			description.put("title", title);
 			description.put("introduction", introduction);
 			byte[] bytes = IOUtil.toByteArray(new FileInputStream(file));
-			Response response = request.post(
+			WeixinResponse response = weixinClient.post(
 					String.format(material_media_upload_uri,
 							token.getAccessToken()),
-					new PartParameter("media", new ByteArrayBody(bytes, file
+					new FormBodyPart("media", new ByteArrayBody(bytes, file
 							.getName())),
-					new PartParameter("type", new StringBody(MediaType.video
+					new FormBodyPart("type", new StringBody(MediaType.video
 							.name(), Consts.UTF_8)),
-					new PartParameter("description", new StringBody(description
+					new FormBodyPart("description", new StringBody(description
 							.toJSONString(), Consts.UTF_8)));
 			return response.getAsJson().getString("media_id");
 		} catch (UnsupportedEncodingException e) {
@@ -387,7 +386,7 @@ public class MediaApi extends MpApi {
 	public MediaCounter countMaterialMedia() throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String material_media_count_uri = getRequestUri("material_media_count_uri");
-		Response response = request.get(String.format(material_media_count_uri,
+		WeixinResponse response = weixinClient.get(String.format(material_media_count_uri,
 				token.getAccessToken()));
 
 		return response.getAsObject(new TypeReference<MediaCounter>() {
@@ -419,7 +418,7 @@ public class MediaApi extends MpApi {
 		obj.put("type", mediaType.name());
 		obj.put("offset", offset);
 		obj.put("count", count);
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(material_media_list_uri, token.getAccessToken()),
 				obj.toJSONString());
 		MediaRecord mediaRecord = null;

@@ -10,7 +10,7 @@ package com.foxinmy.weixin4j.util;
 
 import java.util.Arrays;
 
-import org.apache.http.Consts;
+import com.foxinmy.weixin4j.model.Consts;
 
 /**
  * 提供基于PKCS7算法的加解密接口</br>

@@ -6,8 +6,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.ValueFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentOverview;
@@ -46,7 +46,7 @@ public class AgentApi extends QyApi {
 	public AgentInfo getAgent(int agentid) throws WeixinException {
 		String agent_get_uri = getRequestUri("agent_get_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(String.format(agent_get_uri,
+		WeixinResponse response = weixinClient.post(String.format(agent_get_uri,
 				token.getAccessToken(), agentid));
 		JSONObject jsonObj = response.getAsJson();
 		AgentInfo agent = JSON.toJavaObject(jsonObj, AgentInfo.class);
@@ -75,7 +75,7 @@ public class AgentApi extends QyApi {
 	public JsonResult setAgent(AgentSetter agentSet) throws WeixinException {
 		String agent_set_uri = getRequestUri("agent_set_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(agent_set_uri, token.getAccessToken()),
 				JSON.toJSONString(agentSet, typeFilter));
 		return response.getAsJsonResult();
@@ -109,7 +109,7 @@ public class AgentApi extends QyApi {
 	public List<AgentOverview> listAgentOverview() throws WeixinException {
 		String agent_list_uri = getRequestUri("agent_list_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.get(String.format(agent_list_uri,
+		WeixinResponse response = weixinClient.get(String.format(agent_list_uri,
 				token.getAccessToken()));
 
 		return JSON.parseArray(response.getAsJson().getString("agentlist"),

@@ -5,8 +5,8 @@ import java.util.Date;
 
 import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.XmlResult;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.mp.api.CashApi;
 import com.foxinmy.weixin4j.mp.api.CouponApi;
 import com.foxinmy.weixin4j.mp.api.Pay2Api;

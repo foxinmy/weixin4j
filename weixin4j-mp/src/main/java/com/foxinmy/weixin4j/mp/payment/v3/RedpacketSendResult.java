@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.http.XmlResult;
+import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**

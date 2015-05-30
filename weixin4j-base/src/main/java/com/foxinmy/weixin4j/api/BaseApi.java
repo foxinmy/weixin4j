@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.foxinmy.weixin4j.http.HttpRequest;
+import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
 import com.foxinmy.weixin4j.xml.Map2ObjectConverter;
 import com.foxinmy.weixin4j.xml.XmlStream;
 import com.thoughtworks.xstream.core.ClassLoaderReference;
@@ -22,7 +22,7 @@ import com.thoughtworks.xstream.mapper.DefaultMapper;
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">微信企业号API文档</a>
  */
 public abstract class BaseApi {
-	protected final HttpRequest request = new HttpRequest();
+	protected final WeixinHttpClient weixinClient = new WeixinHttpClient();
 	protected final static XmlStream mapXstream = XmlStream.get();
 	static {
 		mapXstream.alias("xml", Map.class);

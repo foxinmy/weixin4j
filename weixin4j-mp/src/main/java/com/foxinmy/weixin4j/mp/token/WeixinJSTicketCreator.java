@@ -2,8 +2,8 @@ package com.foxinmy.weixin4j.mp.token;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.HttpRequest;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenCreator;
@@ -24,7 +24,7 @@ public class WeixinJSTicketCreator implements TokenCreator {
 
 	private final String appid;
 	private final TokenHolder weixinTokenHolder;
-	private final HttpRequest request;
+	private final WeixinHttpClient httpClient;
 
 	/**
 	 * jssdk
@@ -37,7 +37,7 @@ public class WeixinJSTicketCreator implements TokenCreator {
 	public WeixinJSTicketCreator(String appid, TokenHolder weixinTokenHolder) {
 		this.appid = appid;
 		this.weixinTokenHolder = weixinTokenHolder;
-		this.request = new HttpRequest();
+		this.httpClient = new WeixinHttpClient();
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class WeixinJSTicketCreator implements TokenCreator {
 
 	@Override
 	public Token createToken() throws WeixinException {
-		Response response = request.get(String.format(Consts.MP_JS_TICKET_URL,
+		WeixinResponse response = httpClient.get(String.format(Consts.MP_JS_TICKET_URL,
 				weixinTokenHolder.getToken().getAccessToken()));
 		JSONObject result = response.getAsJson();
 		Token token = new Token(result.getString("ticket"));

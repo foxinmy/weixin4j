@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
@@ -35,7 +35,7 @@ public class HelperApi extends QyApi {
 	public List<String> getcallbackip() throws WeixinException {
 		String getcallbackip_uri = getRequestUri("getcallbackip_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(String.format(getcallbackip_uri,
+		WeixinResponse response = weixinClient.post(String.format(getcallbackip_uri,
 				token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("ip_list"),
 				String.class);

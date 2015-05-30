@@ -5,7 +5,7 @@ import java.net.URLEncoder;
 
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
@@ -92,7 +92,7 @@ public class OauthApi extends MpApi {
 	public OauthToken getOauthToken(String code, String appid, String appsecret)
 			throws WeixinException {
 		String user_token_uri = getRequestUri("sns_user_token_uri");
-		Response response = request.get(String.format(user_token_uri, appid,
+		WeixinResponse response = weixinClient.get(String.format(user_token_uri, appid,
 				appsecret, code));
 
 		return response.getAsObject(new TypeReference<OauthToken>() {
@@ -122,7 +122,7 @@ public class OauthApi extends MpApi {
 	public OauthToken refreshToken(String appId, String refreshToken)
 			throws WeixinException {
 		String sns_token_refresh_uri = getRequestUri("sns_token_refresh_uri");
-		Response response = request.get(String.format(sns_token_refresh_uri,
+		WeixinResponse response = weixinClient.get(String.format(sns_token_refresh_uri,
 				appId, refreshToken));
 
 		return response.getAsObject(new TypeReference<OauthToken>() {
@@ -141,7 +141,7 @@ public class OauthApi extends MpApi {
 	public boolean authAccessToken(String accessToken, String openId) {
 		String sns_auth_token_uri = getRequestUri("sns_auth_token_uri");
 		try {
-			request.get(String.format(sns_auth_token_uri, accessToken, openId));
+			weixinClient.get(String.format(sns_auth_token_uri, accessToken, openId));
 			return true;
 		} catch (WeixinException e) {
 			;
@@ -164,7 +164,7 @@ public class OauthApi extends MpApi {
 	 */
 	public User getUser(OauthToken token) throws WeixinException {
 		String user_info_uri = getRequestUri("sns_user_info_uri");
-		Response response = request.get(String.format(user_info_uri,
+		WeixinResponse response = weixinClient.get(String.format(user_info_uri,
 				token.getAccessToken(), token.getOpenid()));
 
 		return response.getAsObject(new TypeReference<User>() {

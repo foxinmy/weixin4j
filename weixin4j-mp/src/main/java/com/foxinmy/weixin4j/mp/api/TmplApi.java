@@ -3,8 +3,8 @@ package com.foxinmy.weixin4j.mp.api;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.message.TemplateMessage;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
@@ -47,7 +47,7 @@ public class TmplApi extends MpApi {
 		}
 		Token token = tokenHolder.getToken();
 		String template_set_industry_uri = getRequestUri("template_set_industry_uri");
-		Response response = request.post(String.format(
+		WeixinResponse response = weixinClient.post(String.format(
 				template_set_industry_uri, token.getAccessToken()), obj
 				.toJSONString());
 
@@ -67,7 +67,7 @@ public class TmplApi extends MpApi {
 	public String getTemplateId(String shortId) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String template_getid_uri = getRequestUri("template_getid_uri");
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(template_getid_uri, token.getAccessToken()),
 				String.format("{\"template_id_short\":\"%s\"}", shortId));
 
@@ -90,7 +90,7 @@ public class TmplApi extends MpApi {
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String template_send_uri = getRequestUri("template_send_uri");
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(template_send_uri, token.getAccessToken()),
 				JSON.toJSONString(tplMessage));
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.BatchApi;

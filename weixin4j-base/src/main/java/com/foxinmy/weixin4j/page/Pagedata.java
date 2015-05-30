@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.util;
+package com.foxinmy.weixin4j.page;
 
 import java.io.Serializable;
 import java.util.Iterator;

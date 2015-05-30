@@ -7,8 +7,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.User;
@@ -69,7 +69,7 @@ public class UserApi extends MpApi {
 	public User getUser(String openId, Lang lang) throws WeixinException {
 		String user_info_uri = getRequestUri("api_user_info_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.get(String.format(user_info_uri,
+		WeixinResponse response = weixinClient.get(String.format(user_info_uri,
 				token.getAccessToken(), openId, lang.name()));
 
 		return response.getAsObject(new TypeReference<User>() {
@@ -90,7 +90,7 @@ public class UserApi extends MpApi {
 	public Following getFollowing(String nextOpenId) throws WeixinException {
 		String following_uri = getRequestUri("following_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.get(String.format(following_uri,
+		WeixinResponse response = weixinClient.get(String.format(following_uri,
 				token.getAccessToken(), nextOpenId == null ? "" : nextOpenId));
 
 		Following following = response
@@ -156,7 +156,7 @@ public class UserApi extends MpApi {
 		JSONObject obj = new JSONObject();
 		obj.put("openid", openId);
 		obj.put("remark", remark);
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(updateremark_uri, token.getAccessToken()),
 				obj.toJSONString());
 

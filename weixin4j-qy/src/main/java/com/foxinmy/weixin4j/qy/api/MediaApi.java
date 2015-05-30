@@ -10,15 +10,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.entity.mime.content.ByteArrayBody;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.PropertyFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.PartParameter;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
+import com.foxinmy.weixin4j.http.apache.FormBodyPart;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.Callback;
@@ -108,8 +107,8 @@ public class MediaApi extends QyApi {
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String file_upload_uri = getRequestUri("file_upload_uri");
-		Response response = request.post(String.format(file_upload_uri,
-				token.getAccessToken(), mediaType), new PartParameter("media",
+		WeixinResponse response = weixinClient.post(String.format(file_upload_uri,
+				token.getAccessToken(), mediaType), new FormBodyPart("media",
 				new ByteArrayBody(bytes, fileName)));
 
 		return response.getAsJson().getString("media_id");
@@ -179,9 +178,9 @@ public class MediaApi extends QyApi {
 	public byte[] downloadMedia(String mediaId) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String file_download_uri = getRequestUri("file_download_uri");
-		Response response = request.get(String.format(file_download_uri,
+		WeixinResponse response = weixinClient.get(String.format(file_download_uri,
 				token.getAccessToken(), mediaId));
-		return response.getBody();
+		return response.getContent();
 	}
 
 	/**

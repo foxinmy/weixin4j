@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSONPath;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.AutoReplySetting;
@@ -53,7 +53,7 @@ public class HelperApi extends MpApi {
 		JSONObject obj = new JSONObject();
 		obj.put("action", "long2short");
 		obj.put("long_url", url);
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(shorturl_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -75,7 +75,7 @@ public class HelperApi extends MpApi {
 	public SemResult semantic(SemQuery semQuery) throws WeixinException {
 		String semantic_uri = getRequestUri("semantic_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(semantic_uri, token.getAccessToken()),
 				semQuery.toJson());
 		return response.getAsObject(new TypeReference<SemResult>() {
@@ -93,7 +93,7 @@ public class HelperApi extends MpApi {
 	public List<String> getcallbackip() throws WeixinException {
 		String getcallbackip_uri = getRequestUri("getcallbackip_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(String.format(getcallbackip_uri,
+		WeixinResponse response = weixinClient.post(String.format(getcallbackip_uri,
 				token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("ip_list"),
 				String.class);
@@ -115,7 +115,7 @@ public class HelperApi extends MpApi {
 	public MenuSetting getMenuSetting() throws WeixinException {
 		String menu_get_selfmenu_uri = getRequestUri("menu_get_selfmenu_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.get(String.format(menu_get_selfmenu_uri,
+		WeixinResponse response = weixinClient.get(String.format(menu_get_selfmenu_uri,
 				token.getAccessToken()));
 		JSONObject result = response.getAsJson();
 
@@ -188,7 +188,7 @@ public class HelperApi extends MpApi {
 	public AutoReplySetting getAutoReplySetting() throws WeixinException {
 		String autoreply_setting_get_uri = getRequestUri("autoreply_setting_get_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.get(String.format(
+		WeixinResponse response = weixinClient.get(String.format(
 				autoreply_setting_get_uri, token.getAccessToken()));
 
 		JSONObject result = response.getAsJson();

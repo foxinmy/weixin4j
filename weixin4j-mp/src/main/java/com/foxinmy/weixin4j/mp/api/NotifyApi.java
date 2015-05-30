@@ -2,8 +2,8 @@ package com.foxinmy.weixin4j.mp.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -76,7 +76,7 @@ public class NotifyApi extends MpApi {
 		}
 		String custom_notify_uri = getRequestUri("custom_notify_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(custom_notify_uri, token.getAccessToken()),
 				obj.toJSONString());
 

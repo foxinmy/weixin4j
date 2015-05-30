@@ -2,8 +2,8 @@ package com.foxinmy.weixin4j.qy.token;
 
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.HttpRequest;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
@@ -23,7 +23,7 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  */
 public class WeixinTokenCreator implements TokenCreator {
 
-	private final HttpRequest request;
+	private final WeixinHttpClient httpClient;
 	private final String corpid;
 	private final String corpsecret;
 
@@ -31,13 +31,13 @@ public class WeixinTokenCreator implements TokenCreator {
 		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
 		this.corpid = weixinAccount.getId();
 		this.corpsecret = weixinAccount.getSecret();
-		this.request = new HttpRequest();
+		this.httpClient = new WeixinHttpClient();
 	}
 
 	public WeixinTokenCreator(String corpid, String corpsecret) {
 		this.corpid = corpid;
 		this.corpsecret = corpsecret;
-		this.request = new HttpRequest();
+		this.httpClient = new WeixinHttpClient();
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class WeixinTokenCreator implements TokenCreator {
 	public Token createToken() throws WeixinException {
 		String tokenUrl = String.format(Consts.QY_ASSESS_TOKEN_URL, corpid,
 				corpsecret);
-		Response response = request.get(tokenUrl);
+		WeixinResponse response = httpClient.get(tokenUrl);
 		Token token = response.getAsObject(new TypeReference<Token>() {
 		});
 		token.setTime(System.currentTimeMillis());

@@ -3,7 +3,7 @@ package com.foxinmy.weixin4j.qy.api;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.BatchResult;
 import com.foxinmy.weixin4j.qy.model.Callback;
@@ -55,7 +55,7 @@ public class BatchApi extends QyApi {
 		obj.putAll(parameter.getParameter());
 		obj.put("callback", callback);
 		obj.put("invite_tips", tips);
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(batch_inviteuser_uri, token.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJson().getString("jobid");
@@ -93,7 +93,7 @@ public class BatchApi extends QyApi {
 		JSONObject obj = new JSONObject();
 		obj.put("media_id", mediaId);
 		obj.put("callback", callback);
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(batchUrl, token.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJson().getString("jobid");
@@ -164,7 +164,7 @@ public class BatchApi extends QyApi {
 	public BatchResult getresult(String jobId) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String batch_getresult_uri = getRequestUri("batch_getresult_uri");
-		Response response = request.get(String.format(batch_getresult_uri,
+		WeixinResponse response = weixinClient.get(String.format(batch_getresult_uri,
 				token.getAccessToken(), jobId));
 		return response.getAsObject(new TypeReference<BatchResult>() {
 		});

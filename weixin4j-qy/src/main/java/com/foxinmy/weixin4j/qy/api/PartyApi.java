@@ -5,8 +5,8 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.JsonResult;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -45,7 +45,7 @@ public class PartyApi extends QyApi {
 		JSONObject obj = (JSONObject) JSON.toJSON(depart);
 		obj.remove("id");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(department_create_uri, token.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJson().getIntValue("id");
@@ -66,7 +66,7 @@ public class PartyApi extends QyApi {
 		String department_update_uri = getRequestUri("department_update_uri");
 		JSONObject obj = (JSONObject) JSON.toJSON(party);
 		Token token = tokenHolder.getToken();
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(department_update_uri, token.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJsonResult();
@@ -85,7 +85,7 @@ public class PartyApi extends QyApi {
 	public List<Party> listParty(int partId) throws WeixinException {
 		String department_list_uri = getRequestUri("department_list_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(String.format(department_list_uri,
+		WeixinResponse response = weixinClient.post(String.format(department_list_uri,
 				token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("department"),
 				Party.class);
@@ -104,7 +104,7 @@ public class PartyApi extends QyApi {
 	public JsonResult deleteParty(int partId) throws WeixinException {
 		String department_delete_uri = getRequestUri("department_delete_uri");
 		Token token = tokenHolder.getToken();
-		Response response = request.post(String.format(department_delete_uri,
+		WeixinResponse response = weixinClient.post(String.format(department_delete_uri,
 				token.getAccessToken(), partId));
 		return response.getAsJsonResult();
 	}

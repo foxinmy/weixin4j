@@ -7,7 +7,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -123,7 +123,7 @@ public class DataApi extends MpApi {
 		JSONObject obj = new JSONObject();
 		obj.put("begin_date", DateUtil.fortmat2yyyy_MM_dd(beginDate));
 		obj.put("end_date", DateUtil.fortmat2yyyy_MM_dd(endDate));
-		Response response = request.post(String.format(datacube_uri,
+		WeixinResponse response = weixinClient.post(String.format(datacube_uri,
 				datacubeType.name().toLowerCase(), token.getAccessToken()), obj
 				.toJSONString());
 

@@ -7,7 +7,7 @@ import java.io.OutputStream;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.Response;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -48,7 +48,7 @@ public class QrApi extends MpApi {
 	private JSONObject doQR(QRParameter parameter) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String qr_uri = getRequestUri("qr_ticket_uri");
-		Response response = request.post(
+		WeixinResponse response = weixinClient.post(
 				String.format(qr_uri, token.getAccessToken()),
 				parameter.getContent());
 		return response.getAsJson();
@@ -68,9 +68,10 @@ public class QrApi extends MpApi {
 	public byte[] getQRData(QRParameter parameter) throws WeixinException {
 		String ticket = doQR(parameter).getString("ticket");
 		String qr_uri = getRequestUri("qr_image_uri");
-		Response response = request.get(String.format(qr_uri, ticket));
+		WeixinResponse response = weixinClient.get(String
+				.format(qr_uri, ticket));
 
-		return response.getBody();
+		return response.getContent();
 	}
 
 	/**
@@ -99,13 +100,8 @@ public class QrApi extends MpApi {
 		byte[] datas = getQRData(parameter);
 		OutputStream os = null;
 		try {
-			if (file.createNewFile()) {
-				os = new FileOutputStream(file);
-				os.write(datas);
-			} else {
-				throw new WeixinException(String.format("create file fail:%s",
-						file.getAbsolutePath()));
-			}
+			os = new FileOutputStream(file);
+			os.write(datas);
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		} finally {
