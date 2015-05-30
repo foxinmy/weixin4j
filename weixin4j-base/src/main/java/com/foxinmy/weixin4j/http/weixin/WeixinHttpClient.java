@@ -23,6 +23,7 @@ import com.foxinmy.weixin4j.http.entity.ByteArrayEntity;
 import com.foxinmy.weixin4j.http.entity.FileEntity;
 import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.entity.StringEntity;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.util.ErrorUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
@@ -194,6 +195,7 @@ public class WeixinHttpClient extends SimpleHttpClient {
 					.replaceFirst("</retmsg>", "</return_msg>")
 					.replaceFirst("</root>", "</xml>");
 			xmlResult = XmlStream.get(newXml, XmlResult.class);
+			response.setContent(newXml.getBytes(Consts.UTF_8));
 		}
 		response.setXmlResult(true);
 		if (xmlResult.getReturnCode().equals("0")) {

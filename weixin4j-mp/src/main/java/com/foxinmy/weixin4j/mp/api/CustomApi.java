@@ -101,12 +101,12 @@ public class CustomApi extends MpApi {
 		String text = "";
 		if (isOnline) {
 			String getonlinekflist_uri = getRequestUri("getonlinekflist_uri");
-			WeixinResponse response = weixinClient.post(String.format(getonlinekflist_uri,
+			WeixinResponse response = weixinClient.get(String.format(getonlinekflist_uri,
 					token.getAccessToken()));
 			text = response.getAsJson().getString("kf_online_list");
 		} else {
 			String getkflist_uri = getRequestUri("getkflist_uri");
-			WeixinResponse response = weixinClient.post(String.format(getkflist_uri,
+			WeixinResponse response = weixinClient.get(String.format(getkflist_uri,
 					token.getAccessToken()));
 			text = response.getAsJson().getString("kf_list");
 		}
