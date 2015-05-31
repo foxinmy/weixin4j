@@ -59,7 +59,7 @@ https://github.com/foxinmy/weixin4j/releases
 
 ###3.从源码打包
 
-`git clone`&`mvn package -Prelease`
+`git clone`&`mvn package`
 
 [更新LOG](./CHANGE.md)
 ----------------------

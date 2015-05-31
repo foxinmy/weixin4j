@@ -57,6 +57,13 @@
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.plexus</groupId>
+						<artifactId>plexus-compiler-javac</artifactId>
+						<version>2.5</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -93,8 +100,9 @@
 								<exclude>**/*.md</exclude>
 							</excludes>
 							<archive>
-								<addMavenDescriptor>false</addMavenDescriptor>
+								<addMavenDescriptor>true</addMavenDescriptor>
 							</archive>
+							<useDefaultManifestFile>true</useDefaultManifestFile>
 						</configuration>
 					</execution>
 				</executions>
@@ -119,6 +127,7 @@
 										<include>com.foxinmy:weixin4j-base</include>
 									</includes>
 								</artifactSet>
+								<createDependencyReducedPom>false</createDependencyReducedPom>
 							</configuration>
 						</execution>
 					</executions>
@@ -190,7 +199,7 @@
 					<version>2.5.1</version>
 					<configuration>
 						<descriptors>
-							<descriptor>src/main/assembly.xml</descriptor>
+							<descriptor>../assembly.xml</descriptor>
 						</descriptors>
 					</configuration>
 					<executions>
