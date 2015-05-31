@@ -110,28 +110,17 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-shade-plugin</artifactId>
-					<version>2.3</version>
-					<executions>
-						<execution>
-							<phase>package</phase>
-							<goals>
-								<goal>shade</goal>
-							</goals>
-							<configuration>
-								<createSourcesJar>false</createSourcesJar>
-								<artifactSet>
-									<includes>
-										<include>com.foxinmy:weixin4j-base</include>
-									</includes>
-								</artifactSet>
-								<createDependencyReducedPom>false</createDependencyReducedPom>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
+				<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-shade-plugin</artifactId> 
+					<version>2.3</version> <executions> <execution> <id>standard</id> <phase>package</phase> 
+					<goals> <goal>shade</goal> </goals> <configuration> <createSourcesJar>false</createSourcesJar> 
+					<artifactSet> <includes> <include>com.foxinmy:weixin4j-base</include> </includes> 
+					</artifactSet> <createDependencyReducedPom>false</createDependencyReducedPom> 
+					</configuration> </execution> <execution> <id>full</id> <phase>package</phase> 
+					<goals> <goal>shade</goal> </goals> <configuration> <createSourcesJar>false</createSourcesJar> 
+					<artifactSet> <includes> <include>com.foxinmy:weixin4j-base</include> <include>com.alibaba:fastjson</include> 
+					</includes> </artifactSet> <finalName>${project.artifactId}-${project.version}-full</finalName> 
+					<createDependencyReducedPom>false</createDependencyReducedPom> </configuration> 
+					</execution> </executions> </plugin> -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
@@ -234,16 +223,6 @@
 			</resource>
 		</resources>
 	</build>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.2</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<profiles>
 		<profile>
 			<id>release</id>
@@ -265,6 +244,16 @@
 			</build>
 		</profile>
 	</profiles>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.2</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<distributionManagement>
 		<snapshotRepository>
 			<id>oss-snapshot</id>

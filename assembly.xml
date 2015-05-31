@@ -25,7 +25,6 @@
 			<unpack>true</unpack>
 			<includes>
 				<include>com.foxinmy:weixin4j-base</include>
-				<include>com.alibaba:fastjson</include>
 			</includes>
 		</dependencySet>
 	</dependencySets>
