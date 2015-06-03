@@ -1,7 +1,8 @@
 package com.foxinmy.weixin4j.tuple;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 音乐对象
@@ -27,31 +28,31 @@ public class Music implements NotifyTuple {
 	/**
 	 * 音乐标题
 	 */
-	@XStreamAlias("Title")
+	@XmlElement(name = "Title")
 	private String title;
 	/**
 	 * 音乐描述
 	 */
 	@JSONField(name = "description")
-	@XStreamAlias("Description")
+	@XmlElement(name = "Description")
 	private String desc;
 	/**
 	 * 音乐链接
 	 */
 	@JSONField(name = "musicurl")
-	@XStreamAlias("MusicUrl")
+	@XmlElement(name = "MusicUrl")
 	private String musicUrl;
 	/**
 	 * 高质量音乐链接，WIFI环境优先使用该链接播放音乐
 	 */
 	@JSONField(name = "hqmusicurl")
-	@XStreamAlias("HQMusicUrl")
+	@XmlElement(name = "HQMusicUrl")
 	private String hqMusicUrl;
 	/**
 	 * 缩略图的媒体id，通过上传多媒体文件，得到的id
 	 */
 	@JSONField(name = "thumb_media_id")
-	@XStreamAlias("ThumbMediaId")
+	@XmlElement(name = "ThumbMediaId")
 	private String thumbMediaId;
 
 	public Music(String thumbMediaId) {

@@ -2,12 +2,14 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayPackage;
 import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.foxinmy.weixin4j.util.RandomUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V3支付的订单详情
@@ -18,7 +20,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
 public class PayPackageV3 extends PayPackage {
 
 	private static final long serialVersionUID = 8944928173669656177L;
@@ -30,19 +32,19 @@ public class PayPackageV3 extends PayPackage {
 	/**
 	 * 微信支付分配的商户号 必须
 	 */
-	@XStreamAlias("mch_id")
+	@XmlElement(name = "mch_id")
 	@JSONField(name = "mch_id")
 	private String mchId;
 	/**
 	 * 微信支付分配的终端设备号 非必须
 	 */
-	@XStreamAlias("device_info")
+	@XmlElement(name = "device_info")
 	@JSONField(name = "device_info")
 	private String deviceInfo;
 	/**
 	 * 随机字符串,不长于 32 位 必须
 	 */
-	@XStreamAlias("nonce_str")
+	@XmlElement(name = "nonce_str")
 	@JSONField(name = "nonce_str")
 	private String nonceStr;
 	/**
@@ -52,7 +54,7 @@ public class PayPackageV3 extends PayPackage {
 	/**
 	 * 交易类型JSAPI、NATIVE、APP 必须
 	 */
-	@XStreamAlias("trade_type")
+	@XmlElement(name = "trade_type")
 	@JSONField(name = "trade_type")
 	private String tradeType;
 	/**
@@ -62,7 +64,7 @@ public class PayPackageV3 extends PayPackage {
 	/**
 	 * 只在 trade_type 为 NATIVE 时需要填写 非必须
 	 */
-	@XStreamAlias("product_id")
+	@XmlElement(name = "product_id")
 	@JSONField(name = "product_id")
 	private String productId;
 

@@ -1,9 +1,10 @@
 package com.foxinmy.weixin4j.mp.payment;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 public class PayRequest extends PayBaseInfo {
 
@@ -12,7 +13,7 @@ public class PayRequest extends PayBaseInfo {
 	/**
 	 * 订单详情扩展 订单信息组成该字符串
 	 */
-	@XStreamAlias("Package")
+	@XmlElement(name = "Package")
 	@JSONField(name = "package")
 	private String packageInfo;
 

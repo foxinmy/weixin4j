@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -64,14 +63,14 @@ public class CashApi extends MpApi {
 		obj.put("wxappid", weixinAccount.getId());
 		String sign = PayUtil.paysignMd5(obj, weixinAccount.getPaySignKey());
 		obj.put("sign", sign);
-		String param = map2xml(new HashMap<String, Object>(obj));
+		String param = XmlStream.map2xml(obj);
 		String redpack_send_uri = getRequestUri("redpack_send_uri");
 		WeixinResponse response = null;
 		InputStream ca = null;
 		try {
 			ca = new FileInputStream(caFile);
-			SSLHttpClinet request = new SSLHttpClinet(
-					weixinAccount.getMchId(), ca);
+			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
+					ca);
 			response = request.post(redpack_send_uri, param);
 		} catch (WeixinException e) {
 			throw e;
@@ -114,14 +113,14 @@ public class CashApi extends MpApi {
 		obj.put("device_info", weixinAccount.getDeviceInfo());
 		String sign = PayUtil.paysignMd5(obj, weixinAccount.getPaySignKey());
 		obj.put("sign", sign);
-		String param = map2xml(new HashMap<String, Object>(obj));
+		String param = XmlStream.map2xml(obj);
 		String mp_payment_uri = getRequestUri("mp_payment_uri");
 		WeixinResponse response = null;
 		InputStream ca = null;
 		try {
 			ca = new FileInputStream(caFile);
-			SSLHttpClinet request = new SSLHttpClinet(
-					weixinAccount.getMchId(), ca);
+			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
+					ca);
 			response = request.post(mp_payment_uri, param);
 		} catch (WeixinException e) {
 			throw e;
@@ -141,6 +140,6 @@ public class CashApi extends MpApi {
 				.replaceFirst("</mch_appid>", "</appid>")
 				.replaceFirst("<mchid>", "<mch_id>")
 				.replaceFirst("</mchid>", "</mch_id>");
-		return XmlStream.get(text, MPPaymentResult.class);
+		return XmlStream.fromXML(text, MPPaymentResult.class);
 	}
 }

@@ -25,8 +25,7 @@ import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
-import com.foxinmy.weixin4j.mp.payment.conver.CouponConverter;
-import com.foxinmy.weixin4j.mp.payment.conver.RefundConverter;
+import com.foxinmy.weixin4j.mp.payment.conver.ListsuffixResultConverter;
 import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.v3.Order;
 import com.foxinmy.weixin4j.mp.payment.v3.RefundRecord;
@@ -40,6 +39,7 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * V3(商户平台版)支付API
@@ -77,10 +77,11 @@ public class Pay3Api extends PayApi {
 		Map<String, String> map = baseMap(idQuery);
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
-		String param = map2xml(map);
+		String param = XmlStream.map2xml(map);
 		String orderquery_uri = getRequestUri("orderquery_v3_uri");
 		WeixinResponse response = weixinClient.post(orderquery_uri, param);
-		return CouponConverter.fromXML(response.getAsString(), Order.class);
+		return ListsuffixResultConverter.containCouponConvert(
+				response.getAsString(), Order.class);
 	}
 
 	/**
@@ -139,7 +140,7 @@ public class Pay3Api extends PayApi {
 			String sign = PayUtil
 					.paysignMd5(map, weixinAccount.getPaySignKey());
 			map.put("sign", sign);
-			String param = map2xml(map);
+			String param = XmlStream.map2xml(map);
 			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
 					ca);
 			response = request.post(refund_uri, param);
@@ -156,8 +157,8 @@ public class Pay3Api extends PayApi {
 				}
 			}
 		}
-		return CouponConverter.fromXML(response.getAsString(),
-				RefundResult.class);
+		return response.getAsObject(new TypeReference<RefundResult>() {
+		});
 	}
 
 	/**
@@ -219,7 +220,7 @@ public class Pay3Api extends PayApi {
 			String sign = PayUtil
 					.paysignMd5(map, weixinAccount.getPaySignKey());
 			map.put("sign", sign);
-			String param = map2xml(map);
+			String param = XmlStream.map2xml(map);
 			WeixinResponse response = request.post(reverse_uri, param);
 			return response.getAsObject(new TypeReference<ApiResult>() {
 			});
@@ -256,10 +257,10 @@ public class Pay3Api extends PayApi {
 		}
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
-		String param = map2xml(map);
+		String param = XmlStream.map2xml(map);
 		String shorturl_uri = getRequestUri("p_shorturl_uri");
 		WeixinResponse response = weixinClient.post(shorturl_uri, param);
-		map = xml2map(response.getAsString());
+		map = XmlStream.xml2map(response.getAsString());
 		return map.get("short_url");
 	}
 
@@ -283,7 +284,7 @@ public class Pay3Api extends PayApi {
 				IdType.TRADENO));
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
-		String param = map2xml(map);
+		String param = XmlStream.map2xml(map);
 		String closeorder_uri = getRequestUri("closeorder_uri");
 		WeixinResponse response = weixinClient.post(closeorder_uri, param);
 		return response.getAsObject(new TypeReference<ApiResult>() {
@@ -332,7 +333,7 @@ public class Pay3Api extends PayApi {
 		map.put("bill_type", billType.name());
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
-		String param = map2xml(map);
+		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinClient.post(downloadbill_uri, param);
 
 		BufferedReader reader = null;
@@ -391,10 +392,10 @@ public class Pay3Api extends PayApi {
 		Map<String, String> map = baseMap(idQuery);
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
-		String param = map2xml(map);
+		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinClient.post(refundquery_uri, param);
-		return RefundConverter.fromXML(response.getAsString(),
-				RefundRecord.class);
+		return ListsuffixResultConverter.containRefundDetailConvert(
+				response.getAsString(), RefundRecord.class);
 	}
 
 	/**
@@ -432,7 +433,7 @@ public class Pay3Api extends PayApi {
 		map.putAll((Map<String, String>) JSON.toJSON(returnXml));
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
-		String param = map2xml(map);
+		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinClient.post(pay_report_uri, param);
 		return response.getAsXmlResult();
 	}

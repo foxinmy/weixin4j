@@ -3,9 +3,10 @@ package com.foxinmy.weixin4j.tuple;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * 图文对象(消息内容存储在微信后台)
@@ -32,13 +33,13 @@ public class MpNews implements MassTuple, NotifyTuple {
 	 * 上传图文列表后微信返回的媒体ID
 	 */
 	@JSONField(name = "media_id")
-	@XStreamAlias("MediaId")
+	@XmlElement(name = "MediaId")
 	private String mediaId;
 	/**
 	 * 图文列表
 	 */
 	@JSONField(name = "articles")
-	@XStreamOmitField
+	@XmlTransient
 	private List<MpArticle> articles;
 
 	public MpNews() {

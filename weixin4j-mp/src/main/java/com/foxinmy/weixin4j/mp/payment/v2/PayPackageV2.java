@@ -2,10 +2,11 @@ package com.foxinmy.weixin4j.mp.payment.v2;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.PayPackage;
 import com.foxinmy.weixin4j.util.DateUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V2支付的订单详情
@@ -23,7 +24,7 @@ public class PayPackageV2 extends PayPackage {
 	/**
 	 * 银行通道类型 固定为"WX" 非空
 	 */
-	@XStreamAlias("bank_type")
+	@XmlElement(name = "bank_type")
 	@JSONField(name = "bank_type")
 	private String bankType;
 	/**
@@ -33,25 +34,25 @@ public class PayPackageV2 extends PayPackage {
 	/**
 	 * 支付币种 默认值是"1" 非空
 	 */
-	@XStreamAlias("fee_type")
+	@XmlElement(name = "fee_type")
 	@JSONField(name = "fee_type")
 	private String feeType;
 	/**
 	 * 物流费用 可为空 如果有值,必须保 证 transport_fee + product_fee=total_fee
 	 */
-	@XStreamAlias("transport_fee")
+	@XmlElement(name = "transport_fee")
 	@JSONField(name = "transport_fee")
 	private String transportFee;
 	/**
 	 * 商品费用 可为空 商品费用,单位为分。如果有值,必须保 证 transport_fee +product_fee=total_fee;
 	 */
-	@XStreamAlias("product_fee")
+	@XmlElement(name = "product_fee")
 	@JSONField(name = "product_fee")
 	private String productFee;
 	/**
 	 * 传入参数字符编码 取值范围:"GBK"、"UTF-8",默认:"GBK" 可为空
 	 */
-	@XStreamAlias("input_charset")
+	@XmlElement(name = "input_charset")
 	@JSONField(name = "input_charset")
 	private String inputCharset;
 

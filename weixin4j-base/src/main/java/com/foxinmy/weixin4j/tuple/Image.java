@@ -1,7 +1,8 @@
 package com.foxinmy.weixin4j.tuple;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 图片对象
@@ -28,7 +29,7 @@ public class Image implements MassTuple, NotifyTuple {
 	 * 上传后的微信返回的媒体ID
 	 */
 	@JSONField(name = "media_id")
-	@XStreamAlias("MediaId")
+	@XmlElement(name = "MediaId")
 	private String mediaId;
 
 	public Image(String mediaId) {

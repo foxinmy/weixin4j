@@ -1,7 +1,8 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 企业付款结果
@@ -20,19 +21,19 @@ public class MPPaymentResult extends ApiResult {
 	 * 微信订单订单号
 	 */
 	@JSONField(name = "payment_no")
-	@XStreamAlias("payment_no")
+	@XmlElement(name = "payment_no")
 	private String transactionId;
 	/**
 	 * 商户订单号
 	 */
 	@JSONField(name = "partner_trade_no")
-	@XStreamAlias("partner_trade_no")
+	@XmlElement(name = "partner_trade_no")
 	private String outTradeNo;
 	/**
 	 * 支付时间
 	 */
 	@JSONField(name = "payment_time")
-	@XStreamAlias("payment_time")
+	@XmlElement(name = "payment_time")
 	private String paymentTime;
 
 	public String getTransactionId() {

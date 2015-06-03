@@ -1,7 +1,8 @@
 package com.foxinmy.weixin4j.mp.payment;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * JSAPI支付回调时的POST信息
@@ -19,12 +20,12 @@ public class JsPayNotify extends PayBaseInfo {
 	/**
 	 * 用户的openid
 	 */
-	@XStreamAlias("OpenId")
+	@XmlElement(name = "OpenId")
 	private String openid;
 	/**
 	 * 是否关注公众号
 	 */
-	@XStreamAlias("IsSubscribe")
+	@XmlElement(name = "IsSubscribe")
 	private int issubscribe;
 
 	public String getOpenid() {

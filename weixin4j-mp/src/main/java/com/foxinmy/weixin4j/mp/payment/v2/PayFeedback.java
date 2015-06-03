@@ -1,7 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.foxinmy.weixin4j.mp.payment.PayBaseInfo;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V2维权POST的数据
@@ -12,7 +14,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
 public class PayFeedback extends PayBaseInfo {
 
 	private static final long serialVersionUID = 7230049346213966310L;
@@ -20,42 +22,42 @@ public class PayFeedback extends PayBaseInfo {
 	/**
 	 * 投诉单号
 	 */
-	@XStreamAlias("FeedBackId")
+	@XmlElement(name = "FeedBackId")
 	private String feedbackId;
 	/**
 	 * 用户ID
 	 */
-	@XStreamAlias("OpenId")
+	@XmlElement(name = "OpenId")
 	private String openId;
 	/**
 	 * 订单交易单号
 	 */
-	@XStreamAlias("TransId")
+	@XmlElement(name = "TransId")
 	private String transId;
 	/**
 	 * 投诉原因
 	 */
-	@XStreamAlias("Reason")
+	@XmlElement(name = "Reason")
 	private String reason;
 	/**
 	 * 用户希望解决方案
 	 */
-	@XStreamAlias("Solution")
+	@XmlElement(name = "Solution")
 	private String solution;
 	/**
 	 * 备注信息+电话
 	 */
-	@XStreamAlias("ExtInfo")
+	@XmlElement(name = "ExtInfo")
 	private String extInfo;
 	/**
 	 * 用户上传的图片凭证,最多五张
 	 */
-	@XStreamAlias("PicInfo")
+	@XmlElement(name = "PicInfo")
 	private String picInfo;
 	/**
 	 * 通知类型 request 用户提交投诉 confirm 用户确认消除 投诉 reject 用户拒绝消除投诉
 	 */
-	@XStreamAlias("MsgType")
+	@XmlElement(name = "MsgType")
 	private String status;
 
 	public String getFeedbackId() {

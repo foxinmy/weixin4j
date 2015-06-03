@@ -1,10 +1,14 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.RefundChannel;
 import com.foxinmy.weixin4j.mp.type.RefundStatus;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V2退款详细
@@ -15,6 +19,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RefundDetail extends ApiResult {
 
 	private static final long serialVersionUID = -3687863914168618620L;
@@ -22,43 +28,43 @@ public class RefundDetail extends ApiResult {
 	/**
 	 * 商户退款单号
 	 */
-	@XStreamAlias("out_refund_no")
+	@XmlElement(name = "out_refund_no")
 	@JSONField(name = "out_refund_no")
 	private String outRefundNo;
 	/**
 	 * 微信退款单号
 	 */
-	@XStreamAlias("refund_id")
+	@XmlElement(name = "refund_id")
 	@JSONField(name = "refund_id")
 	private String refundId;
 	/**
 	 * 退款渠道 0:退到财付通、1:退到银行;
 	 */
-	@XStreamAlias("refund_channel")
+	@XmlElement(name = "refund_channel")
 	@JSONField(name = "refund_channel")
 	private int refundChannel;
 	/**
 	 * 退款总金额,单位为分,可以做部分退款
 	 */
-	@XStreamAlias("refund_fee")
+	@XmlElement(name = "refund_fee")
 	@JSONField(name = "refund_fee")
 	private int refundFee;
 	/**
 	 * 退款状态
 	 */
-	@XStreamAlias("refund_status")
+	@XmlElement(name = "refund_status")
 	@JSONField(name = "refund_status")
 	private int refundStatus;
 	/**
 	 * 转账退款接收退款的财付通帐号
 	 */
-	@XStreamAlias("recv_user_id")
+	@XmlElement(name = "recv_user_id")
 	@JSONField(name = "recv_user_id")
 	private String recvUserId;
 	/**
 	 * 转账退款接收退款的姓名(需与接收退款的财付通帐号绑定的姓名一致)
 	 */
-	@XStreamAlias("reccv_user_name")
+	@XmlElement(name = "reccv_user_name")
 	@JSONField(name = "reccv_user_name")
 	private String reccvUserName;
 
@@ -135,9 +141,8 @@ public class RefundDetail extends ApiResult {
 				+ ", refundChannel=" + refundChannel + ", refundFee="
 				+ refundFee + ", refundStatus=" + refundStatus
 				+ ", recvUserId=" + recvUserId + ", reccvUserName="
-				+ reccvUserName + ", refundChannel="
-				+ getFormatRefundChannel() + ", refundFee="
-				+ getFormatRefundFee() + ", refundStatus="
+				+ reccvUserName + ", refundChannel=" + getFormatRefundChannel()
+				+ ", refundFee=" + getFormatRefundFee() + ", refundStatus="
 				+ getFormatRefundStatus();
 	}
 }

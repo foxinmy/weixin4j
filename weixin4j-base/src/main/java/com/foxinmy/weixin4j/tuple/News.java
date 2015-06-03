@@ -3,8 +3,10 @@ package com.foxinmy.weixin4j.tuple;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 图文对象
@@ -18,7 +20,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("Articles")
+@XmlRootElement(name = "Articles")
 public class News implements NotifyTuple {
 
 	private static final long serialVersionUID = 3348756809039388415L;
@@ -36,7 +38,7 @@ public class News implements NotifyTuple {
 	 * @see com.foxinmy.weixin4j.tuple.Article
 	 */
 	@JSONField(name = "articles")
-	@XStreamAlias("Articles")
+	@XmlElement(name = "Articles")
 	private List<Article> articles;
 
 	public News() {

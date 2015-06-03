@@ -26,6 +26,10 @@ public class WeixinException extends Exception {
 		this.errorMsg = errorMsg;
 	}
 
+	public WeixinException(Throwable e) {
+		super(e);
+	}
+
 	public String getErrorCode() {
 		return errorCode;
 	}

@@ -1,7 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.foxinmy.weixin4j.mp.type.TradeType;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V3预订单信息
@@ -12,7 +14,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
 public class PrePay extends ApiResult {
 
 	private static final long serialVersionUID = -8430005768959715444L;
@@ -22,17 +24,17 @@ public class PrePay extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.TradeType
 	 */
-	@XStreamAlias("trade_type")
+	@XmlElement(name = "trade_type")
 	private TradeType tradeType;
 	/**
 	 * 微信生成的预支付回话标识，用于后续接口调用中使用，该值有效期为2小时
 	 */
-	@XStreamAlias("prepay_id")
+	@XmlElement(name = "prepay_id")
 	private String prepayId;
 	/**
 	 * trade_type 为 NATIVE 是有 返回,此参数可直接生成二 维码展示出来进行扫码支付 可能为空
 	 */
-	@XStreamAlias("code_url")
+	@XmlElement(name = "code_url")
 	private String codeUrl;
 
 	public PrePay() {

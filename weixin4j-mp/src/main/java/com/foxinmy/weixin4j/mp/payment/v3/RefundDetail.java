@@ -2,13 +2,18 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.RefundChannel;
 import com.foxinmy.weixin4j.mp.type.RefundStatus;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V3退款详细
@@ -19,6 +24,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RefundDetail extends ApiResult {
 
 	private static final long serialVersionUID = -3687863914168618620L;
@@ -26,25 +33,25 @@ public class RefundDetail extends ApiResult {
 	/**
 	 * 商户退款单号
 	 */
-	@XStreamAlias("out_refund_no")
+	@XmlElement(name = "out_refund_no")
 	@JSONField(name = "out_refund_no")
 	private String outRefundNo;
 	/**
 	 * 微信退款单号
 	 */
-	@XStreamAlias("refund_id")
+	@XmlElement(name = "refund_id")
 	@JSONField(name = "refund_id")
 	private String refundId;
 	/**
 	 * 退款渠道:ORIGINAL—原路退款,默认 BALANCE—退回到余额
 	 */
-	@XStreamAlias("refund_channel")
+	@XmlElement(name = "refund_channel")
 	@JSONField(name = "refund_channel")
 	private String refundChannel;
 	/**
 	 * 退款总金额,单位为分,可以做部分退款
 	 */
-	@XStreamAlias("refund_fee")
+	@XmlElement(name = "refund_fee")
 	@JSONField(name = "refund_fee")
 	private int refundFee;
 	/**
@@ -52,13 +59,13 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
 	 */
-	@XStreamAlias("refund_fee_type")
+	@XmlElement(name = "refund_fee_type")
 	@JSONField(name = "refund_fee_type")
 	private CurrencyType refundFeeType;
 	/**
 	 * 订单总金额
 	 */
-	@XStreamAlias("total_fee")
+	@XmlElement(name = "total_fee")
 	@JSONField(name = "total_fee")
 	private int totalFee;
 	/**
@@ -66,13 +73,13 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
 	 */
-	@XStreamAlias("fee_type")
+	@XmlElement(name = "fee_type")
 	@JSONField(name = "fee_type")
 	private CurrencyType feeType;
 	/**
 	 * 现金支付金额
 	 */
-	@XStreamAlias("cash_fee")
+	@XmlElement(name = "cash_fee")
 	@JSONField(name = "cash_fee")
 	private int cashFee;
 	/**
@@ -80,13 +87,13 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
 	 */
-	@XStreamAlias("cash_fee_type")
+	@XmlElement(name = "cash_fee_type")
 	@JSONField(name = "cash_fee_type")
 	private CurrencyType cashFeeType;
 	/**
 	 * 现金退款金额
 	 */
-	@XStreamAlias("cash_refund_fee")
+	@XmlElement(name = "cash_refund_fee")
 	@JSONField(name = "cash_refund_fee")
 	private Integer cashRefundFee;
 	/**
@@ -94,19 +101,19 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
 	 */
-	@XStreamAlias("cash_refund_fee_type")
+	@XmlElement(name = "cash_refund_fee_type")
 	@JSONField(name = "cash_refund_fee_type")
 	private CurrencyType cashRefundFeeType;
 	/**
 	 * 退款状态
 	 */
-	@XStreamAlias("refund_status")
+	@XmlElement(name = "refund_status")
 	@JSONField(name = "refund_status")
 	private String refundStatus;
 	/**
 	 * 现金券退款金额<=退款金额,退款金额-现金券退款金额为现金
 	 */
-	@XStreamAlias("coupon_refund_fee")
+	@XmlElement(name = "coupon_refund_fee")
 	@JSONField(name = "coupon_refund_fee")
 	private Integer couponRefundFee;
 	/**
@@ -114,7 +121,7 @@ public class RefundDetail extends ApiResult {
 	 * color="red">微信支付文档上写的coupon_count,而实际测试拿到的是coupon_refund_count,做个记号。
 	 * </font>
 	 */
-	@XStreamAlias("coupon_refund_count")
+	@XmlElement(name = "coupon_refund_count")
 	@JSONField(name = "coupon_refund_count")
 	private Integer couponRefundCount;
 	/**
@@ -122,7 +129,8 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo
 	 */
-	@JSONField(serialize = false)
+	@XmlTransient
+	@JSONField(serialize = false, deserialize = false)
 	private List<CouponInfo> couponList;
 
 	public String getOutRefundNo() {

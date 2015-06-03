@@ -9,8 +9,8 @@ import java.util.Map;
 
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.SSLHttpClinet;
+import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponDetail;
@@ -18,6 +18,7 @@ import com.foxinmy.weixin4j.mp.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponStock;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 代金券API
@@ -73,14 +74,14 @@ public class CouponApi extends MpApi {
 		map.put("type", "XML");
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
-		String param = map2xml(map);
+		String param = XmlStream.map2xml(map);
 		String coupon_send_uri = getRequestUri("coupon_send_uri");
 		WeixinResponse response = null;
 		InputStream ca = null;
 		try {
 			ca = new FileInputStream(caFile);
-			SSLHttpClinet request = new SSLHttpClinet(
-					weixinAccount.getMchId(), ca);
+			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
+					ca);
 			response = request.post(coupon_send_uri, param);
 		} catch (WeixinException e) {
 			throw e;
@@ -116,9 +117,10 @@ public class CouponApi extends MpApi {
 		map.put("coupon_stock_id", couponStockId);
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
-		String param = map2xml(map);
+		String param = XmlStream.map2xml(map);
 		String couponstock_query_uri = getRequestUri("couponstock_query_uri");
-		WeixinResponse response = weixinClient.post(couponstock_query_uri, param);
+		WeixinResponse response = weixinClient.post(couponstock_query_uri,
+				param);
 		return response.getAsObject(new TypeReference<CouponStock>() {
 		});
 	}
@@ -140,9 +142,10 @@ public class CouponApi extends MpApi {
 		map.put("coupon_id", couponId);
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
-		String param = map2xml(map);
+		String param = XmlStream.map2xml(map);
 		String coupondetail_query_uri = getRequestUri("coupondetail_query_uri");
-		WeixinResponse response = weixinClient.post(coupondetail_query_uri, param);
+		WeixinResponse response = weixinClient.post(coupondetail_query_uri,
+				param);
 		return response.getAsObject(new TypeReference<CouponDetail>() {
 		});
 	}

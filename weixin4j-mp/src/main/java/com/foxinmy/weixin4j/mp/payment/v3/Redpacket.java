@@ -2,9 +2,10 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.util.DateUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 红包
@@ -22,49 +23,49 @@ public class Redpacket implements Serializable {
 	/**
 	 * 商户订单号（每个订单号必须唯一） 组成： mch_id+yyyymmdd+10位一天内不能重复的数字。
 	 */
-	@XStreamAlias("mch_billno")
+	@XmlElement(name = "mch_billno")
 	@JSONField(name = "mch_billno")
 	private String outTradeNo;
 	/**
 	 * 提供方名称 必填
 	 */
-	@XStreamAlias("nick_name")
+	@XmlElement(name = "nick_name")
 	@JSONField(name = "nick_name")
 	private String nickName;
 	/**
 	 * 红包发送者名称 必填
 	 */
-	@XStreamAlias("send_name")
+	@XmlElement(name = "send_name")
 	@JSONField(name = "send_name")
 	private String sendName;
 	/**
 	 * 接收红包的用户的openid
 	 */
-	@XStreamAlias("re_openid")
+	@XmlElement(name = "re_openid")
 	@JSONField(name = "re_openid")
 	private String openid;
 	/**
 	 * 付款金额，单位分
 	 */
-	@XStreamAlias("total_amount")
+	@XmlElement(name = "total_amount")
 	@JSONField(name = "total_amount")
 	private String totalAmount;
 	/**
 	 * 最小红包金额，单位分
 	 */
-	@XStreamAlias("min_value")
+	@XmlElement(name = "min_value")
 	@JSONField(name = "min_value")
 	private String minValue;
 	/**
 	 * 最大红包金额，单位分（ 最小金额等于最大金额： min_value=max_value =total_amount）
 	 */
-	@XStreamAlias("max_value")
+	@XmlElement(name = "max_value")
 	@JSONField(name = "max_value")
 	private String maxValue;
 	/**
 	 * 红包发放总人数
 	 */
-	@XStreamAlias("total_num")
+	@XmlElement(name = "total_num")
 	@JSONField(name = "total_num")
 	private int totalNum;
 	/**
@@ -74,13 +75,13 @@ public class Redpacket implements Serializable {
 	/**
 	 * ip地址
 	 */
-	@XStreamAlias("client_ip")
+	@XmlElement(name = "client_ip")
 	@JSONField(name = "client_ip")
 	private String clientIp;
 	/**
 	 * 活动名称
 	 */
-	@XStreamAlias("act_name")
+	@XmlElement(name = "act_name")
 	@JSONField(name = "act_name")
 	private String actName;
 	/**
@@ -90,25 +91,25 @@ public class Redpacket implements Serializable {
 	/**
 	 * 商户logo的url 非必填
 	 */
-	@XStreamAlias("logo_imgurl")
+	@XmlElement(name = "logo_imgurl")
 	@JSONField(name = "logo_imgurl")
 	private String logoUrl;
 	/**
 	 * 分享文案 非必填
 	 */
-	@XStreamAlias("share_content")
+	@XmlElement(name = "share_content")
 	@JSONField(name = "share_content")
 	private String shareContent;
 	/**
 	 * 分享链接 非必填
 	 */
-	@XStreamAlias("share_url")
+	@XmlElement(name = "share_url")
 	@JSONField(name = "share_url")
 	private String shareUrl;
 	/**
 	 * 分享的图片 非必填
 	 */
-	@XStreamAlias("share_imgurl")
+	@XmlElement(name = "share_imgurl")
 	@JSONField(name = "share_imgurl")
 	private String shareImageUrl;
 

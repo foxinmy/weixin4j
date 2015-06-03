@@ -2,8 +2,9 @@ package com.foxinmy.weixin4j.tuple;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 客服消息图文
@@ -21,24 +22,24 @@ public class Article implements Serializable {
 	/**
 	 * 图文消息标题
 	 */
-	@XStreamAlias("Title")
+	@XmlElement(name = "Title")
 	private String title;
 	/**
 	 * 图文消息描述
 	 */
 	@JSONField(name = "description")
-	@XStreamAlias("Description")
+	@XmlElement(name = "Description")
 	private String desc;
 	/**
 	 * 图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
 	 */
 	@JSONField(name = "picurl")
-	@XStreamAlias("PicUrl")
+	@XmlElement(name = "PicUrl")
 	private String picUrl;
 	/**
-	 *  点击图文消息跳转链接
+	 * 点击图文消息跳转链接
 	 */
-	@XStreamAlias("Url")
+	@XmlElement(name = "Url")
 	private String url;
 
 	public Article(String title, String desc, String picUrl, String url) {

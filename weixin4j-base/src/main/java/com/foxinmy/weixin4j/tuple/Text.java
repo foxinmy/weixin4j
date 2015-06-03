@@ -1,6 +1,6 @@
 package com.foxinmy.weixin4j.tuple;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 文本对象
@@ -14,7 +14,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("Content")
+@XmlRootElement(name = "Content")
 public class Text implements MassTuple, NotifyTuple {
 
 	private static final long serialVersionUID = 520050144519064503L;

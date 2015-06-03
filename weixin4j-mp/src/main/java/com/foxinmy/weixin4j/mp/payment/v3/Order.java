@@ -3,14 +3,19 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.TradeState;
 import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.foxinmy.weixin4j.util.DateUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * V3订单信息
@@ -21,7 +26,8 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Order extends ApiResult {
 
 	private static final long serialVersionUID = 5636828325595317079L;
@@ -30,19 +36,19 @@ public class Order extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.TradeState
 	 */
-	@XStreamAlias("trade_state")
+	@XmlElement(name = "trade_state")
 	@JSONField(name = "trade_state")
 	private TradeState tradeState;
 	/**
 	 * 用户的openid
 	 */
-	@XStreamAlias("openid")
+	@XmlElement(name = "openid")
 	@JSONField(name = "openid")
 	private String openId;
 	/**
 	 * 用户是否关注公众账号,Y- 关注,N-未关注,仅在公众 账号类型支付有效
 	 */
-	@XStreamAlias("is_subscribe")
+	@XmlElement(name = "is_subscribe")
 	@JSONField(name = "is_subscribe")
 	private String isSubscribe;
 	/**
@@ -50,43 +56,43 @@ public class Order extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.TradeType
 	 */
-	@XStreamAlias("trade_type")
+	@XmlElement(name = "trade_type")
 	@JSONField(name = "trade_type")
 	private TradeType tradeType;
 	/**
 	 * 银行类型
 	 */
-	@XStreamAlias("bank_type")
+	@XmlElement(name = "bank_type")
 	@JSONField(name = "bank_type")
 	private String bankType;
 	/**
 	 * 订单总金额,单位为分
 	 */
-	@XStreamAlias("total_fee")
+	@XmlElement(name = "total_fee")
 	@JSONField(name = "total_fee")
 	private int totalFee;
 	/**
 	 * 现金券支付金额<=订单总金 额,订单总金额-现金券金额 为现金支付金额
 	 */
-	@XStreamAlias("coupon_fee")
+	@XmlElement(name = "coupon_fee")
 	@JSONField(name = "coupon_fee")
 	private Integer couponFee;
 	/**
 	 * 代金券或立减优惠使用数量
 	 */
-	@XStreamAlias("coupon_count")
+	@XmlElement(name = "coupon_count")
 	@JSONField(name = "coupon_count")
 	private Integer couponCount;
 	/**
 	 * 代金券信息
 	 */
-	@XStreamOmitField
+	@XmlTransient
 	@JSONField(serialize = false)
 	private List<CouponInfo> couponList;
 	/**
 	 * 现金支付金额
 	 */
-	@XStreamAlias("cash_fee")
+	@XmlElement(name = "cash_fee")
 	@JSONField(name = "cash_fee")
 	private int cashFee;
 	/**
@@ -94,19 +100,19 @@ public class Order extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
 	 */
-	@XStreamAlias("fee_type")
+	@XmlElement(name = "fee_type")
 	@JSONField(name = "fee_type")
 	private CurrencyType feeType;
 	/**
 	 * 微信支付订单号
 	 */
-	@XStreamAlias("transaction_id")
+	@XmlElement(name = "transaction_id")
 	@JSONField(name = "transaction_id")
 	private String transactionId;
 	/**
 	 * 商户订单号
 	 */
-	@XStreamAlias("out_trade_no")
+	@XmlElement(name = "out_trade_no")
 	@JSONField(name = "out_trade_no")
 	private String outTradeNo;
 	/**
@@ -116,13 +122,13 @@ public class Order extends ApiResult {
 	/**
 	 * 支付完成时间,格式为 yyyyMMddhhmmss
 	 */
-	@XStreamAlias("time_end")
+	@XmlElement(name = "time_end")
 	@JSONField(name = "time_end")
 	private String timeEnd;
 	/**
 	 * 交易状态描述
 	 */
-	@XStreamAlias("trade_state_desc")
+	@XmlElement(name = "trade_state_desc")
 	@JSONField(name = "trade_state_desc")
 	private String tradeStateDesc;
 
@@ -224,7 +230,10 @@ public class Order extends ApiResult {
 
 	@JSONField(serialize = false, deserialize = false)
 	public Date getFormatTimeEnd() {
-		return DateUtil.parse2yyyyMMddHHmmss(timeEnd);
+		if (StringUtil.isNotBlank(timeEnd)) {
+			return DateUtil.parse2yyyyMMddHHmmss(timeEnd);
+		}
+		return null;
 	}
 
 	public String getTradeStateDesc() {

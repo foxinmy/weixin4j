@@ -2,10 +2,13 @@ package com.foxinmy.weixin4j.mp.payment.v2;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.util.StringUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * V2退款记录
@@ -16,7 +19,8 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @since JDK 1.7
  * @see com.foxinmy.weixin4j.mp.payment.v2.RefundDetail
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RefundRecord extends ApiResult {
 
 	private static final long serialVersionUID = -2971132874939642721L;
@@ -24,48 +28,52 @@ public class RefundRecord extends ApiResult {
 	/**
 	 * 微信订单号
 	 */
-	@XStreamAlias("transaction_id")
+	@XmlElement(name = "transaction_id")
 	@JSONField(name = "transaction_id")
 	private String transactionId;
 	/**
 	 * 商户订单号
 	 */
-	@XStreamAlias("out_trade_no")
+	@XmlElement(name = "out_trade_no")
 	@JSONField(name = "out_trade_no")
 	private String outTradeNo;
 	/**
 	 * 退款笔数
 	 */
-	@XStreamAlias("refund_count")
+	@XmlElement(name = "refund_count")
 	@JSONField(name = "refund_count")
 	private int count;
 	/**
 	 * 退款详情
 	 */
-	@XStreamOmitField
+	@XmlTransient
 	@JSONField(serialize = false, deserialize = false)
-	private List<RefundDetail> details;
+	private List<RefundDetail> refundList;
 
 	public String getTransactionId() {
 		return transactionId;
 	}
 
 	public String getOutTradeNo() {
-		return StringUtil.isNotBlank(outTradeNo) ? outTradeNo : null;
+		return outTradeNo;
 	}
 
 	public int getCount() {
 		return count;
 	}
 
-	public List<RefundDetail> getDetails() {
-		return details;
+	public List<RefundDetail> getRefundList() {
+		return refundList;
+	}
+
+	public void setRefundList(List<RefundDetail> refundList) {
+		this.refundList = refundList;
 	}
 
 	@Override
 	public String toString() {
 		return "RefundRecord [transactionId=" + transactionId + ", outTradeNo="
-				+ outTradeNo + ", count=" + count + ", details=" + details
-				+ ", " + super.toString() + "]";
+				+ outTradeNo + ", count=" + count + ", refundList="
+				+ refundList + ", " + super.toString() + "]";
 	}
 }

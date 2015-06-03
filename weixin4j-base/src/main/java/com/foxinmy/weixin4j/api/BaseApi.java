@@ -1,15 +1,10 @@
 package com.foxinmy.weixin4j.api;
 
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
-import com.foxinmy.weixin4j.xml.Map2ObjectConverter;
-import com.foxinmy.weixin4j.xml.XmlStream;
-import com.thoughtworks.xstream.core.ClassLoaderReference;
-import com.thoughtworks.xstream.mapper.DefaultMapper;
 
 /**
  * API基础
@@ -23,21 +18,6 @@ import com.thoughtworks.xstream.mapper.DefaultMapper;
  */
 public abstract class BaseApi {
 	protected final WeixinHttpClient weixinClient = new WeixinHttpClient();
-	protected final static XmlStream mapXstream = XmlStream.get();
-	static {
-		mapXstream.alias("xml", Map.class);
-		mapXstream.registerConverter(new Map2ObjectConverter(new DefaultMapper(
-				new ClassLoaderReference(XmlStream.class.getClassLoader()))));
-	}
-
-	protected String map2xml(Map<?, ?> map) {
-		return mapXstream.toXML(map).replaceAll("__", "_");
-	}
-
-	@SuppressWarnings("unchecked")
-	protected Map<String, String> xml2map(String xml) {
-		return mapXstream.fromXML(xml, Map.class);
-	}
 
 	protected abstract ResourceBundle getWeixinBundle();
 
@@ -55,7 +35,7 @@ public abstract class BaseApi {
 		m.appendTail(sb);
 		return sb.toString();
 	}
-	
+
 	protected String getConfigValue(String key) {
 		return getWeixinBundle().getString(key);
 	}

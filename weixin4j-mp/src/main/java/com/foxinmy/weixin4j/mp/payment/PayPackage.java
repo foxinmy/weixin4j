@@ -3,9 +3,10 @@ package com.foxinmy.weixin4j.mp.payment;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.util.DateUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 订单信息
@@ -35,45 +36,45 @@ public class PayPackage implements Serializable {
 	/**
 	 * 商户系统内部的订单号 ,32 个字符内 、可包含字母 ,确保 在商户系统唯一 必须
 	 */
-	@XStreamAlias("out_trade_no")
+	@XmlElement(name = "out_trade_no")
 	@JSONField(name = "out_trade_no")
 	private String outTradeNo;
 	/**
 	 * 订单总金额,单位为分,不能带小数点 必须
 	 */
-	@XStreamAlias("total_fee")
+	@XmlElement(name = "total_fee")
 	@JSONField(name = "total_fee")
 	private String totalFee;
 	/**
 	 * 订单生成的机器 IP 必须
 	 */
-	@XStreamAlias("spbill_create_ip")
+	@XmlElement(name = "spbill_create_ip")
 	@JSONField(name = "spbill_create_ip")
 	private String spbillCreateIp;
 	/**
 	 * 订单生成时间,格式为 yyyyMMddHHmmss,如 2009 年 12月25日9点10分10秒表示为 20091225091010。时区 为
 	 * GMT+8 beijing。该时间取 自商户服务器 非必须
 	 */
-	@XStreamAlias("time_start")
+	@XmlElement(name = "time_start")
 	@JSONField(name = "time_start")
 	private String timeStart;
 	/**
 	 * 订单失效时间,格为 yyyyMMddHHmmss,如 2009 年 12月27日9点10分10秒表示为 20091227091010。时区 为
 	 * GMT+8 beijing。该时间取 自商户服务商品标记 非必须
 	 */
-	@XStreamAlias("time_expire")
+	@XmlElement(name = "time_expire")
 	@JSONField(name = "time_expire")
 	private String timeExpire;
 	/**
 	 * 商品标记,该字段不能随便填,不使用请填空 非必须
 	 */
-	@XStreamAlias("goods_tag")
+	@XmlElement(name = "goods_tag")
 	@JSONField(name = "goods_tag")
 	private String goodsTag;
 	/**
 	 * 通知地址接收微信支付成功通知 必须
 	 */
-	@XStreamAlias("notify_url")
+	@XmlElement(name = "notify_url")
 	@JSONField(name = "notify_url")
 	private String notifyUrl;
 

@@ -43,12 +43,12 @@ public class WeixinResponse extends HttpResponse {
 		if (isXmlResult) {
 			@SuppressWarnings("unchecked")
 			Class<T> clazz = (Class<T>) typeReference.getType();
-			return XmlStream.get(getAsString(), clazz);
+			return XmlStream.fromXML(getAsString(), clazz);
 		}
 		return null;
 	}
 
 	public XmlResult getAsXmlResult() {
-		return XmlStream.get(getAsString(), XmlResult.class);
+		return XmlStream.fromXML(getAsString(), XmlResult.class);
 	}
 }

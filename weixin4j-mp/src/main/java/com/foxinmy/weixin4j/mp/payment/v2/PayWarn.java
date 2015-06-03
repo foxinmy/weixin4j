@@ -1,7 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.foxinmy.weixin4j.mp.payment.PayBaseInfo;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V2告警通知
@@ -12,7 +14,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
 public class PayWarn extends PayBaseInfo {
 
 	private static final long serialVersionUID = 2334592957844332640L;
@@ -20,17 +22,17 @@ public class PayWarn extends PayBaseInfo {
 	/**
 	 * 错误代号 1001=发货超时
 	 */
-	@XStreamAlias("ErrorType")
+	@XmlElement(name = "ErrorType")
 	private String errortype;
 	/**
 	 * 错误描述
 	 */
-	@XStreamAlias("Description")
+	@XmlElement(name = "Description")
 	private String description;
 	/**
 	 * 错误详情
 	 */
-	@XStreamAlias("AlarmContent")
+	@XmlElement(name = "AlarmContent")
 	private String alarmcontent;
 
 	public String getErrortype() {

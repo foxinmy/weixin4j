@@ -1,7 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V2 Native支付时的回调响应
@@ -12,19 +14,19 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
 public class NativePayResponseV2 extends JsPayRequestV2 {
 
 	private static final long serialVersionUID = 6119895998783333012L;
 	/**
 	 * 返回码
 	 */
-	@XStreamAlias("RetCode")
+	@XmlElement(name = "RetCode")
 	private String retCode;
 	/**
 	 * 返回消息
 	 */
-	@XStreamAlias("RetErrMsg")
+	@XmlElement(name = "RetErrMsg")
 	private String retMsg;
 
 	public NativePayResponseV2(WeixinMpAccount weixinAccount,

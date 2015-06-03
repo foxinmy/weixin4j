@@ -2,9 +2,10 @@ package com.foxinmy.weixin4j.mp.payment;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.SignType;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 基本信息
@@ -22,27 +23,27 @@ public class PayBaseInfo implements Serializable {
 	/**
 	 * 公众号ID
 	 */
-	@XStreamAlias("AppId")
+	@XmlElement(name = "AppId")
 	private String appId;
 	/**
 	 * 时间戳
 	 */
-	@XStreamAlias("TimeStamp")
+	@XmlElement(name = "TimeStamp")
 	private String timeStamp;
 	/**
 	 * 随机字符串
 	 */
-	@XStreamAlias("NonceStr")
+	@XmlElement(name = "NonceStr")
 	private String nonceStr;
 	/**
 	 * 签名结果
 	 */
-	@XStreamAlias("AppSignature")
+	@XmlElement(name = "AppSignature")
 	private String paySign;
 	/**
 	 * 签名方式
 	 */
-	@XStreamAlias("SignMethod")
+	@XmlElement(name = "SignMethod")
 	private String signType;
 
 	public String getAppId() {

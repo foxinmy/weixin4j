@@ -1,8 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 发送红包结果
@@ -19,31 +20,31 @@ public class RedpacketSendResult extends XmlResult {
 	/**
 	 * 微信分配的公众账号
 	 */
-	@XStreamAlias("wxappid")
+	@XmlElement(name = "wxappid")
 	@JSONField(name = "wxappid")
 	private String appid;
 	/**
 	 * 微信支付分配的商户号
 	 */
-	@XStreamAlias("mch_id")
+	@XmlElement(name = "mch_id")
 	@JSONField(name = "mch_id")
 	private String mchId;
 	/**
 	 * 商户订单号（每个订单号必须唯一） 组成： mch_id+yyyymmdd+10位一天内不能重复的数字。
 	 */
-	@XStreamAlias("mch_billno")
+	@XmlElement(name = "mch_billno")
 	@JSONField(name = "mch_billno")
 	private String outTradeNo;
 	/**
 	 * 接收红包的用户的openid
 	 */
-	@XStreamAlias("re_openid")
+	@XmlElement(name = "re_openid")
 	@JSONField(name = "re_openid")
 	private String openid;
 	/**
 	 * 付款金额 单位为分
 	 */
-	@XStreamAlias("total_amount")
+	@XmlElement(name = "total_amount")
 	@JSONField(name = "total_amount")
 	private int totalAmount;
 

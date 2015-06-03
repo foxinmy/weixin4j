@@ -1,9 +1,12 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 调用V3.x接口返回的公用字段
@@ -14,6 +17,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ApiResult extends XmlResult {
 
 	private static final long serialVersionUID = -8430005768959715444L;
@@ -21,25 +25,25 @@ public class ApiResult extends XmlResult {
 	/**
 	 * 微信分配的公众账号 ID商户号 非空
 	 */
-	@XStreamAlias("appid")
+	@XmlElement(name = "appid")
 	@JSONField(name = "appid")
 	private String appId;
 	/**
 	 * 微信支付分配的商户号 非空
 	 */
-	@XStreamAlias("mch_id")
+	@XmlElement(name = "mch_id")
 	@JSONField(name = "mch_id")
 	private String mchId;
 	/**
 	 * 代理模式下分配的商户号 可能为空
 	 */
-	@XStreamAlias("sub_mch_id")
+	@XmlElement(name = "sub_mch_id")
 	@JSONField(name = "sub_mch_id")
 	private String subMchId;
 	/**
 	 * 随机字符串 非空
 	 */
-	@XStreamAlias("nonce_str")
+	@XmlElement(name = "nonce_str")
 	@JSONField(name = "nonce_str")
 	private String nonceStr;
 	/**
@@ -49,7 +53,7 @@ public class ApiResult extends XmlResult {
 	/**
 	 * 微信支付分配的终端设备号 可能为空
 	 */
-	@XStreamAlias("device_info")
+	@XmlElement(name = "device_info")
 	@JSONField(name = "device_info")
 	private String deviceInfo;
 	/**

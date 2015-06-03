@@ -2,10 +2,14 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * V3退款记录
@@ -14,9 +18,9 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @author jy
  * @date 2014年11月1日
  * @since JDK 1.7
- * @see com.foxinmy.weixin4j.mp.payment.v3.RefundDetail
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RefundRecord extends ApiResult {
 
 	private static final long serialVersionUID = -2971132874939642721L;
@@ -24,19 +28,19 @@ public class RefundRecord extends ApiResult {
 	/**
 	 * 微信订单号
 	 */
-	@XStreamAlias("transaction_id")
+	@XmlElement(name = "transaction_id")
 	@JSONField(name = "transaction_id")
 	private String transactionId;
 	/**
 	 * 商户订单号
 	 */
-	@XStreamAlias("out_trade_no")
+	@XmlElement(name = "out_trade_no")
 	@JSONField(name = "out_trade_no")
 	private String outTradeNo;
 	/**
 	 * 订单总金额
 	 */
-	@XStreamAlias("total_fee")
+	@XmlElement(name = "total_fee")
 	@JSONField(name = "total_fee")
 	private int totalFee;
 	/**
@@ -44,13 +48,13 @@ public class RefundRecord extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
 	 */
-	@XStreamAlias("fee_type")
+	@XmlElement(name = "fee_type")
 	@JSONField(name = "fee_type")
 	private CurrencyType feeType;
 	/**
 	 * 现金支付金额
 	 */
-	@XStreamAlias("cash_fee")
+	@XmlElement(name = "cash_fee")
 	@JSONField(name = "cash_fee")
 	private int cashFee;
 	/**
@@ -58,33 +62,35 @@ public class RefundRecord extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
 	 */
-	@XStreamAlias("cash_fee_type")
+	@XmlElement(name = "cash_fee_type")
 	@JSONField(name = "cash_fee_type")
 	private CurrencyType cashFeeType;
 	/**
 	 * 退款总金额
 	 */
-	@XStreamAlias("refund_fee")
+	@XmlElement(name = "refund_fee")
 	@JSONField(name = "refund_fee")
 	private int refundFee;
 	/**
 	 * 代金券或立减优惠退款金额=订单金额-现金退款金额，注意：满立减金额不会退回
 	 */
-	@XStreamAlias("coupon_refund_fee")
+	@XmlElement(name = "coupon_refund_fee")
 	@JSONField(name = "coupon_refund_fee")
 	private Integer couponRefundFee;
 	/**
 	 * 退款笔数
 	 */
-	@XStreamAlias("refund_count")
+	@XmlElement(name = "refund_count")
 	@JSONField(name = "refund_count")
 	private int count;
 	/**
 	 * 退款详情
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.RefundDetail
 	 */
-	@XStreamOmitField
+	@XmlTransient
 	@JSONField(serialize = false, deserialize = false)
-	private List<RefundDetail> details;
+	private List<RefundDetail> refundList;
 
 	public String getTransactionId() {
 		return transactionId;
@@ -148,12 +154,12 @@ public class RefundRecord extends ApiResult {
 		return count;
 	}
 
-	public List<RefundDetail> getDetails() {
-		return details;
+	public List<RefundDetail> getRefundList() {
+		return refundList;
 	}
 
-	public void setDetails(List<RefundDetail> details) {
-		this.details = details;
+	public void setRefundList(List<RefundDetail> refundList) {
+		this.refundList = refundList;
 	}
 
 	public int getRefundFee() {
@@ -178,6 +184,6 @@ public class RefundRecord extends ApiResult {
 				+ ", cashFeeType=" + cashFeeType + ", refundFee="
 				+ getFormatRefundFee() + ", couponRefundFee="
 				+ getFormatCouponRefundFee() + ", count=" + count
-				+ ", details=" + details + ", " + super.toString() + "]";
+				+ ", refundList=" + refundList + ", " + super.toString() + "]";
 	}
 }

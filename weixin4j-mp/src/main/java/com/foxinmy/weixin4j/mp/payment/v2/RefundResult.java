@@ -1,7 +1,11 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V2退款申请结果
@@ -12,7 +16,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RefundResult extends RefundDetail {
 
 	private static final long serialVersionUID = -3687863914168618620L;
@@ -20,13 +25,13 @@ public class RefundResult extends RefundDetail {
 	/**
 	 * 微信订单号
 	 */
-	@XStreamAlias("transaction_id")
+	@XmlElement(name = "transaction_id")
 	@JSONField(name = "transaction_id")
 	private String transactionId;
 	/**
 	 * 商户系统内部的订单号
 	 */
-	@XStreamAlias("out_trade_no")
+	@XmlElement(name = "out_trade_no")
 	@JSONField(name = "out_trade_no")
 	private String outTradeNo;
 

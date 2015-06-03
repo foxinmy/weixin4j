@@ -1,7 +1,8 @@
 package com.foxinmy.weixin4j.tuple;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 群发视频对象
@@ -28,7 +29,7 @@ public class MpVideo implements MassTuple {
 	 * 上传视频后微信返回的媒体ID
 	 */
 	@JSONField(name = "media_id")
-	@XStreamAlias("MediaId")
+	@XmlElement(name = "MediaId")
 	private String mediaId;
 
 	public MpVideo(String mediaId) {

@@ -2,10 +2,11 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.MPPaymentCheckNameType;
 import com.foxinmy.weixin4j.util.DateUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 企业付款
@@ -22,7 +23,7 @@ public class MPPayment implements Serializable {
 	/**
 	 * 商户订单号
 	 */
-	@XStreamAlias("partner_trade_no")
+	@XmlElement(name = "partner_trade_no")
 	@JSONField(name = "partner_trade_no")
 	private String outTradeNo;
 	/**
@@ -34,13 +35,13 @@ public class MPPayment implements Serializable {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.type.MPPaymentCheckNameType
 	 */
-	@XStreamAlias("check_name")
+	@XmlElement(name = "check_name")
 	@JSONField(name = "check_name")
 	private MPPaymentCheckNameType checkNameType;
 	/**
 	 * 收款用户真实姓名。 如果check_name设置为FORCE_CHECK或OPTION_CHECK，则必填用户真实姓名 可选
 	 */
-	@XStreamAlias("re_user_name")
+	@XmlElement(name = "re_user_name")
 	@JSONField(name = "re_user_name")
 	private String userName;
 	/**
@@ -54,7 +55,7 @@ public class MPPayment implements Serializable {
 	/**
 	 * 调用接口的机器Ip地址
 	 */
-	@XStreamAlias("spbill_create_ip")
+	@XmlElement(name = "spbill_create_ip")
 	@JSONField(name = "spbill_create_ip")
 	private String clientIp;
 	

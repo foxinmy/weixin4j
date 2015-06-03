@@ -9,7 +9,7 @@ import java.util.Calendar;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.util.ConfigUtil;
-import com.thoughtworks.xstream.XStream;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 用FILE保存TOKEN
@@ -21,7 +21,6 @@ import com.thoughtworks.xstream.XStream;
  * @see com.foxinmy.weixin4j.token.TokenCreator
  */
 public class FileTokenHolder implements TokenHolder {
-	private final XStream xstream;
 	private final String tokenPath;
 	private final TokenCreator tokenCreator;
 
@@ -32,11 +31,6 @@ public class FileTokenHolder implements TokenHolder {
 	public FileTokenHolder(String tokenPath, TokenCreator tokenCreator) {
 		this.tokenPath = tokenPath;
 		this.tokenCreator = tokenCreator;
-		xstream = new XStream();
-		xstream.ignoreUnknownElements();
-		xstream.autodetectAnnotations(true);
-		xstream.alias("xml", Token.class);
-		xstream.processAnnotations(Token.class);
 	}
 
 	@Override
@@ -48,8 +42,8 @@ public class FileTokenHolder implements TokenHolder {
 		long now_time = ca.getTimeInMillis();
 		try {
 			if (token_file.exists()) {
-				token = (Token) xstream
-						.fromXML(new FileInputStream(token_file));
+				token = XmlStream.fromXML(new FileInputStream(token_file),
+						Token.class);
 				long expire_time = token.getTime()
 						+ (token.getExpiresIn() * 1000) - 2;
 				if (expire_time > now_time) {
@@ -57,7 +51,7 @@ public class FileTokenHolder implements TokenHolder {
 				}
 			}
 			token = tokenCreator.createToken();
-			xstream.toXML(token, new FileOutputStream(token_file));
+			XmlStream.toXML(token, new FileOutputStream(token_file));
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		}

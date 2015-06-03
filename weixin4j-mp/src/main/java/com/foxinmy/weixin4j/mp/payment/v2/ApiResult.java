@@ -2,10 +2,13 @@ package com.foxinmy.weixin4j.mp.payment.v2;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.SignType;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 调用V2.x接口返回的公用字段
@@ -16,6 +19,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ApiResult implements Serializable {
 
 	private static final long serialVersionUID = -2876899595643466203L;
@@ -23,19 +27,19 @@ public class ApiResult implements Serializable {
 	 * 是查询结果状态码,0 表明成功,其他表明错误;
 	 */
 	@JSONField(name = "ret_code")
-	@XStreamAlias("retcode")
+	@XmlElement(name = "retcode")
 	private int retCode;
 	/**
 	 * 是查询结果出错信息;
 	 */
 	@JSONField(name = "ret_msg")
-	@XStreamAlias("retmsg")
+	@XmlElement(name = "retmsg")
 	private String retMsg;
 	/**
 	 * 是返回信息中的编码方式;
 	 */
 	@JSONField(name = "input_charset")
-	@XStreamAlias("input_charset")
+	@XmlElement(name = "input_charset")
 	private String inputCharset;
 	/**
 	 * 是财付通商户号,即前文的 partnerid;
@@ -44,7 +48,7 @@ public class ApiResult implements Serializable {
 	/**
 	 * 多密钥支持的密钥序号,默认 1
 	 */
-	@XStreamAlias("sign_key_index")
+	@XmlElement(name = "sign_key_index")
 	@JSONField(name = "sign_key_index")
 	private Integer signKeyIndex;
 	/**
@@ -55,7 +59,7 @@ public class ApiResult implements Serializable {
 	 * 签名类型,取值:MD5、RSA
 	 */
 	@JSONField(name = "sign_type")
-	@XStreamAlias("sign_type")
+	@XmlElement(name = "sign_type")
 	private SignType signType;
 
 	public int getRetCode() {

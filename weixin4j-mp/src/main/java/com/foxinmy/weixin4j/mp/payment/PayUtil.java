@@ -220,12 +220,13 @@ public class PayUtil {
 	 * @return 预支付对象
 	 */
 	private final static WeixinHttpClient httpClient = new WeixinHttpClient();
+
 	public static PrePay createPrePay(PayPackageV3 payPackage, String paySignKey)
 			throws PayException {
 		if (StringUtil.isBlank(payPackage.getSign())) {
 			payPackage.setSign(paysignMd5(payPackage, paySignKey));
 		}
-		String payJsRequestXml = XmlStream.to(payPackage).replaceAll("__", "_");
+		String payJsRequestXml = XmlStream.toXML(payPackage);
 		try {
 			WeixinResponse response = httpClient.post(Consts.UNIFIEDORDER,
 					payJsRequestXml);
@@ -355,7 +356,7 @@ public class PayUtil {
 		map.put("retcode", payRequest.getRetCode());
 		map.put("reterrmsg", payRequest.getRetMsg());
 		payRequest.setPaySign(paysignSha(map));
-		return XmlStream.to(payRequest);
+		return XmlStream.toXML(payRequest);
 	}
 
 	/**
@@ -406,7 +407,7 @@ public class PayUtil {
 			throws WeixinException {
 		String sign = paysignMd5(payPackage, weixinAccount.getPaySignKey());
 		payPackage.setSign(sign);
-		String para = XmlStream.to(payPackage).replaceAll("__", "_");
+		String para = XmlStream.toXML(payPackage);
 		WeixinResponse response = httpClient.post(Consts.MICROPAYURL, para);
 		return response
 				.getAsObject(new TypeReference<com.foxinmy.weixin4j.mp.payment.v3.Order>() {

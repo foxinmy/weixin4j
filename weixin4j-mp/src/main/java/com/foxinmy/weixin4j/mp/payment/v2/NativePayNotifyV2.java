@@ -1,7 +1,8 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.foxinmy.weixin4j.mp.payment.JsPayNotify;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * V2 Native支付回调时POST的信息
@@ -19,7 +20,7 @@ public class NativePayNotifyV2 extends JsPayNotify {
 	/**
 	 * 产品ID 可视为订单ID
 	 */
-	@XStreamAlias("ProductId")
+	@XmlElement(name = "ProductId")
 	private String productId;
 
 	public String getProductId() {

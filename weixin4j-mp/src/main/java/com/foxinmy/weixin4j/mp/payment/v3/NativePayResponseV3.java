@@ -1,12 +1,13 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * V3 Native支付时的回调响应
@@ -17,12 +18,12 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
 public class NativePayResponseV3 extends ApiResult {
 
 	private static final long serialVersionUID = 6119895998783333012L;
 
-	@XStreamOmitField
+	@XmlTransient
 	@JSONField(serialize = false)
 	private PrePay prePay;
 

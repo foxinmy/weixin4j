@@ -1,8 +1,9 @@
 package com.foxinmy.weixin4j.tuple;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * 视频对象
@@ -29,24 +30,24 @@ public class Video implements NotifyTuple {
 	 * 上传视频微信返回的媒体ID
 	 */
 	@JSONField(name = "media_id")
-	@XStreamAlias("MediaId")
+	@XmlElement(name = "MediaId")
 	private String mediaId;
 	/**
 	 * 缩略图的媒体ID(客服消息)
 	 */
-	@XStreamOmitField
 	@JSONField(name = "thumb_media_id")
+	@XmlTransient
 	private String thumbMediaId;
 	/**
 	 * 视频标题
 	 */
-	@XStreamAlias("Title")
+	@XmlElement(name = "Title")
 	private String title;
 	/**
 	 * 视频描述
 	 */
 	@JSONField(name = "description")
-	@XStreamAlias("Description")
+	@XmlElement(name = "Description")
 	private String desc;
 
 	public Video(String mediaId) {

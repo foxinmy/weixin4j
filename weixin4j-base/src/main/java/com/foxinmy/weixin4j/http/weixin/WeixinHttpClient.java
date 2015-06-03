@@ -28,7 +28,6 @@ import com.foxinmy.weixin4j.util.ErrorUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
-import com.thoughtworks.xstream.mapper.CannotResolveClassException;
 
 public class WeixinHttpClient extends SimpleHttpClient {
 
@@ -155,7 +154,7 @@ public class WeixinHttpClient extends SimpleHttpClient {
 				try {
 					checkXml(response);
 					return response;
-				} catch (CannotResolveClassException ex) {
+				} catch (IllegalArgumentException ex) {
 					;
 				}
 				throw new WeixinException(response.getAsString());
@@ -185,7 +184,7 @@ public class WeixinHttpClient extends SimpleHttpClient {
 		XmlResult xmlResult = null;
 		try {
 			xmlResult = response.getAsXmlResult();
-		} catch (CannotResolveClassException ex) {
+		} catch (IllegalArgumentException ex) {
 			// <?xml><root><data..../data></root>
 			String newXml = response.getAsString()
 					.replaceFirst("<root>", "<xml>")
@@ -194,7 +193,7 @@ public class WeixinHttpClient extends SimpleHttpClient {
 					.replaceFirst("<retmsg>", "<return_msg>")
 					.replaceFirst("</retmsg>", "</return_msg>")
 					.replaceFirst("</root>", "</xml>");
-			xmlResult = XmlStream.get(newXml, XmlResult.class);
+			xmlResult = XmlStream.fromXML(newXml, XmlResult.class);
 			response.setContent(newXml.getBytes(Consts.UTF_8));
 		}
 		response.setXmlResult(true);

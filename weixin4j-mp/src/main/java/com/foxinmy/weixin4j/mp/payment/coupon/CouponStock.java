@@ -2,12 +2,13 @@ package com.foxinmy.weixin4j.mp.payment.coupon;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
 import com.foxinmy.weixin4j.mp.type.CouponStockStatus;
 import com.foxinmy.weixin4j.mp.type.CouponType;
 import com.foxinmy.weixin4j.util.DateUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 代金券信息
@@ -25,91 +26,91 @@ public class CouponStock extends ApiResult {
 	/**
 	 * 代金券批次ID
 	 */
-	@XStreamAlias("coupon_stock_id")
+	@XmlElement(name = "coupon_stock_id")
 	@JSONField(name = "coupon_stock_id")
 	private String couponStockId;
 	/**
 	 * 代金券名称
 	 */
-	@XStreamAlias("coupon_name")
+	@XmlElement(name = "coupon_name")
 	@JSONField(name = "coupon_name")
 	private String couponName;
 	/**
 	 * 代金券面额
 	 */
-	@XStreamAlias("coupon_value")
+	@XmlElement(name = "coupon_value")
 	@JSONField(name = "coupon_value")
 	private int couponValue;
 	/**
 	 * 代金券使用最低限额
 	 */
-	@XStreamAlias("coupon_mininumn")
+	@XmlElement(name = "coupon_mininumn")
 	@JSONField(name = "coupon_mininumn")
 	private Integer couponMininumn;
 	/**
 	 * 代金券类型：1-代金券无门槛，2-代金券有门槛互斥，3-代金券有门槛叠加
 	 */
-	@XStreamAlias("coupon_type")
+	@XmlElement(name = "coupon_type")
 	@JSONField(name = "coupon_type")
 	private int couponType;
 	/**
 	 * 批次状态: 1-未激活；2-审批中；4-已激活；8-已作废；16-中止发放；
 	 */
-	@XStreamAlias("coupon_stock_status")
+	@XmlElement(name = "coupon_stock_status")
 	@JSONField(name = "coupon_stock_status")
 	private int couponStockStatus;
 	/**
 	 * 代金券数量
 	 */
-	@XStreamAlias("coupon_total")
+	@XmlElement(name = "coupon_total")
 	@JSONField(name = "coupon_total")
 	private int couponTotal;
 	/**
 	 * 代金券每个人最多能领取的数量, 如果为0，则表示没有限制
 	 */
-	@XStreamAlias("max_quota")
+	@XmlElement(name = "max_quota")
 	@JSONField(name = "max_quota")
 	private Integer maxQuota;
 	/**
 	 * 代金券锁定数量
 	 */
-	@XStreamAlias("locked_num")
+	@XmlElement(name = "locked_num")
 	@JSONField(name = "locked_num")
 	private Integer lockedNum;
 	/**
 	 * 代金券已使用数量
 	 */
-	@XStreamAlias("used_num")
+	@XmlElement(name = "used_num")
 	@JSONField(name = "used_num")
 	private Integer usedNum;
 	/**
 	 * 代金券已经发送的数量
 	 */
-	@XStreamAlias("is_send_num")
+	@XmlElement(name = "is_send_num")
 	@JSONField(name = "is_send_num")
 	private Integer sendNum;
 	/**
 	 * 生效开始时间 格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
 	 */
-	@XStreamAlias("begin_time")
+	@XmlElement(name = "begin_time")
 	@JSONField(name = "begin_time")
 	private String beginTime;
 	/**
 	 * 生效结束时间 格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
 	 */
-	@XStreamAlias("end_time")
+	@XmlElement(name = "end_time")
 	@JSONField(name = "end_time")
 	private String endTime;
 	/**
 	 * 创建时间 格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
 	 */
-	@XStreamAlias("create_time")
+	@XmlElement(name = "create_time")
 	@JSONField(name = "create_time")
 	private String createTime;
 	/**
 	 * 代金券预算额度
 	 */
-	@XStreamAlias("coupon_budget")
+	@XmlElement(name = "coupon_budget")
 	@JSONField(name = "coupon_budget")
 	private Integer couponBudget;
 

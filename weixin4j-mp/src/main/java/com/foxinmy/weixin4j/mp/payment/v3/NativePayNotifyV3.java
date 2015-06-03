@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * V3 Native支付回调时POST的信息
@@ -11,7 +12,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since JDK 1.7
  * @see
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
 public class NativePayNotifyV3 extends ApiResult {
 
 	private static final long serialVersionUID = 4515471400239795492L;
@@ -19,7 +20,7 @@ public class NativePayNotifyV3 extends ApiResult {
 	/**
 	 * 产品ID 可视为订单ID
 	 */
-	@XStreamAlias("product_id")
+	@XmlElement(name = "product_id")
 	private String productId;
 
 	public String getProductId() {

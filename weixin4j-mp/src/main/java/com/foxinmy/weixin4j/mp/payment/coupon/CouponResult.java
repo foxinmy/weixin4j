@@ -1,8 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.coupon;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 代金券发放结果
@@ -20,49 +21,49 @@ public class CouponResult extends ApiResult {
 	/**
 	 * 代金券批次id
 	 */
-	@XStreamAlias("coupon_stock_id")
+	@XmlElement(name = "coupon_stock_id")
 	@JSONField(name = "coupon_stock_id")
 	private String couponStockId;
 	/**
 	 * 返回记录数
 	 */
-	@XStreamAlias("resp_count")
+	@XmlElement(name = "resp_count")
 	@JSONField(name = "resp_count")
 	private int responseCount;
 	/**
 	 * 成功记录数
 	 */
-	@XStreamAlias("success_count")
+	@XmlElement(name = "success_count")
 	@JSONField(name = "success_count")
 	private int successCount;
 	/**
 	 * 失败记录数
 	 */
-	@XStreamAlias("failed_count")
+	@XmlElement(name = "failed_count")
 	@JSONField(name = "failed_count")
 	private int failedCount;
 	/**
 	 * 用户在商户appid下的唯一标识
 	 */
-	@XStreamAlias("openid")
+	@XmlElement(name = "openid")
 	@JSONField(name = "openid")
 	private String openId;
 	/**
 	 * 返回码 SUCCESS或者FAILED
 	 */
-	@XStreamAlias("ret_code")
+	@XmlElement(name = "ret_code")
 	@JSONField(name = "ret_code")
 	private String retCode;
 	/**
 	 * 代金券id
 	 */
-	@XStreamAlias("coupon_id")
+	@XmlElement(name = "coupon_id")
 	@JSONField(name = "coupon_id")
 	private String couponId;
 	/**
 	 * 失败描述信息，例如：“用户已达领用上限”
 	 */
-	@XStreamAlias("ret_msg")
+	@XmlElement(name = "ret_msg")
 	@JSONField(name = "ret_msg")
 	private String retMsg;
 	
