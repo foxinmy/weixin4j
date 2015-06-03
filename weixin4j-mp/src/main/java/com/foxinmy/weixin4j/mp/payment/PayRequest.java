@@ -1,11 +1,16 @@
 package com.foxinmy.weixin4j.mp.payment;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PayRequest extends PayBaseInfo {
 
 	private static final long serialVersionUID = -453746488398523883L;

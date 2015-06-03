@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -18,7 +20,8 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * @since JDK 1.7
  * @see
  */
-@XmlRootElement(name = "xml")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class NativePayResponseV3 extends ApiResult {
 
 	private static final long serialVersionUID = 6119895998783333012L;

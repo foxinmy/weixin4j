@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,7 +16,8 @@ import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
  * @since JDK 1.7
  * @see
  */
-@XmlRootElement(name = "xml")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class NativePayResponseV2 extends JsPayRequestV2 {
 
 	private static final long serialVersionUID = 6119895998783333012L;

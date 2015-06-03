@@ -2,7 +2,10 @@ package com.foxinmy.weixin4j.mp.payment;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.SignType;
@@ -16,6 +19,8 @@ import com.foxinmy.weixin4j.mp.type.SignType;
  * @since JDK 1.7
  * @see
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PayBaseInfo implements Serializable {
 
 	private static final long serialVersionUID = 1843024880782466990L;

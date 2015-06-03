@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,7 +16,8 @@ import com.foxinmy.weixin4j.mp.payment.PayBaseInfo;
  * @since JDK 1.7
  * @see
  */
-@XmlRootElement(name = "xml")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PayWarn extends PayBaseInfo {
 
 	private static final long serialVersionUID = 2334592957844332640L;

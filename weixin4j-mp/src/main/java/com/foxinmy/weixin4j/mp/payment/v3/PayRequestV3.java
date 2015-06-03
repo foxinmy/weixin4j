@@ -1,5 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.mp.payment.PayRequest;
 
@@ -20,6 +24,8 @@ import com.foxinmy.weixin4j.mp.payment.PayRequest;
  * @since JDK 1.7
  * @see com.foxinmy.weixin4j.mp.payment.v3.PrePay
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PayRequestV3 extends PayRequest {
 
 	private static final long serialVersionUID = -5972173459255255197L;

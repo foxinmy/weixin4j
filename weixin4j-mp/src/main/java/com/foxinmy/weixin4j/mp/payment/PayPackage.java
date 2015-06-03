@@ -3,7 +3,10 @@ package com.foxinmy.weixin4j.mp.payment;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.util.DateUtil;
@@ -17,6 +20,8 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @since JDK 1.7
  * @see
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PayPackage implements Serializable {
 
 	private static final long serialVersionUID = 3450161267802545790L;

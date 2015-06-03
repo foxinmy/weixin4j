@@ -2,6 +2,8 @@ package com.foxinmy.weixin4j.mp.payment;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,7 +20,8 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * @since JDK 1.7
  * @see
  */
-@XmlRootElement(name = "xml")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MicroPayPackage extends PayPackage {
 
 	private static final long serialVersionUID = 8944928173669656177L;

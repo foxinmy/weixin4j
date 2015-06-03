@@ -77,14 +77,16 @@ public final class XmlStream {
 			Source source = new StreamSource(content);
 			XmlRootElement rootElement = clazz
 					.getAnnotation(XmlRootElement.class);
-			if (rootElement == null) {
+			if (rootElement == null || rootElement.name().equals(
+					XmlRootElement.class.getMethod("name")
+					.getDefaultValue().toString())) {
 				JAXBElement<T> jaxbElement = unmarshaller.unmarshal(source,
 						clazz);
 				return jaxbElement.getValue();
 			} else {
 				return (T) unmarshaller.unmarshal(source);
 			}
-		} catch (JAXBException e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		} finally {
 			if (content != null) {
@@ -253,7 +255,10 @@ public final class XmlStream {
 		try {
 			XmlRootElement rootElement = clazz
 					.getAnnotation(XmlRootElement.class);
-			if (rootElement == null) {
+			if (rootElement == null
+					|| rootElement.name().equals(
+							XmlRootElement.class.getMethod("name")
+									.getDefaultValue().toString())) {
 				marshaller.marshal(new JAXBElement<T>(new QName(
 						ROOT_ELEMENT_XML), clazz, t), os);
 			} else {

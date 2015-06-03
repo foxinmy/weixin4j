@@ -164,7 +164,9 @@ public class SimpleHttpClient implements HttpClient {
 				if (os != null) {
 					os.close();
 				}
-				is.close();
+				if (is != null) {
+					is.close();
+				}
 			}
 		}
 		HttpResponse response = new HttpResponse();

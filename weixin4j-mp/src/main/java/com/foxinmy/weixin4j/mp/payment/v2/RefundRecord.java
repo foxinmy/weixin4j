@@ -19,7 +19,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @since JDK 1.7
  * @see com.foxinmy.weixin4j.mp.payment.v2.RefundDetail
  */
-@XmlRootElement(name = "xml")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RefundRecord extends ApiResult {
 

@@ -2,6 +2,10 @@ package com.foxinmy.weixin4j.mp.payment.v2;
 
 import java.beans.Transient;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayRequest;
@@ -23,6 +27,8 @@ import com.foxinmy.weixin4j.util.MapUtil;
  * @since JDK 1.7
  * @see
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class JsPayRequestV2 extends PayRequest {
 
 	private static final long serialVersionUID = -5972173459255255197L;

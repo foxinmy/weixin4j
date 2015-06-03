@@ -16,7 +16,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @since JDK 1.7
  * @see
  */
-@XmlRootElement(name = "xml")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RefundResult extends RefundDetail {
 

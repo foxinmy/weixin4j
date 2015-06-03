@@ -135,7 +135,7 @@ public class MediaApi extends MpApi {
 								fileName)), new FormBodyPart("type",
 								new StringBody(mediaType, Consts.UTF_8)));
 			} catch (UnsupportedEncodingException e) {
-				; // ignore
+				throw new WeixinException(e); // ignore
 			}
 		} else {
 			String file_upload_uri = getRequestUri("file_upload_uri");
@@ -386,8 +386,8 @@ public class MediaApi extends MpApi {
 	public MediaCounter countMaterialMedia() throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String material_media_count_uri = getRequestUri("material_media_count_uri");
-		WeixinResponse response = weixinClient.get(String.format(material_media_count_uri,
-				token.getAccessToken()));
+		WeixinResponse response = weixinClient.get(String.format(
+				material_media_count_uri, token.getAccessToken()));
 
 		return response.getAsObject(new TypeReference<MediaCounter>() {
 		});

@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.mp.payment.v3;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
@@ -17,6 +18,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @since JDK 1.7
  * @see
  */
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ApiResult extends XmlResult {
 
@@ -121,8 +123,8 @@ public class ApiResult extends XmlResult {
 		return recall;
 	}
 
-	public String setRecall() {
-		return recall;
+	public void setRecall(String recall) {
+		this.recall = recall;
 	}
 
 	@JSONField(deserialize = false, serialize = false)

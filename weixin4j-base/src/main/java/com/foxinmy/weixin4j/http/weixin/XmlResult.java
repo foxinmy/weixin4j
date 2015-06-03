@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -17,6 +18,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @since JDK 1.7
  * @see
  */
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class XmlResult implements Serializable {
 

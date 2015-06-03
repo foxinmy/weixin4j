@@ -1,6 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v3;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
@@ -14,6 +17,8 @@ import com.foxinmy.weixin4j.http.weixin.XmlResult;
  * @since JDK 1.7
  * @see
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RedpacketSendResult extends XmlResult {
 
 	private static final long serialVersionUID = 5611847899634131711L;

@@ -1,6 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.coupon;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
@@ -14,6 +17,8 @@ import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
  * @since JDK 1.7
  * @see
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CouponResult extends ApiResult {
 
 	private static final long serialVersionUID = -1996967923720149124L;

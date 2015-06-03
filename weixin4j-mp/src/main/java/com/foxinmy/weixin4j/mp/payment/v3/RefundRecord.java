@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.mp.type.CurrencyType;
  * @date 2014年11月1日
  * @since JDK 1.7
  */
-@XmlRootElement(name = "xml")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RefundRecord extends ApiResult {
 

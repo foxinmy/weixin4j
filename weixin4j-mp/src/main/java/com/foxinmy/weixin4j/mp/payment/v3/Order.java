@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @since JDK 1.7
  * @see
  */
-@XmlRootElement(name = "xml")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Order extends ApiResult {
 

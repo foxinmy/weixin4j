@@ -1,6 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.foxinmy.weixin4j.mp.payment.JsPayNotify;
 
@@ -13,6 +16,8 @@ import com.foxinmy.weixin4j.mp.payment.JsPayNotify;
  * @since JDK 1.7
  * @see
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class NativePayNotifyV2 extends JsPayNotify {
 
 	private static final long serialVersionUID = 1868431159301749988L;

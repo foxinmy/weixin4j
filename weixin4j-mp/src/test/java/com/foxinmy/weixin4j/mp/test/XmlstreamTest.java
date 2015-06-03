@@ -101,8 +101,9 @@ public class XmlstreamTest {
 	public static void main(String[] args) throws Exception {
 		// map2xml();
 		// xml2map();
-		// xml2order();
+		 xml2order();
 		// xml2refundRecordV2();
-		xml2refundRecordV3();
+		// xml2refundRecordV3();
+		// object2xmlWithoutRootElement();
 	}
 }
