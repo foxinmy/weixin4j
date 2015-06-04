@@ -95,13 +95,14 @@ public class XmlstreamTest {
 
 		}
 		System.err.println(ListsuffixResultConverter
-				.containRefundDetailConvert(sb.toString(), com.foxinmy.weixin4j.mp.payment.v3.RefundRecord.class));
+				.containRefundDetailConvert(sb.toString(),
+						com.foxinmy.weixin4j.mp.payment.v3.RefundRecord.class));
 	}
 
 	public static void main(String[] args) throws Exception {
 		// map2xml();
 		// xml2map();
-		 xml2order();
+		// xml2order();
 		// xml2refundRecordV2();
 		// xml2refundRecordV3();
 		// object2xmlWithoutRootElement();

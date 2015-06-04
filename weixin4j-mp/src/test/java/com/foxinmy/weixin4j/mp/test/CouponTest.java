@@ -32,7 +32,7 @@ public class CouponTest {
 	static {
 		ACCOUNT = new WeixinMpAccount("appid",
 				"appsecret",
-				"paysing", "mchid");
+				"paysign", "mchid");
 		WEIXINPAY = new WeixinPayProxy(ACCOUNT, new FileTokenHolder(
 				new WeixinTokenCreator(ACCOUNT.getId(), ACCOUNT.getSecret())));
 	}

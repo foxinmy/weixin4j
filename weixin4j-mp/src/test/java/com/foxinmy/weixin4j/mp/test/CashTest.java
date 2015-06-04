@@ -6,6 +6,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPayment;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentResult;
 import com.foxinmy.weixin4j.mp.payment.v3.Redpacket;
+import com.foxinmy.weixin4j.mp.payment.v3.RedpacketRecord;
 import com.foxinmy.weixin4j.mp.payment.v3.RedpacketSendResult;
 import com.foxinmy.weixin4j.mp.type.MPPaymentCheckNameType;
 
@@ -33,6 +34,13 @@ public class CashTest extends CouponTest {
 		redpacket.setWishing("来就送钱");
 		RedpacketSendResult result = WEIXINPAY.sendRedpack(caFile, redpacket);
 		System.err.println(result);
+	}
+
+	@Test
+	public void queryRedpacket() throws WeixinException {
+		String outTradeNo = "HB001";
+		RedpacketRecord record = WEIXINPAY.queryRedpack(caFile, outTradeNo);
+		System.err.println(record);
 	}
 
 	@Test

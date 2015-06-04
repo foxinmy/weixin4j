@@ -20,6 +20,7 @@ import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPayment;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentResult;
 import com.foxinmy.weixin4j.mp.payment.v3.Redpacket;
+import com.foxinmy.weixin4j.mp.payment.v3.RedpacketRecord;
 import com.foxinmy.weixin4j.mp.payment.v3.RedpacketSendResult;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.BillType;
@@ -589,6 +590,36 @@ public class WeixinPayProxy {
 			throws WeixinException {
 		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
 		return cashApi.sendRedpack(caFile, redpacket);
+	}
+
+	/**
+	 * 查询红包记录
+	 * 
+	 * @param caFile
+	 *            证书文件(V3版本后缀为*.p12)
+	 * @param outTradeNo
+	 *            商户发放红包的商户订单号
+	 * @return 红包记录
+	 * @see com.foxinmy.weixin4j.mp.api.CashApi
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.RedpacketRecord
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_6">查询红包接口说明</a>
+	 * @throws WeixinException
+	 */
+	public RedpacketRecord queryRedpack(File caFile, String outTradeNo)
+			throws WeixinException {
+		return cashApi.queryRedpack(caFile, outTradeNo);
+	}
+
+	/**
+	 * 查询红包采用properties中配置的ca文件
+	 * 
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinPayProxy#queryRedpack(File,String)}
+	 */
+	public RedpacketRecord queryRedpack(String outTradeNo)
+			throws WeixinException {
+		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
+		return cashApi.queryRedpack(caFile, outTradeNo);
 	}
 
 	/**

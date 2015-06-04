@@ -85,7 +85,7 @@ public class CouponApi extends MpApi {
 			response = request.post(coupon_send_uri, param);
 		} catch (WeixinException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		} finally {
 			if (ca != null) {

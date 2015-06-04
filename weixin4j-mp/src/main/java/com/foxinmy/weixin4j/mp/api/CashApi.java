@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -16,6 +18,7 @@ import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPayment;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentResult;
 import com.foxinmy.weixin4j.mp.payment.v3.Redpacket;
+import com.foxinmy.weixin4j.mp.payment.v3.RedpacketRecord;
 import com.foxinmy.weixin4j.mp.payment.v3.RedpacketSendResult;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
@@ -51,7 +54,7 @@ public class CashApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.payment.v3.Redpacket
 	 * @see com.foxinmy.weixin4j.mp.payment.v3.RedpacketSendResult
 	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_5">红包接口说明</a>
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_5">发放红包接口说明</a>
 	 * @throws WeixinException
 	 */
 	public RedpacketSendResult sendRedpack(File caFile, Redpacket redpacket)
@@ -74,7 +77,7 @@ public class CashApi extends MpApi {
 			response = request.post(redpack_send_uri, param);
 		} catch (WeixinException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		} finally {
 			if (ca != null) {
@@ -86,6 +89,55 @@ public class CashApi extends MpApi {
 			}
 		}
 		return response.getAsObject(new TypeReference<RedpacketSendResult>() {
+		});
+	}
+
+	/**
+	 * 查询红包记录
+	 * 
+	 * @param caFile
+	 *            证书文件(V3版本后缀为*.p12)
+	 * @param outTradeNo
+	 *            商户发放红包的商户订单号
+	 * @return 红包记录
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.RedpacketRecord
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_6">查询红包接口说明</a>
+	 * @throws WeixinException
+	 */
+	public RedpacketRecord queryRedpack(File caFile, String outTradeNo)
+			throws WeixinException {
+		Map<String, String> para = new HashMap<String, String>();
+		para.put("nonce_str", RandomUtil.generateString(16));
+		para.put("mch_id", weixinAccount.getMchId());
+		para.put("bill_type", "MCHT");
+		para.put("appid", weixinAccount.getId());
+		para.put("mch_billno", outTradeNo);
+		String sign = PayUtil.paysignMd5(para, weixinAccount.getPaySignKey());
+		para.put("sign", sign);
+		String param = XmlStream.map2xml(para);
+		String redpack_query_uri = getRequestUri("redpack_query_uri");
+		WeixinResponse response = null;
+		InputStream ca = null;
+		try {
+			ca = new FileInputStream(caFile);
+			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
+					ca);
+			response = request.post(redpack_query_uri, param);
+		} catch (WeixinException e) {
+			throw e;
+		} catch (IOException e) {
+			throw new WeixinException(e.getMessage());
+		} finally {
+			if (ca != null) {
+				try {
+					ca.close();
+				} catch (IOException e) {
+					;
+				}
+			}
+		}
+		return response.getAsObject(new TypeReference<RedpacketRecord>() {
 		});
 	}
 
@@ -124,7 +176,7 @@ public class CashApi extends MpApi {
 			response = request.post(mp_payment_uri, param);
 		} catch (WeixinException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		} finally {
 			if (ca != null) {

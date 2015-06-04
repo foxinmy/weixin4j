@@ -108,4 +108,8 @@
 
   + <font color="red">调整[客服接口](./src/main/java/com/foxinmy/weixin4j/mp/api/CustomApi.java)类的方法名</font>
   
-   + <font color="red">在[二维码接口](./src/main/java/com/foxinmy/weixin4j/mp/api/QRApi.java)类新增获取二维码url方法</font>
+  + <font color="red">在[二维码接口](./src/main/java/com/foxinmy/weixin4j/mp/api/QRApi.java)类新增获取二维码url方法</font>
+   
+* 2015-06-04
+
+  + 新增查询红包接口
