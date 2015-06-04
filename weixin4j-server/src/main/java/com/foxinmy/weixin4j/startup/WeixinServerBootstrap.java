@@ -22,6 +22,7 @@ import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.messagekey.DefaultMessageKeyDefiner;
 import com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner;
 import com.foxinmy.weixin4j.socket.WeixinServerInitializer;
+import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.AesToken;
 
 /**
@@ -246,6 +247,43 @@ public final class WeixinServerBootstrap {
 	 */
 	public WeixinServerBootstrap resolveBeanFactory(BeanFactory beanFactory) {
 		messageDispatcher.setBeanFactory(beanFactory);
+		return this;
+	}
+
+	/**
+	 * 注册消息类型
+	 * 
+	 * @param messageType
+	 *            消息类型
+	 * @param eventType
+	 *            事件类型
+	 * @param accountType
+	 *            账号类型
+	 * @param messageClass
+	 *            消息类
+	 * @see com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner
+	 * @return
+	 */
+	public WeixinServerBootstrap registMessageClass(String messageType,
+			String eventType, AccountType accountType, Class<?> messageClass) {
+		messageDispatcher.registMessageMatch(messageType, eventType,
+				accountType, messageClass);
+		return this;
+	}
+
+	/**
+	 * 注册消息类型
+	 * 
+	 * @param messageKey
+	 *            消息的key
+	 * @param messageClass
+	 *            消息类
+	 * @see com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner
+	 * @return
+	 */
+	public WeixinServerBootstrap registMessageClass(String messageKey,
+			Class<?> messageClass) {
+		messageDispatcher.registMessageMatch(messageKey, messageClass);
 		return this;
 	}
 }

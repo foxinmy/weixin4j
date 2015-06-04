@@ -5,11 +5,11 @@ import com.foxinmy.weixin4j.type.AccountType;
 /**
  * 微信消息key的定义
  * 
- * @className WeixinMessageKey
+ * @className WeixinMessageKeyDefiner
  * @author jy
  * @date 2015年5月18日
  * @since JDK 1.7
- * @see
+ * @see com.foxinmy.weixin4j.messagekey.DefaultMessageKeyDefiner
  */
 public interface WeixinMessageKeyDefiner {
 

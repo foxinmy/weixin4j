@@ -7,6 +7,11 @@ import com.foxinmy.weixin4j.util.StringUtil;
 /**
  * 默认的messageKey实现
  * 
+ * <p>
+ * 普通消息key=messageType.toLowerCase();</br>
+ * 事件消息key=accountType:eventType:messageType.toLowerCase();
+ * </p>
+ * 
  * @className DefaultMessageKeyDefiner
  * @author jy
  * @date 2015年5月18日
