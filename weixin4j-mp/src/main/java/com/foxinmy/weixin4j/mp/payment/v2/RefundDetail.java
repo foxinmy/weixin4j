@@ -68,6 +68,10 @@ public class RefundDetail extends ApiResult {
 	@JSONField(name = "reccv_user_name")
 	private String reccvUserName;
 
+	protected RefundDetail() {
+		// jaxb required
+	}
+
 	public String getOutRefundNo() {
 		return outRefundNo;
 	}

@@ -28,12 +28,12 @@ public class NativePayNotifyV2 extends JsPayNotify {
 	@XmlElement(name = "ProductId")
 	private String productId;
 
+	private NativePayNotifyV2(){
+		// jaxb required
+	}
+	
 	public String getProductId() {
 		return productId;
-	}
-
-	public void setProductId(String productId) {
-		this.productId = productId;
 	}
 
 	@Override

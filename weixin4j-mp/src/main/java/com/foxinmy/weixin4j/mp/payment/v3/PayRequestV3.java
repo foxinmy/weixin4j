@@ -30,6 +30,10 @@ public class PayRequestV3 extends PayRequest {
 
 	private static final long serialVersionUID = -5972173459255255197L;
 	
+	protected PayRequestV3() {
+		// jaxb required
+	}
+	
 	public PayRequestV3(PrePay prePay) throws PayException {
 		this.setAppId(prePay.getAppId());
 		this.setPackageInfo("prepay_id=" + prePay.getPrepayId());

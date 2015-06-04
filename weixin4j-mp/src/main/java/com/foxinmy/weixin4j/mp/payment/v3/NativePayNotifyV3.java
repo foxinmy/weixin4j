@@ -26,12 +26,12 @@ public class NativePayNotifyV3 extends ApiResult {
 	@XmlElement(name = "product_id")
 	private String productId;
 
+	protected NativePayNotifyV3() {
+		// jaxb required
+	}
+	
 	public String getProductId() {
 		return productId;
-	}
-
-	public void setProductId(String productId) {
-		this.productId = productId;
 	}
 
 	@Override

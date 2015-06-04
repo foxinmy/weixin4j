@@ -33,6 +33,10 @@ public class JsPayNotify extends PayBaseInfo {
 	@XmlElement(name = "IsSubscribe")
 	private int issubscribe;
 
+	public JsPayNotify() {
+
+	}
+
 	public String getOpenid() {
 		return openid;
 	}

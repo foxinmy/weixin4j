@@ -43,6 +43,10 @@ public class CouponInfo implements Serializable {
 	@JSONField(name = "coupon_fee")
 	private Integer couponFee;
 
+	public CouponInfo(){
+		
+	}
+	
 	public String getCouponBatchId() {
 		return couponBatchId;
 	}

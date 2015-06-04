@@ -173,6 +173,10 @@ public class CouponDetail extends ApiResult {
 	@JSONField(name = "is_partial_use")
 	private int isPartialUse;
 
+	public CouponDetail(){
+		
+	}
+	
 	public String getCouponStockId() {
 		return couponStockId;
 	}

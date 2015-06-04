@@ -33,6 +33,10 @@ public class JsPayRequestV2 extends PayRequest {
 
 	private static final long serialVersionUID = -5972173459255255197L;
 
+	protected JsPayRequestV2(){
+		// jaxb required
+	}
+	
 	public JsPayRequestV2(WeixinMpAccount weixinAccount, PayPackageV2 payPackage) {
 		this.setAppId(weixinAccount.getId());
 		this.setPackageInfo(package2string(payPackage,

@@ -132,6 +132,10 @@ public class Order extends ApiResult {
 	@JSONField(name = "trade_state_desc")
 	private String tradeStateDesc;
 
+	protected Order() {
+		// jaxb required
+	}
+	
 	public TradeState getTradeState() {
 		return tradeState;
 	}

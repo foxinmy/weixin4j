@@ -119,6 +119,10 @@ public class CouponStock extends ApiResult {
 	@JSONField(name = "coupon_budget")
 	private Integer couponBudget;
 
+	public CouponStock(){
+		
+	}
+	
 	public String getCouponStockId() {
 		return couponStockId;
 	}

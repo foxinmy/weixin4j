@@ -179,9 +179,10 @@ public class PayPackage implements Serializable {
 		this.notifyUrl = notifyUrl;
 	}
 
-	public PayPackage() {
+	protected PayPackage(){
+		// jaxb required
 	}
-
+	
 	/**
 	 * 订单对象
 	 * 

@@ -35,6 +35,10 @@ public class RefundResult extends RefundDetail {
 	@JSONField(name = "out_trade_no")
 	private String outTradeNo;
 
+	protected RefundResult() {
+		// jaxb required
+	}
+	
 	public String getTransactionId() {
 		return transactionId;
 	}

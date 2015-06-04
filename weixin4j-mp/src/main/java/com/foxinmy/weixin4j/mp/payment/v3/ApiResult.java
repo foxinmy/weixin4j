@@ -63,7 +63,7 @@ public class ApiResult extends XmlResult {
 	 */
 	private String recall;
 
-	public ApiResult() {
+	protected ApiResult() {
 
 	}
 

@@ -32,6 +32,10 @@ public class NativePayResponseV2 extends JsPayRequestV2 {
 	@XmlElement(name = "RetErrMsg")
 	private String retMsg;
 
+	protected NativePayResponseV2(){
+		// jaxb required
+	}
+	
 	public NativePayResponseV2(WeixinMpAccount weixinAccount,
 			PayPackageV2 payPackage) {
 		super(weixinAccount, payPackage);

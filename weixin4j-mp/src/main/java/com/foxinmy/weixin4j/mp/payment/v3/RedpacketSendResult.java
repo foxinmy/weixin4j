@@ -53,6 +53,10 @@ public class RedpacketSendResult extends XmlResult {
 	@JSONField(name = "total_amount")
 	private int totalAmount;
 
+	protected RedpacketSendResult() {
+		// jaxb required
+	}
+	
 	public String getAppid() {
 		return appid;
 	}

@@ -40,8 +40,8 @@ public class PrePay extends ApiResult {
 	@XmlElement(name = "code_url")
 	private String codeUrl;
 
-	public PrePay() {
-
+	protected PrePay() {
+		// jaxb required
 	}
 
 	public PrePay(String returnCode, String returnMsg) {

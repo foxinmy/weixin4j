@@ -133,6 +133,10 @@ public class RefundDetail extends ApiResult {
 	@JSONField(serialize = false, deserialize = false)
 	private List<CouponInfo> couponList;
 
+	protected RefundDetail() {
+		// jaxb required
+	}
+	
 	public String getOutRefundNo() {
 		return outRefundNo;
 	}

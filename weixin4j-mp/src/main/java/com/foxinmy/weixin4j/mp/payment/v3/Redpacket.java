@@ -118,50 +118,51 @@ public class Redpacket implements Serializable {
 	@JSONField(name = "share_imgurl")
 	private String shareImageUrl;
 
-	public String getOutTradeNo() {
-		return outTradeNo;
+	protected Redpacket() {
+		// jaxb required
 	}
 
-	public void setOutTradeNo(String outTradeNo) {
+	/**
+	 * 红包
+	 * 
+	 * @param outTradeNo
+	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用
+	 * @param nickName
+	 *            提供方名称
+	 * @param sendName
+	 *            红包发送者名称
+	 * @param openid
+	 *            接受收红包的用户的openid
+	 * @param totalAmount
+	 *            付款金额 <font color="red">单位为元,自动格式化为分</font>
+	 */
+	public Redpacket(String outTradeNo, String nickName, String sendName,
+			String openid, double totalAmount) {
 		this.outTradeNo = outTradeNo;
+		this.nickName = nickName;
+		this.sendName = sendName;
+		this.openid = openid;
+		this.totalAmount = DateUtil.formaFee2Fen(totalAmount);
+	}
+
+	public String getOutTradeNo() {
+		return outTradeNo;
 	}
 
 	public String getNickName() {
 		return nickName;
 	}
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
 	public String getSendName() {
 		return sendName;
-	}
-
-	public void setSendName(String sendName) {
-		this.sendName = sendName;
 	}
 
 	public String getOpenid() {
 		return openid;
 	}
 
-	public void setOpenid(String openid) {
-		this.openid = openid;
-	}
-
 	public String getTotalAmount() {
 		return totalAmount;
-	}
-
-	/**
-	 * <font color="red">单位为元,自动格式化为分</font>
-	 * 
-	 * @param totalAmount
-	 *            付款金额 单位为元
-	 */
-	public void setTotalAmount(double totalAmount) {
-		this.totalAmount = DateUtil.formaFee2Fen(totalAmount);
 	}
 
 	public String getMinValue() {
@@ -172,7 +173,7 @@ public class Redpacket implements Serializable {
 	 * <font color="red">单位为元,自动格式化为分</font>
 	 * 
 	 * @param minValue
-	 *           最小红包 单位为元
+	 *            最小红包 单位为元
 	 */
 	public void setMinValue(double minValue) {
 		this.minValue = DateUtil.formaFee2Fen(minValue);
@@ -186,7 +187,7 @@ public class Redpacket implements Serializable {
 	 * <font color="red">单位为元,自动格式化为分</font>
 	 * 
 	 * @param minValue
-	 *           最大红包 单位为元
+	 *            最大红包 单位为元
 	 */
 	public void setMaxValue(double maxValue) {
 		this.maxValue = DateUtil.formaFee2Fen(maxValue);
@@ -266,13 +267,13 @@ public class Redpacket implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Redpacket [ nickName=" + nickName
-				+ ", sendName=" + sendName + ", openid=" + openid
-				+ ", totalAmount=" + totalAmount + ", minValue=" + minValue
-				+ ", maxValue=" + maxValue + ", totalNum=" + totalNum
-				+ ", wishing=" + wishing + ", clientIp=" + clientIp
-				+ ", actName=" + actName + ", remark=" + remark + ", logoUrl="
-				+ logoUrl + ", shareContent=" + shareContent + ", shareUrl="
-				+ shareUrl + ", shareImageUrl=" + shareImageUrl + "]";
+		return "Redpacket [ nickName=" + nickName + ", sendName=" + sendName
+				+ ", openid=" + openid + ", totalAmount=" + totalAmount
+				+ ", minValue=" + minValue + ", maxValue=" + maxValue
+				+ ", totalNum=" + totalNum + ", wishing=" + wishing
+				+ ", clientIp=" + clientIp + ", actName=" + actName
+				+ ", remark=" + remark + ", logoUrl=" + logoUrl
+				+ ", shareContent=" + shareContent + ", shareUrl=" + shareUrl
+				+ ", shareImageUrl=" + shareImageUrl + "]";
 	}
 }

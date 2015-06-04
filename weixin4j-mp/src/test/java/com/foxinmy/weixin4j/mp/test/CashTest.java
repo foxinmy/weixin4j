@@ -22,17 +22,13 @@ public class CashTest extends CouponTest {
 
 	@Test
 	public void sendRedpacket() throws WeixinException {
-		Redpacket redpacket = new Redpacket();
+		Redpacket redpacket = new Redpacket("HB001", "无忧钱庄", "无忧钱庄",
+				"oyFLst1bqtuTcxK-ojF8hOGtLQao", 1d);
 		redpacket.setActName("红包测试");
 		redpacket.setClientIp("127.0.0.1");
 		redpacket.setMaxValue(1d);
 		redpacket.setMinValue(1d);
-		redpacket.setNickName("无忧钱庄");
-		redpacket.setOpenid("oyFLst1bqtuTcxK-ojF8hOGtLQao");
-		redpacket.setOutTradeNo("HB001");
 		redpacket.setRemark("快来领取红包吧！");
-		redpacket.setSendName("无忧钱庄");
-		redpacket.setTotalAmount(1d);
 		redpacket.setTotalNum(1);
 		redpacket.setWishing("来就送钱");
 		RedpacketSendResult result = WEIXINPAY.sendRedpack(caFile, redpacket);

@@ -64,6 +64,10 @@ public class ApiResult implements Serializable {
 	@XmlElement(name = "sign_type")
 	private SignType signType;
 
+	protected ApiResult(){
+		// jaxb required
+	}
+	
 	public int getRetCode() {
 		return retCode;
 	}

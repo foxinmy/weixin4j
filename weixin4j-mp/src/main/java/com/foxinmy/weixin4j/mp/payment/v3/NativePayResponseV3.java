@@ -32,6 +32,10 @@ public class NativePayResponseV3 extends ApiResult {
 
 	private String prepay_id;
 
+	protected NativePayResponseV3() {
+		// jaxb required
+	}
+	
 	/**
 	 * 一般作为校验失败时返回
 	 * 

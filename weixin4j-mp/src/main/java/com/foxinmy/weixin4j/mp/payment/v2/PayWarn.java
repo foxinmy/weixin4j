@@ -38,6 +38,10 @@ public class PayWarn extends PayBaseInfo {
 	@XmlElement(name = "AlarmContent")
 	private String alarmcontent;
 
+	public PayWarn() {
+
+	}
+
 	public String getErrortype() {
 		return errortype;
 	}

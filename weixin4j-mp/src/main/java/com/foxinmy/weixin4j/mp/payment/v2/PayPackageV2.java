@@ -61,6 +61,10 @@ public class PayPackageV2 extends PayPackage {
 	@JSONField(name = "input_charset")
 	private String inputCharset;
 
+	protected PayPackageV2() {
+		// jaxb required
+	}
+
 	public PayPackageV2(String outTradeNo, double totalFee,
 			String spbillCreateIp) {
 		this(null, null, null, outTradeNo, totalFee, null, spbillCreateIp,

@@ -72,10 +72,13 @@ public class CouponResult extends ApiResult {
 	@JSONField(name = "ret_msg")
 	private String retMsg;
 	
+	public CouponResult(){
+		
+	}
+	
 	public String getCouponStockId() {
 		return couponStockId;
 	}
-
 
 	public int getResponseCount() {
 		return responseCount;

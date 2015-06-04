@@ -50,6 +50,10 @@ public class RefundRecord extends ApiResult {
 	@JSONField(serialize = false, deserialize = false)
 	private List<RefundDetail> refundList;
 
+	protected RefundRecord() {
+		// jaxb required
+	}
+	
 	public String getTransactionId() {
 		return transactionId;
 	}

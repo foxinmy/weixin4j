@@ -71,6 +71,10 @@ public class PayPackageV3 extends PayPackage {
 	@JSONField(name = "product_id")
 	private String productId;
 
+	protected PayPackageV3() {
+		// jaxb required
+	}
+	
 	public PayPackageV3(WeixinMpAccount weixinAccount, String openId,
 			String body, String outTradeNo, double totalFee,
 			String spbillCreateIp, TradeType tradeType) {

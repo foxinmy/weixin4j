@@ -247,6 +247,7 @@ public final class XmlStream {
 			try {
 				JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 				marshaller = jaxbContext.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_ENCODING, Consts.UTF_8.name()); 
 				messageMarshaller.put(clazz, marshaller);
 			} catch (JAXBException e) {
 				throw new IllegalArgumentException(e);

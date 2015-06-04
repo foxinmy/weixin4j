@@ -64,6 +64,10 @@ public class MPPayment implements Serializable {
 	@JSONField(name = "spbill_create_ip")
 	private String clientIp;
 	
+	protected MPPayment() {
+		// jaxb required
+	}
+	
 	/**
 	 * 企业付款
 	 * @param outTradeNo 商户的订单号

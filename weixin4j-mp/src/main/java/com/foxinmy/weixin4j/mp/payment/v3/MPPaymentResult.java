@@ -41,6 +41,10 @@ public class MPPaymentResult extends ApiResult {
 	@XmlElement(name = "payment_time")
 	private String paymentTime;
 
+	protected MPPaymentResult() {
+		// jaxb required
+	}
+	
 	public String getTransactionId() {
 		return transactionId;
 	}

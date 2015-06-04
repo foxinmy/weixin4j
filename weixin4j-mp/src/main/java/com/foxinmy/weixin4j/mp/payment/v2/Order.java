@@ -2,10 +2,6 @@ package com.foxinmy.weixin4j.mp.payment.v2;
 
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.TradeState;
@@ -20,8 +16,6 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @since JDK 1.7
  * @see
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Order extends ApiResult {
 
 	private static final long serialVersionUID = 4543552984506609920L;

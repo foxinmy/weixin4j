@@ -63,6 +63,10 @@ public class PayFeedback extends PayBaseInfo {
 	@XmlElement(name = "MsgType")
 	private String status;
 
+	public PayFeedback() {
+
+	}
+
 	public String getFeedbackId() {
 		return feedbackId;
 	}

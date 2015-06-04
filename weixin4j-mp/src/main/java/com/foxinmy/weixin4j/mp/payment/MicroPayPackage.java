@@ -58,6 +58,10 @@ public class MicroPayPackage extends PayPackage {
 	@JSONField(name = "auth_code")
 	private String authCode;
 
+	protected MicroPayPackage(){
+		// jaxb required
+	}
+	
 	public MicroPayPackage(WeixinMpAccount weixinAccount, String body,
 			String attach, String outTradeNo, double totalFee,
 			String spbillCreateIp, String authCode) {
