@@ -96,16 +96,16 @@ public class WeixinRequestHandler extends
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		}
-		CruxMessageHandler messageHandler = CruxMessageHandler.parser(request
+		CruxMessageHandler cruxMessage = CruxMessageHandler.parser(request
 				.getOriginalContent());
 		ctx.channel().attr(Consts.ENCRYPTTYPE_KEY)
 				.set(request.getEncryptType());
 		ctx.channel().attr(Consts.USEROPENID_KEY)
-				.set(messageHandler.getFromUserName());
+				.set(cruxMessage.getFromUserName());
 		if (StringUtil.isBlank(aesToken.getAppid())) {
 			ctx.channel().attr(Consts.ACCOUNTOPENID_KEY)
-					.set(messageHandler.getToUserName());
+					.set(cruxMessage.getToUserName());
 		}
-		messageDispatcher.doDispatch(ctx, request, messageHandler);
+		messageDispatcher.doDispatch(ctx, request, cruxMessage);
 	}
 }

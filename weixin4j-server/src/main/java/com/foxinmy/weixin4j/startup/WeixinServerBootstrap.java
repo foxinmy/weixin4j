@@ -32,6 +32,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  * @author jy
  * @date 2014年10月12日
  * @since JDK 1.7
+ * @see com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
  * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher
@@ -51,7 +52,7 @@ public final class WeixinServerBootstrap {
 	 */
 	public final static int DEFAULT_WORKERTHREADS = 20;
 	/**
-	 * 默认服务启动端口
+	 * 服务启动的默认端口
 	 */
 	public final static int DEFAULT_SERVERPORT = 30000;
 	/**

@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
 
 /**
- * 微信消息匹配
+ * 微信消息匹配(不够优雅,待改进)
  * 
  * @className WeixinMessageMatcher
  * @author jy

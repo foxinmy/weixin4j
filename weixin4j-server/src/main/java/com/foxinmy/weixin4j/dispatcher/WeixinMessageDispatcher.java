@@ -117,11 +117,11 @@ public class WeixinMessageDispatcher {
 	 * @throws WeixinException
 	 */
 	public void doDispatch(final ChannelHandlerContext context,
-			final WeixinRequest request, final CruxMessageHandler messageHandler)
+			final WeixinRequest request, final CruxMessageHandler cruxMessage)
 			throws WeixinException {
 		String messageKey = messageKeyDefiner.defineMessageKey(
-				messageHandler.getMsgType(), messageHandler.getEventType(),
-				messageHandler.getAccountType());
+				cruxMessage.getMsgType(), cruxMessage.getEventType(),
+				cruxMessage.getAccountType());
 		Class<?> targetClass = messageMatcher.find(messageKey);
 		Object message = request.getOriginalContent();
 		if (targetClass != null) {
