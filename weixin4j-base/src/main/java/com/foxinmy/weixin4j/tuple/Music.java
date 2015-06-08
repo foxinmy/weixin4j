@@ -104,10 +104,6 @@ public class Music implements NotifyTuple {
 		return thumbMediaId;
 	}
 
-	public void setThumbMediaId(String thumbMediaId) {
-		this.thumbMediaId = thumbMediaId;
-	}
-
 	@Override
 	public String toString() {
 		return "Music [title=" + title + ", desc=" + desc + ", musicUrl="

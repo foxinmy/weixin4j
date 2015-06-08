@@ -73,10 +73,6 @@ public class Video implements NotifyTuple {
 		return mediaId;
 	}
 
-	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
-	}
-
 	public String getThumbMediaId() {
 		return thumbMediaId;
 	}

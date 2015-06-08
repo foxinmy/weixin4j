@@ -40,10 +40,6 @@ public class File implements NotifyTuple {
 		return mediaId;
 	}
 
-	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
-	}
-
 	@Override
 	public String toString() {
 		return "File [mediaId=" + mediaId + "]";

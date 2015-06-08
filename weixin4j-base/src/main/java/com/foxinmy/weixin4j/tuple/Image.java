@@ -40,10 +40,6 @@ public class Image implements MassTuple, NotifyTuple {
 		return mediaId;
 	}
 
-	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
-	}
-
 	@Override
 	public String toString() {
 		return "Image [mediaId=" + mediaId + "]";

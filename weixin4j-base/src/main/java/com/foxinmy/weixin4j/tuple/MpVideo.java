@@ -40,10 +40,6 @@ public class MpVideo implements MassTuple {
 		return mediaId;
 	}
 
-	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
-	}
-
 	@Override
 	public String toString() {
 		return "MpVideo [mediaId=" + mediaId + "]";

@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.tuple;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 文本对象
@@ -14,7 +13,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @since JDK 1.7
  * @see
  */
-@XmlRootElement(name = "Content")
 public class Text implements MassTuple, NotifyTuple {
 
 	private static final long serialVersionUID = 520050144519064503L;

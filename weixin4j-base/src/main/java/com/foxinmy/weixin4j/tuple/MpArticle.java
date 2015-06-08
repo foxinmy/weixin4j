@@ -46,13 +46,13 @@ public class MpArticle implements Serializable {
 	 */
 	@JSONField(name = "show_cover_pic")
 	private String showCoverPic;
-	
+
 	/**
 	 * 正文的URL 可为空
 	 */
 	@JSONField(name = "content_url")
 	private String contentUrl;
-	
+
 	/**
 	 * 封面图片的URL 可为空
 	 */
@@ -73,10 +73,6 @@ public class MpArticle implements Serializable {
 		return thumbMediaId;
 	}
 
-	public void setThumbMediaId(String thumbMediaId) {
-		this.thumbMediaId = thumbMediaId;
-	}
-
 	public String getAuthor() {
 		return author;
 	}
@@ -89,10 +85,6 @@ public class MpArticle implements Serializable {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getSourceUrl() {
 		return sourceUrl;
 	}
@@ -103,10 +95,6 @@ public class MpArticle implements Serializable {
 
 	public String getContent() {
 		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
 	}
 
 	public String getDigest() {
