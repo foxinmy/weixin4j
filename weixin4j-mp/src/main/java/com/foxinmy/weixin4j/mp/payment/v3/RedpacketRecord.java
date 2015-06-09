@@ -54,6 +54,7 @@ public class RedpacketRecord extends XmlResult {
 	/**
 	 * 红包状态
 	 */
+	@XmlElement(name = "status")
 	private RedpacketStatus status;
 	/**
 	 * 发放类型
@@ -82,6 +83,7 @@ public class RedpacketRecord extends XmlResult {
 	/**
 	 * 发送失败原因
 	 */
+	@XmlElement(name = "reason")
 	private String reason;
 	/**
 	 * 发放时间
@@ -104,10 +106,12 @@ public class RedpacketRecord extends XmlResult {
 	/**
 	 * 祝福语
 	 */
+	@XmlElement(name = "wishing")
 	private String wishing;
 	/**
 	 * 活动描述
 	 */
+	@XmlElement(name = "remark")
 	private String remark;
 	/**
 	 * 活动名称
@@ -229,10 +233,12 @@ public class RedpacketRecord extends XmlResult {
 		/**
 		 * 领取红包的Openid
 		 */
+		@XmlElement(name = "openid")
 		private String openid;
 		/**
 		 * 领取状态
 		 */
+		@XmlElement(name = "status")
 		private RedpacketStatus status;
 		/**
 		 * 领取金额

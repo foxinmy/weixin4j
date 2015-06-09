@@ -12,5 +12,7 @@ import com.foxinmy.weixin4j.http.entity.HttpEntity;
  * @see
  */
 public abstract class HttpEntityRequest extends AbstractHttpRequest {
+	public abstract void setEntity(HttpEntity entity);
+
 	public abstract HttpEntity getEntity();
 }

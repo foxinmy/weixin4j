@@ -42,7 +42,8 @@ public class HttpPost extends HttpEntityRequest {
 		return entity;
 	}
 
-	public void setEntity(HttpEntity httpEntity) {
-		this.entity = httpEntity;
+	@Override
+	public void setEntity(HttpEntity entity) {
+		this.entity = entity;
 	}
 }
