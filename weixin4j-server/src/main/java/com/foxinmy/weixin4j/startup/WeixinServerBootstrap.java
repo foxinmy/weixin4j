@@ -32,7 +32,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  * @author jy
  * @date 2014年10月12日
  * @since JDK 1.7
- * @see com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner
+ * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
  * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher

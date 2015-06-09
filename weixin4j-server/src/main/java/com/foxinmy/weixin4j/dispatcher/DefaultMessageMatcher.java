@@ -25,6 +25,15 @@ import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
 
+/**
+ * 默认MessageMatcher实现(可以改进)
+ * 
+ * @className DefaultMessageMatcher
+ * @author jy
+ * @date 2015年6月10日
+ * @since JDK 1.7
+ * @see
+ */
 public class DefaultMessageMatcher implements WeixinMessageMatcher {
 
 	private final Map<MessageKey, Class<?>> messageClassMap;
@@ -51,7 +60,6 @@ public class DefaultMessageMatcher implements WeixinMessageMatcher {
 		/****************** 企业号事件消息 ******************/
 		// /////////////////////////////////////////////////
 		initQyEventMessageClass();
-
 	}
 
 	private void initGeneralMessageClass() {
