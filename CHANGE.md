@@ -318,3 +318,7 @@
 * 2015-06-08
 
   + **weixin4j-base**: 新增群发卡券消息类型
+
+* 2015-06-10
+
+  + **weixin4j-server**: released 1.0.2
