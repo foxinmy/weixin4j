@@ -15,14 +15,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.foxinmy.weixin4j.dispatcher.BeanFactory;
+import com.foxinmy.weixin4j.dispatcher.DefaultMessageMatcher;
+import com.foxinmy.weixin4j.dispatcher.MessageKey;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
+import com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
-import com.foxinmy.weixin4j.messagekey.DefaultMessageKeyDefiner;
-import com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner;
 import com.foxinmy.weixin4j.socket.WeixinServerInitializer;
-import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.AesToken;
 
 /**
@@ -100,15 +100,15 @@ public final class WeixinServerBootstrap {
 	}
 
 	public WeixinServerBootstrap(AesToken aesToken) {
-		this(aesToken, new DefaultMessageKeyDefiner());
+		this(aesToken, new DefaultMessageMatcher());
 	}
 
 	public WeixinServerBootstrap(AesToken aesToken,
-			WeixinMessageKeyDefiner messageKeyDefiner) {
+			WeixinMessageMatcher messageMatcher) {
 		this.aesToken = aesToken;
 		this.messageHandlerList = new LinkedList<WeixinMessageHandler>();
 		this.messageInterceptorList = new LinkedList<WeixinMessageInterceptor>();
-		this.messageDispatcher = new WeixinMessageDispatcher(messageKeyDefiner);
+		this.messageDispatcher = new WeixinMessageDispatcher(messageMatcher);
 	}
 
 	/**
@@ -254,37 +254,15 @@ public final class WeixinServerBootstrap {
 	/**
 	 * 注册消息类型
 	 * 
-	 * @param messageType
-	 *            消息类型
-	 * @param eventType
-	 *            事件类型
-	 * @param accountType
-	 *            账号类型
-	 * @param messageClass
-	 *            消息类
-	 * @see com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner
-	 * @return
-	 */
-	public WeixinServerBootstrap registMessageClass(String messageType,
-			String eventType, AccountType accountType, Class<?> messageClass) {
-		messageDispatcher.registMessageMatch(messageType, eventType,
-				accountType, messageClass);
-		return this;
-	}
-
-	/**
-	 * 注册消息类型
-	 * 
 	 * @param messageKey
-	 *            消息的key
+	 *            消息key
 	 * @param messageClass
 	 *            消息类
-	 * @see com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner
 	 * @return
 	 */
-	public WeixinServerBootstrap registMessageClass(String messageKey,
+	public WeixinServerBootstrap registMessageClass(MessageKey messageKey,
 			Class<?> messageClass) {
-		messageDispatcher.registMessageMatch(messageKey, messageClass);
+		messageDispatcher.registMessageClass(messageKey, messageClass);
 		return this;
 	}
 }

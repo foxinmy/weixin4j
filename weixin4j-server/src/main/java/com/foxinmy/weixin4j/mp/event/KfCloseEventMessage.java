@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.type.EventType;
 public class KfCloseEventMessage extends EventMessage {
 
 	private static final long serialVersionUID = 3644449346935205541L;
-
+	
 	public KfCloseEventMessage() {
 		super(EventType.kf_close_session.name());
 	}

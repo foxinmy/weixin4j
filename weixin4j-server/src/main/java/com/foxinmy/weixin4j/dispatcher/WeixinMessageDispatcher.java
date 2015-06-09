@@ -27,11 +27,8 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
-import com.foxinmy.weixin4j.messagekey.DefaultMessageKeyDefiner;
-import com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
-import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
@@ -48,7 +45,6 @@ import com.foxinmy.weixin4j.xml.CruxMessageHandler;
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
  * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher
- * @see com.foxinmy.weixin4j.messagekey.WeixinMessageKeyDefiner
  * @see com.foxinmy.weixin4j.dispatcher.MessageHandlerExecutor
  * @see com.foxinmy.weixin4j.dispatcher.BeanFactory
  */
@@ -87,22 +83,17 @@ public class WeixinMessageDispatcher {
 	 */
 	private WeixinMessageMatcher messageMatcher;
 	/**
-	 * 消息key
-	 */
-	private WeixinMessageKeyDefiner messageKeyDefiner;
-	/**
 	 * 消息转换
 	 */
 	private Map<Class<?>, Unmarshaller> messageUnmarshaller;
 
 	public WeixinMessageDispatcher() {
-		this(new DefaultMessageKeyDefiner());
+		this(new DefaultMessageMatcher());
 	}
 
-	public WeixinMessageDispatcher(WeixinMessageKeyDefiner messageKeyDefiner) {
-		messageMatcher = new WeixinMessageMatcher(messageKeyDefiner);
-		messageUnmarshaller = new HashMap<Class<?>, Unmarshaller>();
-		this.messageKeyDefiner = messageKeyDefiner;
+	public WeixinMessageDispatcher(WeixinMessageMatcher messageMatcher) {
+		this.messageMatcher = messageMatcher;
+		this.messageUnmarshaller = new HashMap<Class<?>, Unmarshaller>();
 	}
 
 	/**
@@ -119,16 +110,15 @@ public class WeixinMessageDispatcher {
 	public void doDispatch(final ChannelHandlerContext context,
 			final WeixinRequest request, final CruxMessageHandler cruxMessage)
 			throws WeixinException {
-		String messageKey = messageKeyDefiner.defineMessageKey(
-				cruxMessage.getMsgType(), cruxMessage.getEventType(),
-				cruxMessage.getAccountType());
-		Class<?> targetClass = messageMatcher.find(messageKey);
+		MessageKey messageKey = new MessageKey(cruxMessage.getMsgType(),
+				cruxMessage.getEventType(), cruxMessage.getAccountType());
+		Class<?> targetClass = messageMatcher.match(messageKey);
 		Object message = request.getOriginalContent();
 		if (targetClass != null) {
 			message = messageRead(request.getOriginalContent(), targetClass);
 		}
-		logger.info("define [{}] messageKey matched [{}] unmarshal to {}",
-				messageKey, targetClass, message);
+		logger.info("define '{}' matched '{}'", messageKey,
+				targetClass);
 		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(context,
 				request, messageKey, message);
 		if (handlerExecutor == null
@@ -186,7 +176,7 @@ public class WeixinMessageDispatcher {
 	 */
 	protected MessageHandlerExecutor getHandlerExecutor(
 			ChannelHandlerContext context, WeixinRequest request,
-			String messageKey, Object message) throws WeixinException {
+			MessageKey messageKey, Object message) throws WeixinException {
 		WeixinMessageHandler messageHandler = null;
 		WeixinMessageHandler[] messageHandlers = getMessageHandlers();
 		if (messageHandlers == null) {
@@ -195,11 +185,6 @@ public class WeixinMessageDispatcher {
 		for (WeixinMessageHandler handler : messageHandlers) {
 			if (handler instanceof MessageHandlerAdapter) {
 				Class<?> genericType = genericTypeRead(handler);
-				if (!messageMatcher.match(genericType)) {
-					message = messageRead(request.getOriginalContent(),
-							genericType);
-					messageMatcher.regist(messageKey, genericType);
-				}
 				if (genericType == message.getClass()
 						&& handler.canHandle(request, message)) {
 					messageHandler = handler;
@@ -268,7 +253,6 @@ public class WeixinMessageDispatcher {
 			}
 		}
 		return this.messageHandlers;
-
 	}
 
 	/**
@@ -421,21 +405,11 @@ public class WeixinMessageDispatcher {
 		this.beanFactory = beanFactory;
 	}
 
-	public void registMessageMatch(String messageType, String eventType,
-			AccountType accountType, Class<?> messageClass) {
-		registMessageMatch(messageKeyDefiner.defineMessageKey(messageType,
-				eventType, accountType), messageClass);
-	}
-
-	public void registMessageMatch(String messageKey, Class<?> messageClass) {
+	public void registMessageClass(MessageKey messageKey, Class<?> messageClass) {
 		messageMatcher.regist(messageKey, messageClass);
 	}
 
 	public WeixinMessageMatcher getMessageMatcher() {
 		return this.messageMatcher;
-	}
-
-	public WeixinMessageKeyDefiner getMessageKeyDefiner() {
-		return this.messageKeyDefiner;
 	}
 }
