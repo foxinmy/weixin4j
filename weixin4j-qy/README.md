@@ -32,9 +32,9 @@ weixin4j-qy
 	    <artifactId>weixin4j-qy</artifactId>
 	    <version>1.4</version>
 	</dependency>
-1.需新增或拷贝`weixin.properties`文件到项目的`classpath`中
+1.需新增或拷贝`weixin4j.properties`文件到项目的`classpath`中
 
-weixin.properties说明
+weixin4j.properties说明
 
 | 属性名       |       说明      |
 | :---------- | :-------------- |
@@ -48,8 +48,8 @@ weixin.properties说明
 		"token":"企业号中应用在回调模式下的token",\
 		"encodingAesKey":"企业号中应用在回调模式下AES加密密钥"}
 	
-	token_path=/tmp/weixin/token
-	media_path=/tmp/weixin/media
+	token_path=/tmp/weixin4j/token
+	media_path=/tmp/weixin4j/media
 
 2.实例化一个`WeixinProxy`对象,调用API
 

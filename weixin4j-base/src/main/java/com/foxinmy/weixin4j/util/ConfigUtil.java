@@ -21,7 +21,7 @@ public class ConfigUtil {
 	private final static String CLASSPATH_VALUE;
 	private final static ResourceBundle weixinBundle;
 	static {
-		weixinBundle = ResourceBundle.getBundle("weixin");
+		weixinBundle = ResourceBundle.getBundle("weixin4j");
 		Set<String> keySet = weixinBundle.keySet();
 		File file = null;
 		CLASSPATH_VALUE = Thread.currentThread().getContextClassLoader()

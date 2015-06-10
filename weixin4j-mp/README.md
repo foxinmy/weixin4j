@@ -48,9 +48,9 @@ weixin4j-mp
 	    <artifactId>weixin4j-mp</artifactId>
 	    <version>1.4</version>
 	</dependency>
-1.需新增或拷贝`weixin.properties`文件到项目的`classpath`中
+1.需新增或拷贝`weixin4j.properties`文件到项目的`classpath`中
 
-weixin.properties说明
+weixin4j.properties说明
 
 | 属性名         |       说明      |
 | :----------	| :-------------- |
@@ -73,12 +73,12 @@ weixin.properties说明
 		"version":"针对微信支付的版本号(2,3),如果不填则按照mchId非空与否来判断",\
 		"paySignKey":"微信支付中调用API的密钥"}
 	
-	token_path=/tmp/weixin/token
-	qr_path=/tmp/weixin/qr
-	media_path=/tmp/weixin/media
-	bill_path=/tmp/weixin/bill
+	token_path=/tmp/weixin4j/token
+	qr_path=/tmp/weixin4j/qr
+	media_path=/tmp/weixin4j/media
+	bill_path=/tmp/weixin4j/bill
 	# ca证书存放的完整路径 (V2版本后缀为*.pfx,V3版本后缀为*.p12)
-	ca_file=/tmp/weixin/xxxxx.p12
+	ca_file=/tmp/weixin4j/xxxxx.p12
 	#classpath路径下:ca_file=classpath:xxxxx.p12
 	
 	#微信登陆授权的重定向路径(使用OauthApi时需要填写)
