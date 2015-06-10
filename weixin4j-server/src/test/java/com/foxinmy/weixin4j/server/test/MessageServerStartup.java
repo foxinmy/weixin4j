@@ -15,9 +15,9 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
- * 服务启动
+ * 服务启动测试类
  * 
- * @className ServerStarup
+ * @className MessageServerStartup
  * @author jy
  * @date 2015年5月7日
  * @since JDK 1.7
@@ -25,9 +25,12 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
  */
 public class MessageServerStartup {
 
-	final String appid = "appid";
-	final String token = "carsonliu13450438112";
-	final String aesKey = "AES密钥";
+	// 应用ID
+	final String appid = "wx4ab8f8de58159a57";
+	// 开发者token
+	final String token = "weixin4j";
+	// AES密钥(安全模式)
+	final String aesKey = "";
 
 	/**
 	 * 明文模式
@@ -109,6 +112,6 @@ public class MessageServerStartup {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new MessageServerStartup().test3();
+		new MessageServerStartup().test1();
 	}
 }

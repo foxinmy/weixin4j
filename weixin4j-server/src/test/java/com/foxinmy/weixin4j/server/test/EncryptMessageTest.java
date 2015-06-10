@@ -24,9 +24,9 @@ public class EncryptMessageTest extends MessagePush {
 	 */
 	@Test
 	public void testValidate() throws IOException {
-		String echostr = "2143641595566077626";
-		String para = "?signature=0d2366aedb4f3531cfa4297c1e4ea7eece2311d9&echostr="
-				+ echostr + "&timestamp=1415951914&nonce=165976363";
+		String echostr = "9104940990866104523";
+		String para = "?signature=6ea29ec4c087868f960a20f28b7ac3edef7e444e&echostr="
+				+ echostr + "&timestamp=1433903307&nonce=1961697383";
 		xmlSb.delete(0, xmlSb.length());
 		String response = get(para);
 		Assert.assertEquals(echostr, response);
@@ -39,15 +39,14 @@ public class EncryptMessageTest extends MessagePush {
 	 */
 	@Test
 	public void testType1() throws IOException {
-		String para = "?signature=6dd806a20a314723e78bc58742a1b98a7adfd151&timestamp=1415979366&nonce=1865915590";
+		String para = "?signature=d919cc8a6361597afa536e906156262cc9cd93df&timestamp=1433903433&nonce=518016546";
 		xmlSb.delete(0, xmlSb.length());
 		xmlSb.append("<xml>");
-		xmlSb.append("<ToUserName><![CDATA[gh_248c6f91d64f]]></ToUserName>");
-		xmlSb.append("<FromUserName><![CDATA[oyFLst1bqtuTcxK-ojF8hOGtLQao]]></FromUserName>");
-		xmlSb.append("<CreateTime>1415979365</CreateTime>");
-		xmlSb.append("<MsgType><![CDATA[event]]></MsgType>");
-		xmlSb.append("<Event><![CDATA[CLICK]]></Event>");
-		xmlSb.append("<EventKey><![CDATA[CHECKIN]]></EventKey>");
+		xmlSb.append("<ToUserName><![CDATA[gh_22b350df957b]]></ToUserName>");
+		xmlSb.append("<FromUserName><![CDATA[owGBft_vbBbOaQOmpEUE4xDLeRSU]]></FromUserName>");
+		xmlSb.append("<CreateTime>1433903433</CreateTime>");
+		xmlSb.append("<MsgType><![CDATA[text]]></MsgType>");
+		xmlSb.append("<Content><![CDATA[text]]></Content>");
 		xmlSb.append("</xml>");
 		String response = push(para, xmlSb.toString());
 		Assert.assertNotNull(response);

@@ -147,7 +147,6 @@ public final class WeixinServerBootstrap {
 							new WeixinServerInitializer(aesToken,
 									messageDispatcher));
 			Channel ch = b.bind(serverPort).sync().channel();
-			System.err.println("weixin4j server startup OK:" + serverPort);
 			logger.info("weixin4j server startup OK:{}", serverPort);
 			ch.closeFuture().sync();
 		} catch (WeixinException e) {

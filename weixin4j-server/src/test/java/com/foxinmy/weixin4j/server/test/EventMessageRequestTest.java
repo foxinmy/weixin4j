@@ -19,6 +19,7 @@ public class EventMessageRequestTest extends MessagePush {
 	/***************** event message *********************/
 	@Test
 	public void scribe() throws IOException {
+		String para = "?signature=d919cc8a6361597afa536e906156262cc9cd93df&timestamp=1433903433&nonce=518016546";
 		xmlSb.delete(0, xmlSb.length());
 		xmlSb.append("<xml>");
 		xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
@@ -27,13 +28,14 @@ public class EventMessageRequestTest extends MessagePush {
 		xmlSb.append("<MsgType><![CDATA[event]]></MsgType>");
 		xmlSb.append("<Event><![CDATA[subscribe]]></Event>");
 		xmlSb.append("</xml>");
-		String response = push(xmlSb.toString());
+		String response = push(para, xmlSb.toString());
 		Assert.assertNotNull(response);
 		System.out.println(response);
 	}
 
 	@Test
 	public void scan() throws IOException {
+		String para = "?signature=d919cc8a6361597afa536e906156262cc9cd93df&timestamp=1433903433&nonce=518016546";
 		xmlSb.delete(0, xmlSb.length());
 		xmlSb.append("<xml>");
 		xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
@@ -44,13 +46,14 @@ public class EventMessageRequestTest extends MessagePush {
 		xmlSb.append("<EventKey><![CDATA[SCENE_VALUE]]></EventKey>");
 		xmlSb.append("<Ticket><![CDATA[TICKET]]></Ticket>");
 		xmlSb.append("</xml>");
-		String response = push(xmlSb.toString());
+		String response = push(para, xmlSb.toString());
 		Assert.assertNotNull(response);
 		System.out.println(response);
 	}
 
 	@Test
 	public void scan_scribe() throws IOException {
+		String para = "?signature=d919cc8a6361597afa536e906156262cc9cd93df&timestamp=1433903433&nonce=518016546";
 		xmlSb.delete(0, xmlSb.length());
 		xmlSb.append("<xml><ToUserName><![CDATA[toUser]]></ToUserName>");
 		xmlSb.append("<FromUserName><![CDATA[FromUser]]></FromUserName>");
@@ -60,13 +63,14 @@ public class EventMessageRequestTest extends MessagePush {
 		xmlSb.append("<EventKey><![CDATA[qrscene_123123]]></EventKey>");
 		xmlSb.append("<Ticket><![CDATA[TICKET]]></Ticket>");
 		xmlSb.append("</xml>");
-		String response = push(xmlSb.toString());
+		String response = push(para, xmlSb.toString());
 		Assert.assertNotNull(response);
 		System.out.println(response);
 	}
 
 	@Test
 	public void location() throws IOException {
+		String para = "?signature=d919cc8a6361597afa536e906156262cc9cd93df&timestamp=1433903433&nonce=518016546";
 		xmlSb.delete(0, xmlSb.length());
 		xmlSb.append("<xml>");
 		xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
@@ -78,13 +82,14 @@ public class EventMessageRequestTest extends MessagePush {
 		xmlSb.append("<Longitude>113.352425</Longitude>");
 		xmlSb.append("<Precision>119.385040</Precision>");
 		xmlSb.append("</xml>");
-		String response = push(xmlSb.toString());
+		String response = push(para, xmlSb.toString());
 		Assert.assertNotNull(response);
 		System.out.println(response);
 	}
 
 	@Test
 	public void menu_click() throws IOException {
+		String para = "?signature=d919cc8a6361597afa536e906156262cc9cd93df&timestamp=1433903433&nonce=518016546";
 		xmlSb.delete(0, xmlSb.length());
 		xmlSb.append("<xml>");
 		xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
@@ -94,13 +99,14 @@ public class EventMessageRequestTest extends MessagePush {
 		xmlSb.append("<Event><![CDATA[CLICK]]></Event>");
 		xmlSb.append("<EventKey><![CDATA[EVENTKEY]]></EventKey>");
 		xmlSb.append("</xml>");
-		String response = push(xmlSb.toString());
+		String response = push(para, xmlSb.toString());
 		Assert.assertNotNull(response);
 		System.out.println(response);
 	}
 
 	@Test
 	public void menu_link() throws IOException {
+		String para = "?signature=d919cc8a6361597afa536e906156262cc9cd93df&timestamp=1433903433&nonce=518016546";
 		xmlSb.delete(0, xmlSb.length());
 		xmlSb.append("<xml>");
 		xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
@@ -110,13 +116,14 @@ public class EventMessageRequestTest extends MessagePush {
 		xmlSb.append("<Event><![CDATA[VIEW]]></Event>");
 		xmlSb.append("<EventKey><![CDATA[www.qq.com]]></EventKey>");
 		xmlSb.append("</xml>");
-		String response = push(xmlSb.toString());
+		String response = push(para, xmlSb.toString());
 		Assert.assertNotNull(response);
 		System.out.println(response);
 	}
 
 	@Test
 	public void menu_scan() throws IOException {
+		String para = "?signature=d919cc8a6361597afa536e906156262cc9cd93df&timestamp=1433903433&nonce=518016546";
 		xmlSb.delete(0, xmlSb.length());
 		xmlSb.append("<xml>");
 		xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
@@ -130,13 +137,14 @@ public class EventMessageRequestTest extends MessagePush {
 		xmlSb.append("</ScanCodeInfo>");
 
 		xmlSb.append("</xml>");
-		String response = push(xmlSb.toString());
+		String response = push(para, xmlSb.toString());
 		Assert.assertNotNull(response);
 		System.out.println(response);
 	}
 
 	@Test
 	public void menu_photo() throws IOException {
+		String para = "?signature=d919cc8a6361597afa536e906156262cc9cd93df&timestamp=1433903433&nonce=518016546";
 		xmlSb.delete(0, xmlSb.length());
 		xmlSb.append("<xml>");
 		xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
@@ -149,13 +157,14 @@ public class EventMessageRequestTest extends MessagePush {
 		xmlSb.append("<PicList><item><PicMd5Sum><![CDATA[1b5f7c23b5bf75682a53e7b6d163e185]]></PicMd5Sum>");
 		xmlSb.append("</item></PicList></SendPicsInfo>");
 		xmlSb.append("</xml>");
-		String response = push(xmlSb.toString());
+		String response = push(para, xmlSb.toString());
 		Assert.assertNotNull(response);
 		System.out.println(response);
 	}
 
 	@Test
 	public void menu_location() throws IOException {
+		String para = "?signature=d919cc8a6361597afa536e906156262cc9cd93df&timestamp=1433903433&nonce=518016546";
 		xmlSb.delete(0, xmlSb.length());
 		xmlSb.append("<xml>");
 		xmlSb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
@@ -170,7 +179,7 @@ public class EventMessageRequestTest extends MessagePush {
 		xmlSb.append("<Label><![CDATA[ 广州市海珠区客村艺苑路 106号]]></Label>");
 		xmlSb.append("<Poiname><![CDATA[]]></Poiname></SendLocationInfo>");
 		xmlSb.append("</xml>");
-		String response = push(xmlSb.toString());
+		String response = push(para, xmlSb.toString());
 		Assert.assertNotNull(response);
 		System.out.println(response);
 	}
