@@ -24,19 +24,19 @@ weixin4j
 如何获取
 ----------
 ###1.maven依赖
-微信公众平台API(1.4,2015-04-29 released)
+微信公众平台API(1.5.0,2015-06-10 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.4</version>
+	    <version>1.5.0</version>
 	</dependency>
-微信企业号API(1.4,2015-04-29 released)
+微信企业号API(1.5.0,2015-06-10 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-qy</artifactId>
-	    <version>1.4</version>
+	    <version>1.5.0</version>
 	</dependency>
 微信被动消息服务器(1.0.2,2015-06-10 released)
 

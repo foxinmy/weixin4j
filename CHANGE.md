@@ -322,7 +322,7 @@
 * 2015-06-10
 
   + **weixin4j-server**: released 1.0.2
-  
-* 2015-06-11
 
   + weixin.properties重命名为weixin4j.properties
+  
+  + released 1.5.0！

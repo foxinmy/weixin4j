@@ -41,12 +41,12 @@ weixin4j-mp
 
 如何使用
 --------
-0.maven依赖(1.4,2015-05-16 released)
+0.maven依赖(1.5.0,2015-06-10 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.4</version>
+	    <version>1.5.0</version>
 	</dependency>
 1.需新增或拷贝`weixin4j.properties`文件到项目的`classpath`中
 
@@ -74,7 +74,7 @@ weixin4j.properties说明
 		"paySignKey":"微信支付中调用API的密钥"}
 	
 	token_path=/tmp/weixin4j/token
-	qr_path=/tmp/weixin4j/qr
+	qr_path=/tmp/weixin4j/qrcode
 	media_path=/tmp/weixin4j/media
 	bill_path=/tmp/weixin4j/bill
 	# ca证书存放的完整路径 (V2版本后缀为*.pfx,V3版本后缀为*.p12)
