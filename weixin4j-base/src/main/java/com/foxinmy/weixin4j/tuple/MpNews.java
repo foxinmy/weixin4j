@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
- * 图文对象(消息内容存储在微信后台)
+ * 图文对象(mpnews消息与news消息类似，不同的是图文消息内容存储在微信后台，并且支持保密选项。每个应用每天最多可以发送100次)
  * <p>
  * <font color="red">可用于「群发消息(其中mediaId与articles请至少保持一个有值)」「企业号的客服消息」</font>
  * </p>

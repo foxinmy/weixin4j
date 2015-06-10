@@ -400,6 +400,26 @@
 		<text>缺少标签名字</text>
 	</error>
 	<error>
+		<code>41021</code>
+		<text>缺少suiteid</text>
+	</error>
+	<error>
+		<code>41022</code>
+		<text>缺少suitetoken</text>
+	</error>
+	<error>
+		<code>41023</code>
+		<text>缺少suiteticket</text>
+	</error>
+	<error>
+		<code>41024</code>
+		<text>缺少suitesecret</text>
+	</error>
+	<error>
+		<code>41025</code>
+		<text>缺少永久授权码</text>
+	</error>
+	<error>
 		<code>42001</code>
 		<desc>access_token expired</desc>
 		<text>access_token超时</text>
@@ -573,6 +593,14 @@
 	<error>
 		<code>45024</code>
 		<text>账号数量超过上限</text>
+	</error>
+	<error>
+		<code>45025</code>
+		<text>同一个成员每周只能邀请一次</text>
+	</error>
+	<error>
+		<code>45026</code>
+		<text>触发删除用户数的保护</text>
 	</error>
 	<error>
 		<code>45027</code>
