@@ -2,6 +2,8 @@ package com.foxinmy.weixin4j.server.test;
 
 import io.netty.channel.ChannelHandlerContext;
 
+import java.math.BigDecimal;
+
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.BlankMessageHandler;
 import com.foxinmy.weixin4j.handler.DebugMessageHandler;
@@ -112,6 +114,9 @@ public class MessageServerStartup {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new MessageServerStartup().test1();
+		
+		System.err.println(new BigDecimal(new Long(14212345l)).divide(
+				new BigDecimal("100000"))
+				.toString());
 	}
 }

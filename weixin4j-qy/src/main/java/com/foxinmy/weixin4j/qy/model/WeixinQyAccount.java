@@ -30,8 +30,22 @@ public class WeixinQyAccount extends WeixinAccount {
 		super(corpid, corpsecret);
 	}
 
+	/**
+	 * 提供商的secret
+	 */
+	private String providerSecret;
+
+	public String getProviderSecret() {
+		return providerSecret;
+	}
+
+	public void setProviderSecret(String providerSecret) {
+		this.providerSecret = providerSecret;
+	}
+
 	@Override
 	public String toString() {
-		return "WeixinQyAccount [" + super.toString() + "]";
+		return "WeixinQyAccount [" + super.toString() + ", providerSecret="
+				+ providerSecret + "]";
 	}
 }

@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 
 /**
- * 公众号配置
+ * 公众号配置信息 class路径下weixin4j.properties文件
  * 
  * @className ConfigUtil
  * @author jy
@@ -40,7 +40,7 @@ public class ConfigUtil {
 	}
 
 	/**
-	 * 获取weixin.properties文件中的key值
+	 * 获取weixin4j.properties文件中的key值
 	 * 
 	 * @param key
 	 * @return

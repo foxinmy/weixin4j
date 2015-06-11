@@ -8,9 +8,10 @@ import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
- * 微信企业号JSTICKET创建者
+ * 微信企业号JSTICKET创建
  * 
  * @className WeixinJSTicketCreator
  * @author jy
@@ -22,30 +23,41 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  */
 public class WeixinJSTicketCreator implements TokenCreator {
 
-	private final String appid;
+	private final String corpid;
 	private final TokenHolder weixinTokenHolder;
 	private final WeixinHttpClient httpClient;
+
+	/**
+	 * jssdk
+	 * 
+	 * @param weixinTokenHolder
+	 *            <font color="red">公众平台的access_token</font>
+	 */
+	public WeixinJSTicketCreator(TokenHolder weixinTokenHolder) {
+		this(ConfigUtil.getWeixinAccount().getId(), weixinTokenHolder);
+	}
 
 	/**
 	 * <font color="red">企业号的的access_token</font>
 	 * 
 	 * @param weixinTokenHolder
 	 */
-	public WeixinJSTicketCreator(String appid, TokenHolder weixinTokenHolder) {
-		this.appid = appid;
+	public WeixinJSTicketCreator(String corpid, TokenHolder weixinTokenHolder) {
+		this.corpid = corpid;
 		this.weixinTokenHolder = weixinTokenHolder;
 		this.httpClient = new WeixinHttpClient();
 	}
 
 	@Override
 	public String getCacheKey() {
-		return String.format("qy_jsticket_%s", appid);
+		return String.format("qy_jsticket_%s", corpid);
 	}
 
 	@Override
 	public Token createToken() throws WeixinException {
-		WeixinResponse response = httpClient.get(String.format(Consts.QY_JS_TICKET_URL,
-				weixinTokenHolder.getToken().getAccessToken()));
+		WeixinResponse response = httpClient.get(String.format(
+				Consts.QY_JS_TICKET_URL, weixinTokenHolder.getToken()
+						.getAccessToken()));
 		JSONObject result = response.getAsJson();
 		Token token = new Token(result.getString("ticket"));
 		token.setExpiresIn(result.getIntValue("expires_in"));

@@ -11,6 +11,7 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * oauth授权
@@ -26,21 +27,12 @@ public class OauthApi extends MpApi {
 	/**
 	 * @see {@link com.foxinmy.weixin4j.mp.api.OauthApi#getAuthorizeURL(String, String,String)}
 	 * 
-	 * @return
+	 * @return 请求授权的URL
 	 */
 	public String getAuthorizeURL() {
-		return getAuthorizeURL("state");
-	}
-
-	/**
-	 * @see {@link com.foxinmy.weixin4j.mp.api.OauthApi#getAuthorizeURL(String, String,String)}
-	 * 
-	 * @return
-	 */
-	public String getAuthorizeURL(String state) {
 		String appId = ConfigUtil.getWeixinAccount().getId();
 		String redirectUri = ConfigUtil.getValue("redirect_uri");
-		return getAuthorizeURL(appId, redirectUri, state);
+		return getAuthorizeURL(appId, redirectUri, "state", "snsapi_login");
 	}
 
 	/**
@@ -52,14 +44,15 @@ public class OauthApi extends MpApi {
 	 *            重定向地址
 	 * @param state
 	 *            用于保持请求和回调的状态，授权请求后原样带回给第三方
-	 * @return 请求的URL
+	 * @return 请求授权的URL
 	 */
-	public String getAuthorizeURL(String appId, String redirectUri, String state) {
+	public String getAuthorizeURL(String appId, String redirectUri,
+			String state, String... scopes) {
 		String sns_user_auth_uri = getRequestUri("sns_user_auth_uri");
 		try {
 			return String.format(sns_user_auth_uri, appId,
 					URLEncoder.encode(redirectUri, Consts.UTF_8.name()),
-					"snsapi_login", state);
+					StringUtil.join(scopes, ','), state);
 		} catch (UnsupportedEncodingException e) {
 			;
 		}
@@ -92,8 +85,8 @@ public class OauthApi extends MpApi {
 	public OauthToken getOauthToken(String code, String appid, String appsecret)
 			throws WeixinException {
 		String user_token_uri = getRequestUri("sns_user_token_uri");
-		WeixinResponse response = weixinClient.get(String.format(user_token_uri, appid,
-				appsecret, code));
+		WeixinResponse response = weixinClient.get(String.format(
+				user_token_uri, appid, appsecret, code));
 
 		return response.getAsObject(new TypeReference<OauthToken>() {
 		});
@@ -122,8 +115,8 @@ public class OauthApi extends MpApi {
 	public OauthToken refreshToken(String appId, String refreshToken)
 			throws WeixinException {
 		String sns_token_refresh_uri = getRequestUri("sns_token_refresh_uri");
-		WeixinResponse response = weixinClient.get(String.format(sns_token_refresh_uri,
-				appId, refreshToken));
+		WeixinResponse response = weixinClient.get(String.format(
+				sns_token_refresh_uri, appId, refreshToken));
 
 		return response.getAsObject(new TypeReference<OauthToken>() {
 		});
@@ -141,7 +134,8 @@ public class OauthApi extends MpApi {
 	public boolean authAccessToken(String accessToken, String openId) {
 		String sns_auth_token_uri = getRequestUri("sns_auth_token_uri");
 		try {
-			weixinClient.get(String.format(sns_auth_token_uri, accessToken, openId));
+			weixinClient.get(String.format(sns_auth_token_uri, accessToken,
+					openId));
 			return true;
 		} catch (WeixinException e) {
 			;

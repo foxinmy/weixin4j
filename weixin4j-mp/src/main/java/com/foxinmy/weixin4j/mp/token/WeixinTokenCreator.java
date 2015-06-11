@@ -28,10 +28,11 @@ public class WeixinTokenCreator implements TokenCreator {
 	private final String secret;
 
 	public WeixinTokenCreator() {
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
-		this.appid = weixinAccount.getId();
-		this.secret = weixinAccount.getSecret();
-		this.httpClient = new WeixinHttpClient();
+		this(ConfigUtil.getWeixinAccount());
+	}
+
+	public WeixinTokenCreator(WeixinAccount weixinAccount) {
+		this(weixinAccount.getId(), weixinAccount.getSecret());
 	}
 
 	public WeixinTokenCreator(String appid, String secret) {

@@ -41,15 +41,20 @@ weixin4j.properties说明
 | account     | 微信企业号信息 `json格式`  |
 | token_path  | 使用FileTokenHolder时token保存的物理路径 |
 | media_path  | 调用媒体接口时保存媒体文件的物理路径 |
+| redirect_uri     | 调用OauthApi接口时需要填写的重定向路径 |
 
 示例(properties中换行用右斜杆\\)
 
 	account={"id":"corpid","secret":"corpsecret",\
 		"token":"企业号中应用在回调模式下的token",\
-		"encodingAesKey":"企业号中应用在回调模式下AES加密密钥"}
+		"encodingAesKey":"企业号中应用在回调模式下AES加密密钥",\
+		"providerSecret:"提供商的secret"}
 	
 	token_path=/tmp/weixin4j/token
 	media_path=/tmp/weixin4j/media
+	
+	#微信登陆授权的重定向路径(使用OauthApi时需要填写)
+	redirect_uri=http://xxx
 
 2.实例化一个`WeixinProxy`对象,调用API
 

@@ -8,6 +8,7 @@ import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * 微信公众平台JSTICKET创建者
@@ -25,6 +26,16 @@ public class WeixinJSTicketCreator implements TokenCreator {
 	private final String appid;
 	private final TokenHolder weixinTokenHolder;
 	private final WeixinHttpClient httpClient;
+
+	/**
+	 * jssdk
+	 * 
+	 * @param weixinTokenHolder
+	 *            <font color="red">公众平台的access_token</font>
+	 */
+	public WeixinJSTicketCreator(TokenHolder weixinTokenHolder) {
+		this(ConfigUtil.getWeixinAccount().getId(), weixinTokenHolder);
+	}
 
 	/**
 	 * jssdk
@@ -47,8 +58,9 @@ public class WeixinJSTicketCreator implements TokenCreator {
 
 	@Override
 	public Token createToken() throws WeixinException {
-		WeixinResponse response = httpClient.get(String.format(Consts.MP_JS_TICKET_URL,
-				weixinTokenHolder.getToken().getAccessToken()));
+		WeixinResponse response = httpClient.get(String.format(
+				Consts.MP_JS_TICKET_URL, weixinTokenHolder.getToken()
+						.getAccessToken()));
 		JSONObject result = response.getAsJson();
 		Token token = new Token(result.getString("ticket"));
 		token.setExpiresIn(result.getIntValue("expires_in"));

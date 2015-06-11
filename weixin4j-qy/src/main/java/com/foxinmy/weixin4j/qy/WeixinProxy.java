@@ -62,7 +62,7 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * appid,appsecret
+	 * corpid,corpsecret
 	 * 
 	 * @param corpid
 	 * @param corpsecret

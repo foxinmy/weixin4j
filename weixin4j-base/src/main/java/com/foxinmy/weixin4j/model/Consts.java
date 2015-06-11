@@ -37,6 +37,10 @@ public final class Consts {
 	 */
 	public static final String QY_ASSESS_TOKEN_URL = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s";
 	/**
+	 * 企业号提供商获取token的url
+	 */
+	public static final String QY_PROVIDER_TOKEN_URL = "https://qyapi.weixin.qq.com/cgi-bin/service/get_provider_token";
+	/**
 	 * 公众平台jssdk获取token的url
 	 */
 	public static final String MP_JS_TICKET_URL = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi";

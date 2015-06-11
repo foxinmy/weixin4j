@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
- * 微信企业号TOKEN创建者
+ * 微信企业号TOKEN创建
  * 
  * @className WeixinTokenCreator
  * @author jy
@@ -28,10 +28,11 @@ public class WeixinTokenCreator implements TokenCreator {
 	private final String corpsecret;
 
 	public WeixinTokenCreator() {
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
-		this.corpid = weixinAccount.getId();
-		this.corpsecret = weixinAccount.getSecret();
-		this.httpClient = new WeixinHttpClient();
+		this(ConfigUtil.getWeixinAccount());
+	}
+
+	public WeixinTokenCreator(WeixinAccount weixinAccount) {
+		this(weixinAccount.getId(), weixinAccount.getSecret());
 	}
 
 	public WeixinTokenCreator(String corpid, String corpsecret) {
