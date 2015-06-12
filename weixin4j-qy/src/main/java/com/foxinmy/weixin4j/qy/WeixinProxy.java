@@ -67,7 +67,7 @@ public class WeixinProxy {
 	/**
 	 * 默认使用weixin4j.properties配置的账号信息
 	 * 
-	 * @param tokenStorager
+	 * @param tokenStorager token存储策略
 	 */
 	public WeixinProxy(TokenStorager tokenStorager) {
 		this(tokenStorager, ConfigUtil.getWeixinAccount());

@@ -49,3 +49,7 @@
 * 2015-04-13
 
   + 新增WeixinTokenCreator与WeixinJSTicketCreator类
+  
+* 2015-06-12
+
+  + 新增企业号[登陆授权](src/main/java/com/foxinmy/weixin4j/qy/api/OauthApi.java)API

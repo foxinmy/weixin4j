@@ -330,3 +330,5 @@
 * 2015-06-12
 
   + 修缮token实现机制
+  
+  + **weixin4j-qy**: 新增企业号[登陆授权](weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/api/OauthApi.java)API

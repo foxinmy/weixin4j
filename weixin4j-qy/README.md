@@ -22,6 +22,8 @@ weixin4j-qy
   * AgentApi `应用设置API`
   
   * BatchApi `批量操作API`
+  
+  * OauthApi `oauth授权登陆API`
 
 如何使用
 --------

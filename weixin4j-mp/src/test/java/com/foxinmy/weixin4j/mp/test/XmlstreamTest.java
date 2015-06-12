@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.mp.payment.conver.ListsuffixResultConverter;
+import com.foxinmy.weixin4j.mp.payment.conver.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundRecord;
 import com.foxinmy.weixin4j.mp.payment.v3.Order;
 import com.foxinmy.weixin4j.xml.XmlStream;
@@ -60,7 +60,7 @@ public class XmlstreamTest {
 		} catch (Exception e) {
 
 		}
-		System.err.println(ListsuffixResultConverter.containCouponConvert(
+		System.err.println(ListsuffixResultDeserializer.containCouponDeserialize(
 				sb.toString(), Order.class));
 	}
 
@@ -77,7 +77,7 @@ public class XmlstreamTest {
 		} catch (Exception e) {
 
 		}
-		System.err.println(ListsuffixResultConverter.containRefundConvert(
+		System.err.println(ListsuffixResultDeserializer.containRefundDeserialize(
 				sb.toString(), RefundRecord.class));
 	}
 
@@ -94,8 +94,8 @@ public class XmlstreamTest {
 		} catch (Exception e) {
 
 		}
-		System.err.println(ListsuffixResultConverter
-				.containRefundDetailConvert(sb.toString(),
+		System.err.println(ListsuffixResultDeserializer
+				.containRefundDetailDeserialize(sb.toString(),
 						com.foxinmy.weixin4j.mp.payment.v3.RefundRecord.class));
 	}
 

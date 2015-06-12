@@ -84,10 +84,10 @@ public class Order extends ApiResult {
 	@JSONField(name = "coupon_count")
 	private Integer couponCount;
 	/**
-	 * 代金券信息
+	 * 代金券信息 验证签名有点麻烦
 	 */
 	@XmlTransient
-	@JSONField(serialize = false)
+	@JSONField(serialize = false, deserialize = false)
 	private List<CouponInfo> couponList;
 	/**
 	 * 现金支付金额
@@ -135,7 +135,7 @@ public class Order extends ApiResult {
 	protected Order() {
 		// jaxb required
 	}
-	
+
 	public TradeState getTradeState() {
 		return tradeState;
 	}

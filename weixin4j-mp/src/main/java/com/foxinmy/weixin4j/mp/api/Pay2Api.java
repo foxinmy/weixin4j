@@ -34,7 +34,7 @@ import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
-import com.foxinmy.weixin4j.mp.payment.conver.ListsuffixResultConverter;
+import com.foxinmy.weixin4j.mp.payment.conver.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.mp.payment.v2.Order;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundRecord;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundResult;
@@ -442,7 +442,7 @@ public class Pay2Api extends PayApi {
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPartnerKey());
 		map.put("sign", sign.toLowerCase());
 		WeixinResponse response = weixinClient.get(refundquery_uri, map);
-		return ListsuffixResultConverter.containRefundConvert(
+		return ListsuffixResultDeserializer.containRefundDeserialize(
 				response.getAsString(), RefundRecord.class);
 	}
 
