@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
-import com.foxinmy.weixin4j.token.FileTokenHolder;
+import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
@@ -23,8 +23,8 @@ public class TokenTest {
 
 	@Before
 	public void setUp() {
-		tokenHolder = new FileTokenHolder(
-				new WeixinTokenCreator());
+		tokenHolder = new TokenHolder(new WeixinTokenCreator(),
+				new FileTokenStorager());
 	}
 
 	@Test

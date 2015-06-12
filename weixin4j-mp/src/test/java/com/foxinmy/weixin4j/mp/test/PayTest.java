@@ -17,11 +17,10 @@ import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.v3.Order;
 import com.foxinmy.weixin4j.mp.payment.v3.PayPackageV3;
 import com.foxinmy.weixin4j.mp.payment.v3.PrePay;
-import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.IdType;
 import com.foxinmy.weixin4j.mp.type.TradeType;
-import com.foxinmy.weixin4j.token.FileTokenHolder;
+import com.foxinmy.weixin4j.token.FileTokenStorager;
 
 public class PayTest {
 	private final static WeixinPayProxy PAY2;
@@ -31,12 +30,10 @@ public class PayTest {
 	static {
 		ACCOUNT2 = new WeixinMpAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
 				"请填入v3版本的paysignkey", "请填入v2版本的partnerId", "请填入v2版本的partnerKey");
-		PAY2 = new WeixinPayProxy(ACCOUNT2, new FileTokenHolder(
-				new WeixinTokenCreator(ACCOUNT2.getId(), ACCOUNT2.getSecret())));
+		PAY2 = new WeixinPayProxy(new FileTokenStorager(), ACCOUNT2);
 		ACCOUNT3 = new WeixinMpAccount("请填入v3版本的appid", "请填入v3版本的appSecret",
 				"请填入v3版本的paysignkey", "请填入v3版本的mchid");
-		PAY3 = new WeixinPayProxy(ACCOUNT3, new FileTokenHolder(
-				new WeixinTokenCreator(ACCOUNT3.getId(), ACCOUNT3.getSecret())));
+		PAY3 = new WeixinPayProxy(new FileTokenStorager(), ACCOUNT3);
 	}
 
 	@Test

@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.model.Button;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.BatchApi;
 import com.foxinmy.weixin4j.qy.api.HelperApi;
@@ -30,9 +31,11 @@ import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
-import com.foxinmy.weixin4j.token.FileTokenHolder;
+import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.type.MediaType;
+import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * 微信企业号接口实现
@@ -55,10 +58,19 @@ public class WeixinProxy {
 	private final BatchApi batchApi;
 
 	/**
-	 * 默认采用文件存放Token信息
+	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinProxy() {
-		this(new FileTokenHolder(new WeixinTokenCreator()));
+		this(new FileTokenStorager());
+	}
+
+	/**
+	 * 默认使用weixin4j.properties配置的账号信息
+	 * 
+	 * @param tokenStorager
+	 */
+	public WeixinProxy(TokenStorager tokenStorager) {
+		this(tokenStorager, ConfigUtil.getWeixinAccount());
 	}
 
 	/**
@@ -68,16 +80,19 @@ public class WeixinProxy {
 	 * @param corpsecret
 	 */
 	public WeixinProxy(String corpid, String corpsecret) {
-		this(new FileTokenHolder(new WeixinTokenCreator(corpid, corpsecret)));
+		this(new FileTokenStorager(), new WeixinAccount(corpid, corpsecret));
 	}
 
 	/**
-	 * TokenHolder对象
 	 * 
-	 * @see com.foxinmy.weixin4j.token.TokenHolder
-	 * @param tokenHolder
+	 * @param tokenStorager
+	 *            token存储策略
+	 * @param weixinAccount
+	 *            企业号账号信息
 	 */
-	public WeixinProxy(TokenHolder tokenHolder) {
+	public WeixinProxy(TokenStorager tokenStorager, WeixinAccount weixinAccount) {
+		TokenHolder tokenHolder = new TokenHolder(new WeixinTokenCreator(
+				weixinAccount), tokenStorager);
 		this.partyApi = new PartyApi(tokenHolder);
 		this.userApi = new UserApi(tokenHolder);
 		this.tagApi = new TagApi(tokenHolder);

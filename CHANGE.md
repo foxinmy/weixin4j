@@ -326,3 +326,7 @@
   + weixin.properties重命名为weixin4j.properties
   
   + released 1.5.0！
+  
+* 2015-06-12
+
+  + 修缮token实现机制

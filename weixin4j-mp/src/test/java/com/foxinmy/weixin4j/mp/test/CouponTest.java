@@ -13,8 +13,7 @@ import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponStock;
-import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
-import com.foxinmy.weixin4j.token.FileTokenHolder;
+import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -33,8 +32,7 @@ public class CouponTest {
 		ACCOUNT = new WeixinMpAccount("appid",
 				"appsecret",
 				"paysign", "mchid");
-		WEIXINPAY = new WeixinPayProxy(ACCOUNT, new FileTokenHolder(
-				new WeixinTokenCreator(ACCOUNT.getId(), ACCOUNT.getSecret())));
+		WEIXINPAY = new WeixinPayProxy(new FileTokenStorager(), ACCOUNT);
 	}
 	protected final File caFile = new File("证书文件路径(*.p12)");
 

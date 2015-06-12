@@ -8,6 +8,7 @@ import java.util.List;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.model.Button;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.api.DataApi;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
@@ -39,13 +40,15 @@ import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.mp.type.Lang;
-import com.foxinmy.weixin4j.token.FileTokenHolder;
+import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.Tuple;
 import com.foxinmy.weixin4j.tuple.Video;
 import com.foxinmy.weixin4j.type.MediaType;
+import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * 微信公众平台接口实现
@@ -71,10 +74,18 @@ public class WeixinProxy {
 	private final DataApi dataApi;
 
 	/**
-	 * 默认采用文件存放Token信息
+	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinProxy() {
-		this(new FileTokenHolder(new WeixinTokenCreator()));
+		this(new FileTokenStorager());
+	}
+
+	/**
+	 * 默认使用weixin4j.properties配置的账号信息
+	 * @param tokenStorager
+	 */
+	public WeixinProxy(TokenStorager tokenStorager) {
+		this(tokenStorager, ConfigUtil.getWeixinAccount());
 	}
 
 	/**
@@ -83,16 +94,19 @@ public class WeixinProxy {
 	 * @param appsecret
 	 */
 	public WeixinProxy(String appid, String appsecret) {
-		this(new FileTokenHolder(new WeixinTokenCreator(appid, appsecret)));
+		this(new FileTokenStorager(), new WeixinAccount(appid, appsecret));
 	}
 
 	/**
-	 * TokenHolder对象
 	 * 
-	 * @see com.foxinmy.weixin4j.token.TokenHolder
-	 * @param tokenHolder
+	 * @param tokenStorager
+	 *            token存储策略
+	 * @param weixinAccount
+	 *            公众号账号信息
 	 */
-	public WeixinProxy(TokenHolder tokenHolder) {
+	public WeixinProxy(TokenStorager tokenStorager, WeixinAccount weixinAccount) {
+		TokenHolder tokenHolder = new TokenHolder(new WeixinTokenCreator(
+				weixinAccount), tokenStorager);
 		this.mediaApi = new MediaApi(tokenHolder);
 		this.notifyApi = new NotifyApi(tokenHolder);
 		this.customApi = new CustomApi(tokenHolder);

@@ -55,7 +55,7 @@ weixin4j.properties说明
 | 属性名         |       说明      |
 | :----------	| :-------------- |
 | account     	| 微信公众号信息 `json格式`  |
-| token_path  	| 使用FileTokenHolder时token保存的物理路径 |
+| token_path  	| 使用FileTokenStorager时token保存的物理路径 |
 | qr_path     	| 调用二维码接口时保存二维码图片的物理路径 |
 | media_path  	| 调用媒体接口时保存媒体文件的物理路径 |
 | bill_path   	| 调用下载对账单接口保存excel文件的物理路径 |
@@ -81,7 +81,7 @@ weixin4j.properties说明
 	ca_file=/tmp/weixin4j/xxxxx.p12
 	#classpath路径下:ca_file=classpath:xxxxx.p12
 	
-	#微信登陆授权的重定向路径(使用OauthApi时需要填写)
+	#公众号登陆授权的重定向路径(使用OauthApi时需要填写)
 	redirect_uri=http://xxx
 
 2.实例化一个`WeixinProxy`对象,调用API,需要强调的是如果只传入appid,appsecret两个参数将无法调用支付相关接口
@@ -91,11 +91,11 @@ weixin4j.properties说明
     // weixinProxy = new WeixinProxy(weixinAccount);
     weixinProxy.getUser(openId);
 
-> 针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenHolder`,默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用[RedisTokenHolder](https://github.com/foxinmy/weixin4j/wiki/%E7%94%A8redis%E4%BF%9D%E5%AD%98token).
+> 针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenStorager`,默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用[RedisTokenStorager](https://github.com/foxinmy/weixin4j/wiki/%E7%94%A8redis%E4%BF%9D%E5%AD%98token).
 >
->   WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenHolder());
+>   WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenStorager());
 
->   // weixinProxy = new WeixinProxy(new RedisTokenHolder(weixinAccount));
+>   // weixinProxy = new WeixinProxy(new RedisTokenStorager(weixinAccount));
 
 [更新LOG](./CHANGE.md)
 ----------------------

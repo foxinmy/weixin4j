@@ -28,8 +28,9 @@ import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.IdType;
 import com.foxinmy.weixin4j.mp.type.RefundType;
-import com.foxinmy.weixin4j.token.FileTokenHolder;
+import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
@@ -51,19 +52,32 @@ public class WeixinPayProxy {
 	private final CouponApi couponApi;
 	private final CashApi cashApi;
 
+	/**
+	 * 默认使用文件保存token、使用weixin4j.properties配置的账号信息
+	 */
 	public WeixinPayProxy() {
-		this(JSON.parseObject(ConfigUtil.getValue("account"),
-				WeixinMpAccount.class), new FileTokenHolder(
-				new WeixinTokenCreator()));
+		this(new FileTokenStorager());
 	}
 
 	/**
-	 * WeixinAccount对象
-	 * 
-	 * @param weixinAccount
-	 *            微信账户
+	 * 使用weixin4j.properties配置的账号信息
 	 */
-	public WeixinPayProxy(WeixinMpAccount weixinAccount, TokenHolder tokenHolder) {
+	public WeixinPayProxy(TokenStorager tokenStorager) {
+		this(tokenStorager, JSON.parseObject(ConfigUtil.getValue("account"),
+				WeixinMpAccount.class));
+	}
+
+	/**
+	 * 
+	 * @param tokenStorager
+	 *            token的存储策略
+	 * @param weixinAccount
+	 *            公众号账号信息
+	 */
+	public WeixinPayProxy(TokenStorager tokenStorager,
+			WeixinMpAccount weixinAccount) {
+		TokenHolder tokenHolder = new TokenHolder(new WeixinTokenCreator(
+				weixinAccount), tokenStorager);
 		this.pay2Api = new Pay2Api(weixinAccount, tokenHolder);
 		this.pay3Api = new Pay3Api(weixinAccount, tokenHolder);
 		int version = weixinAccount.getVersion();
