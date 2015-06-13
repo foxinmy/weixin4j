@@ -7,9 +7,9 @@ import java.util.Map;
 
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
-import com.foxinmy.weixin4j.mp.payment.conver.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundRecord;
 import com.foxinmy.weixin4j.mp.payment.v3.Order;
+import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.xml.ListsuffixResultSerializer;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
@@ -62,8 +62,8 @@ public class XmlstreamTest {
 		} catch (Exception e) {
 
 		}
-		System.err.println(ListsuffixResultDeserializer
-				.containCouponDeserialize(sb.toString(), Order.class));
+		System.err.println(ListsuffixResultDeserializer.deserialize(
+				sb.toString(), Order.class, "couponList"));
 	}
 
 	public static RefundRecord xml2refundRecordV2() throws Exception {
@@ -79,8 +79,8 @@ public class XmlstreamTest {
 		} catch (Exception e) {
 
 		}
-		return ListsuffixResultDeserializer.containRefundDeserialize(
-				sb.toString(), RefundRecord.class);
+		return ListsuffixResultDeserializer.deserialize(sb.toString(),
+				RefundRecord.class, "refundList");
 	}
 
 	public static void xml2refundRecordV3() throws Exception {
@@ -97,8 +97,9 @@ public class XmlstreamTest {
 
 		}
 		System.err.println(ListsuffixResultDeserializer
-				.containRefundDetailDeserialize(sb.toString(),
-						com.foxinmy.weixin4j.mp.payment.v3.RefundRecord.class));
+				.deserializeHasTwoSuffix(sb.toString(),
+						com.foxinmy.weixin4j.mp.payment.v3.RefundRecord.class,
+						"refundList", "couponList"));
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -106,15 +107,15 @@ public class XmlstreamTest {
 		// xml2map();
 		// xml2order();
 		// xml2refundRecordV2();
-		// xml2refundRecordV3();
+		 xml2refundRecordV3();
 		// object2xmlWithoutRootElement();
 		RefundRecord refundRecord = xml2refundRecordV2();
 		System.err.println(refundRecord);
 		String sign = refundRecord.getSign();
 		refundRecord.setSign(null);
-		String validSign = PayUtil.paysignMd5(refundRecord,
-				"paysignkey");
+		String validSign = PayUtil.paysignMd5(refundRecord, "paysignkey");
 		System.err.println("sign=" + sign + ",validSign=" + validSign);
-		System.err.println(ListsuffixResultSerializer.serializeToXML(refundRecord));
+		System.err.println(ListsuffixResultSerializer
+				.serializeToXML(refundRecord));
 	}
 }

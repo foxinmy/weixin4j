@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment.conver;
+package com.foxinmy.weixin4j.xml;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -24,11 +24,8 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.stream.StreamSource;
 
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo;
 import com.foxinmy.weixin4j.util.ReflectionUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.xml.ListWrapper;
-import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 对 后缀为_$n 的 xml节点反序列化
@@ -47,46 +44,53 @@ public class ListsuffixResultDeserializer {
 			.compile("_\\d{1,}_\\d{1,}$");
 
 	/**
-	 * 对包含 coupon_id_$n 节点的转换 如V3订单查询接口
+	 * 对包含$n节点的xml序列化
 	 * 
 	 * @param content
+	 *            xml内容
 	 * @param clazz
+	 * @param listPropertyName
+	 *            转换为list的属性名称
 	 * @return
 	 */
-	public static <T> T containCouponDeserialize(String content, Class<T> clazz) {
-		return deserialize(content, clazz, "couponList");
-	}
-
-	/**
-	 * 对包含 refund_id_$n 节点的转换 如V2退款查询接口
-	 * 
-	 * @param content
-	 * @param clazz
-	 * @return
-	 */
-	public static <T> T containRefundDeserialize(String content, Class<T> clazz) {
-		return deserialize(content, clazz, "refundList");
-	}
-
-	/**
-	 * 对同时包含 refund_id_$n 和 coupon_refund_id_$n_$m 节点的转换 如V3退款查询接口
-	 * 
-	 * @param content
-	 * @param clazz
-	 * @return
-	 */
-	public static <T> T containRefundDetailDeserialize(String content,
-			Class<T> clazz) {
+	public static <T> T deserialize(String content, Class<T> clazz,
+			String listPropertyName) {
 		T t = XmlStream.fromXML(content, clazz);
 		Class<?> wrapperClazz = ReflectionUtil.getFieldGenericType(t,
-				"refundList");
+				listPropertyName);
+		ListWrapper<?> listWrapper = deserializeToListWrapper(content,
+				wrapperClazz);
+		if (listWrapper != null) {
+			ReflectionUtil.invokeSetterMethod(t, listPropertyName,
+					listWrapper.getItems(), List.class);
+		}
+		return t;
+	}
+
+	/**
+	 * 对同时包含$n和$n_$m的xml序列化 如 refund_id_$n 和 coupon_refund_id_$n_$m V3退款查询接口
+	 * 
+	 * @param content
+	 *            xml内容
+	 * @param clazz
+	 * @param mainlistPropertyName
+	 *            $n结尾转换为list的属性名称
+	 * @param subListPropertyName
+	 *            $n_$m结尾转换为list的熟悉名称
+	 * @return
+	 */
+	public static <T> T deserializeHasTwoSuffix(String content, Class<T> clazz,
+			String mainlistPropertyName, String subListPropertyName) {
+		T t = XmlStream.fromXML(content, clazz);
+		Class<?> wrapperClazz = ReflectionUtil.getFieldGenericType(t,
+				mainlistPropertyName);
 		XMLStreamReader xr = null;
 		try {
 			xr = XMLInputFactory.newInstance().createXMLStreamReader(
 					new StringReader(content));
 			Matcher matcher = null;
-			Map<String, Map<String, String>> refundMap = new HashMap<String, Map<String, String>>();
-			Map<String, StringBuilder> couponMap = new HashMap<String, StringBuilder>();
+			Map<String, Map<String, String>> mainMap = new HashMap<String, Map<String, String>>();
+			Map<String, StringBuilder> subMap = new HashMap<String, StringBuilder>();
 			while (true) {
 				int event = xr.next();
 				if (event == XMLStreamConstants.END_DOCUMENT) {
@@ -107,9 +111,9 @@ public class ListsuffixResultDeserializer {
 									key = matcher.group().replaceFirst(
 											SUFFIX_PATTERN.pattern(), "");
 									StringBuilder sb = null;
-									if ((sb = couponMap.get(key)) == null) {
+									if ((sb = subMap.get(key)) == null) {
 										sb = new StringBuilder();
-										couponMap.put(key, sb);
+										subMap.put(key, sb);
 									}
 									String reverserName = new StringBuffer(
 											new StringBuilder(name)
@@ -124,9 +128,9 @@ public class ListsuffixResultDeserializer {
 											.append(">");
 								} else {
 									Map<String, String> innerMap = null;
-									if ((innerMap = refundMap.get(key)) == null) {
+									if ((innerMap = mainMap.get(key)) == null) {
 										innerMap = new HashMap<String, String>();
-										refundMap.put(key, innerMap);
+										mainMap.put(key, innerMap);
 									}
 									innerMap.put(name.replace(key, ""),
 											xr.getText());
@@ -136,7 +140,7 @@ public class ListsuffixResultDeserializer {
 					}
 				}
 			}
-			if (!refundMap.isEmpty()) {
+			if (!mainMap.isEmpty()) {
 				String itemName = StringUtil.uncapitalize(wrapperClazz
 						.getSimpleName());
 				XmlRootElement rootElement = wrapperClazz
@@ -153,18 +157,18 @@ public class ListsuffixResultDeserializer {
 						;
 					}
 				}
-				List<Object> refundList = new ArrayList<Object>();
+				List<Object> mainList = new ArrayList<Object>();
 				StringBuilder xmlBuilder = new StringBuilder();
-				for (Iterator<Entry<String, Map<String, String>>> refundIt = refundMap
+				for (Iterator<Entry<String, Map<String, String>>> refundIt = mainMap
 						.entrySet().iterator(); refundIt.hasNext();) {
 					xmlBuilder.delete(0, xmlBuilder.length());
 					xmlBuilder.append("<").append(itemName).append(">");
-					Entry<String, Map<String, String>> refundEntry = refundIt
+					Entry<String, Map<String, String>> mainEntry = refundIt
 							.next();
-					for (Iterator<Entry<String, String>> refundInnerIt = refundEntry
-							.getValue().entrySet().iterator(); refundInnerIt
+					for (Iterator<Entry<String, String>> mainInnerIt = mainEntry
+							.getValue().entrySet().iterator(); mainInnerIt
 							.hasNext();) {
-						Entry<String, String> entry = refundInnerIt.next();
+						Entry<String, String> entry = mainInnerIt.next();
 						xmlBuilder.append("<").append(entry.getKey())
 								.append(">");
 						xmlBuilder.append(entry.getValue());
@@ -172,24 +176,25 @@ public class ListsuffixResultDeserializer {
 								.append(">");
 					}
 					xmlBuilder.append("</").append(itemName).append(">");
-					Object refund = XmlStream.fromXML(xmlBuilder.toString(),
+					Object main = XmlStream.fromXML(xmlBuilder.toString(),
 							wrapperClazz);
-					StringBuilder couponXml = couponMap.get(refundEntry
-							.getKey());
-					if (couponXml != null) {
-						ListWrapper<?> listWrapper = toListWrapper(
+					StringBuilder subXml = subMap.get(mainEntry.getKey());
+					if (subXml != null) {
+						ListWrapper<?> listWrapper = deserializeToListWrapper(
 								String.format("<xml>%s</xml>",
-										couponXml.toString()), CouponInfo.class);
+										subXml.toString()),
+								ReflectionUtil.getFieldGenericType(main,
+										subListPropertyName));
 						if (listWrapper != null) {
-							ReflectionUtil.invokeSetterMethod(refund,
-									"couponList", listWrapper.getItems(),
-									List.class);
+							ReflectionUtil.invokeSetterMethod(main,
+									subListPropertyName,
+									listWrapper.getItems(), List.class);
 						}
 					}
-					refundList.add(refund);
+					mainList.add(main);
 				}
-				ReflectionUtil.invokeSetterMethod(t, "refundList", refundList,
-						List.class);
+				ReflectionUtil.invokeSetterMethod(t, mainlistPropertyName,
+						mainList, List.class);
 			}
 		} catch (XMLStreamException e) {
 			throw new IllegalArgumentException(e);
@@ -205,21 +210,8 @@ public class ListsuffixResultDeserializer {
 		return t;
 	}
 
-	public static <T> T deserialize(String content, Class<T> clazz,
-			String listPropertyName) {
-		T t = XmlStream.fromXML(content, clazz);
-		Class<?> wrapperClazz = ReflectionUtil.getFieldGenericType(t,
-				listPropertyName);
-		ListWrapper<?> listWrapper = toListWrapper(content, wrapperClazz);
-		if (listWrapper != null) {
-			ReflectionUtil.invokeSetterMethod(t, listPropertyName,
-					listWrapper.getItems(), List.class);
-		}
-		return t;
-	}
-
 	@SuppressWarnings("unchecked")
-	public static <T> ListWrapper<T> toListWrapper(String content,
+	public static <T> ListWrapper<T> deserializeToListWrapper(String content,
 			Class<T> clazz) {
 		XMLStreamReader xr = null;
 		XMLStreamWriter xw = null;

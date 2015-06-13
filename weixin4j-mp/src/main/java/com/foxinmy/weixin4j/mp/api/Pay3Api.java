@@ -25,7 +25,6 @@ import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
-import com.foxinmy.weixin4j.mp.payment.conver.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.v3.Order;
 import com.foxinmy.weixin4j.mp.payment.v3.RefundRecord;
@@ -39,6 +38,7 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
@@ -80,8 +80,8 @@ public class Pay3Api extends PayApi {
 		String param = XmlStream.map2xml(map);
 		String orderquery_uri = getRequestUri("orderquery_v3_uri");
 		WeixinResponse response = weixinClient.post(orderquery_uri, param);
-		return ListsuffixResultDeserializer.containCouponDeserialize(
-				response.getAsString(), Order.class);
+		return ListsuffixResultDeserializer.deserialize(response.getAsString(),
+				Order.class, "couponList");
 	}
 
 	/**
@@ -394,8 +394,9 @@ public class Pay3Api extends PayApi {
 		map.put("sign", sign);
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinClient.post(refundquery_uri, param);
-		return ListsuffixResultDeserializer.containRefundDetailDeserialize(
-				response.getAsString(), RefundRecord.class);
+		return ListsuffixResultDeserializer.deserializeHasTwoSuffix(
+				response.getAsString(), RefundRecord.class, "refundList",
+				"couponList");
 	}
 
 	/**
