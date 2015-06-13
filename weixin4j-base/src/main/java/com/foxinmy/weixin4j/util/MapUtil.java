@@ -71,6 +71,7 @@ public class MapUtil {
 	 */
 	public static String toJoinString(Map<String, String> map, boolean encoder,
 			boolean lowerCase) {
+		map.remove("sign");
 		StringBuilder sb = new StringBuilder();
 		Set<Map.Entry<String, String>> set = map.entrySet();
 		try {

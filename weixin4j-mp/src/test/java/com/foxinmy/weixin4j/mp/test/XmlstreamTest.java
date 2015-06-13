@@ -113,7 +113,7 @@ public class XmlstreamTest {
 		String sign = refundRecord.getSign();
 		refundRecord.setSign(null);
 		String validSign = PayUtil.paysignMd5(refundRecord,
-				"GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ");
+				"paysignkey");
 		System.err.println("sign=" + sign + ",validSign=" + validSign);
 		System.err.println(ListsuffixResultSerializer.serializeToXML(refundRecord));
 	}
