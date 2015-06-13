@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.SignType;
-import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 调用V2.x接口返回的公用字段
@@ -28,13 +27,13 @@ public class ApiResult implements Serializable {
 	/**
 	 * 是查询结果状态码,0 表明成功,其他表明错误;
 	 */
-	@JSONField(name = "ret_code")
+	@JSONField(name = "retcode")
 	@XmlElement(name = "retcode")
-	private int retCode;
+	private Integer retCode;
 	/**
 	 * 是查询结果出错信息;
 	 */
-	@JSONField(name = "ret_msg")
+	@JSONField(name = "retmsg")
 	@XmlElement(name = "retmsg")
 	private String retMsg;
 	/**
@@ -64,11 +63,11 @@ public class ApiResult implements Serializable {
 	@XmlElement(name = "sign_type")
 	private SignType signType;
 
-	protected ApiResult(){
+	protected ApiResult() {
 		// jaxb required
 	}
-	
-	public int getRetCode() {
+
+	public Integer getRetCode() {
 		return retCode;
 	}
 
@@ -77,7 +76,7 @@ public class ApiResult implements Serializable {
 	}
 
 	public String getRetMsg() {
-		return StringUtil.isNotBlank(retMsg) ? retMsg : null;
+		return this.retMsg;
 	}
 
 	public void setRetMsg(String retMsg) {

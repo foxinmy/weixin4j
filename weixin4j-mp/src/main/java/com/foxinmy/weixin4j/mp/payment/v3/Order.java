@@ -16,6 +16,7 @@ import com.foxinmy.weixin4j.mp.type.TradeState;
 import com.foxinmy.weixin4j.mp.type.TradeType;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
 /**
  * V3订单信息
@@ -86,8 +87,9 @@ public class Order extends ApiResult {
 	/**
 	 * 代金券信息 验证签名有点麻烦
 	 */
+	@ListsuffixResult
 	@XmlTransient
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(deserialize = false)
 	private List<CouponInfo> couponList;
 	/**
 	 * 现金支付金额

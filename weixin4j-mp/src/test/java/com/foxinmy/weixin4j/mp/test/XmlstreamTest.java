@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.conver.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundRecord;
 import com.foxinmy.weixin4j.mp.payment.v3.Order;
+import com.foxinmy.weixin4j.xml.ListsuffixResultSerializer;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 public class XmlstreamTest {
@@ -60,11 +62,11 @@ public class XmlstreamTest {
 		} catch (Exception e) {
 
 		}
-		System.err.println(ListsuffixResultDeserializer.containCouponDeserialize(
-				sb.toString(), Order.class));
+		System.err.println(ListsuffixResultDeserializer
+				.containCouponDeserialize(sb.toString(), Order.class));
 	}
 
-	public static void xml2refundRecordV2() throws Exception {
+	public static RefundRecord xml2refundRecordV2() throws Exception {
 		StringBuffer sb = new StringBuffer();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(
@@ -77,8 +79,8 @@ public class XmlstreamTest {
 		} catch (Exception e) {
 
 		}
-		System.err.println(ListsuffixResultDeserializer.containRefundDeserialize(
-				sb.toString(), RefundRecord.class));
+		return ListsuffixResultDeserializer.containRefundDeserialize(
+				sb.toString(), RefundRecord.class);
 	}
 
 	public static void xml2refundRecordV3() throws Exception {
@@ -106,5 +108,13 @@ public class XmlstreamTest {
 		// xml2refundRecordV2();
 		// xml2refundRecordV3();
 		// object2xmlWithoutRootElement();
+		RefundRecord refundRecord = xml2refundRecordV2();
+		System.err.println(refundRecord);
+		String sign = refundRecord.getSign();
+		refundRecord.setSign(null);
+		String validSign = PayUtil.paysignMd5(refundRecord,
+				"GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ");
+		System.err.println("sign=" + sign + ",validSign=" + validSign);
+		System.err.println(ListsuffixResultSerializer.serializeToXML(refundRecord));
 	}
 }

@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
 /**
  * V2退款记录
@@ -42,18 +43,19 @@ public class RefundRecord extends ApiResult {
 	 */
 	@XmlElement(name = "refund_count")
 	@JSONField(name = "refund_count")
-	private int count;
+	private int refundCount;
 	/**
 	 * 退款详情
 	 */
+	@ListsuffixResult
 	@XmlTransient
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(deserialize = false)
 	private List<RefundDetail> refundList;
 
 	protected RefundRecord() {
 		// jaxb required
 	}
-	
+
 	public String getTransactionId() {
 		return transactionId;
 	}
@@ -62,8 +64,8 @@ public class RefundRecord extends ApiResult {
 		return outTradeNo;
 	}
 
-	public int getCount() {
-		return count;
+	public int getRefundCount() {
+		return refundCount;
 	}
 
 	public List<RefundDetail> getRefundList() {
@@ -77,7 +79,7 @@ public class RefundRecord extends ApiResult {
 	@Override
 	public String toString() {
 		return "RefundRecord [transactionId=" + transactionId + ", outTradeNo="
-				+ outTradeNo + ", count=" + count + ", refundList="
+				+ outTradeNo + ", refundCount=" + refundCount + ", refundList="
 				+ refundList + ", " + super.toString() + "]";
 	}
 }

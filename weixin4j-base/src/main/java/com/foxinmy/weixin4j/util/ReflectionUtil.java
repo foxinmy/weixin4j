@@ -201,11 +201,9 @@ public class ReflectionUtil {
 		return field.getType().getSimpleName();
 	}
 
-	@SuppressWarnings("unused")
-	private static Field getAccessibleField(final Object object,
+	public static Field getAccessibleField(final Object object,
 			final String fieldName) {
-		for (Class<?> superClass = object.getClass(); superClass != Object.class; superClass = superClass
-				.getSuperclass()) {
+		for (Class<?> superClass = object.getClass(); superClass != Object.class;) {
 			try {
 				Field field = superClass.getDeclaredField(fieldName);
 				field.setAccessible(true);

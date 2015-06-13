@@ -14,6 +14,7 @@ import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.RefundChannel;
 import com.foxinmy.weixin4j.mp.type.RefundStatus;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
 /**
  * V3退款详细
@@ -129,14 +130,15 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo
 	 */
+	@ListsuffixResult
 	@XmlTransient
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(deserialize = false)
 	private List<CouponInfo> couponList;
 
 	protected RefundDetail() {
 		// jaxb required
 	}
-	
+
 	public String getOutRefundNo() {
 		return outRefundNo;
 	}

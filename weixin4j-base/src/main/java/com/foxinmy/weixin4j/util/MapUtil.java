@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.xml.ListsuffixResultSerializer;
 
 /**
  * 签名工具类
@@ -23,15 +23,19 @@ import com.foxinmy.weixin4j.model.Consts;
 public class MapUtil {
 	/**
 	 * 连接字符串
-	 * @param object 对象
-	 * @param encoder 是否编码
-	 * @param lowerCase 是否转换小写
-	 * @param extra 附加对象
+	 * 
+	 * @param object
+	 *            对象
+	 * @param encoder
+	 *            是否编码
+	 * @param lowerCase
+	 *            是否转换小写
+	 * @param extra
+	 *            附加对象
 	 * @return
 	 */
 	public static String toJoinString(Object object, boolean encoder,
 			boolean lowerCase, Map<String, String> extra) {
-		String text = JSON.toJSONString(object);
 		Map<String, String> map = new TreeMap<String, String>(
 				new Comparator<String>() {
 					@Override
@@ -39,10 +43,15 @@ public class MapUtil {
 						return o1.compareTo(o2);
 					}
 				});
-
-		map.putAll(JSON.parseObject(text,
-				new TypeReference<Map<String, String>>() {
-				}));
+		JSONObject obj = null;
+		if (object instanceof String) {
+			obj = JSONObject.parseObject(object.toString());
+		} else {
+			obj = ListsuffixResultSerializer.serializeToJSON(object);
+		}
+		for (String key : obj.keySet()) {
+			map.put(key, obj.getString(key));
+		}
 		if (extra != null && !extra.isEmpty()) {
 			map.putAll(extra);
 		}
@@ -51,9 +60,13 @@ public class MapUtil {
 
 	/**
 	 * 连接字符串
-	 * @param map 对象
-	 * @param encoder 是否编码
-	 * @param lowerCase 是否转换小写
+	 * 
+	 * @param map
+	 *            对象
+	 * @param encoder
+	 *            是否编码
+	 * @param lowerCase
+	 *            是否转换小写
 	 * @return
 	 */
 	public static String toJoinString(Map<String, String> map, boolean encoder,

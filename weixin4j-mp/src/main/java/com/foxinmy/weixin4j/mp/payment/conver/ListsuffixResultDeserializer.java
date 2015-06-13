@@ -31,15 +31,15 @@ import com.foxinmy.weixin4j.xml.ListWrapper;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
- * 对 后缀为_$n 的 xml节点转换
+ * 对 后缀为_$n 的 xml节点反序列化
  * 
- * @className ListsuffixResultConverter
+ * @className ListsuffixResultDeserializer
  * @author jy
  * @date 2015年3月24日
  * @since JDK 1.7
  * @see
  */
-public class ListsuffixResultConverter {
+public class ListsuffixResultDeserializer {
 
 	private final static Pattern SUFFIX_PATTERN = Pattern.compile("(_\\d)$");
 
@@ -53,8 +53,8 @@ public class ListsuffixResultConverter {
 	 * @param clazz
 	 * @return
 	 */
-	public static <T> T containCouponConvert(String content, Class<T> clazz) {
-		return convert(content, clazz, "couponList");
+	public static <T> T containCouponDeserialize(String content, Class<T> clazz) {
+		return deserialize(content, clazz, "couponList");
 	}
 
 	/**
@@ -64,8 +64,8 @@ public class ListsuffixResultConverter {
 	 * @param clazz
 	 * @return
 	 */
-	public static <T> T containRefundConvert(String content, Class<T> clazz) {
-		return convert(content, clazz, "refundList");
+	public static <T> T containRefundDeserialize(String content, Class<T> clazz) {
+		return deserialize(content, clazz, "refundList");
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class ListsuffixResultConverter {
 	 * @param clazz
 	 * @return
 	 */
-	public static <T> T containRefundDetailConvert(String content,
+	public static <T> T containRefundDetailDeserialize(String content,
 			Class<T> clazz) {
 		T t = XmlStream.fromXML(content, clazz);
 		Class<?> wrapperClazz = ReflectionUtil.getFieldGenericType(t,
@@ -205,7 +205,7 @@ public class ListsuffixResultConverter {
 		return t;
 	}
 
-	public static <T> T convert(String content, Class<T> clazz,
+	public static <T> T deserialize(String content, Class<T> clazz,
 			String listPropertyName) {
 		T t = XmlStream.fromXML(content, clazz);
 		Class<?> wrapperClazz = ReflectionUtil.getFieldGenericType(t,
