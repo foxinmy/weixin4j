@@ -3,8 +3,11 @@ package com.foxinmy.weixin4j.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @title 反射工具类
@@ -213,5 +216,21 @@ public class ReflectionUtil {
 			}
 		}
 		return null;
+	}
+
+	public static Set<Field> getAllField(Class<?> clazz) {
+		Set<Field> fieldSet = new HashSet<Field>();
+		while (clazz != Object.class) {
+			Field[] fields = clazz.getDeclaredFields();
+			for (Field field : fields) {
+				int modifier = field.getModifiers();
+				if (Modifier.isFinal(modifier) || Modifier.isStatic(modifier)) {
+					continue;
+				}
+				fieldSet.add(field);
+			}
+			clazz = clazz.getSuperclass();
+		}
+		return fieldSet;
 	}
 }

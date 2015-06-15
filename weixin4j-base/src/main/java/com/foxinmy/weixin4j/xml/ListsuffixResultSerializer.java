@@ -12,13 +12,12 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.NameFilter;
-import com.alibaba.fastjson.serializer.PropertyFilter;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.util.ReflectionUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 对 后缀为_$n 的 xml节点序列化
@@ -31,8 +30,6 @@ import com.foxinmy.weixin4j.util.ReflectionUtil;
  */
 public class ListsuffixResultSerializer {
 
-	private static final String LISTSUFFIX_RESULT_NAME = "$listsuffix_result$";
-
 	/**
 	 * 序列化为json
 	 * 
@@ -40,30 +37,30 @@ public class ListsuffixResultSerializer {
 	 * @return json
 	 */
 	public static JSONObject serializeToJSON(Object object) {
-		final JSONObject listsuffix = new JSONObject();
-		String preJson = JSON.toJSONString(object, new PropertyFilter() {
-			@Override
-			public boolean apply(Object source, String name, Object value) {
-				if (name.equalsIgnoreCase(LISTSUFFIX_RESULT_NAME)) {
-					listsuffix.put(LISTSUFFIX_RESULT_NAME, JSON.toJSON(value));
-					return false;
+		JSONObject result = (JSONObject) JSON.toJSON(object);
+		Map<Field, String[]> listsuffixFields = ListsuffixResultDeserializer
+				.getListsuffixFields(object.getClass());
+		if (!listsuffixFields.isEmpty()) {
+			JSONField jsonField = null;
+			Object value = null;
+			for (Field field : listsuffixFields.keySet()) {
+				jsonField = field.getAnnotation(JSONField.class);
+				if (jsonField != null
+						&& StringUtil.isNotBlank(jsonField.name())) {
+					result.remove(jsonField.name());
+				} else {
+					result.remove(field.getName());
 				}
-				Field field = ReflectionUtil.getAccessibleField(source, name);
-				if (field != null
-						&& field.getAnnotation(ListsuffixResult.class) != null) {
-					listsuffix.put(LISTSUFFIX_RESULT_NAME, JSON.toJSON(value));
-					return false;
+				try {
+					field.setAccessible(true);
+					value = field.get(object);
+				} catch (Exception e) {
+					;//
 				}
-				return true;
+				if (value != null && value instanceof List) {
+					result.putAll(listsuffixConvertMap((List<?>) value));
+				}
 			}
-		});
-		JSONObject result = JSON.parseObject(preJson);
-		try {
-			Map<String, String> listMap = listsuffixConvertMap(listsuffix
-					.getJSONArray(LISTSUFFIX_RESULT_NAME));
-			result.putAll(listMap);
-		} catch (JSONException e) {
-			;//
 		}
 		return result;
 	}
@@ -115,6 +112,9 @@ public class ListsuffixResultSerializer {
 			xw.writeStartDocument(Consts.UTF_8.name(), "1.0");
 			xw.writeStartElement("xml");
 			for (String key : obj.keySet()) {
+				if (StringUtil.isBlank(obj.getString(key))) {
+					continue;
+				}
 				xw.writeStartElement(key);
 				xw.writeCData(obj.getString(key));
 				xw.writeEndElement();

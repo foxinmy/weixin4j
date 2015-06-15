@@ -81,7 +81,7 @@ public class Pay3Api extends PayApi {
 		String orderquery_uri = getRequestUri("orderquery_v3_uri");
 		WeixinResponse response = weixinClient.post(orderquery_uri, param);
 		return ListsuffixResultDeserializer.deserialize(response.getAsString(),
-				Order.class, "couponList");
+				Order.class);
 	}
 
 	/**
@@ -394,9 +394,8 @@ public class Pay3Api extends PayApi {
 		map.put("sign", sign);
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinClient.post(refundquery_uri, param);
-		return ListsuffixResultDeserializer.deserializeHasTwoSuffix(
-				response.getAsString(), RefundRecord.class, "refundList",
-				"couponList");
+		return ListsuffixResultDeserializer.deserialize(
+				response.getAsString(), RefundRecord.class);
 	}
 
 	/**

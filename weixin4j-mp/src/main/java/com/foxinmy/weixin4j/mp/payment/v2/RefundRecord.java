@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.xml.ListsuffixResult;
@@ -48,8 +47,6 @@ public class RefundRecord extends ApiResult {
 	 * 退款详情
 	 */
 	@ListsuffixResult
-	@XmlTransient
-	@JSONField(deserialize = false)
 	private List<RefundDetail> refundList;
 
 	protected RefundRecord() {

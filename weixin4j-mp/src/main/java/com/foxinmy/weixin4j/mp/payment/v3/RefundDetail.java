@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo;
@@ -131,8 +130,6 @@ public class RefundDetail extends ApiResult {
 	 * @see com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo
 	 */
 	@ListsuffixResult
-	@XmlTransient
-	@JSONField(deserialize = false)
 	private List<CouponInfo> couponList;
 
 	protected RefundDetail() {

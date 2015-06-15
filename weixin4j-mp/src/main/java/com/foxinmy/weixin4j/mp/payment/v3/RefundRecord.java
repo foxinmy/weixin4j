@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.CurrencyType;
@@ -89,9 +88,7 @@ public class RefundRecord extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.payment.v3.RefundDetail
 	 */
-	@ListsuffixResult
-	@XmlTransient
-	@JSONField(deserialize = false)
+	@ListsuffixResult({ "out_refund_no(_\\d)$", "^refund_.*(_\\d)$" })
 	private List<RefundDetail> refundList;
 
 	protected RefundRecord() {

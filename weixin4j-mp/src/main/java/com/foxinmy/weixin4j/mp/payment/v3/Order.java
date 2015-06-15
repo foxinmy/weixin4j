@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponInfo;
@@ -88,8 +87,6 @@ public class Order extends ApiResult {
 	 * 代金券信息 验证签名有点麻烦
 	 */
 	@ListsuffixResult
-	@XmlTransient
-	@JSONField(deserialize = false)
 	private List<CouponInfo> couponList;
 	/**
 	 * 现金支付金额

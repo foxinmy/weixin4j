@@ -443,7 +443,7 @@ public class Pay2Api extends PayApi {
 		map.put("sign", sign.toLowerCase());
 		WeixinResponse response = weixinClient.get(refundquery_uri, map);
 		return ListsuffixResultDeserializer.deserialize(response.getAsString(),
-				RefundRecord.class, "refundList");
+				RefundRecord.class);
 	}
 
 	@Override
