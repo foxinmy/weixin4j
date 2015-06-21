@@ -51,7 +51,7 @@ public class FileTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public void cachingToken(Token token, String cacheKey)
+	public void cachingToken(String cacheKey, Token token)
 			throws WeixinException {
 		try {
 			XmlStream.toXML(

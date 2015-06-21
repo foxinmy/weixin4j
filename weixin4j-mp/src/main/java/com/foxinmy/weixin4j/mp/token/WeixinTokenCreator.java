@@ -4,11 +4,9 @@ import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.mp.type.URLConsts;
 import com.foxinmy.weixin4j.token.TokenCreator;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * 微信公众平台TOKEN创建者
@@ -27,14 +25,13 @@ public class WeixinTokenCreator implements TokenCreator {
 	private final String appid;
 	private final String secret;
 
-	public WeixinTokenCreator() {
-		this(ConfigUtil.getWeixinAccount());
-	}
-
-	public WeixinTokenCreator(WeixinAccount weixinAccount) {
-		this(weixinAccount.getId(), weixinAccount.getSecret());
-	}
-
+	/**
+	 * 
+	 * @param appid
+	 *            公众号ID
+	 * @param secret
+	 *            公众号secret
+	 */
 	public WeixinTokenCreator(String appid, String secret) {
 		this.appid = appid;
 		this.secret = secret;
@@ -48,7 +45,7 @@ public class WeixinTokenCreator implements TokenCreator {
 
 	@Override
 	public Token createToken() throws WeixinException {
-		String tokenUrl = String.format(Consts.MP_ASSESS_TOKEN_URL, appid,
+		String tokenUrl = String.format(URLConsts.ASSESS_TOKEN_URL, appid,
 				secret);
 		WeixinResponse response = httpClient.get(tokenUrl);
 		Token token = response.getAsObject(new TypeReference<Token>() {

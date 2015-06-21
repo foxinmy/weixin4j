@@ -8,7 +8,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.model.Button;
-import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.BatchApi;
 import com.foxinmy.weixin4j.qy.api.HelperApi;
@@ -16,6 +15,7 @@ import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.qy.api.MenuApi;
 import com.foxinmy.weixin4j.qy.api.NotifyApi;
 import com.foxinmy.weixin4j.qy.api.PartyApi;
+import com.foxinmy.weixin4j.qy.api.QyApi;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
 import com.foxinmy.weixin4j.qy.message.NotifyMessage;
@@ -31,11 +31,9 @@ import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
-import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.type.MediaType;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * 微信企业号接口实现
@@ -47,6 +45,7 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">api文档</a>
  */
 public class WeixinProxy {
+
 	private final MediaApi mediaApi;
 	private final MenuApi menuApi;
 	private final NotifyApi notifyApi;
@@ -57,20 +56,24 @@ public class WeixinProxy {
 	private final AgentApi agentApi;
 	private final BatchApi batchApi;
 
+	private final TokenHolder tokenHolder;
+
 	/**
 	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinProxy() {
-		this(new FileTokenStorager());
+		this(QyApi.DEFAULT_TOKEN_STORAGER);
 	}
 
 	/**
 	 * 默认使用weixin4j.properties配置的账号信息
 	 * 
-	 * @param tokenStorager token存储策略
+	 * @param tokenStorager
+	 *            token存储策略
 	 */
 	public WeixinProxy(TokenStorager tokenStorager) {
-		this(tokenStorager, ConfigUtil.getWeixinAccount());
+		this(QyApi.DEFAULT_WEIXIN_ACCOUNT.getId(), QyApi.DEFAULT_WEIXIN_ACCOUNT
+				.getSecret(), tokenStorager);
 	}
 
 	/**
@@ -80,19 +83,22 @@ public class WeixinProxy {
 	 * @param corpsecret
 	 */
 	public WeixinProxy(String corpid, String corpsecret) {
-		this(new FileTokenStorager(), new WeixinAccount(corpid, corpsecret));
+		this(corpid, corpsecret, QyApi.DEFAULT_TOKEN_STORAGER);
 	}
 
 	/**
 	 * 
+	 * @param corpid
+	 *            企业号ID
+	 * @param corpsecret
+	 *            企业号secret
 	 * @param tokenStorager
-	 *            token存储策略
-	 * @param weixinAccount
-	 *            企业号账号信息
+	 *            企业号token存储器
 	 */
-	public WeixinProxy(TokenStorager tokenStorager, WeixinAccount weixinAccount) {
-		TokenHolder tokenHolder = new TokenHolder(new WeixinTokenCreator(
-				weixinAccount), tokenStorager);
+	public WeixinProxy(String corpid, String corpsecret,
+			TokenStorager tokenStorager) {
+		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(corpid,
+				corpsecret), tokenStorager);
 		this.partyApi = new PartyApi(tokenHolder);
 		this.userApi = new UserApi(tokenHolder);
 		this.tagApi = new TagApi(tokenHolder);
@@ -102,6 +108,10 @@ public class WeixinProxy {
 		this.notifyApi = new NotifyApi(tokenHolder);
 		this.menuApi = new MenuApi(tokenHolder);
 		this.mediaApi = new MediaApi(tokenHolder);
+	}
+
+	public TokenHolder getTokenHolder() {
+		return this.tokenHolder;
 	}
 
 	/**

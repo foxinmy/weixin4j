@@ -3,12 +3,12 @@ package com.foxinmy.weixin4j.mp;
 import java.io.File;
 import java.util.Date;
 
-import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.mp.api.CashApi;
 import com.foxinmy.weixin4j.mp.api.CouponApi;
+import com.foxinmy.weixin4j.mp.api.MpApi;
 import com.foxinmy.weixin4j.mp.api.Pay2Api;
 import com.foxinmy.weixin4j.mp.api.Pay3Api;
 import com.foxinmy.weixin4j.mp.api.PayApi;
@@ -28,7 +28,6 @@ import com.foxinmy.weixin4j.mp.type.CurrencyType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.IdType;
 import com.foxinmy.weixin4j.mp.type.RefundType;
-import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.util.ConfigUtil;
@@ -52,32 +51,35 @@ public class WeixinPayProxy {
 	private final CouponApi couponApi;
 	private final CashApi cashApi;
 
+	private final TokenHolder tokenHolder;
+
 	/**
 	 * 默认使用文件保存token、使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinPayProxy() {
-		this(new FileTokenStorager());
+		this(MpApi.DEFAULT_TOKEN_STORAGER);
 	}
 
 	/**
 	 * 使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinPayProxy(TokenStorager tokenStorager) {
-		this(tokenStorager, JSON.parseObject(ConfigUtil.getValue("account"),
-				WeixinMpAccount.class));
+		this(MpApi.DEFAULT_WEIXIN_ACCOUNT, tokenStorager);
 	}
 
 	/**
+	 *
+	 * @param weixinAccount
+	 *            公众号账号信息
 	 * 
 	 * @param tokenStorager
 	 *            token的存储策略
-	 * @param weixinAccount
-	 *            公众号账号信息
 	 */
-	public WeixinPayProxy(TokenStorager tokenStorager,
-			WeixinMpAccount weixinAccount) {
-		TokenHolder tokenHolder = new TokenHolder(new WeixinTokenCreator(
-				weixinAccount), tokenStorager);
+	public WeixinPayProxy(WeixinMpAccount weixinAccount,
+			TokenStorager tokenStorager) {
+		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(
+				weixinAccount.getId(), weixinAccount.getSecret()),
+				tokenStorager);
 		this.pay2Api = new Pay2Api(weixinAccount, tokenHolder);
 		this.pay3Api = new Pay3Api(weixinAccount, tokenHolder);
 		int version = weixinAccount.getVersion();
@@ -90,6 +92,10 @@ public class WeixinPayProxy {
 		}
 		this.couponApi = new CouponApi(weixinAccount);
 		this.cashApi = new CashApi(weixinAccount);
+	}
+
+	public TokenHolder getTokenHolder() {
+		return this.tokenHolder;
 	}
 
 	/**

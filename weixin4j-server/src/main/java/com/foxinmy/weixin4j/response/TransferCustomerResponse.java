@@ -17,12 +17,12 @@ public class TransferCustomerResponse implements WeixinResponse {
 	 */
 	private String kfAccount;
 
-	public String getKfAccount() {
-		return kfAccount;
+	public TransferCustomerResponse(String kfAccount) {
+		this.kfAccount = kfAccount;
 	}
 
-	public void setKfAccount(String kfAccount) {
-		this.kfAccount = kfAccount;
+	public String getKfAccount() {
+		return kfAccount;
 	}
 
 	@Override

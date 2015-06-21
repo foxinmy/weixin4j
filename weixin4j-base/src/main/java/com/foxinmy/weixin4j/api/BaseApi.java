@@ -1,10 +1,11 @@
 package com.foxinmy.weixin4j.api;
 
-import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.token.FileTokenStorager;
+import com.foxinmy.weixin4j.token.TokenStorager;
 
 /**
  * API基础
@@ -17,9 +18,10 @@ import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">微信企业号API文档</a>
  */
 public abstract class BaseApi {
+
 	protected final WeixinHttpClient weixinClient = new WeixinHttpClient();
 
-	protected abstract ResourceBundle getWeixinBundle();
+	protected abstract String getConfigValue(String key);
 
 	protected String getRequestUri(String key) {
 		String url = getConfigValue(key);
@@ -36,7 +38,8 @@ public abstract class BaseApi {
 		return sb.toString();
 	}
 
-	protected String getConfigValue(String key) {
-		return getWeixinBundle().getString(key);
-	}
+	/**
+	 * 默认token使用File的方式存储
+	 */
+	public final static TokenStorager DEFAULT_TOKEN_STORAGER = new FileTokenStorager();
 }

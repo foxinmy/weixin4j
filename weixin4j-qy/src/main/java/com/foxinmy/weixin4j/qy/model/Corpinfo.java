@@ -34,6 +34,11 @@ public class Corpinfo extends AgentOverview {
 	 */
 	@JSONField(name = "corp_agent_max")
 	private int corpAgentMax;
+	/**
+	 * 授权方企业号二维码
+	 */
+	@JSONField(name = "corp_wxqrcode")
+	private String corpWxqrcode;
 
 	public String getCorpid() {
 		return corpid;
@@ -67,10 +72,19 @@ public class Corpinfo extends AgentOverview {
 		this.corpAgentMax = corpAgentMax;
 	}
 
+	public String getCorpWxqrcode() {
+		return corpWxqrcode;
+	}
+
+	public void setCorpWxqrcode(String corpWxqrcode) {
+		this.corpWxqrcode = corpWxqrcode;
+	}
+
 	@Override
 	public String toString() {
 		return "Corpinfo [corpid=" + corpid + ", corpType=" + corpType
 				+ ", corpUserMax=" + corpUserMax + ", corpAgentMax="
-				+ corpAgentMax + ", " + super.toString() + "]";
+				+ corpAgentMax + ", corpWxqrcode=" + corpWxqrcode + ", "
+				+ super.toString() + "]";
 	}
 }

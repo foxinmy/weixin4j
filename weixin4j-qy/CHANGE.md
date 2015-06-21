@@ -53,3 +53,7 @@
 * 2015-06-12
 
   + 新增企业号[登陆授权](src/main/java/com/foxinmy/weixin4j/qy/api/OauthApi.java)API
+  
+* 2015-06-21
+
+  + **weixin4j-qy**:新增企业号[第三方应用API](src/main/java/com/foxinmy/weixin4j/qy/suite)。

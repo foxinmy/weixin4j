@@ -28,12 +28,13 @@ public interface TokenStorager {
 	/**
 	 * 缓存新的token
 	 * 
-	 * @param token
-	 *            新产生的token
 	 * @param cacheKey
 	 *            缓存的名称
+	 * 
+	 * @param token
+	 *            新产生的token
 	 * @throws WeixinException
 	 */
-	public void cachingToken(Token token, String cacheKey)
+	public void cachingToken(String cacheKey, Token token)
 			throws WeixinException;
 }

@@ -7,7 +7,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.util.ConfigUtil;
@@ -24,13 +23,14 @@ import com.foxinmy.weixin4j.util.StringUtil;
  *      href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&lang=zh_CN">微信登陆</a>
  */
 public class OauthApi extends MpApi {
+
 	/**
 	 * @see {@link com.foxinmy.weixin4j.mp.api.OauthApi#getAuthorizeURL(String, String,String)}
 	 * 
 	 * @return 请求授权的URL
 	 */
 	public String getAuthorizeURL() {
-		String appId = ConfigUtil.getWeixinAccount().getId();
+		String appId = DEFAULT_WEIXIN_ACCOUNT.getId();
 		String redirectUri = ConfigUtil.getValue("redirect_uri");
 		return getAuthorizeURL(appId, redirectUri, "state", "snsapi_login");
 	}
@@ -65,8 +65,8 @@ public class OauthApi extends MpApi {
 	 * @return
 	 */
 	public OauthToken getOauthToken(String code) throws WeixinException {
-		WeixinAccount account = ConfigUtil.getWeixinAccount();
-		return getOauthToken(code, account.getId(), account.getSecret());
+		return getOauthToken(code, DEFAULT_WEIXIN_ACCOUNT.getId(),
+				DEFAULT_WEIXIN_ACCOUNT.getSecret());
 	}
 
 	/**
@@ -98,8 +98,7 @@ public class OauthApi extends MpApi {
 	 * @return
 	 */
 	public OauthToken refreshToken(String refreshToken) throws WeixinException {
-		WeixinAccount account = ConfigUtil.getWeixinAccount();
-		return refreshToken(account.getId(), refreshToken);
+		return refreshToken(DEFAULT_WEIXIN_ACCOUNT.getId(), refreshToken);
 	}
 
 	/**

@@ -19,6 +19,7 @@ import com.foxinmy.weixin4j.mp.payment.v3.PayRequestV3;
 import com.foxinmy.weixin4j.mp.payment.v3.PrePay;
 import com.foxinmy.weixin4j.mp.type.SignType;
 import com.foxinmy.weixin4j.mp.type.TradeType;
+import com.foxinmy.weixin4j.mp.type.URLConsts;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
@@ -228,7 +229,7 @@ public class PayUtil {
 		}
 		String payJsRequestXml = XmlStream.toXML(payPackage);
 		try {
-			WeixinResponse response = httpClient.post(Consts.UNIFIEDORDER,
+			WeixinResponse response = httpClient.post(URLConsts.UNIFIEDORDER,
 					payJsRequestXml);
 			PrePay prePay = response.getAsObject(new TypeReference<PrePay>() {
 			});
@@ -303,7 +304,7 @@ public class PayUtil {
 		map.put("productid", productId);
 		map.put("appkey", weixinAccount.getPaySignKey());
 		String sign = paysignSha(map);
-		return String.format(Consts.NATIVEURLV2, sign, weixinAccount.getId(),
+		return String.format(URLConsts.NATIVEURLV2, sign, weixinAccount.getId(),
 				productId, timestamp, noncestr);
 	}
 
@@ -328,7 +329,7 @@ public class PayUtil {
 		map.put("nonce_str", noncestr);
 		map.put("product_id", productId);
 		String sign = paysignMd5(map, weixinAccount.getPaySignKey());
-		return String.format(Consts.NATIVEURLV3, sign, weixinAccount.getId(),
+		return String.format(URLConsts.NATIVEURLV3, sign, weixinAccount.getId(),
 				weixinAccount.getMchId(), productId, timestamp, noncestr);
 	}
 
@@ -408,7 +409,7 @@ public class PayUtil {
 		String sign = paysignMd5(payPackage, weixinAccount.getPaySignKey());
 		payPackage.setSign(sign);
 		String para = XmlStream.toXML(payPackage);
-		WeixinResponse response = httpClient.post(Consts.MICROPAYURL, para);
+		WeixinResponse response = httpClient.post(URLConsts.MICROPAYURL, para);
 		return response
 				.getAsObject(new TypeReference<com.foxinmy.weixin4j.mp.payment.v3.Order>() {
 				});

@@ -32,7 +32,7 @@ public class CouponTest {
 		ACCOUNT = new WeixinMpAccount("appid",
 				"appsecret",
 				"paysign", "mchid");
-		WEIXINPAY = new WeixinPayProxy(new FileTokenStorager(), ACCOUNT);
+		WEIXINPAY = new WeixinPayProxy(ACCOUNT, new FileTokenStorager());
 	}
 	protected final File caFile = new File("证书文件路径(*.p12)");
 

@@ -30,10 +30,10 @@ public class PayTest {
 	static {
 		ACCOUNT2 = new WeixinMpAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
 				"请填入v3版本的paysignkey", "请填入v2版本的partnerId", "请填入v2版本的partnerKey");
-		PAY2 = new WeixinPayProxy(new FileTokenStorager(), ACCOUNT2);
+		PAY2 = new WeixinPayProxy(ACCOUNT2, new FileTokenStorager());
 		ACCOUNT3 = new WeixinMpAccount("请填入v3版本的appid", "请填入v3版本的appSecret",
 				"请填入v3版本的paysignkey", "请填入v3版本的mchid");
-		PAY3 = new WeixinPayProxy(new FileTokenStorager(), ACCOUNT3);
+		PAY3 = new WeixinPayProxy(ACCOUNT3, new FileTokenStorager());
 	}
 
 	@Test

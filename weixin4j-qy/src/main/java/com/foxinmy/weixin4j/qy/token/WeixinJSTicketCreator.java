@@ -4,11 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.qy.type.URLConsts;
 import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * 微信企业号JSTICKET创建
@@ -28,19 +27,11 @@ public class WeixinJSTicketCreator implements TokenCreator {
 	private final WeixinHttpClient httpClient;
 
 	/**
-	 * jssdk
 	 * 
+	 * @param corpid
+	 *            企业号ID
 	 * @param weixinTokenHolder
-	 *            <font color="red">公众平台的access_token</font>
-	 */
-	public WeixinJSTicketCreator(TokenHolder weixinTokenHolder) {
-		this(ConfigUtil.getWeixinAccount().getId(), weixinTokenHolder);
-	}
-
-	/**
-	 * <font color="red">企业号的的access_token</font>
-	 * 
-	 * @param weixinTokenHolder
+	 *            <font color="red">企业号的的access_token</font>
 	 */
 	public WeixinJSTicketCreator(String corpid, TokenHolder weixinTokenHolder) {
 		this.corpid = corpid;
@@ -56,7 +47,7 @@ public class WeixinJSTicketCreator implements TokenCreator {
 	@Override
 	public Token createToken() throws WeixinException {
 		WeixinResponse response = httpClient.get(String.format(
-				Consts.QY_JS_TICKET_URL, weixinTokenHolder.getToken()
+				URLConsts.JS_TICKET_URL, weixinTokenHolder.getToken()
 						.getAccessToken()));
 		JSONObject result = response.getAsJson();
 		Token token = new Token(result.getString("ticket"));

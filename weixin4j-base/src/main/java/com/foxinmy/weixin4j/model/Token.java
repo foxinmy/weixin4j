@@ -32,7 +32,7 @@ public class Token implements Serializable {
 	@JSONField(name = "expires_in")
 	private int expiresIn;
 	/**
-	 * token创建的时间 只在FileTokenHolder模式下有效
+	 * token创建的时间 只在FileTokenStorager模式下有效
 	 */
 	private long time;
 

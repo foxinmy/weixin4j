@@ -106,7 +106,6 @@ public class XmlstreamTest {
 		// System.err.println(xml2refundRecordV2());
 		 xml2refundRecordV3();
 		// object2xmlWithoutRootElement();
-
 		/*RefundRecord refundRecord = xml2refundRecordV2();
 		System.err.println(refundRecord);
 		String sign = refundRecord.getSign();
@@ -115,6 +114,5 @@ public class XmlstreamTest {
 		System.err.println("sign=" + sign + ",validSign=" + validSign);
 		System.err.println(ListsuffixResultSerializer
 				.serializeToXML(refundRecord));*/
-
 	}
 }

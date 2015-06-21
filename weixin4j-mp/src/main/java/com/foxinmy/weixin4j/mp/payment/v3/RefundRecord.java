@@ -88,7 +88,7 @@ public class RefundRecord extends ApiResult {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.payment.v3.RefundDetail
 	 */
-	@ListsuffixResult({ "out_refund_no(_\\d)$", "^refund_.*(_\\d)$" })
+	@ListsuffixResult({ "^out_refund_no(_\\d)$", "^refund_.*(_\\d)$" })
 	private List<RefundDetail> refundList;
 
 	protected RefundRecord() {

@@ -487,9 +487,13 @@
 		<text>需要企业授权</text>
 	</error>
 	<error>
+		<code>43013</code>
+		<text>应用对成员不可见</text>
+	</error>
+	<error>
 		<code>44001</code>
 		<desc>empty media data</desc>
-		<text>空白的二进制数据</text>
+		<text>多媒体文件为空</text>
 	</error>
 	<error>
 		<code>44002</code>
@@ -859,7 +863,7 @@
 	</error>
 	<error>
 		<code>60125</code>
-		<text>部门名字长度超过限制</text>
+		<text>非法部门名字，长度超过限制、重名等</text>
 	</error>
 	<error>
 		<code>60126</code>

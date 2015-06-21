@@ -1,15 +1,12 @@
 package com.foxinmy.weixin4j.qy.token;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.qy.model.WeixinQyAccount;
+import com.foxinmy.weixin4j.qy.type.URLConsts;
 import com.foxinmy.weixin4j.token.TokenCreator;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * 微信企业号应用提供商凭证创建
@@ -28,15 +25,13 @@ public class WeixinProviderTokenCreator implements TokenCreator {
 	private final String corpid;
 	private final String providersecret;
 
-	public WeixinProviderTokenCreator() {
-		this(JSON.parseObject(ConfigUtil.getValue("account"),
-				WeixinQyAccount.class));
-	}
-
-	public WeixinProviderTokenCreator(WeixinQyAccount qyAccount) {
-		this(qyAccount.getId(), qyAccount.getProviderSecret());
-	}
-
+	/**
+	 * 
+	 * @param corpid
+	 *            企业号ID
+	 * @param providersecret
+	 *            企业号提供商的secret
+	 */
 	public WeixinProviderTokenCreator(String corpid, String providersecret) {
 		this.corpid = corpid;
 		this.providersecret = providersecret;
@@ -53,7 +48,7 @@ public class WeixinProviderTokenCreator implements TokenCreator {
 		JSONObject obj = new JSONObject();
 		obj.put("corpid", corpid);
 		obj.put("provider_secret", providersecret);
-		WeixinResponse response = httpClient.post(Consts.QY_PROVIDER_TOKEN_URL,
+		WeixinResponse response = httpClient.post(URLConsts.PROVIDER_TOKEN_URL,
 				obj.toJSONString());
 		obj = response.getAsJson();
 		Token token = new Token(obj.getString("provider_access_token"));

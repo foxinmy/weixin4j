@@ -5,9 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * token测试
@@ -23,7 +25,9 @@ public class TokenTest {
 
 	@Before
 	public void setUp() {
-		tokenHolder = new TokenHolder(new WeixinTokenCreator(),
+		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		tokenHolder = new TokenHolder(new WeixinTokenCreator(
+				weixinAccount.getId(), weixinAccount.getSecret()),
 				new FileTokenStorager());
 	}
 
