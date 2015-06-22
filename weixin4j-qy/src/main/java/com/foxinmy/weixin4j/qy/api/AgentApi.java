@@ -65,7 +65,7 @@ public class AgentApi extends QyApi {
 	 * 设置企业应用的选项设置信息，如：地理位置上报等
 	 * 
 	 * @param agentSet
-	 *            设置参数
+	 *            设置信息
 	 * @see com.foxinmy.weixin4j.qy.model.AgentSetter
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%AE%BE%E7%BD%AE%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%BA%94%E7%94%A8">设置企业号信息</a>
@@ -81,7 +81,7 @@ public class AgentApi extends QyApi {
 		return response.getAsJsonResult();
 	}
 
-	private static ValueFilter typeFilter;
+	public static ValueFilter typeFilter;
 	static {
 		typeFilter = new ValueFilter() {
 			@Override

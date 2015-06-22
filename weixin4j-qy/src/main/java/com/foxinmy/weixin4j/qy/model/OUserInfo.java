@@ -3,12 +3,11 @@ package com.foxinmy.weixin4j.qy.model;
 import java.io.Serializable;
 import java.util.List;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.qy.type.AgentAuthType;
 
 /**
- * oauth授权登陆信息
+ * 企业号oauth授权登陆信息&第三方应用授权信息
  * 
  * @className OUserInfo
  * @author jy
@@ -48,7 +47,7 @@ public class OUserInfo implements Serializable {
 	 * 该管理员拥有的通讯录权限
 	 */
 	@JSONField(name = "auth_info")
-	private JSONObject authInfo;
+	private AuthInfo authInfo;
 
 	public boolean isSysAdmin() {
 		return isSysAdmin;
@@ -90,11 +89,11 @@ public class OUserInfo implements Serializable {
 		this.agentInfo = agentInfo;
 	}
 
-	public JSONObject getAuthInfo() {
+	public AuthInfo getAuthInfo() {
 		return authInfo;
 	}
 
-	public void setAuthInfo(JSONObject authInfo) {
+	public void setAuthInfo(AuthInfo authInfo) {
 		this.authInfo = authInfo;
 	}
 
@@ -106,24 +105,78 @@ public class OUserInfo implements Serializable {
 				+ authInfo + "]";
 	}
 
-	public static class AgentItem {
+	/**
+	 * 授权信息
+	 * 
+	 * @className AuthInfo
+	 * @author jy
+	 * @date 2015年6月22日
+	 * @since JDK 1.7
+	 * @see
+	 */
+	public static class AuthInfo implements Serializable {
+
+		private static final long serialVersionUID = -4290240764958942370L;
 		/**
-		 * 应用id
+		 * 授权的应用信息
 		 */
-		private int agentid;
+		@JSONField(name = "agent")
+		private List<AgentItem> agentItems;
+		/**
+		 * 授权的通讯录部门
+		 */
+		@JSONField(name = "department")
+		private List<DepartmentItem> departmentItems;
+
+		public List<AgentItem> getAgentItems() {
+			return agentItems;
+		}
+
+		public void setAgentItems(List<AgentItem> agentItems) {
+			this.agentItems = agentItems;
+		}
+
+		public List<DepartmentItem> getDepartmentItems() {
+			return departmentItems;
+		}
+
+		public void setDepartmentItems(List<DepartmentItem> departmentItems) {
+			this.departmentItems = departmentItems;
+		}
+
+		@Override
+		public String toString() {
+			return "AuthInfo [agentItems=" + agentItems + ", departmentItems="
+					+ departmentItems + "]";
+		}
+	}
+
+	/**
+	 * 授权的应用信息
+	 * 
+	 * @className AgentItem
+	 * @author jy
+	 * @date 2015年6月22日
+	 * @since JDK 1.7
+	 * @see
+	 */
+	public static class AgentItem extends AgentOverview {
+
+		private static final long serialVersionUID = -1188968391623633559L;
 		/**
 		 * 管理员对应用的权限
 		 */
 		@JSONField(name = "auth_type")
 		private AgentAuthType authType;
-
-		public int getAgentid() {
-			return agentid;
-		}
-
-		public void setAgentid(int agentid) {
-			this.agentid = agentid;
-		}
+		/**
+		 * 服务商套件中的对应应用id
+		 */
+		private String appid;
+		/**
+		 * 授权方应用敏感权限组，目前仅有get_location，表示是否有权限设置应用获取地理位置的开关
+		 */
+		@JSONField(name = "api_group")
+		private List<String> apiGroup;
 
 		public AgentAuthType getAuthType() {
 			return authType;
@@ -138,10 +191,59 @@ public class OUserInfo implements Serializable {
 			this.authType = null;
 		}
 
+		public String getAppid() {
+			return appid;
+		}
+
+		public void setAppid(String appid) {
+			this.appid = appid;
+		}
+
+		public List<String> getApiGroup() {
+			return apiGroup;
+		}
+
+		public void setApiGroup(List<String> apiGroup) {
+			this.apiGroup = apiGroup;
+		}
+
 		@Override
 		public String toString() {
-			return "AgentItem [agentid=" + agentid + ", authType=" + authType
-					+ "]";
+			return "AgentItem [authType=" + authType + ", appid=" + appid
+					+ ", apiGroup=" + apiGroup + ", " + super.toString() + "]";
+		}
+	}
+
+	/**
+	 * 授权的通讯录部门
+	 * 
+	 * @className DepartmentItem
+	 * @author jy
+	 * @date 2015年6月22日
+	 * @since JDK 1.7
+	 * @see
+	 */
+	public static class DepartmentItem extends Party {
+
+		private static final long serialVersionUID = 556556672204642407L;
+
+		/**
+		 * 是否具有该部门的写权限
+		 */
+		private boolean writable;
+
+		public boolean isWritable() {
+			return writable;
+		}
+
+		public void setWritable(boolean writable) {
+			this.writable = writable;
+		}
+
+		@Override
+		public String toString() {
+			return "DepartmentItem [writable=" + writable + ", "
+					+ super.toString() + "]";
 		}
 	}
 }

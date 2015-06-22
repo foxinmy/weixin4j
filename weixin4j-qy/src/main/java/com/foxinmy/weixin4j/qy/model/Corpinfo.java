@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.qy.model;
 
+import java.io.Serializable;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.qy.type.CorpType;
 
@@ -12,13 +14,28 @@ import com.foxinmy.weixin4j.qy.type.CorpType;
  * @since JDK 1.7
  * @see
  */
-public class Corpinfo extends AgentOverview {
+public class Corpinfo implements Serializable {
 
 	private static final long serialVersionUID = 1251033124778972419L;
 	/**
 	 * 授权方企业号id
 	 */
 	private String corpid;
+	/**
+	 * 授权方企业号名称
+	 */
+	@JSONField(name = "corp_name")
+	private String corpName;
+	/**
+	 * 企业方形头像
+	 */
+	@JSONField(name = "corp_square_logo_url")
+	private String squareLogoUrl;
+	/**
+	 * 企业圆形头像
+	 */
+	@JSONField(name = "corp_round_logo_url")
+	private String roundLogoUrl;
 	/**
 	 * 授权方企业号类型
 	 */
@@ -28,17 +45,17 @@ public class Corpinfo extends AgentOverview {
 	 * 授权方企业号用户规模
 	 */
 	@JSONField(name = "corp_user_max")
-	private int corpUserMax;
+	private int userMax;
 	/**
 	 * 授权方企业号应用规模
 	 */
 	@JSONField(name = "corp_agent_max")
-	private int corpAgentMax;
+	private int agentMax;
 	/**
 	 * 授权方企业号二维码
 	 */
 	@JSONField(name = "corp_wxqrcode")
-	private String corpWxqrcode;
+	private String wxqrcode;
 
 	public String getCorpid() {
 		return corpid;
@@ -56,35 +73,60 @@ public class Corpinfo extends AgentOverview {
 		this.corpType = corpType;
 	}
 
-	public int getCorpUserMax() {
-		return corpUserMax;
+	public String getCorpName() {
+		return corpName;
 	}
 
-	public void setCorpUserMax(int corpUserMax) {
-		this.corpUserMax = corpUserMax;
+	public void setCorpName(String corpName) {
+		this.corpName = corpName;
 	}
 
-	public int getCorpAgentMax() {
-		return corpAgentMax;
+	public String getSquareLogoUrl() {
+		return squareLogoUrl;
 	}
 
-	public void setCorpAgentMax(int corpAgentMax) {
-		this.corpAgentMax = corpAgentMax;
+	public void setSquareLogoUrl(String squareLogoUrl) {
+		this.squareLogoUrl = squareLogoUrl;
 	}
 
-	public String getCorpWxqrcode() {
-		return corpWxqrcode;
+	public String getRoundLogoUrl() {
+		return roundLogoUrl;
 	}
 
-	public void setCorpWxqrcode(String corpWxqrcode) {
-		this.corpWxqrcode = corpWxqrcode;
+	public void setRoundLogoUrl(String roundLogoUrl) {
+		this.roundLogoUrl = roundLogoUrl;
+	}
+
+	public int getUserMax() {
+		return userMax;
+	}
+
+	public void setUserMax(int userMax) {
+		this.userMax = userMax;
+	}
+
+	public int getAgentMax() {
+		return agentMax;
+	}
+
+	public void setAgentMax(int agentMax) {
+		this.agentMax = agentMax;
+	}
+
+	public String getWxqrcode() {
+		return wxqrcode;
+	}
+
+	public void setWxqrcode(String wxqrcode) {
+		this.wxqrcode = wxqrcode;
 	}
 
 	@Override
 	public String toString() {
-		return "Corpinfo [corpid=" + corpid + ", corpType=" + corpType
-				+ ", corpUserMax=" + corpUserMax + ", corpAgentMax="
-				+ corpAgentMax + ", corpWxqrcode=" + corpWxqrcode + ", "
-				+ super.toString() + "]";
+		return "Corpinfo [corpid=" + corpid + ", corpName=" + corpName
+				+ ", squareLogoUrl=" + squareLogoUrl + ", roundLogoUrl="
+				+ roundLogoUrl + ", corpType=" + corpType + ", userMax="
+				+ userMax + ", agentMax=" + agentMax + ", wxqrcode=" + wxqrcode
+				+ "]";
 	}
 }

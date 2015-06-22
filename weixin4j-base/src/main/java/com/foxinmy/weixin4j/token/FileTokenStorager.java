@@ -20,27 +20,29 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  */
 public class FileTokenStorager implements TokenStorager {
 
-	private final String tokenPath;
+	private final String cachePath;
 
 	public FileTokenStorager() {
 		this(ConfigUtil.getValue("token_path"));
 	}
 
-	public FileTokenStorager(String tokenPath) {
-		this.tokenPath = tokenPath;
+	public FileTokenStorager(String cachePath) {
+		this.cachePath = cachePath;
 	}
 
 	@Override
-	public Token lookupToken(String cacheKey) throws WeixinException {
-		File token_file = new File(String.format("%s/%s.xml", tokenPath,
+	public Token lookup(String cacheKey) throws WeixinException {
+		File token_file = new File(String.format("%s/%s.xml", cachePath,
 				cacheKey));
 		try {
 			if (token_file.exists()) {
 				Token token = XmlStream.fromXML(
 						new FileInputStream(token_file), Token.class);
-				long expire_time = token.getTime()
-						+ (token.getExpiresIn() * 1000) - 2;
-				if (expire_time > System.currentTimeMillis()) {
+				if (token.getTime() < 0) {
+					return token;
+				}
+				if ((token.getTime() + (token.getExpiresIn() * 1000l) - 2) > System
+						.currentTimeMillis()) {
 					return token;
 				}
 			}
@@ -51,13 +53,12 @@ public class FileTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public void cachingToken(String cacheKey, Token token)
-			throws WeixinException {
+	public void caching(String cacheKey, Token token) throws WeixinException {
 		try {
 			XmlStream.toXML(
 					token,
 					new FileOutputStream(new File(String.format("%s/%s.xml",
-							tokenPath, cacheKey))));
+							cachePath, cacheKey))));
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		}

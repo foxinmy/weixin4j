@@ -44,10 +44,10 @@ public final class TokenHolder {
 	 */
 	public Token getToken() throws WeixinException {
 		String cacheKey = tokenCreator.getCacheKey();
-		Token token = tokenStorager.lookupToken(cacheKey);
+		Token token = tokenStorager.lookup(cacheKey);
 		if (token == null) {
 			token = tokenCreator.createToken();
-			tokenStorager.cachingToken(cacheKey, token);
+			tokenStorager.caching(cacheKey, token);
 		}
 		return token;
 	}

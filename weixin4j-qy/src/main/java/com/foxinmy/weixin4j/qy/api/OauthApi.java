@@ -4,11 +4,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.qy.model.Corpinfo;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
@@ -83,26 +81,7 @@ public class OauthApi extends QyApi {
 		WeixinResponse response = weixinClient.post(
 				String.format(oauth_logininfo_uri, providerToken),
 				String.format("{\"auth_code\":\"%s\"}", authCode));
-		return JSON.parseObject(response.getAsString(), OUserInfo.class,
-				new ExtraProcessor() {
-
-					@Override
-					public void processExtra(Object object, String key,
-							Object value) {
-						if (object instanceof Corpinfo) {
-							Corpinfo corpinfo = (Corpinfo) object;
-							if (key.equalsIgnoreCase("corp_name")) {
-								corpinfo.setName(value.toString());
-							} else if (key
-									.equalsIgnoreCase("corp_round_logo_url")) {
-								corpinfo.setRoundLogoUrl(value.toString());
-							} else if (key
-									.equalsIgnoreCase("corp_square_logo_url")) {
-								corpinfo.setSquareLogoUrl(value.toString());
-							}
-						}
-					}
-				});
+		return JSON.parseObject(response.getAsString(), OUserInfo.class);
 	}
 
 	/**

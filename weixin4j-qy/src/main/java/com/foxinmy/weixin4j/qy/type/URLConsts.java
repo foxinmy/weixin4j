@@ -40,4 +40,10 @@ public final class URLConsts {
 	 */
 	public static final String SUITE_PRE_CODE_URL = BASE_URL
 			+ "/service/get_pre_auth_code?suite_access_token=%s";
+
+	/**
+	 * 企业号第三方应用套件获取企业号access_token的url
+	 */
+	public static final String TOKEN_SUITE_URL = BASE_URL
+			+ "/service/get_corp_token?suite_access_token=%s";
 }

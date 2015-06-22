@@ -9,55 +9,55 @@ import com.foxinmy.weixin4j.qy.type.URLConsts;
 import com.foxinmy.weixin4j.token.TokenCreator;
 
 /**
- * 微信企业号应用套件凭证创建
+ * 微信企业号token创建(永久授权码)
  * 
- * @className WeixinTokenCreator
+ * @className WeixinTokenSuiteCreator
  * @author jy
  * @date 2015年6月17日
  * @since JDK 1.7
  * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E8.8E.B7.E5.8F.96.E5.BA.94.E7.94.A8.E5.A5.97.E4.BB.B6.E4.BB.A4.E7.89.8C">获取应用套件凭证</a>
+ *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E8.8E.B7.E5.8F.96.E4.BC.81.E4.B8.9A.E5.8F.B7access_token">获取企业号access_token</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class WeixinSuiteTokenCreator implements TokenCreator {
+public class WeixinTokenSuiteCreator implements TokenCreator {
 
 	private final WeixinHttpClient httpClient;
 	private final String suiteId;
-	private final String suiteSecret;
-	private final SuiteTicketHolder ticketHolder;
+	private final String authCorpid;
+	private final SuitePerCodeHolder perCodeHolder;
 
 	/**
 	 * 
 	 * @param suiteId
-	 *            套件ID
+	 *            应用套件ID
 	 * @param suiteSecret
-	 *            套件secret
-	 * @param stringStorager
-	 *            套件ticket存取器
+	 *            授权方corpid
+	 * @param perCodeHolder
+	 *            永久授权码
 	 */
-	public WeixinSuiteTokenCreator(String suiteId, String suiteSecret,
-			SuiteTicketHolder ticketHolder) {
+	public WeixinTokenSuiteCreator(String suiteId, String authCorpid,
+			SuitePerCodeHolder perCodeHolder) {
 		this.suiteId = suiteId;
-		this.suiteSecret = suiteSecret;
-		this.ticketHolder = ticketHolder;
+		this.authCorpid = authCorpid;
+		this.perCodeHolder = perCodeHolder;
 		this.httpClient = new WeixinHttpClient();
 	}
 
 	@Override
 	public String getCacheKey() {
-		return String.format("qy_suite_token_%s", suiteId);
+		return String.format("qy_token_suite_%s", suiteId);
 	}
 
 	@Override
 	public Token createToken() throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", suiteId);
-		obj.put("suite_secret", suiteSecret);
-		obj.put("suite_ticket", ticketHolder.lookup(suiteId));
-		WeixinResponse response = httpClient.post(URLConsts.SUITE_TOKEN_URL,
+		obj.put("auth_corpid", authCorpid);
+		obj.put("permanent_code", perCodeHolder.lookup(suiteId));
+		WeixinResponse response = httpClient.post(URLConsts.TOKEN_SUITE_URL,
 				obj.toJSONString());
 		obj = response.getAsJson();
-		Token token = new Token(obj.getString("suite_access_token"));
+		Token token = new Token(obj.getString("access_token"));
 		token.setExpiresIn(obj.getIntValue("expires_in"));
 		token.setTime(System.currentTimeMillis());
 		return token;
