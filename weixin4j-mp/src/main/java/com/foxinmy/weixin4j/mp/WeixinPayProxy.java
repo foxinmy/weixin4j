@@ -68,9 +68,19 @@ public class WeixinPayProxy {
 	}
 
 	/**
+	 * 使用文件保存token
+	 * 
+	 * @param weixinAccount
+	 *            支付相关的公众号账号信息
+	 */
+	public WeixinPayProxy(WeixinMpAccount weixinAccount) {
+		this(weixinAccount, MpApi.DEFAULT_TOKEN_STORAGER);
+	}
+
+	/**
 	 *
 	 * @param weixinAccount
-	 *            公众号账号信息
+	 *            支付相关的公众号账号信息
 	 * 
 	 * @param tokenStorager
 	 *            token的存储策略

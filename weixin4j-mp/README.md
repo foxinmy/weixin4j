@@ -39,6 +39,8 @@ weixin4j-mp
 
 * CashApi `现金API`
 
+* PayUtil [微信支付工具类](./src/main/java/com/foxinmy/weixin4j/mp/payment/PayUtil.java)
+
 如何使用
 --------
 0.maven依赖(1.5.0,2015-06-10 released)
@@ -84,18 +86,22 @@ weixin4j.properties说明
 	#公众号登陆授权的重定向路径(使用OauthApi时需要填写)
 	redirect_uri=http://xxx
 
-2.实例化一个`WeixinProxy`对象,调用API,需要强调的是如果只传入appid,appsecret两个参数将无法调用支付相关接口
+2.实例化微信企业号接口实现对象,调用具体的API方法
 
+	// 微信公众号API
     WeixinProxy weixinProxy = new WeixinProxy();
     // weixinProxy = new WeixinProxy(appid,appsecret);
-    // weixinProxy = new WeixinProxy(weixinAccount);
     weixinProxy.getUser(openId);
+    // 微信支付API
+    WeixinPayProxy weixinPayProxy = new WeixinPayProxy();
+    // weixinPayProxy = new WeixinPayProxy(weixinAccount);
+    weixinPayProxy.orderQueryV3(idQuery);
 
 > 针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenStorager`,默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用[RedisTokenStorager](https://github.com/foxinmy/weixin4j/wiki/%E7%94%A8redis%E4%BF%9D%E5%AD%98token).
 >
 >   WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenStorager());
 
->   // weixinProxy = new WeixinProxy(new RedisTokenStorager(weixinAccount));
+>   // weixinProxy = new WeixinProxy(new RedisTokenStorager(appid,appsecret));
 
 [更新LOG](./CHANGE.md)
 ----------------------

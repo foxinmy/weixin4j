@@ -56,4 +56,8 @@
   
 * 2015-06-21
 
-  + **weixin4j-qy**:新增企业号[第三方应用API](src/main/java/com/foxinmy/weixin4j/qy/suite)。
+  + 新增企业号[第三方应用API](src/main/java/com/foxinmy/weixin4j/qy/suite)。
+  
+* 2015-06-22
+
+  + 新增企业号[第三方应用代理](src/main/java/com/foxinmy/weixin4j/qy/WeixinSuiteProxy.java)。

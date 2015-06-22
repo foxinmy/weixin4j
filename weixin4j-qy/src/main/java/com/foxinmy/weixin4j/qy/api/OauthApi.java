@@ -3,11 +3,7 @@ package com.foxinmy.weixin4j.qy.api;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import com.alibaba.fastjson.JSON;
-import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.qy.model.OUserInfo;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
@@ -60,28 +56,6 @@ public class OauthApi extends QyApi {
 			;
 		}
 		return "";
-	}
-
-	/**
-	 * 获取企业号管理员登录信息
-	 * 
-	 * @param providerToken
-	 *            提供商的token
-	 * @param authCode
-	 *            oauth2.0授权企业号管理员登录产生的code
-	 * @return 登陆信息
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E5%91%98%E7%99%BB%E5%BD%95%E4%BF%A1%E6%81%AF">授权获取企业号管理员登录信息</a>
-	 * @see com.foxinmy.weixin4j.qy.model.OUserInfo
-	 * @throws WeixinException
-	 */
-	public OUserInfo getOUserInfo(String providerToken, String authCode)
-			throws WeixinException {
-		String oauth_logininfo_uri = getRequestUri("oauth_logininfo_uri");
-		WeixinResponse response = weixinClient.post(
-				String.format(oauth_logininfo_uri, providerToken),
-				String.format("{\"auth_code\":\"%s\"}", authCode));
-		return JSON.parseObject(response.getAsString(), OUserInfo.class);
 	}
 
 	/**

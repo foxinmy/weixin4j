@@ -53,7 +53,7 @@ public class WeixinSuiteTokenCreator implements TokenCreator {
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", suiteId);
 		obj.put("suite_secret", suiteSecret);
-		obj.put("suite_ticket", ticketHolder.lookup(suiteId));
+		obj.put("suite_ticket", ticketHolder.getTicket(suiteId));
 		WeixinResponse response = httpClient.post(URLConsts.SUITE_TOKEN_URL,
 				obj.toJSONString());
 		obj = response.getAsJson();

@@ -28,7 +28,7 @@ public class SuitePerCodeHolder {
 	 * @param permanentCode
 	 * @throws WeixinException
 	 */
-	public void caching(String suiteId, String permanentCode)
+	public void cachingPermanentCode(String suiteId, String permanentCode)
 			throws WeixinException {
 		Token token = new Token(permanentCode);
 		token.setExpiresIn(-1);
@@ -52,7 +52,7 @@ public class SuitePerCodeHolder {
 	 * @return
 	 * @throws WeixinException
 	 */
-	public String lookup(String suiteId) throws WeixinException {
+	public String getPermanentCode(String suiteId) throws WeixinException {
 		return tokenStorager.lookup(getCacheKey(suiteId)).getAccessToken();
 	}
 }

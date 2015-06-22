@@ -10,6 +10,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.qy.model.OUserInfo;
 import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
@@ -127,6 +128,28 @@ public class UserApi extends QyApi {
 	}
 
 	/**
+	 * 获取企业号管理员登录信息
+	 * 
+	 * @param providerToken
+	 *            提供商的token
+	 * @param authCode
+	 *            oauth2.0授权企业号管理员登录产生的code
+	 * @return 登陆信息
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E5%91%98%E7%99%BB%E5%BD%95%E4%BF%A1%E6%81%AF">授权获取企业号管理员登录信息</a>
+	 * @see com.foxinmy.weixin4j.qy.model.OUserInfo
+	 * @throws WeixinException
+	 */
+	public OUserInfo getOUserInfoByCode(String providerToken, String authCode)
+			throws WeixinException {
+		String oauth_logininfo_uri = getRequestUri("oauth_logininfo_uri");
+		WeixinResponse response = weixinClient.post(
+				String.format(oauth_logininfo_uri, providerToken),
+				String.format("{\"auth_code\":\"%s\"}", authCode));
+		return JSON.parseObject(response.getAsString(), OUserInfo.class);
+	}
+
+	/**
 	 * 根据code获取成员信息
 	 * 
 	 * @param code
@@ -144,8 +167,8 @@ public class UserApi extends QyApi {
 			throws WeixinException {
 		String user_getid_uri = getRequestUri("user_getid_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(user_getid_uri,
-				token.getAccessToken(), code, agentid));
+		WeixinResponse response = weixinClient.post(String.format(
+				user_getid_uri, token.getAccessToken(), code, agentid));
 		return response.getAsJson();
 	}
 
@@ -171,9 +194,9 @@ public class UserApi extends QyApi {
 		String user_list_uri = findDetail ? getRequestUri("user_list_uri")
 				: getRequestUri("user_slist_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(user_list_uri,
-				token.getAccessToken(), departId, fetchChild ? 1 : 0,
-				userStatus.getVal()));
+		WeixinResponse response = weixinClient.post(String.format(
+				user_list_uri, token.getAccessToken(), departId, fetchChild ? 1
+						: 0, userStatus.getVal()));
 		List<User> list = null;
 		if (findDetail) {
 			JSONArray arrays = response.getAsJson().getJSONArray("userlist");
@@ -220,8 +243,8 @@ public class UserApi extends QyApi {
 	public JsonResult deleteUser(String userid) throws WeixinException {
 		String user_delete_uri = getRequestUri("user_delete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(user_delete_uri,
-				token.getAccessToken(), userid));
+		WeixinResponse response = weixinClient.post(String.format(
+				user_delete_uri, token.getAccessToken(), userid));
 		return response.getAsJsonResult();
 	}
 
@@ -242,8 +265,8 @@ public class UserApi extends QyApi {
 		obj.put("useridlist", userIds);
 		String user_delete_uri = getRequestUri("user_batchdelete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(user_delete_uri,
-				token.getAccessToken(), obj.toJSONString()));
+		WeixinResponse response = weixinClient.post(String.format(
+				user_delete_uri, token.getAccessToken(), obj.toJSONString()));
 		return response.getAsJsonResult();
 	}
 
@@ -260,8 +283,8 @@ public class UserApi extends QyApi {
 	public JsonResult authsucc(String userId) throws WeixinException {
 		String user_authsucc_uri = getRequestUri("user_authsucc_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(user_authsucc_uri,
-				token.getAccessToken(), userId));
+		WeixinResponse response = weixinClient.post(String.format(
+				user_authsucc_uri, token.getAccessToken(), userId));
 		return response.getAsJsonResult();
 	}
 

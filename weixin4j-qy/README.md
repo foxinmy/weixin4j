@@ -64,18 +64,22 @@ weixin4j.properties说明
 	#企业号第三方应用套件授权后重定向的url(使用OauthApi时需要填写)
 	suite_redirect_uri=http://xxx
 
-2.实例化一个`WeixinProxy`对象,调用API
+2.实例化微信企业号接口实现对象,调用具体的API方法
 
+	// 微信企业号API
     WeixinProxy weixinProxy = new WeixinProxy();
     // weixinProxy = new WeixinProxy(corpid,corpsecret);
-    // weixinProxy = new WeixinProxy(weixinAccount);
     weixinProxy.getUser(userid);
+    // 微信第三方应用API
+    WeixinSuiteProxy weixinSuiteProxy = new WeixinSuiteProxy();
+    //weixinSuiteProxy = new WeixinSuiteProxy(suiteId,suiteSecret);
+    weixinSuiteProxy.getOAuthInfo(authCorpid);
 
 > 针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenStorager`,默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用[RedisTokenStorager](https://github.com/foxinmy/weixin4j/wiki/%E7%94%A8redis%E4%BF%9D%E5%AD%98token).
 
 >   WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenStorager());
 
->   // weixinProxy = new WeixinProxy(new RedisTokenStorager(weixinAccount));
+>   // weixinProxy = new WeixinProxy(new RedisTokenStorager(corpid,corpsecret));
 
 [更新LOG](./CHANGE.md)
 ----------------------

@@ -337,4 +337,8 @@
 
   + 新增了默认常量对象在BaseApi.java类
   
-  + **weixin4j-qy**:新增企业号[第三方应用API](weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/suite)。
+  + **weixin4j-qy**: 新增企业号[第三方应用API](weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/suite)。
+
+* 2015-06-22
+
+  + **weixin4j-qy**: 新增企业号[第三方应用代理](weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/WeixinSuiteProxy.java)。

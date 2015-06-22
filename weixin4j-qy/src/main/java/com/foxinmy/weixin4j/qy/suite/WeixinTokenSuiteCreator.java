@@ -53,7 +53,7 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", suiteId);
 		obj.put("auth_corpid", authCorpid);
-		obj.put("permanent_code", perCodeHolder.lookup(suiteId));
+		obj.put("permanent_code", perCodeHolder.getPermanentCode(suiteId));
 		WeixinResponse response = httpClient.post(URLConsts.TOKEN_SUITE_URL,
 				obj.toJSONString());
 		obj = response.getAsJson();

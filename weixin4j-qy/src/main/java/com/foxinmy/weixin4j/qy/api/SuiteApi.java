@@ -16,7 +16,6 @@ import com.foxinmy.weixin4j.qy.suite.SuiteTicketHolder;
 import com.foxinmy.weixin4j.qy.suite.WeixinSuitePreCodeCreator;
 import com.foxinmy.weixin4j.qy.suite.WeixinSuiteTokenCreator;
 import com.foxinmy.weixin4j.qy.suite.WeixinTokenSuiteCreator;
-import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
@@ -48,10 +47,6 @@ public class SuiteApi extends QyApi {
 	 * 应用套件pre_code
 	 */
 	private final TokenHolder suitePreCodeHolder;
-	/**
-	 * 应用套件的存储策略
-	 */
-	private final TokenStorager tokenStorager;
 	/**
 	 * 应用套件ID
 	 */
@@ -87,7 +82,6 @@ public class SuiteApi extends QyApi {
 				new WeixinSuitePreCodeCreator(suiteTokenHolder, suiteId),
 				tokenStorager);
 		this.suitePerCodeHolder = new SuitePerCodeHolder(tokenStorager);
-		this.tokenStorager = tokenStorager;
 		this.suiteId = suiteId;
 	}
 
@@ -110,21 +104,21 @@ public class SuiteApi extends QyApi {
 	}
 
 	/**
+	 * 应用套件预授权码
+	 * 
+	 * @return
+	 */
+	public TokenHolder getPreCodeHolder() {
+		return this.suitePreCodeHolder;
+	}
+
+	/**
 	 * 应用套件永久授权码
 	 * 
 	 * @return
 	 */
 	public SuitePerCodeHolder getPerCodeHolder() {
 		return this.suitePerCodeHolder;
-	}
-
-	/**
-	 * 应用套件pre_code
-	 * 
-	 * @return
-	 */
-	public TokenHolder getPreCodeHolder() {
-		return this.suitePreCodeHolder;
 	}
 
 	/**
@@ -136,7 +130,7 @@ public class SuiteApi extends QyApi {
 	 */
 	public TokenHolder crateTokenHolder(String authCorpid) {
 		return new TokenHolder(new WeixinTokenSuiteCreator(suiteId, authCorpid,
-				suitePerCodeHolder), tokenStorager);
+				suitePerCodeHolder), suiteTicketHolder.getTokenStorager());
 	}
 
 	/**
@@ -153,7 +147,7 @@ public class SuiteApi extends QyApi {
 	public JsonResult setSuiteSession(int... appids) throws WeixinException {
 		String suite_set_session_uri = getRequestUri("suite_set_session_uri");
 		JSONObject para = new JSONObject();
-		para.put("pre_auth_code", suiteTicketHolder.lookup(suiteId));
+		para.put("pre_auth_code", suiteTicketHolder.getTicket(suiteId));
 		para.put("session_info", appids);
 		WeixinResponse response = weixinClient
 				.post(String.format(suite_set_session_uri,
@@ -187,14 +181,16 @@ public class SuiteApi extends QyApi {
 		obj.put("user_info", obj.remove("auth_user_info"));
 		OUserInfo oInfo = JSON.toJavaObject(obj, OUserInfo.class);
 		// 缓存微信企业号access_token
-		TokenCreator tokenCreator = new WeixinTokenCreator(oInfo.getCorpinfo()
-				.getCorpid(), null);
+		TokenCreator tokenCreator = new WeixinTokenSuiteCreator(suiteId, null,
+				suitePerCodeHolder);
 		Token token = new Token(obj.getString("access_token"));
 		token.setExpiresIn(obj.getIntValue("expires_in"));
 		token.setTime(System.currentTimeMillis());
-		tokenStorager.caching(tokenCreator.getCacheKey(), token);
+		suiteTicketHolder.getTokenStorager().caching(
+				tokenCreator.getCacheKey(), token);
 		// 缓存微信企业号永久授权码
-		suitePerCodeHolder.caching(suiteId, obj.getString("permanent_code"));
+		suitePerCodeHolder.cachingPermanentCode(suiteId,
+				obj.getString("permanent_code"));
 		return oInfo;
 	}
 
@@ -214,7 +210,7 @@ public class SuiteApi extends QyApi {
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", suiteId);
 		obj.put("auth_corpid", authCorpid);
-		obj.put("permanent_code", suitePerCodeHolder.lookup(suiteId));
+		obj.put("permanent_code", suitePerCodeHolder.getPermanentCode(suiteId));
 		WeixinResponse response = weixinClient.post(
 				String.format(suite_get_authinfo_uri,
 						suiteTokenHolder.getAccessToken()), obj.toJSONString());
@@ -241,7 +237,7 @@ public class SuiteApi extends QyApi {
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", suiteId);
 		obj.put("auth_corpid", authCorpid);
-		obj.put("permanent_code", suitePerCodeHolder.lookup(suiteId));
+		obj.put("permanent_code", suitePerCodeHolder.getPermanentCode(suiteId));
 		obj.put("agentid", agentid);
 		WeixinResponse response = weixinClient.post(String.format(
 				suite_get_agent_uri, suiteTokenHolder.getAccessToken(),
@@ -278,7 +274,7 @@ public class SuiteApi extends QyApi {
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", suiteId);
 		obj.put("auth_corpid", authCorpid);
-		obj.put("permanent_code", suitePerCodeHolder.lookup(suiteId));
+		obj.put("permanent_code", suitePerCodeHolder.getPermanentCode(suiteId));
 		obj.put("agent", agentSet);
 		WeixinResponse response = weixinClient.post(
 				String.format(suite_set_agent_uri,
