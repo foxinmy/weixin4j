@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
 /**
  * 微信企业号应用套件预授权码创建
  * 
- * @className WeixinTokenCreator
+ * @className WeixinSuitePreCodeCreator
  * @author jy
  * @date 2015年6月17日
  * @since JDK 1.7
