@@ -342,3 +342,9 @@
 * 2015-06-22
 
   + **weixin4j-qy**: 新增企业号[第三方应用代理](weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/WeixinSuiteProxy.java)。
+  
+* 2015-06-23
+
+  + **weixin4j-mp**: 新增企业付款查询接口
+  
+  + **weixin4j-server**: 对多个公众号的接入支持

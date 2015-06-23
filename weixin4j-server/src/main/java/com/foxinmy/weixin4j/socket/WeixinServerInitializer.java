@@ -6,6 +6,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
+import java.util.Map;
+
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.util.AesToken;
@@ -21,15 +23,15 @@ import com.foxinmy.weixin4j.util.AesToken;
  */
 public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 
-	private final AesToken aesToken;
+	private final Map<String, AesToken> aesTokenMap;
 	private final WeixinMessageDispatcher messageDispatcher;
 
-	public WeixinServerInitializer(AesToken aesToken,
+	public WeixinServerInitializer(Map<String, AesToken> aesTokenMap,
 			WeixinMessageDispatcher messageDispatcher) throws WeixinException {
-		if (aesToken == null) {
+		if (aesTokenMap.isEmpty()) {
 			throw new WeixinException("AesToken not be null.");
 		}
-		this.aesToken = aesToken;
+		this.aesTokenMap = aesTokenMap;
 		this.messageDispatcher = messageDispatcher;
 	}
 
@@ -38,8 +40,8 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 		ChannelPipeline pipeline = channel.pipeline();
 		pipeline.addLast(new HttpServerCodec());
 		pipeline.addLast(new HttpObjectAggregator(65536));
-		pipeline.addLast(new WeixinMessageDecoder(aesToken));
-		pipeline.addLast(new WeixinResponseEncoder(aesToken));
-		pipeline.addLast(new WeixinRequestHandler(aesToken, messageDispatcher));
+		pipeline.addLast(new WeixinMessageDecoder(aesTokenMap));
+		pipeline.addLast(new WeixinResponseEncoder());
+		pipeline.addLast(new WeixinRequestHandler(messageDispatcher));
 	}
 }

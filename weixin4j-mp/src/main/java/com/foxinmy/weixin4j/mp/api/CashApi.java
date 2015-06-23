@@ -16,6 +16,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.payment.PayUtil;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPayment;
+import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentRecord;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentResult;
 import com.foxinmy.weixin4j.mp.payment.v3.Redpacket;
 import com.foxinmy.weixin4j.mp.payment.v3.RedpacketRecord;
@@ -193,5 +194,53 @@ public class CashApi extends MpApi {
 				.replaceFirst("<mchid>", "<mch_id>")
 				.replaceFirst("</mchid>", "</mch_id>");
 		return XmlStream.fromXML(text, MPPaymentResult.class);
+	}
+
+	/**
+	 * 企业付款查询 用于商户的企业付款操作进行结果查询，返回付款操作详细结果
+	 * 
+	 * @param caFile
+	 *            证书文件(V3版本后缀为*.p12)
+	 * @param outTradeNo
+	 *            商户调用企业付款API时使用的商户订单号
+	 * @return 付款记录
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.MPPaymentRecord
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/mch_pay.php?chapter=14_3">企业付款查询</a>
+	 * @throws WeixinException
+	 */
+	public MPPaymentRecord mpPaymentQuery(File caFile, String outTradeNo)
+			throws WeixinException {
+		JSONObject obj = new JSONObject();
+		obj.put("nonce_str", RandomUtil.generateString(16));
+		obj.put("mch_id", weixinAccount.getMchId());
+		obj.put("appid", weixinAccount.getId());
+		obj.put("partner_trade_no", outTradeNo);
+		String sign = PayUtil.paysignMd5(obj, weixinAccount.getPaySignKey());
+		obj.put("sign", sign);
+		String param = XmlStream.map2xml(obj);
+		String mp_payquery_uri = getRequestUri("mp_payquery_uri");
+		WeixinResponse response = null;
+		InputStream ca = null;
+		try {
+			ca = new FileInputStream(caFile);
+			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
+					ca);
+			response = request.post(mp_payquery_uri, param);
+		} catch (WeixinException e) {
+			throw e;
+		} catch (IOException e) {
+			throw new WeixinException(e.getMessage());
+		} finally {
+			if (ca != null) {
+				try {
+					ca.close();
+				} catch (IOException e) {
+					;
+				}
+			}
+		}
+		return response.getAsObject(new TypeReference<MPPaymentRecord>() {
+		});
 	}
 }

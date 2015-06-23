@@ -2,8 +2,6 @@ package com.foxinmy.weixin4j.server.test;
 
 import io.netty.channel.ChannelHandlerContext;
 
-import java.math.BigDecimal;
-
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.BlankMessageHandler;
 import com.foxinmy.weixin4j.handler.DebugMessageHandler;
@@ -27,6 +25,8 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
  */
 public class MessageServerStartup {
 
+	// 微信号(原始ID)
+	final String openid = "gh_22b350df957b";
 	// 应用ID
 	final String appid = "wx4ab8f8de58159a57";
 	// 开发者token
@@ -41,8 +41,8 @@ public class MessageServerStartup {
 	 */
 	public void test1() throws WeixinException {
 		// 所有请求都回复调试的文本消息
-		new WeixinServerBootstrap(token).addHandler(DebugMessageHandler.global)
-				.startup();
+		new WeixinServerBootstrap(openid, token).addHandler(
+				DebugMessageHandler.global).startup();
 	}
 
 	/**
@@ -78,8 +78,8 @@ public class MessageServerStartup {
 	public void test4() throws WeixinException {
 		// 扫描包加载消息处理器
 		String packageToScan = "com.foxinmy.weixin4j.handler";
-		new WeixinServerBootstrap(token).handlerPackagesToScan(packageToScan)
-				.startup();
+		new WeixinServerBootstrap(openid, token).handlerPackagesToScan(
+				packageToScan).startup();
 	}
 
 	public void test5() throws WeixinException {
@@ -109,14 +109,11 @@ public class MessageServerStartup {
 				System.err.println("请求处理完毕");
 			}
 		};
-		new WeixinServerBootstrap(token).addInterceptor(interceptor)
+		new WeixinServerBootstrap(openid, token).addInterceptor(interceptor)
 				.addHandler(BlankMessageHandler.global).startup();
 	}
 
 	public static void main(String[] args) throws Exception {
-		
-		System.err.println(new BigDecimal(new Long(14212345l)).divide(
-				new BigDecimal("100000"))
-				.toString());
+		new MessageServerStartup().test1();
 	}
 }

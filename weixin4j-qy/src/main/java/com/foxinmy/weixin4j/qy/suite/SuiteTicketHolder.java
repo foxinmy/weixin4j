@@ -48,7 +48,7 @@ public class SuiteTicketHolder {
 	 * @param suiteTicket
 	 * @throws WeixinException
 	 */
-	public void cachingTicket(SuiteTicketMessage suiteTicket)
+	public void cachingTicket(WeixinSuiteMessage suiteTicket)
 			throws WeixinException {
 		Token token = new Token(suiteTicket.getSuiteTicket());
 		token.setExpiresIn(-1);

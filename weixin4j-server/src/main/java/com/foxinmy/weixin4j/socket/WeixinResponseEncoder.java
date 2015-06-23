@@ -36,22 +36,16 @@ public class WeixinResponseEncoder extends
 	private final InternalLogger logger = InternalLoggerFactory
 			.getInstance(getClass());
 
-	private final AesToken aesToken;
-
-	public WeixinResponseEncoder(AesToken aesToken) {
-		this.aesToken = aesToken;
-	}
-
 	@Override
 	protected void encode(ChannelHandlerContext ctx, WeixinResponse response,
 			List<Object> out) throws WeixinException {
-		EncryptType encryptType = ctx.channel().attr(Consts.ENCRYPTTYPE_KEY)
-				.get();
-		String userOpenId = ctx.channel().attr(Consts.USEROPENID_KEY).get();
-		String accountOpenId = ctx.channel().attr(Consts.ACCOUNTOPENID_KEY)
-				.get();
-		if (StringUtil.isBlank(accountOpenId)) {
-			accountOpenId = aesToken.getAppid();
+		MessageTransfer messageTransfer = ctx.channel()
+				.attr(Consts.MESSAGE_TRANSFER_KEY).get();
+		AesToken aesToken = messageTransfer.getAesToken();
+		EncryptType encryptType = messageTransfer.getEncryptType();
+		String weixinId = aesToken.getWeixinId();
+		if (StringUtil.isBlank(weixinId)) {
+			weixinId = messageTransfer.getToUserName();
 		}
 		StringBuilder content = new StringBuilder();
 		if (response instanceof BlankResponse) {
@@ -59,10 +53,10 @@ public class WeixinResponseEncoder extends
 		} else {
 			content.append("<xml>");
 			content.append(String.format(
-					"<ToUserName><![CDATA[%s]]></ToUserName>", userOpenId));
+					"<ToUserName><![CDATA[%s]]></ToUserName>",
+					messageTransfer.getFromUserName()));
 			content.append(String.format(
-					"<FromUserName><![CDATA[%s]]></FromUserName>",
-					accountOpenId));
+					"<FromUserName><![CDATA[%s]]></FromUserName>", weixinId));
 			content.append(String.format(
 					"<CreateTime><![CDATA[%d]]></CreateTime>",
 					System.currentTimeMillis() / 1000l));
@@ -74,7 +68,7 @@ public class WeixinResponseEncoder extends
 				String nonce = RandomUtil.generateString(32);
 				String timestamp = String
 						.valueOf(System.currentTimeMillis() / 1000l);
-				String encrtypt = MessageUtil.aesEncrypt(accountOpenId,
+				String encrtypt = MessageUtil.aesEncrypt(weixinId,
 						aesToken.getAesKey(), content.toString());
 				String msgSignature = MessageUtil.signature(
 						aesToken.getToken(), nonce, timestamp, encrtypt);

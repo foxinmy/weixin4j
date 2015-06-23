@@ -18,6 +18,7 @@ import com.foxinmy.weixin4j.mp.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.mp.payment.coupon.CouponStock;
 import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPayment;
+import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentRecord;
 import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentResult;
 import com.foxinmy.weixin4j.mp.payment.v3.Redpacket;
 import com.foxinmy.weixin4j.mp.payment.v3.RedpacketRecord;
@@ -30,7 +31,6 @@ import com.foxinmy.weixin4j.mp.type.IdType;
 import com.foxinmy.weixin4j.mp.type.RefundType;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * 微信支付接口实现
@@ -239,9 +239,8 @@ public class WeixinPayProxy {
 			IdQuery idQuery, String outRefundNo, double totalFee,
 			double refundFee, String opUserId, String opUserPasswd)
 			throws WeixinException {
-		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
-		return refundV2(caFile, idQuery, outRefundNo, totalFee, refundFee,
-				opUserId, opUserPasswd);
+		return refundV2(PayApi.DEFAULT_CA_FILE, idQuery, outRefundNo, totalFee,
+				refundFee, opUserId, opUserPasswd);
 	}
 
 	/**
@@ -358,9 +357,8 @@ public class WeixinPayProxy {
 	public com.foxinmy.weixin4j.mp.payment.v3.RefundResult refundV3(
 			IdQuery idQuery, String outRefundNo, double totalFee,
 			double refundFee, String opUserId) throws WeixinException {
-		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
-		return pay3Api.refund(caFile, idQuery, outRefundNo, totalFee,
-				refundFee, CurrencyType.CNY, opUserId);
+		return pay3Api.refund(PayApi.DEFAULT_CA_FILE, idQuery, outRefundNo,
+				totalFee, refundFee, CurrencyType.CNY, opUserId);
 	}
 
 	/**
@@ -444,8 +442,7 @@ public class WeixinPayProxy {
 	 * @throws WeixinException
 	 */
 	public ApiResult reverse(IdQuery idQuery) throws WeixinException {
-		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
-		return payApi.reverse(caFile, idQuery);
+		return payApi.reverse(PayApi.DEFAULT_CA_FILE, idQuery);
 	}
 
 	/**
@@ -552,9 +549,8 @@ public class WeixinPayProxy {
 	 */
 	public CouponResult sendCoupon(String couponStockId, String partnerTradeNo,
 			String openId) throws WeixinException {
-		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
-		return couponApi.sendCoupon(caFile, couponStockId, partnerTradeNo,
-				openId, null);
+		return couponApi.sendCoupon(PayApi.DEFAULT_CA_FILE, couponStockId,
+				partnerTradeNo, openId, null);
 	}
 
 	/**
@@ -618,8 +614,7 @@ public class WeixinPayProxy {
 	 */
 	public RedpacketSendResult sendRedpack(Redpacket redpacket)
 			throws WeixinException {
-		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
-		return cashApi.sendRedpack(caFile, redpacket);
+		return cashApi.sendRedpack(PayApi.DEFAULT_CA_FILE, redpacket);
 	}
 
 	/**
@@ -648,8 +643,7 @@ public class WeixinPayProxy {
 	 */
 	public RedpacketRecord queryRedpack(String outTradeNo)
 			throws WeixinException {
-		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
-		return cashApi.queryRedpack(caFile, outTradeNo);
+		return cashApi.queryRedpack(PayApi.DEFAULT_CA_FILE, outTradeNo);
 	}
 
 	/**
@@ -679,7 +673,35 @@ public class WeixinPayProxy {
 	 */
 	public MPPaymentResult mpPayment(MPPayment mpPayment)
 			throws WeixinException {
-		File caFile = new File(ConfigUtil.getClassPathValue("ca_file"));
-		return cashApi.mpPayment(caFile, mpPayment);
+		return cashApi.mpPayment(PayApi.DEFAULT_CA_FILE, mpPayment);
+	}
+
+	/**
+	 * 企业付款查询 用于商户的企业付款操作进行结果查询，返回付款操作详细结果
+	 * 
+	 * @param caFile
+	 *            证书文件(V3版本后缀为*.p12)
+	 * @param outTradeNo
+	 *            商户调用企业付款API时使用的商户订单号
+	 * @return 付款记录
+	 * @see com.foxinmy.weixin4j.mp.api.CashApi
+	 * @see com.foxinmy.weixin4j.mp.payment.v3.MPPaymentRecord
+	 * @see <a
+	 *      href="http://pay.weixin.qq.com/wiki/doc/api/mch_pay.php?chapter=14_3">企业付款查询</a>
+	 * @throws WeixinException
+	 */
+	public MPPaymentRecord mpPaymentQuery(File caFile, String outTradeNo)
+			throws WeixinException {
+		return cashApi.mpPaymentQuery(caFile, outTradeNo);
+	}
+
+	/**
+	 * 企业付款查询采用properties中配置的ca文件
+	 * 
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinPayProxy#mpPaymentQuery(File, String)}
+	 */
+	public MPPaymentRecord mpPaymentQuery(String outTradeNo)
+			throws WeixinException {
+		return cashApi.mpPaymentQuery(PayApi.DEFAULT_CA_FILE, outTradeNo);
 	}
 }

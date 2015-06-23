@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.request;
 import java.io.Serializable;
 
 import com.foxinmy.weixin4j.type.EncryptType;
+import com.foxinmy.weixin4j.util.AesToken;
 
 /**
  * 微信请求
@@ -60,10 +61,15 @@ public class WeixinRequest implements Serializable, Cloneable {
 	 * xml消息密文主体(AES时存在)
 	 */
 	private String encryptContent;
+	/**
+	 * aes & token
+	 */
+	private AesToken aesToken;
 
 	public WeixinRequest(String method, EncryptType encryptType,
 			String echoStr, String timeStamp, String nonce, String signature,
-			String msgSignature, String originalContent, String encryptContent) {
+			String msgSignature, String originalContent, String encryptContent,
+			AesToken aesToken) {
 		this.method = method;
 		this.encryptType = encryptType;
 		this.echoStr = echoStr;
@@ -73,6 +79,7 @@ public class WeixinRequest implements Serializable, Cloneable {
 		this.msgSignature = msgSignature;
 		this.originalContent = originalContent;
 		this.encryptContent = encryptContent;
+		this.aesToken = aesToken;
 	}
 
 	public String getMethod() {
@@ -111,12 +118,17 @@ public class WeixinRequest implements Serializable, Cloneable {
 		return encryptContent;
 	}
 
+	public AesToken getAesToken() {
+		return aesToken;
+	}
+
 	@Override
 	public String toString() {
 		return "WeixinRequest [encryptContent=" + encryptContent
 				+ ", encryptType=" + encryptType + ", echoStr=" + echoStr
 				+ ", timeStamp=" + timeStamp + ", nonce=" + nonce
 				+ ", signature=" + signature + ", originalContent="
-				+ originalContent + ", method=" + method + "]";
+				+ originalContent + ", method=" + method + ", aesToken="
+				+ aesToken + "]";
 	}
 }

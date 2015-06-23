@@ -17,6 +17,7 @@ import com.foxinmy.weixin4j.mp.type.BillType;
 import com.foxinmy.weixin4j.mp.type.IdQuery;
 import com.foxinmy.weixin4j.mp.type.SignType;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -30,6 +31,12 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @see com.foxinmy.weixin4j.mp.api.Pay3Api
  */
 public abstract class PayApi extends MpApi {
+
+	/**
+	 * 默认的证书文件
+	 */
+	public final static File DEFAULT_CA_FILE = new File(
+			ConfigUtil.getClassPathValue("ca_file"));
 
 	protected final WeixinMpAccount weixinAccount;
 	protected final TokenHolder tokenHolder;
@@ -93,8 +100,9 @@ public abstract class PayApi extends MpApi {
 			throws WeixinException {
 		String payfeedback_update_uri = getRequestUri("payfeedback_update_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.get(String.format(payfeedback_update_uri,
-				token.getAccessToken(), openId, feedbackId));
+		WeixinResponse response = weixinClient.get(String.format(
+				payfeedback_update_uri, token.getAccessToken(), openId,
+				feedbackId));
 		return response.getAsJsonResult();
 	}
 

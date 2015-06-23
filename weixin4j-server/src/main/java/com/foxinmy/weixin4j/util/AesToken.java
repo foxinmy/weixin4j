@@ -16,9 +16,9 @@ public class AesToken implements Serializable {
 	private static final long serialVersionUID = -6001008896414323534L;
 
 	/**
-	 * 账号ID
+	 * 账号ID(原始ID或者appid)
 	 */
-	private String appid;
+	private String weixinId;
 	/**
 	 * 开发者的token
 	 */
@@ -28,18 +28,36 @@ public class AesToken implements Serializable {
 	 */
 	private String aesKey;
 
-	public AesToken(String token) {
-		this.token = token;
+	/**
+	 * 一般为明文模式
+	 * 
+	 * @param openid
+	 *            微信号(原始ID)
+	 * @param token
+	 *            开发者的Token
+	 */
+	public AesToken(String openid, String token) {
+		this(openid, token, null);
 	}
 
+	/**
+	 * 一般为AES加密模式
+	 * 
+	 * @param appid
+	 *            应用ID
+	 * @param token
+	 *            开发者Token
+	 * @param aesKey
+	 *            解密的EncodingAESKey
+	 */
 	public AesToken(String appid, String token, String aesKey) {
-		this.appid = appid;
+		this.weixinId = appid;
 		this.token = token;
 		this.aesKey = aesKey;
 	}
 
-	public String getAppid() {
-		return appid;
+	public String getWeixinId() {
+		return weixinId;
 	}
 
 	public String getToken() {

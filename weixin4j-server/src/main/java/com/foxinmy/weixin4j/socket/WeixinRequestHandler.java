@@ -18,7 +18,6 @@ import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
-import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.CruxMessageHandler;
 
 /**
@@ -34,12 +33,11 @@ public class WeixinRequestHandler extends
 		SimpleChannelInboundHandler<WeixinRequest> {
 	private final InternalLogger logger = InternalLoggerFactory
 			.getInstance(getClass());
-	private final AesToken aesToken;
+
 	private final WeixinMessageDispatcher messageDispatcher;
 
-	public WeixinRequestHandler(AesToken aesToken,
-			WeixinMessageDispatcher messageDispatcher) throws WeixinException {
-		this.aesToken = aesToken;
+	public WeixinRequestHandler(WeixinMessageDispatcher messageDispatcher)
+			throws WeixinException {
 		this.messageDispatcher = messageDispatcher;
 	}
 
@@ -56,6 +54,7 @@ public class WeixinRequestHandler extends
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, WeixinRequest request)
 			throws WeixinException {
+		final AesToken aesToken = request.getAesToken();
 		if (request.getMethod().equals(HttpMethod.GET.name())) {
 			if (MessageUtil.signature(aesToken.getToken(),
 					request.getTimeStamp(), request.getNonce()).equals(
@@ -98,14 +97,10 @@ public class WeixinRequestHandler extends
 		}
 		CruxMessageHandler cruxMessage = CruxMessageHandler.parser(request
 				.getOriginalContent());
-		ctx.channel().attr(Consts.ENCRYPTTYPE_KEY)
-				.set(request.getEncryptType());
-		ctx.channel().attr(Consts.USEROPENID_KEY)
-				.set(cruxMessage.getFromUserName());
-		if (StringUtil.isBlank(aesToken.getAppid())) {
-			ctx.channel().attr(Consts.ACCOUNTOPENID_KEY)
-					.set(cruxMessage.getToUserName());
-		}
+		MessageTransfer messageTransfer = new MessageTransfer(aesToken,
+				request.getEncryptType(), cruxMessage.getToUserName(),
+				cruxMessage.getFromUserName());
+		ctx.channel().attr(Consts.MESSAGE_TRANSFER_KEY).set(messageTransfer);
 		messageDispatcher.doDispatch(ctx, request, cruxMessage);
 	}
 }

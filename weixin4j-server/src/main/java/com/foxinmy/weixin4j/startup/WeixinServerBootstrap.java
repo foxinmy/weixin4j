@@ -11,8 +11,10 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.foxinmy.weixin4j.dispatcher.BeanFactory;
 import com.foxinmy.weixin4j.dispatcher.DefaultMessageMatcher;
@@ -54,7 +56,7 @@ public final class WeixinServerBootstrap {
 	/**
 	 * 服务启动的默认端口
 	 */
-	public final static int DEFAULT_SERVERPORT = 30000;
+	public final static int DEFAULT_SERVERPORT = 80;
 	/**
 	 * 消息分发器
 	 */
@@ -73,16 +75,19 @@ public final class WeixinServerBootstrap {
 	 * aes and token
 	 * 
 	 */
-	private final AesToken aesToken;
+	private final Map<String, AesToken> aesTokenMap;
 
 	/**
 	 * 明文模式
 	 * 
-	 * * @param token 开发者token
+	 * @param openid
+	 *            微信号(原始ID)
+	 * @param token
+	 *            开发者token
 	 * 
 	 */
-	public WeixinServerBootstrap(String token) {
-		this(new AesToken(token));
+	public WeixinServerBootstrap(String openid, String token) {
+		this(openid, token, null);
 	}
 
 	/**
@@ -105,10 +110,30 @@ public final class WeixinServerBootstrap {
 
 	public WeixinServerBootstrap(AesToken aesToken,
 			WeixinMessageMatcher messageMatcher) {
-		this.aesToken = aesToken;
+		this.aesTokenMap = new HashMap<String, AesToken>();
+		this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
+		this.aesTokenMap.put(null, aesToken);
 		this.messageHandlerList = new LinkedList<WeixinMessageHandler>();
 		this.messageInterceptorList = new LinkedList<WeixinMessageInterceptor>();
 		this.messageDispatcher = new WeixinMessageDispatcher(messageMatcher);
+	}
+
+	/**
+	 * 多个公众号的支持
+	 * <p>
+	 * <font color="red">请注意：需在服务接收事件的URL中附加一个名为wexin_id的参数,其值视加密模式而定,
+	 * 如为明文模式weixin_id则填写公众号的微信号(即原始ID),如为AES加密模式weixin_id则填写公众号的应用ID(即appid)
+	 * </font>
+	 * <p>
+	 * 
+	 * @param aesTokens
+	 * @return
+	 */
+	public WeixinServerBootstrap multAesToken(AesToken... aesTokens) {
+		for (AesToken aesToken : aesTokens) {
+			this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
+		}
+		return this;
 	}
 
 	/**
@@ -144,7 +169,7 @@ public final class WeixinServerBootstrap {
 					.channel(NioServerSocketChannel.class)
 					.handler(new LoggingHandler())
 					.childHandler(
-							new WeixinServerInitializer(aesToken,
+							new WeixinServerInitializer(aesTokenMap,
 									messageDispatcher));
 			Channel ch = b.bind(serverPort).sync().channel();
 			logger.info("weixin4j server startup OK:{}", serverPort);

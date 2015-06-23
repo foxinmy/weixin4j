@@ -23,11 +23,13 @@ import com.foxinmy.weixin4j.util.Consts;
  */
 public class EncryptMessageHandler extends DefaultHandler {
 
+	private String toUserName;
 	private String encryptContent;
 	private String content;
 
 	@Override
 	public void startDocument() throws SAXException {
+		toUserName = null;
 		encryptContent = null;
 	}
 
@@ -42,6 +44,8 @@ public class EncryptMessageHandler extends DefaultHandler {
 			throws SAXException {
 		if (localName.equalsIgnoreCase("encrypt")) {
 			encryptContent = content;
+		} else if (localName.equalsIgnoreCase("tousername")) {
+			toUserName = content;
 		}
 	}
 
@@ -49,6 +53,10 @@ public class EncryptMessageHandler extends DefaultHandler {
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
 		this.content = new String(ch, start, length);
+	}
+
+	public String getToUserName() {
+		return toUserName;
 	}
 
 	public String getEncryptContent() {

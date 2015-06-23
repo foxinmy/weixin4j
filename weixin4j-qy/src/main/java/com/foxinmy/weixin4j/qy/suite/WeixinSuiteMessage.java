@@ -7,9 +7,18 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * 套件消息
+ * 
+ * @className WeixinSuiteMessage
+ * @author jy
+ * @date 2015年6月23日
+ * @since JDK 1.7
+ * @see
+ */
 @XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SuiteTicketMessage implements Serializable {
+public class WeixinSuiteMessage implements Serializable {
 
 	private static final long serialVersionUID = 6457919241019021514L;
 	/**
@@ -60,7 +69,7 @@ public class SuiteTicketMessage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SuiteTicketMessage [suiteId=" + suiteId + ", eventType="
+		return "WeixinSuiteMessage [suiteId=" + suiteId + ", eventType="
 				+ eventType + ", timeStamp=" + timeStamp + ", SuiteTicket="
 				+ SuiteTicket + ", authCorpId=" + authCorpId + "]";
 	}
