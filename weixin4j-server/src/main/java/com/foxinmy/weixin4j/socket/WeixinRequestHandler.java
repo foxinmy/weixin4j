@@ -18,6 +18,7 @@ import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.CruxMessageHandler;
 
 /**
@@ -36,8 +37,7 @@ public class WeixinRequestHandler extends
 
 	private final WeixinMessageDispatcher messageDispatcher;
 
-	public WeixinRequestHandler(WeixinMessageDispatcher messageDispatcher)
-			throws WeixinException {
+	public WeixinRequestHandler(WeixinMessageDispatcher messageDispatcher) {
 		this.messageDispatcher = messageDispatcher;
 	}
 
@@ -70,9 +70,10 @@ public class WeixinRequestHandler extends
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		} else if (request.getMethod().equals(HttpMethod.POST.name())) {
-			if (!MessageUtil.signature(aesToken.getToken(),
-					request.getTimeStamp(), request.getNonce()).equals(
-					request.getSignature())) {
+			if (!StringUtil.isBlank(request.getSignature())
+					&& !MessageUtil.signature(aesToken.getToken(),
+							request.getTimeStamp(), request.getNonce()).equals(
+							request.getSignature())) {
 				ctx.writeAndFlush(
 						HttpUtil.createHttpResponse(null, FORBIDDEN, null))
 						.addListener(ChannelFutureListener.CLOSE);
@@ -103,4 +104,6 @@ public class WeixinRequestHandler extends
 		ctx.channel().attr(Consts.MESSAGE_TRANSFER_KEY).set(messageTransfer);
 		messageDispatcher.doDispatch(ctx, request, cruxMessage);
 	}
+
+	
 }

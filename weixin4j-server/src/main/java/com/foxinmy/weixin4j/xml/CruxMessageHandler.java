@@ -2,6 +2,8 @@ package com.foxinmy.weixin4j.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -28,7 +30,8 @@ public class CruxMessageHandler extends DefaultHandler {
 	private String toUserName;
 	private String msgType;
 	private String eventType;
-	private String agentId;
+	private boolean agentId;
+	private Set<String> nodeNames;
 
 	private String content;
 
@@ -38,12 +41,14 @@ public class CruxMessageHandler extends DefaultHandler {
 		toUserName = null;
 		msgType = null;
 		eventType = null;
-		agentId = null;
+		agentId = false;
+		nodeNames = new HashSet<String>();
 	}
 
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
+		nodeNames.add(localName.toLowerCase());
 		if (localName.equalsIgnoreCase("fromUserName")) {
 			fromUserName = content;
 		} else if (localName.equalsIgnoreCase("toUserName")) {
@@ -53,7 +58,7 @@ public class CruxMessageHandler extends DefaultHandler {
 		} else if (localName.equalsIgnoreCase("event")) {
 			eventType = content.toLowerCase();
 		} else if (localName.equalsIgnoreCase("agentId")) {
-			agentId = content;
+			agentId = true;
 		}
 	}
 
@@ -64,7 +69,13 @@ public class CruxMessageHandler extends DefaultHandler {
 	}
 
 	public AccountType getAccountType() {
-		return StringUtil.isBlank(agentId) ? AccountType.MP : AccountType.QY;
+		if (agentId) {
+			return AccountType.QY;
+		}
+		if (StringUtil.isBlank(msgType) && StringUtil.isBlank(eventType)) {
+			return null;
+		}
+		return AccountType.MP;
 	}
 
 	public String getMsgType() {
@@ -81,6 +92,10 @@ public class CruxMessageHandler extends DefaultHandler {
 
 	public String getToUserName() {
 		return toUserName;
+	}
+
+	public Set<String> getNodeNames() {
+		return nodeNames;
 	}
 
 	private static CruxMessageHandler global = new CruxMessageHandler();

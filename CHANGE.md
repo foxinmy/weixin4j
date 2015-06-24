@@ -348,3 +348,7 @@
   + **weixin4j-mp**: 新增企业付款查询接口
   
   + **weixin4j-server**: 对多个公众号的接入支持
+  
+* 2015-06-24
+
+  + **weixin4j-qy**: 新增userid与openid互换接口

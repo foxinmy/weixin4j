@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.handler;
 
+import java.util.Set;
+
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
@@ -17,8 +19,8 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
 public abstract class MessageHandlerAdapter<M> implements WeixinMessageHandler {
 
 	@Override
-	public boolean canHandle(WeixinRequest request, Object message)
-			throws WeixinException {
+	public boolean canHandle(WeixinRequest request, Object message,
+			Set<String> nodeNames) throws WeixinException {
 		return canHandle0(request, (M) message);
 	}
 
@@ -38,8 +40,8 @@ public abstract class MessageHandlerAdapter<M> implements WeixinMessageHandler {
 	}
 
 	@Override
-	public WeixinResponse doHandle(WeixinRequest request, Object message)
-			throws WeixinException {
+	public WeixinResponse doHandle(WeixinRequest request, Object message,
+			Set<String> nodeNames) throws WeixinException {
 		return doHandle0(request, (M) message);
 	}
 

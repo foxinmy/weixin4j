@@ -4,6 +4,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
+import java.util.Set;
+
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
@@ -33,16 +35,22 @@ public class MessageHandlerExecutor {
 	 * 消息拦截器
 	 */
 	private final WeixinMessageInterceptor[] messageInterceptors;
+	/**
+	 * 节点名称集合
+	 */
+	private final Set<String> nodeNames;
 
 	private final ChannelHandlerContext context;
 	private int interceptorIndex = -1;
 
 	public MessageHandlerExecutor(ChannelHandlerContext context,
 			WeixinMessageHandler messageHandler,
-			WeixinMessageInterceptor[] messageInterceptors) {
+			WeixinMessageInterceptor[] messageInterceptors,
+			Set<String> nodeNames) {
 		this.context = context;
 		this.messageHandler = messageHandler;
 		this.messageInterceptors = messageInterceptors;
+		this.nodeNames = nodeNames;
 	}
 
 	public WeixinMessageHandler getMessageHandler() {
@@ -65,7 +73,7 @@ public class MessageHandlerExecutor {
 			for (int i = 0; i < messageInterceptors.length; i++) {
 				WeixinMessageInterceptor interceptor = messageInterceptors[i];
 				if (!interceptor.preHandle(context, request, message,
-						messageHandler)) {
+						nodeNames, messageHandler)) {
 					triggerAfterCompletion(request, message, null);
 					return false;
 				}
@@ -94,7 +102,7 @@ public class MessageHandlerExecutor {
 		for (int i = messageInterceptors.length - 1; i >= 0; i--) {
 			WeixinMessageInterceptor interceptor = messageInterceptors[i];
 			interceptor.postHandle(context, request, response, message,
-					messageHandler);
+					nodeNames, messageHandler);
 		}
 	}
 
@@ -118,7 +126,7 @@ public class MessageHandlerExecutor {
 			WeixinMessageInterceptor interceptor = messageInterceptors[i];
 			try {
 				interceptor.afterCompletion(context, request, message,
-						messageHandler, exception);
+						nodeNames, messageHandler, exception);
 			} catch (WeixinException e) {
 				logger.error(
 						"MessageInterceptor.afterCompletion threw exception", e);

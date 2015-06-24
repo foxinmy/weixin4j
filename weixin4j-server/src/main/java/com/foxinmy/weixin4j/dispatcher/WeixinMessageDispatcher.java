@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -29,6 +30,7 @@ import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
+import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
@@ -110,17 +112,16 @@ public class WeixinMessageDispatcher {
 	public void doDispatch(final ChannelHandlerContext context,
 			final WeixinRequest request, final CruxMessageHandler cruxMessage)
 			throws WeixinException {
-		MessageKey messageKey = new MessageKey(cruxMessage.getMsgType(),
+		MessageKey messageKey = defineMessageKey(cruxMessage.getMsgType(),
 				cruxMessage.getEventType(), cruxMessage.getAccountType());
 		Class<?> targetClass = messageMatcher.match(messageKey);
 		Object message = request.getOriginalContent();
 		if (targetClass != null) {
 			message = messageRead(request.getOriginalContent(), targetClass);
 		}
-		logger.info("define '{}' matched '{}'", messageKey,
-				targetClass);
+		logger.info("define '{}' matched '{}'", messageKey, targetClass);
 		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(context,
-				request, messageKey, message);
+				request, messageKey, message, cruxMessage.getNodeNames());
 		if (handlerExecutor == null
 				|| handlerExecutor.getMessageHandler() == null) {
 			noHandlerFound(context, request, message);
@@ -132,7 +133,7 @@ public class WeixinMessageDispatcher {
 		WeixinException dispatchException = null;
 		try {
 			WeixinResponse response = handlerExecutor.getMessageHandler()
-					.doHandle(request, message);
+					.doHandle(request, message, cruxMessage.getNodeNames());
 			handlerExecutor.applyPostHandle(request, response, message);
 			context.write(response);
 		} catch (WeixinException e) {
@@ -140,6 +141,22 @@ public class WeixinMessageDispatcher {
 		}
 		handlerExecutor.triggerAfterCompletion(request, message,
 				dispatchException);
+	}
+
+	/**
+	 * 声明messagekey
+	 * 
+	 * @param messageType
+	 *            消息类型
+	 * @param eventType
+	 *            事件类型
+	 * @param accountType
+	 *            账号类型
+	 * @return
+	 */
+	protected MessageKey defineMessageKey(String messageType, String eventType,
+			AccountType accountType) {
+		return new MessageKey(messageType, eventType, accountType);
 	}
 
 	/**
@@ -170,13 +187,16 @@ public class WeixinMessageDispatcher {
 	 *            消息的key
 	 * @param message
 	 *            微信消息
+	 * @param nodeNames
+	 *            节点名称集合
 	 * @return MessageHandlerExecutor
 	 * @see com.foxinmy.weixin4j.dispatcher.MessageHandlerExecutor
 	 * @throws WeixinException
 	 */
 	protected MessageHandlerExecutor getHandlerExecutor(
 			ChannelHandlerContext context, WeixinRequest request,
-			MessageKey messageKey, Object message) throws WeixinException {
+			MessageKey messageKey, Object message, Set<String> nodeNames)
+			throws WeixinException {
 		WeixinMessageHandler messageHandler = null;
 		WeixinMessageHandler[] messageHandlers = getMessageHandlers();
 		if (messageHandlers == null) {
@@ -186,7 +206,7 @@ public class WeixinMessageDispatcher {
 			if (handler instanceof MessageHandlerAdapter) {
 				Class<?> genericType = genericTypeRead(handler);
 				if (genericType == message.getClass()
-						&& handler.canHandle(request, message)) {
+						&& handler.canHandle(request, message, nodeNames)) {
 					messageHandler = handler;
 					break;
 				}
@@ -195,14 +215,14 @@ public class WeixinMessageDispatcher {
 		if (messageHandler == null) {
 			for (WeixinMessageHandler handler : messageHandlers) {
 				if (!(handler instanceof MessageHandlerAdapter)
-						&& handler.canHandle(request, message)) {
+						&& handler.canHandle(request, message, nodeNames)) {
 					messageHandler = handler;
 					break;
 				}
 			}
 		}
 		return new MessageHandlerExecutor(context, messageHandler,
-				getMessageInterceptors());
+				getMessageInterceptors(), nodeNames);
 	}
 
 	/**

@@ -61,3 +61,7 @@
 * 2015-06-22
 
   + 新增企业号[第三方应用代理](src/main/java/com/foxinmy/weixin4j/qy/WeixinSuiteProxy.java)。
+  
+* 2015-06-24
+
+  + 新增userid与openid互换接口

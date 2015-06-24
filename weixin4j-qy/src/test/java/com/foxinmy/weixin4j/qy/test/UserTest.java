@@ -89,4 +89,11 @@ public class UserTest extends TokenTest {
 	public void invite() throws WeixinException {
 		userApi.inviteUser("11", null);
 	}
+
+	@Test
+	public void convert() throws WeixinException {
+		String[] result = userApi.userid2openid("jinyu", 1);
+		System.err.println(result);
+		System.err.println(userApi.openid2userid(result[0]));
+	}
 }

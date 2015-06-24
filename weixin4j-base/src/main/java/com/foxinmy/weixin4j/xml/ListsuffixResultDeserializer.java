@@ -42,6 +42,26 @@ import com.foxinmy.weixin4j.util.StringUtil;
  */
 public class ListsuffixResultDeserializer {
 
+	private static Pattern DEFAULT_PATTERN;
+	static {
+		String regex = null;
+		try {
+			Object value = ListsuffixResult.class.getMethod("value")
+					.getDefaultValue();
+			if (value instanceof String) {
+				regex = (String) value;
+			} else if (value instanceof String[]) {
+				regex = ((String[]) value)[0];
+			}
+		} catch (NoSuchMethodException e) {
+			;
+		}
+		if (StringUtil.isBlank(regex)) {
+			regex = "(_\\d)$";
+		}
+		DEFAULT_PATTERN = Pattern.compile(regex);
+	}
+
 	/**
 	 * 对包含$n节点的xml序列化
 	 * 
@@ -109,9 +129,8 @@ public class ListsuffixResultDeserializer {
 								} else if (event == XMLStreamConstants.CHARACTERS) {
 									String key = matcher.group();
 									if (!pattern.pattern().equals(
-											ListsuffixResult.DEFAULT_REGEX)) {
-										matcher = ListsuffixResult.DEFAULT_PATTERN
-												.matcher(name);
+											DEFAULT_PATTERN.pattern())) {
+										matcher = DEFAULT_PATTERN.matcher(name);
 										matcher.find();
 										key = matcher.group();
 									}
@@ -146,7 +165,7 @@ public class ListsuffixResultDeserializer {
 										.getDefaultValue().toString())) {
 							itemName = rootElement.name();
 						}
-					} catch (Exception e) {
+					} catch (NoSuchMethodException e) {
 						;
 					}
 				}

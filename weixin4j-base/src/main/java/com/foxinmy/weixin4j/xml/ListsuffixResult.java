@@ -4,7 +4,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.regex.Pattern;
 
 /**
  * 对$n结尾的节点注解
@@ -18,9 +17,5 @@ import java.util.regex.Pattern;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ListsuffixResult {
-	String[] value() default { DEFAULT_REGEX };
-
-	public final static String DEFAULT_REGEX = "(_\\d)$";
-	public final static Pattern DEFAULT_PATTERN = Pattern
-			.compile(DEFAULT_REGEX);
+	String[] value() default { "(_\\d)$" };
 }

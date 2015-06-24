@@ -851,4 +851,39 @@ public class WeixinProxy {
 	public BatchResult getresult(String jobId) throws WeixinException {
 		return batchApi.getresult(jobId);
 	}
+
+	/**
+	 * userid转换成openid:该接口使用场景为微信支付、微信红包和企业转账，企业号用户在使用微信支付的功能时，
+	 * 需要自行将企业号的userid转成openid。 在使用微信红包功能时，需要将应用id和userid转成appid和openid才能使用。
+	 * 
+	 * @param userid
+	 *            企业号内的成员id 必填
+	 * @param agentid
+	 *            需要发送红包的应用ID，若只是使用微信支付和企业转账，则无需该参数 传入0或负数则忽略
+	 * @return 结果数组 第一个元素为对应的openid 第二个元素则为应用的appid(如果有)
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.UserApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=Userid%E4%B8%8Eopenid%E4%BA%92%E6%8D%A2%E6%8E%A5%E5%8F%A3">userid转换成openid</a>
+	 */
+	public String[] userid2openid(String userid, int agentid)
+			throws WeixinException {
+		return userApi.userid2openid(userid, agentid);
+	}
+
+	/**
+	 * openid转换成userid:该接口主要应用于使用微信支付、微信红包和企业转账之后的结果查询，
+	 * 开发者需要知道某个结果事件的openid对应企业号内成员的信息时，可以通过调用该接口进行转换查询。
+	 * 
+	 * @param openid
+	 *            在使用微信支付、微信红包和企业转账之后，返回结果的openid
+	 * @return 该openid在企业号中对应的成员userid
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.UserApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=Userid%E4%B8%8Eopenid%E4%BA%92%E6%8D%A2%E6%8E%A5%E5%8F%A3">openid转换成userid</a>
+	 */
+	public String openid2userid(String openid) throws WeixinException {
+		return userApi.openid2userid(openid);
+	}
 }

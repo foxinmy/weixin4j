@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.handler;
 
+import java.util.Set;
+
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
@@ -22,10 +24,12 @@ public interface WeixinMessageHandler {
 	 *            微信请求
 	 * @param message
 	 *            微信消息
+	 * @param nodeNames
+	 *            节点名称集合
 	 * @return true则执行doHandle
 	 */
-	public boolean canHandle(WeixinRequest request, Object message)
-			throws WeixinException;
+	public boolean canHandle(WeixinRequest request, Object message,
+			Set<String> nodeNames) throws WeixinException;
 
 	/**
 	 * 处理请求
@@ -34,8 +38,10 @@ public interface WeixinMessageHandler {
 	 *            微信请求
 	 * @param message
 	 *            微信消息
-	 * @return
+	 * @param nodeNames
+	 *            节点名称集合
+	 * @return 回复内容
 	 */
-	public WeixinResponse doHandle(WeixinRequest request, Object message)
-			throws WeixinException;
+	public WeixinResponse doHandle(WeixinRequest request, Object message,
+			Set<String> nodeNames) throws WeixinException;
 }
