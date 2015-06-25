@@ -43,10 +43,6 @@ public class WeixinResponseEncoder extends
 				.attr(Consts.MESSAGE_TRANSFER_KEY).get();
 		AesToken aesToken = messageTransfer.getAesToken();
 		EncryptType encryptType = messageTransfer.getEncryptType();
-		String weixinId = aesToken.getWeixinId();
-		if (StringUtil.isBlank(weixinId)) {
-			weixinId = messageTransfer.getToUserName();
-		}
 		StringBuilder content = new StringBuilder();
 		if (response instanceof BlankResponse) {
 			content.append(response.toContent());
@@ -56,7 +52,9 @@ public class WeixinResponseEncoder extends
 					"<ToUserName><![CDATA[%s]]></ToUserName>",
 					messageTransfer.getFromUserName()));
 			content.append(String.format(
-					"<FromUserName><![CDATA[%s]]></FromUserName>", weixinId));
+					"<FromUserName><![CDATA[%s]]></FromUserName>",
+					StringUtil.isBlank(aesToken.getWeixinId()) ? messageTransfer
+							.getToUserName() : aesToken.getWeixinId()));
 			content.append(String.format(
 					"<CreateTime><![CDATA[%d]]></CreateTime>",
 					System.currentTimeMillis() / 1000l));
@@ -68,8 +66,9 @@ public class WeixinResponseEncoder extends
 				String nonce = RandomUtil.generateString(32);
 				String timestamp = String
 						.valueOf(System.currentTimeMillis() / 1000l);
-				String encrtypt = MessageUtil.aesEncrypt(weixinId,
-						aesToken.getAesKey(), content.toString());
+				String encrtypt = MessageUtil.aesEncrypt(
+						aesToken.getWeixinId(), aesToken.getAesKey(),
+						content.toString());
 				String msgSignature = MessageUtil.signature(
 						aesToken.getToken(), nonce, timestamp, encrtypt);
 				content.delete(0, content.length());

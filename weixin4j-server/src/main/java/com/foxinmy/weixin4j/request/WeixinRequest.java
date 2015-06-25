@@ -1,6 +1,8 @@
 package com.foxinmy.weixin4j.request;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.AesToken;
@@ -65,11 +67,15 @@ public class WeixinRequest implements Serializable, Cloneable {
 	 * aes & token
 	 */
 	private AesToken aesToken;
+	/**
+	 * url parameter
+	 */
+	private Map<String, List<String>> parameters;
 
 	public WeixinRequest(String method, EncryptType encryptType,
 			String echoStr, String timeStamp, String nonce, String signature,
 			String msgSignature, String originalContent, String encryptContent,
-			AesToken aesToken) {
+			AesToken aesToken, Map<String, List<String>> parameters) {
 		this.method = method;
 		this.encryptType = encryptType;
 		this.echoStr = echoStr;
@@ -80,6 +86,7 @@ public class WeixinRequest implements Serializable, Cloneable {
 		this.originalContent = originalContent;
 		this.encryptContent = encryptContent;
 		this.aesToken = aesToken;
+		this.parameters = parameters;
 	}
 
 	public String getMethod() {
@@ -122,6 +129,10 @@ public class WeixinRequest implements Serializable, Cloneable {
 		return aesToken;
 	}
 
+	public Map<String, List<String>> getParameters() {
+		return parameters;
+	}
+
 	@Override
 	public String toString() {
 		return "WeixinRequest [encryptContent=" + encryptContent
@@ -129,6 +140,6 @@ public class WeixinRequest implements Serializable, Cloneable {
 				+ ", timeStamp=" + timeStamp + ", nonce=" + nonce
 				+ ", signature=" + signature + ", originalContent="
 				+ originalContent + ", method=" + method + ", aesToken="
-				+ aesToken + "]";
+				+ aesToken + ", parameters=" + parameters + "]";
 	}
 }

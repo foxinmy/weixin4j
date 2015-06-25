@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @since JDK 1.7
  * @see
  */
-public class AesToken implements Serializable {
+public class AesToken implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -6001008896414323534L;
 

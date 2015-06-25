@@ -239,9 +239,9 @@ public class SuiteApi extends QyApi {
 		obj.put("auth_corpid", authCorpid);
 		obj.put("permanent_code", suitePerCodeHolder.getPermanentCode(suiteId));
 		obj.put("agentid", agentid);
-		WeixinResponse response = weixinClient.post(String.format(
-				suite_get_agent_uri, suiteTokenHolder.getAccessToken(),
-				obj.toJSONString()));
+		WeixinResponse response = weixinClient.post(
+				String.format(suite_get_agent_uri,
+						suiteTokenHolder.getAccessToken()), obj.toJSONString());
 		JSONObject jsonObj = response.getAsJson();
 		AgentInfo agent = JSON.toJavaObject(jsonObj, AgentInfo.class);
 		agent.setAllowUsers(JSON.parseArray(

@@ -61,7 +61,6 @@ public final class WeixinServerBootstrap {
 	 * 消息分发器
 	 */
 	private WeixinMessageDispatcher messageDispatcher;
-
 	/**
 	 * 消息处理器
 	 */
@@ -287,6 +286,14 @@ public final class WeixinServerBootstrap {
 	public WeixinServerBootstrap registMessageClass(MessageKey messageKey,
 			Class<?> messageClass) {
 		messageDispatcher.registMessageClass(messageKey, messageClass);
+		return this;
+	}
+
+	/**
+	 * 开启debug:未匹配到MessageHanlder输出消息信息
+	 */
+	public WeixinServerBootstrap openDebugMode() {
+		messageDispatcher.openDebugMode();
 		return this;
 	}
 }

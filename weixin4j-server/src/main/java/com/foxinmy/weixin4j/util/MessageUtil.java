@@ -145,8 +145,7 @@ public final class MessageUtil {
 			fromAppId = StringUtil.newStringUtf8(Arrays.copyOfRange(bytes,
 					20 + xmlLength, bytes.length));
 		} catch (Exception e) {
-			throw new WeixinException("-40008", "公众平台发送的xml不合法"
-					+ e.getMessage());
+			throw new WeixinException("-40008", "xml内容不合法" + e.getMessage());
 		}
 		// 校验appId是否一致
 		if (!fromAppId.trim().equals(appId)) {
