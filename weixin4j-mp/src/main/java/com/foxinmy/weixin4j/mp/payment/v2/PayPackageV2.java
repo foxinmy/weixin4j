@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.mp.payment.PayPackage;
+import com.foxinmy.weixin4j.payment.PayPackage;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**

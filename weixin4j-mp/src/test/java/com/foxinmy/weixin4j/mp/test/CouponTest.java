@@ -8,12 +8,11 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.mp.WeixinPayProxy;
-import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
-import com.foxinmy.weixin4j.mp.payment.coupon.CouponDetail;
-import com.foxinmy.weixin4j.mp.payment.coupon.CouponResult;
-import com.foxinmy.weixin4j.mp.payment.coupon.CouponStock;
-import com.foxinmy.weixin4j.token.FileTokenStorager;
+import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.payment.WeixinPayProxy;
+import com.foxinmy.weixin4j.payment.coupon.CouponDetail;
+import com.foxinmy.weixin4j.payment.coupon.CouponResult;
+import com.foxinmy.weixin4j.payment.coupon.CouponStock;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -27,12 +26,10 @@ import com.foxinmy.weixin4j.util.DateUtil;
  */
 public class CouponTest {
 	protected final static WeixinPayProxy WEIXINPAY;
-	protected final static WeixinMpAccount ACCOUNT;
+	protected final static WeixinPayAccount ACCOUNT;
 	static {
-		ACCOUNT = new WeixinMpAccount("appid",
-				"appsecret",
-				"paysign", "mchid");
-		WEIXINPAY = new WeixinPayProxy(ACCOUNT, new FileTokenStorager());
+		ACCOUNT = new WeixinPayAccount("appid", "appsecret", "paysign", "mchid");
+		WEIXINPAY = new WeixinPayProxy(ACCOUNT);
 	}
 	protected final File caFile = new File("证书文件路径(*.p12)");
 

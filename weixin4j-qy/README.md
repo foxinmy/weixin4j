@@ -26,6 +26,12 @@ weixin4j-qy
   * OauthApi `oauth授权登陆API`
   
   * SuiteApi `第三方应用API`
+  
+  * Pay3Api `商户平台支付API`
+	
+  * CouponApi `代金券API`
+	
+  * CashApi `现金API`
 
 如何使用
 --------

@@ -3,12 +3,12 @@ package com.foxinmy.weixin4j.mp.test;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.mp.payment.v3.MPPayment;
-import com.foxinmy.weixin4j.mp.payment.v3.MPPaymentResult;
-import com.foxinmy.weixin4j.mp.payment.v3.Redpacket;
-import com.foxinmy.weixin4j.mp.payment.v3.RedpacketRecord;
-import com.foxinmy.weixin4j.mp.payment.v3.RedpacketSendResult;
-import com.foxinmy.weixin4j.mp.type.MPPaymentCheckNameType;
+import com.foxinmy.weixin4j.payment.mch.MPPayment;
+import com.foxinmy.weixin4j.payment.mch.MPPaymentResult;
+import com.foxinmy.weixin4j.payment.mch.Redpacket;
+import com.foxinmy.weixin4j.payment.mch.RedpacketRecord;
+import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
+import com.foxinmy.weixin4j.type.MPPaymentCheckNameType;
 
 /**
  * 现金发放测试

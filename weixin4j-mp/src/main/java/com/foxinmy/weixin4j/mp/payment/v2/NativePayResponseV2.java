@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
+import com.foxinmy.weixin4j.model.WeixinPayAccount;
 
 /**
  * V2 Native支付时的回调响应
@@ -36,7 +36,7 @@ public class NativePayResponseV2 extends JsPayRequestV2 {
 		// jaxb required
 	}
 	
-	public NativePayResponseV2(WeixinMpAccount weixinAccount,
+	public NativePayResponseV2(WeixinPayAccount weixinAccount,
 			PayPackageV2 payPackage) {
 		super(weixinAccount, payPackage);
 		this.retCode = "0";

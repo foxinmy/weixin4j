@@ -28,21 +28,24 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.Feature;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.SSLHttpClinet;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
-import com.foxinmy.weixin4j.mp.payment.PayUtil;
-import com.foxinmy.weixin4j.mp.payment.v2.Order;
-import com.foxinmy.weixin4j.mp.payment.v2.RefundRecord;
-import com.foxinmy.weixin4j.mp.payment.v2.RefundResult;
-import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
-import com.foxinmy.weixin4j.mp.type.BillType;
-import com.foxinmy.weixin4j.mp.type.IdQuery;
-import com.foxinmy.weixin4j.mp.type.RefundType;
-import com.foxinmy.weixin4j.mp.type.SignType;
+import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.mp.payment.v2.OrderV2;
+import com.foxinmy.weixin4j.mp.payment.v2.PayUtil2;
+import com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2;
+import com.foxinmy.weixin4j.mp.payment.v2.RefundResultV2;
+import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
+import com.foxinmy.weixin4j.payment.PayUtil;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenStorager;
+import com.foxinmy.weixin4j.type.BillType;
+import com.foxinmy.weixin4j.type.IdQuery;
+import com.foxinmy.weixin4j.type.RefundType;
+import com.foxinmy.weixin4j.type.SignType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
@@ -59,13 +62,25 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
  * @since JDK 1.7
  * @see
  */
-public class Pay2Api extends PayApi {
+public class Pay2Api extends MpApi {
 
-	private final HelperApi helperApi;
+	private final WeixinPayAccount weixinAccount;
+	private final TokenHolder tokenHolder;
 
-	public Pay2Api(WeixinMpAccount weixinAccount, TokenHolder tokenHolder) {
-		super(weixinAccount, tokenHolder);
-		this.helperApi = new HelperApi(tokenHolder);
+	public Pay2Api() {
+		this(JSON.parseObject(ConfigUtil.getValue("account"),
+				WeixinPayAccount.class));
+	}
+
+	public Pay2Api(WeixinPayAccount weixinAccount) {
+		this(weixinAccount, DEFAULT_TOKEN_STORAGER);
+	}
+
+	public Pay2Api(WeixinPayAccount weixinAccount, TokenStorager tokenStorager) {
+		this.weixinAccount = weixinAccount;
+		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(
+				weixinAccount.getId(), weixinAccount.getSecret()),
+				tokenStorager);
 	}
 
 	/**
@@ -74,12 +89,12 @@ public class Pay2Api extends PayApi {
 	 * @param idQuery
 	 *            订单号
 	 * @return 订单信息
-	 * @see com.foxinmy.weixin4j.mp.payment.v2.Order
+	 * @see com.foxinmy.weixin4j.mp.payment.v2.OrderV2
 	 * @since V2
 	 * @throws WeixinException
 	 */
-	public Order orderQuery(IdQuery idQuery) throws WeixinException {
-		String orderquery_uri = getRequestUri("orderquery_uri");
+	public OrderV2 orderQuery(IdQuery idQuery) throws WeixinException {
+		String orderquery_uri = getRequestUri("orderquery_v2_uri");
 		Token token = tokenHolder.getToken();
 		StringBuilder sb = new StringBuilder();
 		sb.append(idQuery.getType().getName()).append("=")
@@ -97,7 +112,7 @@ public class Pay2Api extends PayApi {
 		obj.put("appkey", weixinAccount.getPaySignKey());
 		obj.put("package", sb.toString());
 		obj.put("timestamp", timestamp);
-		String signature = PayUtil.paysignSha(obj);
+		String signature = PayUtil2.paysignSha(obj);
 
 		obj.clear();
 		obj.put("appid", weixinAccount.getId());
@@ -111,7 +126,7 @@ public class Pay2Api extends PayApi {
 				obj.toJSONString());
 
 		String order_info = response.getAsJson().getString("order_info");
-		Order order = JSON.parseObject(order_info, Order.class,
+		OrderV2 order = JSON.parseObject(order_info, OrderV2.class,
 				Feature.IgnoreNotMatch);
 		if (order.getRetCode() != 0) {
 			throw new WeixinException(Integer.toString(order.getRetCode()),
@@ -144,15 +159,14 @@ public class Pay2Api extends PayApi {
 	 *            如 opUserPasswd
 	 * 
 	 * @return 退款申请结果
-	 * @see com.foxinmy.weixin4j.mp.payment.v2.RefundResult
+	 * @see com.foxinmy.weixin4j.mp.payment.v2.RefundResultV2
 	 * @since V2
 	 * @throws WeixinException
 	 */
-	@Override
-	protected RefundResult refund(File caFile, IdQuery idQuery,
+	protected RefundResultV2 refundApply(File caFile, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
 			String opUserId, Map<String, String> mopara) throws WeixinException {
-		String refund_uri = getRequestUri("refund_v2_uri");
+		String refund_uri = getRequestUri("refundapply_v2_uri");
 		WeixinResponse response = null;
 		InputStream ca = null;
 		try {
@@ -189,7 +203,7 @@ public class Pay2Api extends PayApi {
 				CertificateFactory cf = CertificateFactory
 						.getInstance(com.foxinmy.weixin4j.model.Consts.X509);
 				java.security.cert.Certificate cert = cf
-						.generateCertificate(PayUtil.class
+						.generateCertificate(Pay2Api.class
 								.getResourceAsStream("cacert.pem"));
 				ks = KeyStore
 						.getInstance(com.foxinmy.weixin4j.model.Consts.JKS);
@@ -229,7 +243,7 @@ public class Pay2Api extends PayApi {
 				}
 			}
 		}
-		return response.getAsObject(new TypeReference<RefundResult>() {
+		return response.getAsObject(new TypeReference<RefundResultV2>() {
 		});
 	}
 
@@ -251,14 +265,14 @@ public class Pay2Api extends PayApi {
 	 *            操作员帐号, 默认为商户号
 	 * @param opUserPasswd
 	 *            操作员密码,默认为商户后台登录密码
-	 * @see {@link com.foxinmy.weixin4j.mp.api.Pay2Api#refund(File, IdQuery, String, double, double, String, Map)}
+	 * @see {@link com.foxinmy.weixin4j.mp.api.Pay2Api#refundApply(File, IdQuery, String, double, double, String, Map)}
 	 */
-	public RefundResult refund(File caFile, IdQuery idQuery,
+	public RefundResultV2 refundApply(File caFile, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
 			String opUserId, String opUserPasswd) throws WeixinException {
 		Map<String, String> mopara = new HashMap<String, String>();
 		mopara.put("op_user_passwd", DigestUtil.MD5(opUserPasswd));
-		return refund(caFile, idQuery, outRefundNo, totalFee, refundFee,
+		return refundApply(caFile, idQuery, outRefundNo, totalFee, refundFee,
 				opUserId, mopara);
 	}
 
@@ -289,10 +303,10 @@ public class Pay2Api extends PayApi {
 	 * @param refundType
 	 *            为空或者填 1:商户号余额退款;2:现金帐号 退款;3:优先商户号退款,若商户号余额不足, 再做现金帐号退款。使用 2 或
 	 *            3 时,需联系财 付通开通此功能
-	 * @see {@link com.foxinmy.weixin4j.mp.api.Pay2Api#refund(File, IdQuery, String, double, double, String, Map)}
+	 * @see {@link com.foxinmy.weixin4j.mp.api.Pay2Api#refundApply(File, IdQuery, String, double, double, String, Map)}
 	 * @return 退款结果
 	 */
-	public RefundResult refund(File caFile, IdQuery idQuery,
+	public RefundResultV2 refundApply(File caFile, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
 			String opUserId, String opUserPasswd, String recvUserId,
 			String reccvUserName, RefundType refundType) throws WeixinException {
@@ -307,39 +321,8 @@ public class Pay2Api extends PayApi {
 		if (refundType != null) {
 			mopara.put("refund_type", Integer.toString(refundType.getVal()));
 		}
-		return refund(caFile, idQuery, outRefundNo, totalFee, refundFee,
+		return refundApply(caFile, idQuery, outRefundNo, totalFee, refundFee,
 				opUserId, mopara);
-	}
-
-	/**
-	 * 冲正订单(需要证书)</br><font color="red">V2暂不支持</font>
-	 * 
-	 * @param caFile
-	 *            证书文件(V2版本后缀为*.pfx)
-	 * @param idQuery
-	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
-	 *            transaction_id> out_trade_no
-	 * @since V2
-	 * @return 撤销结果
-	 * @throws WeixinException
-	 */
-	public ApiResult reverse(File caFile, IdQuery idQuery)
-			throws WeixinException {
-		throw new WeixinException("V2 unsupport reverse api");
-	}
-
-	/**
-	 * 关闭订单</br> 当订单支付失败,调用关单接口后用新订单号重新发起支付,如果关单失败,返回已完
-	 * 成支付请按正常支付处理。如果出现银行掉单,调用关单成功后,微信后台会主动发起退款。
-	 * 
-	 * @param outTradeNo
-	 *            商户系统内部的订单号
-	 * @return 处理结果
-	 * @since V2
-	 * @throws WeixinException
-	 */
-	public ApiResult closeOrder(String outTradeNo) throws WeixinException {
-		throw new WeixinException("V2 unsupport closeOrder api");
 	}
 
 	/**
@@ -428,12 +411,12 @@ public class Pay2Api extends PayApi {
 	 *            四个参数必填一个,优先级为:
 	 *            refund_id>out_refund_no>transaction_id>out_trade_no
 	 * @return 退款记录
-	 * @see com.foxinmy.weixin4j.mp.payment.v2.RefundRecord
-	 * @see com.foxinmy.weixin4j.mp.payment.v2.RefundDetail
+	 * @see com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2
+	 * @see com.foxinmy.weixin4j.mp.payment.v2.RefundDetailV2
 	 * @since V2
 	 * @throws WeixinException
 	 */
-	public RefundRecord refundQuery(IdQuery idQuery) throws WeixinException {
+	public RefundRecordV2 refundQuery(IdQuery idQuery) throws WeixinException {
 		String refundquery_uri = getRequestUri("refundquery_v2_uri");
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("input_charset", Consts.UTF_8.name());
@@ -443,11 +426,66 @@ public class Pay2Api extends PayApi {
 		map.put("sign", sign.toLowerCase());
 		WeixinResponse response = weixinClient.get(refundquery_uri, map);
 		return ListsuffixResultDeserializer.deserialize(response.getAsString(),
-				RefundRecord.class);
+				RefundRecordV2.class);
 	}
 
-	@Override
-	public String getShorturl(String url) throws WeixinException {
-		return helperApi.getShorturl(url);
+	/**
+	 * 发货通知
+	 * 
+	 * @param openId
+	 *            用户ID
+	 * @param transid
+	 *            交易单号
+	 * @param outTradeNo
+	 *            订单号
+	 * @param status
+	 *            成功|失败
+	 * @param statusMsg
+	 *            status为失败时携带的信息
+	 * @return 发货处理结果
+	 * @throws WeixinException
+	 */
+	public JsonResult deliverNotify(String openId, String transid,
+			String outTradeNo, boolean status, String statusMsg)
+			throws WeixinException {
+		String delivernotify_uri = getRequestUri("delivernotify_uri");
+		Token token = tokenHolder.getToken();
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("appid", weixinAccount.getId());
+		map.put("appkey", weixinAccount.getPaySignKey());
+		map.put("openid", openId);
+		map.put("transid", transid);
+		map.put("out_trade_no", outTradeNo);
+		map.put("deliver_timestamp", DateUtil.timestamp2string());
+		map.put("deliver_status", status ? "1" : "0");
+		map.put("deliver_msg", statusMsg);
+		map.put("app_signature", PayUtil2.paysignSha(map));
+		map.put("sign_method", SignType.SHA1.name().toLowerCase());
+
+		WeixinResponse response = weixinClient.post(
+				String.format(delivernotify_uri, token.getAccessToken()),
+				JSON.toJSONString(map));
+		return response.getAsJsonResult();
+	}
+
+	/**
+	 * 维权处理
+	 * 
+	 * @param openId
+	 *            用户ID
+	 * @param feedbackId
+	 *            维权单号
+	 * @return 维权处理结果
+	 * @throws WeixinException
+	 */
+	public JsonResult updateFeedback(String openId, String feedbackId)
+			throws WeixinException {
+		String payfeedback_update_uri = getRequestUri("payfeedback_update_uri");
+		Token token = tokenHolder.getToken();
+		WeixinResponse response = weixinClient.get(String.format(
+				payfeedback_update_uri, token.getAccessToken(), openId,
+				feedbackId));
+		return response.getAsJsonResult();
 	}
 }

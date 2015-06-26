@@ -29,6 +29,7 @@ public class WeixinAccount implements Serializable {
 	private String encodingAesKey;
 
 	public WeixinAccount() {
+
 	}
 
 	public WeixinAccount(String id, String secret) {

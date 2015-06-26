@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
-import com.foxinmy.weixin4j.mp.payment.PayRequest;
+import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 
@@ -37,7 +37,7 @@ public class JsPayRequestV2 extends PayRequest {
 		// jaxb required
 	}
 	
-	public JsPayRequestV2(WeixinMpAccount weixinAccount, PayPackageV2 payPackage) {
+	public JsPayRequestV2(WeixinPayAccount weixinAccount, PayPackageV2 payPackage) {
 		this.setAppId(weixinAccount.getId());
 		this.setPackageInfo(package2string(payPackage,
 				weixinAccount.getPartnerKey()));

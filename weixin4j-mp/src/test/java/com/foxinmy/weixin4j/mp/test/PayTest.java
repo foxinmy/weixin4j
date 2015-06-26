@@ -10,48 +10,50 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.foxinmy.weixin4j.mp.WeixinPayProxy;
-import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
-import com.foxinmy.weixin4j.mp.payment.PayUtil;
-import com.foxinmy.weixin4j.mp.payment.v3.ApiResult;
-import com.foxinmy.weixin4j.mp.payment.v3.Order;
-import com.foxinmy.weixin4j.mp.payment.v3.PayPackageV3;
-import com.foxinmy.weixin4j.mp.payment.v3.PrePay;
-import com.foxinmy.weixin4j.mp.type.IdQuery;
-import com.foxinmy.weixin4j.mp.type.IdType;
-import com.foxinmy.weixin4j.mp.type.TradeType;
+import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.mp.api.Pay2Api;
+import com.foxinmy.weixin4j.payment.PayUtil;
+import com.foxinmy.weixin4j.payment.WeixinPayProxy;
+import com.foxinmy.weixin4j.payment.mch.ApiResult;
+import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
+import com.foxinmy.weixin4j.payment.mch.Order;
+import com.foxinmy.weixin4j.payment.mch.PrePay;
 import com.foxinmy.weixin4j.token.FileTokenStorager;
+import com.foxinmy.weixin4j.type.IdQuery;
+import com.foxinmy.weixin4j.type.IdType;
+import com.foxinmy.weixin4j.type.TradeType;
 
 public class PayTest {
-	private final static WeixinPayProxy PAY2;
+	private final static Pay2Api PAY2;
 	private final static WeixinPayProxy PAY3;
-	private final static WeixinMpAccount ACCOUNT2;
-	private final static WeixinMpAccount ACCOUNT3;
+	private final static WeixinPayAccount ACCOUNT2;
+	private final static WeixinPayAccount ACCOUNT3;
 	static {
-		ACCOUNT2 = new WeixinMpAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
+		ACCOUNT2 = new WeixinPayAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
 				"请填入v3版本的paysignkey", "请填入v2版本的partnerId", "请填入v2版本的partnerKey");
-		PAY2 = new WeixinPayProxy(ACCOUNT2, new FileTokenStorager());
-		ACCOUNT3 = new WeixinMpAccount("请填入v3版本的appid", "请填入v3版本的appSecret",
+		PAY2 = new Pay2Api(ACCOUNT2, new FileTokenStorager());
+		ACCOUNT3 = new WeixinPayAccount("请填入v3版本的appid", "请填入v3版本的appSecret",
 				"请填入v3版本的paysignkey", "请填入v3版本的mchid");
-		PAY3 = new WeixinPayProxy(ACCOUNT3, new FileTokenStorager());
+		PAY3 = new WeixinPayProxy(ACCOUNT3);
 	}
 
 	@Test
 	public void orderQueryV2() throws WeixinException {
-		System.err.println(PAY2.orderQueryV2("D14110500021"));
+		System.err.println(PAY2.orderQuery(new IdQuery("D14110500021",
+				IdType.REFUNDNO)));
 	}
 
 	@Test
 	public void refundV2() throws WeixinException {
 		File caFile = new File("签名文件，如12333.pfx");
 		IdQuery idQuery = new IdQuery("D15020300005", IdType.TRADENO);
-		System.err.println(PAY2.refundV2(caFile, idQuery, "1422925555037", 16d,
-				16d, "1221928801", "111111", null, null, null));
+		System.err.println(PAY2.refundApply(caFile, idQuery, "1422925555037",
+				16d, 16d, "1221928801", "111111", null, null, null));
 	}
 
 	@Test
 	public void refundQueryV2() throws WeixinException {
-		System.err.println(PAY2.refundQueryV2(new IdQuery("D14123000004",
+		System.err.println(PAY2.refundQuery(new IdQuery("D14123000004",
 				IdType.TRADENO)));
 		refundQueryV3();
 	}
@@ -68,7 +70,7 @@ public class PayTest {
 
 	@Test
 	public void orderQueryV3() throws WeixinException {
-		Order order = PAY3.orderQueryV3(new IdQuery("T0002", IdType.TRADENO));
+		Order order = PAY3.orderQuery(new IdQuery("T0002", IdType.TRADENO));
 		System.err.println(order);
 		String sign = order.getSign();
 		order.setSign(null);
@@ -80,7 +82,7 @@ public class PayTest {
 
 	@Test
 	public void refundQueryV3() throws WeixinException {
-		com.foxinmy.weixin4j.mp.payment.v3.RefundRecord record = PAY3
+		com.foxinmy.weixin4j.payment.mch.RefundRecord record = PAY3
 				.refundQueryV3(new IdQuery("TT_1427183696238", IdType.TRADENO));
 		System.err.println(record);
 		// 这里的验证签名需要把details循环拼接
@@ -108,9 +110,10 @@ public class PayTest {
 	public void refundV3() throws WeixinException {
 		File caFile = new File("签名文件如123.p12");
 		IdQuery idQuery = new IdQuery("TT_1427183696238", IdType.TRADENO);
-		com.foxinmy.weixin4j.mp.payment.v3.RefundResult result = PAY3.refundV3(
-				caFile, idQuery, "TT_R" + System.currentTimeMillis(), 0.01d,
-				0.01d, null, "10020674");
+		com.foxinmy.weixin4j.payment.mch.RefundResult result = PAY3
+				.refundApply(caFile, idQuery,
+						"TT_R" + System.currentTimeMillis(), 0.01d, 0.01d,
+						null, "10020674");
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
@@ -122,7 +125,7 @@ public class PayTest {
 
 	@Test
 	public void nativeV3() throws WeixinException {
-		PayPackageV3 payPackageV3 = new PayPackageV3(ACCOUNT3,
+		MchPayPackage payPackageV3 = new MchPayPackage(ACCOUNT3,
 				"oyFLst1bqtuTcxK-ojF8hOGtLQao", "native测试", "T0001", 0.1d,
 				"127.0.0.1", TradeType.NATIVE);
 		payPackageV3.setProductId("0001");

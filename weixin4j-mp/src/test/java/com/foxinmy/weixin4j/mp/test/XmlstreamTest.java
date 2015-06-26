@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.mp.payment.v2.RefundRecord;
-import com.foxinmy.weixin4j.mp.payment.v3.Order;
+import com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2;
+import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
@@ -64,7 +64,7 @@ public class XmlstreamTest {
 				sb.toString(), Order.class));
 	}
 
-	public static RefundRecord xml2refundRecordV2() throws Exception {
+	public static RefundRecordV2 xml2refundRecordV2() throws Exception {
 		StringBuffer sb = new StringBuffer();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(
@@ -78,7 +78,7 @@ public class XmlstreamTest {
 
 		}
 		return ListsuffixResultDeserializer.deserialize(sb.toString(),
-				RefundRecord.class);
+				RefundRecordV2.class);
 	}
 
 	public static void xml2refundRecordV3() throws Exception {
@@ -96,7 +96,7 @@ public class XmlstreamTest {
 		}
 		System.err.println(ListsuffixResultDeserializer.deserialize(
 				sb.toString(),
-				com.foxinmy.weixin4j.mp.payment.v3.RefundRecord.class));
+				com.foxinmy.weixin4j.payment.mch.RefundRecord.class));
 	}
 
 	public static void main(String[] args) throws Exception {

@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.foxinmy.weixin4j.mp.payment.PayBaseInfo;
+import com.foxinmy.weixin4j.payment.PayBaseInfo;
 
 /**
  * V2告警通知

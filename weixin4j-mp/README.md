@@ -29,7 +29,7 @@ weixin4j-mp
 
 * Pay2Api `V2支付API`
   
-* Pay3Api `V3支付API`
+* Pay3Api `V3(商户平台)支付API`
 
 * CouponApi `代金券API`
 
@@ -39,7 +39,7 @@ weixin4j-mp
 
 * CashApi `现金API`
 
-* PayUtil [微信支付工具类](./src/main/java/com/foxinmy/weixin4j/mp/payment/PayUtil.java)
+* PayUtil [微信支付工具类](https://github.com/foxinmy/weixin4j/tree/master/weixin4j-base/src/main/java/com/foxinmy/weixin4j/payment/PayUtil.java)
 
 如何使用
 --------

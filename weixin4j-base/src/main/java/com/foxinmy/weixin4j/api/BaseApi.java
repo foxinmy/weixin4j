@@ -3,9 +3,12 @@ package com.foxinmy.weixin4j.api;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenStorager;
+import com.foxinmy.weixin4j.util.ConfigUtil;
 
 /**
  * API基础
@@ -39,7 +42,18 @@ public abstract class BaseApi {
 	}
 
 	/**
+	 * 默认使用weixin4j.properties文件中的公众号信息
+	 */
+	public final static WeixinAccount DEFAULT_WEIXIN_ACCOUNT;
+
+	/**
 	 * 默认token使用File的方式存储
 	 */
-	public final static TokenStorager DEFAULT_TOKEN_STORAGER = new FileTokenStorager();
+	public final static TokenStorager DEFAULT_TOKEN_STORAGER;
+
+	static {
+		DEFAULT_WEIXIN_ACCOUNT = JSON.parseObject(
+				ConfigUtil.getValue("account"), WeixinAccount.class);
+		DEFAULT_TOKEN_STORAGER = new FileTokenStorager();
+	}
 }

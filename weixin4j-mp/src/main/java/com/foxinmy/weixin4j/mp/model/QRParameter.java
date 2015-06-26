@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.mp.model;
 
 import java.io.Serializable;
 
-import com.foxinmy.weixin4j.mp.type.QRType;
+import com.foxinmy.weixin4j.type.QRType;
 
 /**
  * 二维码参数对象
@@ -28,7 +28,7 @@ public class QRParameter implements Serializable {
 	/**
 	 * 二维码类型
 	 * 
-	 * @see com.foxinmy.weixin4j.mp.type.QRType
+	 * @see com.foxinmy.weixin4j.type.QRType
 	 */
 	private QRType qrType;
 	/**

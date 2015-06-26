@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.foxinmy.weixin4j.mp.payment.JsPayNotify;
+import com.foxinmy.weixin4j.payment.JsPayNotify;
 
 /**
  * V2 Native支付回调时POST的信息
