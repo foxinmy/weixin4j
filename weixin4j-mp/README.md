@@ -95,7 +95,7 @@ weixin4j.properties说明
     // 微信支付API
     WeixinPayProxy weixinPayProxy = new WeixinPayProxy();
     // weixinPayProxy = new WeixinPayProxy(weixinAccount);
-    weixinPayProxy.orderQueryV3(idQuery);
+    weixinPayProxy.orderQuery(idQuery);
 
 > 针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenStorager`,默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用[RedisTokenStorager](https://github.com/foxinmy/weixin4j/wiki/%E7%94%A8redis%E4%BF%9D%E5%AD%98token).
 >

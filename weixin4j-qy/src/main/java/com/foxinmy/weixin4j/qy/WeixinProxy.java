@@ -97,8 +97,12 @@ public class WeixinProxy {
 	 */
 	public WeixinProxy(String corpid, String corpsecret,
 			TokenStorager tokenStorager) {
-		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(corpid,
-				corpsecret), tokenStorager);
+		this(new TokenHolder(new WeixinTokenCreator(corpid, corpsecret),
+				tokenStorager));
+	}
+
+	public WeixinProxy(TokenHolder tokenHolder) {
+		this.tokenHolder = tokenHolder;
 		this.partyApi = new PartyApi(tokenHolder);
 		this.userApi = new UserApi(tokenHolder);
 		this.tagApi = new TagApi(tokenHolder);

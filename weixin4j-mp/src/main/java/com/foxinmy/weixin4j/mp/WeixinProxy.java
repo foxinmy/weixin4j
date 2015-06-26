@@ -101,8 +101,12 @@ public class WeixinProxy {
 
 	public WeixinProxy(String appid, String appsecret,
 			TokenStorager tokenStorager) {
-		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(appid,
-				appsecret), tokenStorager);
+		this(new TokenHolder(new WeixinTokenCreator(appid, appsecret),
+				tokenStorager));
+	}
+
+	public WeixinProxy(TokenHolder tokenHolder) {
+		this.tokenHolder = tokenHolder;
 		this.mediaApi = new MediaApi(tokenHolder);
 		this.notifyApi = new NotifyApi(tokenHolder);
 		this.customApi = new CustomApi(tokenHolder);
