@@ -55,7 +55,7 @@ public class BatchTest extends TokenTest {
 	@Test
 	public void getresult() throws WeixinException {
 		BatchResult result = batchApi
-				.getresult("PVucPBfEapLnvQZ1ru2Vdw3Dbl-jXs3AEQdS24cqmI0");
+				.getBatchResult("PVucPBfEapLnvQZ1ru2Vdw3Dbl-jXs3AEQdS24cqmI0");
 		System.err.println(result);
 	}
 }

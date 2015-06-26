@@ -161,7 +161,7 @@ public class BatchApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E8.8E.B7.E5.8F.96.E5.BC.82.E6.AD.A5.E4.BB.BB.E5.8A.A1.E7.BB.93.E6.9E.9C">获取异步任务执行结果</a>
 	 * @throws WeixinException
 	 */
-	public BatchResult getresult(String jobId) throws WeixinException {
+	public BatchResult getBatchResult(String jobId) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String batch_getresult_uri = getRequestUri("batch_getresult_uri");
 		WeixinResponse response = weixinClient.get(String.format(batch_getresult_uri,

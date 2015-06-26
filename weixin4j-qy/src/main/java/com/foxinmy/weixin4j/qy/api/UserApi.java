@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.qy.api;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +30,12 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98">管理成员说明</a>
  */
 public class UserApi extends QyApi {
+	private final MediaApi mediaApi;
 	private final TokenHolder tokenHolder;
 
 	public UserApi(TokenHolder tokenHolder) {
 		this.tokenHolder = tokenHolder;
+		this.mediaApi = new MediaApi(tokenHolder);
 	}
 
 	/**
@@ -47,7 +51,25 @@ public class UserApi extends QyApi {
 	 */
 	public JsonResult createUser(User user) throws WeixinException {
 		String user_create_uri = getRequestUri("user_create_uri");
-		return excute(user_create_uri, user);
+		return excute(user_create_uri, user, null);
+	}
+
+	/**
+	 * 创建成员
+	 * 
+	 * @param user
+	 *            成员对象
+	 * @param avatar
+	 *            头像文件
+	 * @see com.foxinmy.weixin4j.qy.model.User
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E5.88.9B.E5.BB.BA.E6.88.90.E5.91.98">创建成员说明</a>
+	 * @return 处理结果
+	 * @throws WeixinException
+	 */
+	public JsonResult createUser(User user, File avatar) throws WeixinException {
+		String user_create_uri = getRequestUri("user_create_uri");
+		return excute(user_create_uri, user, avatar);
 	}
 
 	/**
@@ -63,16 +85,42 @@ public class UserApi extends QyApi {
 	 */
 	public JsonResult updateUser(User user) throws WeixinException {
 		String user_update_uri = getRequestUri("user_update_uri");
-		return excute(user_update_uri, user);
+		return excute(user_update_uri, user, null);
 	}
 
-	private JsonResult excute(String uri, User user) throws WeixinException {
+	/**
+	 * 更新用户(如果非必须的字段未指定 则不更新该字段之前的设置值)
+	 * 
+	 * @param user
+	 *            成员对象
+	 * @param avatar
+	 *            头像文件
+	 * @see com.foxinmy.weixin4j.qy.model.User
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E6.9B.B4.E6.96.B0.E6.88.90.E5.91.98">更新成员说明</a>
+	 * @return 处理结果
+	 * @throws WeixinException
+	 */
+	public JsonResult updateUser(User user, File avatar) throws WeixinException {
+		String user_update_uri = getRequestUri("user_update_uri");
+		return excute(user_update_uri, user, avatar);
+	}
+
+	private JsonResult excute(String uri, User user, File avatar)
+			throws WeixinException {
 		JSONObject obj = (JSONObject) JSON.toJSON(user);
 		Object extattr = obj.remove("extattr");
 		if (extattr != null) {
 			JSONObject attrs = new JSONObject();
 			attrs.put("attrs", extattr);
 			obj.put("extattr", attrs);
+		}
+		if (avatar != null) {
+			try {
+				obj.put("avatar_mediaid", mediaApi.uploadMedia(avatar));
+			} catch (IOException e) {
+				throw new WeixinException(e);
+			}
 		}
 		Token token = tokenHolder.getToken();
 		WeixinResponse response = weixinClient.post(

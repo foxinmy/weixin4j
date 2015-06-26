@@ -393,6 +393,24 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 创建成员
+	 * 
+	 * @param user
+	 *            成员对象
+	 * @param avatar
+	 *            头像文件
+	 * @see com.foxinmy.weixin4j.qy.model.User
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E5.88.9B.E5.BB.BA.E6.88.90.E5.91.98">创建成员说明</a>
+	 * @see com.foxinmy.weixin4j.qy.api.UserApi
+	 * @return 处理结果
+	 * @throws WeixinException
+	 */
+	public JsonResult createUser(User user, File avatar) throws WeixinException {
+		return userApi.createUser(user, avatar);
+	}
+
+	/**
 	 * 更新用户(如果非必须的字段未指定 则不更新该字段之前的设置值)
 	 * 
 	 * @param user
@@ -406,6 +424,24 @@ public class WeixinProxy {
 	 */
 	public JsonResult updateUser(User user) throws WeixinException {
 		return userApi.updateUser(user);
+	}
+
+	/**
+	 * 更新用户(如果非必须的字段未指定 则不更新该字段之前的设置值)
+	 * 
+	 * @param user
+	 *            成员对象
+	 * @param avatar
+	 *            头像文件
+	 * @see com.foxinmy.weixin4j.qy.model.User
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E6.9B.B4.E6.96.B0.E6.88.90.E5.91.98">更新成员说明</a>
+	 * @see com.foxinmy.weixin4j.qy.api.UserApi
+	 * @return 处理结果
+	 * @throws WeixinException
+	 */
+	public JsonResult updateUser(User user, File avatar) throws WeixinException {
+		return userApi.updateUser(user, avatar);
 	}
 
 	/**
@@ -852,8 +888,8 @@ public class WeixinProxy {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E8.8E.B7.E5.8F.96.E5.BC.82.E6.AD.A5.E4.BB.BB.E5.8A.A1.E7.BB.93.E6.9E.9C">获取异步任务执行结果</a>
 	 * @throws WeixinException
 	 */
-	public BatchResult getresult(String jobId) throws WeixinException {
-		return batchApi.getresult(jobId);
+	public BatchResult getBatchResult(String jobId) throws WeixinException {
+		return batchApi.getBatchResult(jobId);
 	}
 
 	/**
