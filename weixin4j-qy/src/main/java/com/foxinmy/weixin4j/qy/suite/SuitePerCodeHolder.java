@@ -41,7 +41,7 @@ public class SuitePerCodeHolder {
 	 * 
 	 * @return
 	 */
-	private String getCacheKey() {
+	public String getCacheKey() {
 		return String.format("qy_suite_percode_%s", suiteId);
 	}
 

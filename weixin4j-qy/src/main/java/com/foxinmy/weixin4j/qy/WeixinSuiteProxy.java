@@ -39,6 +39,11 @@ public class WeixinSuiteProxy {
 		this(suiteId, suiteSecret, QyApi.DEFAULT_TOKEN_STORAGER);
 	}
 
+	public WeixinSuiteProxy(TokenStorager tokenStorager) throws WeixinException {
+		this(QyApi.DEFAULT_WEIXIN_ACCOUNT.getSuiteId(),
+				QyApi.DEFAULT_WEIXIN_ACCOUNT.getSuiteSecret(), tokenStorager);
+	}
+
 	/**
 	 * 
 	 * @param suiteId
@@ -53,13 +58,13 @@ public class WeixinSuiteProxy {
 	 */
 	public WeixinSuiteProxy(String suiteId, String suiteSecret,
 			TokenStorager tokenStorager) throws WeixinException {
-		this.suiteApi = new SuiteApi(suiteId, suiteSecret, tokenStorager);
+		this(new SuiteTicketHolder(suiteId, suiteSecret, tokenStorager));
 	}
 
 	/**
 	 * 
 	 * @param suiteTicketHolder
-	 *            套件ticket存取
+	 *            套件ticket的存取
 	 * @throws WeixinException
 	 */
 	public WeixinSuiteProxy(SuiteTicketHolder suiteTicketHolder)

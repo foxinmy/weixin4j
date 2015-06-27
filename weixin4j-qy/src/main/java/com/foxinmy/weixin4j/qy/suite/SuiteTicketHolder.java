@@ -29,7 +29,6 @@ public class SuiteTicketHolder {
 	/**
 	 * 查找ticket
 	 * 
-	 * @param suiteId
 	 * @return
 	 * @throws WeixinException
 	 */
@@ -40,10 +39,9 @@ public class SuiteTicketHolder {
 	/**
 	 * 获取ticket的key
 	 * 
-	 * @param suiteId
 	 * @return
 	 */
-	private String getCacheKey() {
+	public String getCacheKey() {
 		return String.format("qy_suite_ticket_%s", suiteId);
 	}
 

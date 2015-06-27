@@ -18,7 +18,6 @@ import com.foxinmy.weixin4j.qy.suite.WeixinSuiteTokenCreator;
 import com.foxinmy.weixin4j.qy.suite.WeixinTokenSuiteCreator;
 import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.token.TokenStorager;
 
 /**
  * 第三方应用套件
@@ -48,34 +47,12 @@ public class SuiteApi extends QyApi {
 	 */
 	private final TokenHolder suitePreCodeHolder;
 
-	public SuiteApi() throws WeixinException {
-		this(DEFAULT_WEIXIN_ACCOUNT.getSuiteId(), DEFAULT_WEIXIN_ACCOUNT
-				.getSuiteSecret());
-	}
-
-	public SuiteApi(String suiteId, String suiteSecret) throws WeixinException {
-		this(suiteId, suiteSecret, DEFAULT_TOKEN_STORAGER);
-	}
-
-	/**
-	 * 
-	 * @param suiteId
-	 *            应用ID
-	 * @param suiteSecret
-	 *            应用secret
-	 * @param tokenStorager
-	 *            应用token存储器
-	 * @throws WeixinException
-	 */
-	public SuiteApi(String suiteId, String suiteSecret,
-			TokenStorager tokenStorager) throws WeixinException {
-		this(new SuiteTicketHolder(suiteId, suiteSecret, tokenStorager));
-	}
-
 	/**
 	 * 
 	 * @param suiteTicketHolder
 	 *            套件ticket存取
+	 * @param tokenStorager
+	 *            应用token存储器
 	 * @throws WeixinException
 	 */
 	public SuiteApi(SuiteTicketHolder suiteTicketHolder) throws WeixinException {
@@ -153,7 +130,7 @@ public class SuiteApi extends QyApi {
 	public JsonResult setSuiteSession(int... appids) throws WeixinException {
 		String suite_set_session_uri = getRequestUri("suite_set_session_uri");
 		JSONObject para = new JSONObject();
-		para.put("pre_auth_code", suiteTicketHolder.getTicket());
+		para.put("pre_auth_code", suitePreCodeHolder.getAccessToken());
 		para.put("session_info", appids);
 		WeixinResponse response = weixinClient
 				.post(String.format(suite_set_session_uri,
