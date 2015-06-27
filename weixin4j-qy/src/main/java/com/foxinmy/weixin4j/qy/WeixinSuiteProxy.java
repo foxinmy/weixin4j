@@ -57,6 +57,17 @@ public class WeixinSuiteProxy {
 	}
 
 	/**
+	 * 
+	 * @param suiteTicketHolder
+	 *            套件ticket存取
+	 * @throws WeixinException
+	 */
+	public WeixinSuiteProxy(SuiteTicketHolder suiteTicketHolder)
+			throws WeixinException {
+		this.suiteApi = new SuiteApi(suiteTicketHolder);
+	}
+
+	/**
 	 * 应用套件token
 	 * 
 	 * @return
@@ -100,7 +111,7 @@ public class WeixinSuiteProxy {
 	 * @return 企业号token
 	 */
 	public TokenHolder crateTokenHolder(String authCorpid) {
-		return suiteApi.crateTokenHolder(authCorpid);
+		return suiteApi.createTokenHolder(authCorpid);
 	}
 
 	/**

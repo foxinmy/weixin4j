@@ -22,38 +22,29 @@ import com.foxinmy.weixin4j.token.TokenCreator;
 public class WeixinSuiteTokenCreator implements TokenCreator {
 
 	private final WeixinHttpClient httpClient;
-	private final String suiteId;
-	private final String suiteSecret;
 	private final SuiteTicketHolder ticketHolder;
 
 	/**
 	 * 
-	 * @param suiteId
-	 *            套件ID
-	 * @param suiteSecret
-	 *            套件secret
 	 * @param stringStorager
 	 *            套件ticket存取器
 	 */
-	public WeixinSuiteTokenCreator(String suiteId, String suiteSecret,
-			SuiteTicketHolder ticketHolder) {
-		this.suiteId = suiteId;
-		this.suiteSecret = suiteSecret;
+	public WeixinSuiteTokenCreator(SuiteTicketHolder ticketHolder) {
 		this.ticketHolder = ticketHolder;
 		this.httpClient = new WeixinHttpClient();
 	}
 
 	@Override
 	public String getCacheKey() {
-		return String.format("qy_suite_token_%s", suiteId);
+		return String.format("qy_suite_token_%s", ticketHolder.getSuiteId());
 	}
 
 	@Override
 	public Token createToken() throws WeixinException {
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", suiteId);
-		obj.put("suite_secret", suiteSecret);
-		obj.put("suite_ticket", ticketHolder.getTicket(suiteId));
+		obj.put("suite_id", ticketHolder.getSuiteId());
+		obj.put("suite_secret", ticketHolder.getSuiteSecret());
+		obj.put("suite_ticket", ticketHolder.getTicket());
 		WeixinResponse response = httpClient.post(URLConsts.SUITE_TOKEN_URL,
 				obj.toJSONString());
 		obj = response.getAsJson();

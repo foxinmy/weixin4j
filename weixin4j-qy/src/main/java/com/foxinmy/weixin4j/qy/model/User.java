@@ -33,7 +33,8 @@ public class User implements Serializable {
 	/**
 	 * 非必须 成员所属部门id列表。注意，每个部门的直属员工上限为1000个
 	 */
-	private List<Integer> department;
+	@JSONField(name = "department")
+	private List<Integer> partys;
 	/**
 	 * 非必须 职位信息。长度为0~64个字符
 	 */
@@ -123,16 +124,16 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	public List<Integer> getDepartment() {
-		return department;
+	public List<Integer> getPartys() {
+		return partys;
 	}
 
-	public void setDepartment(List<Integer> department) {
-		this.department = department;
+	public void setPartys(List<Integer> partys) {
+		this.partys = partys;
 	}
 
-	public void setDepartment(Integer... department) {
-		this.department = Arrays.asList(department);
+	public void setPartys(Integer... partys) {
+		this.partys = Arrays.asList(partys);
 	}
 
 	public String getPosition() {
@@ -252,8 +253,8 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [userid=" + userid + ", name=" + name + ", department="
-				+ department + ", position=" + position + ", mobile=" + mobile
+		return "User [userid=" + userid + ", name=" + name + ", partys="
+				+ partys + ", position=" + position + ", mobile=" + mobile
 				+ ", gender=" + getFormatGender() + ", tel=" + tel + ", email="
 				+ email + ", weixinid=" + weixinid + ", avatar=" + avatar
 				+ ", status=" + getFormatStatus() + ", enable="

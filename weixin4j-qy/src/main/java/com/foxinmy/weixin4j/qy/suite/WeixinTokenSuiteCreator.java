@@ -22,22 +22,18 @@ import com.foxinmy.weixin4j.token.TokenCreator;
 public class WeixinTokenSuiteCreator implements TokenCreator {
 
 	private final WeixinHttpClient httpClient;
-	private final String suiteId;
 	private final String authCorpid;
 	private final SuitePerCodeHolder perCodeHolder;
 
 	/**
 	 * 
-	 * @param suiteId
-	 *            应用套件ID
 	 * @param suiteSecret
 	 *            授权方corpid
 	 * @param perCodeHolder
 	 *            永久授权码
 	 */
-	public WeixinTokenSuiteCreator(String suiteId, String authCorpid,
+	public WeixinTokenSuiteCreator(String authCorpid,
 			SuitePerCodeHolder perCodeHolder) {
-		this.suiteId = suiteId;
 		this.authCorpid = authCorpid;
 		this.perCodeHolder = perCodeHolder;
 		this.httpClient = new WeixinHttpClient();
@@ -45,15 +41,15 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("qy_token_suite_%s", suiteId);
+		return String.format("qy_token_suite_%s", perCodeHolder.getSuiteId());
 	}
 
 	@Override
 	public Token createToken() throws WeixinException {
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", suiteId);
+		obj.put("suite_id", perCodeHolder.getSuiteId());
 		obj.put("auth_corpid", authCorpid);
-		obj.put("permanent_code", perCodeHolder.getPermanentCode(suiteId));
+		obj.put("permanent_code", perCodeHolder.getPermanentCode());
 		WeixinResponse response = httpClient.post(URLConsts.TOKEN_SUITE_URL,
 				obj.toJSONString());
 		obj = response.getAsJson();

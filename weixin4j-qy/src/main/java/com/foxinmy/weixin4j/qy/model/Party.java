@@ -36,8 +36,8 @@ public class Party implements Serializable {
 
 	}
 
-	public Party(String name) {
-		this(0, name, 1, 1);
+	public Party(int id, String name) {
+		this(id, name, 0, 0);
 	}
 
 	public Party(int id, String name, int parentid, int order) {

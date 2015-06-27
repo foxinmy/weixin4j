@@ -15,9 +15,14 @@ import com.foxinmy.weixin4j.token.TokenStorager;
  */
 public class SuiteTicketHolder {
 
+	private final String suiteId;
+	private final String suiteSecret;
 	private final TokenStorager tokenStorager;
 
-	public SuiteTicketHolder(TokenStorager tokenStorager) {
+	public SuiteTicketHolder(String suiteId, String suiteSecret,
+			TokenStorager tokenStorager) {
+		this.suiteId = suiteId;
+		this.suiteSecret = suiteSecret;
 		this.tokenStorager = tokenStorager;
 	}
 
@@ -28,8 +33,8 @@ public class SuiteTicketHolder {
 	 * @return
 	 * @throws WeixinException
 	 */
-	public String getTicket(String suiteId) throws WeixinException {
-		return tokenStorager.lookup(getCacheKey(suiteId)).getAccessToken();
+	public String getTicket() throws WeixinException {
+		return tokenStorager.lookup(getCacheKey()).getAccessToken();
 	}
 
 	/**
@@ -38,7 +43,7 @@ public class SuiteTicketHolder {
 	 * @param suiteId
 	 * @return
 	 */
-	private String getCacheKey(String suiteId) {
+	private String getCacheKey() {
 		return String.format("qy_suite_ticket_%s", suiteId);
 	}
 
@@ -52,7 +57,15 @@ public class SuiteTicketHolder {
 			throws WeixinException {
 		Token token = new Token(suiteTicket.getSuiteTicket());
 		token.setExpiresIn(-1);
-		tokenStorager.caching(getCacheKey(suiteTicket.getSuiteId()), token);
+		tokenStorager.caching(getCacheKey(), token);
+	}
+
+	public String getSuiteId() {
+		return this.suiteId;
+	}
+
+	public String getSuiteSecret() {
+		return this.suiteSecret;
 	}
 
 	public TokenStorager getTokenStorager() {
