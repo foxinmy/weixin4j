@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.mp;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -132,7 +133,8 @@ public class WeixinProxy {
 	 * @param isMaterial
 	 *            是否永久上传
 	 * @return 上传到微信服务器返回的媒体标识
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#uploadMedia(File, MediaType)}
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#uploadMedia(InputStream, MediaType,boolean)}
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 * @throws IOException
 	 */
@@ -142,49 +144,30 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 上传媒体文件
-	 * 
-	 * @param file
-	 *            文件对象
-	 * @param mediaType
-	 *            媒体类型
-	 * @param isMaterial
-	 *            是否永久上传
-	 * @return 上传到微信服务器返回的媒体标识
-	 * @throws WeixinException
-	 * @throws IOException
-	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#uploadMedia(String, byte[],String)}
-	 */
-	public String uploadMedia(File file, MediaType mediaType, boolean isMaterial)
-			throws WeixinException, IOException {
-		return mediaApi.uploadMedia(file, mediaType, isMaterial);
-	}
-
-	/**
-	 * 上传媒体文件
+	 * 上传媒体文件 </br> <font color="red">此接口只包含图片、语音、缩略图、视频(临时)四种媒体类型的上传</font>
 	 * <p>
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
 	 * 否则抛出异常.
 	 * </p>
 	 * 
-	 * @param fileName
-	 *            文件名
-	 * @param data
-	 *            媒体数据包
+	 * @param is
+	 *            媒体数据流
 	 * @param mediaType
-	 *            媒体类型
+	 *            媒体文件类型：分别有图片（image）、语音（voice）、视频(video)和缩略图（thumb）
 	 * @param isMaterial
 	 *            是否永久上传
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
+	 *      href="http://mp.weixin.qq.com/wiki/5/963fc70b80dc75483a271298a76a8d59.html">上传临时素材</a>
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久素材</a>
+	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 */
-	public String uploadMedia(String fileName, byte[] data, String mediaType,
+	public String uploadMedia(InputStream is, MediaType mediaType,
 			boolean isMaterial) throws WeixinException {
-		return mediaApi.uploadMedia(fileName, data, mediaType, isMaterial);
+		return mediaApi.uploadMedia(is, mediaType, isMaterial);
 	}
 
 	/**
@@ -203,13 +186,12 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
-	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#downloadMedia(String)}
 	 */
-	public File downloadMedia(String mediaId, MediaType mediaType,
-			boolean isMaterial) throws WeixinException {
-		return mediaApi.downloadMedia(mediaId, mediaType, isMaterial);
+	public File downloadMediaFile(String mediaId, boolean isMaterial)
+			throws WeixinException {
+		return mediaApi.downloadMediaFile(mediaId, isMaterial);
 	}
 
 	/**

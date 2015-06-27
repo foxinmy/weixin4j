@@ -40,6 +40,12 @@ public final class ContentType implements Serializable {
 			Consts.UTF_8);
 	public static final ContentType TEXT_PLAIN = create("text/plain",
 			Consts.UTF_8);
+	public static final ContentType IMAGE_JPG = create("image/jpg",
+			Consts.UTF_8);
+	public static final ContentType AUDIO_MP3 = create("audio/mp3",
+			Consts.UTF_8);
+	public static final ContentType VIDEO_MPEG4 = create("video/mpeg4",
+			Consts.UTF_8);
 	public static final ContentType TEXT_XML = create("text/xml", Consts.UTF_8);
 	public static final ContentType WILDCARD = create("*/*", (Charset) null);
 

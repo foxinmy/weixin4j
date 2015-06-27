@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.qy;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
@@ -207,31 +208,12 @@ public class WeixinProxy {
 	 *            媒体对象
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy.MediaApi#uploadMedia(File, MediaType)}
+	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy.MediaApi#uploadMedia(InputStream, MediaType)}
 	 * @throws WeixinException
 	 * @throws IOException
 	 */
 	public String uploadMedia(File file) throws WeixinException, IOException {
 		return mediaApi.uploadMedia(file);
-	}
-
-	/**
-	 * 上传媒体文件
-	 * 
-	 * @param file
-	 *            文件对象
-	 * @param mediaType
-	 *            媒体类型
-	 * @return 上传到微信服务器返回的媒体标识
-	 * @throws WeixinException
-	 * @throws IOException
-	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#uploadMedia(String, byte[],String)}
-	 */
-	public String uploadMedia(File file, MediaType mediaType)
-			throws WeixinException, IOException {
-		return mediaApi.uploadMedia(file, mediaType);
 	}
 
 	/**
@@ -241,19 +223,20 @@ public class WeixinProxy {
 	 * 否则抛出异常.
 	 * </p>
 	 * 
-	 * @param bytes
-	 *            媒体数据包
+	 * @param is
+	 *            媒体数据流
 	 * @param mediaType
 	 *            媒体类型
-	 * @return 上传到微信服务器返回的媒体标识
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see com.foxinmy.weixin4j.type.MediaType
+	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传媒体文件说明</a>
 	 * @throws WeixinException
 	 */
-	public String uploadMedia(String fileName, byte[] bytes, String mediaType)
+	public String uploadMedia(InputStream is, MediaType mediaType)
 			throws WeixinException {
-		return mediaApi.uploadMedia(fileName, bytes, mediaType);
+		return mediaApi.uploadMedia(is, mediaType);
 	}
 
 	/**
@@ -279,9 +262,7 @@ public class WeixinProxy {
 	 * 
 	 * @param mediaId
 	 *            存储在微信服务器上的媒体标识
-	 * @param extension
-	 *            媒体后缀名
-	 * @return 写入硬盘后的文件对象
+	 * @return 写入硬盘后的文件对象,存储路径见weixin4j.properties配置
 	 * @throws WeixinException
 	 * @throws IOException
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
@@ -290,9 +271,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see {@link com.foxinmy.weixin4j.WeixinProxy.MediaApi#downloadMedia(String)}
 	 */
-	public File downloadMedia(String mediaId, String extension)
-			throws WeixinException {
-		return mediaApi.downloadMedia(mediaId, extension);
+	public File downloadMediaFile(String mediaId) throws WeixinException {
+		return mediaApi.downloadMediaFile(mediaId);
 	}
 
 	/**
@@ -406,7 +386,8 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult createUser(User user, File avatar) throws WeixinException {
+	public JsonResult createUser(User user, InputStream avatar)
+			throws WeixinException {
 		return userApi.createUser(user, avatar);
 	}
 
@@ -440,7 +421,8 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateUser(User user, File avatar) throws WeixinException {
+	public JsonResult updateUser(User user, InputStream avatar)
+			throws WeixinException {
 		return userApi.updateUser(user, avatar);
 	}
 

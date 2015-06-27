@@ -18,7 +18,6 @@ import com.foxinmy.weixin4j.tuple.News;
 import com.foxinmy.weixin4j.tuple.Text;
 import com.foxinmy.weixin4j.tuple.Video;
 import com.foxinmy.weixin4j.tuple.Voice;
-import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 客服消息测试
@@ -90,8 +89,7 @@ public class NotifyTest extends TokenTest {
 
 	@Test
 	public void send2() throws WeixinException, IOException {
-		String mediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"),
-				MediaType.image, false);
+		String mediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"), false);
 		NotifyMessage imageNotify = new NotifyMessage(
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU", new Image(mediaId));
 		JsonResult result = notifyApi.sendNotify(imageNotify);

@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.type;
 
+import com.foxinmy.weixin4j.http.ContentType;
+
 /**
  * 上传的媒体类型</br>
  * <p>
@@ -21,28 +23,18 @@ package com.foxinmy.weixin4j.type;
  * @since JDK 1.7
  */
 public enum MediaType {
-	image("jpg"), voice("amr/mp3"), video("mp4"), thumb("jpg"), file("unknown"), news(
-			"");
+	image(ContentType.IMAGE_JPG), voice(ContentType.AUDIO_MP3), video(
+			ContentType.VIDEO_MPEG4), thumb(ContentType.IMAGE_JPG), file(
+			ContentType.APPLICATION_OCTET_STREAM), news(
+			ContentType.APPLICATION_OCTET_STREAM);
 
-	MediaType(String formatName) {
-		this.formatName = formatName;
+	MediaType(ContentType contentType) {
+		this.contentType = contentType;
 	}
 
-	public static MediaType getMediaType(String key) {
-		if (key.equals("jpg")) {
-			return MediaType.image;
-		} else if ("amr/mp3".contains(key)) {
-			return MediaType.voice;
-		} else if (key.equals("mp4")) {
-			return MediaType.video;
-		} else {
-			return MediaType.file;
-		}
-	}
+	private ContentType contentType;
 
-	private String formatName;
-
-	public String getFormatName() {
-		return formatName;
+	public ContentType getContentType() {
+		return contentType;
 	}
 }

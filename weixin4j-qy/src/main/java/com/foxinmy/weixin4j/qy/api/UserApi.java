@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.qy.api;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 成员API
@@ -67,7 +67,8 @@ public class UserApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult createUser(User user, File avatar) throws WeixinException {
+	public JsonResult createUser(User user, InputStream avatar)
+			throws WeixinException {
 		String user_create_uri = getRequestUri("user_create_uri");
 		return excute(user_create_uri, user, avatar);
 	}
@@ -101,12 +102,13 @@ public class UserApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateUser(User user, File avatar) throws WeixinException {
+	public JsonResult updateUser(User user, InputStream avatar)
+			throws WeixinException {
 		String user_update_uri = getRequestUri("user_update_uri");
 		return excute(user_update_uri, user, avatar);
 	}
 
-	private JsonResult excute(String uri, User user, File avatar)
+	private JsonResult excute(String uri, User user, InputStream avatar)
 			throws WeixinException {
 		JSONObject obj = (JSONObject) JSON.toJSON(user);
 		Object extattr = obj.remove("extattr");
@@ -116,11 +118,8 @@ public class UserApi extends QyApi {
 			obj.put("extattr", attrs);
 		}
 		if (avatar != null) {
-			try {
-				obj.put("avatar_mediaid", mediaApi.uploadMedia(avatar));
-			} catch (IOException e) {
-				throw new WeixinException(e);
-			}
+			obj.put("avatar_mediaid",
+					mediaApi.uploadMedia(avatar, MediaType.image));
 		}
 		Token token = tokenHolder.getToken();
 		WeixinResponse response = weixinClient.post(

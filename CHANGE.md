@@ -358,3 +358,7 @@
   + 将微信支付模块移到base工程
   
   + **weixin4j-qy**: 管理成员新增头像参数
+  
+* 2015-06-27
+
+  + 媒体接口(MediaApi)中上传方法中的File类型调整为InputStream
