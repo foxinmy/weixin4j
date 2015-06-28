@@ -448,7 +448,7 @@ public class WeixinPayProxy {
 	 */
 	public MPPaymentResult mpPayment(File caFile, MPPayment mpPayment)
 			throws WeixinException {
-		return cashApi.mpPayment(caFile, mpPayment);
+		return cashApi.mchPayment(caFile, mpPayment);
 	}
 
 	/**
@@ -458,7 +458,7 @@ public class WeixinPayProxy {
 	 */
 	public MPPaymentResult mpPayment(MPPayment mpPayment)
 			throws WeixinException {
-		return cashApi.mpPayment(DEFAULT_CA_FILE, mpPayment);
+		return cashApi.mchPayment(DEFAULT_CA_FILE, mpPayment);
 	}
 
 	/**
@@ -477,7 +477,7 @@ public class WeixinPayProxy {
 	 */
 	public MPPaymentRecord mpPaymentQuery(File caFile, String outTradeNo)
 			throws WeixinException {
-		return cashApi.mpPaymentQuery(caFile, outTradeNo);
+		return cashApi.mchPaymentQuery(caFile, outTradeNo);
 	}
 
 	/**
@@ -487,6 +487,6 @@ public class WeixinPayProxy {
 	 */
 	public MPPaymentRecord mpPaymentQuery(String outTradeNo)
 			throws WeixinException {
-		return cashApi.mpPaymentQuery(DEFAULT_CA_FILE, outTradeNo);
+		return cashApi.mchPaymentQuery(DEFAULT_CA_FILE, outTradeNo);
 	}
 }

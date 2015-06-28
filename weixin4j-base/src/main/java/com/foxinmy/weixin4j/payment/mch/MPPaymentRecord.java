@@ -53,6 +53,7 @@ public class MPPaymentRecord extends ApiResult {
 	/**
 	 * 收款用户openid
 	 */
+	@XmlElement(name = "openid")
 	private String openid;
 	/**
 	 * 收款用户姓名
@@ -83,6 +84,7 @@ public class MPPaymentRecord extends ApiResult {
 	/**
 	 * 企业付款描述信息
 	 */
+	@XmlElement(name = "desc")
 	private String desc;
 	/**
 	 * 实名验证结果 PASS:通过 FAILED:不通过

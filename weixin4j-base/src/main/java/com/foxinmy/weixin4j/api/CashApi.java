@@ -155,7 +155,7 @@ public class CashApi {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/mch_pay.php?chapter=14_1">企业付款</a>
 	 * @throws WeixinException
 	 */
-	public MPPaymentResult mpPayment(File caFile, MPPayment mpPayment)
+	public MPPaymentResult mchPayment(File caFile, MPPayment mpPayment)
 			throws WeixinException {
 		JSONObject obj = (JSONObject) JSON.toJSON(mpPayment);
 		obj.put("nonce_str", RandomUtil.generateString(16));
@@ -207,7 +207,7 @@ public class CashApi {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/mch_pay.php?chapter=14_3">企业付款查询</a>
 	 * @throws WeixinException
 	 */
-	public MPPaymentRecord mpPaymentQuery(File caFile, String outTradeNo)
+	public MPPaymentRecord mchPaymentQuery(File caFile, String outTradeNo)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("nonce_str", RandomUtil.generateString(16));

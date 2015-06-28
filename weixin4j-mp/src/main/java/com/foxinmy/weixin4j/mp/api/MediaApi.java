@@ -107,7 +107,7 @@ public class MediaApi extends MpApi {
 	 */
 	public String uploadMedia(InputStream is, MediaType mediaType,
 			boolean isMaterial) throws WeixinException {
-		if (mediaType.equals(MediaType.video.name()) && isMaterial) {
+		if (mediaType == MediaType.video && isMaterial) {
 			throw new WeixinException(
 					"please invoke uploadMaterialVideo method");
 		}
@@ -133,7 +133,7 @@ public class MediaApi extends MpApi {
 								.toHexString())));
 			}
 		} catch (UnsupportedEncodingException e) {
-			; // ignore
+			throw new WeixinException(e);
 		} finally {
 			try {
 				is.close();

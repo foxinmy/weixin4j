@@ -274,7 +274,6 @@ public class ObjectId implements Comparable<ObjectId>, java.io.Serializable {
 
 	private static final int _genmachine;
 	static {
-
 		try {
 			// build a 2-byte machine piece based on NICs info
 			int machinePiece;
