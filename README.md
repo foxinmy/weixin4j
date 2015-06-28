@@ -9,13 +9,15 @@ weixin4j
 -------
 * **weixin4j-mp**
 
-  `公众平台API封装`
+  `公众平台API全封装`
 	
   `微信支付(刷卡/扫码/公众号)`
 	
 * **weixin4j-qy**
 
-  `企业号API封装`
+  `企业号API全封装`
+  
+  `微信支付(刷卡/扫码/公众号)`
   
 * **weixin4j-server**
   
