@@ -32,7 +32,7 @@ public class OUserInfo implements Serializable {
 	 * 登陆管理员信息
 	 */
 	@JSONField(name = "user_info")
-	private User userInfo;
+	private User adminInfo;
 	/**
 	 * 授权方企业信息
 	 */
@@ -65,12 +65,12 @@ public class OUserInfo implements Serializable {
 		this.isInnerAdmin = isInnerAdmin;
 	}
 
-	public User getUserInfo() {
-		return userInfo;
+	public User getAdminInfo() {
+		return adminInfo;
 	}
 
-	public void setUserInfo(User userInfo) {
-		this.userInfo = userInfo;
+	public void setAdminInfo(User adminInfo) {
+		this.adminInfo = adminInfo;
 	}
 
 	public Corpinfo getCorpinfo() {
@@ -100,7 +100,7 @@ public class OUserInfo implements Serializable {
 	@Override
 	public String toString() {
 		return "OUserInfo [isSysAdmin=" + isSysAdmin + ", isInnerAdmin="
-				+ isInnerAdmin + ", userInfo=" + userInfo + ", corpinfo="
+				+ isInnerAdmin + ", adminInfo=" + adminInfo + ", corpinfo="
 				+ corpinfo + ", agentInfo=" + agentInfo + ", authInfo="
 				+ authInfo + "]";
 	}

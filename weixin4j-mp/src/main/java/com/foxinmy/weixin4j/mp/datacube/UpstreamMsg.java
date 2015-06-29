@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.MessageType;
 
 /**
  * 数据统计:消息发送概况数据
@@ -61,19 +60,23 @@ public class UpstreamMsg implements Serializable {
 		this.refHour = refHour;
 	}
 
-	public MessageType getMsgType() {
-		// 1代表文字 2代表图片 3代表语音 4代表视频 6代表第三方应用消息（链接消息）
+	/**
+	 * 1代表文字 2代表图片 3代表语音 4代表视频 6代表第三方应用消息（链接消息）
+	 * 
+	 * @return
+	 */
+	public String getMsgType() {
 		switch (msgType) {
 		case 1:
-			return MessageType.text;
+			return "text";
 		case 2:
-			return MessageType.image;
+			return "image";
 		case 3:
-			return MessageType.voice;
+			return "voice";
 		case 4:
-			return MessageType.video;
+			return "video";
 		case 6:
-			return MessageType.link;
+			return "link";
 		default:
 			return null;
 		}

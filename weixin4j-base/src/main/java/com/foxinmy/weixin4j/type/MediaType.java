@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.http.ContentType;
  * <p>
  * 企业号上传限制:</br> 图片（image）:1MB，支持JPG格式</br>
  * 语音（voice）：2MB，播放长度不超过60s，支持AMR格式</br> 视频（video）：10MB，支持MP4格式</br>
- * 普通文件（file）：10MB</br>
+ * 普通文件（file）：20MB</br>
  * </p>
  * <p>
  * <font color='red'>媒体文件在后台保存时间为3天,即3天后media_id失效</font>

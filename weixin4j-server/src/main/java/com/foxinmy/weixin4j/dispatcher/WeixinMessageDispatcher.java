@@ -178,9 +178,16 @@ public class WeixinMessageDispatcher {
 	protected void noHandlerFound(ChannelHandlerContext context,
 			WeixinRequest request, Object message) {
 		if (isDebug) {
-			context.writeAndFlush(
-					new TextResponse(request.getOriginalContent()))
-					.addListener(ChannelFutureListener.CLOSE);
+			if (message instanceof String) {
+				context.writeAndFlush(
+						new TextResponse(request.getOriginalContent()
+								.replaceAll("\\!\\[CDATA\\[", "")
+								.replaceAll("\\]\\]", ""))).addListener(
+						ChannelFutureListener.CLOSE);
+			} else {
+				context.writeAndFlush(new TextResponse(message.toString()))
+						.addListener(ChannelFutureListener.CLOSE);
+			}
 		} else {
 			context.writeAndFlush(
 					HttpUtil.createHttpResponse(null, NOT_FOUND, null))

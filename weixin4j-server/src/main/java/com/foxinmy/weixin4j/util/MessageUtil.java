@@ -33,7 +33,7 @@ public final class MessageUtil {
 	 */
 	public static String signature(String... para) {
 		Arrays.sort(para);
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
 		for (String str : para) {
 			sb.append(str);
 		}
@@ -55,7 +55,7 @@ public final class MessageUtil {
 	public static String aesEncrypt(String appId, String encodingAesKey,
 			String xmlContent) throws WeixinException {
 		byte[] randomBytes = StringUtil.getBytesUtf8(RandomUtil
-				.generateString(16));
+				.generateString(32));
 		byte[] xmlBytes = StringUtil.getBytesUtf8(xmlContent);
 		int xmlLength = xmlBytes.length;
 		byte[] orderBytes = new byte[4];
@@ -64,6 +64,7 @@ public final class MessageUtil {
 		orderBytes[1] = (byte) (xmlLength >> 16 & 0xFF);
 		orderBytes[0] = (byte) (xmlLength >> 24 & 0xFF);
 		byte[] appidBytes = StringUtil.getBytesUtf8(appId);
+
 		int byteLength = randomBytes.length + xmlLength + orderBytes.length
 				+ appidBytes.length;
 		// ... + pad: 使用自定义的填充方式对明文进行补位填充

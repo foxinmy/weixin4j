@@ -39,6 +39,6 @@ public final class Base64 {
 
 	public static String encodeBase64String(final byte[] bytes) {
 		byte[] data = encodeBase64(bytes);
-		return HexUtil.encodeHexString(data);
+		return StringUtil.newStringUtf8(data).trim();
 	}
 }

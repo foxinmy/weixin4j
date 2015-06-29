@@ -14,11 +14,13 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  *      >企业号设置</a>
  */
 public class WeixinQyAccount extends WeixinAccount {
+	
 	private static final long serialVersionUID = 3689999353867189585L;
 
-	public WeixinQyAccount() {
+	public WeixinQyAccount(){
+		
 	}
-
+	
 	/**
 	 * 
 	 * @param corpid

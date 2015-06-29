@@ -67,4 +67,10 @@ public class AesToken implements Serializable, Cloneable {
 	public String getAesKey() {
 		return aesKey;
 	}
+
+	@Override
+	public String toString() {
+		return "AesToken [weixinId=" + weixinId + ", token=" + token
+				+ ", aesKey=" + aesKey + "]";
+	}
 }

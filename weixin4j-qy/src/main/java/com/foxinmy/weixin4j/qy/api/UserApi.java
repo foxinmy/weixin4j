@@ -221,7 +221,7 @@ public class UserApi extends QyApi {
 	/**
 	 * 获取部门成员
 	 * 
-	 * @param departId
+	 * @param partyId
 	 *            部门ID 必须
 	 * @param fetchChild
 	 *            是否递归获取子部门下面的成员 非必须

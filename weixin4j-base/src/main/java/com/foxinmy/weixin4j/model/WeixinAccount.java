@@ -41,12 +41,12 @@ public class WeixinAccount implements Serializable {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getSecret() {
 		return secret;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public void setSecret(String secret) {

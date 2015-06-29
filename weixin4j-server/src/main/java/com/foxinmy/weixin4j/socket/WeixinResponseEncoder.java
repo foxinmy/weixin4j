@@ -17,7 +17,6 @@ import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
-import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 微信回复编码类
@@ -53,8 +52,7 @@ public class WeixinResponseEncoder extends
 					messageTransfer.getFromUserName()));
 			content.append(String.format(
 					"<FromUserName><![CDATA[%s]]></FromUserName>",
-					StringUtil.isBlank(aesToken.getWeixinId()) ? messageTransfer
-							.getToUserName() : aesToken.getWeixinId()));
+					messageTransfer.getToUserName()));
 			content.append(String.format(
 					"<CreateTime><![CDATA[%d]]></CreateTime>",
 					System.currentTimeMillis() / 1000l));
@@ -64,8 +62,8 @@ public class WeixinResponseEncoder extends
 			content.append("</xml>");
 			if (encryptType == EncryptType.AES) {
 				String nonce = RandomUtil.generateString(32);
-				String timestamp = String
-						.valueOf(System.currentTimeMillis() / 1000l);
+				String timestamp = Long
+						.toString(System.currentTimeMillis() / 1000l);
 				String encrtypt = MessageUtil.aesEncrypt(
 						aesToken.getWeixinId(), aesToken.getAesKey(),
 						content.toString());

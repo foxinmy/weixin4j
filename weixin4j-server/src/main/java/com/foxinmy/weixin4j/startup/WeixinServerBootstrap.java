@@ -77,23 +77,24 @@ public final class WeixinServerBootstrap {
 	private final Map<String, AesToken> aesTokenMap;
 
 	/**
+	 * 
 	 * 明文模式
 	 * 
-	 * @param openid
-	 *            微信号(原始ID)
+	 * @param weixinid
+	 *            微信号(原始ID)或者appid
 	 * @param token
 	 *            开发者token
 	 * 
 	 */
-	public WeixinServerBootstrap(String openid, String token) {
-		this(openid, token, null);
+	public WeixinServerBootstrap(String weixinid, String token) {
+		this(weixinid, token, null);
 	}
 
 	/**
 	 * 兼容模式 & 密文模式
 	 * 
 	 * @param appid
-	 *            公众号的唯一ID
+	 *            公众号的appid
 	 * @param token
 	 *            开发者填写的token
 	 * @param aesKey

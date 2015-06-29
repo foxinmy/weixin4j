@@ -487,7 +487,7 @@ public class WeixinProxy {
 	/**
 	 * 获取部门成员
 	 * 
-	 * @param partyId
+	 * @param departId
 	 *            部门ID 必须
 	 * @param fetchChild
 	 *            是否递归获取子部门下面的成员 非必须
@@ -502,9 +502,9 @@ public class WeixinProxy {
 	 * @return 成员列表
 	 * @throws WeixinException
 	 */
-	public List<User> listUser(int partyId, boolean fetchChild,
+	public List<User> listUser(int departId, boolean fetchChild,
 			UserStatus userStatus, boolean findDetail) throws WeixinException {
-		return userApi.listUser(partyId, fetchChild, userStatus, findDetail);
+		return userApi.listUser(departId, fetchChild, userStatus, findDetail);
 	}
 
 	/**
