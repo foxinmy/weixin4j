@@ -9,6 +9,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.User;
+import com.foxinmy.weixin4j.mp.type.Lang;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 
@@ -146,19 +147,40 @@ public class OauthApi extends MpApi {
 	 * oauth获取用户信息(需scope为 snsapi_userinfo)
 	 * 
 	 * @param token
-	 *            授权票据
+	 *            授权信息(token&openid)
 	 * @return 用户对象
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">拉取用户信息</a>
+	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">授权获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
-	 * @see {@link com.foxinmy.weixin4j.mp.api.UserApi#getOauthToken(String)}
+	 * @see {@link com.foxinmy.weixin4j.mp.api.OauthApi#getOauthToken(String)}
+	 * @see {@link com.foxinmy.weixin4j.mp.api.OauthApi#getUser(String,Sring,Lang)}
 	 */
 	public User getUser(OauthToken token) throws WeixinException {
+		return getUser(token.getAccessToken(), token.getOpenid(), Lang.zh_CN);
+	}
+
+	/**
+	 * oauth获取用户信息(需scope为 snsapi_userinfo)
+	 * 
+	 * @param oauthToken
+	 *            授权票据
+	 * @param openid
+	 *            用户openid
+	 * @param lang
+	 *            使用语言
+	 * @return 用户对象
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">授权获取用户信息</a>
+	 * @see com.foxinmy.weixin4j.mp.model.User
+	 */
+	public User getUser(String oauthToken, String openid, Lang lang)
+			throws WeixinException {
 		String user_info_uri = getRequestUri("sns_user_info_uri");
 		WeixinResponse response = weixinClient.get(String.format(user_info_uri,
-				token.getAccessToken(), token.getOpenid()));
+				oauthToken, openid, lang.name()));
 
 		return response.getAsObject(new TypeReference<User>() {
 		});

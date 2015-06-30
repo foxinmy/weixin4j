@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.qy.api;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
@@ -198,8 +197,10 @@ public class SuiteApi extends QyApi {
 		WeixinResponse response = weixinClient.post(
 				String.format(suite_get_authinfo_uri,
 						suiteTokenHolder.getAccessToken()), obj.toJSONString());
-		return response.getAsObject(new TypeReference<OUserInfo>() {
-		});
+		obj = response.getAsJson();
+		obj.put("corp_info", obj.remove("auth_corp_info"));
+		obj.put("user_info", obj.remove("auth_user_info"));
+		return JSON.toJavaObject(obj, OUserInfo.class);
 	}
 
 	/**

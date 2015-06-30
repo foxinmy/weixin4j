@@ -311,7 +311,7 @@ public class WeixinProxy {
 	 * 查询部门列表(以部门的order字段从小到大排列)
 	 * 
 	 * @param partyId
-	 *            部门ID。获取指定部门ID下的子部门
+	 *            部门ID。获取指定部门ID下的子部门 传入0表示获取全部子部门
 	 * @see com.foxinmy.weixin4j.qy.model.Party
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E8.8E.B7.E5.8F.96.E9.83.A8.E9.97.A8.E5.88.97.E8.A1.A8">获取部门列表</a>

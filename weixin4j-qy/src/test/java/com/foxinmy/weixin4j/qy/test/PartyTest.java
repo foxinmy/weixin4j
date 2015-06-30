@@ -44,7 +44,7 @@ public class PartyTest extends TokenTest {
 
 	@Test
 	public void list() throws WeixinException {
-		List<Party> list = partyApi.listParty(1);
+		List<Party> list = partyApi.listParty(0);
 		Assert.assertFalse(list.isEmpty());
 		System.out.println(list);
 	}
