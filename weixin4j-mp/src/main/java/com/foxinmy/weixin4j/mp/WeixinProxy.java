@@ -440,9 +440,9 @@ public class WeixinProxy {
 	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E8.8E.B7.E5.8F.96.E5.9C.A8.E7.BA.BF.E5.AE.A2.E6.9C.8D.E6.8E.A5.E5.BE.85.E4.BF.A1.E6.81.AF">获取在线客服接待信息</a>
 	 * @throws WeixinException
 	 */
-	public List<KfAccount> getKfAccountList(boolean isOnline)
+	public List<KfAccount> listKfAccount(boolean isOnline)
 			throws WeixinException {
-		return customApi.getKfAccountList(isOnline);
+		return customApi.listKfAccount(isOnline);
 	}
 
 	/**
@@ -463,9 +463,9 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E6.B7.BB.E5.8A.A0.E5.AE.A2.E6.9C.8D.E8.B4.A6.E5.8F.B7">新增客服账号</a>
 	 */
-	public JsonResult addAccount(String id, String name, String pwd)
+	public JsonResult createAccount(String id, String name, String pwd)
 			throws WeixinException {
-		return customApi.addAccount(id, name, pwd);
+		return customApi.createAccount(id, name, pwd);
 	}
 
 	/**
@@ -601,9 +601,9 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.9C.8D.E7.9A.84.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
 	 */
-	public List<KfSession> getKfSessionList(String kfAccount)
+	public List<KfSession> listKfSession(String kfAccount)
 			throws WeixinException {
-		return customApi.getKfSessionList(kfAccount);
+		return customApi.listKfSession(kfAccount);
 	}
 
 	/**
@@ -617,8 +617,8 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E6.9C.AA.E6.8E.A5.E5.85.A5.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
 	 */
-	public List<KfSession> getKfSessionWaitList() throws WeixinException {
-		return customApi.getKfSessionWaitList();
+	public List<KfSession> listKfSessionWait() throws WeixinException {
+		return customApi.listKfSessionWait();
 	}
 
 	/**
@@ -822,12 +822,12 @@ public class WeixinProxy {
 	 * @return 消息发送状态
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
-	 * @see {@link com.foxinmy.weixin4j.mp.event.MassEventMessage#getStatusDesc(String)}
+	 * @see {@link com.foxinmy.weixin4j.util.MessageUtil#getStatusDesc(String)}
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.9F.A5.E8.AF.A2.E7.BE.A4.E5.8F.91.E6.B6.88.E6.81.AF.E5.8F.91.E9.80.81.E7.8A.B6.E6.80.81.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">查询群发状态</a>
 	 */
-	public String getMassNews(String msgId) throws WeixinException {
-		return massApi.getMassNews(msgId);
+	public String getMassNewStatus(String msgId) throws WeixinException {
+		return massApi.getMassNewStatus(msgId);
 	}
 
 	/**
@@ -1210,8 +1210,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.HelperApi
 	 * @throws WeixinException
 	 */
-	public List<String> getcallbackip() throws WeixinException {
-		return helperApi.getcallbackip();
+	public List<String> getCallbackip() throws WeixinException {
+		return helperApi.getCallbackip();
 	}
 
 	/**

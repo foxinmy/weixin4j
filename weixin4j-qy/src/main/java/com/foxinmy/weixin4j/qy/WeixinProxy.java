@@ -695,8 +695,8 @@ public class WeixinProxy {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%9B%9E%E8%B0%83%E6%A8%A1%E5%BC%8F#.E8.8E.B7.E5.8F.96.E5.BE.AE.E4.BF.A1.E6.9C.8D.E5.8A.A1.E5.99.A8.E7.9A.84ip.E6.AE.B5">获取IP地址</a>
 	 * @throws WeixinException
 	 */
-	public List<String> getcallbackip() throws WeixinException {
-		return helperApi.getcallbackip();
+	public List<String> getCallbackip() throws WeixinException {
+		return helperApi.getCallbackip();
 	}
 
 	/**
@@ -762,9 +762,9 @@ public class WeixinProxy {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.82.80.E8.AF.B7.E6.88.90.E5.91.98.E5.85.B3.E6.B3.A8">邀请成员关注</a>
 	 * @throws WeixinException
 	 */
-	public String inviteuser(IdParameter parameter, Callback callback,
+	public String batchInviteUser(IdParameter parameter, Callback callback,
 			String tips) throws WeixinException {
-		return batchApi.inviteuser(parameter, callback, tips);
+		return batchApi.inviteUser(parameter, callback, tips);
 	}
 
 	/**
@@ -786,9 +786,9 @@ public class WeixinProxy {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.A2.9E.E9.87.8F.E6.9B.B4.E6.96.B0.E6.88.90.E5.91.98">批量更新成员</a>
 	 * @throws WeixinException
 	 */
-	public String syncuser(String mediaId, Callback callback)
+	public String batchSyncUser(String mediaId, Callback callback)
 			throws WeixinException {
-		return batchApi.syncuser(mediaId, callback);
+		return batchApi.syncUser(mediaId, callback);
 	}
 
 	/**
@@ -811,9 +811,9 @@ public class WeixinProxy {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E6.88.90.E5.91.98">批量覆盖成员</a>
 	 * @throws WeixinException
 	 */
-	public String replaceuser(String mediaId, Callback callback)
+	public String batchReplaceUser(String mediaId, Callback callback)
 			throws WeixinException {
-		return batchApi.replaceuser(mediaId, callback);
+		return batchApi.replaceUser(mediaId, callback);
 	}
 
 	/**
@@ -853,9 +853,9 @@ public class WeixinProxy {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E9.83.A8.E9.97.A8">批量覆盖部门</a>
 	 * @throws WeixinException
 	 */
-	public String replaceparty(String mediaId, Callback callback)
+	public String batchReplaceParty(String mediaId, Callback callback)
 			throws WeixinException {
-		return batchApi.replaceparty(mediaId, callback);
+		return batchApi.replaceParty(mediaId, callback);
 	}
 
 	/**

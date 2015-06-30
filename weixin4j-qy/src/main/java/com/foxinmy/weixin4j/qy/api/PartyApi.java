@@ -43,7 +43,9 @@ public class PartyApi extends QyApi {
 	public int createParty(Party depart) throws WeixinException {
 		String department_create_uri = getRequestUri("department_create_uri");
 		JSONObject obj = (JSONObject) JSON.toJSON(depart);
-		obj.remove("id");
+		if (depart.getId() < 1) {
+			obj.remove("id");
+		}
 		Token token = tokenHolder.getToken();
 		WeixinResponse response = weixinClient.post(
 				String.format(department_create_uri, token.getAccessToken()),
@@ -75,7 +77,8 @@ public class PartyApi extends QyApi {
 	/**
 	 * 查询部门列表(以部门的order字段从小到大排列)
 	 * 
-	 * @param partId 部门ID。获取指定部门ID下的子部门
+	 * @param partId
+	 *            部门ID。获取指定部门ID下的子部门
 	 * @see com.foxinmy.weixin4j.qy.model.Party
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E8.8E.B7.E5.8F.96.E9.83.A8.E9.97.A8.E5.88.97.E8.A1.A8">获取部门列表</a>
@@ -85,8 +88,8 @@ public class PartyApi extends QyApi {
 	public List<Party> listParty(int partId) throws WeixinException {
 		String department_list_uri = getRequestUri("department_list_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(department_list_uri,
-				token.getAccessToken()));
+		WeixinResponse response = weixinClient.post(String.format(
+				department_list_uri, token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("department"),
 				Party.class);
 	}
@@ -104,8 +107,8 @@ public class PartyApi extends QyApi {
 	public JsonResult deleteParty(int partId) throws WeixinException {
 		String department_delete_uri = getRequestUri("department_delete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(department_delete_uri,
-				token.getAccessToken(), partId));
+		WeixinResponse response = weixinClient.post(String.format(
+				department_delete_uri, token.getAccessToken(), partId));
 		return response.getAsJsonResult();
 	}
 }

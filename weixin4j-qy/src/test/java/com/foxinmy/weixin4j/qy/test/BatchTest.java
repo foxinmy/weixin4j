@@ -34,7 +34,7 @@ public class BatchTest extends TokenTest {
 	@Test
 	public void syncuser() throws WeixinException {
 		String jobId = batchApi
-				.syncuser(
+				.syncUser(
 						"1QFmZ8LE9dFxPPx8EH5Kfm3cqGXB0OuXY432ZpsfwMFTJjEDt7QI4GZB1UhYGOSYr",
 						new Callback("http://182.254.188.133:8090",
 								"gp2eGT5mIpngr",
@@ -46,7 +46,7 @@ public class BatchTest extends TokenTest {
 	public void replaceparty() throws WeixinException {
 		String mediaId = mediaApi.batchUploadParties(Arrays.asList(new Party(5,
 				"部门1", 1, 1), new Party(6, "部门2", 1, 1)));
-		String jobId = batchApi.replaceparty(mediaId, new Callback(
+		String jobId = batchApi.replaceParty(mediaId, new Callback(
 				"http://182.254.188.133:8090", "gp2eGT5mIpngr",
 				"BRYfV4zPFUJb3v3MySNBg1ERKE3vyyMRoScu76vFySv"));
 		System.err.println(jobId);

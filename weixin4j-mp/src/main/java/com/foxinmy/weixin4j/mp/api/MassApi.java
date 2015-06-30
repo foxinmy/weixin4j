@@ -1,7 +1,9 @@
 package com.foxinmy.weixin4j.mp.api;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -303,13 +305,13 @@ public class MassApi extends MpApi {
 	 * 
 	 * @param msgId
 	 *            消息ID
-	 * @return 消息发送状态
+	 * @return 消息发送状态,如sendsuccess:发送成功、sendfail:发送失败
 	 * @throws WeixinException
 	 * @see {@link com.foxinmy.weixin4j.mp.event.MassEventMessage#getStatusDesc(String)}
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.9F.A5.E8.AF.A2.E7.BE.A4.E5.8F.91.E6.B6.88.E6.81.AF.E5.8F.91.E9.80.81.E7.8A.B6.E6.80.81.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">查询群发状态</a>
 	 */
-	public String getMassNews(String msgId) throws WeixinException {
+	public String getMassNewStatus(String msgId) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("msg_id", msgId);
 		String mass_get_uri = getRequestUri("mass_get_uri");
@@ -318,6 +320,29 @@ public class MassApi extends MpApi {
 				String.format(mass_get_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJson().getString("msg_status");
+		String status = response.getAsJson().getString("msg_status");
+		String desc = massStatusMap.get(status);
+		return String.format("%s:%s", status, desc);
+	}
+
+	private final static Map<String, String> massStatusMap;
+	static {
+		massStatusMap = new HashMap<String, String>();
+		massStatusMap.put("sendsuccess", "发送成功");
+		massStatusMap.put("send_success", "发送成功");
+		massStatusMap.put("success", "发送成功");
+		massStatusMap.put("send success", "发送成功");
+		massStatusMap.put("sendfail", "发送失败");
+		massStatusMap.put("send_fail", "发送失败");
+		massStatusMap.put("fail", "发送失败");
+		massStatusMap.put("send fail", "发送失败");
+		massStatusMap.put("err(10001)", "涉嫌广告");
+		massStatusMap.put("err(20001)", "涉嫌政治");
+		massStatusMap.put("err(20004)", "涉嫌社会");
+		massStatusMap.put("err(20006)", "涉嫌违法犯罪");
+		massStatusMap.put("err(20008)", "涉嫌欺诈");
+		massStatusMap.put("err(20013)", "涉嫌版权");
+		massStatusMap.put("err(22000)", "涉嫌互推(互相宣传)");
+		massStatusMap.put("err(21000)", "涉嫌其他");
 	}
 }

@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import com.foxinmy.weixin4j.message.event.EventMessage;
 import com.foxinmy.weixin4j.type.EventType;
-import com.foxinmy.weixin4j.util.MessageUtil;
 
 /**
  * 群发消息事件推送
@@ -55,18 +54,6 @@ public class MassEventMessage extends EventMessage {
 		return status;
 	}
 
-	/**
-	 * 发送状态描述</br> err(10001,涉嫌广告) err(20001,涉嫌政治) err(20004,涉嫌社会)</br>
-	 * err(20002,涉嫌色情) err(20006,涉嫌违法犯罪) err(20008,涉嫌欺诈)</br> err(20013,涉嫌版权)
-	 * err(22000,涉嫌互推(互相宣传) err(21000,涉嫌其他)
-	 * 
-	 * @param status
-	 * @return 中文描述
-	 */
-	public String getStatusDesc() {
-		return MessageUtil.getMassStatusDesc(status.toLowerCase());
-	}
-
 	public int getTotalCount() {
 		return totalCount;
 	}
@@ -85,7 +72,7 @@ public class MassEventMessage extends EventMessage {
 
 	@Override
 	public String toString() {
-		return "MassEventMessage [status=" + getStatusDesc() + ", totalCount="
+		return "MassEventMessage [status=" + status + ", totalCount="
 				+ totalCount + ", filterCount=" + filterCount + ", sentCount="
 				+ sentCount + ", errorCount=" + errorCount + ", "
 				+ super.toString() + "]";

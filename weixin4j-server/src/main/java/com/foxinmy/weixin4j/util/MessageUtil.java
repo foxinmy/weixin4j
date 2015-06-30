@@ -1,8 +1,6 @@
 package com.foxinmy.weixin4j.util;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -154,37 +152,5 @@ public final class MessageUtil {
 					+ ",but actual is " + fromAppId);
 		}
 		return xmlContent;
-	}
-
-	private final static Map<String, String> massStatusMap;
-	static {
-		massStatusMap = new HashMap<String, String>();
-		massStatusMap.put("sendsuccess", "发送成功");
-		massStatusMap.put("send_success", "发送成功");
-		massStatusMap.put("success", "发送成功");
-		massStatusMap.put("send success", "发送成功");
-		massStatusMap.put("sendfail", "发送失败");
-		massStatusMap.put("send_fail", "发送失败");
-		massStatusMap.put("fail", "发送失败");
-		massStatusMap.put("send fail", "发送失败");
-		massStatusMap.put("err(10001)", "涉嫌广告");
-		massStatusMap.put("err(20001)", "涉嫌政治");
-		massStatusMap.put("err(20004)", "涉嫌社会");
-		massStatusMap.put("err(20006)", "涉嫌违法犯罪");
-		massStatusMap.put("err(20008)", "涉嫌欺诈");
-		massStatusMap.put("err(20013)", "涉嫌版权");
-		massStatusMap.put("err(22000)", "涉嫌互推(互相宣传)");
-		massStatusMap.put("err(21000)", "涉嫌其他");
-	}
-
-	/**
-	 * 获取群发状态描述
-	 * 
-	 * @param status
-	 *            状态
-	 * @return
-	 */
-	public static String getMassStatusDesc(String status) {
-		return massStatusMap.get(status);
 	}
 }

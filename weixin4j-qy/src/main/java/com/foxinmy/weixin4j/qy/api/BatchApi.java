@@ -47,7 +47,7 @@ public class BatchApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.82.80.E8.AF.B7.E6.88.90.E5.91.98.E5.85.B3.E6.B3.A8">邀请成员关注</a>
 	 * @throws WeixinException
 	 */
-	public String inviteuser(IdParameter parameter, Callback callback,
+	public String inviteUser(IdParameter parameter, Callback callback,
 			String tips) throws WeixinException {
 		String batch_inviteuser_uri = getRequestUri("batch_inviteuser_uri");
 		Token token = tokenHolder.getToken();
@@ -81,7 +81,7 @@ public class BatchApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.A2.9E.E9.87.8F.E6.9B.B4.E6.96.B0.E6.88.90.E5.91.98">批量更新成员</a>
 	 * @throws WeixinException
 	 */
-	public String syncuser(String mediaId, Callback callback)
+	public String syncUser(String mediaId, Callback callback)
 			throws WeixinException {
 		String batch_syncuser_uri = getRequestUri("batch_syncuser_uri");
 		return batch(batch_syncuser_uri, mediaId, callback);
@@ -119,7 +119,7 @@ public class BatchApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E6.88.90.E5.91.98">批量覆盖成员</a>
 	 * @throws WeixinException
 	 */
-	public String replaceuser(String mediaId, Callback callback)
+	public String replaceUser(String mediaId, Callback callback)
 			throws WeixinException {
 		String batch_replaceuser_uri = getRequestUri("batch_replaceuser_uri");
 		return batch(batch_replaceuser_uri, mediaId, callback);
@@ -144,7 +144,7 @@ public class BatchApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E9.83.A8.E9.97.A8">批量覆盖部门</a>
 	 * @throws WeixinException
 	 */
-	public String replaceparty(String mediaId, Callback callback)
+	public String replaceParty(String mediaId, Callback callback)
 			throws WeixinException {
 		String batch_replaceparty_uri = getRequestUri("batch_replaceparty_uri");
 		return batch(batch_replaceparty_uri, mediaId, callback);

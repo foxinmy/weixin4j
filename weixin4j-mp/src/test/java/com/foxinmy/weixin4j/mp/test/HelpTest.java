@@ -19,7 +19,7 @@ public class HelpTest extends TokenTest {
 
 	@Test
 	public void getcallbackip() throws WeixinException {
-		List<String> ipList = helperApi.getcallbackip();
+		List<String> ipList = helperApi.getCallbackip();
 		Assert.assertFalse(ipList.isEmpty());
 	}
 

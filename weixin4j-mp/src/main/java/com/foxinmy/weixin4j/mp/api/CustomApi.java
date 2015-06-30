@@ -95,7 +95,7 @@ public class CustomApi extends MpApi {
 	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E8.8E.B7.E5.8F.96.E5.9C.A8.E7.BA.BF.E5.AE.A2.E6.9C.8D.E6.8E.A5.E5.BE.85.E4.BF.A1.E6.81.AF">获取在线客服接待信息</a>
 	 * @throws WeixinException
 	 */
-	public List<KfAccount> getKfAccountList(boolean isOnline)
+	public List<KfAccount> listKfAccount(boolean isOnline)
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String text = "";
@@ -130,7 +130,7 @@ public class CustomApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E6.B7.BB.E5.8A.A0.E5.AE.A2.E6.9C.8D.E8.B4.A6.E5.8F.B7">新增客服账号</a>
 	 */
-	public JsonResult addAccount(String id, String name, String pwd)
+	public JsonResult createAccount(String id, String name, String pwd)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("kf_account", id);
@@ -322,7 +322,7 @@ public class CustomApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.9C.8D.E7.9A.84.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
 	 */
-	public List<KfSession> getKfSessionList(String kfAccount)
+	public List<KfSession> listKfSession(String kfAccount)
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_list_uri = getRequestUri("kfsession_list_uri");
@@ -343,7 +343,7 @@ public class CustomApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E6.9C.AA.E6.8E.A5.E5.85.A5.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
 	 */
-	public List<KfSession> getKfSessionWaitList() throws WeixinException {
+	public List<KfSession> listKfSessionWait() throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_wait_uri = getRequestUri("kfsession_wait_uri");
 		WeixinResponse response = weixinClient.get(String.format(kfsession_wait_uri,

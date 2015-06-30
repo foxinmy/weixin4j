@@ -102,7 +102,7 @@ public class MassTest extends TokenTest {
 
 	@Test
 	public void getMassNews() throws WeixinException {
-		String status = massApi.getMassNews("82358");
+		String status = massApi.getMassNewStatus("82358");
 		System.out.println(status);
 		Assert.assertNotNull(status);
 	}
