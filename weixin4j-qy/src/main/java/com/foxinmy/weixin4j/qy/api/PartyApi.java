@@ -65,8 +65,17 @@ public class PartyApi extends QyApi {
 	 * @throws WeixinException
 	 */
 	public JsonResult updateParty(Party party) throws WeixinException {
+		if (party.getId() < 1) {
+			throw new WeixinException("department id must gt 1");
+		}
 		String department_update_uri = getRequestUri("department_update_uri");
 		JSONObject obj = (JSONObject) JSON.toJSON(party);
+		if (party.getParentid() < 1) {
+			obj.remove("parentid");
+		}
+		if (party.getOrder() < 0) {
+			obj.remove("order");
+		}
 		Token token = tokenHolder.getToken();
 		WeixinResponse response = weixinClient.post(
 				String.format(department_update_uri, token.getAccessToken()),

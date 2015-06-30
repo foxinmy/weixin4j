@@ -7,6 +7,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
 import com.foxinmy.weixin4j.token.TokenCreator;
+import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
  * 微信企业号token创建(永久授权码)
@@ -24,6 +25,7 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 	private final WeixinHttpClient httpClient;
 	private final String authCorpid;
 	private final SuitePerCodeHolder perCodeHolder;
+	private final TokenHolder suiteTokenHolder;
 
 	/**
 	 * 
@@ -31,11 +33,14 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 	 *            授权方corpid
 	 * @param perCodeHolder
 	 *            永久授权码
+	 * @param suiteTokenHolder
+	 *            套件token
 	 */
 	public WeixinTokenSuiteCreator(String authCorpid,
-			SuitePerCodeHolder perCodeHolder) {
+			SuitePerCodeHolder perCodeHolder, TokenHolder suiteTokenHolder) {
 		this.authCorpid = authCorpid;
 		this.perCodeHolder = perCodeHolder;
+		this.suiteTokenHolder = suiteTokenHolder;
 		this.httpClient = new WeixinHttpClient();
 	}
 
@@ -50,8 +55,9 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 		obj.put("suite_id", perCodeHolder.getSuiteId());
 		obj.put("auth_corpid", authCorpid);
 		obj.put("permanent_code", perCodeHolder.getPermanentCode());
-		WeixinResponse response = httpClient.post(URLConsts.TOKEN_SUITE_URL,
-				obj.toJSONString());
+		WeixinResponse response = httpClient.post(
+				String.format(URLConsts.TOKEN_SUITE_URL,
+						suiteTokenHolder.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
 		Token token = new Token(obj.getString("access_token"));
 		token.setExpiresIn(obj.getIntValue("expires_in"));

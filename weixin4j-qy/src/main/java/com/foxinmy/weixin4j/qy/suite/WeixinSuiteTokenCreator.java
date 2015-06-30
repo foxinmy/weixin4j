@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.qy.suite;
+    package com.foxinmy.weixin4j.qy.suite;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
