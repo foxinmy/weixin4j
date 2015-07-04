@@ -9,6 +9,9 @@ import java.util.List;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.model.Button;
+import com.foxinmy.weixin4j.model.MediaCounter;
+import com.foxinmy.weixin4j.model.MediaItem;
+import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.api.DataApi;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
@@ -29,9 +32,6 @@ import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
-import com.foxinmy.weixin4j.mp.model.MediaCounter;
-import com.foxinmy.weixin4j.mp.model.MediaItem;
-import com.foxinmy.weixin4j.mp.model.MediaRecord;
 import com.foxinmy.weixin4j.mp.model.MenuSetting;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
@@ -134,7 +134,7 @@ public class WeixinProxy {
 	 *            是否永久上传
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#uploadMedia(InputStream, MediaType,boolean)}
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 * @throws IOException
 	 */
@@ -162,7 +162,7 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久素材</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 */
 	public String uploadMedia(InputStream is, MediaType mediaType,
@@ -186,7 +186,7 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#downloadMedia(String)}
 	 */
 	public File downloadMediaFile(String mediaId, boolean isMaterial)
@@ -203,7 +203,7 @@ public class WeixinProxy {
 	 *            是否永久素材
 	 * @return 二进制数据包
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
 	 */
@@ -223,7 +223,7 @@ public class WeixinProxy {
 	 *            图文列表
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
@@ -243,7 +243,7 @@ public class WeixinProxy {
 	 * @see <a href=
 	 *      "http://mp.weixin.qq.com/wiki/4/b3546879f07623cb30df9ca0e420a5d0.html">下载永久媒体素材</a>
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 */
 	public List<MpArticle> downloadArticle(String mediaId)
 			throws WeixinException {
@@ -261,7 +261,7 @@ public class WeixinProxy {
 	 *            图文列表
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/4/19a59cba020d506e767360ca1be29450.html">更新永久图文素材</a>
@@ -278,7 +278,7 @@ public class WeixinProxy {
 	 *            媒体素材的media_id
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/5/e66f61c303db51a6c0f90f46b15af5f5.html">删除永久媒体素材</a>
 	 */
@@ -290,7 +290,7 @@ public class WeixinProxy {
 	/**
 	 * 上传永久视频素材
 	 * 
-	 * @param file
+	 * @param is
 	 *            大小不超过1M且格式为MP4的视频文件
 	 * @param title
 	 *            视频标题
@@ -299,13 +299,12 @@ public class WeixinProxy {
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
-	 * @throws IOException
 	 */
-	public String uploadMaterialVideo(File file, String title,
-			String introduction) throws WeixinException, IOException {
-		return mediaApi.uploadMaterialVideo(file, title, introduction);
+	public String uploadMaterialVideo(InputStream is, String title,
+			String introduction) throws WeixinException {
+		return mediaApi.uploadMaterialVideo(is, title, introduction);
 	}
 
 	/**
@@ -316,7 +315,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.model.MediaCounter
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/16/8cc64f8c189674b421bee3ed403993b8.html">获取素材总数</a>
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 */
 	public MediaCounter countMaterialMedia() throws WeixinException {
 		return mediaApi.countMaterialMedia();
@@ -333,7 +332,7 @@ public class WeixinProxy {
 	 *            返回素材的数量，取值在1到20之间
 	 * @return 媒体素材的记录对象
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see com.foxinmy.weixin4j.mp.model.MediaRecord
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see com.foxinmy.weixin4j.mp.model.MediaItem
@@ -351,7 +350,7 @@ public class WeixinProxy {
 	 * @param mediaType
 	 *            媒体类型
 	 * @return 素材列表
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#listMaterialMedia(MediaType, int, int)}
 	 * @throws WeixinException
 	 */
@@ -651,7 +650,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see com.foxinmy.weixin4j.tuple.Video
 	 * @see com.foxinmy.weixin4j.tuple.MpVideo
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
+	 * @see {@link com.com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 */
 	public String uploadMassVideo(Video video) throws WeixinException {
 		return massApi.uploadVideo(video);
@@ -749,7 +748,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.tuple.MassTuple
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
+	 * @see {@link com.com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 * @see {@link com.foxinmy.weixin4j.mp.api.UserApi#getUser(String)}
 	 */
 	public String massByOpenIds(MassTuple tuple, String... openIds)
@@ -798,8 +797,10 @@ public class WeixinProxy {
 	/**
 	 * 预览群发消息</br> 开发者可通过该接口发送消息给指定用户，在手机端查看消息的样式和排版
 	 * 
-	 * @param openId
-	 *            接收用户的ID
+	 * @param toUser
+	 *            接收用户的openID
+	 * @param toWxName
+	 *            接收用户的微信号 towxname和touser同时赋值时，以towxname优先
 	 * @param tuple
 	 *            消息元件
 	 * @return 处理结果
@@ -809,9 +810,9 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E9.A2.84.E8.A7.88.E6.8E.A5.E5.8F.A3.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">预览群发消息</a>
 	 */
-	public JsonResult previewMassNews(String openId, MassTuple tuple)
-			throws WeixinException {
-		return massApi.previewMassNews(openId, tuple);
+	public JsonResult previewMassNews(String toUser, String toWxName,
+			MassTuple tuple) throws WeixinException {
+		return massApi.previewMassNews(toUser, toWxName, tuple);
 	}
 
 	/**

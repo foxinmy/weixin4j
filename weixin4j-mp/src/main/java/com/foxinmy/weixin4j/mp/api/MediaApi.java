@@ -15,17 +15,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
+import com.foxinmy.weixin4j.http.HttpGet;
+import com.foxinmy.weixin4j.http.HttpPost;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
 import com.foxinmy.weixin4j.http.apache.InputStreamBody;
 import com.foxinmy.weixin4j.http.apache.StringBody;
+import com.foxinmy.weixin4j.http.entity.StringEntity;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.model.MediaCounter;
+import com.foxinmy.weixin4j.model.MediaItem;
+import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.mp.model.MediaCounter;
-import com.foxinmy.weixin4j.mp.model.MediaItem;
-import com.foxinmy.weixin4j.mp.model.MediaRecord;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
@@ -34,6 +36,7 @@ import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConst;
 
 /**
  * 素材相关API
@@ -73,12 +76,12 @@ public class MediaApi extends MpApi {
 		MediaType mediaType = null;
 		if ("bmp/png/jpeg/jpg/gif".contains(mediaTypeKey)) {
 			mediaType = MediaType.image;
-		} else if ("amr/mp3".contains(mediaTypeKey)) {
+		} else if ("mp3/wma/wav/amr".contains(mediaTypeKey)) {
 			mediaType = MediaType.voice;
-		} else if ("mp3/wma/wav/amr".equals(mediaTypeKey)) {
+		} else if ("mp4".equals(mediaTypeKey)) {
 			mediaType = MediaType.video;
 		} else {
-			throw new WeixinException("unknown mediaType:" + mediaTypeKey);
+			throw new WeixinException("cannot handle mediaType:" + mediaTypeKey);
 		}
 		return uploadMedia(new FileInputStream(file), mediaType, isMaterial);
 	}
@@ -102,7 +105,6 @@ public class MediaApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久素材</a>
 	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 */
 	public String uploadMedia(InputStream is, MediaType mediaType,
@@ -125,12 +127,12 @@ public class MediaApi extends MpApi {
 						new FormBodyPart("type", new StringBody(mediaType
 								.name(), Consts.UTF_8)));
 			} else {
-				String file_upload_uri = getRequestUri("file_upload_uri");
-				response = weixinClient.post(String.format(file_upload_uri,
-						token.getAccessToken(), mediaType), new FormBodyPart(
-						"media", new InputStreamBody(is, mediaType
-								.getContentType().getMimeType(), ObjectId.get()
-								.toHexString())));
+				String media_upload_uri = getRequestUri("media_upload_uri");
+				response = weixinClient.post(String.format(media_upload_uri,
+						token.getAccessToken(), mediaType.name()),
+						new FormBodyPart("media", new InputStreamBody(is,
+								mediaType.getContentType().getMimeType(),
+								ObjectId.get().toHexString())));
 			}
 		} catch (UnsupportedEncodingException e) {
 			throw new WeixinException(e);
@@ -162,7 +164,8 @@ public class MediaApi extends MpApi {
 	 */
 	public File downloadMediaFile(String mediaId, boolean isMaterial)
 			throws WeixinException {
-		String media_path = ConfigUtil.getValue("media_path");
+		String media_path = ConfigUtil.getValue("media_path",
+				Weixin4jConst.DEFAULT_MEDIA_PATH);
 		File file = new File(media_path + File.separator + mediaId);
 		if (file.exists()) {
 			return file;
@@ -198,7 +201,7 @@ public class MediaApi extends MpApi {
 	 *            媒体ID
 	 * @param isMaterial
 	 *            是否下载永久素材
-	 * @return 二进制数据包
+	 * @return 二进制数据包(需自行判断类型)
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/11/07b6b76a6b6e8848e855a435d5e34a5f.html">下载临时媒体素材</a>
@@ -208,20 +211,23 @@ public class MediaApi extends MpApi {
 	public byte[] downloadMedia(String mediaId, boolean isMaterial)
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = null;
-		if (isMaterial) {
-			JSONObject media = new JSONObject();
-			media.put("media_id", mediaId);
-			String material_media_download_uri = getRequestUri("material_media_download_uri");
-			response = weixinClient.post(
-					String.format(material_media_download_uri,
-							token.getAccessToken()), media.toJSONString());
-		} else {
-			String file_download_uri = getRequestUri("file_download_uri");
-			response = weixinClient.get(String.format(file_download_uri,
-					token.getAccessToken(), mediaId));
+		try {
+			if (isMaterial) {
+				String material_media_download_uri = getRequestUri("material_media_download_uri");
+				HttpPost method = new HttpPost(String.format(
+						material_media_download_uri, token.getAccessToken()));
+				method.setEntity(new StringEntity(String.format(
+						"{\"media_id\":\"%s\"}", mediaId)));
+				return weixinClient.execute(method).getContent();
+			} else {
+				String meida_download_uri = getRequestUri("meida_download_uri");
+				HttpGet method = new HttpGet(String.format(meida_download_uri,
+						token.getAccessToken(), mediaId));
+				return weixinClient.execute(method).getContent();
+			}
+		} catch (IOException e) {
+			throw new WeixinException(e);
 		}
-		return response.getContent();
 	}
 
 	/**
@@ -327,7 +333,7 @@ public class MediaApi extends MpApi {
 	/**
 	 * 上传永久视频素材
 	 * 
-	 * @param file
+	 * @param is
 	 *            大小不超过1M且格式为MP4的视频文件
 	 * @param title
 	 *            视频标题
@@ -337,29 +343,36 @@ public class MediaApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
 	 * @throws WeixinException
-	 * @throws IOException
 	 */
-	public String uploadMaterialVideo(File file, String title,
-			String introduction) throws WeixinException, IOException {
+	public String uploadMaterialVideo(InputStream is, String title,
+			String introduction) throws WeixinException {
 		String material_media_upload_uri = getRequestUri("material_media_upload_uri");
 		Token token = tokenHolder.getToken();
 		try {
 			JSONObject description = new JSONObject();
 			description.put("title", title);
 			description.put("introduction", introduction);
-			byte[] bytes = IOUtil.toByteArray(new FileInputStream(file));
 			WeixinResponse response = weixinClient.post(
 					String.format(material_media_upload_uri,
 							token.getAccessToken()),
-					new FormBodyPart("media", new ByteArrayBody(bytes, file
-							.getName())),
+					new FormBodyPart("media", new InputStreamBody(is,
+							MediaType.video.getContentType().getMimeType(),
+							ObjectId.get().toHexString())),
 					new FormBodyPart("type", new StringBody(MediaType.video
 							.name(), Consts.UTF_8)),
 					new FormBodyPart("description", new StringBody(description
 							.toJSONString(), Consts.UTF_8)));
 			return response.getAsJson().getString("media_id");
 		} catch (UnsupportedEncodingException e) {
-			throw new WeixinException("unsupported encoding");
+			throw new WeixinException(e);
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					;
+				}
+			}
 		}
 	}
 
@@ -368,7 +381,7 @@ public class MediaApi extends MpApi {
 	 * 
 	 * @return 总数对象
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.MediaCounter
+	 * @see com.foxinmy.weixin4j.model.MediaCounter
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/16/8cc64f8c189674b421bee3ed403993b8.html">获取素材总数</a>
 	 */
@@ -393,9 +406,9 @@ public class MediaApi extends MpApi {
 	 *            返回素材的数量，取值在1到20之间
 	 * @return 媒体素材的记录对象
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.MediaRecord
+	 * @see com.foxinmy.weixin4j.model.MediaRecord
 	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see com.foxinmy.weixin4j.mp.model.MediaItem
+	 * @see com.foxinmy.weixin4j.model.MediaItem
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/12/2108cd7aafff7f388f41f37efa710204.html">获取素材列表</a>
 	 */

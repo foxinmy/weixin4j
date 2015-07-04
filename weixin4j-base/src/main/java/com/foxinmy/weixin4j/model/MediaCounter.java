@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.model;
+package com.foxinmy.weixin4j.model;
 
 import java.io.Serializable;
 
@@ -17,6 +17,16 @@ public class MediaCounter implements Serializable {
 
 	private static final long serialVersionUID = -1752502821323552783L;
 
+	/**
+	 * 应用素材总数目(企业号独有)
+	 */
+	@JSONField(name = "total_count")
+	private int totalCount;
+	/**
+	 * 文件素材总数目(企业号都有)
+	 */
+	@JSONField(name = "file_count")
+	private int fileCount;
 	/**
 	 * 语音总数量
 	 */
@@ -70,9 +80,26 @@ public class MediaCounter implements Serializable {
 		this.newsCount = newsCount;
 	}
 
+	public int getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public int getFileCount() {
+		return fileCount;
+	}
+
+	public void setFileCount(int fileCount) {
+		this.fileCount = fileCount;
+	}
+
 	@Override
 	public String toString() {
-		return "MediaCounter [voiceCount=" + voiceCount + ", videoCount="
+		return "MediaCounter [totalCount=" + totalCount + ", fileCount="
+				+ fileCount + ", voiceCount=" + voiceCount + ", videoCount="
 				+ videoCount + ", imageCount=" + imageCount + ", newsCount="
 				+ newsCount + "]";
 	}

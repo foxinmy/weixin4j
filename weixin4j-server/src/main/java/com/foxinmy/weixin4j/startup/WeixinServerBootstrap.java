@@ -56,7 +56,7 @@ public final class WeixinServerBootstrap {
 	/**
 	 * 服务启动的默认端口
 	 */
-	public final static int DEFAULT_SERVERPORT = 80;
+	public final static int DEFAULT_SERVERPORT = 30000;
 	/**
 	 * 消息分发器
 	 */

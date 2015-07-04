@@ -71,10 +71,7 @@ public class UserTest extends TokenTest {
 
 	@Test
 	public void list() throws WeixinException {
-		List<User> userList = userApi.listUser(1, true, UserStatus.BOTH, true);
-		Assert.assertFalse(userList.isEmpty());
-		System.out.println(userList);
-		userList = userApi.listUser(1);
+		List<User> userList = userApi.listUser(3, true, UserStatus.BOTH, true);
 		Assert.assertFalse(userList.isEmpty());
 		System.out.println(userList);
 	}

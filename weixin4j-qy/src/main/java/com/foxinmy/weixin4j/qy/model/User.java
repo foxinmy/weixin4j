@@ -70,7 +70,7 @@ public class User implements Serializable {
 	/**
 	 * 启用/禁用成员。1表示启用成员，0表示禁用成员
 	 */
-	private int enable;
+	private Integer enable;
 	/**
 	 * 非必须 扩展属性。扩展属性需要在WEB管理端创建后才生效，否则忽略未知属性的赋值
 	 */
@@ -218,16 +218,23 @@ public class User implements Serializable {
 		this.status = status;
 	}
 
-	public int getEnable() {
+	public int getStatus() {
+		return status;
+	}
+
+	public Integer getEnable() {
 		return enable;
 	}
 
 	@JSONField(serialize = false, deserialize = false)
 	public boolean getFormatEnable() {
-		return enable == 1;
+		if (enable != null) {
+			return enable.intValue() == 1;
+		}
+		return false;
 	}
 
-	public void setEnable(int enable) {
+	public void setEnable(Integer enable) {
 		this.enable = enable;
 	}
 

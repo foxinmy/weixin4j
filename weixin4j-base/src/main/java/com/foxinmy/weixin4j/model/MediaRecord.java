@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.model;
+package com.foxinmy.weixin4j.model;
 
 import java.io.Serializable;
 import java.util.List;

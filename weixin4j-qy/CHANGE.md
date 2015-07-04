@@ -69,3 +69,7 @@
 * 2015-06-26
 
   + 管理成员新增头像参数
+  
+* 2015-07-04
+
+  + 新增[媒体素材接口](src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)

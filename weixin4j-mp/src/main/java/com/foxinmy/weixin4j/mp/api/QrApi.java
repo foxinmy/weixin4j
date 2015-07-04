@@ -12,6 +12,7 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConst;
 
 /**
  * 二维码相关API
@@ -89,7 +90,8 @@ public class QrApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 */
 	public File getQRFile(QRParameter parameter) throws WeixinException {
-		String qr_path = ConfigUtil.getValue("qr_path");
+		String qr_path = ConfigUtil.getValue("qr_path",
+				Weixin4jConst.DEFAULT_QRCODE_PATH);
 		String filename = String.format("%s_%s_%d.jpg", parameter.getQrType()
 				.name(), parameter.getSceneValue(), parameter
 				.getExpireSeconds());

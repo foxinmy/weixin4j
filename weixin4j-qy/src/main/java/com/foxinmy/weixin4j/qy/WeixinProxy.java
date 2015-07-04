@@ -9,6 +9,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.model.Button;
+import com.foxinmy.weixin4j.model.MediaCounter;
+import com.foxinmy.weixin4j.model.MediaItem;
+import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.BatchApi;
 import com.foxinmy.weixin4j.qy.api.HelperApi;
@@ -34,6 +37,7 @@ import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
+import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
 
 /**
@@ -204,75 +208,203 @@ public class WeixinProxy {
 	/**
 	 * 上传媒体文件
 	 * 
+	 * @param agentid
+	 *            企业应用ID(<font color="red">大于0时视为上传永久媒体文件</font>)
 	 * @param file
-	 *            媒体对象
+	 *            文件对象
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy.MediaApi#uploadMedia(InputStream, MediaType)}
+	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#uploadMedia(int,InputStream, MediaType)}
 	 * @throws WeixinException
 	 * @throws IOException
 	 */
-	public String uploadMedia(File file) throws WeixinException, IOException {
-		return mediaApi.uploadMedia(file);
+	public String uploadMedia(int agentid, File file) throws WeixinException,
+			IOException {
+		return mediaApi.uploadMedia(agentid, file);
 	}
 
 	/**
-	 * 上传媒体文件(完全公开。所有管理员均可调用，media_id可以共享)
+	 * 上传媒体文件
 	 * <p>
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
 	 * 否则抛出异常.
 	 * </p>
 	 * 
+	 * @param agentid
+	 *            企业应用ID(<font color="red">大于0时视为上传永久媒体文件</font>)
 	 * @param is
 	 *            媒体数据流
 	 * @param mediaType
 	 *            媒体类型
-	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @return 上传到微信服务器返回的媒体标识
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">上传媒体文件说明</a>
-	 * @throws WeixinException
-	 */
-	public String uploadMedia(InputStream is, MediaType mediaType)
-			throws WeixinException {
-		return mediaApi.uploadMedia(is, mediaType);
-	}
-
-	/**
-	 * 下载媒体文件(完全公开。所有管理员均可调用，media_id可以共享)
-	 * 
-	 * @param mediaId
-	 *            媒体ID
-	 * @return 二进制数据包
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">获取媒体说明</a>
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%B4%E6%97%B6%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">上传临时素材文件说明</a>
+	 * @see <a
+	 *      href="http://http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">上传永久素材文件说明</a>
 	 * @throws WeixinException
 	 */
-	public byte[] downloadMedia(String mediaId) throws WeixinException {
-		return mediaApi.downloadMedia(mediaId);
+	public String uploadMedia(int agentid, InputStream is, MediaType mediaType)
+			throws WeixinException {
+		return mediaApi.uploadMedia(agentid, is, mediaType);
 	}
 
 	/**
-	 * 下载媒体文件(完全公开。所有管理员均可调用，media_id可以共享)
-	 * <p>
-	 * 正常情况下返回表头如Content-Type: image/jpeg,否则抛出异常.
-	 * </p>
+	 * 下载媒体文件
 	 * 
+	 * @param agentid
+	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
 	 * @param mediaId
 	 *            存储在微信服务器上的媒体标识
 	 * @return 写入硬盘后的文件对象,存储路径见weixin4j.properties配置
 	 * @throws WeixinException
-	 * @throws IOException
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see com.foxinmy.weixin4j.type.MediaType
+	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#downloadMedia(int,String)}
+	 */
+	public File downloadMediaFile(int agentid, String mediaId)
+			throws WeixinException {
+		return mediaApi.downloadMediaFile(agentid, mediaId);
+	}
+
+	/**
+	 * 下载媒体文件
+	 * 
+	 * @param agentid
+	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
+	 * @param mediaId
+	 *            媒体ID
+	 * @return 二进制数据包(需自行判断类型)
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6">获取媒体说明</a>
-	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see {@link com.foxinmy.weixin4j.WeixinProxy.MediaApi#downloadMedia(String)}
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E4%B8%B4%E6%97%B6%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">获取临时媒体说明</a>
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">获取永久媒体说明</a>
+	 * @throws WeixinException
 	 */
-	public File downloadMediaFile(String mediaId) throws WeixinException {
-		return mediaApi.downloadMediaFile(mediaId);
+	public byte[] downloadMedia(int agentid, String mediaId)
+			throws WeixinException {
+		return mediaApi.downloadMedia(agentid, mediaId);
+	}
+
+	/**
+	 * 上传永久图文素材
+	 * <p>
+	 * 、新增的永久素材也可以在公众平台官网素材管理模块中看到,永久素材的数量是有上限的，请谨慎新增。图文消息素材和图片素材的上限为5000，
+	 * 其他类型为1000
+	 * </P>
+	 * 
+	 * @param agentid
+	 *            企业应用的id
+	 * @param articles
+	 *            图文列表
+	 * @return 上传到微信服务器返回的媒体标识
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">上传永久媒体素材</a>
+	 * @see com.foxinmy.weixin4j.tuple.MpArticle
+	 */
+	public String uploadMaterialArticle(int agentid, List<MpArticle> articles)
+			throws WeixinException {
+		return mediaApi.uploadMaterialArticle(agentid, articles);
+	}
+
+	/**
+	 * 删除永久媒体素材
+	 * 
+	 * @param agentid
+	 *            企业应用ID
+	 * @param mediaId
+	 *            媒体素材的media_id
+	 * @return 处理结果
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%88%A0%E9%99%A4%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">删除永久媒体素材</a>
+	 */
+	public JsonResult deleteMaterialMedia(int agentid, String mediaId)
+			throws WeixinException {
+		return mediaApi.deleteMaterialMedia(agentid, mediaId);
+	}
+
+	/**
+	 * 修改永久图文素材
+	 * 
+	 * @param agentid
+	 *            企业应用的id
+	 * @param mediaId
+	 *            上传后的media_id
+	 * @param articles
+	 *            图文列表
+	 * @return 操作结果
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BF%AE%E6%94%B9%E6%B0%B8%E4%B9%85%E5%9B%BE%E6%96%87%E7%B4%A0%E6%9D%90">修改永久媒体素材</a>
+	 * @see com.foxinmy.weixin4j.tuple.MpArticle
+	 */
+	public String updateMaterialArticle(int agentid, String mediaId,
+			List<MpArticle> articles) throws WeixinException {
+		return mediaApi.updateMaterialArticle(agentid, mediaId, articles);
+	}
+
+	/**
+	 * 获取永久媒体素材的总数
+	 * 
+	 * @param agentid
+	 *            企业应用id
+	 * @return 总数对象
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see com.foxinmy.weixin4j.model.MediaCounter
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%B4%A0%E6%9D%90%E6%80%BB%E6%95%B0">获取素材总数</a>
+	 */
+	public MediaCounter countMaterialMedia(int agentid) throws WeixinException {
+		return mediaApi.countMaterialMedia(agentid);
+	}
+
+	/**
+	 * 获取媒体素材记录列表
+	 * 
+	 * @param agentid
+	 *            企业应用ID
+	 * @param mediaType
+	 *            素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）、文件（file）
+	 * @param offset
+	 *            从全部素材的该偏移位置开始返回，0表示从第一个素材返回
+	 * @param count
+	 *            返回素材的数量，取值在1到20之间
+	 * @return 媒体素材的记录对象
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see com.foxinmy.weixin4j.model.MediaRecord
+	 * @see com.foxinmy.weixin4j.type.MediaType
+	 * @see com.foxinmy.weixin4j.model.MediaItem
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%B4%A0%E6%9D%90%E5%88%97%E8%A1%A8">获取素材列表</a>
+	 */
+	public MediaRecord listMaterialMedia(int agentid, MediaType mediaType,
+			int offset, int count) throws WeixinException {
+		return mediaApi.listMaterialMedia(agentid, mediaType, offset, count);
+	}
+
+	/**
+	 * 获取全部的媒体素材
+	 * 
+	 * @param agentid
+	 *            企业应用id
+	 * @param mediaType
+	 *            媒体类型
+	 * @return 素材列表
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#listMaterialMedia(int,MediaType, int, int)}
+	 * @throws WeixinException
+	 */
+	public List<MediaItem> listAllMaterialMedia(int agentid, MediaType mediaType)
+			throws WeixinException {
+		return mediaApi.listAllMaterialMedia(agentid, mediaType);
 	}
 
 	/**

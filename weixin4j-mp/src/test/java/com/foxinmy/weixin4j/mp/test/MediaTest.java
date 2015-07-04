@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.mp.test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +12,10 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.model.MediaCounter;
+import com.foxinmy.weixin4j.model.MediaItem;
+import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
-import com.foxinmy.weixin4j.mp.model.MediaCounter;
-import com.foxinmy.weixin4j.mp.model.MediaItem;
-import com.foxinmy.weixin4j.mp.model.MediaRecord;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
 
@@ -47,11 +48,9 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void download1() throws WeixinException, IOException {
-		File file = mediaApi
-				.downloadMediaFile(
-						"1Vgd1R5DdznSc3rPxd-sNZ3pLt54cejhJ5ItuNcCgrqoQArNANWy5oxso_r9KNlE",
-						false);
-		Assert.assertTrue(file.exists());
+		byte[] content = mediaApi.downloadMedia(
+				"jM5OWhnYb2DgrNm97HGj8aUdsZcweQc93tnwbH1mERo", true);
+		Assert.assertTrue(content != null);
 	}
 
 	@Test
@@ -66,8 +65,8 @@ public class MediaTest extends TokenTest {
 	@Test
 	public void uploadMaterialVideo() throws IOException, WeixinException {
 		File file = new File("/Users/jy/Downloads/test.jpg");
-		String mediaId = mediaApi.uploadMaterialVideo(file, "title",
-				"introduction");
+		String mediaId = mediaApi.uploadMaterialVideo(
+				new FileInputStream(file), "title", "introduction");
 		// Sy1KOLsi4ri3kB3TYUuculVelcW2I7W6BrfGwkGvSW8beTCAarxuGQLjuNJChJr8
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);

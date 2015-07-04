@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.model;
+package com.foxinmy.weixin4j.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -37,7 +37,7 @@ public class MediaItem implements Serializable {
 	/**
 	 * 图文素材列表
 	 */
-	@JSONField(name = "news_item")
+	@JSONField(name = "articles")
 	private List<MpArticle> articles;
 
 	public String getMediaId() {

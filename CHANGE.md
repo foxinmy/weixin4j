@@ -362,3 +362,7 @@
 * 2015-06-27
 
   + 媒体接口(MediaApi)中上传方法中的File类型调整为InputStream
+  
+* 2015-07-04
+
+  + **weixin4j-qy**: 新增[媒体素材接口](weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)

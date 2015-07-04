@@ -26,6 +26,7 @@ import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConst;
 
 /**
  * 微信支付接口实现
@@ -64,7 +65,8 @@ public class WeixinPayProxy {
 		this.pay3Api = new Pay3Api(weixinAccount);
 		this.couponApi = new CouponApi(weixinAccount);
 		this.cashApi = new CashApi(weixinAccount);
-		this.DEFAULT_CA_FILE = new File(ConfigUtil.getClassPathValue("ca_file"));
+		this.DEFAULT_CA_FILE = new File(ConfigUtil.getClassPathValue("ca_file",
+				Weixin4jConst.DEFAULT_MEDIA_PATH));
 	}
 
 	/**

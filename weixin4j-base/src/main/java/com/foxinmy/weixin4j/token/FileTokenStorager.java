@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
@@ -21,10 +20,6 @@ import com.foxinmy.weixin4j.xml.XmlStream;
 public class FileTokenStorager implements TokenStorager {
 
 	private final String cachePath;
-
-	public FileTokenStorager() {
-		this(ConfigUtil.getValue("token_path"));
-	}
 
 	public FileTokenStorager(String cachePath) {
 		this.cachePath = cachePath;

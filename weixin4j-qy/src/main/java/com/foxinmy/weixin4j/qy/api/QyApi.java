@@ -33,7 +33,7 @@ public class QyApi extends BaseApi {
 	}
 
 	@Override
-	protected String getConfigValue(String key) {
-		return WEIXIN_BUNDLE.getString(key);
+	protected ResourceBundle weixinBundle() {
+		return WEIXIN_BUNDLE;
 	}
 }

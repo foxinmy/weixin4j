@@ -1,14 +1,16 @@
 package com.foxinmy.weixin4j.api;
 
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConst;
 
 /**
  * API基础
@@ -22,12 +24,16 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  */
 public abstract class BaseApi {
 
-	protected final WeixinHttpClient weixinClient = new WeixinHttpClient();
+	protected final WeixinHttpClient weixinClient;
 
-	protected abstract String getConfigValue(String key);
+	protected abstract ResourceBundle weixinBundle();
+
+	public BaseApi() {
+		this.weixinClient = new WeixinHttpClient();
+	}
 
 	protected String getRequestUri(String key) {
-		String url = getConfigValue(key);
+		String url = weixinBundle().getString(key);
 		Pattern p = Pattern.compile("(\\{[^\\}]*\\})");
 		Matcher m = p.matcher(url);
 		StringBuffer sb = new StringBuffer();
@@ -44,16 +50,22 @@ public abstract class BaseApi {
 	/**
 	 * 默认使用weixin4j.properties文件中的公众号信息
 	 */
-	public final static WeixinAccount DEFAULT_WEIXIN_ACCOUNT;
+	public static WeixinAccount DEFAULT_WEIXIN_ACCOUNT;
 
 	/**
 	 * 默认token使用File的方式存储
 	 */
-	public final static TokenStorager DEFAULT_TOKEN_STORAGER;
+	public static TokenStorager DEFAULT_TOKEN_STORAGER;
 
 	static {
-		DEFAULT_WEIXIN_ACCOUNT = JSON.parseObject(
-				ConfigUtil.getValue("account"), WeixinAccount.class);
-		DEFAULT_TOKEN_STORAGER = new FileTokenStorager();
+		try {
+			DEFAULT_WEIXIN_ACCOUNT = ConfigUtil.getWeixinAccount();
+		} catch (MissingResourceException e) {
+			System.err
+					.println("'account' key not found in weixin4j.properties file.");
+			; // error
+		}
+		DEFAULT_TOKEN_STORAGER = new FileTokenStorager(ConfigUtil.getValue(
+				"token_path", Weixin4jConst.DEFAULT_TOKEN_PATH));
 	}
 }

@@ -96,7 +96,7 @@ public class MassTest extends TokenTest {
 	@Test
 	public void previewMass() throws WeixinException {
 		JsonResult result = massApi.previewMassNews(
-				"oyFLst1bqtuTcxK-ojF8hOGtLQao", new Text("test"));
+				"oyFLst1bqtuTcxK-ojF8hOGtLQao", null, new Text("test"));
 		Assert.assertEquals(0, result.getCode());
 	}
 

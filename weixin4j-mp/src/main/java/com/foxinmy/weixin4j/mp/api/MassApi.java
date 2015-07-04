@@ -73,7 +73,7 @@ public class MassApi extends MpApi {
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html">高级群发</a>
 	 * @see com.foxinmy.weixin4j.tuple.Video
 	 * @see com.foxinmy.weixin4j.tuple.MpVideo
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
+	 * @see {@link com.com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 */
 	public String uploadVideo(Video video) throws WeixinException {
 		String video_upload_uri = getRequestUri("video_upload_uri");
@@ -274,8 +274,10 @@ public class MassApi extends MpApi {
 	/**
 	 * 预览群发消息</br> 开发者可通过该接口发送消息给指定用户，在手机端查看消息的样式和排版
 	 * 
-	 * @param openId
-	 *            接收用户的ID
+	 * @param toUser
+	 *            接收用户的openID
+	 * @param toWxName
+	 *            接收用户的微信号 towxname和touser同时赋值时，以towxname优先
 	 * @param tuple
 	 *            消息元件
 	 * @return 处理结果
@@ -284,11 +286,12 @@ public class MassApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E9.A2.84.E8.A7.88.E6.8E.A5.E5.8F.A3.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">预览群发消息</a>
 	 */
-	public JsonResult previewMassNews(String openId, MassTuple tuple)
-			throws WeixinException {
+	public JsonResult previewMassNews(String toUser, String toWxName,
+			MassTuple tuple) throws WeixinException {
 		String msgtype = tuple.getMessageType();
 		JSONObject obj = new JSONObject();
-		obj.put("touser", openId);
+		obj.put("touser", toUser);
+		obj.put("towxname", toWxName);
 		obj.put(msgtype, JSON.toJSON(tuple));
 		obj.put("msgtype", msgtype);
 		String mass_preview_uri = getRequestUri("mass_preview_uri");

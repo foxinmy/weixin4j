@@ -17,7 +17,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @see
  */
 public class Card implements MassTuple {
-	
+
 	private static final long serialVersionUID = 6119453633595102147L;
 
 	@Override

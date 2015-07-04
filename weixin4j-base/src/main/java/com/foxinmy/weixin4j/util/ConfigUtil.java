@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.util;
 
 import java.io.File;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -50,6 +51,25 @@ public class ConfigUtil {
 	}
 
 	/**
+	 * key不存在时则返回传入的默认值
+	 * 
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 */
+	public static String getValue(String key, String defaultValue) {
+		String value = defaultValue;
+		try {
+			value = weixinBundle.getString(key);
+		} catch (MissingResourceException e) {
+			System.err.println("'" + key
+					+ "' key not found in weixin4j.properties file.");
+			; // error
+		}
+		return value;
+	}
+
+	/**
 	 * 判断属性是否存在[classpath:]如果存在则拼接项目路径后返回 一般用于文件的绝对路径获取
 	 * 
 	 * @param key
@@ -58,6 +78,24 @@ public class ConfigUtil {
 	public static String getClassPathValue(String key) {
 		return new File(getValue(key).replaceFirst(CLASSPATH_PREFIX,
 				CLASSPATH_VALUE)).getPath();
+	}
+
+	/**
+	 * 
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 */
+	public static String getClassPathValue(String key, String defaultValue) {
+		String value = defaultValue;
+		try {
+			value = getClassPathValue(key);
+		} catch (MissingResourceException e) {
+			System.err.println("'" + key
+					+ "' key not found in weixin4j.properties file.");
+			; // error
+		}
+		return value;
 	}
 
 	public static WeixinAccount getWeixinAccount() {

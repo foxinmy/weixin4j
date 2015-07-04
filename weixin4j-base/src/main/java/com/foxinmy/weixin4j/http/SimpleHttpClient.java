@@ -128,10 +128,14 @@ public class SimpleHttpClient implements HttpClient {
 			httpEntity = ((HttpEntityRequest) request).getEntity();
 			connection.setUseCaches(false);
 			if (httpEntity != null) {
-				connection.setFixedLengthStreamingMode(httpEntity
-						.getContentLength());
-				connection.setRequestProperty("Content-Type", httpEntity
-						.getContentType().getMimeType());
+				if (httpEntity.getContentLength() > 0l) {
+					connection.setFixedLengthStreamingMode(httpEntity
+							.getContentLength());
+				}
+				if (httpEntity.getContentType() != null) {
+					connection.setRequestProperty("Content-Type", httpEntity
+							.getContentType().getMimeType());
+				}
 			}
 		}
 		connection.connect();

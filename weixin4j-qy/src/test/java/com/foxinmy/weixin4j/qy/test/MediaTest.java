@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.qy.api.MediaApi;
+import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 媒体上传下载测试
@@ -30,8 +31,8 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void upload() throws IOException, WeixinException {
-		File file = new File("/tmp/test.docx");
-		String mediaId = mediaApi.uploadMedia(file);
+		File file = new File("//Users/jy/Downloads/import_file.csv");
+		String mediaId = mediaApi.uploadMedia(1, file);
 		// 1-1gpykXsR8bhNvO13-ZvskptCBxQF1UE535jFdCF63N2inGRAqEb-psF6eppjIIl
 		// 1CF6sBgWWFGY9s4JCEet5ASszsTuyHpeN1f2LWXADveqBlKoxSgb3cO401NEM7dNY
 		Assert.assertNotNull(mediaId);
@@ -41,7 +42,13 @@ public class MediaTest extends TokenTest {
 	@Test
 	public void download() throws WeixinException, IOException {
 		File file = mediaApi
-				.downloadMediaFile("1CF6sBgWWFGY9s4JCEet5ASszsTuyHpeN1f2LWXADveqBlKoxSgb3cO401NEM7dNY");
+				.downloadMediaFile(1,
+						"jM5OWhnYb2DgrNm97HGj8aUdsZcweQc93tnwbH1mERo");
 		Assert.assertTrue(file.exists());
+	}
+
+	@Test
+	public void listAll() throws WeixinException {
+		mediaApi.listAllMaterialMedia(1, MediaType.image);
 	}
 }
