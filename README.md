@@ -26,26 +26,26 @@ weixin4j
 如何获取
 ----------
 ###1.maven依赖
-微信公众平台API(1.5.0,2015-06-10 released)
+微信公众平台API(1.5.1,2015-07-04 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.5.0</version>
+	    <version>1.5.1</version>
 	</dependency>
-微信企业号API(1.5.0,2015-06-10 released)
+微信企业号API(1.5.1,2015-07-04 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-qy</artifactId>
-	    <version>1.5.0</version>
+	    <version>1.5.1</version>
 	</dependency>
-微信被动消息服务器(1.0.2,2015-06-10 released)
+微信被动消息服务器(1.0.3,2015-07-04 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.0.2</version>
+	    <version>1.0.3</version>
 	</dependency>
 
 以上依赖如果出现Missing artifact错误 请尝试在eclipse里这么做

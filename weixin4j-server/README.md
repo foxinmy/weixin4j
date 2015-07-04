@@ -15,19 +15,19 @@ base on netty.
 
 如何使用
 -------
-###maven依赖(1.0.2,2015-06-10 released)
+###maven依赖(1.0.3,2015-07-04 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.0.2</version>
+	    <version>1.0.3</version>
 	</dependency>
 ###编写服务启动类
 明文模式并总是调试输出微信请求信息的服务启动类.
 
 	public class MessageServerStartup{
 		public static void main(String[] args) {
-			new WeixinServerBootstrap("开发者token").addHandler(
+			new WeixinServerBootstrap("appid或微信原始ID","开发者token").addHandler(
 					DebugMessageHandler.global).startup();
 		}
 	}

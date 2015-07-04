@@ -90,7 +90,6 @@ public class UserTest extends TokenTest {
 	@Test
 	public void convert() throws WeixinException {
 		String[] result = userApi.userid2openid("jinyu", 1);
-		System.err.println(result);
 		System.err.println(userApi.openid2userid(result[0]));
 	}
 }

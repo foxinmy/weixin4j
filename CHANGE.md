@@ -366,3 +366,5 @@
 * 2015-07-04
 
   + **weixin4j-qy**: 新增[媒体素材接口](weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/api/MediaApi.java)
+  
+  + released 1.5.1
