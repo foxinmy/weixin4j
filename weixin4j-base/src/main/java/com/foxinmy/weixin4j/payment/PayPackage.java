@@ -55,7 +55,7 @@ public class PayPackage implements Serializable {
 	 */
 	@XmlElement(name = "spbill_create_ip")
 	@JSONField(name = "spbill_create_ip")
-	private String spbillCreateIp;
+	private String createIp;
 	/**
 	 * 订单生成时间,格式为 yyyyMMddHHmmss,如 2009 年 12月25日9点10分10秒表示为 20091225091010。时区 为
 	 * GMT+8 beijing。该时间取 自商户服务器 非必须
@@ -129,12 +129,12 @@ public class PayPackage implements Serializable {
 		this.totalFee = DateUtil.formaFee2Fen(totalFee);
 	}
 
-	public String getSpbillCreateIp() {
-		return spbillCreateIp;
+	public String getCreateIp() {
+		return createIp;
 	}
 
-	public void setSpbillCreateIp(String spbillCreateIp) {
-		this.spbillCreateIp = spbillCreateIp;
+	public void setCreateIp(String createIp) {
+		this.createIp = createIp;
 	}
 
 	public String getTimeStart() {
@@ -206,13 +206,13 @@ public class PayPackage implements Serializable {
 	 *            回调地址
 	 */
 	public PayPackage(String body, String attach, String outTradeNo,
-			double totalFee, String spbillCreateIp, Date timeStart,
+			double totalFee, String createIp, Date timeStart,
 			Date timeExpire, String goodsTag, String notifyUrl) {
 		this.body = body;
 		this.attach = attach;
 		this.outTradeNo = outTradeNo;
 		this.totalFee = DateUtil.formaFee2Fen(totalFee);
-		this.spbillCreateIp = spbillCreateIp;
+		this.createIp = createIp;
 		this.timeStart = timeStart != null ? DateUtil
 				.fortmat2yyyyMMddHHmmss(timeStart) : null;
 		this.timeExpire = timeExpire != null ? DateUtil
@@ -225,7 +225,7 @@ public class PayPackage implements Serializable {
 	public String toString() {
 		return "PayPackage [body=" + body + ", detail=" + detail + ", attach="
 				+ attach + ", outTradeNo=" + outTradeNo + ", totalFee="
-				+ totalFee + ", spbillCreateIp=" + spbillCreateIp
+				+ totalFee + ", createIp=" + createIp
 				+ ", timeStart=" + timeStart + ", timeExpire=" + timeExpire
 				+ ", goodsTag=" + goodsTag + ", notifyUrl=" + notifyUrl + "]";
 	}

@@ -188,7 +188,7 @@ public class PayUtil {
 	}
 
 	/**
-	 * 创建V3.x NativePay支付(扫码支付)链接
+	 * 创建V3.x NativePay支付(扫码支付)链接【模式一】
 	 * 
 	 * @param weixinAccount
 	 *            支付配置信息
@@ -196,6 +196,8 @@ public class PayUtil {
 	 *            与订单ID等价
 	 * @return 支付链接
 	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一</a>
 	 */
 	public static String createNativePayRequestURL(
 			WeixinPayAccount weixinAccount, String productId) {
@@ -208,9 +210,39 @@ public class PayUtil {
 		map.put("nonce_str", noncestr);
 		map.put("product_id", productId);
 		String sign = paysignMd5(map, weixinAccount.getPaySignKey());
-		return String.format(PayURLConsts.MCH_NATIVE_URL, sign,
+		return String.format(PayURLConsts.MCH_NATIVE_URL1, sign,
 				weixinAccount.getId(), weixinAccount.getMchId(), productId,
 				timestamp, noncestr);
+	}
+
+	/**
+	 * 创建V3.x NativePay支付(扫码支付)链接【模式二】
+	 * 
+	 * @param weixinAccount
+	 *            支付配置信息
+	 * @param body
+	 *            商品描述
+	 * @param outTradeNo
+	 *            商户内部唯一订单号
+	 * @param totalFee
+	 *            商品总额 单位元
+	 * @param createIp
+	 *            订单生成的机器 IP
+	 * @return 支付链接
+	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5">模式二</a>
+	 * @throws PayException
+	 */
+	public static String createNativePayRequestURL(
+			WeixinPayAccount weixinAccount, String body, String outTradeNo,
+			double totalFee, String createIp) throws PayException {
+		MchPayPackage payPackage = new MchPayPackage(weixinAccount, null, body,
+				outTradeNo, totalFee, createIp, TradeType.NATIVE);
+		String paySignKey = weixinAccount.getPaySignKey();
+		payPackage.setSign(paysignMd5(payPackage, paySignKey));
+		PrePay prePay = createPrePay(payPackage, paySignKey);
+		return String.format(PayURLConsts.MCH_NATIVE_URL2, prePay.getCodeUrl());
 	}
 
 	/**
@@ -235,10 +267,10 @@ public class PayUtil {
 	 * @throws WeixinException
 	 */
 	public static Order createMicroPay(String authCode, String body,
-			String attach, String orderNo, double orderFee, String ip,
+			String attach, String orderNo, double orderFee, String createIp,
 			WeixinPayAccount weixinAccount) throws WeixinException {
 		MicroPayPackage payPackage = new MicroPayPackage(weixinAccount, body,
-				attach, orderNo, orderFee, ip, authCode);
+				attach, orderNo, orderFee, createIp, authCode);
 		return createMicroPay(payPackage, weixinAccount);
 	}
 
