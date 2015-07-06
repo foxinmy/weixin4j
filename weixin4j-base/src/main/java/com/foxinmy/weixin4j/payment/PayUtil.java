@@ -220,6 +220,8 @@ public class PayUtil {
 	 * 
 	 * @param weixinAccount
 	 *            支付配置信息
+	 * @param productId
+	 *            商品ID
 	 * @param body
 	 *            商品描述
 	 * @param outTradeNo
@@ -235,10 +237,12 @@ public class PayUtil {
 	 * @throws PayException
 	 */
 	public static String createNativePayRequestURL(
-			WeixinPayAccount weixinAccount, String body, String outTradeNo,
-			double totalFee, String createIp) throws PayException {
+			WeixinPayAccount weixinAccount, String productId, String body,
+			String outTradeNo, double totalFee, String createIp)
+			throws PayException {
 		MchPayPackage payPackage = new MchPayPackage(weixinAccount, null, body,
 				outTradeNo, totalFee, createIp, TradeType.NATIVE);
+		payPackage.setProductId(productId);
 		String paySignKey = weixinAccount.getPaySignKey();
 		payPackage.setSign(paysignMd5(payPackage, paySignKey));
 		PrePay prePay = createPrePay(payPackage, paySignKey);
