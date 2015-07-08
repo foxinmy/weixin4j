@@ -1,6 +1,8 @@
 package com.foxinmy.weixin4j.mp.test;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -34,11 +36,11 @@ public class CouponTest {
 	protected final File caFile = new File("证书文件路径(*.p12)");
 
 	@Test
-	public void sendCoupon() throws WeixinException {
+	public void sendCoupon() throws WeixinException, IOException {
 		String partnerTradeNo = String.format("%s%s%s", ACCOUNT.getMchId(),
 				DateUtil.fortmat2yyyyMMdd(new Date()), "1");
-		CouponResult result = WEIXINPAY.sendCoupon(caFile, "123",
-				partnerTradeNo, "oyFLst1bqtuTcxK-ojF8hOGtLQao", null);
+		CouponResult result = WEIXINPAY.sendCoupon(new FileInputStream(caFile),
+				"123", partnerTradeNo, "oyFLst1bqtuTcxK-ojF8hOGtLQao", null);
 		Assert.assertTrue(result.getRetCode().equalsIgnoreCase(Consts.SUCCESS));
 	}
 

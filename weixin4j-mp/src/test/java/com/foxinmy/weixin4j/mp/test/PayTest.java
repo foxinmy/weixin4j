@@ -1,6 +1,8 @@
 package com.foxinmy.weixin4j.mp.test;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -109,13 +111,13 @@ public class PayTest {
 	}
 
 	@Test
-	public void refundV3() throws WeixinException {
+	public void refundV3() throws WeixinException, IOException {
 		File caFile = new File("签名文件如123.p12");
 		IdQuery idQuery = new IdQuery("TT_1427183696238", IdType.TRADENO);
 		com.foxinmy.weixin4j.payment.mch.RefundResult result = PAY3
-				.refundApply(caFile, idQuery,
-						"TT_R" + System.currentTimeMillis(), 0.01d, 0.01d,
-						null, "10020674");
+				.refundApply(new FileInputStream(caFile), idQuery, "TT_R"
+						+ System.currentTimeMillis(), 0.01d, 0.01d, null,
+						"10020674");
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);

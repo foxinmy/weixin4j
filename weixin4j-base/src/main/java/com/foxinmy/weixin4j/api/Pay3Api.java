@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,7 +51,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台API</a>
  */
 public class Pay3Api {
-	
+
 	private final WeixinHttpClient weixinClient;
 
 	private final WeixinPayAccount weixinAccount;
@@ -102,7 +101,7 @@ public class Pay3Api {
 	 * ，要采用原来的退款单号。总退款金额不能超过用户实际支付金额。
 	 * </p>
 	 * 
-	 * @param caFile
+	 * @param ca
 	 *            证书文件(V3版本后缀为*.p12)
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -123,14 +122,11 @@ public class Pay3Api {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	protected RefundResult refundApply(File caFile, IdQuery idQuery,
+	protected RefundResult refundApply(InputStream ca, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
 			String opUserId, Map<String, String> mopara) throws WeixinException {
 		WeixinResponse response = null;
-		InputStream ca = null;
 		try {
-			ca = new FileInputStream(caFile);
-
 			Map<String, String> map = baseMap(idQuery);
 			map.put("out_refund_no", outRefundNo);
 			map.put("total_fee", DateUtil.formaFee2Fen(totalFee));
@@ -149,10 +145,6 @@ public class Pay3Api {
 			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
 					ca);
 			response = request.post(PayURLConsts.MCH_REFUNDAPPLY_URL, param);
-		} catch (WeixinException e) {
-			throw e;
-		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
 		} finally {
 			if (ca != null) {
 				try {
@@ -169,7 +161,7 @@ public class Pay3Api {
 	/**
 	 * 退款申请
 	 * 
-	 * @param caFile
+	 * @param ca
 	 *            证书文件(V3版本后缀为*.p12)
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -184,9 +176,9 @@ public class Pay3Api {
 	 *            货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
 	 * @param opUserId
 	 *            操作员帐号, 默认为商户号
-	 * @see {@link com.foxinmy.weixin4j.api.Pay3Api#refundApply(File, IdQuery, String, double, double, String, Map)}
+	 * @see {@link com.foxinmy.weixin4j.api.Pay3Api#refundApply(InputStream, IdQuery, String, double, double, String, Map)}
 	 */
-	public RefundResult refundApply(File caFile, IdQuery idQuery,
+	public RefundResult refundApply(InputStream ca, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
 			CurrencyType refundFeeType, String opUserId) throws WeixinException {
 		Map<String, String> mopara = new HashMap<String, String>();
@@ -194,7 +186,7 @@ public class Pay3Api {
 			refundFeeType = CurrencyType.CNY;
 		}
 		mopara.put("refund_fee_type", refundFeeType.name());
-		return refundApply(caFile, idQuery, outRefundNo, totalFee, refundFee,
+		return refundApply(ca, idQuery, outRefundNo, totalFee, refundFee,
 				opUserId, mopara);
 	}
 
@@ -204,7 +196,7 @@ public class Pay3Api {
 	 * 如需实现相同功能请调用退款接口</font></br> <font
 	 * color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font></br>
 	 * 
-	 * @param caFile
+	 * @param ca
 	 *            证书文件(V3版本后缀为*.p12)
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -213,11 +205,9 @@ public class Pay3Api {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public ApiResult reverseOrder(File caFile, IdQuery idQuery)
+	public ApiResult reverseOrder(InputStream ca, IdQuery idQuery)
 			throws WeixinException {
-		InputStream ca = null;
 		try {
-			ca = new FileInputStream(caFile);
 			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
 					ca);
 			Map<String, String> map = baseMap(idQuery);
@@ -229,8 +219,6 @@ public class Pay3Api {
 					PayURLConsts.MCH_ORDERREVERSE_URL, param);
 			return response.getAsObject(new TypeReference<ApiResult>() {
 			});
-		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
 		} finally {
 			if (ca != null) {
 				try {

@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.api;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -45,7 +43,7 @@ public class CouponApi {
 	/**
 	 * 发放代金券(需要证书)
 	 * 
-	 * @param caFile
+	 * @param ca
 	 *            证书文件(后缀为*.p12)
 	 * @param couponStockId
 	 *            代金券批次id
@@ -61,7 +59,7 @@ public class CouponApi {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/sp_coupon.php?chapter=12_3">发放代金券接口</a>
 	 * @throws WeixinException
 	 */
-	public CouponResult sendCoupon(File caFile, String couponStockId,
+	public CouponResult sendCoupon(InputStream ca, String couponStockId,
 			String partnerTradeNo, String openId, String opUserId)
 			throws WeixinException {
 		Map<String, String> map = baseMap();
@@ -81,16 +79,10 @@ public class CouponApi {
 		map.put("sign", sign);
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = null;
-		InputStream ca = null;
 		try {
-			ca = new FileInputStream(caFile);
 			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
 					ca);
 			response = request.post(PayURLConsts.MCH_COUPONSEND_URL, param);
-		} catch (WeixinException e) {
-			throw e;
-		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
 		} finally {
 			if (ca != null) {
 				try {

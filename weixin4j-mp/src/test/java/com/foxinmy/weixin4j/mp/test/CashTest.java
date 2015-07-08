@@ -1,5 +1,8 @@
 package com.foxinmy.weixin4j.mp.test;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -22,7 +25,7 @@ import com.foxinmy.weixin4j.type.MPPaymentCheckNameType;
 public class CashTest extends CouponTest {
 
 	@Test
-	public void sendRedpacket() throws WeixinException {
+	public void sendRedpacket() throws WeixinException, IOException {
 		Redpacket redpacket = new Redpacket("HB001", "无忧钱庄", "无忧钱庄",
 				"oyFLst1bqtuTcxK-ojF8hOGtLQao", 1d);
 		redpacket.setActName("红包测试");
@@ -32,23 +35,26 @@ public class CashTest extends CouponTest {
 		redpacket.setRemark("快来领取红包吧！");
 		redpacket.setTotalNum(1);
 		redpacket.setWishing("来就送钱");
-		RedpacketSendResult result = WEIXINPAY.sendRedpack(caFile, redpacket);
+		RedpacketSendResult result = WEIXINPAY.sendRedpack(new FileInputStream(
+				caFile), redpacket);
 		System.err.println(result);
 	}
 
 	@Test
-	public void queryRedpacket() throws WeixinException {
+	public void queryRedpacket() throws WeixinException, IOException {
 		String outTradeNo = "HB001";
-		RedpacketRecord record = WEIXINPAY.queryRedpack(caFile, outTradeNo);
+		RedpacketRecord record = WEIXINPAY.queryRedpack(new FileInputStream(
+				caFile), outTradeNo);
 		System.err.println(record);
 	}
 
 	@Test
-	public void mpPayment() throws WeixinException {
+	public void mpPayment() throws WeixinException, IOException {
 		MPPayment payment = new MPPayment("MP001",
 				"oyFLst1bqtuTcxK-ojF8hOGtLQao",
 				MPPaymentCheckNameType.NO_CHECK, "企业付款测试", 0.01d, "127.0.0.1");
-		MPPaymentResult result = WEIXINPAY.mpPayment(caFile, payment);
+		MPPaymentResult result = WEIXINPAY.mpPayment(
+				new FileInputStream(caFile), payment);
 		System.err.println(result);
 	}
 }
