@@ -69,7 +69,7 @@ public class WeixinPayProxy {
 		this.couponApi = new CouponApi(weixinAccount);
 		this.cashApi = new CashApi(weixinAccount);
 		this.DEFAULT_CA_FILE = ConfigUtil.getClassPathValue("ca_file",
-				Weixin4jConst.DEFAULT_MEDIA_PATH);
+				Weixin4jConst.DEFAULT_CAFILE_PATH);
 	}
 
 	/**

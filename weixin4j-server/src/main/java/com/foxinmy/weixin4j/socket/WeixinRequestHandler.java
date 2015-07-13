@@ -104,6 +104,4 @@ public class WeixinRequestHandler extends
 		ctx.channel().attr(Consts.MESSAGE_TRANSFER_KEY).set(messageTransfer);
 		messageDispatcher.doDispatch(ctx, request, cruxMessage);
 	}
-
-	
 }
