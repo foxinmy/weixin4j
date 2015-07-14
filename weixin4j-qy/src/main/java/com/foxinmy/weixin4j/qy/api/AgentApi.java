@@ -81,7 +81,7 @@ public class AgentApi extends QyApi {
 		return response.getAsJsonResult();
 	}
 
-	public static ValueFilter typeFilter;
+	public final static ValueFilter typeFilter;
 	static {
 		typeFilter = new ValueFilter() {
 			@Override

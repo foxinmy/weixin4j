@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.payment.mch;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -229,7 +230,10 @@ public class RedpacketRecord extends XmlResult {
 
 	@XmlRootElement
 	@XmlAccessorType(XmlAccessType.FIELD)
-	public static class RedpacketReceiver {
+	public static class RedpacketReceiver implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+		
 		/**
 		 * 领取红包的Openid
 		 */

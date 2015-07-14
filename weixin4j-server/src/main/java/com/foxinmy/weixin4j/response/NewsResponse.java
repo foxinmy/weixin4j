@@ -89,7 +89,7 @@ public class NewsResponse implements WeixinResponse {
 	 * @since JDK 1.7
 	 * @see
 	 */
-	public class Article {
+	public static class Article {
 		/**
 		 * 图文消息标题
 		 */

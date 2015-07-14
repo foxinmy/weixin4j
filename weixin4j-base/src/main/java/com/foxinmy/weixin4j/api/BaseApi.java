@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.api;
 
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,21 +49,15 @@ public abstract class BaseApi {
 	/**
 	 * 默认使用weixin4j.properties文件中的公众号信息
 	 */
-	public static WeixinAccount DEFAULT_WEIXIN_ACCOUNT;
+	public final static WeixinAccount DEFAULT_WEIXIN_ACCOUNT;
 
 	/**
 	 * 默认token使用File的方式存储
 	 */
-	public static TokenStorager DEFAULT_TOKEN_STORAGER;
+	public final static TokenStorager DEFAULT_TOKEN_STORAGER;
 
 	static {
-		try {
-			DEFAULT_WEIXIN_ACCOUNT = ConfigUtil.getWeixinAccount();
-		} catch (MissingResourceException e) {
-			System.err
-					.println("'account' key not found in weixin4j.properties file.");
-			; // error
-		}
+		DEFAULT_WEIXIN_ACCOUNT = ConfigUtil.getWeixinAccount();
 		DEFAULT_TOKEN_STORAGER = new FileTokenStorager(ConfigUtil.getValue(
 				"token_path", Weixin4jConst.DEFAULT_TOKEN_PATH));
 	}

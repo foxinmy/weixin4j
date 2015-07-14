@@ -4,10 +4,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
@@ -331,10 +332,9 @@ public class Pay3Api {
 
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
-		FileWriter fw = null;
 		try {
-			fw = new FileWriter(file);
-			writer = new BufferedWriter(fw);
+			writer = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(file), Consts.GBK));
 			reader = new BufferedReader(new InputStreamReader(
 					new ByteArrayInputStream(response.getContent()),
 					com.foxinmy.weixin4j.model.Consts.GBK));
@@ -352,7 +352,6 @@ public class Pay3Api {
 				}
 				if (writer != null) {
 					writer.close();
-					fw.close();
 				}
 			} catch (IOException ignore) {
 				;

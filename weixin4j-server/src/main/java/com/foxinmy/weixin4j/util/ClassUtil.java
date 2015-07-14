@@ -72,16 +72,18 @@ public final class ClassUtil {
 				return file.isDirectory() || file.getName().endsWith(".class");
 			}
 		});
-		for (File file : files) {
-			if (file.isDirectory()) {
-				classes.addAll(findClassesByFile(file,
-						packageName + "." + file.getName()));
-			} else {
-				try {
-					classes.add(Class.forName(packageName + "."
-							+ file.getName().replace(".class", "")));
-				} catch (ClassNotFoundException e) {
-					;
+		if (files != null) {
+			for (File file : files) {
+				if (file.isDirectory()) {
+					classes.addAll(findClassesByFile(file, packageName + "."
+							+ file.getName()));
+				} else {
+					try {
+						classes.add(Class.forName(packageName + "."
+								+ file.getName().replace(".class", "")));
+					} catch (ClassNotFoundException e) {
+						;
+					}
 				}
 			}
 		}

@@ -67,11 +67,11 @@ public class WeixinMessageDecoder extends
 		String weixinId = parameters.containsKey("weixin_id") ? parameters.get(
 				"weixin_id").get(0) : null;
 		AesToken aesToken = aesTokenMap.get(weixinId);
-		if (aesToken == null) { //
+		/*if (aesToken == null) { 
 			AesToken _aesToken = aesTokenMap.get(null);
 			aesToken = new AesToken(weixinId, _aesToken.getToken(),
 					_aesToken.getAesKey());
-		}
+		}*/
 		String originalContent = content;
 		String encryptContent = null;
 		if (!content.isEmpty() && encryptType == EncryptType.AES) {

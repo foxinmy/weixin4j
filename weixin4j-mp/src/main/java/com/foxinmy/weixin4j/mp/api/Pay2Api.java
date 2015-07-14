@@ -6,10 +6,10 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
@@ -209,14 +209,18 @@ public class Pay2Api extends MpApi {
 						.getInstance(com.foxinmy.weixin4j.model.Consts.JKS);
 				ks.load(null, null);
 				ks.setCertificateEntry("tenpay", cert);
-				ks.store(new FileOutputStream(jksFile), jksPwd.toCharArray());
+				FileOutputStream os = new FileOutputStream(jksFile);
+				ks.store(os, jksPwd.toCharArray());
+				os.close();
 			}
 			// load jks ca
 			TrustManagerFactory tmf = TrustManagerFactory
 					.getInstance(com.foxinmy.weixin4j.model.Consts.SunX509);
 			ks = KeyStore.getInstance(com.foxinmy.weixin4j.model.Consts.JKS);
-			ks.load(new FileInputStream(jksFile), jksPwd.toCharArray());
+			FileInputStream is = new FileInputStream(jksFile);
+			ks.load(is, jksPwd.toCharArray());
 			tmf.init(ks);
+			is.close();
 			// load pfx ca
 			KeyManagerFactory kmf = KeyManagerFactory
 					.getInstance(com.foxinmy.weixin4j.model.Consts.SunX509);
@@ -373,10 +377,9 @@ public class Pay2Api extends MpApi {
 		WeixinResponse response = weixinClient.get(downloadbill_uri, map);
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
-		FileWriter fw = null;
 		try {
-			fw = new FileWriter(file);
-			writer = new BufferedWriter(fw);
+			writer = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(file), Consts.GBK));
 			reader = new BufferedReader(new InputStreamReader(
 					new ByteArrayInputStream(response.getContent()),
 					com.foxinmy.weixin4j.model.Consts.GBK));
@@ -394,7 +397,6 @@ public class Pay2Api extends MpApi {
 				}
 				if (writer != null) {
 					writer.close();
-					fw.close();
 				}
 			} catch (IOException ignore) {
 				;

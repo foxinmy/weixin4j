@@ -74,7 +74,11 @@ public class ListsuffixResultDeserializer {
 		T t = XmlStream.fromXML(content, clazz);
 		Map<Field, String[]> listsuffixFields = getListsuffixFields(clazz);
 		if (!listsuffixFields.isEmpty()) {
-			for (Field field : listsuffixFields.keySet()) {
+			Iterator<Entry<Field, String[]>> it = listsuffixFields.entrySet()
+					.iterator();
+			while (it.hasNext()) {
+				Entry<Field, String[]> entry = it.next();
+				Field field = entry.getKey();
 				Type type = field.getGenericType();
 				Class<?> wrapperClazz = null;
 				if (type instanceof ParameterizedType) {
@@ -84,7 +88,7 @@ public class ListsuffixResultDeserializer {
 					continue;
 				}
 				ListWrapper<?> listWrapper = deserializeToListWrapper(content,
-						wrapperClazz, listsuffixFields.get(field));
+						wrapperClazz, entry.getValue());
 				if (listWrapper != null) {
 					try {
 						field.setAccessible(true);

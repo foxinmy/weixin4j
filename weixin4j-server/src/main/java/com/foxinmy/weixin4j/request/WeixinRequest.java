@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  * @since JDK 1.7
  * @see
  */
-public class WeixinRequest implements Serializable, Cloneable {
+public class WeixinRequest implements Serializable {
 
 	private static final long serialVersionUID = -9157395300510879866L;
 

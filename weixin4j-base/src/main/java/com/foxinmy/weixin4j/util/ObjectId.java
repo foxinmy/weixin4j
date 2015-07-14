@@ -148,11 +148,10 @@ public class ObjectId implements Comparable<ObjectId>, java.io.Serializable {
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-
-		ObjectId other = (ObjectId) o;
-		if (other == null)
+		if (!(o instanceof ObjectId)) {
 			return false;
-
+		}
+		ObjectId other = (ObjectId) o;
 		return _time == other._time && _machine == other._machine
 				&& _inc == other._inc;
 	}
@@ -310,8 +309,7 @@ public class ObjectId implements Comparable<ObjectId>, java.io.Serializable {
 				}
 
 				ClassLoader loader = ObjectId.class.getClassLoader();
-				int loaderId = loader != null
-						? System.identityHashCode(loader)
+				int loaderId = loader != null ? System.identityHashCode(loader)
 						: 0;
 
 				StringBuilder sb = new StringBuilder();

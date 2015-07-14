@@ -16,7 +16,7 @@ public class StringEntity implements HttpEntity {
 	}
 
 	public StringEntity(String body, ContentType contentType) {
-		this.content = body.getBytes();
+		this.content = body.getBytes(contentType.getCharset());
 		this.contentType = contentType;
 	}
 
