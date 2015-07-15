@@ -3,7 +3,7 @@ package com.foxinmy.weixin4j.tuple;
 /**
  * 客服消息元件
  * 
- * @className Notifyable
+ * @className NotifyTuple
  * @author jy
  * @date 2014年11月22日
  * @since JDK 1.7

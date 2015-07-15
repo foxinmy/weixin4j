@@ -131,7 +131,9 @@ public class SuiteApi extends QyApi {
 		String suite_set_session_uri = getRequestUri("suite_set_session_uri");
 		JSONObject para = new JSONObject();
 		para.put("pre_auth_code", suitePreCodeHolder.getAccessToken());
-		para.put("session_info", appids);
+		JSONObject appid = new JSONObject();
+		appid.put("appid", appids);
+		para.put("session_info", appid);
 		WeixinResponse response = weixinClient
 				.post(String.format(suite_set_session_uri,
 						suiteTokenHolder.getAccessToken()), para.toJSONString());
