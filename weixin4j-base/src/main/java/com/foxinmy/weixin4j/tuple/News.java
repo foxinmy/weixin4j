@@ -29,6 +29,9 @@ public class News implements NotifyTuple {
 		return "news";
 	}
 
+	/**
+	 * 允许最多的图文列表数
+	 */
 	private static final int MAX_ARTICLE_COUNT = 10;
 
 	/**
@@ -88,6 +91,8 @@ public class News implements NotifyTuple {
 		}
 	}
 
+	@JSONField(serialize = false)
+	@XmlTransient
 	public List<Article> getFullArticles() {
 		return articles;
 	}

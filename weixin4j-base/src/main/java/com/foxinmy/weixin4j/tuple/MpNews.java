@@ -24,6 +24,11 @@ public class MpNews implements MassTuple, NotifyTuple {
 
 	private static final long serialVersionUID = 8853054484809101524L;
 
+	/**
+	 * 允许最多的图文列表数
+	 */
+	private static final int MAX_ARTICLE_COUNT = 10;
+
 	@Override
 	public String getMessageType() {
 		return "mpnews";
@@ -82,7 +87,23 @@ public class MpNews implements MassTuple, NotifyTuple {
 		return this;
 	}
 
+	@JSONField(serialize = false)
+	@XmlTransient
+	public boolean isMaxCount() {
+		return articles.size() == MAX_ARTICLE_COUNT;
+	}
+
 	public List<MpArticle> getArticles() {
+		if (articles.size() > MAX_ARTICLE_COUNT) {
+			return articles.subList(0, MAX_ARTICLE_COUNT);
+		} else {
+			return articles;
+		}
+	}
+
+	@JSONField(serialize = false)
+	@XmlTransient
+	public List<MpArticle> getFullArticles() {
 		return articles;
 	}
 
