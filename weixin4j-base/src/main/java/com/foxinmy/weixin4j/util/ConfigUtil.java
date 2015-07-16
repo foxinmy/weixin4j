@@ -101,8 +101,7 @@ public class ConfigUtil {
 	public static WeixinAccount getWeixinAccount() {
 		WeixinAccount account = null;
 		try {
-			String text = getValue("account");
-			account = JSON.parseObject(text, WeixinAccount.class);
+			account = JSON.parseObject(getValue("account"), WeixinAccount.class);
 		} catch (MissingResourceException e) {
 			System.err
 					.println("'account' key not found in weixin4j.properties file.");

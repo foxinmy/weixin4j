@@ -18,23 +18,63 @@ import com.foxinmy.weixin4j.util.ConfigUtil;
  * @date 2015年6月11日
  * @since JDK 1.7
  * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83">企业号登录授权说明</a>
+ *      href="http://qydev.weixin.qq.com/wiki/index.php?title=OAuth%E9%AA%8C%E8%AF%81%E6%8E%A5%E5%8F%A3">企业号用户身份授权说明</a>
  * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%88%E6%9D%83">第三方应用授权说明</a>
+ *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83">企业号第三方提供商授权说明</a>
+ * @see <a
+ *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%88%E6%9D%83">企业号第三方套件应用授权说明</a>
  */
 public class OauthApi extends QyApi {
 
 	/**
-	 * 企业号登陆授权
+	 * 企业号用户身份授权
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.qy.api.OauthApi#getAuthorizeURL(String, String,String)}
+	 * @see {@link com.foxinmy.weixin4j.qy.api.OauthApi#getUserAuthorizeURL(String, String,String)}
 	 * 
 	 * @return 请求授权的URL
 	 */
-	public String getAuthorizeURL() {
+	public String getUserAuthorizeURL() {
 		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = ConfigUtil.getValue("redirect_uri");
-		return getAuthorizeURL(corpId, redirectUri, "state");
+		String redirectUri = ConfigUtil.getValue("user_oauth_redirect_uri");
+		return getUserAuthorizeURL(corpId, redirectUri, "state");
+	}
+
+	/**
+	 * 企业号用户身份授权
+	 * 
+	 * @param corpId
+	 *            企业号的corpid
+	 * @param redirectUri
+	 *            重定向地址
+	 * @param state
+	 *            用于保持请求和回调的状态
+	 * @return 请求授权的URL
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83">企业号用户身份授权</a>
+	 */
+	public String getUserAuthorizeURL(String corpId, String redirectUri,
+			String state) {
+		String oauth_uri = getRequestUri("user_oauth_uri");
+		try {
+			return String.format(oauth_uri, corpId,
+					URLEncoder.encode(redirectUri, Consts.UTF_8.name()), state);
+		} catch (UnsupportedEncodingException e) {
+			;
+		}
+		return "";
+	}
+
+	/**
+	 * 企业号第三方提供商授权
+	 * 
+	 * @see {@link com.foxinmy.weixin4j.qy.api.OauthApi#getThirdAuthorizeURL(String, String,String)}
+	 * 
+	 * @return 请求授权的URL
+	 */
+	public String getThirdAuthorizeURL() {
+		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
+		String redirectUri = ConfigUtil.getValue("third_oauth_redirect_uri");
+		return getThirdAuthorizeURL(corpId, redirectUri, "state");
 	}
 
 	/**
@@ -48,9 +88,9 @@ public class OauthApi extends QyApi {
 	 *            用于保持请求和回调的状态，授权请求后原样带回给第三方
 	 * @return 请求授权的URL
 	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83">企业号登陆授权</a>
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83">企业号第三方提供商授权</a>
 	 */
-	public String getAuthorizeURL(String corpId, String redirectUri,
+	public String getThirdAuthorizeURL(String corpId, String redirectUri,
 			String state) {
 		String oauth_uri = getRequestUri("provider_oauth_uri");
 		try {
@@ -61,9 +101,9 @@ public class OauthApi extends QyApi {
 		}
 		return "";
 	}
-	
+
 	/**
-	 * 获取企业号管理员登录信息
+	 * 第三方套件获取企业号管理员登录信息
 	 * 
 	 * @param providerToken
 	 *            提供商的token
@@ -92,7 +132,7 @@ public class OauthApi extends QyApi {
 	 */
 	public String getSuiteAuthorizeURL(String preAuthCode) {
 		String suiteId = DEFAULT_WEIXIN_ACCOUNT.getSuiteId();
-		String redirectUri = ConfigUtil.getValue("suite_redirect_uri");
+		String redirectUri = ConfigUtil.getValue("suite_oauth_redirect_uri");
 		return getSuiteAuthorizeURL(suiteId, preAuthCode, redirectUri, "state");
 	}
 
@@ -107,10 +147,10 @@ public class OauthApi extends QyApi {
 	 *            授权后重定向url
 	 * @param state
 	 *            回调后原样返回
-	 * @return 请求授权的URL <a
-	 *         href=""http://qydev.weixin.qq.com/wiki/index.php?title
-	 *         =%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%AE%A1%E7%90%86%E5%91%98%E6%
-	 *         8E%88%E6%9D%83%E5%BA%94%E7%94%A8>应用套件授权</a>
+	 * @see <a href="http://qydev.weixin.qq.com/wiki/index.php?title
+	 *      =%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%AE%A1%E7%90%86%E5%91%98%E6%
+	 *      8E%88%E6%9D%83%E5%BA%94%E7%94%A8">企业号第三方应用套件授权</a>
+	 * @return 请求授权的URL
 	 */
 	public String getSuiteAuthorizeURL(String suiteId, String preAuthCode,
 			String redirectUri, String state) {

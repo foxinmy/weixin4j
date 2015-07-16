@@ -51,8 +51,9 @@ weixin4j.properties说明
 | account     | 微信企业号信息 `json格式`  |
 | token_path  | 使用FileTokenStorager时token保存的物理路径 |
 | media_path  | 调用媒体接口时保存媒体文件的物理路径 |
-| redirect_uri     | 企业号登陆授权后重定向的url(OauthApi接口) |
-| suite_redirect_uri     | 企业号第三方应用套件授权后重定向的url(OauthApi接口) |
+| user_oauth_redirect_uri     | 企业号用户身份授权后重定向的url(OauthApi接口) |
+| third_oauth_redirect_uri	  | 企业号第三方提供商授权后重定向的url(OauthApi接口) |
+| suite_oauth_redirect_uri     | 企业号第三方应用套件授权后重定向的url(OauthApi接口) |
 
 示例(properties中换行用右斜杆\\)
 
@@ -64,8 +65,11 @@ weixin4j.properties说明
 	token_path=/tmp/weixin4j/token
 	media_path=/tmp/weixin4j/media
 	
-	#企业号登陆授权的重定向路径(使用OauthApi时需要填写)
-	redirect_uri=http://xxx
+	#企业号用户身份授权后重定向的url(使用OauthApi时需要填写)
+	user_oauth_redirect_uri=http://xxx
+	
+	#企业号第三方管理员授权后重定向的url(使用OauthApi时需要填写)
+	third_oauth_redirect_uri=http://xxx
 	
 	#企业号第三方应用套件授权后重定向的url(使用OauthApi时需要填写)
 	suite_redirect_uri=http://xxx

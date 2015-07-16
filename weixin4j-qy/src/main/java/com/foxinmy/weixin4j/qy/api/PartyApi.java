@@ -40,10 +40,10 @@ public class PartyApi extends QyApi {
 	 * @return 部门ID
 	 * @throws WeixinException
 	 */
-	public int createParty(Party depart) throws WeixinException {
+	public int createParty(Party party) throws WeixinException {
 		String department_create_uri = getRequestUri("department_create_uri");
-		JSONObject obj = (JSONObject) JSON.toJSON(depart);
-		if (depart.getId() < 1) {
+		JSONObject obj = (JSONObject) JSON.toJSON(party);
+		if (party.getId() < 1) {
 			obj.remove("id");
 		}
 		Token token = tokenHolder.getToken();
