@@ -46,13 +46,11 @@ public class MpArticle implements Serializable {
 	 */
 	@JSONField(name = "show_cover_pic")
 	private String showCoverPic;
-
 	/**
 	 * 正文的URL 可为空
 	 */
 	@JSONField(name = "content_url")
 	private String contentUrl;
-
 	/**
 	 * 封面图片的URL 可为空
 	 */
@@ -63,10 +61,6 @@ public class MpArticle implements Serializable {
 		this.thumbMediaId = thumbMediaId;
 		this.title = title;
 		this.content = content;
-	}
-
-	public MpArticle() {
-
 	}
 
 	public String getThumbMediaId() {

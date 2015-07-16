@@ -133,12 +133,13 @@ public class MassApi extends MpApi {
 		if (tuple instanceof MpNews) {
 			MpNews _news = (MpNews) tuple;
 			List<MpArticle> _articles = _news.getArticles();
-			if (StringUtil.isBlank(_news.getMediaId())
-					&& (_articles == null || _articles.isEmpty())) {
-				throw new WeixinException(
-						"mass fail:mediaId or articles is required");
+			if (StringUtil.isBlank(_news.getMediaId())) {
+				if (_articles.isEmpty()) {
+					throw new WeixinException(
+							"mass fail:mediaId or articles is required");
+				}
+				tuple = new MpNews(uploadArticle(_articles));
 			}
-			tuple = new MpNews(uploadArticle(_articles));
 		}
 		String msgtype = tuple.getMessageType();
 		JSONObject obj = new JSONObject();

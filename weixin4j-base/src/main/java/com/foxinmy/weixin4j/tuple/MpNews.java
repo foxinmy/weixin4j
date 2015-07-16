@@ -1,6 +1,6 @@
 package com.foxinmy.weixin4j.tuple;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -38,9 +38,9 @@ public class MpNews implements MassTuple, NotifyTuple {
 	/**
 	 * 图文列表
 	 */
-	@JSONField(name = "articles")
+	@JSONField(serialize = false)
 	@XmlTransient
-	private List<MpArticle> articles;
+	private LinkedList<MpArticle> articles;
 
 	public MpNews() {
 		this(null);
@@ -48,34 +48,38 @@ public class MpNews implements MassTuple, NotifyTuple {
 
 	public MpNews(String mediaId) {
 		this.mediaId = mediaId;
-		this.articles = new ArrayList<MpArticle>();
+		this.articles = new LinkedList<MpArticle>();
 	}
 
-	public void pushArticle(String thumbMediaId, String title, String content) {
-		articles.add(new MpArticle(thumbMediaId, title, content));
+	public MpNews addArticle(String thumbMediaId, String title, String content) {
+		return addArticle(new MpArticle(thumbMediaId, title, content));
 	}
 
-	public void pushFirstArticle(String thumbMediaId, String title,
-			String content) {
-		articles.add(0, new MpArticle(thumbMediaId, title, content));
+	public MpNews addArticle(MpArticle... articles) {
+		for (MpArticle article : articles) {
+			this.articles.add(article);
+		}
+		return this;
 	}
 
-	public void pushLastArticle(String thumbMediaId, String title,
-			String content) {
-		articles.add(articles.size(), new MpArticle(thumbMediaId, title,
-				content));
+	public MpNews addFirstArticle(MpArticle article) {
+		articles.addFirst(article);
+		return this;
 	}
 
-	public MpArticle removeLastArticle() {
-		return articles.remove(articles.size() - 1);
+	public MpNews addLastArticle(MpArticle article) {
+		articles.addLast(article);
+		return this;
 	}
 
-	public MpArticle removeFirstArticle() {
-		return articles.remove(0);
+	public MpNews removeFirstArticle() {
+		articles.removeFirst();
+		return this;
 	}
 
-	public void setArticles(List<MpArticle> articles) {
-		this.articles = articles;
+	public MpNews removeLastArticle() {
+		articles.removeLast();
+		return this;
 	}
 
 	public List<MpArticle> getArticles() {
@@ -84,10 +88,6 @@ public class MpNews implements MassTuple, NotifyTuple {
 
 	public String getMediaId() {
 		return mediaId;
-	}
-
-	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
 	}
 
 	@Override

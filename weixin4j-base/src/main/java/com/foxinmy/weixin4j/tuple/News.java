@@ -1,10 +1,10 @@
 package com.foxinmy.weixin4j.tuple;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -20,7 +20,6 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @since JDK 1.7
  * @see
  */
-@XmlRootElement(name = "Articles")
 public class News implements NotifyTuple {
 
 	private static final long serialVersionUID = 3348756809039388415L;
@@ -39,50 +38,57 @@ public class News implements NotifyTuple {
 	 */
 	@JSONField(name = "articles")
 	@XmlElement(name = "Articles")
-	private List<Article> articles;
+	private LinkedList<Article> articles;
 
 	public News() {
-		this.articles = new ArrayList<Article>();
+		this.articles = new LinkedList<Article>();
 	}
 
-	public void pushArticle(String title, String desc, String picUrl, String url) {
-		if ((articles.size() + 1) > MAX_ARTICLE_COUNT) {
-			return;
+	public News addArticle(String title, String desc, String picUrl, String url) {
+		return addArticle(new Article(title, desc, picUrl, url));
+	}
+
+	public News addArticle(Article... articles) {
+		for (Article article : articles) {
+			this.articles.add(article);
 		}
-		articles.add(new Article(title, desc, picUrl, url));
+		return this;
 	}
 
-	public void pushFirstArticle(String title, String desc, String picUrl,
-			String url) {
-		articles.add(0, new Article(title, desc, picUrl, url));
+	public News addFirstArticle(Article article) {
+		articles.addFirst(article);
+		return this;
 	}
 
-	public void pushLastArticle(String title, String desc, String picUrl,
-			String url) {
-		articles.add(articles.size(), new Article(title, desc, picUrl, url));
+	public void addLastArticle(Article article) {
+		articles.addLast(article);
 	}
 
-	public Article removeLastArticle() {
-		return articles.remove(articles.size() - 1);
+	public News removeFirstArticle() {
+		articles.removeFirst();
+		return this;
 	}
 
-	public Article removeFirstArticle() {
-		return articles.remove(0);
+	public News removeLastArticle() {
+		articles.removeLast();
+		return this;
 	}
 
 	@JSONField(serialize = false)
+	@XmlTransient
 	public boolean isMaxCount() {
-		return this.articles.size() == MAX_ARTICLE_COUNT;
-	}
-
-	public void setArticles(List<Article> articles) {
-		if (articles.size() > MAX_ARTICLE_COUNT) {
-			articles = articles.subList(0, MAX_ARTICLE_COUNT);
-		}
-		this.articles = articles;
+		return articles.size() == MAX_ARTICLE_COUNT;
 	}
 
 	public List<Article> getArticles() {
+		if (articles.size() > MAX_ARTICLE_COUNT) {
+			return articles.subList(0, MAX_ARTICLE_COUNT);
+		} else {
+			return articles;
+		}
+	}
+
+	public List<Article> getFullArticles() {
 		return articles;
 	}
 

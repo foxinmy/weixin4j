@@ -73,8 +73,8 @@ public class NotifyTest extends TokenTest {
 	public void news() throws WeixinException {
 		News news = new News();
 		NotifyMessage notify = new NotifyMessage("to", news);
-		news.pushArticle("title1", "desc1", "picUrl1", "url1");
-		news.pushArticle("title2", "desc2", "picUrl2", "url2");
+		news.addArticle("title1", "desc1", "picUrl1", "url1");
+		news.addArticle("title2", "desc2", "picUrl2", "url2");
 		System.out.println(notifyApi.sendNotify(notify));
 	}
 
