@@ -1,11 +1,10 @@
 package com.foxinmy.weixin4j.qy.message;
 
 import java.io.Serializable;
-import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.tuple.NotifyTuple;
-import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 发送消息对象
@@ -27,21 +26,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 public class NotifyMessage implements Serializable {
 
 	private static final long serialVersionUID = 1219589414293000383L;
-	
-	private static final char SEPARATOR = '|';
 
-	/**
-	 * UserID列表（消息接收者，多个接收者用‘|’分隔）。特殊情况：指定为@all，则向关注该企业应用的全部成员发送
-	 */
-	private String touser;
-	/**
-	 * PartyID列表，多个接受者用‘|’分隔。当touser为@all时忽略本参数
-	 */
-	private String toparty;
-	/**
-	 * TagID列表，多个接受者用‘|’分隔。当touser为@all时忽略本参数
-	 */
-	private String totag;
 	/**
 	 * 企业应用的id，整型。可在应用的设置页面查看
 	 */
@@ -55,102 +40,47 @@ public class NotifyMessage implements Serializable {
 	 */
 	@JSONField(serialize = false)
 	private NotifyTuple tuple;
+	/**
+	 * id参数
+	 */
+	@JSONField(serialize = false)
+	private IdParameter target;
 
 	public NotifyMessage(NotifyTuple tuple, int agentid) {
-		this(null, null, null, tuple, agentid, false);
-		this.touser = "@all";
+		this(agentid, tuple, new IdParameter(), false);
 	}
 
-	public NotifyMessage(List<String> tousers, List<String> topartys,
-			List<String> totags, NotifyTuple tuple, int agentid, boolean isSafe) {
-		if (tousers != null && !tousers.isEmpty()) {
-			this.touser = StringUtil.join(tousers, SEPARATOR);
-		}
-		if (topartys != null && !topartys.isEmpty()) {
-			this.toparty = StringUtil.join(topartys, SEPARATOR);
-		}
-		if (totags != null && !totags.isEmpty()) {
-			this.totag = StringUtil.join(totags, SEPARATOR);
-		}
+	public NotifyMessage(int agentid, NotifyTuple tuple, IdParameter target,
+			boolean isSafe) {
 		this.agentid = agentid;
 		this.safe = isSafe ? 1 : 0;
 		this.tuple = tuple;
-	}
-
-	public String getTouser() {
-		return touser;
-	}
-
-	public void setTouser(String touser) {
-		this.touser = touser;
-	}
-
-	public void setTouser(List<String> tousers) {
-		if (tousers != null && !tousers.isEmpty()) {
-			this.touser = StringUtil.join(tousers, SEPARATOR);
-		}
-	}
-
-	public String getToparty() {
-		return toparty;
-	}
-
-	public void setToparty(String toparty) {
-		this.toparty = toparty;
-	}
-
-	public void setToparty(List<String> topartys) {
-		if (topartys != null && !topartys.isEmpty()) {
-			this.toparty = StringUtil.join(topartys, SEPARATOR);
-		}
-	}
-
-	public String getTotag() {
-		return totag;
-	}
-
-	public void setTotag(String totag) {
-		this.totag = totag;
-	}
-
-	public void setTotag(List<String> totags) {
-		if (totags != null && !totags.isEmpty()) {
-			this.totag = StringUtil.join(totags, SEPARATOR);
-		}
-	}
-
-	public int getAgentid() {
-		return agentid;
-	}
-
-	public void setAgentid(int agentid) {
-		this.agentid = agentid;
+		this.target = target;
 	}
 
 	public int getSafe() {
 		return safe;
 	}
 
-	public void setSafe(int safe) {
-		this.safe = safe;
-	}
-
 	public void setSafe(boolean isSafe) {
 		this.safe = isSafe ? 1 : 0;
+	}
+
+	public int getAgentid() {
+		return agentid;
 	}
 
 	public NotifyTuple getTuple() {
 		return tuple;
 	}
 
-	public void setTuple(NotifyTuple tuple) {
-		this.tuple = tuple;
+	public IdParameter getTarget() {
+		return target;
 	}
 
 	@Override
 	public String toString() {
-		return "NotifyMessage [touser=" + touser + ", toparty=" + toparty
-				+ ", totag=" + totag + ", agentid=" + agentid + ", safe="
-				+ safe + ", tuple=" + tuple + "]";
+		return "NotifyMessage [agentid=" + agentid + ", safe=" + safe
+				+ ", tuple=" + tuple + ", target=" + target + "]";
 	}
 }

@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.qy.api;
 
+import java.util.Map;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -46,9 +48,8 @@ public class NotifyApi extends QyApi {
 	 * 
 	 * @param notify
 	 *            客服消息对象
-	 * @return 
-	 *         如果无权限，则本次发送失败；如果收件人不存在或未关注，发送仍然执行。两种情况下均返回无效的部分</br>
-	 *         { "errcode": 0, "errmsg": "ok", "invaliduser": "UserID1",
+	 * @return 如果无权限，则本次发送失败；如果收件人不存在或未关注，发送仍然执行。两种情况下均返回无效的部分</br> { "errcode":
+	 *         0, "errmsg": "ok", "invaliduser": "UserID1",
 	 *         "invalidparty":"PartyID1", "invalidtag":"TagID1" }
 	 * @throws WeixinException
 	 * @see <a
@@ -66,10 +67,16 @@ public class NotifyApi extends QyApi {
 	 */
 	public JSONObject sendNotify(NotifyMessage notify) throws WeixinException {
 		NotifyTuple tuple = notify.getTuple();
+		Map<String, String> target = notify.getTarget().getParameter();
 		String msgtype = tuple.getMessageType();
 		JSONObject obj = (JSONObject) JSON.toJSON(notify);
 		obj.put("msgtype", msgtype);
 		obj.put(msgtype, tuple);
+		if (target == null || target.isEmpty()) {
+			obj.put("touser", "@all");
+		} else {
+			obj.putAll(target);
+		}
 		String message_send_uri = getRequestUri("message_send_uri");
 		Token token = tokenHolder.getToken();
 		WeixinResponse response = weixinClient.post(
