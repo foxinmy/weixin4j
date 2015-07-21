@@ -46,8 +46,8 @@ public class NotifyMessage implements Serializable {
 	@JSONField(serialize = false)
 	private IdParameter target;
 
-	public NotifyMessage(NotifyTuple tuple, int agentid) {
-		this(agentid, tuple, new IdParameter(), false);
+	public NotifyMessage(int agentid, NotifyTuple tuple) {
+		this(agentid, tuple, IdParameter.get(), false);
 	}
 
 	public NotifyMessage(int agentid, NotifyTuple tuple, IdParameter target,
