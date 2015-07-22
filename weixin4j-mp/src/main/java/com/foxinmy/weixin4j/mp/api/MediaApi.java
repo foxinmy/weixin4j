@@ -78,7 +78,7 @@ public class MediaApi extends MpApi {
 			mediaType = MediaType.image;
 		} else if ("mp3/wma/wav/amr".contains(mediaTypeKey)) {
 			mediaType = MediaType.voice;
-		} else if ("mp4".equals(mediaTypeKey)) {
+		} else if ("rm/rmvb/wmv/avi/mpg/mpeg/mp4".equals(mediaTypeKey)) {
 			mediaType = MediaType.video;
 		} else {
 			throw new WeixinException("cannot handle mediaType:" + mediaTypeKey);

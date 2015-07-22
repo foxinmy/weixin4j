@@ -32,7 +32,7 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void create() throws WeixinException {
-		int tagId = tagApi.createTag("coder");
+		int tagId = tagApi.createTag(new Tag("coder"));
 		Assert.assertTrue(tagId > 0);
 	}
 

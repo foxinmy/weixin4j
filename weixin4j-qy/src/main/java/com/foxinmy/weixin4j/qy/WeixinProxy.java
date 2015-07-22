@@ -702,16 +702,17 @@ public class WeixinProxy {
 	/**
 	 * 创建标签(创建的标签属于管理组;默认为未加锁状态)
 	 * 
-	 * @param tagName
-	 *            标签名称
+	 * @param tag
+	 *            标签对象；</br>标签名称，长度为1~64个字节，标签名不可与其他标签重名；</br>标签id，整型，
+	 *            指定此参数时新增的标签会生成对应的标签id，不指定时则以目前最大的id自增。
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.9B.E5.BB.BA.E6.A0.87.E7.AD.BE">创建标签说明</a>
 	 * @see com.foxinmy.weixin4j.qy.api.TagApi
 	 * @return 标签ID
 	 * @throws WeixinException
 	 */
-	public int createTag(String tagName) throws WeixinException {
-		return tagApi.createTag(tagName);
+	public int createTag(Tag tag) throws WeixinException {
+		return tagApi.createTag(tag);
 	}
 
 	/**

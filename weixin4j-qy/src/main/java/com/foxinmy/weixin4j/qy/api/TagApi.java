@@ -32,26 +32,32 @@ public class TagApi extends QyApi {
 	/**
 	 * 创建标签(创建的标签属于管理组；默认为加锁状态。加锁状态下只有本管理组才可以增删成员，解锁状态下其它管理组也可以增删成员)
 	 * 
-	 * @param tagName
-	 *            标签名称
+	 * @param tag
+	 *            标签对象；</br>标签名称，长度为1~64个字节，标签名不可与其他标签重名；</br>标签id，整型，
+	 *            指定此参数时新增的标签会生成对应的标签id，不指定时则以目前最大的id自增。
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.9B.E5.BB.BA.E6.A0.87.E7.AD.BE">创建标签说明</a>
 	 * @return 标签ID
 	 * @throws WeixinException
 	 */
-	public int createTag(String tagName) throws WeixinException {
+	public int createTag(Tag tag) throws WeixinException {
 		String tag_create_uri = getRequestUri("tag_create_uri");
 		Token token = tokenHolder.getToken();
+		JSONObject obj = (JSONObject) JSON.toJSON(tag);
+		if (obj.getIntValue("tagid") <= 0) {
+			obj.remove("tagid");
+		}
 		WeixinResponse response = weixinClient.post(
 				String.format(tag_create_uri, token.getAccessToken()),
-				String.format("{\"tagname\":\"%s\"}", tagName));
+				obj.toJSONString());
 		return response.getAsJson().getIntValue("tagid");
 	}
 
 	/**
 	 * 更新标签(管理组必须是指定标签的创建者)
 	 * 
-	 * @param tag 标签信息
+	 * @param tag
+	 *            标签信息
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E6.9B.B4.E6.96.B0.E6.A0.87.E7.AD.BE.E5.90.8D.E5.AD.97"
 	 *      >更新标签说明</a>
@@ -81,8 +87,8 @@ public class TagApi extends QyApi {
 	public JsonResult deleteTag(int tagId) throws WeixinException {
 		String tag_delete_uri = getRequestUri("tag_delete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(tag_delete_uri,
-				token.getAccessToken(), tagId));
+		WeixinResponse response = weixinClient.post(String.format(
+				tag_delete_uri, token.getAccessToken(), tagId));
 		return response.getAsJsonResult();
 	}
 
@@ -118,8 +124,8 @@ public class TagApi extends QyApi {
 	public List<User> getTagUsers(int tagId) throws WeixinException {
 		String tag_get_user_uri = getRequestUri("tag_get_user_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(tag_get_user_uri,
-				token.getAccessToken(), tagId));
+		WeixinResponse response = weixinClient.post(String.format(
+				tag_get_user_uri, token.getAccessToken(), tagId));
 		return JSON.parseArray(response.getAsJson().getString("userlist"),
 				User.class);
 	}

@@ -56,7 +56,7 @@ public class Music implements NotifyTuple {
 	private String thumbMediaId;
 
 	public Music(String thumbMediaId) {
-		this(null, null, null, null, thumbMediaId);
+		this.thumbMediaId = thumbMediaId;
 	}
 
 	public Music(String title, String desc, String musicUrl, String hqMusicUrl,
