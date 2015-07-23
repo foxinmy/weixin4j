@@ -102,9 +102,15 @@ public final class PayURLConsts {
 	 * 商户平台下native支付的url-模式1
 	 */
 	public static final String MCH_NATIVE_URL1 = "weixin://wxpay/bizpayurl?sign=%s&appid=%s&mch_id=%s&product_id=%s&time_stamp=%s&nonce_str=%s";
-	
+
 	/**
 	 * 商户平台下native支付的url-模式2
 	 */
 	public static final String MCH_NATIVE_URL2 = "weixin://wxpay/bizpayurl?sr=%s";
+
+	/**
+	 * 授权码查询OPENID接口
+	 */
+	public static final String MCH_AUTHCODE_OPENID_URL = MCH_BASE_URL
+			+ "/tools/authcodetoopenid";
 }

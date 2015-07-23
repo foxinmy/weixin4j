@@ -17,6 +17,7 @@ import com.foxinmy.weixin4j.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.payment.coupon.CouponStock;
 import com.foxinmy.weixin4j.payment.mch.ApiResult;
+import com.foxinmy.weixin4j.payment.mch.AuthCodeOpenIdResult;
 import com.foxinmy.weixin4j.payment.mch.MPPayment;
 import com.foxinmy.weixin4j.payment.mch.MPPaymentRecord;
 import com.foxinmy.weixin4j.payment.mch.MPPaymentResult;
@@ -504,5 +505,22 @@ public class WeixinPayProxy {
 			throws WeixinException, IOException {
 		return cashApi.mchPaymentQuery(new FileInputStream(DEFAULT_CA_FILE),
 				outTradeNo);
+	}
+
+	/**
+	 * 授权码查询OPENID接口
+	 * 
+	 * @param authCode
+	 *            扫码支付授权码，设备读取用户微信中的条码或者二维码信息
+	 * @return 查询结果
+	 * @see com.foxinmy.weixin4j.api.CashApi
+	 * @see com.foxinmy.weixin4j.payment.mch.AuthCodeOpenIdResult
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_13&index=9">授权码查询OPENID</a>
+	 * @throws WeixinException
+	 */
+	public AuthCodeOpenIdResult authCode2openId(String authCode)
+			throws WeixinException {
+		return pay3Api.authCode2openId(authCode);
 	}
 }

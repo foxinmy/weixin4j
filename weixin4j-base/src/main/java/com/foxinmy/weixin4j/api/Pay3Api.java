@@ -28,6 +28,7 @@ import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayURLConsts;
 import com.foxinmy.weixin4j.payment.PayUtil;
 import com.foxinmy.weixin4j.payment.mch.ApiResult;
+import com.foxinmy.weixin4j.payment.mch.AuthCodeOpenIdResult;
 import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
 import com.foxinmy.weixin4j.payment.mch.RefundResult;
@@ -428,6 +429,30 @@ public class Pay3Api {
 		WeixinResponse response = weixinClient.post(
 				PayURLConsts.MCH_PAYREPORT_URL, param);
 		return response.getAsXmlResult();
+	}
+
+	/**
+	 * 授权码查询OPENID接口
+	 * 
+	 * @param authCode
+	 *            扫码支付授权码，设备读取用户微信中的条码或者二维码信息
+	 * @return 查询结果
+	 * @see com.foxinmy.weixin4j.payment.mch.AuthCodeOpenIdResult
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_13&index=9">授权码查询OPENID</a>
+	 * @throws WeixinException
+	 */
+	public AuthCodeOpenIdResult authCode2openId(String authCode)
+			throws WeixinException {
+		Map<String, String> map = baseMap(null);
+		map.put("auth_code", authCode);
+		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
+		map.put("sign", sign);
+		String param = XmlStream.map2xml(map);
+		WeixinResponse response = weixinClient.post(
+				PayURLConsts.MCH_AUTHCODE_OPENID_URL, param);
+		return response.getAsObject(new TypeReference<AuthCodeOpenIdResult>() {
+		});
 	}
 
 	/**
