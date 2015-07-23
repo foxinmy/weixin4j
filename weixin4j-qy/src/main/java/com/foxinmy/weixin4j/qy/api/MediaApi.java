@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.qy.api;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,37 +61,6 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 上传媒体文件
-	 * 
-	 * @param agentid
-	 *            企业应用ID(<font color="red">大于0时视为上传永久媒体文件</font>)
-	 * @param file
-	 *            文件对象
-	 * @return 上传到微信服务器返回的媒体标识
-	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#uploadMedia(int,InputStream, MediaType)}
-	 * @throws WeixinException
-	 * @throws IOException
-	 */
-	public String uploadMedia(int agentid, File file) throws WeixinException,
-			IOException {
-		String mediaTypeKey = IOUtil.getExtension(file.getName());
-		if (StringUtil.isBlank(mediaTypeKey)) {
-			mediaTypeKey = FileUtil.getFileType(file);
-		}
-		MediaType mediaType = null;
-		if ("bmp/png/jpeg/jpg/gif".contains(mediaTypeKey)) {
-			mediaType = MediaType.image;
-		} else if ("mp3/wma/wav/amr".contains(mediaTypeKey)) {
-			mediaType = MediaType.voice;
-		} else if ("rm/rmvb/wmv/avi/mpg/mpeg/mp4".equals(mediaTypeKey)) {
-			mediaType = MediaType.video;
-		} else {
-			mediaType = MediaType.file;
-		}
-		return uploadMedia(agentid, new FileInputStream(file), mediaType);
-	}
-
-	/**
-	 * 上传媒体文件
 	 * <p>
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
 	 * 否则抛出异常.
@@ -102,8 +70,8 @@ public class MediaApi extends QyApi {
 	 *            企业应用ID(<font color="red">大于0时视为上传永久媒体文件</font>)
 	 * @param is
 	 *            媒体数据流
-	 * @param mediaType
-	 *            媒体类型
+	 * @param fileName
+	 *            文件名
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%B4%E6%97%B6%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">上传临时素材文件说明</a>
@@ -111,17 +79,34 @@ public class MediaApi extends QyApi {
 	 *      href="http://http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">上传永久素材文件说明</a>
 	 * @throws WeixinException
 	 */
-	public String uploadMedia(int agentid, InputStream is, MediaType mediaType)
+	public String uploadMedia(int agentid, InputStream is, String fileName)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
-		if (mediaType == null) {
-			mediaType = MediaType.file;
-		} else if (mediaType == MediaType.thumb) {
-			mediaType = MediaType.image;
-		} else if (mediaType == MediaType.news) {
-			throw new WeixinException(
-					"please invoke uploadMaterialArticle method");
+		byte[] content;
+		try {
+			content = IOUtil.toByteArray(is);
+		} catch (IOException e) {
+			throw new WeixinException(e);
 		}
+		if (StringUtil.isBlank(fileName)) {
+			fileName = ObjectId.get().toHexString();
+		}
+		String suffixName = IOUtil.getExtension(fileName);
+		if (StringUtil.isBlank(suffixName)) {
+			suffixName = FileUtil
+					.getFileType(new ByteArrayInputStream(content));
+			fileName = String.format("%s.%s", fileName, suffixName);
+		}
+		MediaType mediaType = null;
+		if ("bmp/png/jpeg/jpg/gif".contains(suffixName)) {
+			mediaType = MediaType.image;
+		} else if ("mp3/wma/wav/amr".contains(suffixName)) {
+			mediaType = MediaType.voice;
+		} else if ("rm/rmvb/wmv/avi/mpg/mpeg/mp4".equals(suffixName)) {
+			mediaType = MediaType.video;
+		} else {
+			mediaType = MediaType.file;
+		}
+		Token token = tokenHolder.getToken();
 		try {
 			WeixinResponse response = null;
 			if (agentid > 0) {
@@ -129,15 +114,17 @@ public class MediaApi extends QyApi {
 				response = weixinClient.post(String.format(
 						material_media_upload_uri, token.getAccessToken(),
 						mediaType.name(), agentid), new FormBodyPart("media",
-						new InputStreamBody(is, mediaType.getContentType()
-								.getMimeType(), ObjectId.get().toHexString())));
+						new InputStreamBody(new ByteArrayInputStream(content),
+								mediaType.getContentType().getMimeType(),
+								fileName)));
 			} else {
 				String file_upload_uri = getRequestUri("file_upload_uri");
 				response = weixinClient.post(String.format(file_upload_uri,
 						token.getAccessToken(), mediaType.name()),
-						new FormBodyPart("media", new InputStreamBody(is,
-								mediaType.getContentType().getMimeType(),
-								ObjectId.get().toHexString())));
+						new FormBodyPart("media", new InputStreamBody(
+								new ByteArrayInputStream(content), mediaType
+										.getContentType().getMimeType(),
+								fileName)));
 			}
 			return response.getAsJson().getString("media_id");
 		} finally {
@@ -468,7 +455,7 @@ public class MediaApi extends QyApi {
 				writer.write("\r\n");
 			}
 			return uploadMedia(0, new ByteArrayInputStream(writer.getBuffer()
-					.toString().getBytes(Consts.UTF_8)), MediaType.file);
+					.toString().getBytes(Consts.UTF_8)), batchName);
 		} finally {
 			try {
 				writer.close();

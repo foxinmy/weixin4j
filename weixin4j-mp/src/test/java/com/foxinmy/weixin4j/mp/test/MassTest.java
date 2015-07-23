@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.mp.test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +41,9 @@ public class MassTest extends TokenTest {
 	@Test
 	public void uploadArticle() throws IOException, WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
-		String thumbMediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"),
-				false);
+		File file = new File("/tmp/test.jpg");
+		String thumbMediaId = mediaApi.uploadMedia(new FileInputStream(file),
+				file.getName(), false);
 		articles.add(new MpArticle(thumbMediaId, "title", "content"));
 		massApi.uploadArticle(articles);
 	}
@@ -69,8 +71,9 @@ public class MassTest extends TokenTest {
 	@Test
 	public void massArticleByGroup() throws IOException, WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
-		String thumbMediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"),
-				false);
+		File file = new File("/tmp/test.jpg");
+		String thumbMediaId = mediaApi.uploadMedia(new FileInputStream(file),
+				file.getName(), false);
 		articles.add(new MpArticle(thumbMediaId, "title", "content"));
 		String massId = massApi.massArticleByGroupId(articles, 0);
 		Assert.assertTrue(massId != null);
@@ -79,8 +82,9 @@ public class MassTest extends TokenTest {
 	@Test
 	public void massArticleByOpenIds() throws IOException, WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
-		String thumbMediaId = mediaApi.uploadMedia(new File("/tmp/test.jpg"),
-				false);
+		File file = new File("/tmp/test.jpg");
+		String thumbMediaId = mediaApi.uploadMedia(new FileInputStream(file),
+				file.getName(), false);
 		articles.add(new MpArticle(thumbMediaId, "title", "content"));
 		String massId = massApi.massArticleByOpenIds(articles,
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU");

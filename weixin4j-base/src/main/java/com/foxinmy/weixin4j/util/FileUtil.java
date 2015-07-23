@@ -1,8 +1,7 @@
 package com.foxinmy.weixin4j.util;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -93,16 +92,14 @@ public class FileUtil {
 	/**
 	 * 获取文件类型
 	 * 
-	 * @param file
+	 * @param is
 	 * @return
 	 */
-	public static String getFileType(File file) {
-		String fileType = "unknown";
-		FileInputStream fis = null;
+	public static String getFileType(InputStream is) {
+		String fileType = "file";
 		try {
-			fis = new FileInputStream(file);
 			byte[] b = new byte[10];
-			int t = fis.read(b, 0, b.length);
+			int t = is.read(b, 0, b.length);
 			if (t > 0) {
 				String fileCode = bytesToHexString(b).toLowerCase();
 				Iterator<String> keyIter = FILE_TYPE_MAP.keySet().iterator();
@@ -115,11 +112,11 @@ public class FileUtil {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			;
 		} finally {
-			if (fis != null) {
+			if (is != null) {
 				try {
-					fis.close();
+					is.close();
 				} catch (IOException ignore) {
 					;
 				}

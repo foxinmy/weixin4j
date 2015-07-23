@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.qy;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -207,24 +206,6 @@ public class WeixinProxy {
 
 	/**
 	 * 上传媒体文件
-	 * 
-	 * @param agentid
-	 *            企业应用ID(<font color="red">大于0时视为上传永久媒体文件</font>)
-	 * @param file
-	 *            文件对象
-	 * @return 上传到微信服务器返回的媒体标识
-	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#uploadMedia(int,InputStream, MediaType)}
-	 * @throws WeixinException
-	 * @throws IOException
-	 */
-	public String uploadMedia(int agentid, File file) throws WeixinException,
-			IOException {
-		return mediaApi.uploadMedia(agentid, file);
-	}
-
-	/**
-	 * 上传媒体文件
 	 * <p>
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
 	 * 否则抛出异常.
@@ -234,8 +215,8 @@ public class WeixinProxy {
 	 *            企业应用ID(<font color="red">大于0时视为上传永久媒体文件</font>)
 	 * @param is
 	 *            媒体数据流
-	 * @param mediaType
-	 *            媒体类型
+	 * @param fileName
+	 *            文件名
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see <a
@@ -244,9 +225,9 @@ public class WeixinProxy {
 	 *      href="http://http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">上传永久素材文件说明</a>
 	 * @throws WeixinException
 	 */
-	public String uploadMedia(int agentid, InputStream is, MediaType mediaType)
+	public String uploadMedia(int agentid, InputStream is, String fileName)
 			throws WeixinException {
-		return mediaApi.uploadMedia(agentid, is, mediaType);
+		return mediaApi.uploadMedia(agentid, is, fileName);
 	}
 
 	/**

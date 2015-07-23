@@ -26,8 +26,8 @@ import com.foxinmy.weixin4j.http.ContentType;
 public enum MediaType {
 	image(ContentType.IMAGE_JPG), voice(ContentType.AUDIO_MP3), video(
 			ContentType.VIDEO_MPEG4), thumb(ContentType.IMAGE_JPG), file(
-			ContentType.APPLICATION_OCTET_STREAM), news(
-			ContentType.APPLICATION_OCTET_STREAM);
+			ContentType.MULTIPART_FORM_DATA), news(
+			ContentType.MULTIPART_FORM_DATA);
 
 	MediaType(ContentType contentType) {
 		this.contentType = contentType;

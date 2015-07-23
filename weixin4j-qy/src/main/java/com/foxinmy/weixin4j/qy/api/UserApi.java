@@ -16,7 +16,6 @@ import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 成员API
@@ -118,8 +117,7 @@ public class UserApi extends QyApi {
 			obj.put("extattr", attrs);
 		}
 		if (avatar != null) {
-			obj.put("avatar_mediaid",
-					mediaApi.uploadMedia(0, avatar, MediaType.image));
+			obj.put("avatar_mediaid", mediaApi.uploadMedia(0, avatar, null));
 		}
 		Token token = tokenHolder.getToken();
 		WeixinResponse response = weixinClient.post(

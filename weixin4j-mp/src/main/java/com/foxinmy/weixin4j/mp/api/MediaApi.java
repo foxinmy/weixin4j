@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.mp.api;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,38 +56,8 @@ public class MediaApi extends MpApi {
 	}
 
 	/**
-	 * 上传媒体文件
-	 * 
-	 * @param file
-	 *            文件对象
-	 * @param isMaterial
-	 *            是否永久上传
-	 * @return 上传到微信服务器返回的媒体标识
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(InputStream, MediaType,boolean)}
-	 * @throws WeixinException
-	 * @throws IOException
-	 */
-	public String uploadMedia(File file, boolean isMaterial)
-			throws WeixinException, IOException {
-		String mediaTypeKey = IOUtil.getExtension(file.getName());
-		if (StringUtil.isBlank(mediaTypeKey)) {
-			mediaTypeKey = FileUtil.getFileType(file);
-		}
-		MediaType mediaType = null;
-		if ("bmp/png/jpeg/jpg/gif".contains(mediaTypeKey)) {
-			mediaType = MediaType.image;
-		} else if ("mp3/wma/wav/amr".contains(mediaTypeKey)) {
-			mediaType = MediaType.voice;
-		} else if ("rm/rmvb/wmv/avi/mpg/mpeg/mp4".equals(mediaTypeKey)) {
-			mediaType = MediaType.video;
-		} else {
-			throw new WeixinException("cannot handle mediaType:" + mediaTypeKey);
-		}
-		return uploadMedia(new FileInputStream(file), mediaType, isMaterial);
-	}
-
-	/**
-	 * 上传媒体文件 </br> <font color="red">此接口只包含图片、语音、缩略图、视频(临时)四种媒体类型的上传</font>
+	 * 上传媒体文件:图片（image）、语音（voice）、视频(video)和缩略图（thumb） </br> <font
+	 * color="red">此接口只包含图片、语音、缩略图、视频(临时)四种媒体类型的上传</font>
 	 * <p>
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
 	 * 否则抛出异常.
@@ -95,8 +65,8 @@ public class MediaApi extends MpApi {
 	 * 
 	 * @param is
 	 *            媒体数据流
-	 * @param mediaType
-	 *            媒体文件类型：分别有图片（image）、语音（voice）、视频(video)和缩略图（thumb）
+	 * @param fileName
+	 *            文件名
 	 * @param isMaterial
 	 *            是否永久上传
 	 * @return 上传到微信服务器返回的媒体标识
@@ -107,8 +77,33 @@ public class MediaApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @throws WeixinException
 	 */
-	public String uploadMedia(InputStream is, MediaType mediaType,
+	public String uploadMedia(InputStream is, String fileName,
 			boolean isMaterial) throws WeixinException {
+		byte[] content;
+		try {
+			content = IOUtil.toByteArray(is);
+		} catch (IOException e) {
+			throw new WeixinException(e);
+		}
+		if (StringUtil.isBlank(fileName)) {
+			fileName = ObjectId.get().toHexString();
+		}
+		String suffixName = IOUtil.getExtension(fileName);
+		if (StringUtil.isBlank(suffixName)) {
+			suffixName = FileUtil
+					.getFileType(new ByteArrayInputStream(content));
+			fileName = String.format("%s.%s", fileName, suffixName);
+		}
+		MediaType mediaType = null;
+		if ("bmp/png/jpeg/jpg/gif".contains(suffixName)) {
+			mediaType = MediaType.image;
+		} else if ("mp3/wma/wav/amr".contains(suffixName)) {
+			mediaType = MediaType.voice;
+		} else if ("rm/rmvb/wmv/avi/mpg/mpeg/mp4".equals(suffixName)) {
+			mediaType = MediaType.video;
+		} else {
+			throw new WeixinException("cannot handle mediaType:" + suffixName);
+		}
 		if (mediaType == MediaType.video && isMaterial) {
 			throw new WeixinException(
 					"please invoke uploadMaterialVideo method");
@@ -118,21 +113,20 @@ public class MediaApi extends MpApi {
 		try {
 			if (isMaterial) {
 				String material_media_upload_uri = getRequestUri("material_media_upload_uri");
-				response = weixinClient.post(
-						String.format(material_media_upload_uri,
-								token.getAccessToken()),
-						new FormBodyPart("media", new InputStreamBody(is,
-								mediaType.getContentType().getMimeType(),
-								ObjectId.get().toHexString())),
-						new FormBodyPart("type", new StringBody(mediaType
-								.name(), Consts.UTF_8)));
+				response = weixinClient
+						.post(String.format(material_media_upload_uri,
+								token.getAccessToken()), new FormBodyPart(
+								"media", new InputStreamBody(is, mediaType
+										.getContentType().getMimeType(),
+										fileName)), new FormBodyPart("type",
+								new StringBody(mediaType.name(), Consts.UTF_8)));
 			} else {
 				String media_upload_uri = getRequestUri("media_upload_uri");
 				response = weixinClient.post(String.format(media_upload_uri,
 						token.getAccessToken(), mediaType.name()),
 						new FormBodyPart("media", new InputStreamBody(is,
 								mediaType.getContentType().getMimeType(),
-								ObjectId.get().toHexString())));
+								fileName)));
 			}
 		} catch (UnsupportedEncodingException e) {
 			throw new WeixinException(e);
