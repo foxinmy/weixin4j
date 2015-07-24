@@ -101,7 +101,7 @@ public class MediaApi extends QyApi {
 			mediaType = MediaType.image;
 		} else if ("mp3/wma/wav/amr".contains(suffixName)) {
 			mediaType = MediaType.voice;
-		} else if ("rm/rmvb/wmv/avi/mpg/mpeg/mp4".equals(suffixName)) {
+		} else if ("rm/rmvb/wmv/avi/mpg/mpeg/mp4".contains(suffixName)) {
 			mediaType = MediaType.video;
 		} else {
 			mediaType = MediaType.file;
