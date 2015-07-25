@@ -9,8 +9,10 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.MediaCounter;
+import com.foxinmy.weixin4j.model.MediaDownloadResult;
 import com.foxinmy.weixin4j.model.MediaItem;
 import com.foxinmy.weixin4j.model.MediaRecord;
+import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.BatchApi;
 import com.foxinmy.weixin4j.qy.api.HelperApi;
@@ -219,14 +221,15 @@ public class WeixinProxy {
 	 *            文件名
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see com.foxinmy.weixin4j.model.MediaUploadResult
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%B4%E6%97%B6%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">上传临时素材文件说明</a>
 	 * @see <a
 	 *      href="http://http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">上传永久素材文件说明</a>
 	 * @throws WeixinException
 	 */
-	public String uploadMedia(int agentid, InputStream is, String fileName)
-			throws WeixinException {
+	public MediaUploadResult uploadMedia(int agentid, InputStream is,
+			String fileName) throws WeixinException {
 		return mediaApi.uploadMedia(agentid, is, fileName);
 	}
 
@@ -241,7 +244,7 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#downloadMedia(int,String)}
+	 * @see {@link #downloadMedia(int,String)}
 	 */
 	public File downloadMediaFile(int agentid, String mediaId)
 			throws WeixinException {
@@ -255,7 +258,8 @@ public class WeixinProxy {
 	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
 	 * @param mediaId
 	 *            媒体ID
-	 * @return 二进制数据包(需自行判断类型)
+	 * @return 媒体下载结果
+	 * @see com.foxinmy.weixin4j.model.MediaDownloadResult
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E4%B8%B4%E6%97%B6%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">获取临时媒体说明</a>
@@ -263,7 +267,7 @@ public class WeixinProxy {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">获取永久媒体说明</a>
 	 * @throws WeixinException
 	 */
-	public byte[] downloadMedia(int agentid, String mediaId)
+	public MediaDownloadResult downloadMedia(int agentid, String mediaId)
 			throws WeixinException {
 		return mediaApi.downloadMedia(agentid, mediaId);
 	}
@@ -307,6 +311,24 @@ public class WeixinProxy {
 	public JsonResult deleteMaterialMedia(int agentid, String mediaId)
 			throws WeixinException {
 		return mediaApi.deleteMaterialMedia(agentid, mediaId);
+	}
+
+	/**
+	 * 下载永久图文素材
+	 * 
+	 * @param agentid
+	 *            企业应用ID
+	 * @param mediaId
+	 *            媒体素材的media_id
+	 * @return 图文列表
+	 * @throws WeixinException
+	 * @see {@link #downloadMedia(int, String)}
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @see com.foxinmy.weixin4j.tuple.MpArticle
+	 */
+	public List<MpArticle> downloadArticle(int agentid, String mediaId)
+			throws WeixinException {
+		return mediaApi.downloadArticle(agentid, mediaId);
 	}
 
 	/**
@@ -380,7 +402,7 @@ public class WeixinProxy {
 	 *            媒体类型
 	 * @return 素材列表
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see {@link com.foxinmy.weixin4j.qy.api.MediaApi#listMaterialMedia(int,MediaType, int, int)}
+	 * @see {@link #listMaterialMedia(int,MediaType, int, int)}
 	 * @throws WeixinException
 	 */
 	public List<MediaItem> listAllMaterialMedia(int agentid, MediaType mediaType)
@@ -458,7 +480,7 @@ public class WeixinProxy {
 	 *            部门列表
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#replaceparty(String,Callback)}
+	 * @see {@link #replaceparty(String,Callback)}
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
 	 * @return 上传后的mediaId
@@ -563,8 +585,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.qy.model.User
 	 * @see com.foxinmy.weixin4j.qy.api.UserApi
 	 * @return 成员对象
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#getUser(String)}
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#getUserIdByCode(String,int)}
+	 * @see {@link #getUser(String)}
+	 * @see {@link #getUserIdByCode(String,int)}
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E8%8E%B7%E5%8F%96code">企业获取code</a>
 	 * @see <a
@@ -621,7 +643,7 @@ public class WeixinProxy {
 	 * 
 	 * @param departId
 	 *            部门ID
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#listUser(int, boolean,UserStatus)}
+	 * @see {@link #listUser(int, boolean,UserStatus)}
 	 * @see com.foxinmy.weixin4j.qy.api.UserApi
 	 * @return 成员列表
 	 * @throws WeixinException
@@ -933,8 +955,8 @@ public class WeixinProxy {
 	 *            成员列表
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#syncuser(String,Callback)}
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#replaceuser(String,Callback)}
+	 * @see {@link #syncuser(String,Callback)}
+	 * @see {@link #replaceuser(String,Callback)}
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
 	 * @return 上传后的mediaId

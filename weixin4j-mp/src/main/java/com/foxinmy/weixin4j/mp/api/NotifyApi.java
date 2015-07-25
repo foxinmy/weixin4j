@@ -35,7 +35,7 @@ public class NotifyApi extends MpApi {
 	 * @param notify
 	 *            客服消息对象
 	 * @return 处理结果
-	 * @see {@link com.foxinmy.weixin4j.mp.api.NotifyApi#sendNotify(NotifyMessage, String)}
+	 * @see {@link #sendNotify(NotifyMessage, String)}
 	 * @throws WeixinException
 	 */
 	public JsonResult sendNotify(NotifyMessage notify) throws WeixinException {

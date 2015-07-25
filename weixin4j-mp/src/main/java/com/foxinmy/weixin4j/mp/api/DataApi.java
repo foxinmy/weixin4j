@@ -42,7 +42,7 @@ public class DataApi extends MpApi {
 	 *            开始日期
 	 * @param offset
 	 *            增量 表示向前几天 比如 offset=1 则查询 beginDate的后一天之间的数据
-	 * @see {@link com.foxinmy.weixin4j.mp.api.DataApi#datacube(DatacubeType, Date,Date)}
+	 * @see {@link #datacube(DatacubeType, Date,Date)}
 	 * @throws WeixinException
 	 */
 	public List<?> datacube(DatacubeType datacubeType, Date beginDate,
@@ -62,7 +62,7 @@ public class DataApi extends MpApi {
 	 *            增量 表示向后几天 比如 offset=1 则查询 beginDate的前一天之间的数据
 	 * @param endDate
 	 *            截至日期
-	 * @see {@link com.foxinmy.weixin4j.mp.api.DataApi#datacube(DatacubeType, Date,Date)}
+	 * @see {@link #datacube(DatacubeType, Date,Date)}
 	 * @throws WeixinException
 	 */
 	public List<?> datacube(DatacubeType datacubeType, int offset, Date endDate)
@@ -80,7 +80,7 @@ public class DataApi extends MpApi {
 	 *            统计类型
 	 * @param date
 	 *            统计日期
-	 * @see {@link com.foxinmy.weixin4j.mp.api.DataApi#datacube(DatacubeType, Date,Date)}
+	 * @see {@link #datacube(DatacubeType, Date,Date)}
 	 * @throws WeixinException
 	 */
 	public List<?> datacube(DatacubeType datacubeType, Date date)

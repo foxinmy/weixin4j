@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 public class OauthApi extends MpApi {
 
 	/**
-	 * @see {@link com.foxinmy.weixin4j.mp.api.OauthApi#getAuthorizeURL(String, String,String)}
+	 * @see {@link #getAuthorizeURL(String, String,String)}
 	 * 
 	 * @return 请求授权的URL
 	 */
@@ -61,7 +61,7 @@ public class OauthApi extends MpApi {
 	}
 
 	/**
-	 * @see {@link com.foxinmy.weixin4j.mp.api.OauthApi#getOauthToken(String, String,String)}
+	 * @see {@link #getOauthToken(String, String,String)}
 	 * 
 	 * @return
 	 */
@@ -94,7 +94,7 @@ public class OauthApi extends MpApi {
 	}
 
 	/**
-	 * @see {@link com.foxinmy.weixin4j.mp.api.OauthApi#getOauthToken(String, String,String)}
+	 * @see {@link #getOauthToken(String, String,String)}
 	 * 
 	 * @return
 	 */
@@ -154,8 +154,8 @@ public class OauthApi extends MpApi {
 	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">授权获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
-	 * @see {@link com.foxinmy.weixin4j.mp.api.OauthApi#getOauthToken(String)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.OauthApi#getUser(String,Sring,Lang)}
+	 * @see {@link #getOauthToken(String)}
+	 * @see {@link #getUser(String,Sring,Lang)}
 	 */
 	public User getUser(OauthToken token) throws WeixinException {
 		return getUser(token.getAccessToken(), token.getOpenid(), Lang.zh_CN);

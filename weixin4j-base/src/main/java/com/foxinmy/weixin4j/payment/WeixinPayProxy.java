@@ -146,7 +146,7 @@ public class WeixinPayProxy {
 	 * 
 	 * @throws IOException
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.payment.WeixinPayProxy#refund(InputStream, IdQuery, String, double, double,CurrencyType, String)}
+	 * @see {@link #refundApply(InputStream, IdQuery, String, double, double,CurrencyType, String)}
 	 */
 	public com.foxinmy.weixin4j.payment.mch.RefundResult refundApply(
 			IdQuery idQuery, String outRefundNo, double totalFee,
@@ -233,7 +233,7 @@ public class WeixinPayProxy {
 	 * @param idQuery
 	 *            transaction_id、out_trade_no 二选一
 	 * @return 撤销结果
-	 * @see {@link com.foxinmy.weixin4j.mp.WeixinProxy#reverse(InputStream, IdQuery)}
+	 * @see {@link #reverseOrder(InputStream, IdQuery)}
 	 * @throws WeixinException
 	 * @throws IOException
 	 */

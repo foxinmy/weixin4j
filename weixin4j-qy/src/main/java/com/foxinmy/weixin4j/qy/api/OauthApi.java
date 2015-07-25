@@ -29,7 +29,7 @@ public class OauthApi extends QyApi {
 	/**
 	 * 企业号用户身份授权
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.qy.api.OauthApi#getUserAuthorizeURL(String, String,String)}
+	 * @see {@link OauthApi#getUserAuthorizeURL(String, String,String)}
 	 * 
 	 * @return 请求授权的URL
 	 */
@@ -67,7 +67,7 @@ public class OauthApi extends QyApi {
 	/**
 	 * 企业号第三方提供商授权
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.qy.api.OauthApi#getThirdAuthorizeURL(String, String,String)}
+	 * @see {@link #getThirdAuthorizeURL(String, String,String)}
 	 * 
 	 * @return 请求授权的URL
 	 */
@@ -125,7 +125,7 @@ public class OauthApi extends QyApi {
 	}
 
 	/**
-	 * @see {@link com.foxinmy.weixin4j.qy.api.OauthApi#getSuiteAuthorizeURL(String,String, String,String)}
+	 * @see {@link #getSuiteAuthorizeURL(String,String, String,String)}
 	 * @param preAuthCode
 	 *            预授权码
 	 * @return

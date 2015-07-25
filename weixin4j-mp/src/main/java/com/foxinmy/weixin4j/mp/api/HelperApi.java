@@ -104,7 +104,7 @@ public class HelperApi extends MpApi {
 	 * 而如果公众号是在公众平台官网通过网站功能发布菜单，则本接口返回运营者设置的菜单配置。
 	 * 
 	 * @return 菜单集合
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MenuApi#getMenu()}
+	 * @see {@link MenuApi#getMenu()}
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/17/4dc4b0514fdad7a5fbbd477aa9aab5ed.html">获取自定义菜单配置</a>
 	 * @see com.foxinmy.weixin4j.model.Button

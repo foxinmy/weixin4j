@@ -376,3 +376,9 @@
 * 2015-07-23
 
   + 微信支付新增授权码查询OPENID接口
+  
+* 2015-07-25
+
+ + 精简函数上的@link注释
+ 
+ + 新增媒体文件上传、下载结果类([MediaUploadResult.java](./weixin4j-base/src/main/java/com/foxinmy/weixin4j/model/MediaUploadResult.java),[MediaDownloadResult.java](./weixin4j-base/src/main/java/com/foxinmy/weixin4j/model/MediaDownloadResult.java))

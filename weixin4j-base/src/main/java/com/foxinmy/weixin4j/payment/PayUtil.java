@@ -267,7 +267,7 @@ public class PayUtil {
 	 * @param weixinAccount
 	 *            商户信息
 	 * @return 支付的订单信息
-	 * @see {@link com.foxinmy.weixin4j.payment.PayUtil#createMicroPay(MicroPayPackage, WeixinPayAccount)}
+	 * @see {@link #createMicroPay(MicroPayPackage, WeixinPayAccount)}
 	 * @throws WeixinException
 	 */
 	public static Order createMicroPay(String authCode, String body,

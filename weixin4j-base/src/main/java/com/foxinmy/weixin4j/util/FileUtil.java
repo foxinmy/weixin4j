@@ -124,4 +124,22 @@ public class FileUtil {
 		}
 		return fileType;
 	}
+
+	/**
+	 * 获取文件后缀
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public static String getFileExtension(String fileName) {
+		int extensionPos = fileName.lastIndexOf(".");
+		if (extensionPos < 0) {
+			return "";
+		}
+		int lastUnixPos = fileName.lastIndexOf("/");
+		int lastWindowsPos = fileName.lastIndexOf("\\");
+		int lastSeparator = Math.max(lastUnixPos, lastWindowsPos);
+		return lastSeparator > extensionPos ? "" : fileName
+				.substring(extensionPos + 1);
+	}
 }

@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.tuple.Image;
@@ -42,9 +43,9 @@ public class MassTest extends TokenTest {
 	public void uploadArticle() throws IOException, WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
 		File file = new File("/tmp/test.jpg");
-		String thumbMediaId = mediaApi.uploadMedia(new FileInputStream(file),
-				file.getName(), false);
-		articles.add(new MpArticle(thumbMediaId, "title", "content"));
+		MediaUploadResult mediaResult = mediaApi.uploadMedia(false,
+				new FileInputStream(file), file.getName());
+		articles.add(new MpArticle(mediaResult.getMediaId(), "title", "content"));
 		massApi.uploadArticle(articles);
 	}
 
@@ -72,9 +73,9 @@ public class MassTest extends TokenTest {
 	public void massArticleByGroup() throws IOException, WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
 		File file = new File("/tmp/test.jpg");
-		String thumbMediaId = mediaApi.uploadMedia(new FileInputStream(file),
-				file.getName(), false);
-		articles.add(new MpArticle(thumbMediaId, "title", "content"));
+		MediaUploadResult mediaResult = mediaApi.uploadMedia(false,
+				new FileInputStream(file), file.getName());
+		articles.add(new MpArticle(mediaResult.getMediaId(), "title", "content"));
 		String massId = massApi.massArticleByGroupId(articles, 0);
 		Assert.assertTrue(massId != null);
 	}
@@ -83,9 +84,9 @@ public class MassTest extends TokenTest {
 	public void massArticleByOpenIds() throws IOException, WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
 		File file = new File("/tmp/test.jpg");
-		String thumbMediaId = mediaApi.uploadMedia(new FileInputStream(file),
-				file.getName(), false);
-		articles.add(new MpArticle(thumbMediaId, "title", "content"));
+		MediaUploadResult mediaResult = mediaApi.uploadMedia(false,
+				new FileInputStream(file), file.getName());
+		articles.add(new MpArticle(mediaResult.getMediaId(), "title", "content"));
 		String massId = massApi.massArticleByOpenIds(articles,
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
 		Assert.assertTrue(massId != null);

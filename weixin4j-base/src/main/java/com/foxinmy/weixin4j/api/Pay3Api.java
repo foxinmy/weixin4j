@@ -178,7 +178,7 @@ public class Pay3Api {
 	 *            货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
 	 * @param opUserId
 	 *            操作员帐号, 默认为商户号
-	 * @see {@link com.foxinmy.weixin4j.api.Pay3Api#refundApply(InputStream, IdQuery, String, double, double, String, Map)}
+	 * @see {@link #refundApply(InputStream, IdQuery, String, double, double, String, Map)}
 	 */
 	public RefundResult refundApply(InputStream ca, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,

@@ -269,7 +269,7 @@ public class Pay2Api extends MpApi {
 	 *            操作员帐号, 默认为商户号
 	 * @param opUserPasswd
 	 *            操作员密码,默认为商户后台登录密码
-	 * @see {@link com.foxinmy.weixin4j.mp.api.Pay2Api#refundApply(File, IdQuery, String, double, double, String, Map)}
+	 * @see {@link #refundApply(File, IdQuery, String, double, double, String, Map)}
 	 */
 	public RefundResultV2 refundApply(File caFile, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
@@ -307,7 +307,7 @@ public class Pay2Api extends MpApi {
 	 * @param refundType
 	 *            为空或者填 1:商户号余额退款;2:现金帐号 退款;3:优先商户号退款,若商户号余额不足, 再做现金帐号退款。使用 2 或
 	 *            3 时,需联系财 付通开通此功能
-	 * @see {@link com.foxinmy.weixin4j.mp.api.Pay2Api#refundApply(File, IdQuery, String, double, double, String, Map)}
+	 * @see {@link #refundApply(File, IdQuery, String, double, double, String, Map)}
 	 * @return 退款结果
 	 */
 	public RefundResultV2 refundApply(File caFile, IdQuery idQuery,

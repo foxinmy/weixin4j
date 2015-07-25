@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;
@@ -91,10 +92,11 @@ public class NotifyTest extends TokenTest {
 	@Test
 	public void send2() throws WeixinException, IOException {
 		File file = new File("/tmp/test.jpg");
-		String mediaId = mediaApi.uploadMedia(new FileInputStream(file),
-				file.getName(), false);
+		MediaUploadResult mediaResult = mediaApi.uploadMedia(false,
+				new FileInputStream(file), file.getName());
 		NotifyMessage imageNotify = new NotifyMessage(
-				"owGBft_vbBbOaQOmpEUE4xDLeRSU", new Image(mediaId));
+				"owGBft_vbBbOaQOmpEUE4xDLeRSU", new Image(
+						mediaResult.getMediaId()));
 		JsonResult result = notifyApi.sendNotify(imageNotify);
 		Assert.assertEquals(0, result.getCode());
 	}

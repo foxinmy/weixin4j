@@ -42,7 +42,7 @@ public class UserApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see {@link com.foxinmy.weixin4j.mp.api.UserApi#getUser(String,Lang)}
+	 * @see {@link #getUser(String,Lang)}
 	 */
 	public User getUser(String openId) throws WeixinException {
 		return getUser(openId, Lang.zh_CN);

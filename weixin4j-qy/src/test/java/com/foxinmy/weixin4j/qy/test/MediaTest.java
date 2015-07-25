@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.type.MediaType;
 
@@ -33,20 +34,20 @@ public class MediaTest extends TokenTest {
 	@Test
 	public void upload() throws IOException, WeixinException {
 		File file = new File("/Users/jy/Downloads/uu-logo.png");
-		String mediaId = mediaApi.uploadMedia(0, new FileInputStream(file),
-				file.getName());
+		MediaUploadResult mediaResult = mediaApi.uploadMedia(0, new FileInputStream(
+				file), file.getName());
 		// 1-1gpykXsR8bhNvO13-ZvskptCBxQF1UE535jFdCF63N2inGRAqEb-psF6eppjIIl
 		// 1CF6sBgWWFGY9s4JCEet5ASszsTuyHpeN1f2LWXADveqBlKoxSgb3cO401NEM7dNY
-		Assert.assertNotNull(mediaId);
-		System.out.println(mediaId);
+		Assert.assertNotNull(mediaResult.getMediaId());
+		System.out.println(mediaResult);
 	}
 
 	@Test
 	public void download() throws WeixinException, IOException {
 		File file = mediaApi
 				.downloadMediaFile(
-						3,
-						"272LZlRmz1h7V2lcsvouCxwbJ_Dh-rgdDecX_26f_HDzJSZiSZjBeqeSYI1r9Ad9q66iWTGmRDUFgWOvz_fGVGi1BRZ4wjtkhPe2XcK-oomk");
+						0,
+						"1y0NWE5ochkfOoiyJsPwQ3Wg7gsyRHNp8SveqhGXY_1rOH7OcOMwfHDg8KH6s88osq59AfS3BX-MBBKvERB7Bvw");
 		Assert.assertTrue(file.exists());
 	}
 

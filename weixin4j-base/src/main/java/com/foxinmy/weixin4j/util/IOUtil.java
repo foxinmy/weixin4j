@@ -68,16 +68,4 @@ public class IOUtil {
 		}
 		return count;
 	}
-
-	public static String getExtension(String filename) {
-		int extensionPos = filename.lastIndexOf(".");
-		if (extensionPos < 0) {
-			return "";
-		}
-		int lastUnixPos = filename.lastIndexOf("/");
-		int lastWindowsPos = filename.lastIndexOf("\\");
-		int lastSeparator = Math.max(lastUnixPos, lastWindowsPos);
-		return lastSeparator > extensionPos ? "" : filename
-				.substring(extensionPos + 1);
-	}
 }

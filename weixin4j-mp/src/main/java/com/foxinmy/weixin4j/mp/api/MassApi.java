@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.mp.api;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +72,6 @@ public class MassApi extends MpApi {
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html">高级群发</a>
 	 * @see com.foxinmy.weixin4j.tuple.Video
 	 * @see com.foxinmy.weixin4j.tuple.MpVideo
-	 * @see {@link com.com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 */
 	public String uploadVideo(Video video) throws WeixinException {
 		String video_upload_uri = getRequestUri("video_upload_uri");
@@ -124,7 +122,7 @@ public class MassApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.tuple.MpVideo
 	 * @see com.foxinmy.weixin4j.tuple.MpNews
 	 * @see com.foxinmy.weixin4j.tuple.MassTuple
-	 * @see {@link com.foxinmy.weixin4j.mp.api.GroupApi#getGroups()}
+	 * @see {@link GroupApi#getGroups()}
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
 	 */
@@ -170,7 +168,7 @@ public class MassApi extends MpApi {
 	 * @return 群发后的消息ID
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByGroupId(Tuple,int)}
+	 * @see {@link #massByGroupId(Tuple,int)}
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @throws WeixinException
 	 */
@@ -198,7 +196,7 @@ public class MassApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.tuple.MassTuple
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
-	 * @see {@link com.foxinmy.weixin4j.mp.api.UserApi#getUser(String)}
+	 * @see {@link UserApi#getUser(String)}
 	 */
 	public String massByOpenIds(MassTuple tuple, String... openIds)
 			throws WeixinException {
@@ -236,7 +234,7 @@ public class MassApi extends MpApi {
 	 * @return 群发后的消息ID
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByOpenIds(Tuple,String...)}
+	 * @see {@link #massByOpenIds(Tuple,String...)}
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @throws WeixinException
 	 */
@@ -257,8 +255,8 @@ public class MassApi extends MpApi {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E5.88.A0.E9.99.A4.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">删除群发</a>
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByGroupId(Tuple, int)}
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massByOpenIds(Tuple, String...)
+	 * @see {@link #massByGroupId(Tuple, int)}
+	 * @see {@link #massByOpenIds(Tuple, String...)
 	 */
 	public JsonResult deleteMassNews(String msgid) throws WeixinException {
 		JSONObject obj = new JSONObject();
@@ -311,7 +309,6 @@ public class MassApi extends MpApi {
 	 *            消息ID
 	 * @return 消息发送状态,如sendsuccess:发送成功、sendfail:发送失败
 	 * @throws WeixinException
-	 * @see {@link com.foxinmy.weixin4j.mp.event.MassEventMessage#getStatusDesc(String)}
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.9F.A5.E8.AF.A2.E7.BE.A4.E5.8F.91.E6.B6.88.E6.81.AF.E5.8F.91.E9.80.81.E7.8A.B6.E6.80.81.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">查询群发状态</a>
 	 */

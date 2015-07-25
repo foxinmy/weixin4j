@@ -155,10 +155,9 @@ public class UserApi extends QyApi {
 	 * @param code
 	 *            通过员工授权获取到的code，每次员工授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期
 	 * @see com.foxinmy.weixin4j.qy.model.User
-	 * @see com.foxinmy.weixin4j.qy.api.UserApi
 	 * @return 成员对象
-	 * @see {@link com.foxinmy.weixin4j.qy.api.UserApi#getUser(String)}
-	 * @see {@link com.foxinmy.weixin4j.qy.api.UserApi#getUserIdByCode(String,int)}
+	 * @see {@link #getUser(String)}
+	 * @see {@link #getUserIdByCode(String,int)}
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E8%8E%B7%E5%8F%96code">企业获取code</a>
 	 * @see <a
@@ -261,7 +260,7 @@ public class UserApi extends QyApi {
 	 * 
 	 * @param departId
 	 *            部门ID
-	 * @see {@link com.foxinmy.weixin4j.qy.api.UserApi#listUser(int, boolean,UserStatus)}
+	 * @see {@link #listUser(int, boolean,UserStatus)}
 	 * @return 成员列表
 	 * @throws WeixinException
 	 */
