@@ -43,7 +43,6 @@ public class MpNews implements MassTuple, NotifyTuple {
 	/**
 	 * 图文列表
 	 */
-	@JSONField(serialize = false)
 	@XmlTransient
 	private LinkedList<MpArticle> articles;
 

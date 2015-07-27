@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.tuple;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -32,7 +33,8 @@ public class MpVideo implements MassTuple {
 	@XmlElement(name = "MediaId")
 	private String mediaId;
 
-	public MpVideo(String mediaId) {
+	@JSONCreator
+	public MpVideo(@JSONField(name = "media_id") String mediaId) {
 		this.mediaId = mediaId;
 	}
 

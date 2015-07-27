@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.tuple;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -50,19 +51,37 @@ public class Video implements NotifyTuple {
 	@XmlElement(name = "Description")
 	private String desc;
 
-	public Video(String mediaId) {
+	@JSONCreator
+	public Video(@JSONField(name = "media_id") String mediaId) {
 		this.mediaId = mediaId;
 	}
 
+	/**
+	 * 公众平台
+	 * 
+	 * @param mediaId
+	 * @param thumbMediaId
+	 */
 	public Video(String mediaId, String thumbMediaId) {
 		this(mediaId, thumbMediaId, null, null);
 	}
 
+	/**
+	 * 企业号
+	 * 
+	 * @param mediaId
+	 * @param title
+	 * @param desc
+	 */
 	public Video(String mediaId, String title, String desc) {
 		this(mediaId, null, title, desc);
 	}
 
-	public Video(String mediaId, String thumbMediaId, String title, String desc) {
+	@JSONCreator
+	public Video(@JSONField(name = "media_id") String mediaId,
+			@JSONField(name = "thumb_media_id") String thumbMediaId,
+			@JSONField(name = "title") String title,
+			@JSONField(name = "description") String desc) {
 		this.mediaId = mediaId;
 		this.thumbMediaId = thumbMediaId;
 		this.title = title;

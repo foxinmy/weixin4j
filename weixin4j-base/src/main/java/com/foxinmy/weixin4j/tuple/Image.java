@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.tuple;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -32,7 +33,8 @@ public class Image implements MassTuple, NotifyTuple {
 	@XmlElement(name = "MediaId")
 	private String mediaId;
 
-	public Image(String mediaId) {
+	@JSONCreator
+	public Image(@JSONField(name = "media_id")String mediaId) {
 		this.mediaId = mediaId;
 	}
 

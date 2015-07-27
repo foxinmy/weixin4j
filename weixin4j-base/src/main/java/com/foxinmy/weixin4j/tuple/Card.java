@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.tuple;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -32,7 +33,8 @@ public class Card implements MassTuple {
 	@XmlElement(name = "CardId")
 	private String cardId;
 
-	public Card(String cardId) {
+	@JSONCreator
+	public Card(@JSONField(name = "card_id") String cardId) {
 		this.cardId = cardId;
 	}
 

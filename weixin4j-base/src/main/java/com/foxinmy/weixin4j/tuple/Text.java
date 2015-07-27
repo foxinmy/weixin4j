@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.tuple;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
+import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * 文本对象
@@ -27,7 +29,8 @@ public class Text implements MassTuple, NotifyTuple {
 	 */
 	private String content;
 
-	public Text(String content) {
+	@JSONCreator
+	public Text(@JSONField(name = "content") String content) {
 		this.content = content;
 	}
 

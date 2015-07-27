@@ -1,5 +1,8 @@
 package com.foxinmy.weixin4j.tuple;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 语音对象
  * <p>
@@ -21,7 +24,8 @@ public class Voice extends Image implements NotifyTuple {
 		return "voice";
 	}
 
-	public Voice(String mediaId) {
+	@JSONCreator
+	public Voice(@JSONField(name = "media_id") String mediaId) {
 		super(mediaId);
 	}
 }

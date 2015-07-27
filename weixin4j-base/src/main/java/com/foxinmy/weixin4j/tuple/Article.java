@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -33,7 +34,7 @@ public class Article implements Serializable {
 	/**
 	 * 图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
 	 */
-	@JSONField(name = "picurl")
+	@JSONField(name = "pic_url")
 	@XmlElement(name = "PicUrl")
 	private String picUrl;
 	/**
@@ -42,7 +43,11 @@ public class Article implements Serializable {
 	@XmlElement(name = "Url")
 	private String url;
 
-	public Article(String title, String desc, String picUrl, String url) {
+	@JSONCreator
+	public Article(@JSONField(name = "title") String title,
+			@JSONField(name = "description") String desc,
+			@JSONField(name = "pic_url") String picUrl,
+			@JSONField(name = "url") String url) {
 		this.title = title;
 		this.desc = desc;
 		this.picUrl = picUrl;

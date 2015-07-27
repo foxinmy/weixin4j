@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.tuple;
 
 import java.io.Serializable;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -57,7 +58,10 @@ public class MpArticle implements Serializable {
 	@JSONField(name = "cover_url")
 	private String coverUrl;
 
-	public MpArticle(String thumbMediaId, String title, String content) {
+	@JSONCreator
+	public MpArticle(@JSONField(name = "thumb_media_id") String thumbMediaId,
+			@JSONField(name = "title") String title,
+			@JSONField(name = "content") String content) {
 		this.thumbMediaId = thumbMediaId;
 		this.title = title;
 		this.content = content;

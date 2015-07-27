@@ -38,10 +38,9 @@ public class NotifyMessage implements Serializable {
 	/**
 	 * 消息对象
 	 */
-	@JSONField(serialize = false)
 	private NotifyTuple tuple;
 	/**
-	 * id参数
+	 * 发送对象
 	 */
 	@JSONField(serialize = false)
 	private IdParameter target;
