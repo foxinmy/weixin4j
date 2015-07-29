@@ -20,6 +20,23 @@ public class WeixinQyAccount extends WeixinAccount {
 	private static final long serialVersionUID = 3689999353867189585L;
 
 	/**
+	 * 应用套件id
+	 */
+	private String suiteId;
+	/**
+	 * 应用套件secret
+	 */
+	private String suiteSecret;
+	/**
+	 * 第三方提供商secret(企业号登陆)
+	 */
+	private String providerSecret;
+	/**
+	 * 消息服务secret(企业号聊天)
+	 */
+	private String chatSecret;
+
+	/**
 	 * 
 	 * @param corpid
 	 *            企业ID
@@ -47,23 +64,6 @@ public class WeixinQyAccount extends WeixinAccount {
 		this.providerSecret = providerSecret;
 		this.chatSecret = chatSecret;
 	}
-
-	/**
-	 * 应用套件id
-	 */
-	private String suiteId;
-	/**
-	 * 应用套件secret
-	 */
-	private String suiteSecret;
-	/**
-	 * 第三方提供商secret(企业号登陆)
-	 */
-	private String providerSecret;
-	/**
-	 * 消息服务secret(企业号聊天)
-	 */
-	private String chatSecret;
 
 	public String getSuiteId() {
 		return suiteId;

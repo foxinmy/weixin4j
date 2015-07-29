@@ -48,7 +48,7 @@ weixin4j.properties说明
 
 | 属性名       |       说明      |
 | :---------- | :-------------- |
-| account     | 微信企业号信息 `json格式`  |
+| account     | 微信企业号信息 `json格式`(按需填写) |
 | token_path  | 使用FileTokenStorager时token保存的物理路径 |
 | media_path  | 调用媒体接口时保存媒体文件的物理路径 |
 | user_oauth_redirect_uri     | 企业号用户身份授权后重定向的url(OauthApi接口) |
@@ -58,7 +58,7 @@ weixin4j.properties说明
 示例(properties中换行用右斜杆\\)
 
 	account={"id":"corpid","secret":"corpsecret",\
-		"token":"企业号中应用在回调模式下的token",\
+		"suiteId":"应用套件的id","suiteSecret":"应用套件的secret",\
 		"providerSecret:"第三方提供商secret(企业号登陆)",\
 		"chatSecret":"消息服务secret(企业号聊天)"}
 	

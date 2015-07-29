@@ -56,7 +56,7 @@ weixin4j.properties说明
 
 | 属性名         |       说明      |
 | :----------	| :-------------- |
-| account     	| 微信公众号信息 `json格式`  |
+| account     	| 微信公众号信息 `json格式`(按需填写)  |
 | token_path  	| 使用FileTokenStorager时token保存的物理路径 |
 | qr_path     	| 调用二维码接口时保存二维码图片的物理路径 |
 | media_path  	| 调用媒体接口时保存媒体文件的物理路径 |

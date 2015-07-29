@@ -50,8 +50,6 @@ public class WeixinSuiteProxy {
 	 *            应用ID
 	 * @param suiteSecret
 	 *            应用secret
-	 * @param ticketStorager
-	 *            应用ticket存储器(用于读取)
 	 * @param tokenStorager
 	 *            应用token存储器
 	 * @throws WeixinException
@@ -115,7 +113,7 @@ public class WeixinSuiteProxy {
 	 *            授权方corpid
 	 * @return 企业号token
 	 */
-	public TokenHolder crateTokenHolder(String authCorpid) {
+	public TokenHolder createTokenHolder(String authCorpid) {
 		return suiteApi.createTokenHolder(authCorpid);
 	}
 
