@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.qy.model;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 
 /**
@@ -14,22 +16,36 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  *      >企业号设置</a>
  */
 public class WeixinQyAccount extends WeixinAccount {
-	
+
 	private static final long serialVersionUID = 3689999353867189585L;
 
-	public WeixinQyAccount(){
-		
-	}
-	
 	/**
 	 * 
 	 * @param corpid
 	 *            企业ID
 	 * @param corpsecret
 	 *            管理组的凭证密钥
+	 * @param suiteId
+	 *            应用套件的id
+	 * @param suiteSecret
+	 *            应用套件的secret
+	 * @param providerSecret
+	 *            第三方提供商secret(企业号登陆)
+	 * @param chatSecret
+	 *            消息服务secret(企业号聊天)
 	 */
-	public WeixinQyAccount(String corpid, String corpsecret) {
+	@JSONCreator
+	public WeixinQyAccount(@JSONField(name = "id") String corpid,
+			@JSONField(name = "secret") String corpsecret,
+			@JSONField(name = "suiteId") String suiteId,
+			@JSONField(name = "suiteSecret") String suiteSecret,
+			@JSONField(name = "providerSecret") String providerSecret,
+			@JSONField(name = "chatSecret") String chatSecret) {
 		super(corpid, corpsecret);
+		this.suiteId = suiteId;
+		this.suiteSecret = suiteSecret;
+		this.providerSecret = providerSecret;
+		this.chatSecret = chatSecret;
 	}
 
 	/**
@@ -41,65 +57,34 @@ public class WeixinQyAccount extends WeixinAccount {
 	 */
 	private String suiteSecret;
 	/**
-	 * 应用套件token,用于生成签名,校验回调请求的合法性。后续所有托管的企业产生的回调消息都使用该值来解密。
-	 */
-	private String suiteToken;
-	/**
-	 * 应用套件encodingAesKey,回调消息加解密参数，是AES密钥的Base64编码，用于解密回调消息内容对应的密文。
-	 * 后续所有托管的企业产生的回调消息都使用该值来解密。
-	 */
-	private String suiteEncodingAesKey;
-
-	/**
-	 * 提供商的secret
+	 * 第三方提供商secret(企业号登陆)
 	 */
 	private String providerSecret;
+	/**
+	 * 消息服务secret(企业号聊天)
+	 */
+	private String chatSecret;
 
 	public String getSuiteId() {
 		return suiteId;
-	}
-
-	public void setSuiteId(String suiteId) {
-		this.suiteId = suiteId;
 	}
 
 	public String getSuiteSecret() {
 		return suiteSecret;
 	}
 
-	public void setSuiteSecret(String suiteSecret) {
-		this.suiteSecret = suiteSecret;
-	}
-
-	public String getSuiteToken() {
-		return suiteToken;
-	}
-
-	public void setSuiteToken(String suiteToken) {
-		this.suiteToken = suiteToken;
-	}
-
-	public String getSuiteEncodingAesKey() {
-		return suiteEncodingAesKey;
-	}
-
-	public void setSuiteEncodingAesKey(String suiteEncodingAesKey) {
-		this.suiteEncodingAesKey = suiteEncodingAesKey;
-	}
-
 	public String getProviderSecret() {
 		return providerSecret;
 	}
 
-	public void setProviderSecret(String providerSecret) {
-		this.providerSecret = providerSecret;
+	public String getChatSecret() {
+		return chatSecret;
 	}
 
 	@Override
 	public String toString() {
 		return "WeixinQyAccount [" + super.toString() + ", suiteId=" + suiteId
-				+ ", suiteSecret=" + suiteSecret + ", suiteToken=" + suiteToken
-				+ ", suiteEncodingAesKey=" + suiteEncodingAesKey
-				+ ", providerSecret=" + providerSecret + "]";
+				+ ", suiteSecret=" + suiteSecret + ", providerSecret="
+				+ providerSecret + ",  chatSecret=" + chatSecret + "]";
 	}
 }

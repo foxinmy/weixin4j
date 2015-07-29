@@ -62,17 +62,14 @@ weixin4j.properties说明
 | media_path  	| 调用媒体接口时保存媒体文件的物理路径 |
 | bill_path   	| 调用下载对账单接口保存excel文件的物理路径 |
 | ca_file     	| 调用某些接口(支付相关)强制需要auth的ca授权文件 |
-| redirect_uri     | 调用OauthApi接口时需要填写的重定向路径 |
+| oauth_redirect_uri     | 调用OauthApi接口时需要填写的重定向路径 |
 
 示例(properties中换行用右斜杆\\)
 
 	account={"id":"appId","secret":"appSecret",\
-		"token":"开放者的token",\
-		"encodingAesKey":"公众号设置了加密方式且为「安全模式」时需要填入",\
 		"mchId":"V3.x版本下的微信商户号",\
 		"partnerId":"V2版本下的财付通的商户号",\
 		"partnerKey":"V2版本下的财付通商户权限密钥Key",\
-		"version":"针对微信支付的版本号(2,3),如果不填则按照mchId非空与否来判断",\
 		"paySignKey":"微信支付中调用API的密钥"}
 	
 	token_path=/tmp/weixin4j/token
@@ -84,7 +81,7 @@ weixin4j.properties说明
 	#classpath路径下:ca_file=classpath:xxxxx.p12
 	
 	#公众号登陆授权的重定向路径(使用OauthApi时需要填写)
-	redirect_uri=http://xxx
+	oauth_redirect_uri=http://xxx
 
 2.实例化微信企业号接口实现对象,调用具体的API方法
 

@@ -60,15 +60,16 @@ public class MenuApi extends QyApi {
 					public String process(Object object, String name,
 							Object value) {
 						if (object instanceof Button && name.equals("content")) {
-							ButtonType buttonType = ((Button) object)
-									.getFormatType();
-							if (buttonType == ButtonType.view) {
-								return "url";
-							} else if (buttonType == ButtonType.media_id
-									|| buttonType == ButtonType.view_limited) {
-								return "media_id";
-							} else {
-								return "key";
+							ButtonType buttonType = ((Button) object).getType();
+							if (buttonType != null) {
+								if (ButtonType.view == buttonType) {
+									return "url";
+								} else if (ButtonType.media_id == buttonType
+										|| ButtonType.view_limited == buttonType) {
+									return "media_id";
+								} else {
+									return "key";
+								}
 							}
 						}
 						return name;
@@ -124,8 +125,8 @@ public class MenuApi extends QyApi {
 	public JsonResult deleteMenu(int agentid) throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.get(String.format(menu_delete_uri,
-				token.getAccessToken(), agentid));
+		WeixinResponse response = weixinClient.get(String.format(
+				menu_delete_uri, token.getAccessToken(), agentid));
 
 		return response.getAsJsonResult();
 	}

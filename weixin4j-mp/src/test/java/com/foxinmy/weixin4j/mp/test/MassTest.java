@@ -58,7 +58,7 @@ public class MassTest extends TokenTest {
 
 	@Test
 	public void massByGroupId() throws WeixinException {
-		String msgId = massApi.massByGroupId(new Image("mediaId"), 0);
+		String msgId = massApi.massByGroupId(new Image("mediaId"), true, 0);
 		Assert.assertTrue(msgId != null);
 	}
 

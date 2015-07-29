@@ -53,42 +53,28 @@ public class WeixinPayAccount extends WeixinAccount {
 	 * @param appSecret
 	 *            调用接口的凭证
 	 * @param paySignKey
-	 *            支付密钥字符串
+	 *            支付密钥字符串(必填)
 	 * @param mchId
-	 *            微信支付分配的商户号
+	 *            微信支付分配的商户号(V3版本必填)
+	 * @param partnerId 财付通的商户号(V2版本必填)
+	 * @param partnerKey 财付通商户权限密钥Key(V2版本必填)
+	 * @param subMchId 微信支付分配的子商户号，受理模式下必填(商户平台版)
+	 * @param deviceInfo 微信支付分配的设备号(商户平台版)
 	 */
 	@JSONCreator
-	public WeixinPayAccount(@JSONField(name = "appId") String appId,
-			@JSONField(name = "appSecret") String appSecret,
+	public WeixinPayAccount(@JSONField(name = "id") String appId,
+			@JSONField(name = "secret") String appSecret,
 			@JSONField(name = "paySignKey") String paySignKey,
-			@JSONField(name = "mchId") String mchId) {
-		super(appId, appSecret);
-		this.paySignKey = paySignKey;
-		this.mchId = mchId;
-	}
-
-	/**
-	 * V2版本字段
-	 * 
-	 * @param appId
-	 *            公众号唯一的身份ID
-	 * @param appSecret
-	 *            调用接口的凭证
-	 * @param paySignKey
-	 *            支付密钥字符串
-	 * @param partnerId
-	 *            财付通账号的ID
-	 * @param partnerKey
-	 *            财付通账号的key
-	 */
-	@JSONCreator
-	public WeixinPayAccount(@JSONField(name = "appId") String appId,
-			@JSONField(name = "appSecret") String appSecret,
-			@JSONField(name = "paySignKey") String paySignKey,
+			@JSONField(name = "mchId") String mchId,
+			@JSONField(name = "subMchId") String subMchId,
+			@JSONField(name = "deviceInfo") String deviceInfo,
 			@JSONField(name = "partnerId") String partnerId,
 			@JSONField(name = "partnerKey") String partnerKey) {
 		super(appId, appSecret);
 		this.paySignKey = paySignKey;
+		this.mchId = mchId;
+		this.subMchId = subMchId;
+		this.deviceInfo = deviceInfo;
 		this.partnerId = partnerId;
 		this.partnerKey = partnerKey;
 	}
@@ -126,9 +112,10 @@ public class WeixinPayAccount extends WeixinAccount {
 
 	@Override
 	public String toString() {
-		return "WeixinPayAccount [paySignKey=" + paySignKey + ", partnerId="
-				+ partnerId + ", partnerKey=" + partnerKey + ", mchId=" + mchId
-				+ ", subMchId=" + subMchId + ", deviceInfo=" + deviceInfo
-				+ ", version=" + version + "]";
+		return "WeixinPayAccount [" + super.toString() + ", paySignKey="
+				+ paySignKey + ", partnerId=" + partnerId + ", partnerKey="
+				+ partnerKey + ", mchId=" + mchId + ", subMchId=" + subMchId
+				+ ", deviceInfo=" + deviceInfo + ", version=" + getVersion()
+				+ "]";
 	}
 }

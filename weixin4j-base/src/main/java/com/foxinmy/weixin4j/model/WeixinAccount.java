@@ -2,6 +2,9 @@ package com.foxinmy.weixin4j.model;
 
 import java.io.Serializable;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 微信账号信息
  * 
@@ -12,6 +15,7 @@ import java.io.Serializable;
  * @see
  */
 public class WeixinAccount implements Serializable {
+
 	private static final long serialVersionUID = -6001008896414323534L;
 
 	/**
@@ -22,17 +26,10 @@ public class WeixinAccount implements Serializable {
 	 * 调用接口的密钥
 	 */
 	private String secret;
-	private String token;
-	/**
-	 * 安全模式下的加密密钥
-	 */
-	private String encodingAesKey;
 
-	public WeixinAccount() {
-
-	}
-
-	public WeixinAccount(String id, String secret) {
+	@JSONCreator
+	public WeixinAccount(@JSONField(name = "id") String id,
+			@JSONField(name = "secret") String secret) {
 		this.id = id;
 		this.secret = secret;
 	}
@@ -45,33 +42,8 @@ public class WeixinAccount implements Serializable {
 		return secret;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public void setSecret(String secret) {
-		this.secret = secret;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public String getEncodingAesKey() {
-		return encodingAesKey;
-	}
-
-	public void setEncodingAesKey(String encodingAesKey) {
-		this.encodingAesKey = encodingAesKey;
-	}
-
 	@Override
 	public String toString() {
-		return "id=" + id + ", secret=" + secret + ", token=" + token
-				+ ", encodingAesKey=" + encodingAesKey;
+		return "id=" + id + ", secret=" + secret;
 	}
 }

@@ -34,7 +34,7 @@ public class Button implements Serializable {
 	 * 
 	 * @see com.foxinmy.weixin4j.type.ButtonType
 	 */
-	private String type;
+	private ButtonType type;
 	/**
 	 * 菜单KEY值,根据type的类型而定,用于消息接口推送,不超过128字节.
 	 * <p>
@@ -43,7 +43,9 @@ public class Button implements Serializable {
 	 * <p>
 	 * 使用API设置的自定义菜单：</br>
 	 * click、scancode_push、scancode_waitmsg、pic_sysphoto、pic_photo_or_album
-	 * 、</br> pic_weixin、location_select：保存为key；view：保存为url;media_id、view_limited：保存为media_id
+	 * 、</br>
+	 * pic_weixin、location_select：保存为key；view：保存为url;media_id、view_limited
+	 * ：保存为media_id
 	 * </p>
 	 * </p>
 	 */
@@ -64,13 +66,13 @@ public class Button implements Serializable {
 	 *            菜单显示的名称
 	 * @param content
 	 *            当buttonType为view时content设置为url,否则为key.
-	 * @param buttonType
+	 * @param type
 	 *            按钮类型
 	 */
-	public Button(String name, String content, ButtonType buttonType) {
+	public Button(String name, String content, ButtonType type) {
 		this.name = name;
 		this.content = content;
-		this.type = buttonType.name();
+		this.type = type;
 	}
 
 	public String getName() {
@@ -81,16 +83,11 @@ public class Button implements Serializable {
 		this.name = name;
 	}
 
-	public String getType() {
+	public ButtonType getType() {
 		return type;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
-	public ButtonType getFormatType() {
-		return ButtonType.valueOf(type);
-	}
-
-	public void setType(String type) {
+	public void setType(ButtonType type) {
 		this.type = type;
 	}
 

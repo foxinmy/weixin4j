@@ -33,11 +33,12 @@ public class PayTest {
 	private final static WeixinPayAccount ACCOUNT3;
 	static {
 		ACCOUNT2 = new WeixinPayAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
-				"请填入v3版本的paysignkey", "请填入v2版本的partnerId", "请填入v2版本的partnerKey");
+				"请填入v2版本的paysignkey", null, null, null, "请填入v2版本的partnerId",
+				"请填入v2版本的partnerKey");
 		PAY2 = new Pay2Api(ACCOUNT2, new FileTokenStorager(ConfigUtil.getValue(
 				"token_path", "/tmp/weixin4j/token")));
 		ACCOUNT3 = new WeixinPayAccount("请填入v3版本的appid", "请填入v3版本的appSecret",
-				"请填入v3版本的paysignkey", "请填入v3版本的mchid");
+				"请填入v3版本的paysignkey", "请填入v3版本的mchid", null, null, null, null);
 		PAY3 = new WeixinPayProxy(ACCOUNT3);
 	}
 

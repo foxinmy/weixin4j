@@ -67,7 +67,7 @@ public class Video implements NotifyTuple {
 	}
 
 	/**
-	 * 企业号
+	 * 企业号 & 公众号群发
 	 * 
 	 * @param mediaId
 	 * @param title

@@ -382,3 +382,12 @@
  + 精简函数上的@link注释
  
  + 新增媒体文件上传、下载结果类([MediaUploadResult.java](./weixin4j-base/src/main/java/com/foxinmy/weixin4j/model/MediaUploadResult.java),[MediaDownloadResult.java](./weixin4j-base/src/main/java/com/foxinmy/weixin4j/model/MediaDownloadResult.java))
+ 
+* 2015-07-29
+
+ + 精简WeixinAccount类及其配置文件
+ 
+ + **weixin4j-mp**: 新增二维码结果类[QRResult.java](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/model/QRResult.java)并将二维码接口[QRApi.java](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/QrApi.java)名称变更为createQR和createQRFile
+ 
+ + **weixin4j-mp**: [Oauth授权](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/OauthApi.java)跳转的uri在配置文件的属性名改为`oauth_redirect_uri`
+ 

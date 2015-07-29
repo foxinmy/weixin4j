@@ -30,7 +30,8 @@ public class CouponTest {
 	protected final static WeixinPayProxy WEIXINPAY;
 	protected final static WeixinPayAccount ACCOUNT;
 	static {
-		ACCOUNT = new WeixinPayAccount("appid", "appsecret", "paysign", "mchid");
+		ACCOUNT = new WeixinPayAccount("appid", "appsecret", "paysign",
+				"mchid", null, null, null, null);
 		WEIXINPAY = new WeixinPayProxy(ACCOUNT);
 	}
 	protected final File caFile = new File("证书文件路径(*.p12)");

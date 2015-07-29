@@ -36,6 +36,7 @@ import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.mp.model.MenuSetting;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
+import com.foxinmy.weixin4j.mp.model.QRResult;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.User;
@@ -642,22 +643,6 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 分组群发
-	 * 
-	 * @param tuple
-	 *            消息元件
-	 * @param groupId
-	 *            分组ID
-	 * @return 群发后的消息ID
-	 * @see {@link #massMessage(MassTuple,boolean,int)}
-	 * @throws WeixinException
-	 */
-	public String massByGroupId(MassTuple tuple, int groupId)
-			throws WeixinException {
-		return massApi.massByGroupId(tuple, groupId);
-	}
-
-	/**
 	 * 群发消息
 	 * <p>
 	 * 在返回成功时,意味着群发任务提交成功,并不意味着此时群发已经结束,所以,仍有可能在后续的发送过程中出现异常情况导致用户未收到消息,
@@ -685,9 +670,9 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
 	 */
-	public String massMessage(MassTuple tuple, boolean isToAll, int groupId)
+	public String massByGroupId(MassTuple tuple, boolean isToAll, int groupId)
 			throws WeixinException {
-		return massApi.massMessage(tuple, isToAll, groupId);
+		return massApi.massByGroupId(tuple, isToAll, groupId);
 	}
 
 	/**
@@ -1072,26 +1057,16 @@ public class WeixinProxy {
 	 * 
 	 * @param parameter
 	 *            二维码参数
-	 * @return byte数据包
+	 * @return 二维码结果对象
 	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.model.QRResult
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 * @see com.foxinmy.weixin4j.mp.api.QrApi
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">生成二维码</a>
 	 */
-	public byte[] getQRData(QRParameter parameter) throws WeixinException {
-		return qrApi.getQRData(parameter);
-	}
-
-	/**
-	 * 生成带参数的二维码
-	 * 
-	 * @return 二维码图片解析后的地址 开发者可根据该地址自行生成需要的二维码图片
-	 * @throws WeixinException
-	 * @see {@link #getQRData(QRParameter)}
-	 */
-	public String getQRUrl(QRParameter parameter) throws WeixinException {
-		return qrApi.getQRUrl(parameter);
+	public QRResult createQR(QRParameter parameter) throws WeixinException {
+		return qrApi.createQR(parameter);
 	}
 
 	/**
@@ -1099,10 +1074,10 @@ public class WeixinProxy {
 	 * 
 	 * @return 硬盘存储的文件对象
 	 * @throws WeixinException
-	 * @see {@link #getQRData(QRParameter)}
+	 * @see {@link #createQR(QRParameter)}
 	 */
-	public File getQRFile(QRParameter parameter) throws WeixinException {
-		return qrApi.getQRFile(parameter);
+	public File createQRFile(QRParameter parameter) throws WeixinException {
+		return qrApi.createQRFile(parameter);
 	}
 
 	/**

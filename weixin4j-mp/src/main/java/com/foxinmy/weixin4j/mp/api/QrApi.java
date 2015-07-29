@@ -5,11 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
+import com.foxinmy.weixin4j.mp.model.QRResult;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConst;
@@ -37,42 +38,25 @@ public class QrApi extends MpApi {
 	 * 
 	 * @param parameter
 	 *            二维码参数
-	 * @return 二维码图片解析后的地址 开发者可根据该地址自行生成需要的二维码图片
+	 * @return 二维码结果对象
 	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.model.QRResult
+	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">生成二维码</a>
 	 */
-	public String getQRUrl(QRParameter parameter) throws WeixinException {
-		return doQR(parameter).getString("url");
-	}
-
-	private JSONObject doQR(QRParameter parameter) throws WeixinException {
+	public QRResult createQR(QRParameter parameter) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String qr_uri = getRequestUri("qr_ticket_uri");
 		WeixinResponse response = weixinClient.post(
 				String.format(qr_uri, token.getAccessToken()),
 				parameter.getContent());
-		return response.getAsJson();
-	}
-
-	/**
-	 * 生成带参数的二维码
-	 * 
-	 * @param parameter
-	 *            二维码参数
-	 * @return byte数据包
-	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">生成二维码</a>
-	 */
-	public byte[] getQRData(QRParameter parameter) throws WeixinException {
-		String ticket = doQR(parameter).getString("ticket");
-		String qr_uri = getRequestUri("qr_image_uri");
-		WeixinResponse response = weixinClient.get(String
-				.format(qr_uri, ticket));
-
-		return response.getContent();
+		QRResult result = response.getAsObject(new TypeReference<QRResult>() {
+		});
+		qr_uri = getRequestUri("qr_image_uri");
+		response = weixinClient.get(String.format(qr_uri, result.getTicket()));
+		result.setContent(response.getContent());
+		return result;
 	}
 
 	/**
@@ -87,9 +71,10 @@ public class QrApi extends MpApi {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">二维码</a>
+	 * @see #createQR(QRParameter)
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 */
-	public File getQRFile(QRParameter parameter) throws WeixinException {
+	public File createQRFile(QRParameter parameter) throws WeixinException {
 		String qr_path = ConfigUtil.getValue("qr_path",
 				Weixin4jConst.DEFAULT_QRCODE_PATH);
 		String filename = String.format("%s_%s_%d.jpg", parameter.getQrType()
@@ -99,11 +84,11 @@ public class QrApi extends MpApi {
 		if (parameter.getQrType().ordinal() > 0 && file.exists()) {
 			return file;
 		}
-		byte[] datas = getQRData(parameter);
+		QRResult qrResult = createQR(parameter);
 		OutputStream os = null;
 		try {
 			os = new FileOutputStream(file);
-			os.write(datas);
+			os.write(qrResult.getContent());
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		} finally {
@@ -111,7 +96,7 @@ public class QrApi extends MpApi {
 				if (os != null) {
 					os.close();
 				}
-			} catch (IOException ignore) {
+			} catch (IOException e) {
 				;
 			}
 		}

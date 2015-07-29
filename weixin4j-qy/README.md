@@ -59,8 +59,8 @@ weixin4j.properties说明
 
 	account={"id":"corpid","secret":"corpsecret",\
 		"token":"企业号中应用在回调模式下的token",\
-		"encodingAesKey":"企业号中应用在回调模式下AES加密密钥",\
-		"providerSecret:"提供商的secret"}
+		"providerSecret:"第三方提供商secret(企业号登陆)",\
+		"chatSecret":"消息服务secret(企业号聊天)"}
 	
 	token_path=/tmp/weixin4j/token
 	media_path=/tmp/weixin4j/media

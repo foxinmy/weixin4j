@@ -85,22 +85,6 @@ public class MassApi extends MpApi {
 
 	/**
 	 * 分组群发
-	 * 
-	 * @param tuple
-	 *            消息元件
-	 * @param groupId
-	 *            分组ID
-	 * @return 群发后的消息ID
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MassApi#massMessage(MassTuple,boolean,int)}
-	 * @throws WeixinException
-	 */
-	public String massByGroupId(MassTuple tuple, int groupId)
-			throws WeixinException {
-		return massMessage(tuple, false, groupId);
-	}
-
-	/**
-	 * 群发消息
 	 * <p>
 	 * 在返回成功时,意味着群发任务提交成功,并不意味着此时群发已经结束,所以,仍有可能在后续的发送过程中出现异常情况导致用户未收到消息,
 	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
@@ -126,7 +110,7 @@ public class MassApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
 	 */
-	public String massMessage(MassTuple tuple, boolean isToAll, int groupId)
+	public String massByGroupId(MassTuple tuple, boolean isToAll, int groupId)
 			throws WeixinException {
 		if (tuple instanceof MpNews) {
 			MpNews _news = (MpNews) tuple;
@@ -175,7 +159,7 @@ public class MassApi extends MpApi {
 	public String massArticleByGroupId(List<MpArticle> articles, int groupId)
 			throws WeixinException {
 		String mediaId = uploadArticle(articles);
-		return massByGroupId(new MpNews(mediaId), groupId);
+		return massByGroupId(new MpNews(mediaId), false, groupId);
 	}
 
 	/**
