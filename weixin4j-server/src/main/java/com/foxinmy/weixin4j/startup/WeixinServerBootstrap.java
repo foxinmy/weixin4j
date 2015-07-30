@@ -81,7 +81,7 @@ public final class WeixinServerBootstrap {
 	 * 明文模式
 	 * 
 	 * @param weixinid
-	 *            微信号(原始ID)或者appid
+	 *            微信号(原始ID/appid/cropid)
 	 * @param token
 	 *            开发者token
 	 * 
@@ -104,36 +104,47 @@ public final class WeixinServerBootstrap {
 		this(new AesToken(appid, token, aesKey));
 	}
 
-	public WeixinServerBootstrap(AesToken aesToken) {
-		this(aesToken, new DefaultMessageMatcher());
-	}
-
-	public WeixinServerBootstrap(AesToken aesToken,
-			WeixinMessageMatcher messageMatcher) {
-		this.aesTokenMap = new HashMap<String, AesToken>();
-		this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
-		this.aesTokenMap.put(null, aesToken);
-		this.messageHandlerList = new LinkedList<WeixinMessageHandler>();
-		this.messageInterceptorList = new LinkedList<WeixinMessageInterceptor>();
-		this.messageDispatcher = new WeixinMessageDispatcher(messageMatcher);
+	/**
+	 * 多个公众号的支持
+	 * <p>
+	 * <font color="red">请注意：需在服务接收事件的URL中附加一个名为wexin_id的参数,其值请填写公众号的appid/
+	 * cropid</font>
+	 * <p>
+	 * 
+	 * @param aesTokens
+	 *            多个公众号
+	 * @return
+	 */
+	public WeixinServerBootstrap(AesToken... aesToken) {
+		this(new DefaultMessageMatcher(), aesToken);
 	}
 
 	/**
 	 * 多个公众号的支持
 	 * <p>
-	 * <font color="red">请注意：需在服务接收事件的URL中附加一个名为wexin_id的参数,其值视加密模式而定,
-	 * 如为明文模式weixin_id则填写公众号的微信号(即原始ID),如为AES加密模式weixin_id则填写公众号的应用ID(即appid)
-	 * </font>
+	 * <font color="red">请注意：需在服务接收事件的URL中附加一个名为wexin_id的参数,其值请填写公众号的appid/
+	 * cropid</font>
 	 * <p>
 	 * 
+	 * @param messageMatcher
+	 *            消息匹配器
 	 * @param aesTokens
+	 *            多个公众号
 	 * @return
 	 */
-	public WeixinServerBootstrap multAesToken(AesToken... aesTokens) {
+	public WeixinServerBootstrap(WeixinMessageMatcher messageMatcher,
+			AesToken... aesTokens) {
+		this.aesTokenMap = new HashMap<String, AesToken>();
 		for (AesToken aesToken : aesTokens) {
 			this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
 		}
-		return this;
+		// default..
+		if (aesTokens.length == 1) {
+			this.aesTokenMap.put(null, aesTokens[0]);
+		}
+		this.messageHandlerList = new LinkedList<WeixinMessageHandler>();
+		this.messageInterceptorList = new LinkedList<WeixinMessageInterceptor>();
+		this.messageDispatcher = new WeixinMessageDispatcher(messageMatcher);
 	}
 
 	/**
