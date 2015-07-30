@@ -125,13 +125,16 @@ public class OauthApi extends QyApi {
 	}
 
 	/**
+	 * 应用套件授权
+	 * 
 	 * @see {@link #getSuiteAuthorizeURL(String,String, String,String)}
+	 * @param suiteId
+	 *            套件ID
 	 * @param preAuthCode
 	 *            预授权码
 	 * @return
 	 */
-	public String getSuiteAuthorizeURL(String preAuthCode) {
-		String suiteId = DEFAULT_WEIXIN_ACCOUNT.getSuiteId();
+	public String getSuiteAuthorizeURL(String suiteId, String preAuthCode) {
 		String redirectUri = ConfigUtil.getValue("suite_oauth_redirect_uri");
 		return getSuiteAuthorizeURL(suiteId, preAuthCode, redirectUri, "state");
 	}

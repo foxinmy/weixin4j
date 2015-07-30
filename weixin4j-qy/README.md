@@ -58,7 +58,7 @@ weixin4j.properties说明
 示例(properties中换行用右斜杆\\)
 
 	account={"id":"corpid","secret":"corpsecret",\
-		"suiteId":"应用套件的id","suiteSecret":"应用套件的secret",\
+		"suites":[{"id":"应用套件的id","secret":"应用套件的secret"}],\
 		"providerSecret:"第三方提供商secret(企业号登陆)",\
 		"chatSecret":"消息服务secret(企业号聊天)"}
 	
@@ -83,7 +83,7 @@ weixin4j.properties说明
     // 微信第三方应用API
     WeixinSuiteProxy weixinSuiteProxy = new WeixinSuiteProxy();
     //weixinSuiteProxy = new WeixinSuiteProxy(suiteId,suiteSecret);
-    weixinSuiteProxy.getOAuthInfo(authCorpid);
+    weixinSuiteProxy.api().getOAuthInfo(authCorpid);
 
 > 针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenStorager`,默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用[RedisTokenStorager](https://github.com/foxinmy/weixin4j/wiki/%E7%94%A8redis%E4%BF%9D%E5%AD%98token).
 

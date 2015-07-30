@@ -391,3 +391,7 @@
  
  + **weixin4j-mp**: [Oauth授权](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/OauthApi.java)跳转的uri在配置文件的属性名改为`oauth_redirect_uri`
  
+* 2015-07-30
+  
+  + **weixin4j-qy**: 调整[WeixinSuiteProxy](./weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/WeixinSuiteProxy.java)对多个套件的支持
+  

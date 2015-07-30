@@ -79,3 +79,7 @@
 * 2015-07-22
 
   + 创建标签时可以指定ID
+  
+* 2015-07-30
+  
+  + **weixin4j-qy**: 调整[WeixinSuiteProxy](.src/main/java/com/foxinmy/weixin4j/qy/WeixinSuiteProxy.java)对多个套件的支持
