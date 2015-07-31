@@ -127,3 +127,7 @@
  + 新增二维码结果类[QRResult.java](./src/main/java/com/foxinmy/weixin4j/mp/model/QRResult.java)并将二维码接口[QRApi.java](./weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/QrApi.java)名称变更为createQR和createQRFile
  
  + [Oauth授权](./src/main/java/com/foxinmy/weixin4j/mp/api/OauthApi.java)跳转的uri在配置文件的属性名改为`oauth_redirect_uri`
+
+* 2015-07-31
+
+ + 新增图文消息中上传图片接口

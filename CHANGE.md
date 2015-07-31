@@ -400,3 +400,5 @@
   + **weixin4j-server**:`WeixinServerBootstrap` 构造函数支持多个公众号
   
   + **weixin4j-server**:`MessageHandlerAdapter` 声明时限定泛型为`WeixinMessage`的子类
+  
+  + **weixin4j-mp**: 新增图文消息中上传图片接口

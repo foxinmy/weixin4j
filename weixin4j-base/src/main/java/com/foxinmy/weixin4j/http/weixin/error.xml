@@ -318,6 +318,10 @@
 		<text>不合法的media_id类型</text>
 	</error>
 	<error>
+		<code>40137</code>
+		<text>不支持的图片格式</text>
+	</error>
+	<error>
 		<code>41001</code>
 		<desc>access_token missing</desc>
 		<text>缺失access_token参数</text>

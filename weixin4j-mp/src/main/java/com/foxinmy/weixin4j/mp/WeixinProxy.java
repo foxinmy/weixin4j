@@ -129,6 +129,23 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 上传图文消息内的图片获取URL
+	 * 请注意，本接口所上传的图片不占用公众号的素材库中图片数量的5000个的限制。图片仅支持jpg/png格式，大小必须在1MB以下。
+	 * 
+	 * @param is
+	 *            图片数据流
+	 * @param fileName
+	 *            文件名 为空时将自动生成
+	 * @return 图片URL 可用于后续群发中，放置到图文消息中
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @throws WeixinException
+	 */
+	public String uploadImage(InputStream is, String fileName)
+			throws WeixinException {
+		return mediaApi.uploadImage(is, fileName);
+	}
+
+	/**
 	 * 上传媒体文件 </br> <font color="red">此接口只包含图片、语音、缩略图、视频(临时)四种媒体类型的上传</font>
 	 * <p>
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
@@ -148,7 +165,7 @@ public class WeixinProxy {
 	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久素材</a>
 	 * @see com.foxinmy.weixin4j.model.MediaUploadResult
 	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 */
 	public MediaUploadResult uploadMedia(boolean isMaterial, InputStream is,
@@ -172,7 +189,7 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see {@link #downloadMedia(String)}
 	 */
 	public File downloadMediaFile(String mediaId, boolean isMaterial)
@@ -189,7 +206,7 @@ public class WeixinProxy {
 	 *            是否永久素材
 	 * @return 媒体文件下载结果
 	 * @throws WeixinException
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see com.foxinmy.weixin4j.model.MediaDownloadResult
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
@@ -210,7 +227,7 @@ public class WeixinProxy {
 	 *            图文列表
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @throws WeixinException
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
@@ -229,7 +246,7 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see {@link #downloadMedia(String, boolean)}
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 */
 	public List<MpArticle> downloadArticle(String mediaId)
 			throws WeixinException {
@@ -247,7 +264,7 @@ public class WeixinProxy {
 	 *            图文列表
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/4/19a59cba020d506e767360ca1be29450.html">更新永久图文素材</a>
@@ -264,7 +281,7 @@ public class WeixinProxy {
 	 *            媒体素材的media_id
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/5/e66f61c303db51a6c0f90f46b15af5f5.html">删除永久媒体素材</a>
 	 */
@@ -285,7 +302,7 @@ public class WeixinProxy {
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 */
 	public String uploadMaterialVideo(InputStream is, String title,
@@ -301,7 +318,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.model.MediaCounter
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/16/8cc64f8c189674b421bee3ed403993b8.html">获取素材总数</a>
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 */
 	public MediaCounter countMaterialMedia() throws WeixinException {
 		return mediaApi.countMaterialMedia();
@@ -318,7 +335,7 @@ public class WeixinProxy {
 	 *            返回素材的数量，取值在1到20之间
 	 * @return 媒体素材的记录对象
 	 * @throws WeixinException
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see com.foxinmy.weixin4j.mp.model.MediaRecord
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see com.foxinmy.weixin4j.mp.model.MediaItem
@@ -336,7 +353,7 @@ public class WeixinProxy {
 	 * @param mediaType
 	 *            媒体类型
 	 * @return 素材列表
-	 * @see com.com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @see {@link #listMaterialMedia(MediaType, int, int)}
 	 * @throws WeixinException
 	 */
@@ -636,7 +653,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see com.foxinmy.weixin4j.tuple.Video
 	 * @see com.foxinmy.weixin4j.tuple.MpVideo
-	 * @see {@link com.com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 */
 	public String uploadMassVideo(Video video) throws WeixinException {
 		return massApi.uploadVideo(video);
@@ -718,7 +735,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.tuple.MassTuple
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
-	 * @see {@link com.com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
+	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 * @see {@link com.foxinmy.weixin4j.mp.api.UserApi#getUser(String)}
 	 */
 	public String massByOpenIds(MassTuple tuple, String... openIds)

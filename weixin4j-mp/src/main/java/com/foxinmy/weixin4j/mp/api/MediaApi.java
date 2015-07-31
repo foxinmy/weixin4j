@@ -65,6 +65,34 @@ public class MediaApi extends MpApi {
 	}
 
 	/**
+	 * 上传图文消息内的图片获取URL
+	 * 请注意，本接口所上传的图片不占用公众号的素材库中图片数量的5000个的限制。图片仅支持jpg/png格式，大小必须在1MB以下。
+	 * 
+	 * @param is
+	 *            图片数据流
+	 * @param fileName
+	 *            文件名 为空时将自动生成
+	 * @return 图片URL 可用于后续群发中，放置到图文消息中
+	 * @throws WeixinException
+	 */
+	public String uploadImage(InputStream is, String fileName)
+			throws WeixinException {
+		if (StringUtil.isBlank(fileName)) {
+			fileName = ObjectId.get().toHexString();
+		}
+		if (StringUtil.isBlank(FileUtil.getFileExtension(fileName))) {
+			fileName = String.format("%s.jpg", fileName);
+		}
+		String image_upload_uri = getRequestUri("image_upload_uri");
+		Token token = tokenHolder.getToken();
+		WeixinResponse response = weixinClient.post(String.format(
+				image_upload_uri, token.getAccessToken()),
+				new FormBodyPart("media", new InputStreamBody(is,
+						ContentType.IMAGE_JPG.getMimeType(), fileName)));
+		return response.getAsJson().getString("url");
+	}
+
+	/**
 	 * 上传媒体文件:图片（image）、语音（voice）、视频(video)和缩略图（thumb） </br> <font
 	 * color="red">此接口只包含图片、语音、缩略图、视频(临时)四种媒体类型的上传</font>
 	 * <p>
