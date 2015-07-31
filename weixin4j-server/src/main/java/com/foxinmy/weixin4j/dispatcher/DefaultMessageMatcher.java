@@ -21,6 +21,7 @@ import com.foxinmy.weixin4j.mp.event.MassEventMessage;
 import com.foxinmy.weixin4j.mp.event.TemplatesendjobfinishMessage;
 import com.foxinmy.weixin4j.qy.event.BatchjobresultMessage;
 import com.foxinmy.weixin4j.qy.event.EnterAgentEventMessage;
+import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.type.EventType;
 import com.foxinmy.weixin4j.type.MessageType;
@@ -36,10 +37,10 @@ import com.foxinmy.weixin4j.type.MessageType;
  */
 public class DefaultMessageMatcher implements WeixinMessageMatcher {
 
-	private final Map<MessageKey, Class<?>> messageClassMap;
+	private final Map<MessageKey, Class<? extends WeixinMessage>> messageClassMap;
 
 	public DefaultMessageMatcher() {
-		messageClassMap = new HashMap<MessageKey, Class<?>>();
+		messageClassMap = new HashMap<MessageKey, Class<? extends WeixinMessage>>();
 		initMessageClass();
 	}
 
@@ -159,12 +160,13 @@ public class DefaultMessageMatcher implements WeixinMessageMatcher {
 	}
 
 	@Override
-	public Class<?> match(MessageKey messageKey) {
+	public Class<? extends WeixinMessage> match(MessageKey messageKey) {
 		return messageClassMap.get(messageKey);
 	}
 
 	@Override
-	public void regist(MessageKey messageKey, Class<?> messageClass) {
+	public void regist(MessageKey messageKey,
+			Class<? extends WeixinMessage> messageClass) {
 		Class<?> clazz = messageClassMap.get(messageKey);
 		if (clazz != null) {
 			throw new IllegalArgumentException("duplicate messagekey '"

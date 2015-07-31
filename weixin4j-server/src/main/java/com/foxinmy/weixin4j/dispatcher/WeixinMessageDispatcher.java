@@ -28,6 +28,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
+import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.TextResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
@@ -88,7 +89,7 @@ public class WeixinMessageDispatcher {
 	/**
 	 * 消息转换
 	 */
-	private Map<Class<?>, Unmarshaller> messageUnmarshaller;
+	private Map<Class<? extends WeixinMessage>, Unmarshaller> messageUnmarshaller;
 
 	/**
 	 * 开启debug:未匹配到MessageHanlder输出消息信息
@@ -101,7 +102,7 @@ public class WeixinMessageDispatcher {
 
 	public WeixinMessageDispatcher(WeixinMessageMatcher messageMatcher) {
 		this.messageMatcher = messageMatcher;
-		this.messageUnmarshaller = new HashMap<Class<?>, Unmarshaller>();
+		this.messageUnmarshaller = new HashMap<Class<? extends WeixinMessage>, Unmarshaller>();
 	}
 
 	/**
@@ -120,11 +121,9 @@ public class WeixinMessageDispatcher {
 			throws WeixinException {
 		MessageKey messageKey = defineMessageKey(cruxMessage.getMsgType(),
 				cruxMessage.getEventType(), cruxMessage.getAccountType());
-		Class<?> targetClass = messageMatcher.match(messageKey);
-		Object message = request.getOriginalContent();
-		if (targetClass != null) {
-			message = messageRead(request.getOriginalContent(), targetClass);
-		}
+		Class<? extends WeixinMessage> targetClass = messageMatcher
+				.match(messageKey);
+		Object message = messageRead(request.getOriginalContent(), targetClass);
 		logger.info("define '{}' matched '{}'", messageKey, targetClass);
 		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(context,
 				request, messageKey, message, cruxMessage.getNodeNames());
@@ -178,7 +177,7 @@ public class WeixinMessageDispatcher {
 	protected void noHandlerFound(ChannelHandlerContext context,
 			WeixinRequest request, Object message) {
 		if (isDebug) {
-			if (message instanceof String) {
+			if (message == null) {
 				context.writeAndFlush(
 						new TextResponse(request.getOriginalContent()
 								.replaceAll("\\!\\[CDATA\\[", "")
@@ -357,13 +356,16 @@ public class WeixinMessageDispatcher {
 	 * @return 消息对象
 	 * @throws WeixinException
 	 */
-	protected Object messageRead(String message, Class<?> clazz)
-			throws WeixinException {
+	protected Object messageRead(String message,
+			Class<? extends WeixinMessage> clazz) throws WeixinException {
+		if (clazz == null) {
+			return null;
+		}
 		try {
 			Source source = new StreamSource(new ByteArrayInputStream(
 					message.getBytes(Consts.UTF_8)));
-			JAXBElement<?> jaxbElement = getUnmarshaller(clazz).unmarshal(
-					source, clazz);
+			JAXBElement<? extends WeixinMessage> jaxbElement = getUnmarshaller(
+					clazz).unmarshal(source, clazz);
 			return jaxbElement.getValue();
 		} catch (JAXBException e) {
 			throw new WeixinException(e);
@@ -378,7 +380,7 @@ public class WeixinMessageDispatcher {
 	 * @return 消息转换器
 	 * @throws WeixinException
 	 */
-	protected Unmarshaller getUnmarshaller(Class<?> clazz)
+	protected Unmarshaller getUnmarshaller(Class<? extends WeixinMessage> clazz)
 			throws WeixinException {
 		Unmarshaller unmarshaller = messageUnmarshaller.get(clazz);
 		if (unmarshaller == null) {
@@ -445,7 +447,8 @@ public class WeixinMessageDispatcher {
 		this.beanFactory = beanFactory;
 	}
 
-	public void registMessageClass(MessageKey messageKey, Class<?> messageClass) {
+	public void registMessageClass(MessageKey messageKey,
+			Class<? extends WeixinMessage> messageClass) {
 		messageMatcher.regist(messageKey, messageClass);
 	}
 

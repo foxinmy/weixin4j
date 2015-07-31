@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.handler;
 import java.util.Set;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 
@@ -16,7 +17,8 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * @see
  */
 @SuppressWarnings("unchecked")
-public abstract class MessageHandlerAdapter<M> implements WeixinMessageHandler {
+public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements
+		WeixinMessageHandler {
 
 	@Override
 	public boolean canHandle(WeixinRequest request, Object message,

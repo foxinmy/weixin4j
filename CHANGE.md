@@ -394,4 +394,9 @@
 * 2015-07-30
   
   + **weixin4j-qy**: 调整[WeixinSuiteProxy](./weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/WeixinSuiteProxy.java)对多个套件的支持
+
+* 2015-07-31
+
+  + **weixin4j-server**:`WeixinServerBootstrap` 构造函数支持多个公众号
   
+  + **weixin4j-server**:`MessageHandlerAdapter` 声明时限定泛型为`WeixinMessage`的子类

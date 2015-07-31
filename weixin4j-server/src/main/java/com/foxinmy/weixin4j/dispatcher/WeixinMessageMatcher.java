@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.dispatcher;
 
+import com.foxinmy.weixin4j.request.WeixinMessage;
+
 /**
  * 微信消息匹配
  * 
@@ -17,7 +19,7 @@ public interface WeixinMessageMatcher {
 	 *            消息key
 	 * @return 消息类型
 	 */
-	public Class<?> match(MessageKey messageKey);
+	public Class<? extends WeixinMessage> match(MessageKey messageKey);
 
 	/**
 	 * 注册消息类型「程序没有及时更新而微信又产生了新的消息类型」
@@ -27,5 +29,6 @@ public interface WeixinMessageMatcher {
 	 * @param messageClass
 	 *            消息类型
 	 */
-	public void regist(MessageKey messageKey, Class<?> messageClass);
+	public void regist(MessageKey messageKey,
+			Class<? extends WeixinMessage> messageClass);
 }

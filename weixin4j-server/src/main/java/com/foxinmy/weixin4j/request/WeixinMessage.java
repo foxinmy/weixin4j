@@ -1,8 +1,11 @@
 package com.foxinmy.weixin4j.request;
 
+import java.beans.Transient;
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * 微信消息基类
@@ -88,6 +91,12 @@ public class WeixinMessage implements Serializable {
 
 	public long getCreateTime() {
 		return createTime;
+	}
+
+	@Transient
+	@XmlTransient
+	public Date getFormatCreateTime() {
+		return createTime > 0l ? new Date(createTime * 1000l) : null;
 	}
 
 	public String getMsgType() {

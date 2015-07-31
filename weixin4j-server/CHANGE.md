@@ -57,3 +57,9 @@
 * 2015-07-04
 
   + released 1.0.3
+  
+* 2015-07-31
+
+  `WeixinServerBootstrap` 构造函数支持多个公众号
+  
+  `MessageHandlerAdapter` 声明时限定泛型为`WeixinMessage`的子类

@@ -24,6 +24,7 @@ import com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
+import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.socket.WeixinServerInitializer;
 import com.foxinmy.weixin4j.util.AesToken;
 
@@ -81,7 +82,7 @@ public final class WeixinServerBootstrap {
 	 * 明文模式
 	 * 
 	 * @param weixinid
-	 *            微信号(原始ID/appid/cropid)
+	 *            微信号(原始ID/appid/corpid)
 	 * @param token
 	 *            开发者token
 	 * 
@@ -94,7 +95,7 @@ public final class WeixinServerBootstrap {
 	 * 兼容模式 & 密文模式
 	 * 
 	 * @param appid
-	 *            公众号的appid
+	 *            公众号的appid/corpid
 	 * @param token
 	 *            开发者填写的token
 	 * @param aesKey
@@ -108,7 +109,7 @@ public final class WeixinServerBootstrap {
 	 * 多个公众号的支持
 	 * <p>
 	 * <font color="red">请注意：需在服务接收事件的URL中附加一个名为wexin_id的参数,其值请填写公众号的appid/
-	 * cropid</font>
+	 * corpid</font>
 	 * <p>
 	 * 
 	 * @param aesTokens
@@ -123,7 +124,7 @@ public final class WeixinServerBootstrap {
 	 * 多个公众号的支持
 	 * <p>
 	 * <font color="red">请注意：需在服务接收事件的URL中附加一个名为wexin_id的参数,其值请填写公众号的appid/
-	 * cropid</font>
+	 * corpid</font>
 	 * <p>
 	 * 
 	 * @param messageMatcher
@@ -152,7 +153,15 @@ public final class WeixinServerBootstrap {
 	 * 
 	 */
 	public void startup() throws WeixinException {
-		startup(DEFAULT_BOSSTHREADS, DEFAULT_WORKERTHREADS, DEFAULT_SERVERPORT);
+		startup(DEFAULT_SERVERPORT);
+	}
+
+	/**
+	 * 指定端口启动服务
+	 * 
+	 */
+	public void startup(int serverPort) throws WeixinException {
+		startup(DEFAULT_BOSSTHREADS, DEFAULT_WORKERTHREADS, serverPort);
 	}
 
 	/**
@@ -296,7 +305,7 @@ public final class WeixinServerBootstrap {
 	 * @return
 	 */
 	public WeixinServerBootstrap registMessageClass(MessageKey messageKey,
-			Class<?> messageClass) {
+			Class<? extends WeixinMessage> messageClass) {
 		messageDispatcher.registMessageClass(messageKey, messageClass);
 		return this;
 	}
