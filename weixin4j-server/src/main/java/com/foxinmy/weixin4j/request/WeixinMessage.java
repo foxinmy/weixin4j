@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.foxinmy.weixin4j.type.MessageType;
+
 /**
  * 微信消息基类
  * 
@@ -101,6 +103,12 @@ public class WeixinMessage implements Serializable {
 
 	public String getMsgType() {
 		return msgType;
+	}
+
+	@Transient
+	@XmlTransient
+	public MessageType getFormatMsgType() {
+		return MessageType.valueOf(msgType);
 	}
 
 	public long getMsgId() {

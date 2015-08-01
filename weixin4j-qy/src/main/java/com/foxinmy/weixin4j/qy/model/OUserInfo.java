@@ -171,7 +171,7 @@ public class OUserInfo implements Serializable {
 		/**
 		 * 服务商套件中的对应应用id
 		 */
-		private String appid;
+		private int appid;
 		/**
 		 * 授权方应用敏感权限组，目前仅有get_location，表示是否有权限设置应用获取地理位置的开关
 		 */
@@ -191,11 +191,11 @@ public class OUserInfo implements Serializable {
 			this.authType = null;
 		}
 
-		public String getAppid() {
+		public int getAppid() {
 			return appid;
 		}
 
-		public void setAppid(String appid) {
+		public void setAppid(int appid) {
 			this.appid = appid;
 		}
 

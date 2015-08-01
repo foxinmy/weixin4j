@@ -412,3 +412,5 @@
   + **weixin4j-mp**: 调整群发消息接口返回类型为字符串数组[{msg_id,msg_data_id}]
   
   + **weixin4j-qy**: 新增聊天服务接口[ChatApi](./weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/api/ChatApi.java)
+  
+  + **weixin4j-server**: 新增企业号消息服务相关类

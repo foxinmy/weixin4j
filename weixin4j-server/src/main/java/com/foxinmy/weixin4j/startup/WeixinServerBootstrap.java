@@ -130,11 +130,17 @@ public final class WeixinServerBootstrap {
 	 * @param messageMatcher
 	 *            消息匹配器
 	 * @param aesTokens
-	 *            多个公众号
+	 *            公众号信息
 	 * @return
 	 */
 	public WeixinServerBootstrap(WeixinMessageMatcher messageMatcher,
 			AesToken... aesTokens) {
+		if (messageMatcher == null) {
+			throw new IllegalArgumentException("MessageMatcher not be null");
+		}
+		if (aesTokens == null) {
+			throw new IllegalArgumentException("AesToken not be null");
+		}
 		this.aesTokenMap = new HashMap<String, AesToken>();
 		for (AesToken aesToken : aesTokens) {
 			this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);

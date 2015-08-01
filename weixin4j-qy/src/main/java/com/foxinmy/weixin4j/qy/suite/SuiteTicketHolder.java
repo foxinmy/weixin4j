@@ -42,24 +42,19 @@ public class SuiteTicketHolder {
 	 * @return
 	 */
 	public String getCacheKey() {
-		return getCacheKey0(suiteId);
-	}
-
-	private String getCacheKey0(String suiteId) {
 		return String.format("qy_suite_ticket_%s", suiteId);
 	}
 
 	/**
 	 * 缓存ticket
 	 * 
-	 * @param suiteTicket
+	 * @param ticket
 	 * @throws WeixinException
 	 */
-	public void cachingTicket(WeixinSuiteMessage suiteTicket)
-			throws WeixinException {
-		Token token = new Token(suiteTicket.getSuiteTicket());
+	public void cachingTicket(String ticket) throws WeixinException {
+		Token token = new Token(ticket);
 		token.setExpiresIn(-1);
-		tokenStorager.caching(getCacheKey0(suiteTicket.getSuiteId()), token);
+		tokenStorager.caching(getCacheKey(), token);
 	}
 
 	public String getSuiteId() {

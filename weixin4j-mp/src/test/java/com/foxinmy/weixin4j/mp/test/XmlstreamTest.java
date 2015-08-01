@@ -2,14 +2,8 @@ package com.foxinmy.weixin4j.mp.test;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2;
@@ -105,25 +99,17 @@ public class XmlstreamTest {
 				com.foxinmy.weixin4j.payment.mch.RefundRecord.class));
 	}
 
-	public static String errorXml() {
-		StringBuffer xml = new StringBuffer();
-		String url = "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%85%A8%E5%B1%80%E8%BF%94%E5%9B%9E%E7%A0%81%E8%AF%B4%E6%98%8E";
-		try {
-			Document doc = Jsoup.parse(new URL(url), 5000);
-			Elements eles = doc.getElementsByTag("tr");
-			for (Element ele : eles) {
-				xml.append("<error>");
-				xml.append("<code>").append(ele.child(0).text())
-						.append("</code>");
-				xml.append("<text>").append(ele.child(1).text())
-						.append("</text>");
-				xml.append("</error>");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return xml.toString();
-	}
+	/*
+	 * public static String errorXml() { StringBuffer xml = new StringBuffer();
+	 * String url =
+	 * "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%85%A8%E5%B1%80%E8%BF%94%E5%9B%9E%E7%A0%81%E8%AF%B4%E6%98%8E"
+	 * ; try { Document doc = Jsoup.parse(new URL(url), 5000); Elements eles =
+	 * doc.getElementsByTag("tr"); for (Element ele : eles) {
+	 * xml.append("<error>"); xml.append("<code>").append(ele.child(0).text())
+	 * .append("</code>"); xml.append("<text>").append(ele.child(1).text())
+	 * .append("</text>"); xml.append("</error>"); } } catch (Exception e) {
+	 * e.printStackTrace(); } return xml.toString(); }
+	 */
 
 	public static void main(String[] args) throws Exception {
 		// map2xml();

@@ -1,11 +1,14 @@
 package com.foxinmy.weixin4j.qy.suite;
 
+import java.beans.Transient;
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * 套件消息
@@ -30,7 +33,7 @@ public class WeixinSuiteMessage implements Serializable {
 	 * 事件类型
 	 */
 	@XmlElement(name = "InfoType")
-	private SuiteEventType eventType;
+	private String eventType;
 	/**
 	 * 时间戳
 	 */
@@ -51,12 +54,24 @@ public class WeixinSuiteMessage implements Serializable {
 		return suiteId;
 	}
 
-	public SuiteEventType getEventType() {
+	public String getEventType() {
 		return eventType;
+	}
+
+	@Transient
+	@XmlTransient
+	public SuiteEventType getFormatEventType() {
+		return SuiteEventType.valueOf(eventType);
 	}
 
 	public long getTimeStamp() {
 		return timeStamp;
+	}
+
+	@Transient
+	@XmlTransient
+	public Date getFormatTimeStamp() {
+		return timeStamp > 0l ? new Date(timeStamp * 1000l) : null;
 	}
 
 	public String getSuiteTicket() {
