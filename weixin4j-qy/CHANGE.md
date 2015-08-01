@@ -83,3 +83,7 @@
 * 2015-07-30
   
   + **weixin4j-qy**: 调整[WeixinSuiteProxy](.src/main/java/com/foxinmy/weixin4j/qy/WeixinSuiteProxy.java)对多个套件的支持
+  
+* 2015-08-01
+
+  + 新增聊天服务接口[ChatApi](./src/main/java/com/foxinmy/weixin4j/qy/api/ChatApi.java)

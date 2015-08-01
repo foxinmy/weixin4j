@@ -83,6 +83,9 @@ public class TmplApi extends MpApi {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E5.8F.91.E9.80.81.E6.A8.A1.E6.9D.BF.E6.B6.88.E6.81.AF">模板消息</a>
+	 *      <a href=
+	 *      "http://mp.weixin.qq.com/wiki/2/def71e3ecb5706c132229ae505815966.html"
+	 *      >运营规范</a>
 	 * @see com.foxinmy.weixin4j.mp.message.TemplateMessage
 	 * @seee com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 */

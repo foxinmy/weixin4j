@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.tuple;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -56,9 +55,8 @@ public class Music implements NotifyTuple {
 	@XmlElement(name = "ThumbMediaId")
 	private String thumbMediaId;
 
-	@JSONCreator
-	public Music(@JSONField(name = "thumb_media_id") String thumbMediaId) {
-		this.thumbMediaId = thumbMediaId;
+	public Music(String musicUrl, String hqMusicUrl, String thumbMediaId) {
+		this(null, null, musicUrl, hqMusicUrl, thumbMediaId);
 	}
 
 	public Music(@JSONField(name = "title") String title,
@@ -93,16 +91,8 @@ public class Music implements NotifyTuple {
 		return musicUrl;
 	}
 
-	public void setMusicUrl(String musicUrl) {
-		this.musicUrl = musicUrl;
-	}
-
 	public String getHqMusicUrl() {
 		return hqMusicUrl;
-	}
-
-	public void setHqMusicUrl(String hqMusicUrl) {
-		this.hqMusicUrl = hqMusicUrl;
 	}
 
 	public String getThumbMediaId() {

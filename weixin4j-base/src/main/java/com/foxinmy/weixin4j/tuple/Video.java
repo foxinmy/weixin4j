@@ -51,27 +51,15 @@ public class Video implements NotifyTuple {
 	@XmlElement(name = "Description")
 	private String desc;
 
-	@JSONCreator
-	public Video(@JSONField(name = "media_id") String mediaId) {
-		this.mediaId = mediaId;
-	}
-
 	/**
-	 * 公众平台
+	 * 企业号的视频消息不需要缩略图
 	 * 
 	 * @param mediaId
-	 * @param thumbMediaId
-	 */
-	public Video(String mediaId, String thumbMediaId) {
-		this(mediaId, thumbMediaId, null, null);
-	}
-
-	/**
-	 * 企业号 & 公众号群发
-	 * 
-	 * @param mediaId
+	 *            视频媒体文件id，可以调用上传临时素材或者永久素材接口获取
 	 * @param title
+	 *            视频标题
 	 * @param desc
+	 *            视频描述
 	 */
 	public Video(String mediaId, String title, String desc) {
 		this(mediaId, null, title, desc);
@@ -96,24 +84,12 @@ public class Video implements NotifyTuple {
 		return thumbMediaId;
 	}
 
-	public void setThumbMediaId(String thumbMediaId) {
-		this.thumbMediaId = thumbMediaId;
-	}
-
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getDesc() {
 		return desc;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
 	}
 
 	@Override

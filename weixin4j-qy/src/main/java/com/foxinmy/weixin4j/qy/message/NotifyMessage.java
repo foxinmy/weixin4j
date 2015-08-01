@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.tuple.NotifyTuple;
 
 /**
- * 发送消息对象
+ * 客服消息对象
  * 
  * @className NotifyMessage
  * @author jy
@@ -38,6 +38,7 @@ public class NotifyMessage implements Serializable {
 	/**
 	 * 消息对象
 	 */
+	@JSONField(serialize = false)
 	private NotifyTuple tuple;
 	/**
 	 * 发送对象

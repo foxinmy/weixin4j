@@ -55,7 +55,8 @@ public class NotifyMsgTest extends TokenTest {
 
 	@Test
 	public void video() throws WeixinException {
-		NotifyMessage notify = new NotifyMessage(0, new Video("123"));
+		NotifyMessage notify = new NotifyMessage(0, new Video("mediaId",
+				"title", "desc"));
 		System.out.println(notifyApi.sendNotify(notify));
 	}
 

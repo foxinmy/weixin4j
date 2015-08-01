@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.tuple;
 
+
 /**
  * 群发消息元件
  * 

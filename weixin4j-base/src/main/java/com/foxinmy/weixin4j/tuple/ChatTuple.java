@@ -1,0 +1,16 @@
+package com.foxinmy.weixin4j.tuple;
+
+/**
+ * 聊天消息元件
+ * 
+ * @className ChatTuple
+ * @author jy
+ * @date 2015年8月1日
+ * @since JDK 1.7
+ * @see com.foxinmy.weixin4j.tuple.Text
+ * @see com.foxinmy.weixin4j.tuple.Image
+ * @see com.foxinmy.weixin4j.tuple.File
+ */
+public interface ChatTuple extends Tuple {
+
+}

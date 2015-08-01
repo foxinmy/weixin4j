@@ -18,7 +18,6 @@ import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.tuple.Image;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.Text;
-import com.foxinmy.weixin4j.tuple.Video;
 
 /**
  * 群发消息
@@ -50,23 +49,16 @@ public class MassTest extends TokenTest {
 	}
 
 	@Test
-	public void uploadVideo() throws WeixinException {
-		Video video = new Video("mediaId", "title", "desc");
-		String massId = massApi.uploadVideo(video);
-		Assert.assertTrue(massId != null);
-	}
-
-	@Test
 	public void massByGroupId() throws WeixinException {
-		String msgId = massApi.massByGroupId(new Image("mediaId"), true, 0);
-		Assert.assertTrue(msgId != null);
+		String[] msgId = massApi.massByGroupId(new Image("mediaId"), true, 0);
+		Assert.assertTrue(msgId[0] != null);
 	}
 
 	@Test
 	public void massByOpenIds() throws WeixinException {
-		String msgId = massApi.massByOpenIds(new Text("HI"),
+		String[] msgId = massApi.massByOpenIds(new Text("HI"),
 				"oyFLst1bqtuTcxK-ojF8hOGtLQao");
-		Assert.assertTrue(msgId != null);
+		Assert.assertTrue(msgId[0] != null);
 	}
 
 	@Test
@@ -76,8 +68,8 @@ public class MassTest extends TokenTest {
 		MediaUploadResult mediaResult = mediaApi.uploadMedia(false,
 				new FileInputStream(file), file.getName());
 		articles.add(new MpArticle(mediaResult.getMediaId(), "title", "content"));
-		String massId = massApi.massArticleByGroupId(articles, 0);
-		Assert.assertTrue(massId != null);
+		String[] massId = massApi.massArticleByGroupId(articles, 0);
+		Assert.assertTrue(massId[0] != null);
 	}
 
 	@Test
@@ -87,9 +79,9 @@ public class MassTest extends TokenTest {
 		MediaUploadResult mediaResult = mediaApi.uploadMedia(false,
 				new FileInputStream(file), file.getName());
 		articles.add(new MpArticle(mediaResult.getMediaId(), "title", "content"));
-		String massId = massApi.massArticleByOpenIds(articles,
+		String[] massId = massApi.massArticleByOpenIds(articles,
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
-		Assert.assertTrue(massId != null);
+		Assert.assertTrue(massId[0] != null);
 	}
 
 	@Test

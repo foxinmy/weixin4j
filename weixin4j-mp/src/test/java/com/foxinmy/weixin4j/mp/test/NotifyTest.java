@@ -61,13 +61,15 @@ public class NotifyTest extends TokenTest {
 
 	@Test
 	public void video() throws WeixinException {
-		NotifyMessage notify = new NotifyMessage("to", new Video("video"));
+		NotifyMessage notify = new NotifyMessage("to", new Video("mediaId",
+				"title", "desc"));
 		System.out.println(notifyApi.sendNotify(notify));
 	}
 
 	@Test
 	public void music() throws WeixinException {
-		NotifyMessage notify = new NotifyMessage("to", new Music("music"));
+		NotifyMessage notify = new NotifyMessage("to", new Music("musicUrl",
+				"hqMusicUrl", "thumbMediaId"));
 		System.out.println(notifyApi.sendNotify(notify));
 	}
 

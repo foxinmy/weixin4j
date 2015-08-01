@@ -402,3 +402,13 @@
   + **weixin4j-server**:`MessageHandlerAdapter` 声明时限定泛型为`WeixinMessage`的子类
   
   + **weixin4j-mp**: 新增图文消息中上传图片接口
+  
+* 2015-08-01
+
+  + **weixin4j-base**: 整理了Tuple消息元件
+  
+  + **weixin4j-mp**: 新增了群发消息中的上传视频接口
+  
+  + **weixin4j-mp**: 调整群发消息接口返回类型为字符串数组[{msg_id,msg_data_id}]
+  
+  + **weixin4j-qy**: 新增聊天服务接口[ChatApi](./weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/api/ChatApi.java)

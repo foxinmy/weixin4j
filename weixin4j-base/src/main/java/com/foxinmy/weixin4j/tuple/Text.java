@@ -6,7 +6,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 文本对象
  * <p>
- * <font color="red">可用于「客服消息」「群发消息」</font>
+ * <font color="red">可用于「客服消息」「群发消息」及企业号的「聊天消息」</font>
  * </p>
  * 
  * @className Text
@@ -15,7 +15,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @since JDK 1.7
  * @see
  */
-public class Text implements MassTuple, NotifyTuple {
+public class Text implements MassTuple, NotifyTuple, ChatTuple {
 
 	private static final long serialVersionUID = 520050144519064503L;
 

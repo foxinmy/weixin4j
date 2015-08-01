@@ -12,7 +12,9 @@ package com.foxinmy.weixin4j.tuple;
  * @see com.foxinmy.weixin4j.tuple.Voice
  * @see com.foxinmy.weixin4j.tuple.Video
  * @see com.foxinmy.weixin4j.tuple.Music
+ * @see com.foxinmy.weixin4j.tuple.File
  * @see com.foxinmy.weixin4j.tuple.News
+ * @see com.foxinmy.weixin4j.tuple.MpNews
  */
 public interface NotifyTuple extends Tuple {
 

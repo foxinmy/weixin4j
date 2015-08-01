@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -50,7 +51,8 @@ public class MpNews implements MassTuple, NotifyTuple {
 		this(null);
 	}
 
-	public MpNews(String mediaId) {
+	@JSONCreator
+	public MpNews(@JSONField(name = "media_id") String mediaId) {
 		this.mediaId = mediaId;
 		this.articles = new LinkedList<MpArticle>();
 	}

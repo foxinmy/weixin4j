@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 图片对象
  * <p>
- * <font color="red">可用于「客服消息」「群发消息」</font>
+ * <font color="red">可用于「客服消息」「群发消息」及企业号的「聊天消息」</font>
  * </p>
  * 
  * @className Image
@@ -17,7 +17,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @since JDK 1.7
  * @see
  */
-public class Image implements MassTuple, NotifyTuple {
+public class Image implements MassTuple, NotifyTuple, ChatTuple {
 
 	private static final long serialVersionUID = 6928681900960656161L;
 
@@ -34,7 +34,7 @@ public class Image implements MassTuple, NotifyTuple {
 	private String mediaId;
 
 	@JSONCreator
-	public Image(@JSONField(name = "media_id")String mediaId) {
+	public Image(@JSONField(name = "media_id") String mediaId) {
 		this.mediaId = mediaId;
 	}
 

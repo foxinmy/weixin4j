@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 文件对象
  * <p>
- * <font color="red">可用于「企业号的客服消息」</font>
+ * <font color="red">可用于企业号的「客服消息」及「聊天消息」</font>
  * </p>
  * 
  * @className File
@@ -17,7 +17,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @since JDK 1.7
  * @see
  */
-public class File implements NotifyTuple {
+public class File implements NotifyTuple, ChatTuple {
 
 	private static final long serialVersionUID = -8149837316289636110L;
 

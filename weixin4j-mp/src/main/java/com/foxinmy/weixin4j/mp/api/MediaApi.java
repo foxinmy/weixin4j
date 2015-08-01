@@ -38,6 +38,7 @@ import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.MpArticle;
+import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.ErrorUtil;
@@ -90,6 +91,40 @@ public class MediaApi extends MpApi {
 				new FormBodyPart("media", new InputStreamBody(is,
 						ContentType.IMAGE_JPG.getMimeType(), fileName)));
 		return response.getAsJson().getString("url");
+	}
+
+	/**
+	 * 上传群发中的视频素材
+	 * 
+	 * @param is
+	 *            图片数据流
+	 * @param fileName
+	 *            文件名 为空时将自动生成
+	 * @param title
+	 *            视频标题 非空
+	 * @param description
+	 *            视频描述 可为空
+	 * @return 群发视频消息对象
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html">高级群发</a>
+	 * @see com.foxinmy.weixin4j.tuple.MpVideo
+	 */
+	public MpVideo uploadVideo(InputStream is, String fileName, String title,
+			String description) throws WeixinException {
+		MediaUploadResult uploadResult = uploadMedia(false, is, fileName);
+		JSONObject obj = new JSONObject();
+		obj.put("media_id", uploadResult.getMediaId());
+		obj.put("title", title);
+		obj.put("description", description);
+		String video_upload_uri = getRequestUri("video_upload_uri");
+		Token token = tokenHolder.getToken();
+		WeixinResponse response = weixinClient.post(
+				String.format(video_upload_uri, token.getAccessToken()),
+				obj.toJSONString());
+
+		String mediaId = response.getAsJson().getString("media_id");
+		return new MpVideo(mediaId);
 	}
 
 	/**

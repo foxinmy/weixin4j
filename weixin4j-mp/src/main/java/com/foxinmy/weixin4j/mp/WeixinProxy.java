@@ -48,8 +48,8 @@ import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
+import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.tuple.Tuple;
-import com.foxinmy.weixin4j.tuple.Video;
 import com.foxinmy.weixin4j.type.MediaType;
 
 /**
@@ -143,6 +143,29 @@ public class WeixinProxy {
 	public String uploadImage(InputStream is, String fileName)
 			throws WeixinException {
 		return mediaApi.uploadImage(is, fileName);
+	}
+
+	/**
+	 * 上传群发中的视频素材
+	 * 
+	 * @param is
+	 *            图片数据流
+	 * @param fileName
+	 *            文件名 为空时将自动生成
+	 * @param title
+	 *            视频标题 非空
+	 * @param description
+	 *            视频描述 可为空
+	 * @return 群发视频消息对象
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html">高级群发</a>
+	 * @see com.foxinmy.weixin4j.tuple.MpVideo
+	 */
+	public MpVideo uploadVideo(InputStream is, String fileName, String title,
+			String description) throws WeixinException {
+		return mediaApi.uploadVideo(is, fileName, title, description);
 	}
 
 	/**
@@ -641,25 +664,6 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 上传分组群发的视频素材
-	 * 
-	 * @param video
-	 *            视频对象 其中mediaId媒体文件中上传得到的Id 不能为空
-	 * @return 上传后的ID
-	 * @throws WeixinException
-	 * 
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html">高级群发</a>
-	 * @see com.foxinmy.weixin4j.mp.api.MassApi
-	 * @see com.foxinmy.weixin4j.tuple.Video
-	 * @see com.foxinmy.weixin4j.tuple.MpVideo
-	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
-	 */
-	public String uploadMassVideo(Video video) throws WeixinException {
-		return massApi.uploadVideo(video);
-	}
-
-	/**
 	 * 群发消息
 	 * <p>
 	 * 在返回成功时,意味着群发任务提交成功,并不意味着此时群发已经结束,所以,仍有可能在后续的发送过程中出现异常情况导致用户未收到消息,
@@ -673,7 +677,7 @@ public class WeixinProxy {
 	 *            选择false可根据group_id发送给指定群组的用户
 	 * @param groupId
 	 *            分组ID
-	 * @return 群发后的消息ID
+	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现,可以用于在图文分析数据接口中
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 * @see com.foxinmy.weixin4j.tuple.Text
@@ -687,7 +691,7 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
 	 */
-	public String massByGroupId(MassTuple tuple, boolean isToAll, int groupId)
+	public String[] massByGroupId(MassTuple tuple, boolean isToAll, int groupId)
 			throws WeixinException {
 		return massApi.massByGroupId(tuple, isToAll, groupId);
 	}
@@ -699,14 +703,14 @@ public class WeixinProxy {
 	 *            图文列表
 	 * @param groupId
 	 *            分组ID
-	 * @return 群发后的消息ID
+	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现,可以用于在图文分析数据接口中
 	 * @see {@link #massByGroupId(Tuple,int)}
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @throws WeixinException
 	 */
-	public String massArticleByGroupId(List<MpArticle> articles, int groupId)
+	public String[] massArticleByGroupId(List<MpArticle> articles, int groupId)
 			throws WeixinException {
 		return massApi.massArticleByGroupId(articles, groupId);
 	}
@@ -723,7 +727,7 @@ public class WeixinProxy {
 	 *            消息元件
 	 * @param openIds
 	 *            openId列表
-	 * @return 群发后的消息ID
+	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现,可以用于在图文分析数据接口中
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @see com.foxinmy.weixin4j.tuple.Text
@@ -738,7 +742,7 @@ public class WeixinProxy {
 	 * @see {@link com.foxinmy.weixin4j.mp.api.MediaApi#uploadMedia(File)}
 	 * @see {@link com.foxinmy.weixin4j.mp.api.UserApi#getUser(String)}
 	 */
-	public String massByOpenIds(MassTuple tuple, String... openIds)
+	public String[] massByOpenIds(MassTuple tuple, String... openIds)
 			throws WeixinException {
 		return massApi.massByOpenIds(tuple, openIds);
 	}
@@ -750,14 +754,14 @@ public class WeixinProxy {
 	 *            图文列表
 	 * @param openIds
 	 *            openId列表
-	 * @return 群发后的消息ID
+	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现,可以用于在图文分析数据接口中
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
 	 * @see {@link #massByOpenIds(Tuple,String...)}
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @throws WeixinException
 	 */
-	public String massArticleByOpenIds(List<MpArticle> articles,
+	public String[] massArticleByOpenIds(List<MpArticle> articles,
 			String... openIds) throws WeixinException {
 		return massApi.massArticleByOpenIds(articles, openIds);
 	}

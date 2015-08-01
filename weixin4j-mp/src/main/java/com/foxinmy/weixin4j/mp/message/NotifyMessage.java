@@ -41,16 +41,8 @@ public class NotifyMessage implements Serializable {
 		return touser;
 	}
 
-	public void setTouser(String touser) {
-		this.touser = touser;
-	}
-
 	public NotifyTuple getTuple() {
 		return tuple;
-	}
-
-	public void setTuple(NotifyTuple tuple) {
-		this.tuple = tuple;
 	}
 
 	@Override

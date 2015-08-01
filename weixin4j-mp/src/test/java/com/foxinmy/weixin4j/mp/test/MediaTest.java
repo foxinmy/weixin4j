@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.mp.test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.tuple.MpArticle;
+import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.type.MediaType;
 
 /**
@@ -42,8 +44,8 @@ public class MediaTest extends TokenTest {
 	@Test
 	public void upload1() throws IOException, WeixinException {
 		File file = new File("/Users/jy/Downloads/weixin4j.png");
-		MediaUploadResult mediaId = mediaApi.uploadMedia(false, new FileInputStream(
-				file), file.getName());
+		MediaUploadResult mediaId = mediaApi.uploadMedia(false,
+				new FileInputStream(file), file.getName());
 		// 1Vgd1R5DdznSc3rPxd-sNZ3pLt54cejhJ5ItuNcCgrqoQArNANWy5oxso_r9KNlE
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);
@@ -59,8 +61,8 @@ public class MediaTest extends TokenTest {
 	@Test
 	public void upload2() throws IOException, WeixinException {
 		File file = new File("/Users/jy/Downloads/test.jpg");
-		MediaUploadResult mediaId = mediaApi.uploadMedia(true, new FileInputStream(
-				file), file.getName());
+		MediaUploadResult mediaId = mediaApi.uploadMedia(true,
+				new FileInputStream(file), file.getName());
 		// 8790403529
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);
@@ -138,5 +140,16 @@ public class MediaTest extends TokenTest {
 		List<MediaItem> mediaList = mediaApi
 				.listAllMaterialMedia(MediaType.image);
 		System.err.println(mediaList);
+	}
+
+	@Test
+	public void uploadVideo() throws WeixinException {
+		InputStream is = null;
+		String fileName = "视频文件名";
+		String title = "视频标题";
+		String description = "视频描述";
+		MpVideo mpVideo = mediaApi
+				.uploadVideo(is, fileName, title, description);
+		Assert.assertTrue(mpVideo.getMediaId() != null);
 	}
 }

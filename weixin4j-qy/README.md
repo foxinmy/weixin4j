@@ -32,6 +32,8 @@ weixin4j-qy
   * CouponApi `代金券API`
 	
   * CashApi `现金API`
+  
+  * ChatApi `聊天API`
 
 如何使用
 --------
