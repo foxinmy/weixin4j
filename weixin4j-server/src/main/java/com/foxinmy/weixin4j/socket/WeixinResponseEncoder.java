@@ -38,7 +38,7 @@ public class WeixinResponseEncoder extends
 	@Override
 	protected void encode(ChannelHandlerContext ctx, WeixinResponse response,
 			List<Object> out) throws WeixinException {
-		MessageTransfer messageTransfer = ctx.channel()
+		WeixinMessageTransfer messageTransfer = ctx.channel()
 				.attr(Consts.MESSAGE_TRANSFER_KEY).get();
 		AesToken aesToken = messageTransfer.getAesToken();
 		EncryptType encryptType = messageTransfer.getEncryptType();
@@ -85,6 +85,6 @@ public class WeixinResponseEncoder extends
 		}
 		ctx.writeAndFlush(HttpUtil.createHttpResponse(content.toString(), OK,
 				Consts.CONTENTTYPE$APPLICATION_XML));
-		logger.info("{} encode response:{}", encryptType, content);
+		logger.info("{} encode weixin response:{}", encryptType, content);
 	}
 }

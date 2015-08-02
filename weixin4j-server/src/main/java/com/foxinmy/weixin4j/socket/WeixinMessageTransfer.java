@@ -8,13 +8,13 @@ import com.foxinmy.weixin4j.util.AesToken;
 /**
  * 消息传递
  * 
- * @className MessageTransfer
+ * @className WeixinMessageTransfer
  * @author jy
  * @date 2015年6月23日
  * @since JDK 1.7
  * @see
  */
-public class MessageTransfer implements Serializable {
+public class WeixinMessageTransfer implements Serializable {
 
 	private static final long serialVersionUID = 7779948135156353261L;
 
@@ -36,7 +36,7 @@ public class MessageTransfer implements Serializable {
 	 */
 	private String fromUserName;
 
-	public MessageTransfer(AesToken aesToken, EncryptType encryptType,
+	public WeixinMessageTransfer(AesToken aesToken, EncryptType encryptType,
 			String toUserName, String fromUserName) {
 		this.aesToken = aesToken;
 		this.encryptType = encryptType;
@@ -58,5 +58,12 @@ public class MessageTransfer implements Serializable {
 
 	public String getFromUserName() {
 		return fromUserName;
+	}
+
+	@Override
+	public String toString() {
+		return "WeixinMessageTransfer [aesToken=" + aesToken + ", encryptType="
+				+ encryptType + ", toUserName=" + toUserName
+				+ ", fromUserName=" + fromUserName + "]";
 	}
 }

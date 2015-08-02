@@ -24,7 +24,7 @@ public class ChatItem implements Serializable {
 
 	private static final long serialVersionUID = -5921235260175596270L;
 
-	public final String LIST_SEPARATOR = "|";
+	public final String LIST_SEPARATOR = "\\|";
 
 	/**
 	 * 操作成员UserID

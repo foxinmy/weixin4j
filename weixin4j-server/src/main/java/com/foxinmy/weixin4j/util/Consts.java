@@ -4,7 +4,7 @@ import io.netty.util.AttributeKey;
 
 import java.nio.charset.Charset;
 
-import com.foxinmy.weixin4j.socket.MessageTransfer;
+import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
 
 /**
  * 常量类
@@ -35,6 +35,6 @@ public final class Consts {
 	public static final String CONTENTTYPE$APPLICATION_XML = "application/xml";
 	public static final String CONTENTTYPE$TEXT_PLAIN = "text/plain";
 
-	public static final AttributeKey<MessageTransfer> MESSAGE_TRANSFER_KEY = AttributeKey
+	public static final AttributeKey<WeixinMessageTransfer> MESSAGE_TRANSFER_KEY = AttributeKey
 			.valueOf("$_MESSAGETRANSFER");
 }

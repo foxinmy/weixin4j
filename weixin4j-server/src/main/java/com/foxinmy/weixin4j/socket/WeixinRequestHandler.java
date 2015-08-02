@@ -98,7 +98,7 @@ public class WeixinRequestHandler extends
 		}
 		CruxMessageHandler cruxMessage = CruxMessageHandler.parser(request
 				.getOriginalContent());
-		MessageTransfer messageTransfer = new MessageTransfer(aesToken,
+		WeixinMessageTransfer messageTransfer = new WeixinMessageTransfer(aesToken,
 				request.getEncryptType(), cruxMessage.getToUserName(),
 				cruxMessage.getFromUserName());
 		ctx.channel().attr(Consts.MESSAGE_TRANSFER_KEY).set(messageTransfer);
