@@ -31,20 +31,20 @@ public class AesToken implements Serializable {
 	/**
 	 * 一般为明文模式
 	 * 
-	 * @param openid
-	 *            微信号(原始ID)
+	 * @param weixinid
+	 *            微信号(原始ID/appid/corpid)
 	 * @param token
 	 *            开发者的Token
 	 */
-	public AesToken(String openid, String token) {
-		this(openid, token, null);
+	public AesToken(String weixinid, String token) {
+		this(weixinid, token, null);
 	}
 
 	/**
 	 * 一般为AES加密模式
 	 * 
 	 * @param appid
-	 *            应用ID
+	 *            公众号的应用ID(appid/corpid)
 	 * @param token
 	 *            开发者Token
 	 * @param aesKey

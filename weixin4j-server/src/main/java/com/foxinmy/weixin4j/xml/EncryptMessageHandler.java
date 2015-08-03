@@ -63,12 +63,13 @@ public class EncryptMessageHandler extends DefaultHandler {
 		return encryptContent;
 	}
 
-	private final static EncryptMessageHandler messageHandler = new EncryptMessageHandler();
+	private final static EncryptMessageHandler global = new EncryptMessageHandler();
 
-	public static String parser(String xmlContent) throws RuntimeException {
+	public static EncryptMessageHandler parser(String xmlContent)
+			throws RuntimeException {
 		try {
 			XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-			xmlReader.setContentHandler(messageHandler);
+			xmlReader.setContentHandler(global);
 			xmlReader.parse(new InputSource(new ByteArrayInputStream(xmlContent
 					.getBytes(Consts.UTF_8))));
 		} catch (IOException e) {
@@ -76,6 +77,6 @@ public class EncryptMessageHandler extends DefaultHandler {
 		} catch (SAXException e) {
 			throw new RuntimeException(e);
 		}
-		return messageHandler.getEncryptContent();
+		return global;
 	}
 }

@@ -52,8 +52,14 @@ public final class MessageUtil {
 	 */
 	public static String aesEncrypt(String appId, String encodingAesKey,
 			String xmlContent) throws WeixinException {
+		/**
+		 * 其中，msg_encrypt=Base64_Encode(AES_Encrypt [random(16B)+ msg_len(4B) +
+		 * msg + $AppId])
+		 * 
+		 * random(16B)为16字节的随机字符串；msg_len为msg长度，占4个字节(网络字节序)，$AppId为公众账号的AppId
+		 */
 		byte[] randomBytes = StringUtil.getBytesUtf8(RandomUtil
-				.generateString(32));
+				.generateString(16));
 		byte[] xmlBytes = StringUtil.getBytesUtf8(xmlContent);
 		int xmlLength = xmlBytes.length;
 		byte[] orderBytes = new byte[4];
@@ -93,7 +99,9 @@ public final class MessageUtil {
 			// 加密
 			byte[] encrypted = cipher.doFinal(unencrypted);
 			// 使用BASE64对加密后的字符串进行编码
-			return Base64.encodeBase64String(encrypted);
+			// return Base64.encodeBase64String(encrypted);
+			return com.foxinmy.weixin4j.base64.Base64
+					.encodeBase64String(encrypted);
 		} catch (Exception e) {
 			throw new WeixinException("-40006", "AES加密失败:" + e.getMessage());
 		}
@@ -126,12 +134,16 @@ public final class MessageUtil {
 			// 解密
 			original = cipher.doFinal(encrypted);
 		} catch (Exception e) {
-			throw new WeixinException("-40007", "AES解密失败" + e.getMessage());
+			throw new WeixinException("-40007", "AES解密失败:" + e.getMessage());
 		}
 		String xmlContent, fromAppId;
 		try {
 			// 去除补位字符
 			byte[] bytes = PKCS7Encoder.decode(original);
+			/**
+			 * AES加密的buf由16个字节的随机字符串、4个字节的msg_len(网络字节序)、msg和$AppId组成，
+			 * 其中msg_len为msg的长度，$AppId为公众帐号的AppId
+			 */
 			// 获取表示xml长度的字节数组
 			byte[] lengthByte = Arrays.copyOfRange(bytes, 16, 20);
 			// 获取xml消息主体的长度(byte[]2int)
@@ -144,7 +156,7 @@ public final class MessageUtil {
 			fromAppId = StringUtil.newStringUtf8(Arrays.copyOfRange(bytes,
 					20 + xmlLength, bytes.length));
 		} catch (Exception e) {
-			throw new WeixinException("-40008", "xml内容不合法" + e.getMessage());
+			throw new WeixinException("-40008", "xml内容不合法:" + e.getMessage());
 		}
 		// 校验appId是否一致
 		if (!fromAppId.trim().equals(appId)) {

@@ -14,15 +14,13 @@ import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 
 /**
- * 微信回复编码类
+ * 单一回复编码类
  * 
- * @className WeixinResponseEncoder
+ * @className SingleResponseEncoder
  * @author jy
- * @date 2014年11月13日
+ * @date 2015年08月02日
  * @since JDK 1.7
- * @see <a
- *      href="http://mp.weixin.qq.com/wiki/0/61c3a8b9d50ac74f18bdf2e54ddfc4e0.html">加密接入指引</a>
- * @see com.foxinmy.weixin4j.response.WeixinResponse
+ * @see com.foxinmy.weixin4j.response.SingleResponse
  */
 public class SingleResponseEncoder extends
 		MessageToMessageEncoder<SingleResponse> {

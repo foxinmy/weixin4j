@@ -414,3 +414,7 @@
   + **weixin4j-qy**: 新增聊天服务接口[ChatApi](./weixin4j-qy/src/main/java/com/foxinmy/weixin4j/qy/api/ChatApi.java)
   
   + **weixin4j-server**: 新增企业号消息服务相关类
+  
+* 2015-08-03
+
+  + **weixin4j-server**: 新增base64解编码类(来自apache)

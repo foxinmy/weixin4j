@@ -95,7 +95,7 @@ public final class WeixinServerBootstrap {
 	 * 兼容模式 & 密文模式
 	 * 
 	 * @param appid
-	 *            公众号的appid/corpid
+	 *            公众号的应用ID(appid/corpid)
 	 * @param token
 	 *            开发者填写的token
 	 * @param aesKey
