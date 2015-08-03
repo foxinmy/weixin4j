@@ -63,7 +63,7 @@ public class WeixinRequestHandler extends
 				return;
 			}
 			ctx.writeAndFlush(
-					HttpUtil.createHttpResponse(null, FORBIDDEN, null))
+					HttpUtil.createHttpResponse(FORBIDDEN))
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		} else if (request.getMethod().equals(HttpMethod.POST.name())) {
@@ -72,7 +72,7 @@ public class WeixinRequestHandler extends
 							request.getTimeStamp(), request.getNonce()).equals(
 							request.getSignature())) {
 				ctx.writeAndFlush(
-						HttpUtil.createHttpResponse(null, FORBIDDEN, null))
+						HttpUtil.createHttpResponse(FORBIDDEN))
 						.addListener(ChannelFutureListener.CLOSE);
 				return;
 			}
@@ -82,14 +82,14 @@ public class WeixinRequestHandler extends
 						request.getEncryptContent()).equals(
 						request.getMsgSignature())) {
 					ctx.writeAndFlush(
-							HttpUtil.createHttpResponse(null, FORBIDDEN, null))
+							HttpUtil.createHttpResponse(FORBIDDEN))
 							.addListener(ChannelFutureListener.CLOSE);
 					return;
 				}
 			}
 		} else {
 			ctx.writeAndFlush(
-					HttpUtil.createHttpResponse(null, METHOD_NOT_ALLOWED, null))
+					HttpUtil.createHttpResponse(METHOD_NOT_ALLOWED))
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		}

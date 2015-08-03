@@ -179,8 +179,7 @@ public class WeixinMessageDispatcher {
 		if (alwaysResponse) {
 			context.write(BlankResponse.global);
 		} else {
-			context.writeAndFlush(
-					HttpUtil.createHttpResponse(null, NOT_FOUND, null))
+			context.writeAndFlush(HttpUtil.createHttpResponse(NOT_FOUND))
 					.addListener(ChannelFutureListener.CLOSE);
 		}
 	}
