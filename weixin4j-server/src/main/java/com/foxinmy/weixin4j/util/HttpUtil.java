@@ -16,6 +16,8 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.Date;
 
+import org.apache.http.HttpHeaders;
+
 import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
@@ -53,7 +55,7 @@ public class HttpUtil {
 				content.getBytes(Consts.UTF_8).length);
 		httpResponse.headers().set(CONNECTION, Values.KEEP_ALIVE);
 		httpResponse.headers().set(DATE, new Date());
-		httpResponse.headers().set(SERVER, SERVER);
+		httpResponse.headers().set(HttpHeaders.SERVER, SERVER);
 		httpResponse.headers()
 				.set(USER_AGENT,
 						String.format("%s/%s", WEIXIN4J,
