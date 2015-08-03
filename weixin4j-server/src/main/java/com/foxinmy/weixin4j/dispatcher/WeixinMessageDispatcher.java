@@ -119,7 +119,7 @@ public class WeixinMessageDispatcher {
 	public void doDispatch(final ChannelHandlerContext context,
 			final WeixinRequest request, final CruxMessageHandler cruxMessage)
 			throws WeixinException {
-		MessageKey messageKey = defineMessageKey(cruxMessage.getMsgType(),
+		WeixinMessageKey messageKey = defineMessageKey(cruxMessage.getMsgType(),
 				cruxMessage.getEventType(), cruxMessage.getAccountType());
 		Class<? extends WeixinMessage> targetClass = messageMatcher
 				.match(messageKey);
@@ -159,9 +159,9 @@ public class WeixinMessageDispatcher {
 	 *            账号类型
 	 * @return
 	 */
-	protected MessageKey defineMessageKey(String messageType, String eventType,
+	protected WeixinMessageKey defineMessageKey(String messageType, String eventType,
 			AccountType accountType) {
-		return new MessageKey(messageType, eventType, accountType);
+		return new WeixinMessageKey(messageType, eventType, accountType);
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class WeixinMessageDispatcher {
 	 */
 	protected MessageHandlerExecutor getHandlerExecutor(
 			ChannelHandlerContext context, WeixinRequest request,
-			MessageKey messageKey, Object message, Set<String> nodeNames)
+			WeixinMessageKey messageKey, Object message, Set<String> nodeNames)
 			throws WeixinException {
 		WeixinMessageHandler messageHandler = null;
 		WeixinMessageHandler[] messageHandlers = getMessageHandlers();
@@ -447,7 +447,7 @@ public class WeixinMessageDispatcher {
 		this.beanFactory = beanFactory;
 	}
 
-	public void registMessageClass(MessageKey messageKey,
+	public void registMessageClass(WeixinMessageKey messageKey,
 			Class<? extends WeixinMessage> messageClass) {
 		messageMatcher.regist(messageKey, messageClass);
 	}

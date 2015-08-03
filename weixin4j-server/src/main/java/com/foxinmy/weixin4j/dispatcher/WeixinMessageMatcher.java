@@ -19,7 +19,7 @@ public interface WeixinMessageMatcher {
 	 *            消息key
 	 * @return 消息类型
 	 */
-	public Class<? extends WeixinMessage> match(MessageKey messageKey);
+	public Class<? extends WeixinMessage> match(WeixinMessageKey messageKey);
 
 	/**
 	 * 注册消息类型「程序没有及时更新而微信又产生了新的消息类型」
@@ -29,6 +29,6 @@ public interface WeixinMessageMatcher {
 	 * @param messageClass
 	 *            消息类型
 	 */
-	public void regist(MessageKey messageKey,
+	public void regist(WeixinMessageKey messageKey,
 			Class<? extends WeixinMessage> messageClass);
 }

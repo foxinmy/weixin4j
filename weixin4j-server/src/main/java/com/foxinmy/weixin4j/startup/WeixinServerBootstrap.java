@@ -18,7 +18,7 @@ import java.util.Map;
 
 import com.foxinmy.weixin4j.dispatcher.BeanFactory;
 import com.foxinmy.weixin4j.dispatcher.DefaultMessageMatcher;
-import com.foxinmy.weixin4j.dispatcher.MessageKey;
+import com.foxinmy.weixin4j.dispatcher.WeixinMessageKey;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -310,7 +310,7 @@ public final class WeixinServerBootstrap {
 	 *            消息类
 	 * @return
 	 */
-	public WeixinServerBootstrap registMessageClass(MessageKey messageKey,
+	public WeixinServerBootstrap registMessageClass(WeixinMessageKey messageKey,
 			Class<? extends WeixinMessage> messageClass) {
 		messageDispatcher.registMessageClass(messageKey, messageClass);
 		return this;

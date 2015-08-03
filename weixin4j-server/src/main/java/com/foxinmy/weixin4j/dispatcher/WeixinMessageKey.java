@@ -8,13 +8,13 @@ import com.foxinmy.weixin4j.util.StringUtil;
 /**
  * 微信消息key
  * 
- * @className MessageKey
+ * @className WeixinMessageKey
  * @author jy
  * @date 2015年6月9日
  * @since JDK 1.7
  * @see
  */
-public class MessageKey implements Serializable {
+public class WeixinMessageKey implements Serializable {
 
 	private static final long serialVersionUID = -691330687850400289L;
 
@@ -22,7 +22,7 @@ public class MessageKey implements Serializable {
 	private String eventType;
 	private AccountType accountType;
 
-	public MessageKey(String messageType, String eventType,
+	public WeixinMessageKey(String messageType, String eventType,
 			AccountType accountType) {
 		this.messageType = messageType;
 		this.eventType = eventType;
@@ -64,7 +64,7 @@ public class MessageKey implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MessageKey other = (MessageKey) obj;
+		WeixinMessageKey other = (WeixinMessageKey) obj;
 		if (accountType != other.accountType)
 			return false;
 		if (eventType == null) {
@@ -82,7 +82,7 @@ public class MessageKey implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MessageKey [messageType=" + messageType + ", eventType="
+		return "WeixinMessageKey [messageType=" + messageType + ", eventType="
 				+ eventType + ", accountType=" + accountType + "]";
 	}
 }
