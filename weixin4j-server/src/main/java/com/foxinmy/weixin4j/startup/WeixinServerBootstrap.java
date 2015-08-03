@@ -18,8 +18,8 @@ import java.util.Map;
 
 import com.foxinmy.weixin4j.dispatcher.BeanFactory;
 import com.foxinmy.weixin4j.dispatcher.DefaultMessageMatcher;
-import com.foxinmy.weixin4j.dispatcher.WeixinMessageKey;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
+import com.foxinmy.weixin4j.dispatcher.WeixinMessageKey;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
@@ -310,17 +310,18 @@ public final class WeixinServerBootstrap {
 	 *            消息类
 	 * @return
 	 */
-	public WeixinServerBootstrap registMessageClass(WeixinMessageKey messageKey,
+	public WeixinServerBootstrap registMessageClass(
+			WeixinMessageKey messageKey,
 			Class<? extends WeixinMessage> messageClass) {
 		messageDispatcher.registMessageClass(messageKey, messageClass);
 		return this;
 	}
 
 	/**
-	 * 开启debug:未匹配到MessageHanlder输出消息信息
+	 * 打开总是响应开关,如未匹配到MessageHandler时回复空白消息
 	 */
-	public WeixinServerBootstrap openDebugMode() {
-		messageDispatcher.openDebugMode();
+	public WeixinServerBootstrap openAlwaysResponse() {
+		messageDispatcher.openAlwaysResponse();
 		return this;
 	}
 }

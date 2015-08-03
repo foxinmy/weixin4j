@@ -30,7 +30,7 @@ import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
-import com.foxinmy.weixin4j.response.TextResponse;
+import com.foxinmy.weixin4j.response.BlankResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ClassUtil;
@@ -90,11 +90,10 @@ public class WeixinMessageDispatcher {
 	 * 消息转换
 	 */
 	private Map<Class<? extends WeixinMessage>, Unmarshaller> messageUnmarshaller;
-
 	/**
-	 * 开启debug:未匹配到MessageHanlder输出消息信息
+	 * 是否总是响应请求,如未匹配到MessageHandler时回复空白消息
 	 */
-	private boolean isDebug;
+	private boolean alwaysResponse;
 
 	public WeixinMessageDispatcher() {
 		this(new DefaultMessageMatcher());
@@ -119,8 +118,9 @@ public class WeixinMessageDispatcher {
 	public void doDispatch(final ChannelHandlerContext context,
 			final WeixinRequest request, final CruxMessageHandler cruxMessage)
 			throws WeixinException {
-		WeixinMessageKey messageKey = defineMessageKey(cruxMessage.getMsgType(),
-				cruxMessage.getEventType(), cruxMessage.getAccountType());
+		WeixinMessageKey messageKey = defineMessageKey(
+				cruxMessage.getMsgType(), cruxMessage.getEventType(),
+				cruxMessage.getAccountType());
 		Class<? extends WeixinMessage> targetClass = messageMatcher
 				.match(messageKey);
 		Object message = messageRead(request.getOriginalContent(), targetClass);
@@ -159,8 +159,8 @@ public class WeixinMessageDispatcher {
 	 *            账号类型
 	 * @return
 	 */
-	protected WeixinMessageKey defineMessageKey(String messageType, String eventType,
-			AccountType accountType) {
+	protected WeixinMessageKey defineMessageKey(String messageType,
+			String eventType, AccountType accountType) {
 		return new WeixinMessageKey(messageType, eventType, accountType);
 	}
 
@@ -176,17 +176,8 @@ public class WeixinMessageDispatcher {
 	 */
 	protected void noHandlerFound(ChannelHandlerContext context,
 			WeixinRequest request, Object message) {
-		if (isDebug) {
-			if (message == null) {
-				context.writeAndFlush(
-						new TextResponse(request.getOriginalContent()
-								.replaceAll("\\!\\[CDATA\\[", "")
-								.replaceAll("\\]\\]", ""))).addListener(
-						ChannelFutureListener.CLOSE);
-			} else {
-				context.writeAndFlush(new TextResponse(message.toString()))
-						.addListener(ChannelFutureListener.CLOSE);
-			}
+		if (alwaysResponse) {
+			context.write(BlankResponse.global);
 		} else {
 			context.writeAndFlush(
 					HttpUtil.createHttpResponse(null, NOT_FOUND, null))
@@ -456,7 +447,10 @@ public class WeixinMessageDispatcher {
 		return this.messageMatcher;
 	}
 
-	public void openDebugMode() {
-		isDebug = true;
+	/**
+	 * 打开总是响应开关,如未匹配到MessageHandler时回复空白消息
+	 */
+	public void openAlwaysResponse() {
+		this.alwaysResponse = true;
 	}
 }
