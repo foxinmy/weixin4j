@@ -4,7 +4,7 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpHeaders.Names.DATE;
-import static io.netty.handler.codec.http.HttpHeaders.Names.SERVER;
+import static io.netty.handler.codec.http.HttpHeaders.Names.USER_AGENT;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import io.netty.buffer.Unpooled;
@@ -16,6 +16,8 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.Date;
 
+import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
+
 /**
  * HTTP工具类
  * 
@@ -26,6 +28,9 @@ import java.util.Date;
  * @see
  */
 public class HttpUtil {
+
+	private static String SERVER = "netty4";
+	private static String WEIXIN4J = "weixin4j-server";
 
 	public static HttpResponse createHttpResponse(String content,
 			HttpResponseStatus status, String contentType) {
@@ -48,7 +53,11 @@ public class HttpUtil {
 				content.getBytes(Consts.UTF_8).length);
 		httpResponse.headers().set(CONNECTION, Values.KEEP_ALIVE);
 		httpResponse.headers().set(DATE, new Date());
-		httpResponse.headers().set(SERVER, "netty4");
+		httpResponse.headers().set(SERVER, SERVER);
+		httpResponse.headers()
+				.set(USER_AGENT,
+						String.format("%s/%s", WEIXIN4J,
+								WeixinServerBootstrap.VERSION));
 		return httpResponse;
 	}
 }

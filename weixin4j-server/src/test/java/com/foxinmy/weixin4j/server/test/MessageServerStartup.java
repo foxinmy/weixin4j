@@ -5,7 +5,6 @@ import io.netty.channel.ChannelHandlerContext;
 import java.util.Set;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.handler.BlankMessageHandler;
 import com.foxinmy.weixin4j.handler.DebugMessageHandler;
 import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
@@ -113,7 +112,7 @@ public class MessageServerStartup {
 			}
 		};
 		new WeixinServerBootstrap(openid, token).addInterceptor(interceptor)
-				.addHandler(BlankMessageHandler.global).startup();
+				.openAlwaysResponse().startup();
 	}
 
 	public static void main(String[] args) throws Exception {

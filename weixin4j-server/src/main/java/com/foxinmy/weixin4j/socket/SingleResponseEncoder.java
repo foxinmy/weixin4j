@@ -33,7 +33,7 @@ public class SingleResponseEncoder extends
 			List<Object> out) throws WeixinException {
 		String content = response.toContent();
 		ctx.writeAndFlush(HttpUtil.createHttpResponse(content, OK,
-				Consts.CONTENTTYPE$APPLICATION_XML));
+				Consts.CONTENTTYPE$TEXT_PLAIN));
 		logger.info("encode single response:{}", content);
 	}
 }

@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.socket;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.FORBIDDEN;
 import static io.netty.handler.codec.http.HttpResponseStatus.METHOD_NOT_ALLOWED;
-import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -13,6 +12,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
+import com.foxinmy.weixin4j.response.SingleContentResponse;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
@@ -59,10 +59,7 @@ public class WeixinRequestHandler extends
 			if (MessageUtil.signature(aesToken.getToken(),
 					request.getTimeStamp(), request.getNonce()).equals(
 					request.getSignature())) {
-				ctx.writeAndFlush(
-						HttpUtil.createHttpResponse(request.getEchoStr(), OK,
-								Consts.CONTENTTYPE$TEXT_PLAIN)).addListener(
-						ChannelFutureListener.CLOSE);
+				ctx.write(new SingleContentResponse(request.getEchoStr()));
 				return;
 			}
 			ctx.writeAndFlush(
@@ -98,9 +95,9 @@ public class WeixinRequestHandler extends
 		}
 		CruxMessageHandler cruxMessage = CruxMessageHandler.parser(request
 				.getOriginalContent());
-		WeixinMessageTransfer messageTransfer = new WeixinMessageTransfer(aesToken,
-				request.getEncryptType(), cruxMessage.getToUserName(),
-				cruxMessage.getFromUserName());
+		WeixinMessageTransfer messageTransfer = new WeixinMessageTransfer(
+				aesToken, request.getEncryptType(),
+				cruxMessage.getToUserName(), cruxMessage.getFromUserName());
 		ctx.channel().attr(Consts.MESSAGE_TRANSFER_KEY).set(messageTransfer);
 		messageDispatcher.doDispatch(ctx, request, cruxMessage);
 	}

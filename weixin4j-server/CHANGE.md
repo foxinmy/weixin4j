@@ -70,4 +70,6 @@
   
 * 2015-08-03
 
-  新增base64解编码类(来自apache)
+  + 新增base64解编码类(来自apache)
+  
+  + 删除`BlankMessageHandler`类,新增`SingleContentResponse`类

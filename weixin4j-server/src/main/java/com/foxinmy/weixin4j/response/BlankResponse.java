@@ -9,21 +9,11 @@ package com.foxinmy.weixin4j.response;
  * @since JDK 1.7
  * @see
  */
-public class BlankResponse implements WeixinResponse {
+public class BlankResponse extends SingleContentResponse {
 
 	public static final BlankResponse global = new BlankResponse();
 
-	private BlankResponse(){
-		
-	}
-	
-	@Override
-	public String getMsgType() {
-		return "blank";
-	}
-
-	@Override
-	public String toContent() {
-		return "success";
+	private BlankResponse() {
+		super("success");
 	}
 }
