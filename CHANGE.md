@@ -418,3 +418,5 @@
 * 2015-08-03
 
   + **weixin4j-server**: 新增base64解编码类(来自apache)
+  
+  + 在WeixinProxy类新增VERSION字段

@@ -92,4 +92,6 @@ public class WeixinSuiteProxy {
 	public SuiteApi api(String suiteId) {
 		return this.suiteMap.get(suiteId);
 	}
+	
+	public final static String VERSION = "1.5.2";
 }

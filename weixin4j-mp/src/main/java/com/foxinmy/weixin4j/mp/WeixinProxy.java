@@ -1312,4 +1312,6 @@ public class WeixinProxy {
 			throws WeixinException {
 		return dataApi.datacube(datacubeType, date);
 	}
+	
+	public final static String VERSION = "1.5.2";
 }

@@ -1040,4 +1040,6 @@ public class WeixinProxy {
 	public String openid2userid(String openid) throws WeixinException {
 		return userApi.openid2userid(openid);
 	}
+	
+	public final static String VERSION = "1.5.2";
 }
