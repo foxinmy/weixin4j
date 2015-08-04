@@ -4,7 +4,7 @@ import java.util.Set;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
-import com.foxinmy.weixin4j.response.WeixinResponse;
+import com.foxinmy.weixin4j.response.SingleResponse;
 
 /**
  * 微信消息处理器
@@ -42,6 +42,6 @@ public interface WeixinMessageHandler {
 	 *            节点名称集合
 	 * @return 回复内容
 	 */
-	public WeixinResponse doHandle(WeixinRequest request, Object message,
+	public SingleResponse doHandle(WeixinRequest request, Object message,
 			Set<String> nodeNames) throws WeixinException;
 }

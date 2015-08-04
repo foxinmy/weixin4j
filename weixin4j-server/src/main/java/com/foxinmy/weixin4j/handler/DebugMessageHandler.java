@@ -33,9 +33,9 @@ public class DebugMessageHandler implements WeixinMessageHandler {
 	@Override
 	public WeixinResponse doHandle(WeixinRequest request, Object message,
 			Set<String> nodeNames) throws WeixinException {
-		String content = message == null ? content = request
-				.getOriginalContent().replaceAll("\\!\\[CDATA\\[", "")
-				.replaceAll("\\]\\]", "") : message.toString();
+		String content = message == null ? request.getOriginalContent()
+				.replaceAll("\\!\\[CDATA\\[", "").replaceAll("\\]\\]", "")
+				: message.toString();
 		return new TextResponse(content);
 	}
 }

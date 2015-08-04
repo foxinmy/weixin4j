@@ -31,6 +31,7 @@ import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.BlankResponse;
+import com.foxinmy.weixin4j.response.SingleResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ClassUtil;
@@ -137,9 +138,12 @@ public class WeixinMessageDispatcher {
 		}
 		WeixinException dispatchException = null;
 		try {
-			WeixinResponse response = handlerExecutor.getMessageHandler()
+			SingleResponse response = handlerExecutor.getMessageHandler()
 					.doHandle(request, message, cruxMessage.getNodeNames());
-			handlerExecutor.applyPostHandle(request, response, message);
+			if (response instanceof WeixinResponse) {
+				handlerExecutor.applyPostHandle(request,
+						(WeixinResponse) response, message);
+			}
 			context.write(response);
 		} catch (WeixinException e) {
 			dispatchException = e;

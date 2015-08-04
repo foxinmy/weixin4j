@@ -298,6 +298,42 @@
 		<text>news消息不支持指定为高保密消息</text>
 	</error>
 	<error>
+		<code>40077</code>
+		<text>不合法的预授权码</text>
+	</error>
+	<error>
+		<code>40078</code>
+		<text>不合法的临时授权码</text>
+	</error>
+	<error>
+		<code>40079</code>
+		<text>不合法的授权信息</text>
+	</error>
+	<error>
+		<code>40080</code>
+		<text>不合法的suitesecret</text>
+	</error>
+	<error>
+		<code>40082</code>
+		<text>不合法的suitetoken</text>
+	</error>
+	<error>
+		<code>40083</code>
+		<text>不合法的suiteid</text>
+	</error>
+	<error>
+		<code>40084</code>
+		<text>不合法的永久授权码</text>
+	</error>
+	<error>
+		<code>40085</code>
+		<text>不合法的suiteticket</text>
+	</error>
+	<error>
+		<code>40086</code>
+		<text>不合法的第三方应用appid</text>
+	</error>
+	<error>
 		<code>40117</code>
 		<text>分组名字不合法</text>
 	</error>
