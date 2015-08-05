@@ -2,8 +2,6 @@ package com.foxinmy.weixin4j.interceptor;
 
 import io.netty.channel.ChannelHandlerContext;
 
-import java.util.Set;
-
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.request.WeixinRequest;
@@ -29,15 +27,13 @@ public interface WeixinMessageInterceptor {
 	 *            微信请求
 	 * @param message
 	 *            微信消息
-	 * @param nodeNames
-	 *            节点名称集合
 	 * @param handler
 	 *            消息处理器
 	 * @return 返回true执行下一个拦截器
 	 * @throws WeixinException
 	 */
 	boolean preHandle(ChannelHandlerContext context, WeixinRequest request,
-			Object message, Set<String> nodeNames, WeixinMessageHandler handler)
+			Object message, WeixinMessageHandler handler)
 			throws WeixinException;
 
 	/**
@@ -51,14 +47,12 @@ public interface WeixinMessageInterceptor {
 	 *            微信响应
 	 * @param message
 	 *            微信消息
-	 * @param nodeNames
-	 *            节点名称集合
 	 * @param handler
 	 *            消息处理器
 	 * @throws WeixinException
 	 */
 	void postHandle(ChannelHandlerContext context, WeixinRequest request,
-			WeixinResponse response, Object message, Set<String> nodeNames,
+			WeixinResponse response, Object message,
 			WeixinMessageHandler handler) throws WeixinException;
 
 	/**
@@ -70,8 +64,6 @@ public interface WeixinMessageInterceptor {
 	 *            微信请求
 	 * @param message
 	 *            微信消息
-	 * @param nodeNames
-	 *            节点名称集合
 	 * @param handler
 	 *            消息处理器
 	 * @param exception
@@ -79,7 +71,7 @@ public interface WeixinMessageInterceptor {
 	 * @throws WeixinException
 	 */
 	void afterCompletion(ChannelHandlerContext context, WeixinRequest request,
-			Object message, Set<String> nodeNames,
-			WeixinMessageHandler handler, WeixinException exception)
+			WeixinResponse response, Object message,
+			WeixinMessageHandler handler, Exception exception)
 			throws WeixinException;
 }

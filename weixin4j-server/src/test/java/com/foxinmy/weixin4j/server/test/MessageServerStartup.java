@@ -2,8 +2,6 @@ package com.foxinmy.weixin4j.server.test;
 
 import io.netty.channel.ChannelHandlerContext;
 
-import java.util.Set;
-
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.DebugMessageHandler;
 import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
@@ -89,8 +87,7 @@ public class MessageServerStartup {
 			@Override
 			public boolean preHandle(ChannelHandlerContext context,
 					WeixinRequest request, Object message,
-					Set<String> nodeNames, WeixinMessageHandler handler)
-					throws WeixinException {
+					WeixinMessageHandler handler) throws WeixinException {
 				context.writeAndFlush(new TextResponse("所有消息被拦截了！"));
 				return false;
 			}
@@ -98,16 +95,16 @@ public class MessageServerStartup {
 			@Override
 			public void postHandle(ChannelHandlerContext context,
 					WeixinRequest request, WeixinResponse response,
-					Object message, Set<String> nodeNames,
-					WeixinMessageHandler handler) throws WeixinException {
+					Object message, WeixinMessageHandler handler)
+					throws WeixinException {
 				System.err.println("preHandle返回为true,执行handler后");
 			}
 
 			@Override
 			public void afterCompletion(ChannelHandlerContext context,
-					WeixinRequest request, Object message,
-					Set<String> nodeNames, WeixinMessageHandler handler,
-					WeixinException exception) throws WeixinException {
+					WeixinRequest request, WeixinResponse response,
+					Object message, WeixinMessageHandler handler,
+					Exception exception) throws WeixinException {
 				System.err.println("请求处理完毕");
 			}
 		};

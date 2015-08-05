@@ -31,7 +31,6 @@ import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.BlankResponse;
-import com.foxinmy.weixin4j.response.SingleResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ClassUtil;
@@ -136,20 +135,18 @@ public class WeixinMessageDispatcher {
 		if (!handlerExecutor.applyPreHandle(request, message)) {
 			return;
 		}
-		WeixinException dispatchException = null;
+		Exception exception = null;
+		WeixinResponse response = null;
 		try {
-			SingleResponse response = handlerExecutor.getMessageHandler()
-					.doHandle(request, message, cruxMessage.getNodeNames());
-			if (response instanceof WeixinResponse) {
-				handlerExecutor.applyPostHandle(request,
-						(WeixinResponse) response, message);
-			}
+			response = handlerExecutor.getMessageHandler().doHandle(request,
+					message, cruxMessage.getNodeNames());
+			handlerExecutor.applyPostHandle(request, response, message);
 			context.write(response);
-		} catch (WeixinException e) {
-			dispatchException = e;
+		} catch (Exception e) {
+			exception = e;
 		}
-		handlerExecutor.triggerAfterCompletion(request, message,
-				dispatchException);
+		handlerExecutor.triggerAfterCompletion(request, response, message,
+				exception);
 	}
 
 	/**
@@ -202,7 +199,7 @@ public class WeixinMessageDispatcher {
 	 * @param nodeNames
 	 *            节点名称集合
 	 * @return MessageHandlerExecutor
-	 * @see com.foxinmy.weixin4j.dispatcher.MessageHandlerExecutor
+	 * @see MessageHandlerExecutor
 	 * @throws WeixinException
 	 */
 	protected MessageHandlerExecutor getHandlerExecutor(
@@ -234,7 +231,7 @@ public class WeixinMessageDispatcher {
 			}
 		}
 		return new MessageHandlerExecutor(context, messageHandler,
-				getMessageInterceptors(), nodeNames);
+				getMessageInterceptors());
 	}
 
 	/**
@@ -350,16 +347,16 @@ public class WeixinMessageDispatcher {
 	 * @return 消息对象
 	 * @throws WeixinException
 	 */
-	protected Object messageRead(String message,
-			Class<? extends WeixinMessage> clazz) throws WeixinException {
+	protected <M extends WeixinMessage> M messageRead(String message,
+			Class<M> clazz) throws WeixinException {
 		if (clazz == null) {
 			return null;
 		}
 		try {
 			Source source = new StreamSource(new ByteArrayInputStream(
 					message.getBytes(Consts.UTF_8)));
-			JAXBElement<? extends WeixinMessage> jaxbElement = getUnmarshaller(
-					clazz).unmarshal(source, clazz);
+			JAXBElement<M> jaxbElement = getUnmarshaller(clazz).unmarshal(
+					source, clazz);
 			return jaxbElement.getValue();
 		} catch (JAXBException e) {
 			throw new WeixinException(e);

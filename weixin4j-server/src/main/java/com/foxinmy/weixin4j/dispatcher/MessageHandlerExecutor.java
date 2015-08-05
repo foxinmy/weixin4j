@@ -4,8 +4,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
-import java.util.Set;
-
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
@@ -38,19 +36,16 @@ public class MessageHandlerExecutor {
 	/**
 	 * 节点名称集合
 	 */
-	private final Set<String> nodeNames;
-
 	private final ChannelHandlerContext context;
+
 	private int interceptorIndex = -1;
 
 	public MessageHandlerExecutor(ChannelHandlerContext context,
 			WeixinMessageHandler messageHandler,
-			WeixinMessageInterceptor[] messageInterceptors,
-			Set<String> nodeNames) {
+			WeixinMessageInterceptor[] messageInterceptors) {
 		this.context = context;
 		this.messageHandler = messageHandler;
 		this.messageInterceptors = messageInterceptors;
-		this.nodeNames = nodeNames;
 	}
 
 	public WeixinMessageHandler getMessageHandler() {
@@ -73,8 +68,8 @@ public class MessageHandlerExecutor {
 			for (int i = 0; i < messageInterceptors.length; i++) {
 				WeixinMessageInterceptor interceptor = messageInterceptors[i];
 				if (!interceptor.preHandle(context, request, message,
-						nodeNames, messageHandler)) {
-					triggerAfterCompletion(request, message, null);
+						messageHandler)) {
+					triggerAfterCompletion(request, null, message, null);
 					return false;
 				}
 				this.interceptorIndex = i;
@@ -102,7 +97,7 @@ public class MessageHandlerExecutor {
 		for (int i = messageInterceptors.length - 1; i >= 0; i--) {
 			WeixinMessageInterceptor interceptor = messageInterceptors[i];
 			interceptor.postHandle(context, request, response, message,
-					nodeNames, messageHandler);
+					messageHandler);
 		}
 	}
 
@@ -111,22 +106,25 @@ public class MessageHandlerExecutor {
 	 * 
 	 * @param request
 	 *            微信请求
+	 * @param response
+	 *            微信响应 可能为空
 	 * @param message
 	 *            微信消息
 	 * @param exception
 	 *            处理时可能的异常
 	 * @throws WeixinException
 	 */
-	public void triggerAfterCompletion(WeixinRequest request, Object message,
-			WeixinException exception) throws WeixinException {
+	public void triggerAfterCompletion(WeixinRequest request,
+			WeixinResponse response, Object message, Exception exception)
+			throws WeixinException {
 		if (messageInterceptors == null) {
 			return;
 		}
 		for (int i = this.interceptorIndex; i >= 0; i--) {
 			WeixinMessageInterceptor interceptor = messageInterceptors[i];
 			try {
-				interceptor.afterCompletion(context, request, message,
-						nodeNames, messageHandler, exception);
+				interceptor.afterCompletion(context, request, response,
+						message, messageHandler, exception);
 			} catch (WeixinException e) {
 				logger.error(
 						"MessageInterceptor.afterCompletion threw exception", e);

@@ -12,7 +12,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
-import com.foxinmy.weixin4j.response.SingleContentResponse;
+import com.foxinmy.weixin4j.response.SingleResponse;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
@@ -59,7 +59,7 @@ public class WeixinRequestHandler extends
 			if (MessageUtil.signature(aesToken.getToken(),
 					request.getTimeStamp(), request.getNonce()).equals(
 					request.getSignature())) {
-				ctx.write(new SingleContentResponse(request.getEchoStr()));
+				ctx.write(new SingleResponse(request.getEchoStr()));
 				return;
 			}
 			ctx.writeAndFlush(

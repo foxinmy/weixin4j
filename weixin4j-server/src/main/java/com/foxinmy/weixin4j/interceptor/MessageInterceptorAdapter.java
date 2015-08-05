@@ -2,8 +2,6 @@ package com.foxinmy.weixin4j.interceptor;
 
 import io.netty.channel.ChannelHandlerContext;
 
-import java.util.Set;
-
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.request.WeixinRequest;
@@ -23,22 +21,21 @@ public abstract class MessageInterceptorAdapter implements
 
 	@Override
 	public boolean preHandle(ChannelHandlerContext context,
-			WeixinRequest request, Object message, Set<String> nodeNames,
-			WeixinMessageHandler handler) throws WeixinException {
+			WeixinRequest request, Object message, WeixinMessageHandler handler)
+			throws WeixinException {
 		return true;
 	}
 
 	@Override
 	public void postHandle(ChannelHandlerContext context,
 			WeixinRequest request, WeixinResponse response, Object message,
-			Set<String> nodeNames, WeixinMessageHandler handler)
-			throws WeixinException {
+			WeixinMessageHandler handler) throws WeixinException {
 	}
 
 	@Override
 	public void afterCompletion(ChannelHandlerContext context,
-			WeixinRequest request, Object message, Set<String> nodeNames,
-			WeixinMessageHandler handler, WeixinException exception)
+			WeixinRequest request, WeixinResponse response, Object message,
+			WeixinMessageHandler handler, Exception exception)
 			throws WeixinException {
 	}
 }

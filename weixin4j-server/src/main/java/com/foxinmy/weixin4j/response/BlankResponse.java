@@ -9,7 +9,7 @@ package com.foxinmy.weixin4j.response;
  * @since JDK 1.7
  * @see
  */
-public class BlankResponse extends SingleContentResponse {
+public class BlankResponse extends SingleResponse {
 
 	public static final BlankResponse global = new BlankResponse();
 
