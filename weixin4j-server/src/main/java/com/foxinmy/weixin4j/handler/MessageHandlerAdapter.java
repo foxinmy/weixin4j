@@ -6,9 +6,10 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
+import com.foxinmy.weixin4j.util.ClassUtil;
 
 /**
- * 消息处理的适配,主要对微信消息进行泛型转换
+ * 消息适配器
  * 
  * @className MessageHandlerAdapter
  * @author jy
@@ -23,7 +24,9 @@ public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements
 	@Override
 	public boolean canHandle(WeixinRequest request, Object message,
 			Set<String> nodeNames) throws WeixinException {
-		return canHandle0(request, (M) message);
+		return message != null
+				&& message.getClass() == ClassUtil.getGenericType(this)
+				&& canHandle0(request, (M) message);
 	}
 
 	/**

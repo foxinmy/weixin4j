@@ -7,6 +7,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
@@ -157,6 +159,23 @@ public final class ClassUtil {
 				;// ignore
 			}
 		}
+	}
+
+	/**
+	 * 获得泛型类型
+	 * 
+	 * @param object
+	 * @return
+	 */
+	public static Class<?> getGenericType(Object object) {
+		Class<?> clazz = null;
+		Type type = object.getClass().getGenericSuperclass();
+		if (type instanceof ParameterizedType) {
+			ParameterizedType ptype = ((ParameterizedType) type);
+			Type[] args = ptype.getActualTypeArguments();
+			clazz = (Class<?>) args[0];
+		}
+		return clazz;
 	}
 
 	public static void main(String[] args) {

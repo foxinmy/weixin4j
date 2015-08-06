@@ -40,7 +40,7 @@ weixin4j
 	    <artifactId>weixin4j-qy</artifactId>
 	    <version>1.5.1</version>
 	</dependency>
-微信被动消息服务器(1.0.3,2015-07-04 released)
+微信回调消息服务器(1.0.3,2015-07-04 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
@@ -72,8 +72,6 @@ weixin4j
   
 接下来
 ------
-* 企业号消息服务
-
 * 公众号第三方服务应用
 
 * 硬件设备 & 摇一摇周边

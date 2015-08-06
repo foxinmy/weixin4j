@@ -420,3 +420,7 @@
   + **weixin4j-server**: 新增base64解编码类(来自apache)
   
   + 在WeixinProxy类新增VERSION字段
+  
+* 2015-08-06
+
+  + **weixin4j-server**: 调整`LocationEventMessage`类中的经纬度字段类型为double

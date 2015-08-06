@@ -9,8 +9,6 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +23,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.request.WeixinMessage;
@@ -210,28 +207,15 @@ public class WeixinMessageDispatcher {
 			ChannelHandlerContext context, WeixinRequest request,
 			WeixinMessageKey messageKey, Object message, Set<String> nodeNames)
 			throws WeixinException {
-		WeixinMessageHandler messageHandler = null;
 		WeixinMessageHandler[] messageHandlers = getMessageHandlers();
 		if (messageHandlers == null) {
 			return null;
 		}
+		WeixinMessageHandler messageHandler = null;
 		for (WeixinMessageHandler handler : messageHandlers) {
-			if (handler instanceof MessageHandlerAdapter) {
-				Class<?> genericType = genericTypeRead(handler);
-				if (genericType == message.getClass()
-						&& handler.canHandle(request, message, nodeNames)) {
-					messageHandler = handler;
-					break;
-				}
-			}
-		}
-		if (messageHandler == null) {
-			for (WeixinMessageHandler handler : messageHandlers) {
-				if (!(handler instanceof MessageHandlerAdapter)
-						&& handler.canHandle(request, message, nodeNames)) {
-					messageHandler = handler;
-					break;
-				}
+			if (handler.canHandle(request, message, nodeNames)) {
+				messageHandler = handler;
+				break;
 			}
 		}
 		return new MessageHandlerExecutor(context, messageHandler,
@@ -388,23 +372,6 @@ public class WeixinMessageDispatcher {
 			}
 		}
 		return unmarshaller;
-	}
-
-	/**
-	 * 获得泛型类型
-	 * 
-	 * @param object
-	 * @return
-	 */
-	private Class<?> genericTypeRead(Object object) {
-		Class<?> clazz = null;
-		Type type = object.getClass().getGenericSuperclass();
-		if (type instanceof ParameterizedType) {
-			ParameterizedType ptype = ((ParameterizedType) type);
-			Type[] args = ptype.getActualTypeArguments();
-			clazz = (Class<?>) args[0];
-		}
-		return clazz;
 	}
 
 	public void setMessageHandlerList(
