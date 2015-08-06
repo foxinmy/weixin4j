@@ -73,3 +73,7 @@
   + 新增base64解编码类(来自apache)
   
   + 删除`BlankMessageHandler`类,新增`SingleContentResponse`类
+  
+* 2015-08-06
+
+  + 调整`LocationEventMessage`类中的经纬度字段类型为double

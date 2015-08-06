@@ -140,6 +140,10 @@ public class WeixinMessageDispatcher {
 		try {
 			response = handlerExecutor.getMessageHandler().doHandle(request,
 					message, cruxMessage.getNodeNames());
+			// fixed..
+			if (response == null) {
+				response = BlankResponse.global;
+			}
 			handlerExecutor.applyPostHandle(request, response, message);
 			context.write(response);
 		} catch (Exception e) {

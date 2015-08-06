@@ -27,27 +27,27 @@ public class LocationEventMessage extends EventMessage {
 	 * 地理位置纬度
 	 */
 	@XmlElement(name="Latitude")
-	private String latitude;
+	private double latitude;
 	/**
 	 * 地理位置经度
 	 */
 	@XmlElement(name="Longitude")
-	private String longitude;
+	private double longitude;
 	/**
 	 * 地理位置精度
 	 */
 	@XmlElement(name="Precision")
-	private String precision;
+	private double precision;
 
-	public String getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public String getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
-	public String getPrecision() {
+	public double getPrecision() {
 		return precision;
 	}
 
