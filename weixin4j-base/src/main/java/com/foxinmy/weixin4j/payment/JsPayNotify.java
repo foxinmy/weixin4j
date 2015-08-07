@@ -25,42 +25,36 @@ public class JsPayNotify extends PayBaseInfo {
 	/**
 	 * 用户的openid
 	 */
+	@JSONField(name = "OpenId")
 	@XmlElement(name = "OpenId")
-	private String openid;
+	private String openId;
 	/**
 	 * 是否关注公众号
 	 */
+	@JSONField(name = "IsSubscribe")
 	@XmlElement(name = "IsSubscribe")
-	private int issubscribe;
+	private int isSubscribe;
 
 	public JsPayNotify() {
 
 	}
 
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
 	}
 
-	public void setOpenid(String openid) {
-		this.openid = openid;
+	public int getIsSubscribe() {
+		return isSubscribe;
 	}
 
-	public int getIssubscribe() {
-		return issubscribe;
-	}
-
-	public void setIssubscribe(int issubscribe) {
-		this.issubscribe = issubscribe;
-	}
-
-	@JSONField(serialize = false, deserialize = false)
-	public boolean getFormatIssubscribe() {
-		return issubscribe == 1;
+	@JSONField(serialize = false)
+	public boolean getFormatIsSubscribe() {
+		return isSubscribe == 1;
 	}
 
 	@Override
 	public String toString() {
-		return "openid=" + openid + ", issubscribe=" + getFormatIssubscribe()
+		return "openId=" + openId + ", isSubscribe=" + getFormatIsSubscribe()
 				+ ", " + super.toString();
 	}
 }

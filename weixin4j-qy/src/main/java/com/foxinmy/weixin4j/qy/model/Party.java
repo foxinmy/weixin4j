@@ -2,6 +2,8 @@ package com.foxinmy.weixin4j.qy.model;
 
 import java.io.Serializable;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 部门对象
  * 
@@ -26,62 +28,64 @@ public class Party implements Serializable {
 	/**
 	 * 父亲部门id。根部门id为1
 	 */
-	private int parentid;
+	@JSONField(name = "parentid")
+	private int parentId;
 	/**
 	 * 在父部门中的次序。从1开始，数字越大排序越靠后
 	 */
-	private int order;
+	private Integer order;
 
 	public Party() {
 
 	}
 
-	public Party(int id, String name) {
-		this(id, name, 0, 0);
+	public Party(String name) {
+		this.name = name;
 	}
 
-	public Party(int id, String name, int parentid, int order) {
+	public Party(int id, String name, int parentId) {
 		this.id = id;
 		this.name = name;
-		this.parentid = parentid;
-		this.order = order;
+		this.parentId = parentId;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
+	}
+
+	public int getParentId() {
+		return parentId;
+	}
+
+	public Integer getOrder() {
+		return order;
+	}
+
+	// ---------- setter 应该全部去掉
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public int getParentid() {
-		return parentid;
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
 	}
 
-	public void setParentid(int parentid) {
-		this.parentid = parentid;
-	}
-
-	public int getOrder() {
-		return order;
-	}
-
-	public void setOrder(int order) {
+	public void setOrder(Integer order) {
 		this.order = order;
 	}
 
 	@Override
 	public String toString() {
-		return "Party [id=" + id + ", name=" + name + ", parentid=" + parentid
+		return "Party [id=" + id + ", name=" + name + ", parentId=" + parentId
 				+ ", order=" + order + "]";
 	}
 }

@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.qy.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +24,8 @@ public class User implements Serializable {
 	/**
 	 * 必须 员工UserID。对应管理端的帐号，企业内必须唯一。长度为1~64个字符
 	 */
-	private String userid;
+	@JSONField(name = "userid")
+	private String userId;
 	/**
 	 * 必须 成员名称。长度为1~64个字符
 	 */
@@ -34,7 +34,7 @@ public class User implements Serializable {
 	 * 非必须 成员所属部门id列表。注意，每个部门的直属员工上限为1000个
 	 */
 	@JSONField(name = "department")
-	private List<Integer> partys;
+	private List<Integer> partyIds;
 	/**
 	 * 非必须 职位信息。长度为0~64个字符
 	 */
@@ -46,7 +46,7 @@ public class User implements Serializable {
 	/**
 	 * 非必须 性别。gender=0表示男，=1表示女。默认gender=0
 	 */
-	private int gender;
+	private Integer gender;
 	/**
 	 * 非必须 办公电话。长度为0~64个字符
 	 */
@@ -58,7 +58,8 @@ public class User implements Serializable {
 	/**
 	 * 非必须 微信号。企业内必须唯一
 	 */
-	private String weixinid;
+	@JSONField(name = "weixinid")
+	private String weixinId;
 	/**
 	 * 头像url。注：如果要获取小图将url最后的"/0"改成"/64"即可
 	 */
@@ -66,7 +67,7 @@ public class User implements Serializable {
 	/**
 	 * 关注状态: 1=已关注，2=已冻结，4=未关注
 	 */
-	private int status;
+	private Integer status;
 	/**
 	 * 启用/禁用成员。1表示启用成员，0表示禁用成员
 	 */
@@ -77,148 +78,84 @@ public class User implements Serializable {
 	private List<NameValue> extattr;
 
 	public User() {
-		this.extattr = new ArrayList<NameValue>();
 	}
 
-	public User(String userid, String name) {
-		this(userid, name, null, null, null);
-	}
-
-	/**
-	 * mobile/weixinid/email三者不能同时为空
-	 * 
-	 * @param userid
-	 *            用户ID
-	 * @param name
-	 *            用户昵称
-	 * @param tel
-	 *            号码
-	 * @param email
-	 *            邮箱
-	 * @param weixinid
-	 *            微信ID
-	 */
-	public User(String userid, String name, String tel, String email,
-			String weixinid) {
-		this.userid = userid;
+	public User(String userId, String name) {
+		this.userId = userId;
 		this.name = name;
-		this.tel = tel;
-		this.email = email;
-		this.weixinid = weixinid;
-		this.extattr = new ArrayList<NameValue>();
 	}
 
-	public String getUserid() {
-		return userid;
-	}
-
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public String getUserId() {
+		return userId;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public List<Integer> getPartyIds() {
+		return partyIds;
 	}
 
-	public List<Integer> getPartys() {
-		return partys;
-	}
-
-	public void setPartys(List<Integer> partys) {
-		this.partys = partys;
-	}
-
-	public void setPartys(Integer... partys) {
-		this.partys = Arrays.asList(partys);
+	public void setPartyIds(Integer... partyIds) {
+		this.partyIds = Arrays.asList(partyIds);
 	}
 
 	public String getPosition() {
 		return position;
 	}
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
-
 	public String getMobile() {
 		return mobile;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public int getGender() {
+	public Integer getGender() {
 		return gender;
 	}
 
 	@JSONField(serialize = false)
 	public Gender getFormatGender() {
-		if (gender == 0) {
-			return Gender.male;
-		} else if (gender == 1) {
-			return Gender.female;
-		} else {
-			return Gender.unknown;
+		if (gender != null) {
+			if (gender.intValue() == 0) {
+				return Gender.male;
+			} else if (gender.intValue() == 1) {
+				return Gender.female;
+			} else {
+				return Gender.unknown;
+			}
 		}
-	}
-
-	public void setGender(int gender) {
-		this.gender = gender;
+		return null;
 	}
 
 	public String getTel() {
 		return tel;
 	}
 
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String getWeixinId() {
+		return weixinId;
 	}
 
-	public String getWeixinid() {
-		return weixinid;
-	}
-
-	public void setWeixinid(String weixinid) {
-		this.weixinid = weixinid;
-	}
-
-	@JSONField(serialize = false)
 	public String getAvatar() {
 		return avatar;
 	}
 
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
-
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public UserStatus getFormatStatus() {
-		for (UserStatus userStatus : UserStatus.values()) {
-			if (userStatus.getVal() == status) {
-				return userStatus;
+		if (status != null) {
+			for (UserStatus userStatus : UserStatus.values()) {
+				if (userStatus.getVal() == status) {
+					return userStatus;
+				}
 			}
 		}
 		return null;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
@@ -226,16 +163,16 @@ public class User implements Serializable {
 		return enable;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
+	public void setEnable(boolean enable) {
+		this.enable = enable ? 1 : 0;
+	}
+
+	@JSONField(serialize = false)
 	public boolean getFormatEnable() {
 		if (enable != null) {
 			return enable.intValue() == 1;
 		}
 		return false;
-	}
-
-	public void setEnable(Integer enable) {
-		this.enable = enable;
 	}
 
 	public List<NameValue> getExtattr() {
@@ -251,20 +188,65 @@ public class User implements Serializable {
 	}
 
 	public void pushExattr(String name, String value) {
-		pushExattr(new NameValue(name, value));
+		extattr.add(new NameValue(name, value));
 	}
 
-	public void pushExattr(NameValue nameValue) {
-		extattr.add(nameValue);
+	// ---------- setter 应该全部去掉
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPartyIds(List<Integer> partyIds) {
+		this.partyIds = partyIds;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public void setGender(Integer gender) {
+		this.gender = gender;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setWeixinId(String weixinId) {
+		this.weixinId = weixinId;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public void setEnable(Integer enable) {
+		this.enable = enable;
 	}
 
 	@Override
 	public String toString() {
-		return "User [userid=" + userid + ", name=" + name + ", partys="
-				+ partys + ", position=" + position + ", mobile=" + mobile
-				+ ", gender=" + getFormatGender() + ", tel=" + tel + ", email="
-				+ email + ", weixinid=" + weixinid + ", avatar=" + avatar
-				+ ", status=" + getFormatStatus() + ", enable="
-				+ getFormatEnable() + ", extattr=" + extattr + "]";
+		return "User [userId=" + userId + ", name=" + name + ", partyIds="
+				+ partyIds + ", position=" + position + ", mobile=" + mobile
+				+ ", gender=" + gender + ", tel=" + tel + ", email=" + email
+				+ ", weixinId=" + weixinId + ", avatar=" + avatar + ", status="
+				+ status + ", enable=" + enable + ", extattr=" + extattr + "]";
 	}
 }

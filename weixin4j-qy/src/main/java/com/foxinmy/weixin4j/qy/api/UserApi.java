@@ -118,6 +118,8 @@ public class UserApi extends QyApi {
 		}
 		if (avatar != null) {
 			obj.put("avatar_mediaid", mediaApi.uploadMedia(0, avatar, null));
+		} else {
+			obj.put("avatar_mediaid", obj.remove("avatar"));
 		}
 		Token token = tokenHolder.getToken();
 		WeixinResponse response = weixinClient.post(

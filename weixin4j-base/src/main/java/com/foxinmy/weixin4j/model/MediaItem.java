@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.util.TypeUtils;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 
 /**
@@ -33,7 +34,7 @@ public class MediaItem implements Serializable {
 	 * 媒体素材最后更新时间
 	 */
 	@JSONField(name = "update_time")
-	private Date updateTime;
+	private String updateTime;
 	/**
 	 * 图文素材列表
 	 */
@@ -56,11 +57,16 @@ public class MediaItem implements Serializable {
 		this.name = name;
 	}
 
-	public Date getUpdateTime() {
+	public String getUpdateTime() {
 		return updateTime;
 	}
 
-	public void setUpdateTime(Date updateTime) {
+	@JSONField(serialize = false)
+	public Date getForamtUpdateTime() {
+		return updateTime != null ? TypeUtils.castToDate(updateTime) : null;
+	}
+
+	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
 	}
 

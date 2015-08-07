@@ -37,7 +37,7 @@ public class OUserInfo implements Serializable {
 	 * 授权方企业信息
 	 */
 	@JSONField(name = "corp_info")
-	private Corpinfo corpinfo;
+	private CorpInfo corpInfo;
 	/**
 	 * 该管理员在该提供商中能使用的应用列表
 	 */
@@ -53,44 +53,46 @@ public class OUserInfo implements Serializable {
 		return isSysAdmin;
 	}
 
-	public void setSysAdmin(boolean isSysAdmin) {
-		this.isSysAdmin = isSysAdmin;
-	}
-
 	public boolean isInnerAdmin() {
 		return isInnerAdmin;
-	}
-
-	public void setInnerAdmin(boolean isInnerAdmin) {
-		this.isInnerAdmin = isInnerAdmin;
 	}
 
 	public User getAdminInfo() {
 		return adminInfo;
 	}
 
-	public void setAdminInfo(User adminInfo) {
-		this.adminInfo = adminInfo;
-	}
-
-	public Corpinfo getCorpinfo() {
-		return corpinfo;
-	}
-
-	public void setCorpinfo(Corpinfo corpinfo) {
-		this.corpinfo = corpinfo;
+	public CorpInfo getCorpInfo() {
+		return corpInfo;
 	}
 
 	public List<AgentItem> getAgentInfo() {
 		return agentInfo;
 	}
 
-	public void setAgentInfo(List<AgentItem> agentInfo) {
-		this.agentInfo = agentInfo;
-	}
-
 	public AuthInfo getAuthInfo() {
 		return authInfo;
+	}
+
+	// ---------- setter 应该全部去掉
+
+	public void setSysAdmin(boolean isSysAdmin) {
+		this.isSysAdmin = isSysAdmin;
+	}
+
+	public void setInnerAdmin(boolean isInnerAdmin) {
+		this.isInnerAdmin = isInnerAdmin;
+	}
+
+	public void setAdminInfo(User adminInfo) {
+		this.adminInfo = adminInfo;
+	}
+
+	public void setCorpInfo(CorpInfo corpInfo) {
+		this.corpInfo = corpInfo;
+	}
+
+	public void setAgentInfo(List<AgentItem> agentInfo) {
+		this.agentInfo = agentInfo;
 	}
 
 	public void setAuthInfo(AuthInfo authInfo) {
@@ -100,8 +102,8 @@ public class OUserInfo implements Serializable {
 	@Override
 	public String toString() {
 		return "OUserInfo [isSysAdmin=" + isSysAdmin + ", isInnerAdmin="
-				+ isInnerAdmin + ", adminInfo=" + adminInfo + ", corpinfo="
-				+ corpinfo + ", agentInfo=" + agentInfo + ", authInfo="
+				+ isInnerAdmin + ", adminInfo=" + adminInfo + ", corpInfo="
+				+ corpInfo + ", agentInfo=" + agentInfo + ", authInfo="
 				+ authInfo + "]";
 	}
 
@@ -126,28 +128,30 @@ public class OUserInfo implements Serializable {
 		 * 授权的通讯录部门
 		 */
 		@JSONField(name = "department")
-		private List<DepartmentItem> departmentItems;
+		private List<DepartItem> departItems;
 
 		public List<AgentItem> getAgentItems() {
 			return agentItems;
 		}
 
+		public List<DepartItem> getDepartItems() {
+			return departItems;
+		}
+
+		// ---------- setter 应该全部去掉
+
 		public void setAgentItems(List<AgentItem> agentItems) {
 			this.agentItems = agentItems;
 		}
 
-		public List<DepartmentItem> getDepartmentItems() {
-			return departmentItems;
-		}
-
-		public void setDepartmentItems(List<DepartmentItem> departmentItems) {
-			this.departmentItems = departmentItems;
+		public void setDepartItems(List<DepartItem> departItems) {
+			this.departItems = departItems;
 		}
 
 		@Override
 		public String toString() {
-			return "AuthInfo [agentItems=" + agentItems + ", departmentItems="
-					+ departmentItems + "]";
+			return "AuthInfo [agentItems=" + agentItems + ", departItems="
+					+ departItems + "]";
 		}
 	}
 
@@ -167,40 +171,48 @@ public class OUserInfo implements Serializable {
 		 * 管理员对应用的权限
 		 */
 		@JSONField(name = "auth_type")
-		private AgentAuthType authType;
+		private int authType;
 		/**
 		 * 服务商套件中的对应应用id
 		 */
-		private int appid;
+		@JSONField(name = "appid")
+		private int appId;
 		/**
 		 * 授权方应用敏感权限组，目前仅有get_location，表示是否有权限设置应用获取地理位置的开关
 		 */
 		@JSONField(name = "api_group")
 		private List<String> apiGroup;
 
-		public AgentAuthType getAuthType() {
+		public int getAuthType() {
 			return authType;
 		}
 
-		public void setAuthType(int authType) {
+		@JSONField(serialize = false)
+		public AgentAuthType getFormatAuthType() {
 			if (authType == 0) {
-				this.authType = AgentAuthType.USE;
+				return AgentAuthType.USE;
 			} else if (authType == 1) {
-				this.authType = AgentAuthType.MANAGE;
+				return AgentAuthType.MANAGE;
 			}
-			this.authType = null;
+			return null;
 		}
 
-		public int getAppid() {
-			return appid;
-		}
-
-		public void setAppid(int appid) {
-			this.appid = appid;
+		public int getAppId() {
+			return appId;
 		}
 
 		public List<String> getApiGroup() {
 			return apiGroup;
+		}
+
+		// ---------- setter 应该全部去掉
+
+		public void setAuthType(int authType) {
+			this.authType = authType;
+		}
+
+		public void setAppId(int appId) {
+			this.appId = appId;
 		}
 
 		public void setApiGroup(List<String> apiGroup) {
@@ -209,7 +221,7 @@ public class OUserInfo implements Serializable {
 
 		@Override
 		public String toString() {
-			return "AgentItem [authType=" + authType + ", appid=" + appid
+			return "AgentItem [authType=" + authType + ", appId=" + appId
 					+ ", apiGroup=" + apiGroup + ", " + super.toString() + "]";
 		}
 	}
@@ -217,13 +229,13 @@ public class OUserInfo implements Serializable {
 	/**
 	 * 授权的通讯录部门
 	 * 
-	 * @className DepartmentItem
+	 * @className DepartItem
 	 * @author jy
 	 * @date 2015年6月22日
 	 * @since JDK 1.7
 	 * @see
 	 */
-	public static class DepartmentItem extends Party {
+	public static class DepartItem extends Party {
 
 		private static final long serialVersionUID = 556556672204642407L;
 
@@ -236,14 +248,15 @@ public class OUserInfo implements Serializable {
 			return writable;
 		}
 
+		// ---------- setter 应该全部去掉
 		public void setWritable(boolean writable) {
 			this.writable = writable;
 		}
 
 		@Override
 		public String toString() {
-			return "DepartmentItem [writable=" + writable + ", "
-					+ super.toString() + "]";
+			return "DepartItem [writable=" + writable + ", " + super.toString()
+					+ "]";
 		}
 	}
 }

@@ -50,7 +50,7 @@ public class RefundRecord extends ApiResult {
 	 */
 	@XmlElement(name = "fee_type")
 	@JSONField(name = "fee_type")
-	private CurrencyType feeType;
+	private String feeType;
 	/**
 	 * 现金支付金额
 	 */
@@ -64,7 +64,7 @@ public class RefundRecord extends ApiResult {
 	 */
 	@XmlElement(name = "cash_fee_type")
 	@JSONField(name = "cash_fee_type")
-	private CurrencyType cashFeeType;
+	private String cashFeeType;
 	/**
 	 * 退款总金额
 	 */
@@ -108,7 +108,7 @@ public class RefundRecord extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCashFee() {
 		return cashFee / 100d;
 	}
@@ -117,12 +117,24 @@ public class RefundRecord extends ApiResult {
 		return cashFee;
 	}
 
-	public CurrencyType getFeeType() {
+	public String getFeeType() {
 		return feeType;
 	}
 
-	public CurrencyType getCashFeeType() {
+	public String getCashFeeType() {
 		return cashFeeType;
+	}
+
+	@JSONField(serialize = false)
+	public CurrencyType getFormatFeeType() {
+		return feeType != null ? CurrencyType.valueOf(feeType.toUpperCase())
+				: null;
+	}
+
+	@JSONField(serialize = false)
+	public CurrencyType getFormatCashFeeType() {
+		return cashFeeType != null ? CurrencyType.valueOf(cashFeeType
+				.toUpperCase()) : null;
 	}
 
 	/**
@@ -130,7 +142,7 @@ public class RefundRecord extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponRefundFee() {
 		return couponRefundFee != null ? couponRefundFee.intValue() / 100d : 0d;
 	}
@@ -144,7 +156,7 @@ public class RefundRecord extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatTotalFee() {
 		return totalFee / 100d;
 	}
@@ -174,7 +186,7 @@ public class RefundRecord extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatRefundFee() {
 		return refundFee / 100d;
 	}

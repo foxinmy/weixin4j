@@ -53,8 +53,9 @@ public class MPPaymentRecord extends ApiResult {
 	/**
 	 * 收款用户openid
 	 */
+	@JSONField(name = "openid")
 	@XmlElement(name = "openid")
-	private String openid;
+	private String openId;
 	/**
 	 * 收款用户姓名
 	 */
@@ -80,7 +81,7 @@ public class MPPaymentRecord extends ApiResult {
 	 */
 	@XmlElement(name = "check_name")
 	@JSONField(name = "check_name")
-	private MPPaymentCheckNameType checkNameType;
+	private String checkNameType;
 	/**
 	 * 企业付款描述信息
 	 */
@@ -123,8 +124,8 @@ public class MPPaymentRecord extends ApiResult {
 		return failureReason;
 	}
 
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
 	}
 
 	public String getTransferName() {
@@ -156,11 +157,18 @@ public class MPPaymentRecord extends ApiResult {
 	 */
 	@JSONField(serialize = false)
 	public Date getFormatTransferTime() {
-		return DateUtil.parse2yyyyMMddHHmmss(transferTime);
+		return transferTime != null ? DateUtil
+				.parse2yyyyMMddHHmmss(transferTime) : null;
 	}
 
-	public MPPaymentCheckNameType getCheckNameType() {
+	public String getCheckNameType() {
 		return checkNameType;
+	}
+
+	@JSONField(serialize = false)
+	public MPPaymentCheckNameType getFormatCheckNameType() {
+		return checkNameType != null ? MPPaymentCheckNameType
+				.valueOf(checkNameType) : null;
 	}
 
 	public String getDesc() {
@@ -186,7 +194,7 @@ public class MPPaymentRecord extends ApiResult {
 		return "MPPaymentRecord [transactionId=" + transactionId
 				+ ", outTradeNo=" + outTradeNo + ", transactionStatus="
 				+ getFormatTransactionStatus() + ", failureReason="
-				+ failureReason + ", openid=" + openid + ", transferName="
+				+ failureReason + ", openId=" + openId + ", transferName="
 				+ transferName + ", paymentAmount=" + getFormatPaymentAmount()
 				+ ", transferTime=" + transferTime + ", checkNameType="
 				+ checkNameType + ", desc=" + desc + ", checkNameResult="

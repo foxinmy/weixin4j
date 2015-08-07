@@ -13,7 +13,6 @@ import com.foxinmy.weixin4j.type.CouponStatus;
 import com.foxinmy.weixin4j.type.CouponStockType;
 import com.foxinmy.weixin4j.type.CouponType;
 import com.foxinmy.weixin4j.util.DateUtil;
-import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 代金券详细
@@ -173,10 +172,10 @@ public class CouponDetail extends ApiResult {
 	@JSONField(name = "is_partial_use")
 	private int isPartialUse;
 
-	public CouponDetail(){
-		
+	public CouponDetail() {
+
 	}
-	
+
 	public String getCouponStockId() {
 		return couponStockId;
 	}
@@ -185,7 +184,7 @@ public class CouponDetail extends ApiResult {
 		return couponStockType;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public CouponStockType getFormatCouponStockType() {
 		for (CouponStockType couponStockType : CouponStockType.values()) {
 			if (couponStockType.getVal() == this.couponStockType) {
@@ -208,7 +207,7 @@ public class CouponDetail extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponValue() {
 		return couponValue / 100d;
 	}
@@ -222,7 +221,7 @@ public class CouponDetail extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponMininum() {
 		return couponMininum / 100d;
 	}
@@ -235,7 +234,7 @@ public class CouponDetail extends ApiResult {
 		return couponStatus;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public CouponStatus getFormatCouponStatus() {
 		for (CouponStatus couponStatus : CouponStatus.values()) {
 			if (couponStatus.getVal() == this.couponStatus) {
@@ -272,7 +271,7 @@ public class CouponDetail extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponUseValue() {
 		return couponUseValue / 100d;
 	}
@@ -286,7 +285,7 @@ public class CouponDetail extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponRemainValue() {
 		return couponRemainValue / 100d;
 	}
@@ -295,37 +294,38 @@ public class CouponDetail extends ApiResult {
 		return beginTime;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatBeginTime() {
-		return DateUtil.parse2yyyyMMddHHmmss(beginTime);
+		return beginTime != null ? DateUtil.parse2yyyyMMddHHmmss(beginTime)
+				: null;
 	}
 
 	public String getEndTime() {
 		return endTime;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatEndTime() {
-		return DateUtil.parse2yyyyMMddHHmmss(endTime);
+		return endTime != null ? DateUtil.parse2yyyyMMddHHmmss(endTime) : null;
 	}
 
 	public String getSendTime() {
 		return sendTime;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatSendTime() {
-		return DateUtil.parse2yyyyMMddHHmmss(sendTime);
+		return sendTime != null ? DateUtil.parse2yyyyMMddHHmmss(sendTime)
+				: null;
 	}
 
 	public String getUseTime() {
 		return useTime;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatUseTime() {
-		return StringUtil.isNotBlank(useTime) ? DateUtil
-				.parse2yyyyMMddHHmmss(useTime) : null;
+		return useTime != null ? DateUtil.parse2yyyyMMddHHmmss(useTime) : null;
 	}
 
 	public String getTradeNo() {
@@ -352,7 +352,7 @@ public class CouponDetail extends ApiResult {
 		return isPartialUse;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public boolean getFormatIsPartialUse() {
 		return isPartialUse == 1;
 	}
@@ -374,7 +374,6 @@ public class CouponDetail extends ApiResult {
 				+ ", consumerMchId=" + consumerMchId + ", consumerMchName="
 				+ consumerMchName + ", consumerMchAppid=" + consumerMchAppid
 				+ ", sendSource=" + sendSource + ", isPartialUse="
-				+ getFormatIsPartialUse() + ", " + super.toString()
-				+ "]";
+				+ getFormatIsPartialUse() + ", " + super.toString() + "]";
 	}
 }

@@ -28,26 +28,31 @@ public class PayBaseInfo implements Serializable {
 	/**
 	 * 公众号ID
 	 */
+	@JSONField(name = "AppId")
 	@XmlElement(name = "AppId")
 	private String appId;
 	/**
 	 * 时间戳
 	 */
+	@JSONField(name = "TimeStamp")
 	@XmlElement(name = "TimeStamp")
 	private String timeStamp;
 	/**
 	 * 随机字符串
 	 */
+	@JSONField(name = "NonceStr")
 	@XmlElement(name = "NonceStr")
 	private String nonceStr;
 	/**
 	 * 签名结果
 	 */
+	@JSONField(name = "AppSignature")
 	@XmlElement(name = "AppSignature")
 	private String paySign;
 	/**
 	 * 签名方式
 	 */
+	@JSONField(name = "SignMethod")
 	@XmlElement(name = "SignMethod")
 	private String signType;
 
@@ -87,17 +92,14 @@ public class PayBaseInfo implements Serializable {
 		return signType;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public SignType getFormatSignType() {
-		return SignType.valueOf(signType.toUpperCase());
+		return signType != null ? SignType.valueOf(signType.toUpperCase())
+				: null;
 	}
 
 	public void setSignType(SignType signType) {
-		if (signType != null) {
-			this.signType = signType.name();
-		} else {
-			this.signType = null;
-		}
+		this.signType = signType != null ? signType.name() : null;
 	}
 
 	public PayBaseInfo() {

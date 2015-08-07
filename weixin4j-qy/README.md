@@ -74,7 +74,7 @@ weixin4j.properties说明
 	third_oauth_redirect_uri=http://xxx
 	
 	#企业号第三方应用套件授权后重定向的url(使用OauthApi时需要填写)
-	suite_redirect_uri=http://xxx
+	suite_oauth_redirect_uri=http://xxx
 
 2.实例化微信企业号接口实现对象,调用具体的API方法
 

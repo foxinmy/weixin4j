@@ -93,8 +93,7 @@ public class SemResult extends JsonResult {
 	@Override
 	public String toString() {
 		return "SemResult [query=" + query + ", type=" + type + ", semantic="
-				+ semantic + ", result=" + result + ", answer=" + answer
-				+ ", text=" + text + ", getCode()=" + getCode()
-				+ ", getDesc()=" + getDesc() + "]";
+				+ semantic + ", result=" + result + ", answer=" + answer + ", "
+				+ super.toString() + "]";
 	}
 }

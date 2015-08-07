@@ -43,7 +43,7 @@ public class KfAccount implements Serializable {
 	/**
 	 * 客服在线状态 1：pc在线，2：手机在线 若pc和手机同时在线则为 1+2=3
 	 */
-	private KfOnlineStatus status;
+	private int status;
 	/**
 	 * 客服设置的最大自动接入数
 	 */
@@ -87,18 +87,23 @@ public class KfAccount implements Serializable {
 		this.headImg = headImg;
 	}
 
-	public KfOnlineStatus getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	@JSONField(serialize = false)
+	public KfOnlineStatus getFormatStatus() {
 		if (status == 1) {
-			this.status = KfOnlineStatus.PC;
+			return KfOnlineStatus.PC;
 		} else if (status == 2) {
-			this.status = KfOnlineStatus.MOBILE;
+			return KfOnlineStatus.MOBILE;
 		} else {
-			this.status = KfOnlineStatus.BOTH;
+			return KfOnlineStatus.BOTH;
 		}
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public int getAutoAccept() {

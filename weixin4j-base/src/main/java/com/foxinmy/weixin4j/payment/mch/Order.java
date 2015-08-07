@@ -14,7 +14,6 @@ import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.TradeState;
 import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.DateUtil;
-import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
 /**
@@ -38,7 +37,7 @@ public class Order extends ApiResult {
 	 */
 	@XmlElement(name = "trade_state")
 	@JSONField(name = "trade_state")
-	private TradeState tradeState;
+	private String tradeState;
 	/**
 	 * 用户的openid
 	 */
@@ -58,7 +57,7 @@ public class Order extends ApiResult {
 	 */
 	@XmlElement(name = "trade_type")
 	@JSONField(name = "trade_type")
-	private TradeType tradeType;
+	private String tradeType;
 	/**
 	 * 银行类型
 	 */
@@ -101,7 +100,7 @@ public class Order extends ApiResult {
 	 */
 	@XmlElement(name = "fee_type")
 	@JSONField(name = "fee_type")
-	private CurrencyType feeType;
+	private String feeType;
 	/**
 	 * 微信支付订单号
 	 */
@@ -135,8 +134,9 @@ public class Order extends ApiResult {
 		// jaxb required
 	}
 
-	public TradeState getTradeState() {
-		return tradeState;
+	@JSONField(serialize = false)
+	public TradeState getFormatTradeState() {
+		return tradeState != null ? TradeState.valueOf(tradeState.toUpperCase()) : null;
 	}
 
 	public String getOpenId() {
@@ -147,13 +147,14 @@ public class Order extends ApiResult {
 		return isSubscribe;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public boolean getFormatIsSubscribe() {
 		return isSubscribe != null && isSubscribe.equalsIgnoreCase("y");
 	}
 
-	public TradeType getTradeType() {
-		return tradeType;
+	@JSONField(serialize = false)
+	public TradeType getFormatTradeType() {
+		return tradeType != null ? TradeType.valueOf(tradeType.toUpperCase()) : null;
 	}
 
 	public String getBankType() {
@@ -169,7 +170,7 @@ public class Order extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatTotalFee() {
 		return totalFee / 100d;
 	}
@@ -183,18 +184,13 @@ public class Order extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponFee() {
 		return couponFee != null ? couponFee / 100d : 0d;
 	}
 
 	public Integer getCouponCount() {
 		return couponCount;
-	}
-
-	@JSONField(serialize = false, deserialize = false)
-	public int getFormatCouponCount() {
-		return couponCount != null ? couponCount.intValue() : 0;
 	}
 
 	public int getCashFee() {
@@ -206,12 +202,25 @@ public class Order extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCashFee() {
 		return cashFee / 100d;
 	}
 
-	public CurrencyType getFeeType() {
+	@JSONField(serialize = false)
+	public CurrencyType getFormatFeeType() {
+		return feeType != null ? CurrencyType.valueOf(feeType.toUpperCase()) : null;
+	}
+
+	public String getTradeState() {
+		return tradeState;
+	}
+
+	public String getTradeType() {
+		return tradeType;
+	}
+
+	public String getFeeType() {
 		return feeType;
 	}
 
@@ -231,12 +240,9 @@ public class Order extends ApiResult {
 		return timeEnd;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatTimeEnd() {
-		if (StringUtil.isNotBlank(timeEnd)) {
-			return DateUtil.parse2yyyyMMddHHmmss(timeEnd);
-		}
-		return null;
+		return timeEnd != null ? DateUtil.parse2yyyyMMddHHmmss(timeEnd) : null;
 	}
 
 	public String getTradeStateDesc() {
@@ -259,10 +265,10 @@ public class Order extends ApiResult {
 				+ ", transactionId=" + transactionId + ", outTradeNo="
 				+ outTradeNo + ", attach=" + attach + ", timeEnd=" + timeEnd
 				+ ", totalFee=" + getFormatTotalFee() + ", couponFee="
-				+ getFormatCouponFee() + ", couponCount="
-				+ getFormatCouponCount() + ", couponList=" + couponList
-				+ ", cashFee=" + getFormatCashFee() + ", timeEnd="
-				+ getFormatTimeEnd() + ", tradeStateDesc=" + tradeStateDesc
-				+ ", " + super.toString() + "]";
+				+ getFormatCouponFee() + ", couponCount=" + couponCount
+				+ ", couponList=" + couponList + ", cashFee="
+				+ getFormatCashFee() + ", timeEnd=" + getFormatTimeEnd()
+				+ ", tradeStateDesc=" + tradeStateDesc + ", "
+				+ super.toString() + "]";
 	}
 }

@@ -70,7 +70,7 @@ public class PartyApi extends QyApi {
 		}
 		String department_update_uri = getRequestUri("department_update_uri");
 		JSONObject obj = (JSONObject) JSON.toJSON(party);
-		if (party.getParentid() < 1) {
+		if (party.getParentId() < 1) {
 			obj.remove("parentid");
 		}
 		if (party.getOrder() < 0) {

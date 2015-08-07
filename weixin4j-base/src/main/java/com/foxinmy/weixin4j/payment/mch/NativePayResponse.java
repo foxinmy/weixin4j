@@ -30,7 +30,8 @@ public class NativePayResponse extends ApiResult {
 	@JSONField(serialize = false)
 	private PrePay prePay;
 
-	private String prepay_id;
+	@JSONField(name = "prepay_id")
+	private String prepayId;
 
 	protected NativePayResponse() {
 		// jaxb required
@@ -64,24 +65,24 @@ public class NativePayResponse extends ApiResult {
 		super.setReturnCode(Consts.SUCCESS);
 		this.setResultCode(Consts.SUCCESS);
 		this.setMchId(payPackage.getMchId());
-		this.setAppId(payPackage.getAppid());
+		this.setAppId(payPackage.getAppId());
 		this.setNonceStr(RandomUtil.generateString(16));
 		this.prePay = PayUtil.createPrePay(payPackage, paysignKey);
-		this.prepay_id = prePay.getPrepayId();
+		this.prepayId = prePay.getPrepayId();
 	}
 
-	public String getPrepay_id() {
-		return prepay_id;
+	public String getPrepayId() {
+		return prepayId;
 	}
 
-	public void setPrepay_id(String prepay_id) {
-		this.prepay_id = prepay_id;
+	public void setPrepayId(String prepayId) {
+		this.prepayId = prepayId;
 	}
 
 	@Override
 	public String toString() {
-		return "NativePayResponseV3 [prePay=" + prePay + ", prepay_id="
-				+ prepay_id + ", " + super.toString() + "]";
+		return "NativePayResponseV3 [prePay=" + prePay + ", prepayId="
+				+ prepayId + ", " + super.toString() + "]";
 	}
 
 }

@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.payment.PayBaseInfo;
 
 /**
@@ -25,16 +26,19 @@ public class PayWarn extends PayBaseInfo {
 	/**
 	 * 错误代号 1001=发货超时
 	 */
+	@JSONField(name = "ErrorType")
 	@XmlElement(name = "ErrorType")
 	private String errortype;
 	/**
 	 * 错误描述
 	 */
+	@JSONField(name = "Description")
 	@XmlElement(name = "Description")
 	private String description;
 	/**
 	 * 错误详情
 	 */
+	@JSONField(name = "AlarmContent")
 	@XmlElement(name = "AlarmContent")
 	private String alarmcontent;
 

@@ -61,7 +61,7 @@ public class ApiResultV2 implements Serializable {
 	 */
 	@JSONField(name = "sign_type")
 	@XmlElement(name = "sign_type")
-	private SignType signType;
+	private String signType;
 
 	protected ApiResultV2() {
 		// jaxb required
@@ -107,11 +107,16 @@ public class ApiResultV2 implements Serializable {
 		this.sign = sign;
 	}
 
-	public SignType getSignType() {
+	public String getSignType() {
 		return signType;
 	}
 
-	public void setSignType(SignType signType) {
+	@JSONField(serialize = false)
+	public SignType getFormatSignType() {
+		return signType != null ? SignType.valueOf(signType) : null;
+	}
+
+	public void setSignType(String signType) {
 		this.signType = signType;
 	}
 

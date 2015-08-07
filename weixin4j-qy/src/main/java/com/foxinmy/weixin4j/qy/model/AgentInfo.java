@@ -30,17 +30,17 @@ public class AgentInfo extends AgentSetter {
 	/**
 	 * 企业应用可见范围（人员），其中包括userid和关注状态state
 	 */
-	@JSONField(serialize = false)
+	@JSONField(deserialize = false)
 	private List<User> allowUsers;
 	/**
 	 * 企业应用可见范围（部门）
 	 */
-	@JSONField(serialize = false)
+	@JSONField(deserialize = false)
 	private List<Integer> allowPartys;
 	/**
 	 * 企业应用可见范围（标签）
 	 */
-	@JSONField(serialize = false)
+	@JSONField(deserialize = false)
 	private List<Integer> allowTags;
 	/**
 	 * 企业应用是否被禁用
@@ -55,16 +55,8 @@ public class AgentInfo extends AgentSetter {
 		return squareLogoUrl;
 	}
 
-	public void setSquareLogoUrl(String squareLogoUrl) {
-		this.squareLogoUrl = squareLogoUrl;
-	}
-
 	public String getRoundLogoUrl() {
 		return roundLogoUrl;
-	}
-
-	public void setRoundLogoUrl(String roundLogoUrl) {
-		this.roundLogoUrl = roundLogoUrl;
 	}
 
 	public List<User> getAllowUsers() {
@@ -93,6 +85,16 @@ public class AgentInfo extends AgentSetter {
 
 	public boolean isClose() {
 		return close;
+	}
+
+	// ---------- setter 应该全部去掉
+
+	public void setSquareLogoUrl(String squareLogoUrl) {
+		this.squareLogoUrl = squareLogoUrl;
+	}
+
+	public void setRoundLogoUrl(String roundLogoUrl) {
+		this.roundLogoUrl = roundLogoUrl;
 	}
 
 	public void setClose(boolean close) {

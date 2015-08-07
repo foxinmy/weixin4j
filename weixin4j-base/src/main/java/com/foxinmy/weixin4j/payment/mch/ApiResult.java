@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 调用V3.x接口返回的公用字段
@@ -88,7 +87,7 @@ public class ApiResult extends XmlResult {
 	}
 
 	public String getSubMchId() {
-		return StringUtil.isNotBlank(subMchId) ? subMchId : null;
+		return subMchId;
 	}
 
 	public void setSubMchId(String subMchId) {
@@ -127,7 +126,7 @@ public class ApiResult extends XmlResult {
 		this.recall = recall;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public boolean getFormatRecall() {
 		return recall != null && recall.equalsIgnoreCase("y");
 	}

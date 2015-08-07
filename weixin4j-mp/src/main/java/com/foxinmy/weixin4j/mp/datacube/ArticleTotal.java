@@ -27,7 +27,8 @@ public class ArticleTotal implements Serializable {
 	 * 这里的msgid实际上是由msgid（图文消息id）和index（消息次序索引）组成， 例如12003_3，
 	 * 其中12003是msgid，即一次群发的id消息的； 3为index，假设该次群发的图文消息共5个文章（因为可能为多图文）， 3表示5个中的第3个
 	 */
-	private String msgid;
+	@JSONField(name = "msgid")
+	private String msgId;
 	/**
 	 * 图文消息的标题
 	 */
@@ -45,12 +46,12 @@ public class ArticleTotal implements Serializable {
 		this.refDate = refDate;
 	}
 
-	public String getMsgid() {
-		return msgid;
+	public String getMsgId() {
+		return msgId;
 	}
 
-	public void setMsgid(String msgid) {
-		this.msgid = msgid;
+	public void setMsgId(String msgId) {
+		this.msgId = msgId;
 	}
 
 	public String getTitle() {
@@ -71,7 +72,7 @@ public class ArticleTotal implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ArticleTotal [refDate=" + refDate + ", msgid=" + msgid
+		return "ArticleTotal [refDate=" + refDate + ", msgId=" + msgId
 				+ ", title=" + title + ", details=" + details + "]";
 	}
 }

@@ -50,7 +50,12 @@ public class UpstreamMsgDist implements Serializable {
 		this.msgUser = msgUser;
 	}
 
-	public DatacuteCountIntervalType getCountInterval() {
+	public int getCountInterval() {
+		return countInterval;
+	}
+
+	@JSONField(serialize = false)
+	public DatacuteCountIntervalType getFormatCountInterval() {
 		return DatacuteCountIntervalType.values()[countInterval];
 	}
 

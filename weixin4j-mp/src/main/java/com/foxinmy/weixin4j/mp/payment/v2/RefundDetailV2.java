@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.type.RefundChannel;
 import com.foxinmy.weixin4j.type.RefundStatus;
-import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * V2退款详细
@@ -84,7 +83,7 @@ public class RefundDetailV2 extends ApiResultV2 {
 		return refundChannel;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public RefundChannel getFormatRefundChannel() {
 		if (refundChannel == 0) {
 			return RefundChannel.TENPAY;
@@ -104,7 +103,7 @@ public class RefundDetailV2 extends ApiResultV2 {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatRefundFee() {
 		return refundFee / 100d;
 	}
@@ -113,7 +112,7 @@ public class RefundDetailV2 extends ApiResultV2 {
 		return refundStatus;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public RefundStatus getFormatRefundStatus() {
 		String refundStatus_ = String.format(",%d,", refundStatus);
 		if (",4,10,".contains(refundStatus_)) {
@@ -132,11 +131,11 @@ public class RefundDetailV2 extends ApiResultV2 {
 	}
 
 	public String getRecvUserId() {
-		return StringUtil.isNotBlank(recvUserId) ? recvUserId : null;
+		return recvUserId;
 	}
 
 	public String getReccvUserName() {
-		return StringUtil.isNotBlank(reccvUserName) ? reccvUserName : null;
+		return reccvUserName;
 	}
 
 	@Override

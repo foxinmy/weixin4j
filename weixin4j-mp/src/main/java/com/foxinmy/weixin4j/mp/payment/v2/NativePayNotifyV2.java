@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.payment.JsPayNotify;
 
 /**
@@ -21,17 +22,18 @@ import com.foxinmy.weixin4j.payment.JsPayNotify;
 public class NativePayNotifyV2 extends JsPayNotify {
 
 	private static final long serialVersionUID = 1868431159301749988L;
-	
+
 	/**
 	 * 产品ID 可视为订单ID
 	 */
+	@JSONField(name = "ProductId")
 	@XmlElement(name = "ProductId")
 	private String productId;
 
-	private NativePayNotifyV2(){
+	private NativePayNotifyV2() {
 		// jaxb required
 	}
-	
+
 	public String getProductId() {
 		return productId;
 	}

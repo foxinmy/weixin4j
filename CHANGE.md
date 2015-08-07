@@ -424,3 +424,7 @@
 * 2015-08-06
 
   + **weixin4j-server**: 调整`LocationEventMessage`类中的经纬度字段类型为double
+  
+* 2015-08-07
+  
+  + 主要去掉了实体类中的字段上@JSONFiled上的deserialize=false属性和不合理的format方法

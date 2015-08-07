@@ -16,7 +16,6 @@ import com.foxinmy.weixin4j.type.RedpacketSendType;
 import com.foxinmy.weixin4j.type.RedpacketStatus;
 import com.foxinmy.weixin4j.type.RedpacketType;
 import com.foxinmy.weixin4j.util.DateUtil;
-import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 红包记录
@@ -56,19 +55,19 @@ public class RedpacketRecord extends XmlResult {
 	 * 红包状态
 	 */
 	@XmlElement(name = "status")
-	private RedpacketStatus status;
+	private String status;
 	/**
 	 * 发放类型
 	 */
 	@XmlElement(name = "send_type")
 	@JSONField(name = "send_type")
-	private RedpacketSendType sendType;
+	private String sendType;
 	/**
 	 * 红包类型
 	 */
 	@XmlElement(name = "hb_type")
 	@JSONField(name = "hb_type")
-	private RedpacketType type;
+	private String hbType;
 	/**
 	 * 红包个数
 	 */
@@ -140,16 +139,32 @@ public class RedpacketRecord extends XmlResult {
 		return repacketId;
 	}
 
-	public RedpacketStatus getStatus() {
+	@JSONField(serialize = false)
+	public RedpacketStatus getFormatStatus() {
+		return status != null ? RedpacketStatus.valueOf(status.toUpperCase())
+				: null;
+	}
+
+	@JSONField(serialize = false)
+	public RedpacketSendType getFormatSendType() {
+		return sendType != null ? RedpacketSendType.valueOf(sendType) : null;
+	}
+
+	@JSONField(serialize = false)
+	public RedpacketType getFomatHbType() {
+		return hbType != null ? RedpacketType.valueOf(hbType) : null;
+	}
+
+	public String getStatus() {
 		return status;
 	}
 
-	public RedpacketSendType getSendType() {
+	public String getSendType() {
 		return sendType;
 	}
 
-	public RedpacketType getType() {
-		return type;
+	public String getHbType() {
+		return hbType;
 	}
 
 	public int getTotalNum() {
@@ -165,7 +180,7 @@ public class RedpacketRecord extends XmlResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatTotalAmount() {
 		return totalAmount / 100d;
 	}
@@ -178,21 +193,20 @@ public class RedpacketRecord extends XmlResult {
 		return sendTime;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatSendTime() {
-		return DateUtil.parse2yyyyMMddHHmmss(sendTime);
+		return sendTime != null ? DateUtil.parse2yyyyMMddHHmmss(sendTime)
+				: null;
 	}
 
 	public String getRefundTime() {
 		return refundTime;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatRefundTime() {
-		if (StringUtil.isNotBlank(refundTime)) {
-			return DateUtil.parse2yyyyMMddHHmmss(refundTime);
-		}
-		return null;
+		return refundTime != null ? DateUtil.parse2yyyyMMddHHmmss(refundTime)
+				: null;
 	}
 
 	public Integer getRefundAmount() {
@@ -204,12 +218,9 @@ public class RedpacketRecord extends XmlResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatRefundAmount() {
-		if (refundAmount != null) {
-			return refundAmount.intValue() / 100d;
-		}
-		return 0d;
+		return refundAmount != null ? refundAmount.intValue() / 100d : 0d;
 	}
 
 	public String getWishing() {
@@ -231,9 +242,9 @@ public class RedpacketRecord extends XmlResult {
 	@XmlRootElement
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class RedpacketReceiver implements Serializable {
-		
+
 		private static final long serialVersionUID = 1L;
-		
+
 		/**
 		 * 领取红包的Openid
 		 */
@@ -276,14 +287,15 @@ public class RedpacketRecord extends XmlResult {
 		 * 
 		 * @return 元单位
 		 */
-		@JSONField(serialize = false, deserialize = false)
+		@JSONField(serialize = false)
 		public double getFormatAmount() {
 			return amount / 100d;
 		}
 
-		@JSONField(serialize = false, deserialize = false)
+		@JSONField(serialize = false)
 		public Date getFormatReceiveTime() {
-			return DateUtil.parse2yyyyMMddHHmmss(receiveTime);
+			return receiveTime != null ? DateUtil
+					.parse2yyyyMMddHHmmss(receiveTime) : null;
 		}
 
 		@Override
@@ -298,10 +310,10 @@ public class RedpacketRecord extends XmlResult {
 	public String toString() {
 		return "RedpacketRecord [outTradeNo=" + outTradeNo + ", mchId=" + mchId
 				+ ", repacketId=" + repacketId + ", status=" + status
-				+ ", sendType=" + sendType + ", type=" + type + ", totalNum="
-				+ totalNum + ", totalAmount=" + getFormatTotalAmount()
-				+ ", reason=" + reason + ", sendTime=" + sendTime
-				+ ", refundTime=" + refundTime + ", refundAmount="
+				+ ", sendType=" + sendType + ", hbType=" + hbType
+				+ ", totalNum=" + totalNum + ", totalAmount="
+				+ getFormatTotalAmount() + ", reason=" + reason + ", sendTime="
+				+ sendTime + ", refundTime=" + refundTime + ", refundAmount="
 				+ getFormatRefundAmount() + ", wishing=" + wishing
 				+ ", remark=" + remark + ", actName=" + actName
 				+ ", receivers=" + receivers + "]";

@@ -60,12 +60,17 @@ public class UpstreamMsg implements Serializable {
 		this.refHour = refHour;
 	}
 
+	public int getMsgType() {
+		return msgType;
+	}
+
 	/**
 	 * 1代表文字 2代表图片 3代表语音 4代表视频 6代表第三方应用消息（链接消息）
 	 * 
 	 * @return
 	 */
-	public String getMsgType() {
+	@JSONField(serialize = false)
+	public String getFormatMsgType() {
 		switch (msgType) {
 		case 1:
 			return "text";

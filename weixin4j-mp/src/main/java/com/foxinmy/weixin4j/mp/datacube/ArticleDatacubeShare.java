@@ -76,7 +76,12 @@ public class ArticleDatacubeShare implements Serializable {
 		this.shareCount = shareCount;
 	}
 
-	public ShareSourceType getShareScene() {
+	public int getShareScene() {
+		return shareScene;
+	}
+
+	@JSONField(serialize = false)
+	public ShareSourceType getFormatShareScene() {
 		if (shareScene == 1) {
 			return ShareSourceType.FRIENDFORWARD;
 		} else if (shareScene == 2) {

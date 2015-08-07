@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.qy.model;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.qy.type.BatchStatus;
 import com.foxinmy.weixin4j.qy.type.BatchType;
@@ -32,58 +33,72 @@ public class BatchResult extends JsonResult {
 	/**
 	 * 目前运行百分比，当任务完成时为100
 	 */
-	private int percentage;
+	@JSONField(name = "percentage")
+	private int percentAge;
 	/**
 	 * 预估剩余时间（单位：分钟），当任务完成时为0
 	 */
-	private int remaintime;
+	@JSONField(name = "remaintime")
+	private int remainTime;
 	/**
 	 * 详细的处理结果 TODO
 	 */
 	private JSONArray result;
 
-	public BatchStatus getStatus() {
+	public int getStatus() {
+		return status;
+	}
+
+	@JSONField(serialize = false)
+	public BatchStatus getFormatStatus() {
 		return BatchStatus.values()[status - 1];
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public String getType() {
+		return type;
 	}
 
-	public BatchType getType() {
-		return BatchType.valueOf(type.toUpperCase());
-	}
-
-	public void setType(String type) {
-		this.type = type;
+	@JSONField(serialize = false)
+	public BatchType getFormatType() {
+		return type != null ? BatchType.valueOf(type.toUpperCase()) : null;
 	}
 
 	public int getTotal() {
 		return total;
 	}
 
-	public void setTotal(int total) {
-		this.total = total;
+	public int getPercentAge() {
+		return percentAge;
 	}
 
-	public int getPercentage() {
-		return percentage;
-	}
-
-	public void setPercentage(int percentage) {
-		this.percentage = percentage;
-	}
-
-	public int getRemaintime() {
-		return remaintime;
-	}
-
-	public void setRemaintime(int remaintime) {
-		this.remaintime = remaintime;
+	public int getRemainTime() {
+		return remainTime;
 	}
 
 	public JSONArray getResult() {
 		return result;
+	}
+
+	// ---------- setter 应该全部去掉
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	public void setPercentAge(int percentAge) {
+		this.percentAge = percentAge;
+	}
+
+	public void setRemainTime(int remainTime) {
+		this.remainTime = remainTime;
 	}
 
 	public void setResult(JSONArray result) {
@@ -92,8 +107,8 @@ public class BatchResult extends JsonResult {
 
 	@Override
 	public String toString() {
-		return "BatchResult [status=" + getStatus() + ", type=" + getType() + ", total="
-				+ total + ", percentage=" + percentage + ", remaintime="
-				+ remaintime + ", result=" + result + "]";
+		return "BatchResult [status=" + status + ", type=" + type + ", total="
+				+ total + ", percentAge=" + percentAge + ", remainTime="
+				+ remainTime + ", result=" + result + "]";
 	}
 }

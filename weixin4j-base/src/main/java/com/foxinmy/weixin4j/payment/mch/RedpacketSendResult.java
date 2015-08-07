@@ -27,7 +27,7 @@ public class RedpacketSendResult extends XmlResult {
 	 */
 	@XmlElement(name = "wxappid")
 	@JSONField(name = "wxappid")
-	private String appid;
+	private String appId;
 	/**
 	 * 微信支付分配的商户号
 	 */
@@ -45,7 +45,7 @@ public class RedpacketSendResult extends XmlResult {
 	 */
 	@XmlElement(name = "re_openid")
 	@JSONField(name = "re_openid")
-	private String openid;
+	private String openId;
 	/**
 	 * 付款金额 单位为分
 	 */
@@ -56,9 +56,9 @@ public class RedpacketSendResult extends XmlResult {
 	protected RedpacketSendResult() {
 		// jaxb required
 	}
-	
-	public String getAppid() {
-		return appid;
+
+	public String getAppId() {
+		return appId;
 	}
 
 	public String getMchId() {
@@ -69,8 +69,8 @@ public class RedpacketSendResult extends XmlResult {
 		return outTradeNo;
 	}
 
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
 	}
 
 	public int getTotalAmount() {
@@ -82,15 +82,15 @@ public class RedpacketSendResult extends XmlResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatTotalAmount() {
 		return totalAmount / 100d;
 	}
 
 	@Override
 	public String toString() {
-		return "RedpacketSendResult [appid=" + appid + ", mchId=" + mchId
-				+ ", outTradeNo=" + outTradeNo + ", openid=" + openid
+		return "RedpacketSendResult [appId=" + appId + ", mchId=" + mchId
+				+ ", outTradeNo=" + outTradeNo + ", openId=" + openId
 				+ ", totalAmount=" + totalAmount + ", " + super.toString()
 				+ "]";
 	}

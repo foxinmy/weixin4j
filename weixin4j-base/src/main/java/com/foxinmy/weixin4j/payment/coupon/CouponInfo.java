@@ -43,10 +43,10 @@ public class CouponInfo implements Serializable {
 	@JSONField(name = "coupon_fee")
 	private Integer couponFee;
 
-	public CouponInfo(){
-		
+	public CouponInfo() {
+
 	}
-	
+
 	public String getCouponBatchId() {
 		return couponBatchId;
 	}
@@ -64,9 +64,9 @@ public class CouponInfo implements Serializable {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponFee() {
-		return couponFee / 100d;
+		return couponFee != null ? couponFee.doubleValue() / 100d : 0d;
 	}
 
 	public void setCouponId(String couponId) {

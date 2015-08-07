@@ -52,7 +52,12 @@ public class UserSummary implements Serializable {
 		this.refDate = refDate;
 	}
 
-	public UserSourceType getUserSource() {
+	public int getUserSource() {
+		return userSource;
+	}
+
+	@JSONField(serialize = false)
+	public UserSourceType getFormatUserSource() {
 		if (userSource == 30) {
 			return UserSourceType.QRCODE;
 		} else if (userSource == 17) {
@@ -98,8 +103,8 @@ public class UserSummary implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserSummary [refDate=" + refDate + ", userSource="
-				+ getUserSource() + ", newUser=" + newUser + ", cancelUser="
-				+ cancelUser + ", cumulateUser=" + cumulateUser + "]";
+		return "UserSummary [refDate=" + refDate + ", userSource=" + userSource
+				+ ", newUser=" + newUser + ", cancelUser=" + cancelUser
+				+ ", cumulateUser=" + cumulateUser + "]";
 	}
 }

@@ -119,10 +119,10 @@ public class CouponStock extends ApiResult {
 	@JSONField(name = "coupon_budget")
 	private Integer couponBudget;
 
-	public CouponStock(){
-		
+	public CouponStock() {
+
 	}
-	
+
 	public String getCouponStockId() {
 		return couponStockId;
 	}
@@ -140,7 +140,7 @@ public class CouponStock extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponValue() {
 		return couponValue / 100d;
 	}
@@ -154,7 +154,7 @@ public class CouponStock extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponMininumn() {
 		return couponMininumn != null ? couponMininumn.intValue() / 100d : 0d;
 	}
@@ -163,7 +163,7 @@ public class CouponStock extends ApiResult {
 		return couponType;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public CouponType getFormatCouponType() {
 		for (CouponType couponType : CouponType.values()) {
 			if (couponType.getVal() == this.couponType) {
@@ -177,7 +177,7 @@ public class CouponStock extends ApiResult {
 		return couponStockStatus;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public CouponStockStatus getFormatCouponStockStatus() {
 		for (CouponStockStatus couponStockStatus : CouponStockStatus.values()) {
 			if (couponStockStatus.getVal() == this.couponStockStatus) {
@@ -200,7 +200,7 @@ public class CouponStock extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatMaxQuota() {
 		return maxQuota != null ? maxQuota.intValue() / 100d : 0d;
 	}
@@ -214,7 +214,7 @@ public class CouponStock extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatLockedNum() {
 		return lockedNum != null ? lockedNum.intValue() / 100d : 0d;
 	}
@@ -228,7 +228,7 @@ public class CouponStock extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatUsedNum() {
 		return usedNum != null ? usedNum.intValue() / 100d : 0d;
 	}
@@ -242,7 +242,7 @@ public class CouponStock extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatSendNum() {
 		return sendNum != null ? sendNum.intValue() / 100d : 0d;
 	}
@@ -251,27 +251,29 @@ public class CouponStock extends ApiResult {
 		return beginTime;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatBeginTime() {
-		return DateUtil.parse2yyyyMMddHHmmss(beginTime);
+		return beginTime != null ? DateUtil.parse2yyyyMMddHHmmss(beginTime)
+				: null;
 	}
 
 	public String getEndTime() {
 		return endTime;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatEndTime() {
-		return DateUtil.parse2yyyyMMddHHmmss(endTime);
+		return endTime != null ? DateUtil.parse2yyyyMMddHHmmss(endTime) : null;
 	}
 
 	public String getCreateTime() {
 		return createTime;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatCreateTime() {
-		return DateUtil.parse2yyyyMMddHHmmss(createTime);
+		return createTime != null ? DateUtil.parse2yyyyMMddHHmmss(createTime)
+				: null;
 	}
 
 	public Integer getCouponBudget() {
@@ -283,7 +285,7 @@ public class CouponStock extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponBudget() {
 		return couponBudget != null ? couponBudget.intValue() / 100d : 0d;
 	}

@@ -12,7 +12,6 @@ import com.foxinmy.weixin4j.payment.coupon.CouponInfo;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.RefundChannel;
 import com.foxinmy.weixin4j.type.RefundStatus;
-import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
 /**
@@ -61,7 +60,7 @@ public class RefundDetail extends ApiResult {
 	 */
 	@XmlElement(name = "refund_fee_type")
 	@JSONField(name = "refund_fee_type")
-	private CurrencyType refundFeeType;
+	private String refundFeeType;
 	/**
 	 * 订单总金额
 	 */
@@ -75,7 +74,7 @@ public class RefundDetail extends ApiResult {
 	 */
 	@XmlElement(name = "fee_type")
 	@JSONField(name = "fee_type")
-	private CurrencyType feeType;
+	private String feeType;
 	/**
 	 * 现金支付金额
 	 */
@@ -89,7 +88,7 @@ public class RefundDetail extends ApiResult {
 	 */
 	@XmlElement(name = "cash_fee_type")
 	@JSONField(name = "cash_fee_type")
-	private CurrencyType cashFeeType;
+	private String cashFeeType;
 	/**
 	 * 现金退款金额
 	 */
@@ -103,7 +102,7 @@ public class RefundDetail extends ApiResult {
 	 */
 	@XmlElement(name = "cash_refund_fee_type")
 	@JSONField(name = "cash_refund_fee_type")
-	private CurrencyType cashRefundFeeType;
+	private String cashRefundFeeType;
 	/**
 	 * 退款状态
 	 */
@@ -148,20 +147,24 @@ public class RefundDetail extends ApiResult {
 		return refundChannel;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public RefundChannel getFormatRefundChannel() {
-		if (StringUtil.isNotBlank(refundChannel)) {
-			return RefundChannel.valueOf(refundChannel.toUpperCase());
-		}
-		return null;
+		return refundChannel != null ? RefundChannel.valueOf(refundChannel
+				.toUpperCase()) : null;
 	}
 
 	public int getRefundFee() {
 		return refundFee;
 	}
 
-	public CurrencyType getFeeType() {
+	public String getFeeType() {
 		return feeType;
+	}
+
+	@JSONField(serialize = false)
+	public CurrencyType getFormatFeeType() {
+		return feeType != null ? CurrencyType.valueOf(feeType.toUpperCase())
+				: null;
 	}
 
 	/**
@@ -169,7 +172,7 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatRefundFee() {
 		return refundFee / 100d;
 	}
@@ -178,12 +181,10 @@ public class RefundDetail extends ApiResult {
 		return refundStatus;
 	}
 
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public RefundStatus getFormatRefundStatus() {
-		if (StringUtil.isNotBlank(refundStatus)) {
-			return RefundStatus.valueOf(refundStatus);
-		}
-		return null;
+		return refundStatus != null ? RefundStatus.valueOf(refundStatus
+				.toUpperCase()) : null;
 	}
 
 	public Integer getCouponRefundFee() {
@@ -195,13 +196,19 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCouponRefundFee() {
 		return couponRefundFee != null ? couponRefundFee.intValue() / 100d : 0d;
 	}
 
-	public CurrencyType getRefundFeeType() {
+	public String getRefundFeeType() {
 		return refundFeeType;
+	}
+
+	@JSONField(serialize = false)
+	public CurrencyType getFormatRefundFeeType() {
+		return refundFeeType != null ? CurrencyType.valueOf(refundFeeType
+				.toUpperCase()) : null;
 	}
 
 	public int getTotalFee() {
@@ -213,7 +220,7 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatTotalFee() {
 		return totalFee / 100d;
 	}
@@ -227,13 +234,19 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCashFee() {
 		return cashFee / 100d;
 	}
 
-	public CurrencyType getCashFeeType() {
+	public String getCashFeeType() {
 		return cashFeeType;
+	}
+
+	@JSONField(serialize = false)
+	public CurrencyType getFormatCashFeeType() {
+		return cashFeeType != null ? CurrencyType.valueOf(cashFeeType
+				.toUpperCase()) : null;
 	}
 
 	public Integer getCashRefundFee() {
@@ -245,22 +258,23 @@ public class RefundDetail extends ApiResult {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(deserialize = false, serialize = false)
+	@JSONField(serialize = false)
 	public double getFormatCashRefundFee() {
 		return cashRefundFee != null ? cashRefundFee.intValue() / 100d : 0d;
 	}
 
-	public CurrencyType getCashRefundFeeType() {
+	public String getCashRefundFeeType() {
 		return cashRefundFeeType;
+	}
+
+	@JSONField(serialize = false)
+	public CurrencyType getFormatCashRefundFeeType() {
+		return cashRefundFeeType != null ? CurrencyType
+				.valueOf(cashRefundFeeType.toUpperCase()) : null;
 	}
 
 	public Integer getCouponRefundCount() {
 		return couponRefundCount;
-	}
-
-	@JSONField(deserialize = false, serialize = false)
-	public int getFormatCouponRefundCount() {
-		return couponRefundCount != null ? couponRefundCount.intValue() : 0;
 	}
 
 	public List<CouponInfo> getCouponList() {
@@ -282,7 +296,7 @@ public class RefundDetail extends ApiResult {
 				+ getFormatCashRefundFee() + ", cashRefundFeeType="
 				+ cashRefundFeeType + ", refundStatus=" + refundStatus
 				+ ", couponRefundFee=" + getFormatCouponRefundFee()
-				+ ", couponCount=" + getCouponRefundCount() + ", couponList="
+				+ ", couponRefundCount=" + couponRefundCount + ", couponList="
 				+ couponList + ", " + super.toString() + "]";
 	}
 }

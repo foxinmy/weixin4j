@@ -71,11 +71,11 @@ public class CouponResult extends ApiResult {
 	@XmlElement(name = "ret_msg")
 	@JSONField(name = "ret_msg")
 	private String retMsg;
-	
-	public CouponResult(){
-		
+
+	public CouponResult() {
+
 	}
-	
+
 	public String getCouponStockId() {
 		return couponStockId;
 	}
@@ -84,36 +84,29 @@ public class CouponResult extends ApiResult {
 		return responseCount;
 	}
 
-
 	public int getSuccessCount() {
 		return successCount;
 	}
-
 
 	public int getFailedCount() {
 		return failedCount;
 	}
 
-
 	public String getOpenId() {
 		return openId;
 	}
-
 
 	public String getRetCode() {
 		return retCode;
 	}
 
-
 	public String getCouponId() {
 		return couponId;
 	}
 
-
 	public String getRetMsg() {
 		return retMsg;
 	}
-
 
 	@Override
 	public String toString() {

@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 
 /**
@@ -24,18 +25,20 @@ public class NativePayResponseV2 extends JsPayRequestV2 {
 	/**
 	 * 返回码
 	 */
+	@JSONField(name = "RetCode")
 	@XmlElement(name = "RetCode")
 	private String retCode;
 	/**
 	 * 返回消息
 	 */
+	@JSONField(name = "RetErrMsg")
 	@XmlElement(name = "RetErrMsg")
 	private String retMsg;
 
-	protected NativePayResponseV2(){
+	protected NativePayResponseV2() {
 		// jaxb required
 	}
-	
+
 	public NativePayResponseV2(WeixinPayAccount weixinAccount,
 			PayPackageV2 payPackage) {
 		super(weixinAccount, payPackage);

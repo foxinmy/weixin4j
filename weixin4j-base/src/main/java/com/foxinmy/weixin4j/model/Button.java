@@ -56,7 +56,8 @@ public class Button implements Serializable {
 	@JSONField(name = "sub_button")
 	private List<Button> subs;
 
-	public Button() {
+	protected Button() {
+		this.subs = new ArrayList<Button>();
 	}
 
 	/**
@@ -73,6 +74,7 @@ public class Button implements Serializable {
 		this.name = name;
 		this.content = content;
 		this.type = type;
+		this.subs = new ArrayList<Button>();
 	}
 
 	public String getName() {
@@ -108,9 +110,6 @@ public class Button implements Serializable {
 	}
 
 	public Button pushSub(Button btn) {
-		if (this.subs == null) {
-			this.subs = new ArrayList<Button>();
-		}
 		this.subs.add(btn);
 		return this;
 	}

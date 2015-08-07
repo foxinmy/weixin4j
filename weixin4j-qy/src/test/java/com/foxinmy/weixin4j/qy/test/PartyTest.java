@@ -30,14 +30,14 @@ public class PartyTest extends TokenTest {
 
 	@Test
 	public void create() throws WeixinException {
-		Party Party = new Party(1, "苦逼组");
+		Party Party = new Party(1, "苦逼组", 1);
 		int id = partyApi.createParty(Party);
 		Assert.assertTrue(id > 0);
 	}
 
 	@Test
 	public void update() throws WeixinException {
-		Party Party = new Party(2, "苦逼组111");
+		Party Party = new Party(2, "苦逼组111", 1);
 		JsonResult result = partyApi.updateParty(Party);
 		Assert.assertEquals("updated", result.getDesc());
 	}

@@ -28,7 +28,9 @@ public class MicroPayPackage extends PayPackage {
 	/**
 	 * 微信分配的公众账号 必须
 	 */
-	private String appid;
+	@XmlElement(name = "appid")
+	@JSONField(name = "appid")
+	private String appId;
 	/**
 	 * 微信支付分配的商户号 必须
 	 */
@@ -58,10 +60,10 @@ public class MicroPayPackage extends PayPackage {
 	@JSONField(name = "auth_code")
 	private String authCode;
 
-	protected MicroPayPackage(){
+	protected MicroPayPackage() {
 		// jaxb required
 	}
-	
+
 	public MicroPayPackage(WeixinPayAccount weixinAccount, String body,
 			String attach, String outTradeNo, double totalFee,
 			String spbillCreateIp, String authCode) {
@@ -71,21 +73,21 @@ public class MicroPayPackage extends PayPackage {
 				authCode);
 	}
 
-	public MicroPayPackage(String appid, String mchId, String deviceInfo,
+	public MicroPayPackage(String appId, String mchId, String deviceInfo,
 			String nonceStr, String body, String attach, String outTradeNo,
 			double totalFee, String spbillCreateIp, Date timeStart,
 			Date timeExpire, String goodsTag, String authCode) {
 		super(body, attach, outTradeNo, totalFee, spbillCreateIp, timeStart,
 				timeExpire, goodsTag, null);
-		this.appid = appid;
+		this.appId = appId;
 		this.mchId = mchId;
 		this.deviceInfo = deviceInfo;
 		this.nonceStr = nonceStr;
 		this.authCode = authCode;
 	}
 
-	public String getAppid() {
-		return appid;
+	public String getAppId() {
+		return appId;
 	}
 
 	public String getMchId() {
@@ -118,7 +120,7 @@ public class MicroPayPackage extends PayPackage {
 
 	@Override
 	public String toString() {
-		return "MicroPayPackage [appid=" + appid + ", mchId=" + mchId
+		return "MicroPayPackage [appId=" + appId + ", mchId=" + mchId
 				+ ", deviceInfo=" + deviceInfo + ", nonceStr=" + nonceStr
 				+ ", sign=" + sign + ", authCode=" + authCode + ", "
 				+ super.toString() + "]";

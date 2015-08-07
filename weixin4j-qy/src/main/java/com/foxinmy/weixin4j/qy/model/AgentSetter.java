@@ -21,17 +21,18 @@ public class AgentSetter implements Serializable {
 	/**
 	 * 企业应用的id
 	 */
-	private int agentid;
+	@JSONField(name = "agentid")
+	private int agentId;
 	/**
 	 * 企业应用是否打开地理位置上报
 	 */
 	@JSONField(name = "report_location_flag")
-	private ReportLocationType reportLocationType;
+	private String reportLocationType;
 	/**
 	 * 企业应用头像的mediaid，通过多媒体接口上传图片获得mediaid，上传后会自动裁剪成方形和圆形两个头像
 	 */
 	@JSONField(name = "logo_mediaid")
-	private String logoMediaid;
+	private String logoMediaId;
 	/**
 	 * 企业应用名称
 	 */
@@ -56,32 +57,34 @@ public class AgentSetter implements Serializable {
 	@JSONField(name = "isreportenter")
 	private int isReportEnter;
 
-	public AgentSetter(int agentid) {
-		this.agentid = agentid;
+	public AgentSetter(int agentId) {
+		this.agentId = agentId;
 	}
 
-	public int getAgentid() {
-		return agentid;
+	public int getAgentId() {
+		return agentId;
 	}
 
-	public void setAgentid(int agentid) {
-		this.agentid = agentid;
-	}
-
-	public ReportLocationType getReportLocationType() {
+	public String getReportLocationType() {
 		return reportLocationType;
 	}
 
+	@JSONField(serialize = false)
+	public ReportLocationType getFormatReportLocationType() {
+		return reportLocationType != null ? ReportLocationType
+				.valueOf(reportLocationType.toUpperCase()) : null;
+	}
+
 	public void setReportLocationType(ReportLocationType reportLocationType) {
-		this.reportLocationType = reportLocationType;
+		this.reportLocationType = reportLocationType.name();
 	}
 
-	public String getLogoMediaid() {
-		return logoMediaid;
+	public String getLogoMediaId() {
+		return logoMediaId;
 	}
 
-	public void setLogoMediaid(String logoMediaid) {
-		this.logoMediaid = logoMediaid;
+	public void setLogoMediaid(String logoMediaId) {
+		this.logoMediaId = logoMediaId;
 	}
 
 	public String getName() {
@@ -124,10 +127,24 @@ public class AgentSetter implements Serializable {
 		this.isReportEnter = isReportEnter ? 1 : 0;
 	}
 
+	// ---------- setter 应该全部去掉
+	
+	public void setAgentId(int agentId) {
+		this.agentId = agentId;
+	}
+
+	public void setReportLocationType(String reportLocationType) {
+		this.reportLocationType = reportLocationType;
+	}
+
+	public void setLogoMediaId(String logoMediaId) {
+		this.logoMediaId = logoMediaId;
+	}
+
 	@Override
 	public String toString() {
-		return "agentid=" + agentid + ", reportLocationType="
-				+ reportLocationType + ", logoMediaid=" + logoMediaid
+		return "agentId=" + agentId + ", reportLocationType="
+				+ reportLocationType + ", logoMediaId=" + logoMediaId
 				+ ", name=" + name + ", description=" + description
 				+ ", redirectDomain=" + redirectDomain + ", isReportUser="
 				+ isReportUser + ", isReportEnter=" + isReportEnter;

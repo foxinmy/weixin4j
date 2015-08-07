@@ -30,7 +30,8 @@ public class NotifyMessage implements Serializable {
 	/**
 	 * 企业应用的id，整型。可在应用的设置页面查看
 	 */
-	private int agentid;
+	@JSONField(name = "agentid")
+	private int agentId;
 	/**
 	 * 表示是否是保密消息，0表示否，1表示是，默认0
 	 */
@@ -50,9 +51,9 @@ public class NotifyMessage implements Serializable {
 		this(agentid, tuple, IdParameter.get(), false);
 	}
 
-	public NotifyMessage(int agentid, NotifyTuple tuple, IdParameter target,
+	public NotifyMessage(int agentId, NotifyTuple tuple, IdParameter target,
 			boolean isSafe) {
-		this.agentid = agentid;
+		this.agentId = agentId;
 		this.safe = isSafe ? 1 : 0;
 		this.tuple = tuple;
 		this.target = target;
@@ -66,8 +67,8 @@ public class NotifyMessage implements Serializable {
 		this.safe = isSafe ? 1 : 0;
 	}
 
-	public int getAgentid() {
-		return agentid;
+	public int getAgentId() {
+		return agentId;
 	}
 
 	public NotifyTuple getTuple() {
@@ -80,7 +81,7 @@ public class NotifyMessage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "NotifyMessage [agentid=" + agentid + ", safe=" + safe
+		return "NotifyMessage [agentId=" + agentId + ", safe=" + safe
 				+ ", tuple=" + tuple + ", target=" + target + "]";
 	}
 }

@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.qy.model;
 
 import java.io.Serializable;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -17,7 +18,8 @@ public class ChatMute implements Serializable {
 
 	private static final long serialVersionUID = 6734443056426236273L;
 
-	private String userid;
+	@JSONField(name = "userid")
+	private String userId;
 	private int status;
 
 	/**
@@ -25,8 +27,8 @@ public class ChatMute implements Serializable {
 	 * 
 	 * @param userid
 	 */
-	public ChatMute(String userid) {
-		this.userid = userid;
+	public ChatMute(String userId) {
+		this.userId = userId;
 	}
 
 	/**
@@ -37,27 +39,28 @@ public class ChatMute implements Serializable {
 	 * @param status
 	 *            是否开启免打扰
 	 */
-	public ChatMute(String userid, boolean status) {
-		this.userid = userid;
+	@JSONCreator
+	public ChatMute(@JSONField(name = "userId") String userId,
+			@JSONField(name = "status") boolean status) {
+		this.userId = userId;
 		this.status = status ? 1 : 0;
 	}
 
-	public String getUserid() {
-		return userid;
+	public String getUserId() {
+		return userId;
 	}
 
 	public int getStatus() {
 		return status;
 	}
 
-	@JSONField(deserialize = false)
+	@JSONField(serialize = false)
 	public boolean getFormatStatus() {
 		return status == 1;
 	}
 
 	@Override
 	public String toString() {
-		return "ChatMute [userid=" + userid + ", status=" + getFormatStatus()
-				+ "]";
+		return "ChatMute [userId=" + userId + ", status=" + status + "]";
 	}
 }

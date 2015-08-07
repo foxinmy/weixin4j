@@ -30,7 +30,8 @@ public class ArticleSummary extends ArticleDatacube1 {
 	 * 例如12003_3， 其中12003是msgid，即一次群发的消息的id；
 	 * 3为index，假设该次群发的图文消息共5个文章（因为可能为多图文），3表示5个中的第3个
 	 */
-	private String msgid;
+	@JSONField(name = "msgid")
+	private String msgId;
 	/**
 	 * 图文消息的标题
 	 */
@@ -52,12 +53,12 @@ public class ArticleSummary extends ArticleDatacube1 {
 		this.refHour = refHour;
 	}
 
-	public String getMsgid() {
-		return msgid;
+	public String getMsgId() {
+		return msgId;
 	}
 
-	public void setMsgid(String msgid) {
-		this.msgid = msgid;
+	public void setMsgId(String msgId) {
+		this.msgId = msgId;
 	}
 
 	public String getTitle() {
@@ -71,7 +72,7 @@ public class ArticleSummary extends ArticleDatacube1 {
 	@Override
 	public String toString() {
 		return "ArticleSummary [refDate=" + refDate + ", refHour=" + refHour
-				+ ", msgid=" + msgid + ", title=" + title + ", "
+				+ ", msgId=" + msgId + ", title=" + title + ", "
 				+ super.toString() + "]";
 	}
 }

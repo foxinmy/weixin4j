@@ -45,7 +45,7 @@ public class BatchTest extends TokenTest {
 	@Test
 	public void replaceparty() throws WeixinException {
 		String mediaId = mediaApi.batchUploadParties(Arrays.asList(new Party(5,
-				"部门1", 1, 1), new Party(6, "部门2", 1, 1)));
+				"部门1", 1), new Party(6, "部门2", 1)));
 		String jobId = batchApi.replaceParty(mediaId, new Callback(
 				"http://182.254.188.133:8090", "gp2eGT5mIpngr",
 				"BRYfV4zPFUJb3v3MySNBg1ERKE3vyyMRoScu76vFySv"));

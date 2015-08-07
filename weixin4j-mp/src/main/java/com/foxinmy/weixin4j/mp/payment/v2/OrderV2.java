@@ -103,12 +103,9 @@ public class OrderV2 extends ApiResultV2 {
 		return tradeState;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public TradeState getFormatTradeState() {
-		if (tradeState == 0) {
-			return TradeState.SUCCESS;
-		}
-		return null;
+		return tradeState == 0 ? TradeState.SUCCESS : null;
 	}
 
 	public void setTradeState(int tradeState) {
@@ -148,7 +145,7 @@ public class OrderV2 extends ApiResultV2 {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatTotalFee() {
 		return totalFee / 100d;
 	}
@@ -161,12 +158,9 @@ public class OrderV2 extends ApiResultV2 {
 		return feeType;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public CurrencyType getFormatFeeType() {
-		if (feeType == 1) {
-			return CurrencyType.CNY;
-		}
-		return null;
+		return feeType == 1 ? CurrencyType.CNY : null;
 	}
 
 	public void setFeeType(int feeType) {
@@ -217,9 +211,9 @@ public class OrderV2 extends ApiResultV2 {
 		return timeEnd;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public Date getFormatTimeEnd() {
-		return DateUtil.parse2yyyyMMddHHmmss(timeEnd);
+		return timeEnd != null ? DateUtil.parse2yyyyMMddHHmmss(timeEnd) : null;
 	}
 
 	public void setTimeEnd(String timeEnd) {
@@ -235,7 +229,7 @@ public class OrderV2 extends ApiResultV2 {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatTransportFee() {
 		return transportFee / 100d;
 	}
@@ -253,7 +247,7 @@ public class OrderV2 extends ApiResultV2 {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatProductFee() {
 		return productFee / 100d;
 	}
@@ -271,7 +265,7 @@ public class OrderV2 extends ApiResultV2 {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatDiscount() {
 		return discount / 100d;
 	}
@@ -289,9 +283,9 @@ public class OrderV2 extends ApiResultV2 {
 	 * 
 	 * @return 元单位
 	 */
-	@JSONField(serialize = false, deserialize = false)
+	@JSONField(serialize = false)
 	public double getFormatRmbTotalFee() {
-		return rmbTotalFee != null ? rmbTotalFee / 100d : 0d;
+		return rmbTotalFee != null ? rmbTotalFee.doubleValue() / 100d : 0d;
 	}
 
 	public void setRmbTotalFee(int rmbTotalFee) {

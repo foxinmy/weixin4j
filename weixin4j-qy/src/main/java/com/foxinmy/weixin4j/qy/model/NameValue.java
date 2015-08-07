@@ -2,8 +2,12 @@ package com.foxinmy.weixin4j.qy.model;
 
 import java.io.Serializable;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * name-value
+ * 
  * @className NameValue
  * @author jy
  * @date 2015年3月29日
@@ -16,11 +20,9 @@ public class NameValue implements Serializable {
 	private String name;
 	private String value;
 
-	public NameValue() {
-
-	}
-
-	public NameValue(String name, String value) {
+	@JSONCreator
+	public NameValue(@JSONField(name = "name") String name,
+			@JSONField(name = "value") String value) {
 		this.name = name;
 		this.value = value;
 	}
@@ -31,14 +33,6 @@ public class NameValue implements Serializable {
 
 	public String getValue() {
 		return value;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
 	}
 
 	@Override

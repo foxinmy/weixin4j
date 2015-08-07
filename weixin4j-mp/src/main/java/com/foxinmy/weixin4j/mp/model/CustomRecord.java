@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.mp.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.CustomRecordOperCode;
 
 /**
@@ -24,15 +25,17 @@ public class CustomRecord implements Serializable {
 	/**
 	 * 用户的标识
 	 */
-	private String openid;
+	@JSONField(name = "openid")
+	private String openId;
 	/**
 	 * 操作ID（会话状态）
 	 */
-	private CustomRecordOperCode opercode;
+	@JSONField(name = "opercode")
+	private int operCode;
 	/**
 	 * 操作时间
 	 */
-	private Date time;
+	private long time;
 	/**
 	 * 聊天记录
 	 */
@@ -46,28 +49,38 @@ public class CustomRecord implements Serializable {
 		this.worker = worker;
 	}
 
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
 	}
 
-	public void setOpenid(String openid) {
-		this.openid = openid;
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
-	public CustomRecordOperCode getOpercode() {
-		return opercode;
+	public int getOperCode() {
+		return operCode;
 	}
 
-	public void setOpercode(int opercode) {
-		this.opercode = CustomRecordOperCode.getOper(opercode);
+	@JSONField(serialize = false)
+	public CustomRecordOperCode getFormatOperCode() {
+		return CustomRecordOperCode.getOper(operCode);
 	}
 
-	public Date getTime() {
-		return (Date) time.clone();
+	public void setOperCode(int operCode) {
+		this.operCode = operCode;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	@JSONField(serialize = false)
+	public Date getFormatTime() {
+		return new Date(time * 1000l);
 	}
 
 	public void setTime(long time) {
-		this.time = new Date(time * 1000l);
+		this.time = time;
 	}
 
 	public String getText() {
@@ -82,8 +95,8 @@ public class CustomRecord implements Serializable {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[CustomRecord worker=").append(worker);
-		sb.append(" ,openid=").append(openid);
-		sb.append(" ,opercode=").append(opercode);
+		sb.append(" ,openId=").append(openId);
+		sb.append(" ,operCode=").append(operCode);
 		sb.append(" ,time=").append(time);
 		sb.append(" ,text=").append(text);
 		sb.append("]");

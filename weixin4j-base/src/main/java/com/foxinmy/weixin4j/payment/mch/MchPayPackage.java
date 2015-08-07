@@ -31,7 +31,9 @@ public class MchPayPackage extends PayPackage {
 	/**
 	 * 微信分配的公众账号 必须
 	 */
-	private String appid;
+	@XmlElement(name = "appid")
+	@JSONField(name = "appid")
+	private String appId;
 	/**
 	 * 微信支付分配的商户号 必须
 	 */
@@ -63,7 +65,9 @@ public class MchPayPackage extends PayPackage {
 	/**
 	 * 用户在商户 appid 下的唯一 标识, trade_type 为 JSAPI 时,此参数必传
 	 */
-	private String openid;
+	@XmlElement(name = "openid")
+	@JSONField(name = "openid")
+	private String openId;
 	/**
 	 * 只在 trade_type 为 NATIVE 时需要填写 非必须
 	 */
@@ -91,24 +95,24 @@ public class MchPayPackage extends PayPackage {
 				notifyUrl, tradeType, openId, null);
 	}
 
-	public MchPayPackage(String appid, String mchId, String deviceInfo,
+	public MchPayPackage(String appId, String mchId, String deviceInfo,
 			String nonceStr, String body, String attach, String outTradeNo,
 			double totalFee, String spbillCreateIp, Date timeStart,
 			Date timeExpire, String goodsTag, String notifyUrl,
-			TradeType tradeType, String openid, String productId) {
+			TradeType tradeType, String openId, String productId) {
 		super(body, attach, outTradeNo, totalFee, spbillCreateIp, timeStart,
 				timeExpire, goodsTag, notifyUrl);
-		this.appid = appid;
+		this.appId = appId;
 		this.mchId = mchId;
 		this.deviceInfo = deviceInfo;
 		this.nonceStr = nonceStr;
 		this.tradeType = tradeType.name();
-		this.openid = openid;
+		this.openId = openId;
 		this.productId = productId;
 	}
 
-	public String getAppid() {
-		return appid;
+	public String getAppId() {
+		return appId;
 	}
 
 	public String getMchId() {
@@ -135,8 +139,8 @@ public class MchPayPackage extends PayPackage {
 		return tradeType;
 	}
 
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
 	}
 
 	public String getProductId() {
@@ -149,10 +153,10 @@ public class MchPayPackage extends PayPackage {
 
 	@Override
 	public String toString() {
-		return "MchPayPackage [appid=" + appid + ", mchId=" + mchId
+		return "MchPayPackage [appId=" + appId + ", mchId=" + mchId
 				+ ", deviceInfo=" + deviceInfo + ", nonceStr=" + nonceStr
-				+ ", sign=" + sign + ", tradeType=" + tradeType + ", openid="
-				+ openid + ", productId=" + productId + ", " + super.toString()
+				+ ", sign=" + sign + ", tradeType=" + tradeType + ", openId="
+				+ openId + ", productId=" + productId + ", " + super.toString()
 				+ "]";
 	}
 }

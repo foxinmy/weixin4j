@@ -34,7 +34,9 @@ public class MPPayment implements Serializable {
 	/**
 	 * 接收红包的用户的openid
 	 */
-	private String openid;
+	@JSONField(name = "openid")
+	@XmlElement(name = "openid")
+	private String openId;
 	/**
 	 * 校验用户姓名选项
 	 * 
@@ -71,17 +73,17 @@ public class MPPayment implements Serializable {
 	/**
 	 * 企业付款
 	 * @param outTradeNo 商户的订单号
-	 * @param openid 用户的openid
+	 * @param openId 用户的openid
 	 * @param checkNameType 校验用户姓名选项
 	 * @param desc 描述
 	 * @param amount 金额
 	 * @param clientIp 调用接口IP
 	 */
-	public MPPayment(String outTradeNo, String openid,
+	public MPPayment(String outTradeNo, String openId,
 			MPPaymentCheckNameType checkNameType, String desc, double amount,
 			String clientIp) {
 		this.outTradeNo = outTradeNo;
-		this.openid = openid;
+		this.openId = openId;
 		this.checkNameType = checkNameType;
 		this.desc = desc;
 		this.amount = DateUtil.formaFee2Fen(amount);
@@ -92,8 +94,8 @@ public class MPPayment implements Serializable {
 		return outTradeNo;
 	}
 
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
 	}
 
 	public MPPaymentCheckNameType getCheckNameType() {
@@ -122,7 +124,7 @@ public class MPPayment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MPPayment [outTradeNo=" + outTradeNo + ", openid=" + openid
+		return "MPPayment [outTradeNo=" + outTradeNo + ", openId=" + openId
 				+ ", checkNameType=" + checkNameType + ", userName=" + userName
 				+ ", desc=" + desc + ", amount=" + amount + ", clientIp="
 				+ clientIp + "]";

@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 模板消息
  * 
@@ -21,11 +24,13 @@ public class TemplateMessage implements Serializable {
 	/**
 	 * 用户的openid
 	 */
-	private String touser;
+	@JSONField(name = "touser")
+	private String toUser;
 	/**
 	 * 模板ID
 	 */
-	private String template_id;
+	@JSONField(name = "template_id")
+	private String templateId;
 	/**
 	 * 点击消息跳转的url
 	 */
@@ -33,21 +38,22 @@ public class TemplateMessage implements Serializable {
 	/**
 	 * 顶部的颜色值
 	 */
-	private String topcolor = "#FF0000";
+	@JSONField(name = "topcolor")
+	private String topColor = "#FF0000";
 	/**
 	 * 数据项
 	 */
 	private Map<String, Item> data;
 
-	public void pushData(String key, String value) {
-		this.data.put(key, new Item(value));
-	}
-
-	public TemplateMessage(String touser, String template_id, String title,
-			String url) {
-		this.touser = touser;
-		this.template_id = template_id;
+	@JSONCreator
+	public TemplateMessage(@JSONField(name = "toUser") String toUser,
+			@JSONField(name = "templateId") String templateId,
+			@JSONField(name = "title") String title,
+			@JSONField(name = "url") String url) {
+		this.toUser = toUser;
+		this.templateId = templateId;
 		this.url = url;
+		this.topColor = "#FF0000";
 		this.data = new HashMap<String, Item>();
 		pushData("first", title);
 	}
@@ -95,36 +101,24 @@ public class TemplateMessage implements Serializable {
 		}
 	}
 
-	public String getTouser() {
-		return touser;
+	public String getToUser() {
+		return toUser;
 	}
 
-	public void setTouser(String touser) {
-		this.touser = touser;
-	}
-
-	public String getTemplate_id() {
-		return template_id;
-	}
-
-	public void setTemplate_id(String template_id) {
-		this.template_id = template_id;
+	public String getTemplateId() {
+		return templateId;
 	}
 
 	public String getUrl() {
 		return url;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public String getTopColor() {
+		return topColor;
 	}
 
-	public String getTopcolor() {
-		return topcolor;
-	}
-
-	public void setTopcolor(String topcolor) {
-		this.topcolor = topcolor;
+	public void setTopColor(String topColor) {
+		this.topColor = topColor;
 	}
 
 	public Map<String, Item> getData() {
@@ -135,10 +129,14 @@ public class TemplateMessage implements Serializable {
 		this.data = data;
 	}
 
+	public void pushData(String key, String value) {
+		this.data.put(key, new Item(value));
+	}
+
 	@Override
 	public String toString() {
-		return "TemplateMessage [touser=" + touser + ", template_id="
-				+ template_id + ", url=" + url + ", topcolor=" + topcolor
+		return "TemplateMessage [toUser=" + toUser + ", templateId="
+				+ templateId + ", url=" + url + ", topColor=" + topColor
 				+ ", data=" + data + "]";
 	}
 }

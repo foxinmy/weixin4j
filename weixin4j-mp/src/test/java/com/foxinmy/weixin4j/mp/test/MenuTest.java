@@ -59,7 +59,7 @@ public class MenuTest extends TokenTest {
 
 		Button b1 = new Button("我要订餐", "ORDERING", ButtonType.click);
 		btnList.add(b1);
-		Button b2 = new Button("查询订单", "http://182.254.188.133:8082/order/list", ButtonType.view);
+		Button b2 = new Button("查询订单", "http://www.lendocean.com/order/list", ButtonType.view);
 		btnList.add(b2);
 		Button b3 = new Button("最新资讯", "NEWS", ButtonType.click);
 		btnList.add(b3);

@@ -26,16 +26,18 @@ public class User implements Serializable {
 	/**
 	 * 用户的唯一标识
 	 */
-	private String openid;
+	@JSONField(name = "openid")
+	private String openId;
 	/**
 	 * 用户昵称
 	 */
-	private String nickname;
+	@JSONField(name = "nickname")
+	private String nickName;
 	/**
 	 * 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
 	 */
 	@JSONField(name = "sex")
-	private Gender gender;
+	private int gender;
 	/**
 	 * 用户个人资料填写的省份
 	 */
@@ -65,44 +67,50 @@ public class User implements Serializable {
 	 * 关注时间
 	 */
 	@JSONField(name = "subscribe_time")
-	private Date subscribeTime;
+	private long subscribeTime;
 	/**
 	 * 使用语言
 	 */
-	private Lang language;
+	private String language;
 	/**
 	 * 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段
 	 */
-	private String unionid;
+	@JSONField(name = "unionid")
+	private String unionId;
 
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
 	}
 
-	public void setOpenid(String openid) {
-		this.openid = openid;
+	public void setOpenid(String openId) {
+		this.openId = openId;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getNickName() {
+		return nickName;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
-	public Gender getGender() {
+	public int getGender() {
 		return gender;
 	}
 
-	public void setGender(int sex) {
-		if (sex == 1) {
-			this.gender = Gender.male;
-		} else if (sex == 2) {
-			this.gender = Gender.female;
+	@JSONField(serialize = false)
+	public Gender getFormatGender() {
+		if (gender == 1) {
+			return Gender.male;
+		} else if (gender == 2) {
+			return Gender.female;
 		} else {
-			this.gender = Gender.unknown;
+			return Gender.unknown;
 		}
+	}
+
+	public void setGender(int gender) {
+		this.gender = gender;
 	}
 
 	public String getProvince() {
@@ -154,11 +162,16 @@ public class User implements Serializable {
 		this.privilege = privilege;
 	}
 
-	public Lang getLanguage() {
+	public String getLanguage() {
 		return language;
 	}
 
-	public void setLanguage(Lang language) {
+	@JSONField(serialize = false)
+	public Lang getFormatLanguage() {
+		return language != null ? Lang.valueOf(language) : null;
+	}
+
+	public void setLanguage(String language) {
 		this.language = language;
 	}
 
@@ -170,20 +183,25 @@ public class User implements Serializable {
 		this.isSubscribe = isSubscribe;
 	}
 
-	public Date getSubscribeTime() {
-		return (Date) subscribeTime.clone();
+	public long getSubscribeTime() {
+		return subscribeTime;
+	}
+
+	@JSONField(serialize = false)
+	public Date getFormatSubscribeTime() {
+		return new Date(subscribeTime * 1000l);
 	}
 
 	public void setSubscribeTime(long subscribeTime) {
-		this.subscribeTime = new Date(subscribeTime * 1000l);
+		this.subscribeTime = subscribeTime;
 	}
 
-	public String getUnionid() {
-		return unionid;
+	public String getUnionId() {
+		return unionId;
 	}
 
-	public void setUnionid(String unionid) {
-		this.unionid = unionid;
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
 	}
 
 	@Override
@@ -194,26 +212,18 @@ public class User implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof User) {
-			return openid.equals(((User) obj).getOpenid());
+			return openId.equals(((User) obj).getOpenId());
 		}
 		return false;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[User openid=").append(openid);
-		sb.append(", nickname=").append(nickname);
-		sb.append(", gender=").append(gender);
-		sb.append(", province=").append(province);
-		sb.append(", city=").append(city);
-		sb.append(", country=").append(country);
-		sb.append(", headimgurl=").append(headimgurl);
-		sb.append(", privilege=").append(privilege);
-		sb.append(", language=").append(language);
-		sb.append(", subscribeTime=").append(subscribeTime);
-		sb.append(", unionid=").append(unionid);
-		sb.append(", isSubscribe=").append(isSubscribe).append("]");
-		return sb.toString();
+		return "User [openId=" + openId + ", nickName=" + nickName
+				+ ", gender=" + gender + ", province=" + province + ", city="
+				+ city + ", country=" + country + ", headimgurl=" + headimgurl
+				+ ", privilege=" + privilege + ", isSubscribe=" + isSubscribe
+				+ ", subscribeTime=" + subscribeTime + ", language=" + language
+				+ ", unionId=" + unionId + "]";
 	}
 }

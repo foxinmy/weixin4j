@@ -35,9 +35,8 @@ public class UserTest extends TokenTest {
 
 	@Test
 	public void create() throws WeixinException {
-		User user = new User("u001", "jack");
-		user.setMobile("13500000000");
-		user.setPartys(1);
+		User user = new User("id", "name");
+		user.setPartyIds(1);
 		user.pushExattr("爱好", "code");
 		JsonResult result = userApi.createUser(user);
 		Assert.assertEquals("created", result.getDesc());
@@ -45,18 +44,16 @@ public class UserTest extends TokenTest {
 
 	@Test
 	public void batchUpload() throws WeixinException {
-		User user = new User("u001", "jack");
-		user.setMobile("13500000000");
-		user.setPartys(1);
+		User user = new User("id", "name");
+		user.setPartyIds(1);
 		String mediaId = mediaApi.batchUploadUsers(Arrays.asList(user));
 		System.err.println(mediaId);
 	}
 
 	@Test
 	public void update() throws WeixinException {
-		User user = new User("u001", "ted");
-		user.setMobile("13500000000");
-		user.setPartys(1);
+		User user = new User("id", "name");
+		user.setPartyIds(1);
 		user.pushExattr("爱好", "code");
 		JsonResult result = userApi.updateUser(user);
 		Assert.assertEquals("updated", result.getDesc());
