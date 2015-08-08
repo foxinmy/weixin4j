@@ -27,7 +27,7 @@ public class AgentSetter implements Serializable {
 	 * 企业应用是否打开地理位置上报
 	 */
 	@JSONField(name = "report_location_flag")
-	private String reportLocationType;
+	private ReportLocationType reportLocationType;
 	/**
 	 * 企业应用头像的mediaid，通过多媒体接口上传图片获得mediaid，上传后会自动裁剪成方形和圆形两个头像
 	 */
@@ -50,12 +50,12 @@ public class AgentSetter implements Serializable {
 	 * 是否接收用户变更通知。0：不接收；1：接收
 	 */
 	@JSONField(name = "isreportuser")
-	private int isReportUser;
+	private boolean isReportUser;
 	/**
 	 * 是否上报用户进入应用事件。0：不接收；1：接收
 	 */
 	@JSONField(name = "isreportenter")
-	private int isReportEnter;
+	private boolean isReportEnter;
 
 	public AgentSetter(int agentId) {
 		this.agentId = agentId;
@@ -65,80 +65,62 @@ public class AgentSetter implements Serializable {
 		return agentId;
 	}
 
-	public String getReportLocationType() {
+	public ReportLocationType getReportLocationType() {
 		return reportLocationType;
-	}
-
-	@JSONField(serialize = false)
-	public ReportLocationType getFormatReportLocationType() {
-		return reportLocationType != null ? ReportLocationType
-				.valueOf(reportLocationType.toUpperCase()) : null;
-	}
-
-	public void setReportLocationType(ReportLocationType reportLocationType) {
-		this.reportLocationType = reportLocationType.name();
 	}
 
 	public String getLogoMediaId() {
 		return logoMediaId;
 	}
 
-	public void setLogoMediaid(String logoMediaId) {
-		this.logoMediaId = logoMediaId;
-	}
-
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public String getRedirectDomain() {
 		return redirectDomain;
+	}
+
+	// ---------- setter 应该全部去掉
+
+	public void setReportLocationType(ReportLocationType reportLocationType) {
+		this.reportLocationType = reportLocationType;
+	}
+
+	public void setLogoMediaid(String logoMediaId) {
+		this.logoMediaId = logoMediaId;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setRedirectDomain(String redirectDomain) {
 		this.redirectDomain = redirectDomain;
 	}
 
-	public boolean getIsReportUser() {
-		return isReportUser == 1;
-	}
-
-	public void setIsReportUser(boolean isReportUser) {
-		this.isReportUser = isReportUser ? 1 : 0;
-	}
-
-	public boolean getIsReportEnter() {
-		return isReportEnter == 1;
-	}
-
-	public void setIsReportEnter(boolean isReportEnter) {
-		this.isReportEnter = isReportEnter ? 1 : 0;
-	}
-
-	// ---------- setter 应该全部去掉
-	
 	public void setAgentId(int agentId) {
 		this.agentId = agentId;
 	}
 
-	public void setReportLocationType(String reportLocationType) {
-		this.reportLocationType = reportLocationType;
-	}
-
 	public void setLogoMediaId(String logoMediaId) {
 		this.logoMediaId = logoMediaId;
+	}
+
+	public void setReportUser(boolean isReportUser) {
+		this.isReportUser = isReportUser;
+	}
+
+	public void setReportEnter(boolean isReportEnter) {
+		this.isReportEnter = isReportEnter;
 	}
 
 	@Override

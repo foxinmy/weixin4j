@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.qy.model;
 
 import java.io.Serializable;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -14,9 +15,9 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @see
  */
 public class Callback implements Serializable {
-	
+
 	private static final long serialVersionUID = 8575808461248605317L;
-	
+
 	/**
 	 * 企业应用接收企业号推送请求的访问协议和地址，支持http或https协议
 	 */
@@ -31,7 +32,10 @@ public class Callback implements Serializable {
 	@JSONField(name = "encodingaeskey")
 	private String aesKey;
 
-	public Callback(String url, String token, String aesKey) {
+	@JSONCreator
+	public Callback(@JSONField(name = "url") String url,
+			@JSONField(name = "token") String token,
+			@JSONField(name = "aesKey") String aesKey) {
 		this.url = url;
 		this.token = token;
 		this.aesKey = aesKey;

@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.socket;
 
+import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.FORBIDDEN;
 import static io.netty.handler.codec.http.HttpResponseStatus.METHOD_NOT_ALLOWED;
 import io.netty.channel.ChannelFutureListener;
@@ -55,6 +56,11 @@ public class WeixinRequestHandler extends
 	protected void channelRead0(ChannelHandlerContext ctx, WeixinRequest request)
 			throws WeixinException {
 		final AesToken aesToken = request.getAesToken();
+		if (aesToken == null) {
+			ctx.writeAndFlush(HttpUtil.createHttpResponse(BAD_REQUEST))
+					.addListener(ChannelFutureListener.CLOSE);
+			return;
+		}
 		if (request.getMethod().equals(HttpMethod.GET.name())) {
 			if (MessageUtil.signature(aesToken.getToken(),
 					request.getTimeStamp(), request.getNonce()).equals(
@@ -62,8 +68,7 @@ public class WeixinRequestHandler extends
 				ctx.write(new SingleResponse(request.getEchoStr()));
 				return;
 			}
-			ctx.writeAndFlush(
-					HttpUtil.createHttpResponse(FORBIDDEN))
+			ctx.writeAndFlush(HttpUtil.createHttpResponse(FORBIDDEN))
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		} else if (request.getMethod().equals(HttpMethod.POST.name())) {
@@ -71,8 +76,7 @@ public class WeixinRequestHandler extends
 					&& !MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce()).equals(
 							request.getSignature())) {
-				ctx.writeAndFlush(
-						HttpUtil.createHttpResponse(FORBIDDEN))
+				ctx.writeAndFlush(HttpUtil.createHttpResponse(FORBIDDEN))
 						.addListener(ChannelFutureListener.CLOSE);
 				return;
 			}
@@ -81,15 +85,13 @@ public class WeixinRequestHandler extends
 						request.getTimeStamp(), request.getNonce(),
 						request.getEncryptContent()).equals(
 						request.getMsgSignature())) {
-					ctx.writeAndFlush(
-							HttpUtil.createHttpResponse(FORBIDDEN))
+					ctx.writeAndFlush(HttpUtil.createHttpResponse(FORBIDDEN))
 							.addListener(ChannelFutureListener.CLOSE);
 					return;
 				}
 			}
 		} else {
-			ctx.writeAndFlush(
-					HttpUtil.createHttpResponse(METHOD_NOT_ALLOWED))
+			ctx.writeAndFlush(HttpUtil.createHttpResponse(METHOD_NOT_ALLOWED))
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		}
