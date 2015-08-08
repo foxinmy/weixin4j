@@ -65,20 +65,22 @@ public class DefaultMessageMatcher implements WeixinMessageMatcher {
 
 	private void initGeneralMessageClass() {
 		for (AccountType accountType : AccountType.values()) {
-			messageClassMap.put(new WeixinMessageKey(MessageType.text.name(), null,
-					accountType), TextMessage.class);
-			messageClassMap.put(new WeixinMessageKey(MessageType.image.name(), null,
-					accountType), ImageMessage.class);
-			messageClassMap.put(new WeixinMessageKey(MessageType.voice.name(), null,
-					accountType), VoiceMessage.class);
-			messageClassMap.put(new WeixinMessageKey(MessageType.video.name(), null,
-					accountType), VideoMessage.class);
-			messageClassMap.put(new WeixinMessageKey(MessageType.shortvideo.name(),
+			messageClassMap.put(new WeixinMessageKey(MessageType.text.name(),
+					null, accountType), TextMessage.class);
+			messageClassMap.put(new WeixinMessageKey(MessageType.image.name(),
+					null, accountType), ImageMessage.class);
+			messageClassMap.put(new WeixinMessageKey(MessageType.voice.name(),
+					null, accountType), VoiceMessage.class);
+			messageClassMap.put(new WeixinMessageKey(MessageType.video.name(),
 					null, accountType), VideoMessage.class);
-			messageClassMap.put(new WeixinMessageKey(MessageType.location.name(),
-					null, accountType), LocationMessage.class);
-			messageClassMap.put(new WeixinMessageKey(MessageType.link.name(), null,
-					accountType), LinkMessage.class);
+			messageClassMap.put(
+					new WeixinMessageKey(MessageType.shortvideo.name(), null,
+							accountType), VideoMessage.class);
+			messageClassMap.put(
+					new WeixinMessageKey(MessageType.location.name(), null,
+							accountType), LocationMessage.class);
+			messageClassMap.put(new WeixinMessageKey(MessageType.link.name(),
+					null, accountType), LinkMessage.class);
 		}
 	}
 
@@ -87,19 +89,21 @@ public class DefaultMessageMatcher implements WeixinMessageMatcher {
 		EventType[] eventTypes = new EventType[] { EventType.subscribe,
 				EventType.unsubscribe };
 		for (EventType eventType : eventTypes) {
-			messageClassMap.put(new WeixinMessageKey(messageType, eventType.name(),
-					AccountType.MP),
+			messageClassMap.put(
+					new WeixinMessageKey(messageType, eventType.name(),
+							AccountType.MP),
 					com.foxinmy.weixin4j.mp.event.ScribeEventMessage.class);
 		}
 		for (EventType eventType : eventTypes) {
-			messageClassMap.put(new WeixinMessageKey(messageType, eventType.name(),
-					AccountType.QY),
+			messageClassMap.put(
+					new WeixinMessageKey(messageType, eventType.name(),
+							AccountType.QY),
 					com.foxinmy.weixin4j.qy.event.ScribeEventMessage.class);
 		}
 		for (AccountType accountType : AccountType.values()) {
-			messageClassMap.put(
-					new WeixinMessageKey(messageType, EventType.location.name(),
-							accountType), LocationEventMessage.class);
+			messageClassMap.put(new WeixinMessageKey(messageType,
+					EventType.location.name(), accountType),
+					LocationEventMessage.class);
 			messageClassMap.put(new WeixinMessageKey(messageType,
 					EventType.location_select.name(), accountType),
 					MenuLocationEventMessage.class);
@@ -128,8 +132,9 @@ public class DefaultMessageMatcher implements WeixinMessageMatcher {
 	private void initMpEventMessageClass() {
 		String messageType = MessageType.event.name();
 		AccountType accountType = AccountType.MP;
-		messageClassMap.put(new WeixinMessageKey(messageType, EventType.scan.name(),
-				accountType),
+		messageClassMap.put(
+				new WeixinMessageKey(messageType, EventType.scan.name(),
+						accountType),
 				com.foxinmy.weixin4j.mp.event.ScanEventMessage.class);
 		messageClassMap.put(new WeixinMessageKey(messageType,
 				EventType.masssendjobfinish.name(), accountType),
@@ -152,11 +157,17 @@ public class DefaultMessageMatcher implements WeixinMessageMatcher {
 		String messageType = MessageType.event.name();
 		AccountType accountType = AccountType.QY;
 		messageClassMap.put(new WeixinMessageKey(messageType,
+				EventType.batch_job_result.name(), null),
+				BatchjobresultMessage.class);
+		messageClassMap.put(new WeixinMessageKey(messageType,
 				EventType.batch_job_result.name(), accountType),
 				BatchjobresultMessage.class);
-		messageClassMap.put(
-				new WeixinMessageKey(messageType, EventType.enter_agent.name(),
-						accountType), EnterAgentEventMessage.class);
+		messageClassMap.put(new WeixinMessageKey(messageType,
+				EventType.batch_job_result.name(), AccountType.MP),
+				BatchjobresultMessage.class);
+		messageClassMap.put(new WeixinMessageKey(messageType,
+				EventType.enter_agent.name(), accountType),
+				EnterAgentEventMessage.class);
 	}
 
 	@Override

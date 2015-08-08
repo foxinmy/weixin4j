@@ -523,7 +523,12 @@ public class MediaApi extends QyApi {
 					public boolean apply(Object object, String name,
 							Object value) {
 						if (column.containsKey(name)) {
-							column.put(name, value);
+							if (name.equalsIgnoreCase("department")) {
+								column.put(name, StringUtil.join(
+										(JSONArray) JSON.toJSON(value), ';'));
+							} else {
+								column.put(name, value);
+							}
 						}
 						return true;
 					}
