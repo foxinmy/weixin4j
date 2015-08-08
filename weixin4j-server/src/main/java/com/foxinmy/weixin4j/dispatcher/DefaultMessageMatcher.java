@@ -155,18 +155,12 @@ public class DefaultMessageMatcher implements WeixinMessageMatcher {
 
 	private void initQyEventMessageClass() {
 		String messageType = MessageType.event.name();
-		AccountType accountType = AccountType.QY;
-		messageClassMap.put(new WeixinMessageKey(messageType,
-				EventType.batch_job_result.name(), null),
-				BatchjobresultMessage.class);
-		messageClassMap.put(new WeixinMessageKey(messageType,
-				EventType.batch_job_result.name(), accountType),
-				BatchjobresultMessage.class);
+		// batch_job_result消息不好区分微信号类型
 		messageClassMap.put(new WeixinMessageKey(messageType,
 				EventType.batch_job_result.name(), AccountType.MP),
 				BatchjobresultMessage.class);
 		messageClassMap.put(new WeixinMessageKey(messageType,
-				EventType.enter_agent.name(), accountType),
+				EventType.enter_agent.name(), AccountType.QY),
 				EnterAgentEventMessage.class);
 	}
 
