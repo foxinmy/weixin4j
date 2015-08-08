@@ -56,16 +56,32 @@ public class WeixinRequestHandler extends
 	protected void channelRead0(ChannelHandlerContext ctx, WeixinRequest request)
 			throws WeixinException {
 		final AesToken aesToken = request.getAesToken();
-		if (aesToken == null) {
+		if (aesToken == null
+				|| (StringUtil.isBlank(request.getSignature()) && StringUtil
+						.isBlank(request.getMsgSignature()))) {
 			ctx.writeAndFlush(HttpUtil.createHttpResponse(BAD_REQUEST))
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		}
+		/**
+		 * 公众平台:无论Get,Post都带signature参数,当开启aes模式时带msg_signature参数
+		 * 企业号:无论Get,Post都带msg_signature参数
+		 **/
 		if (request.getMethod().equals(HttpMethod.GET.name())) {
-			if (MessageUtil.signature(aesToken.getToken(),
-					request.getTimeStamp(), request.getNonce()).equals(
-					request.getSignature())) {
+			if (!StringUtil.isBlank(request.getSignature())
+					&& MessageUtil.signature(aesToken.getToken(),
+							request.getTimeStamp(), request.getNonce()).equals(
+							request.getSignature())) {
 				ctx.write(new SingleResponse(request.getEchoStr()));
+				return;
+			}
+			if (!StringUtil.isBlank(request.getMsgSignature())
+					&& MessageUtil.signature(aesToken.getToken(),
+							request.getTimeStamp(), request.getNonce(),
+							request.getEchoStr()).equals(
+							request.getMsgSignature())) {
+				ctx.write(new SingleResponse(MessageUtil.aesDecrypt(null,
+						aesToken.getAesKey(), request.getEchoStr())));
 				return;
 			}
 			ctx.writeAndFlush(HttpUtil.createHttpResponse(FORBIDDEN))
@@ -80,15 +96,14 @@ public class WeixinRequestHandler extends
 						.addListener(ChannelFutureListener.CLOSE);
 				return;
 			}
-			if (request.getEncryptType() == EncryptType.AES) {
-				if (!MessageUtil.signature(aesToken.getToken(),
-						request.getTimeStamp(), request.getNonce(),
-						request.getEncryptContent()).equals(
-						request.getMsgSignature())) {
-					ctx.writeAndFlush(HttpUtil.createHttpResponse(FORBIDDEN))
-							.addListener(ChannelFutureListener.CLOSE);
-					return;
-				}
+			if (request.getEncryptType() == EncryptType.AES
+					&& !MessageUtil.signature(aesToken.getToken(),
+							request.getTimeStamp(), request.getNonce(),
+							request.getEncryptContent()).equals(
+							request.getMsgSignature())) {
+				ctx.writeAndFlush(HttpUtil.createHttpResponse(FORBIDDEN))
+						.addListener(ChannelFutureListener.CLOSE);
+				return;
 			}
 		} else {
 			ctx.writeAndFlush(HttpUtil.createHttpResponse(METHOD_NOT_ALLOWED))

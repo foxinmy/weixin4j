@@ -159,7 +159,7 @@ public final class MessageUtil {
 			throw new WeixinException("-40008", "xml内容不合法:" + e.getMessage());
 		}
 		// 校验appId是否一致
-		if (!fromAppId.trim().equals(appId)) {
+		if (appId != null && !fromAppId.trim().equals(appId)) {
 			throw new WeixinException("-40005", "校验AppID失败,expect " + appId
 					+ ",but actual is " + fromAppId);
 		}
