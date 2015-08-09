@@ -15,12 +15,12 @@ base on netty.
 
 如何使用
 -------
-###maven依赖(1.0.3,2015-07-04 released)
+###maven依赖(1.0.4,2015-08-09 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.0.3</version>
+	    <version>1.0.4</version>
 	</dependency>
 ###编写服务启动类
 明文模式并总是调试输出微信请求信息的服务启动类.
@@ -66,21 +66,21 @@ base on netty.
 		WeixinMessageInterceptor interceptor = new MessageInterceptorAdapter() {
 			@Override
 			public boolean preHandle(ChannelHandlerContext context,
-					WeixinRequest request, Object message,
+					WeixinRequest request, WeixinResponse response, Object message,
 					WeixinMessageHandler handler) throws WeixinException {
 				context.write(new TextResponse("所有消息被拦截了！"));
 				return false;
 			}
 			@Override
 			public void postHandle(ChannelHandlerContext context,
-					WeixinRequest request, WeixinResponse response,
+					WeixinRequest request, WeixinResponse response, WeixinResponse response,
 					Object message, WeixinMessageHandler handler)
 					throws WeixinException {
 				System.err.println("preHandle返回为true,执行handler后");
 			}
 			@Override
 			public void afterCompletion(ChannelHandlerContext context,
-					WeixinRequest request, Object message,
+					WeixinRequest request, WeixinResponse response, Object message,
 					WeixinMessageHandler handler, WeixinException exception)
 					throws WeixinException {
 				System.err.println("请求处理完毕");
