@@ -93,3 +93,5 @@
   + 会话API暴露到WeixinProxy类
   
   + 重命名NotifyApi#sendNotify为sendNotifyMessage
+ 
+  + version upgrade to 1.5.2

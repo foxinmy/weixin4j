@@ -81,25 +81,23 @@ public final class WeixinServerBootstrap {
 	 * 
 	 * 明文模式
 	 * 
-	 * @param weixinid
-	 *            微信号(原始ID/appid/corpid)
 	 * @param token
 	 *            开发者token
 	 * 
 	 */
-	public WeixinServerBootstrap(String weixinid, String token) {
-		this(weixinid, token, null);
+	public WeixinServerBootstrap(String token) {
+		this(null, token, null);
 	}
 
 	/**
-	 * 兼容模式 & 密文模式
+	 * 明文模式 & 兼容模式 & 密文模式
 	 * 
 	 * @param appid
-	 *            公众号的应用ID(appid/corpid)
+	 *            公众号的应用ID(appid/corpid) 密文&兼容模式下需要填写
 	 * @param token
-	 *            开发者填写的token
+	 *            开发者填写的token 无论哪种模式都需要填写
 	 * @param aesKey
-	 *            消息加密的密钥
+	 *            消息加密的密钥 密文&兼容模式下需要填写
 	 */
 	public WeixinServerBootstrap(String appid, String token, String aesKey) {
 		this(new AesToken(appid, token, aesKey));
@@ -142,12 +140,13 @@ public final class WeixinServerBootstrap {
 			throw new IllegalArgumentException("AesToken not be null");
 		}
 		this.aesTokenMap = new HashMap<String, AesToken>();
-		for (AesToken aesToken : aesTokens) {
-			this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
-		}
-		// default..
 		if (aesTokens.length == 1) {
+			this.aesTokenMap.put(aesTokens[0].getWeixinId(), aesTokens[0]);
 			this.aesTokenMap.put(null, aesTokens[0]);
+		} else {
+			for (AesToken aesToken : aesTokens) {
+				this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
+			}
 		}
 		this.messageHandlerList = new LinkedList<WeixinMessageHandler>();
 		this.messageInterceptorList = new LinkedList<WeixinMessageInterceptor>();

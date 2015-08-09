@@ -39,7 +39,6 @@ public class WeixinResponseEncoder extends
 			List<Object> out) throws WeixinException {
 		WeixinMessageTransfer messageTransfer = ctx.channel()
 				.attr(Consts.MESSAGE_TRANSFER_KEY).get();
-		AesToken aesToken = messageTransfer.getAesToken();
 		EncryptType encryptType = messageTransfer.getEncryptType();
 		StringBuilder content = new StringBuilder();
 		content.append("<xml>");
@@ -55,6 +54,7 @@ public class WeixinResponseEncoder extends
 		content.append(response.toContent());
 		content.append("</xml>");
 		if (encryptType == EncryptType.AES) {
+			AesToken aesToken = messageTransfer.getAesToken();
 			String nonce = RandomUtil.generateString(32);
 			String timestamp = Long
 					.toString(System.currentTimeMillis() / 1000l);

@@ -24,9 +24,7 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
  */
 public class MessageServerStartup {
 
-	// 微信号(原始ID)
-	final String openid = "gh_22b350df957b";
-	// 应用ID
+	// 公众号ID
 	final String appid = "wx4ab8f8de58159a57";
 	// 开发者token
 	final String token = "weixin4j";
@@ -40,8 +38,8 @@ public class MessageServerStartup {
 	 */
 	public void test1() throws WeixinException {
 		// 所有请求都回复调试的文本消息
-		new WeixinServerBootstrap(openid, token).addHandler(
-				DebugMessageHandler.global).startup();
+		new WeixinServerBootstrap(token).addHandler(DebugMessageHandler.global)
+				.startup();
 	}
 
 	/**
@@ -77,8 +75,8 @@ public class MessageServerStartup {
 	public void test4() throws WeixinException {
 		// 扫描包加载消息处理器
 		String packageToScan = "com.foxinmy.weixin4j.handler";
-		new WeixinServerBootstrap(openid, token).handlerPackagesToScan(
-				packageToScan).startup();
+		new WeixinServerBootstrap(token).handlerPackagesToScan(packageToScan)
+				.startup();
 	}
 
 	public void test5() throws WeixinException {
@@ -108,7 +106,7 @@ public class MessageServerStartup {
 				System.err.println("请求处理完毕");
 			}
 		};
-		new WeixinServerBootstrap(openid, token).addInterceptor(interceptor)
+		new WeixinServerBootstrap(token).addInterceptor(interceptor)
 				.openAlwaysResponse().startup();
 	}
 

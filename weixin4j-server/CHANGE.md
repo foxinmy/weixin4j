@@ -77,3 +77,9 @@
 * 2015-08-06
 
   + 调整`LocationEventMessage`类中的经纬度字段类型为double
+  
+* 2015-08-09
+ 
+  + version upgrade to 1.0.4
+  
+  + 调整WeixinServerBootstrap明文构造函数的参数为token
