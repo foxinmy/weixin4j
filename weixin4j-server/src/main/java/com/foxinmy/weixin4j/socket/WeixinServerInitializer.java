@@ -28,9 +28,6 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 
 	public WeixinServerInitializer(Map<String, AesToken> aesTokenMap,
 			WeixinMessageDispatcher messageDispatcher) throws WeixinException {
-		if (aesTokenMap.isEmpty()) {
-			throw new WeixinException("AesToken not be null.");
-		}
 		this.aesTokenMap = aesTokenMap;
 		this.messageDispatcher = messageDispatcher;
 	}
