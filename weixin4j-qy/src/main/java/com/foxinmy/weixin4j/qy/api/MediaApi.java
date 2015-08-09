@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -523,9 +524,10 @@ public class MediaApi extends QyApi {
 					public boolean apply(Object object, String name,
 							Object value) {
 						if (column.containsKey(name)) {
-							if (name.equalsIgnoreCase("department")) {
-								column.put(name, StringUtil.join(
-										(JSONArray) JSON.toJSON(value), ';'));
+							if (value instanceof Collection) {
+								column.put(name,
+										StringUtil.join(((Collection<?>) value)
+												.iterator(), ';'));
 							} else {
 								column.put(name, value);
 							}

@@ -86,4 +86,10 @@
   
 * 2015-08-01
 
-  + 新增聊天服务接口[ChatApi](./src/main/java/com/foxinmy/weixin4j/qy/api/ChatApi.java)
+  + 新增会话服务接口[ChatApi](./src/main/java/com/foxinmy/weixin4j/qy/api/ChatApi.java)
+  
+* 2015-08-09
+ 
+  + 会话API暴露到WeixinProxy类
+  
+  + 重命名NotifyApi#sendNotify为sendNotifyMessage

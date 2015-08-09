@@ -140,7 +140,7 @@ public class ChatApi extends QyApi {
 	/**
 	 * 清除会话未读状态
 	 * 
-	 * @param v
+	 * @param targetId
 	 *            会话值，为userid|chatid，分别表示：成员id|会话id
 	 * @param owner
 	 *            会话所有者的userid
@@ -151,7 +151,7 @@ public class ChatApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E6.B8.85.E9.99.A4.E4.BC.9A.E8.AF.9D.E6.9C.AA.E8.AF.BB.E7.8A.B6.E6.80.81">清除会话未读状态</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult clearNotify(String targetId, String owner,
+	public JsonResult clearChatNotify(String targetId, String owner,
 			ChatType chatType) throws WeixinException {
 		JSONObject chat = new JSONObject();
 		chat.put("type", chatType.name());
@@ -171,13 +171,15 @@ public class ChatApi extends QyApi {
 	 * ，对微信端进行提醒。
 	 * 
 	 * @param chatMutes
+	 *            提醒参数
+	 * @see com.foxinmy.weixin4j.qy.model.ChatMute
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E8.AE.BE.E7.BD.AE.E6.88.90.E5.91.98.E6.96.B0.E6.B6.88.E6.81.AF.E5.85.8D.E6.89.93.E6.89.B0"
 	 *      >设置成员新消息免打扰</a>
 	 * @return 列表中不存在的成员，剩余合法成员会继续执行。
 	 * @throws WeixinException
 	 */
-	public List<String> setMute(List<ChatMute> chatMutes)
+	public List<String> setChatMute(List<ChatMute> chatMutes)
 			throws WeixinException {
 		JSONObject mute = new JSONObject();
 		mute.put("user_mute_list", chatMutes);
@@ -201,7 +203,8 @@ public class ChatApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E5.8F.91.E6.B6.88.E6.81.AF">发送消息</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult sendMessage(ChatMessage message) throws WeixinException {
+	public JsonResult sendChatMessage(ChatMessage message)
+			throws WeixinException {
 		ChatTuple tuple = message.getChatTuple();
 		String msgtype = tuple.getMessageType();
 		JSONObject msg = new JSONObject();

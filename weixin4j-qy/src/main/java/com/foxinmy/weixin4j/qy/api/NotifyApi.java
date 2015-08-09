@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.NotifyTuple;
 
 /**
- * 发送消息API
+ * 客服消息API
  * 
  * @className NotifyApi
  * @author jy.hu
@@ -46,7 +46,7 @@ public class NotifyApi extends QyApi {
 	 * 3）发送人员不在应用可见范围内：不执行发送任务，返回首个出错的userid</br>
 	 * </p>
 	 * 
-	 * @param notify
+	 * @param message
 	 *            客服消息对象
 	 * @return 如果无权限，则本次发送失败；如果收件人不存在或未关注，发送仍然执行。两种情况下均返回无效的部分</br> { "errcode":
 	 *         0, "errmsg": "ok", "invaliduser": "UserID1",
@@ -65,11 +65,12 @@ public class NotifyApi extends QyApi {
 	 * @see com.foxinmy.weixin4j.tuple.MpNews
 	 * @see com.foxinmy.weixin4j.qy.message.NotifyMessage
 	 */
-	public JSONObject sendNotify(NotifyMessage notify) throws WeixinException {
-		NotifyTuple tuple = notify.getTuple();
-		Map<String, String> target = notify.getTarget().getParameter();
+	public JSONObject sendNotifyMessage(NotifyMessage message)
+			throws WeixinException {
+		NotifyTuple tuple = message.getTuple();
+		Map<String, String> target = message.getTarget().getParameter();
 		String msgtype = tuple.getMessageType();
-		JSONObject obj = (JSONObject) JSON.toJSON(notify);
+		JSONObject obj = (JSONObject) JSON.toJSON(message);
 		obj.put("msgtype", msgtype);
 		obj.put(msgtype, tuple);
 		if (target == null || target.isEmpty()) {

@@ -15,6 +15,7 @@ import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.BatchApi;
+import com.foxinmy.weixin4j.qy.api.ChatApi;
 import com.foxinmy.weixin4j.qy.api.HelperApi;
 import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.qy.api.MenuApi;
@@ -23,17 +24,21 @@ import com.foxinmy.weixin4j.qy.api.PartyApi;
 import com.foxinmy.weixin4j.qy.api.QyApi;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
+import com.foxinmy.weixin4j.qy.message.ChatMessage;
 import com.foxinmy.weixin4j.qy.message.NotifyMessage;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentOverview;
 import com.foxinmy.weixin4j.qy.model.AgentSetter;
 import com.foxinmy.weixin4j.qy.model.BatchResult;
 import com.foxinmy.weixin4j.qy.model.Callback;
+import com.foxinmy.weixin4j.qy.model.ChatInfo;
+import com.foxinmy.weixin4j.qy.model.ChatMute;
 import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
+import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -61,6 +66,7 @@ public class WeixinProxy {
 	private final HelperApi helperApi;
 	private final AgentApi agentApi;
 	private final BatchApi batchApi;
+	private final ChatApi chatApi;
 
 	private final TokenHolder tokenHolder;
 
@@ -118,6 +124,7 @@ public class WeixinProxy {
 		this.notifyApi = new NotifyApi(tokenHolder);
 		this.menuApi = new MenuApi(tokenHolder);
 		this.mediaApi = new MediaApi(tokenHolder);
+		this.chatApi = new ChatApi(tokenHolder);
 	}
 
 	public TokenHolder getTokenHolder() {
@@ -125,14 +132,14 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 发送消息(需要管理员对应用有使用权限，对收件人touser、toparty、totag有查看权限，否则本次调用失败)
+	 * 发送客服消息(需要管理员对应用有使用权限，对收件人touser、toparty、totag有查看权限，否则本次调用失败)
 	 * <p>
 	 * 1） 发送人员列表存在错误的userid：执行发送，开发者需注意返回结果说明</br>
 	 * 2）发送人员不在通讯录权限范围内：不执行发送任务，返回首个出错的userid</br>
 	 * 3）发送人员不在应用可见范围内：不执行发送任务，返回首个出错的userid</br>
 	 * </p>
 	 * 
-	 * @param notify
+	 * @param message
 	 *            客服消息对象
 	 * @return 
 	 *         如果对应用或收件人、部门、标签任何一个无权限，则本次发送失败；如果收件人、部门或标签不存在，发送仍然执行，但返回无效的部分</br>
@@ -153,8 +160,9 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.tuple.MpNews
 	 * @see com.foxinmy.weixin4j.qy.message.NotifyMessage
 	 */
-	public JSONObject sendNotify(NotifyMessage notify) throws WeixinException {
-		return notifyApi.sendNotify(notify);
+	public JSONObject sendNotifyMessage(NotifyMessage message)
+			throws WeixinException {
+		return notifyApi.sendNotifyMessage(message);
 	}
 
 	/**
@@ -1040,6 +1048,136 @@ public class WeixinProxy {
 	public String openid2userid(String openid) throws WeixinException {
 		return userApi.openid2userid(openid);
 	}
-	
+
+	/**
+	 * 创建会话 <font color="red">如果会话id为空,程序会自动生成一个唯一ID</font>
+	 * 
+	 * @param chatInfo
+	 *            会话信息
+	 * @return 会话ID
+	 * @see com.foxinmy.weixin4j.qy.api.ChatApi
+	 * @see com.foxinmy.weixin4j.qy.model.ChatInfo
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E5.88.9B.E5.BB.BA.E4.BC.9A.E8.AF.9D">创建会话</a>
+	 * @throws WeixinException
+	 */
+	public String createChat(ChatInfo chatInfo) throws WeixinException {
+		return chatApi.createChat(chatInfo);
+	}
+
+	/**
+	 * 获取会话
+	 * 
+	 * @param chatId
+	 *            会话ID
+	 * @return 会话信息
+	 * @see com.foxinmy.weixin4j.qy.api.ChatApi
+	 * @see com.foxinmy.weixin4j.qy.model.ChatInfo
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E8.8E.B7.E5.8F.96.E4.BC.9A.E8.AF.9D">获取会话</a>
+	 * @throws WeixinException
+	 */
+	public ChatInfo getChat(String chatId) throws WeixinException {
+		return chatApi.getChat(chatId);
+	}
+
+	/**
+	 * 更新会话
+	 * 
+	 * @param chatInfo
+	 *            会话信息 至少保持会话ID不能为空
+	 * @param operator
+	 *            操作人userid
+	 * @param addUsers
+	 *            会话新增成员列表
+	 * @param deleteUsers
+	 *            会话退出成员列表
+	 * @return 处理结果
+	 * @see com.foxinmy.weixin4j.qy.api.ChatApi
+	 * @see com.foxinmy.weixin4j.qy.model.ChatInfo
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E4.BF.AE.E6.94.B9.E4.BC.9A.E8.AF.9D.E4.BF.A1.E6.81.AF">修改会话信息</a>
+	 * @throws WeixinException
+	 */
+	public JsonResult updateChat(ChatInfo chatInfo, String operator,
+			List<String> addUsers, List<String> deleteUsers)
+			throws WeixinException {
+		return chatApi.updateChat(chatInfo, operator, addUsers, deleteUsers);
+	}
+
+	/**
+	 * 退出会话
+	 * 
+	 * @param chatId
+	 *            会话ID
+	 * @param operator
+	 *            操作人userid
+	 * @return 处理结果
+	 * @see com.foxinmy.weixin4j.qy.api.ChatApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E9.80.80.E5.87.BA.E4.BC.9A.E8.AF.9D">退出会话</a>
+	 * @throws WeixinException
+	 */
+	public JsonResult quitChat(String chatId, String operator)
+			throws WeixinException {
+		return chatApi.quitChat(chatId, operator);
+	}
+
+	/**
+	 * 清除会话未读状态
+	 * 
+	 * @param targetId
+	 *            会话值，为userid|chatid，分别表示：成员id|会话id
+	 * @param owner
+	 *            会话所有者的userid
+	 * @param chatType
+	 *            会话类型：single|group，分别表示：群聊|单聊
+	 * @return 处理结果
+	 * @see com.foxinmy.weixin4j.qy.api.ChatApi
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E6.B8.85.E9.99.A4.E4.BC.9A.E8.AF.9D.E6.9C.AA.E8.AF.BB.E7.8A.B6.E6.80.81">清除会话未读状态</a>
+	 * @throws WeixinException
+	 */
+	public JsonResult clearChatNotify(String targetId, String owner,
+			ChatType chatType) throws WeixinException {
+		return chatApi.clearChatNotify(targetId, owner, chatType);
+	}
+
+	/**
+	 * 设置成员接收到的消息是否提醒。主要场景是用于对接企业im的在线状态，如成员处于在线状态时，可以设置该成员的消息免打扰。当成员离线时，关闭免打扰状态
+	 * ，对微信端进行提醒。
+	 * 
+	 * @param chatMutes
+	 *            提醒参数
+	 * @see com.foxinmy.weixin4j.qy.api.ChatApi
+	 * @see com.foxinmy.weixin4j.qy.model.ChatMute
+	 * @see <a href=
+	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E8.AE.BE.E7.BD.AE.E6.88.90.E5.91.98.E6.96.B0.E6.B6.88.E6.81.AF.E5.85.8D.E6.89.93.E6.89.B0"
+	 *      >设置成员新消息免打扰</a>
+	 * @return 列表中不存在的成员，剩余合法成员会继续执行。
+	 * @throws WeixinException
+	 */
+	public List<String> setChatMute(List<ChatMute> chatMutes)
+			throws WeixinException {
+		return chatApi.setChatMute(chatMutes);
+	}
+
+	/**
+	 * 发送会话消息
+	 * 
+	 * @param message
+	 *            消息对象
+	 * @return 处理结果
+	 * @see com.foxinmy.weixin4j.qy.api.ChatApi
+	 * @see com.foxinmy.weixin4j.qy.message.ChatMessage
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E5.8F.91.E6.B6.88.E6.81.AF">发送消息</a>
+	 * @throws WeixinException
+	 */
+	public JsonResult sendChatMessage(ChatMessage message)
+			throws WeixinException {
+		return chatApi.sendChatMessage(message);
+	}
+
 	public final static String VERSION = "1.5.2";
 }

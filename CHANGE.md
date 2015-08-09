@@ -428,3 +428,9 @@
 * 2015-08-07
   
   + 主要去掉了实体类中的字段上@JSONFiled上的deserialize=false属性和不合理的format方法
+  
+* 2015-08-09
+ 
+  + **weixin4j-qy**: 会话API暴露到WeixinProxy类
+  
+  + **weixin4j-qy**: 重命名NotifyApi#sendNotify为sendNotifyMessage

@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.tuple.ChatTuple;
 
 /**
- * 聊天消息对象
+ * 会话消息对象
  * 
  * @className ChatMessage
  * @author jy

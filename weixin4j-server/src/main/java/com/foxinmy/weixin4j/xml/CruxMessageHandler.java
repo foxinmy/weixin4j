@@ -30,7 +30,7 @@ public class CruxMessageHandler extends DefaultHandler {
 	private String toUserName;
 	private String msgType;
 	private String eventType;
-	private boolean agentId;
+	private boolean hasAgent;
 	private Set<String> nodeNames;
 
 	private String content;
@@ -41,7 +41,7 @@ public class CruxMessageHandler extends DefaultHandler {
 		toUserName = null;
 		msgType = null;
 		eventType = null;
-		agentId = false;
+		hasAgent = false;
 		nodeNames = new HashSet<String>();
 	}
 
@@ -57,8 +57,8 @@ public class CruxMessageHandler extends DefaultHandler {
 			msgType = content.toLowerCase();
 		} else if (localName.equalsIgnoreCase("event")) {
 			eventType = content.toLowerCase();
-		} else if (localName.equalsIgnoreCase("agentId")) {
-			agentId = true;
+		} else if (localName.startsWith("agent")) {
+			hasAgent = true;
 		}
 	}
 
@@ -69,7 +69,7 @@ public class CruxMessageHandler extends DefaultHandler {
 	}
 
 	public AccountType getAccountType() {
-		if (agentId) {
+		if (hasAgent) {
 			return AccountType.QY;
 		}
 		if (StringUtil.isBlank(msgType) && StringUtil.isBlank(eventType)) {

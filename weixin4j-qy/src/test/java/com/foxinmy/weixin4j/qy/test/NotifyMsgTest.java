@@ -38,33 +38,33 @@ public class NotifyMsgTest extends TokenTest {
 	@Test
 	public void text() throws WeixinException {
 		NotifyMessage notify = new NotifyMessage(0, new Text("content"));
-		System.out.println(notifyApi.sendNotify(notify));
+		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 
 	@Test
 	public void image() throws WeixinException {
 		NotifyMessage notify = new NotifyMessage(0, new Image("123"));
-		System.out.println(notifyApi.sendNotify(notify));
+		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 
 	@Test
 	public void voice() throws WeixinException {
 		NotifyMessage notify = new NotifyMessage(0, new Voice("123"));
-		System.out.println(notifyApi.sendNotify(notify));
+		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 
 	@Test
 	public void video() throws WeixinException {
 		NotifyMessage notify = new NotifyMessage(0, new Video("mediaId",
 				"title", "desc"));
-		System.out.println(notifyApi.sendNotify(notify));
+		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 
 	@Test
 	public void file() throws WeixinException {
 		File file = new File("file");
 		NotifyMessage notify = new NotifyMessage(0, file);
-		System.out.println(notifyApi.sendNotify(notify));
+		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class NotifyMsgTest extends TokenTest {
 		NotifyMessage notify = new NotifyMessage(0, news);
 		news.addArticle("title1", "desc1", "picUrl1", "url1");
 		news.addArticle("title2", "desc2", "picUrl2", "url2");
-		System.out.println(notifyApi.sendNotify(notify));
+		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 
 	@Test
@@ -82,13 +82,14 @@ public class NotifyMsgTest extends TokenTest {
 		NotifyMessage notify = new NotifyMessage(0, news);
 		news.addArticle("thumbMediaId1", "title1", "content1");
 		news.addArticle("thumbMediaId2", "title1", "content2");
-		System.out.println(notifyApi.sendNotify(notify));
+		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 
 	@Test
 	public void send1() throws WeixinException {
 		Text text = new Text("this is a text");
-		JSONObject result = notifyApi.sendNotify(new NotifyMessage(1, text));
+		JSONObject result = notifyApi.sendNotifyMessage(new NotifyMessage(1,
+				text));
 		Assert.assertEquals(0, result.getIntValue("errcode"));
 	}
 }
