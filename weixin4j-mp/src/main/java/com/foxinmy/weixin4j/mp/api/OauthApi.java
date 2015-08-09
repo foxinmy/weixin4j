@@ -32,7 +32,7 @@ public class OauthApi extends MpApi {
 	 */
 	public String getAuthorizeURL() {
 		String appId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = ConfigUtil.getValue("oauth_redirect_uri");
+		String redirectUri = ConfigUtil.getValue("user_oauth_redirect_uri");
 		return getAuthorizeURL(appId, redirectUri, "state", "snsapi_login");
 	}
 

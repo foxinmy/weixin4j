@@ -27,7 +27,7 @@ base on netty.
 
 	public class MessageServerStartup{
 		public static void main(String[] args) {
-			new WeixinServerBootstrap("appid或微信原始ID","开发者token").addHandler(
+			new WeixinServerBootstrap("token").addHandler(
 					DebugMessageHandler.global).startup();
 		}
 	}
@@ -36,7 +36,7 @@ base on netty.
 
 	public class MessageServerStartup{
 		public static void main(String[] args) {
-			new WeixinServerBootstrap("appid","开发者token","加密密钥").addHandler(
+			new WeixinServerBootstrap("appid","token","aesKey").addHandler(
 					DebugMessageHandler.global).startup();
 		}
 	}

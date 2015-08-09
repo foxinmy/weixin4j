@@ -141,3 +141,5 @@
 * 2015-08-09
  
   + version upgrade to 1.5.2
+  
+  + oauth_redirect_uri配置属性名更改为user_oauth_redirect_uri
