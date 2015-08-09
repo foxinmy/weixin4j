@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.xml.CruxMessageHandler;
+import com.foxinmy.weixin4j.xml.MessageTransferHandler;
 
 /**
  * 微信请求处理类
@@ -110,12 +110,10 @@ public class WeixinRequestHandler extends
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		}
-		CruxMessageHandler cruxMessage = CruxMessageHandler.parser(request
-				.getOriginalContent());
-		WeixinMessageTransfer messageTransfer = new WeixinMessageTransfer(
-				aesToken, request.getEncryptType(),
-				cruxMessage.getToUserName(), cruxMessage.getFromUserName());
+		WeixinMessageTransfer messageTransfer = MessageTransferHandler.parser(
+				request.getOriginalContent(), aesToken,
+				request.getEncryptType());
 		ctx.channel().attr(Consts.MESSAGE_TRANSFER_KEY).set(messageTransfer);
-		messageDispatcher.doDispatch(ctx, request, cruxMessage);
+		messageDispatcher.doDispatch(ctx, request, messageTransfer);
 	}
 }

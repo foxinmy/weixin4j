@@ -29,12 +29,12 @@ import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.BlankResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
+import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
 import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.ReflectionUtil;
-import com.foxinmy.weixin4j.xml.CruxMessageHandler;
 
 /**
  * 微信消息分发器
@@ -108,22 +108,22 @@ public class WeixinMessageDispatcher {
 	 *            上下文环境
 	 * @param request
 	 *            微信请求
-	 * @param cruxMessage
-	 *            微信的关键消息
+	 * @param messageTransfer
+	 *            微信消息
 	 * @throws WeixinException
 	 */
 	public void doDispatch(final ChannelHandlerContext context,
-			final WeixinRequest request, final CruxMessageHandler cruxMessage)
-			throws WeixinException {
+			final WeixinRequest request,
+			final WeixinMessageTransfer messageTransfer) throws WeixinException {
 		WeixinMessageKey messageKey = defineMessageKey(
-				cruxMessage.getMsgType(), cruxMessage.getEventType(),
-				cruxMessage.getAccountType());
+				messageTransfer.getMsgType(), messageTransfer.getEventType(),
+				messageTransfer.getAccountType());
 		Class<? extends WeixinMessage> targetClass = messageMatcher
 				.match(messageKey);
 		Object message = messageRead(request.getOriginalContent(), targetClass);
 		logger.info("define '{}' matched '{}'", messageKey, targetClass);
 		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(context,
-				request, messageKey, message, cruxMessage.getNodeNames());
+				request, messageKey, message, messageTransfer.getNodeNames());
 		if (handlerExecutor == null
 				|| handlerExecutor.getMessageHandler() == null) {
 			noHandlerFound(context, request, message);
@@ -136,7 +136,7 @@ public class WeixinMessageDispatcher {
 		WeixinResponse response = null;
 		try {
 			response = handlerExecutor.getMessageHandler().doHandle(request,
-					message, cruxMessage.getNodeNames());
+					message, messageTransfer.getNodeNames());
 			// fixed..
 			if (response == null) {
 				response = BlankResponse.global;

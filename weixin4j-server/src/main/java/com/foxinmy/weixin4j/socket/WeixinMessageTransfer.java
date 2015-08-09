@@ -1,7 +1,9 @@
 package com.foxinmy.weixin4j.socket;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.AesToken;
 
@@ -26,7 +28,6 @@ public class WeixinMessageTransfer implements Serializable {
 	 * 加密类型
 	 */
 	private EncryptType encryptType;
-
 	/**
 	 * 消息接收方
 	 */
@@ -35,13 +36,34 @@ public class WeixinMessageTransfer implements Serializable {
 	 * 消息发送方
 	 */
 	private String fromUserName;
+	/**
+	 * 账号
+	 */
+	private AccountType accountType;
+	/**
+	 * 消息类型
+	 */
+	private String msgType;
+	/**
+	 * 事件类型
+	 */
+	private String eventType;
+	/**
+	 * 节点集合
+	 */
+	private Set<String> nodeNames;
 
 	public WeixinMessageTransfer(AesToken aesToken, EncryptType encryptType,
-			String toUserName, String fromUserName) {
+			String toUserName, String fromUserName, AccountType accountType,
+			String msgType, String eventType, Set<String> nodeNames) {
 		this.aesToken = aesToken;
 		this.encryptType = encryptType;
 		this.toUserName = toUserName;
 		this.fromUserName = fromUserName;
+		this.accountType = accountType;
+		this.msgType = msgType;
+		this.eventType = eventType;
+		this.nodeNames = nodeNames;
 	}
 
 	public AesToken getAesToken() {
@@ -60,10 +82,28 @@ public class WeixinMessageTransfer implements Serializable {
 		return fromUserName;
 	}
 
+	public AccountType getAccountType() {
+		return accountType;
+	}
+
+	public String getMsgType() {
+		return msgType;
+	}
+
+	public String getEventType() {
+		return eventType;
+	}
+
+	public Set<String> getNodeNames() {
+		return nodeNames;
+	}
+
 	@Override
 	public String toString() {
 		return "WeixinMessageTransfer [aesToken=" + aesToken + ", encryptType="
 				+ encryptType + ", toUserName=" + toUserName
-				+ ", fromUserName=" + fromUserName + "]";
+				+ ", fromUserName=" + fromUserName + ", accountType="
+				+ accountType + ", msgType=" + msgType + ", eventType="
+				+ eventType + ", nodeNames=" + nodeNames + "]";
 	}
 }
