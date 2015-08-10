@@ -33,7 +33,7 @@ public class Party implements Serializable {
 	/**
 	 * 在父部门中的次序。从1开始，数字越大排序越靠后
 	 */
-	private Integer order;
+	private int order;
 
 	public Party() {
 
@@ -61,7 +61,7 @@ public class Party implements Serializable {
 		return parentId;
 	}
 
-	public Integer getOrder() {
+	public int getOrder() {
 		return order;
 	}
 
@@ -79,7 +79,7 @@ public class Party implements Serializable {
 		this.parentId = parentId;
 	}
 
-	public void setOrder(Integer order) {
+	public void setOrder(int order) {
 		this.order = order;
 	}
 
