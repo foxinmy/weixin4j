@@ -44,7 +44,7 @@ public class WeixinMessageDecoder extends
 	@Override
 	protected void decode(ChannelHandlerContext ctx, FullHttpRequest req,
 			List<Object> out) throws WeixinException {
-		String content = req.content().toString(Consts.UTF_8);
+		String messageContent = req.content().toString(Consts.UTF_8);
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
 				true);
 		String methodName = req.getMethod().name();
@@ -67,28 +67,28 @@ public class WeixinMessageDecoder extends
 		String weixinId = parameters.containsKey("weixin_id") ? parameters.get(
 				"weixin_id").get(0) : null;
 		AesToken aesToken = aesTokenMap.get(weixinId);
-		String originalContent = content;
 		String encryptContent = null;
-		if (!StringUtil.isBlank(content) && encryptType == EncryptType.AES) {
+		if (!StringUtil.isBlank(messageContent)
+				&& encryptType == EncryptType.AES) {
 			if (StringUtil.isBlank(aesToken.getAesKey())) {
 				throw new WeixinException(
 						"AESEncodingKey not be null in AES mode");
 			}
-			EncryptMessageHandler encrypt = EncryptMessageHandler
-					.parser(content);
-			encryptContent = encrypt.getEncryptContent();
+			EncryptMessageHandler encryptHandler = EncryptMessageHandler
+					.parser(messageContent);
+			encryptContent = encryptHandler.getEncryptContent();
 			/**
 			 * 企业号第三方套件 ╮（╯_╰）╭
 			 */
 			if (aesToken.getWeixinId().startsWith("tj")) {
-				aesToken = new AesToken(encrypt.getToUserName(),
+				aesToken = new AesToken(encryptHandler.getToUserName(),
 						aesToken.getToken(), aesToken.getAesKey());
 			}
-			originalContent = MessageUtil.aesDecrypt(aesToken.getWeixinId(),
+			messageContent = MessageUtil.aesDecrypt(aesToken.getWeixinId(),
 					aesToken.getAesKey(), encryptContent);
 		}
 		out.add(new WeixinRequest(methodName, encryptType, echoStr, timeStamp,
-				nonce, signature, msgSignature, originalContent,
-				encryptContent, aesToken, parameters));
+				nonce, signature, msgSignature, messageContent, encryptContent,
+				aesToken, parameters));
 	}
 }

@@ -11,10 +11,9 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
 import com.foxinmy.weixin4j.type.AccountType;
-import com.foxinmy.weixin4j.type.EncryptType;
-import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 
@@ -83,21 +82,21 @@ public class MessageTransferHandler extends DefaultHandler {
 
 	private static MessageTransferHandler global = new MessageTransferHandler();
 
-	public static WeixinMessageTransfer parser(String xmlContent,
-			AesToken aesToken, EncryptType encryptType) throws RuntimeException {
+	public static WeixinMessageTransfer parser(WeixinRequest request)
+			throws RuntimeException {
 		try {
 			XMLReader xmlReader = XMLReaderFactory.createXMLReader();
 			xmlReader.setContentHandler(global);
-			xmlReader.parse(new InputSource(new ByteArrayInputStream(xmlContent
-					.getBytes(Consts.UTF_8))));
+			xmlReader.parse(new InputSource(new ByteArrayInputStream(request
+					.getOriginalContent().getBytes(Consts.UTF_8))));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} catch (SAXException e) {
 			throw new RuntimeException(e);
 		}
-		return new WeixinMessageTransfer(aesToken, encryptType,
-				global.toUserName, global.fromUserName,
-				global.getAccountType(), global.msgType, global.eventType,
-				global.nodeNames);
+		return new WeixinMessageTransfer(request.getAesToken(),
+				request.getEncryptType(), global.toUserName,
+				global.fromUserName, global.getAccountType(), global.msgType,
+				global.eventType, global.nodeNames);
 	}
 }

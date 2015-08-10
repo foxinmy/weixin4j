@@ -110,9 +110,8 @@ public class WeixinRequestHandler extends
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		}
-		WeixinMessageTransfer messageTransfer = MessageTransferHandler.parser(
-				request.getOriginalContent(), aesToken,
-				request.getEncryptType());
+		WeixinMessageTransfer messageTransfer = MessageTransferHandler
+				.parser(request);
 		ctx.channel().attr(Consts.MESSAGE_TRANSFER_KEY).set(messageTransfer);
 		messageDispatcher.doDispatch(ctx, request, messageTransfer);
 	}
