@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
- * 聊天服务接口
+ * 会话服务接口
  * 
  * @className ChatApi
  * @author jy

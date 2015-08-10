@@ -21,7 +21,7 @@ weixin4j-qy
   
   * AgentApi `应用设置API`
   
-  * BatchApi `批量操作API`
+  * BatchApi `批量任务API`
   
   * OauthApi `oauth授权登陆API`
   
@@ -33,7 +33,7 @@ weixin4j-qy
 	
   * CashApi `现金API`
   
-  * ChatApi `聊天API`
+  * ChatApi `会话服务API`
 
 如何使用
 --------
