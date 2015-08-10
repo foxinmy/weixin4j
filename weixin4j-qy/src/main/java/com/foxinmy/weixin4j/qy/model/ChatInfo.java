@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.qy.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -36,14 +37,18 @@ public class ChatInfo implements Serializable {
 	@JSONField(name = "userlist")
 	private List<String> members;
 
-	public ChatInfo() {
+	protected ChatInfo() {
 
 	}
 
-	public ChatInfo(String chatId, String name, String owner) {
+	public ChatInfo(String chatId) {
 		this.chatId = chatId;
+	}
+
+	public ChatInfo(String name, String owner, String... members) {
 		this.name = name;
 		this.owner = owner;
+		this.members = Arrays.asList(members);
 	}
 
 	public String getChatId() {
@@ -64,6 +69,10 @@ public class ChatInfo implements Serializable {
 
 	public void setMembers(List<String> members) {
 		this.members = members;
+	}
+
+	public void setMembers(String... members) {
+		this.members = Arrays.asList(members);
 	}
 
 	// ---------- setter 应该全部去掉

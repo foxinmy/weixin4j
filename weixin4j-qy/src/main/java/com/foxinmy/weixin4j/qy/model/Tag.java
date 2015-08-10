@@ -28,7 +28,7 @@ public class Tag implements Serializable {
 	@JSONField(name = "tagname")
 	private String name;
 
-	public Tag() {
+	protected Tag() {
 
 	}
 

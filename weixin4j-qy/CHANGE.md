@@ -95,3 +95,7 @@
   + 重命名NotifyApi#sendNotify为sendNotifyMessage
  
   + version upgrade to 1.5.2
+  
+* 2015-08-10
+
+  + 新增了会话API测试类

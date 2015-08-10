@@ -20,13 +20,13 @@ import com.foxinmy.weixin4j.tuple.Voice;
 /**
  * 客服消息测试
  * 
- * @className MessageNotifyTest
+ * @className NotifyTest
  * @author jy.hu
  * @date 2014年4月10日
  * @since JDK 1.7
  * @see
  */
-public class NotifyMsgTest extends TokenTest {
+public class NotifyTest extends TokenTest {
 
 	private NotifyApi notifyApi;
 

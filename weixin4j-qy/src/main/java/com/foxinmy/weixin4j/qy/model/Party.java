@@ -35,7 +35,7 @@ public class Party implements Serializable {
 	 */
 	private int order;
 
-	public Party() {
+	protected Party() {
 
 	}
 

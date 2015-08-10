@@ -77,7 +77,7 @@ public class User implements Serializable {
 	 */
 	private List<NameValue> extattr;
 
-	public User() {
+	protected User() {
 	}
 
 	public User(String userId, String name) {
