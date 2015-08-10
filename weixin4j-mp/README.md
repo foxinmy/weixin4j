@@ -62,7 +62,7 @@ weixin4j.properties说明
 | media_path  	| 调用媒体接口时保存媒体文件的物理路径 |
 | bill_path   	| 调用下载对账单接口保存excel文件的物理路径 |
 | ca_file     	| 调用某些接口(支付相关)强制需要auth的ca授权文件 |
-| oauth_redirect_uri     | 调用OauthApi接口时需要填写的重定向路径 |
+| user_oauth_redirect_uri     | 调用OauthApi接口时需要填写的重定向路径 |
 
 示例(properties中换行用右斜杆\\)
 
@@ -81,7 +81,7 @@ weixin4j.properties说明
 	#classpath路径下:ca_file=classpath:xxxxx.p12
 	
 	#公众号登陆授权的重定向路径(使用OauthApi时需要填写)
-	oauth_redirect_uri=http://xxx
+	user_oauth_redirect_uri=http://xxx
 
 2.实例化微信企业号接口实现对象,调用具体的API方法
 
