@@ -411,7 +411,7 @@ public class WeixinProxy {
 	 *            媒体类型
 	 * @return 素材列表
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see {@link #listMaterialMedia(int,MediaType, int, int)}
+	 * @see {@link #listMaterialMedia(int,MediaType, Pageable)}
 	 * @throws WeixinException
 	 */
 	public List<MediaItem> listAllMaterialMedia(int agentid, MediaType mediaType)

@@ -379,7 +379,7 @@ public class WeixinProxy {
 	 *            媒体类型
 	 * @return 素材列表
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
-	 * @see {@link #listMaterialMedia(MediaType, int, int)}
+	 * @see {@link #listMaterialMedia(MediaType, Pageable)}
 	 * @throws WeixinException
 	 */
 	public List<MediaItem> listAllMaterialMedia(MediaType mediaType)

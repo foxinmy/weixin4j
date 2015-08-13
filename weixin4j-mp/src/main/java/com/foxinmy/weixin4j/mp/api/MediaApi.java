@@ -568,7 +568,7 @@ public class MediaApi extends MpApi {
 	 * @param mediaType
 	 *            媒体类型
 	 * @return 素材列表
-	 * @see {@link #listMaterialMedia(MediaType, int, int)}
+	 * @see {@link #listMaterialMedia(MediaType, Pageable)}
 	 * @throws WeixinException
 	 */
 	public List<MediaItem> listAllMaterialMedia(MediaType mediaType)

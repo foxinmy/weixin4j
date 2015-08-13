@@ -456,7 +456,7 @@ public class MediaApi extends QyApi {
 	 * @param mediaType
 	 *            媒体类型
 	 * @return 素材列表
-	 * @see {@link #listMaterialMedia(int,MediaType, int, int)}
+	 * @see {@link #listMaterialMedia(int,MediaType, Pageable)}
 	 * @throws WeixinException
 	 */
 	public List<MediaItem> listAllMaterialMedia(int agentid, MediaType mediaType)
