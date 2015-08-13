@@ -83,3 +83,7 @@
   + version upgrade to 1.0.4
   
   + 调整WeixinServerBootstrap明文构造函数的参数为token
+  
+* 2015-08-13
+
+  + version upgrade to 1.0.5
