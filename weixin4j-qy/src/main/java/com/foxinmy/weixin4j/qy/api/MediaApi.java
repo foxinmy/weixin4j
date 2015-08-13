@@ -21,12 +21,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.PropertyFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.ContentType;
-import com.foxinmy.weixin4j.http.Header;
+import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpGet;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
 import com.foxinmy.weixin4j.http.apache.HttpHeaders;
 import com.foxinmy.weixin4j.http.apache.InputStreamBody;
+import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
@@ -239,12 +240,13 @@ public class MediaApi extends QyApi {
 				method = new HttpGet(String.format(meida_download_uri,
 						token.getAccessToken(), mediaId));
 			}
-			HttpResponse response = weixinClient.execute(method);
+			HttpResponse response = HttpClientFactory.getInstance().execute(
+					method);
 			byte[] content = response.getContent();
 			String fileName = "";
-			Header contentType = response
+			HttpHeaders contentType = response
 					.getFirstHeader(HttpHeaders.CONTENT_TYPE);
-			Header disposition = response.getFirstHeader("Content-disposition");
+			HttpHeaders disposition = response.getFirstHeader("Content-disposition");
 			if (contentType.getValue().contains(
 					ContentType.APPLICATION_JSON.getMimeType())
 					|| (disposition != null && disposition.getValue().indexOf(
@@ -427,6 +429,7 @@ public class MediaApi extends QyApi {
 		Token token = tokenHolder.getToken();
 		String material_media_list_uri = getRequestUri("material_media_list_uri");
 		JSONObject obj = new JSONObject();
+		obj.put("agentid", agentid);
 		obj.put("type",
 				mediaType == MediaType.news ? "mpnews" : mediaType.name());
 		obj.put("offset", offset);
