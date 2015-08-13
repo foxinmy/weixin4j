@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.tuple;
 
 /**
- * 聊天消息元件
+ * 企业号会话消息元件
  * 
  * @className ChatTuple
  * @author jy

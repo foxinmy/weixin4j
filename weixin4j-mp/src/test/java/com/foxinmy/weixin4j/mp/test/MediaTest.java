@@ -18,6 +18,7 @@ import com.foxinmy.weixin4j.model.MediaDownloadResult;
 import com.foxinmy.weixin4j.model.MediaItem;
 import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
+import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
@@ -130,8 +131,9 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void listMaterialMedia() throws WeixinException {
-		MediaRecord mediaRecord = mediaApi.listMaterialMedia(MediaType.news, 0,
-				20);
+		Pageable pageable = Pageable.get();
+		MediaRecord mediaRecord = mediaApi.listMaterialMedia(MediaType.news,
+				pageable);
 		System.err.println(mediaRecord);
 	}
 

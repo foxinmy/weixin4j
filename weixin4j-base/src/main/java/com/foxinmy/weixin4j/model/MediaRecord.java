@@ -32,13 +32,19 @@ public class MediaRecord implements Serializable {
 	/**
 	 * 媒体类型
 	 */
-	@JSONField(serialize = false)
+	@JSONField(serialize = false, deserialize = false)
 	private MediaType mediaType;
 	/**
 	 * 媒体信息
 	 */
 	@JSONField(name = "item")
 	private List<MediaItem> items;
+
+	/**
+	 * 分页信息
+	 */
+	@JSONField(serialize = false, deserialize = false)
+	private Pageable pageable;
 
 	public int getTotalCount() {
 		return totalCount;
@@ -72,10 +78,23 @@ public class MediaRecord implements Serializable {
 		this.items = items;
 	}
 
+	public Pageable getPageable() {
+		return pageable;
+	}
+
+	public void setPageable(Pageable pageable) {
+		this.pageable = pageable;
+	}
+
+	@JSONField(serialize = false)
+	public Pagedata<MediaItem> getPagedata() {
+		return new Pagedata<MediaItem>(pageable, totalCount, items);
+	}
+
 	@Override
 	public String toString() {
 		return "MediaRecord [totalCount=" + totalCount + ", itemCount="
 				+ itemCount + ", mediaType=" + mediaType + ", items=" + items
-				+ "]";
+				+ ", pageable=" + pageable + "]";
 	}
 }

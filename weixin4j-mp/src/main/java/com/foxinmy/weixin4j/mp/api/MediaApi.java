@@ -35,6 +35,7 @@ import com.foxinmy.weixin4j.model.MediaDownloadResult;
 import com.foxinmy.weixin4j.model.MediaItem;
 import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
+import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.MpArticle;
@@ -513,26 +514,26 @@ public class MediaApi extends MpApi {
 	 * 
 	 * @param mediaType
 	 *            素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
-	 * @param offset
-	 *            从全部素材的该偏移位置开始返回，0表示从第一个素材返回
-	 * @param count
-	 *            返回素材的数量，取值在1到20之间
+	 * @param pageable
+	 *            分页数据
 	 * @return 媒体素材的记录对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.model.MediaRecord
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see com.foxinmy.weixin4j.model.MediaItem
+	 * @see com.foxinmy.weixin4j.model.Pageable
+	 * @see com.foxinmy.weixin4j.model.Pagedata
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/12/2108cd7aafff7f388f41f37efa710204.html">获取素材列表</a>
 	 */
-	public MediaRecord listMaterialMedia(MediaType mediaType, int offset,
-			int count) throws WeixinException {
+	public MediaRecord listMaterialMedia(MediaType mediaType, Pageable pageable)
+			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String material_media_list_uri = getRequestUri("material_media_list_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("type", mediaType.name());
-		obj.put("offset", offset);
-		obj.put("count", count);
+		obj.put("offset", pageable.getOffset());
+		obj.put("count", pageable.getPageSize());
 		WeixinResponse response = weixinClient.post(
 				String.format(material_media_list_uri, token.getAccessToken()),
 				obj.toJSONString());
@@ -557,6 +558,7 @@ public class MediaApi extends MpApi {
 					});
 		}
 		mediaRecord.setMediaType(mediaType);
+		mediaRecord.setPageable(pageable);
 		return mediaRecord;
 	}
 
@@ -571,17 +573,16 @@ public class MediaApi extends MpApi {
 	 */
 	public List<MediaItem> listAllMaterialMedia(MediaType mediaType)
 			throws WeixinException {
-		int offset = 0;
-		int count = 20;
+		Pageable pageable = new Pageable(1, 20);
 		List<MediaItem> mediaList = new ArrayList<MediaItem>();
 		MediaRecord mediaRecord = null;
 		for (;;) {
-			mediaRecord = listMaterialMedia(mediaType, offset, count);
+			mediaRecord = listMaterialMedia(mediaType, pageable);
 			mediaList.addAll(mediaRecord.getItems());
-			if (offset >= mediaRecord.getTotalCount()) {
+			if (pageable.getOffset() >= mediaRecord.getTotalCount()) {
 				break;
 			}
-			offset += count;
+			pageable = pageable.next();
 		}
 		return mediaList;
 	}

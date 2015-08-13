@@ -58,13 +58,31 @@ public class MpArticle implements Serializable {
 	@JSONField(name = "cover_url")
 	private String coverUrl;
 
-	@JSONCreator
-	public MpArticle(@JSONField(name = "thumb_media_id") String thumbMediaId,
-			@JSONField(name = "title") String title,
-			@JSONField(name = "content") String content) {
+	public MpArticle(String thumbMediaId, String title, String content) {
 		this.thumbMediaId = thumbMediaId;
 		this.title = title;
 		this.content = content;
+	}
+
+	@JSONCreator
+	public MpArticle(@JSONField(name = "thumbMediaId") String thumbMediaId,
+			@JSONField(name = "author") String author,
+			@JSONField(name = "title") String title,
+			@JSONField(name = "sourceUrl") String sourceUrl,
+			@JSONField(name = "content") String content,
+			@JSONField(name = "digest") String digest,
+			@JSONField(name = "showCoverPic") String showCoverPic,
+			@JSONField(name = "contentUrl") String contentUrl,
+			@JSONField(name = "coverUrl") String coverUrl) {
+		this.thumbMediaId = thumbMediaId;
+		this.author = author;
+		this.title = title;
+		this.sourceUrl = sourceUrl;
+		this.content = content;
+		this.digest = digest;
+		this.showCoverPic = showCoverPic;
+		this.contentUrl = contentUrl;
+		this.coverUrl = coverUrl;
 	}
 
 	public String getThumbMediaId() {

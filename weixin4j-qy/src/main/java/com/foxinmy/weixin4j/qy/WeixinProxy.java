@@ -13,6 +13,7 @@ import com.foxinmy.weixin4j.model.MediaDownloadResult;
 import com.foxinmy.weixin4j.model.MediaItem;
 import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
+import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.BatchApi;
 import com.foxinmy.weixin4j.qy.api.ChatApi;
@@ -383,22 +384,22 @@ public class WeixinProxy {
 	 *            企业应用ID
 	 * @param mediaType
 	 *            素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）、文件（file）
-	 * @param offset
-	 *            从全部素材的该偏移位置开始返回，0表示从第一个素材返回
-	 * @param count
-	 *            返回素材的数量，取值在1到20之间
+	 * @param pageable
+	 *            分页数据
 	 * @return 媒体素材的记录对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see com.foxinmy.weixin4j.model.MediaRecord
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see com.foxinmy.weixin4j.model.MediaItem
+	 * @see com.foxinmy.weixin4j.model.Pageable
+	 * @see com.foxinmy.weixin4j.model.Pagedata
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%B4%A0%E6%9D%90%E5%88%97%E8%A1%A8">获取素材列表</a>
 	 */
 	public MediaRecord listMaterialMedia(int agentid, MediaType mediaType,
-			int offset, int count) throws WeixinException {
-		return mediaApi.listMaterialMedia(agentid, mediaType, offset, count);
+			Pageable pageable) throws WeixinException {
+		return mediaApi.listMaterialMedia(agentid, mediaType, pageable);
 	}
 
 	/**

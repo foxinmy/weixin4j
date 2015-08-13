@@ -5,11 +5,12 @@ import java.io.Serializable;
 import com.foxinmy.weixin4j.model.Sort.Direction;
 
 /**
+ * 分页数据(页码从1开始
+ * 
  * @className Pageable
  * @author jy
  * @date 2014年12月27日
  * @since JDK 1.7
- * @see com.foxinmy.weixin4j.model.springframework.data.domain.Pageable
  */
 public class Pageable implements Serializable {
 
@@ -38,6 +39,7 @@ public class Pageable implements Serializable {
 		this.page = page;
 		this.size = size;
 	}
+
 	public Pageable(int page, int size, Direction direction,
 			String... properties) {
 		this(page, size, new Sort(direction, properties));
@@ -49,6 +51,15 @@ public class Pageable implements Serializable {
 		this.sort = sort;
 	}
 
+	/**
+	 * page=1,size=20
+	 * 
+	 * @return
+	 */
+	public static Pageable get() {
+		return new Pageable(1, 20);
+	}
+
 	public int getPageSize() {
 		return size;
 	}
@@ -56,12 +67,15 @@ public class Pageable implements Serializable {
 	public int getPageNumber() {
 		return page;
 	}
+
 	public Sort getSort() {
 		return sort;
 	}
+
 	public void setSort(Sort sort) {
 		this.sort = sort;
 	}
+
 	public int getOffset() {
 		return (page - 1) * size;
 	}
@@ -82,6 +96,7 @@ public class Pageable implements Serializable {
 	public Pageable first() {
 		return new Pageable(0, getPageSize(), getSort());
 	}
+
 	@Override
 	public String toString() {
 		return "Pageable [page=" + page + ", size=" + size + ", sort=" + sort
