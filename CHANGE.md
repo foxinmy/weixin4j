@@ -440,3 +440,7 @@
 * 2015-08-10
 
   + **weixin4j-qy**: 新增了会话API测试类
+  
+* 2015-08-13
+  
+  + `release`: weixin4j-[mp|qy] upgrade to 1.5.3,weixin4j-server upgrade to 1.0.5

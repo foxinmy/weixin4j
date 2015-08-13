@@ -43,12 +43,12 @@ weixin4j-mp
 
 如何使用
 --------
-0.maven依赖(1.5.2,2015-08-09 released)
+0.maven依赖(1.5.3,2015-08-13 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.5.2</version>
+	    <version>1.5.3</version>
 	</dependency>
 1.需新增或拷贝`weixin4j.properties`文件到项目的`classpath`中
 
@@ -83,7 +83,7 @@ weixin4j.properties说明
 	#公众号登陆授权的重定向路径(使用OauthApi时需要填写)
 	user_oauth_redirect_uri=http://xxx
 
-2.实例化微信企业号接口实现对象,调用具体的API方法
+2.实例化微信企业号接口代理对象,调用具体的API方法
 
 	// 微信公众号API
     WeixinProxy weixinProxy = new WeixinProxy();

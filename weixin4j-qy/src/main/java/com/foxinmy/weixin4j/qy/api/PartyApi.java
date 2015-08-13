@@ -43,6 +43,9 @@ public class PartyApi extends QyApi {
 	public int createParty(Party party) throws WeixinException {
 		String department_create_uri = getRequestUri("department_create_uri");
 		JSONObject obj = (JSONObject) JSON.toJSON(party);
+		if (party.getParentId() < 1) {
+			obj.remove("parentid");
+		}
 		if (party.getId() < 1) {
 			obj.remove("id");
 		}
