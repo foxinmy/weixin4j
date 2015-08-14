@@ -2,7 +2,7 @@ weixin4j-server
 ===============
 
 微信回调消息服务器
--------------
+----------------
 base on netty.
 
 功能列表
@@ -128,7 +128,7 @@ assembly打包(辅助)
 
 4.[startup.sh](./src/main/startup.sh)中`APP_HOME`为服务的启动目录,相当于运行服务时的classpath目录.
 
-5.修改[startup.sh](./src/main/startup.sh)中`APP_MAINCLASS`为上述编写的netty服务启动类的全限定名.
+5.修改[startup.sh](./src/main/startup.sh)中`APP_MAINCLASS`为上述编写的带main方法的服务启动类的全限定名.
 
 6.执行`mvn package`命令后在target目录下得到一个zip的压缩包,在7或者8中选择一种方式启动服务.
 
