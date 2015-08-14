@@ -11,7 +11,7 @@ base on netty.
 
 * `消息分发`
 
-* `消息拦截`
+* `消息拦截`(还需更多测试
 
 如何使用
 -------
@@ -94,7 +94,7 @@ base on netty.
 
 assembly打包(辅助)
 -----------------
-> [assembly](http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html)是maven的一个打包插件,它可以创建一个包含脚本、配置文件以及所有运行时所依赖的元素(jar)assembly插件能帮你构建一个完整的发布包.
+> [assembly](http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html)是maven的一个打包插件,它可以构建一个包含脚本、配置文件以及所有运行时所依赖的元素的完整发布包.
 
 1.复制[assembly.xml](./src/main/assembly.xml)和[startup.sh](./src/main/startup.sh)到自己工程的src/main目录下.
 
@@ -124,7 +124,7 @@ assembly打包(辅助)
 
 `finalName`表示打包(zip)后的文件名,需配合[startup.sh](./src/main/startup.sh)中`APP_HOME`的值使用.
 
-3.[startup.sh](./src/main/startup.sh)中`JAVA_HOME`为java运行环境(jre|jdk)的安装根目录,如果与脚本中的值不一致,可使用`ln -s t/usr/local/java 实际的目录`.
+3.[startup.sh](./src/main/startup.sh)中`JAVA_HOME`为java运行环境(jre|jdk)的安装根目录,如果与脚本中的值不一致,可使用软连接命令:`ln -s /usr/local/java 实际的目录`.
 
 4.[startup.sh](./src/main/startup.sh)中`APP_HOME`为服务的启动目录,相当于运行服务时的classpath目录.
 
