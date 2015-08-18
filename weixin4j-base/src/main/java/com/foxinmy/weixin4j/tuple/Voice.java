@@ -25,7 +25,7 @@ public class Voice extends Image implements NotifyTuple {
 	}
 
 	@JSONCreator
-	public Voice(@JSONField(name = "media_id") String mediaId) {
+	public Voice(@JSONField(name = "mediaId") String mediaId) {
 		super(mediaId);
 	}
 }

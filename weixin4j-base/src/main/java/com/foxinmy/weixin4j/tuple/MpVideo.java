@@ -34,7 +34,7 @@ public class MpVideo implements MassTuple {
 	private String mediaId;
 
 	@JSONCreator
-	public MpVideo(@JSONField(name = "media_id") String mediaId) {
+	public MpVideo(@JSONField(name = "mediaId") String mediaId) {
 		this.mediaId = mediaId;
 	}
 

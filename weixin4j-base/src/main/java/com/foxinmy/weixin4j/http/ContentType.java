@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.http;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.List;
 import java.util.Locale;
 
 import com.foxinmy.weixin4j.model.Consts;
@@ -78,6 +79,17 @@ public final class ContentType implements Serializable {
 			buf.append(this.charset.name());
 		}
 		return buf.toString();
+	}
+
+	public static String toString(List<ContentType> contentTypes) {
+		if (contentTypes == null || contentTypes.isEmpty()) {
+			return null;
+		}
+		StringBuilder buf = new StringBuilder();
+		for (ContentType contentType : contentTypes) {
+			buf.append(contentType.toString()).append(",");
+		}
+		return buf.delete(buf.length() - 1, buf.length()).toString();
 	}
 
 	private static boolean valid(final String s) {

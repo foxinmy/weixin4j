@@ -17,13 +17,13 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 /**
  * 接口调用错误获取
  * 
- * @className ErrorUtil
+ * @className WeixinErrorUtil
  * @author jy
  * @date 2015年5月12日
  * @since JDK 1.7
  * @see
  */
-public final class ErrorUtil {
+public final class WeixinErrorUtil {
 	private static byte[] errorXmlByteArray;
 	private final static Map<String, String> errorCacheMap;
 	static {

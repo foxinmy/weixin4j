@@ -69,7 +69,7 @@ public class UserApi extends MpApi {
 	public User getUser(String openId, Lang lang) throws WeixinException {
 		String user_info_uri = getRequestUri("api_user_info_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.get(String.format(user_info_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(user_info_uri,
 				token.getAccessToken(), openId, lang.name()));
 
 		return response.getAsObject(new TypeReference<User>() {
@@ -90,7 +90,7 @@ public class UserApi extends MpApi {
 	public Following getFollowing(String nextOpenId) throws WeixinException {
 		String following_uri = getRequestUri("following_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.get(String.format(following_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(following_uri,
 				token.getAccessToken(), nextOpenId == null ? "" : nextOpenId));
 
 		Following following = response
@@ -156,7 +156,7 @@ public class UserApi extends MpApi {
 		JSONObject obj = new JSONObject();
 		obj.put("openid", openId);
 		obj.put("remark", remark);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(updateremark_uri, token.getAccessToken()),
 				obj.toJSONString());
 

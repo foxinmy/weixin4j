@@ -123,7 +123,7 @@ public class DataApi extends MpApi {
 		JSONObject obj = new JSONObject();
 		obj.put("begin_date", DateUtil.fortmat2yyyy_MM_dd(beginDate));
 		obj.put("end_date", DateUtil.fortmat2yyyy_MM_dd(endDate));
-		WeixinResponse response = weixinClient.post(String.format(datacube_uri,
+		WeixinResponse response = weixinExecutor.post(String.format(datacube_uri,
 				datacubeType.name().toLowerCase(), token.getAccessToken()), obj
 				.toJSONString());
 

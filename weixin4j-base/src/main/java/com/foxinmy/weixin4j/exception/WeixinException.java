@@ -1,5 +1,9 @@
 package com.foxinmy.weixin4j.exception;
 
+import java.io.IOException;
+
+import com.foxinmy.weixin4j.util.StringUtil;
+
 /**
  * 调用微信接口抛出的异常
  * 
@@ -30,6 +34,10 @@ public class WeixinException extends Exception {
 		super(e);
 	}
 
+	public WeixinException(String msg, IOException ex) {
+		super(msg, ex);
+	}
+
 	public String getErrorCode() {
 		return errorCode;
 	}
@@ -40,6 +48,16 @@ public class WeixinException extends Exception {
 
 	@Override
 	public String getMessage() {
-		return this.errorCode + "," + this.errorMsg;
+		StringBuilder buf = new StringBuilder();
+		if (StringUtil.isNotBlank(errorCode)) {
+			buf.append(errorCode);
+		}
+		if (StringUtil.isNotBlank(errorMsg)) {
+			buf.append(" ").append(errorMsg);
+		}
+		if (buf.length() == 0) {
+			return super.getMessage();
+		}
+		return buf.toString();
 	}
 }

@@ -53,7 +53,7 @@ public class MenuApi extends QyApi {
 		Token token = tokenHolder.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("button", btnList);
-		WeixinResponse response = weixinClient
+		WeixinResponse response = weixinExecutor
 				.post(String.format(menu_create_uri, token.getAccessToken(),
 						agentid), JSON.toJSONString(obj, new NameFilter() {
 					@Override
@@ -93,7 +93,7 @@ public class MenuApi extends QyApi {
 	public List<Button> getMenu(int agentid) throws WeixinException {
 		String menu_get_uri = getRequestUri("menu_get_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.get(String.format(menu_get_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(menu_get_uri,
 				token.getAccessToken(), agentid));
 
 		JSONArray buttons = response.getAsJson().getJSONObject("menu")
@@ -125,7 +125,7 @@ public class MenuApi extends QyApi {
 	public JsonResult deleteMenu(int agentid) throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.get(String.format(
+		WeixinResponse response = weixinExecutor.get(String.format(
 				menu_delete_uri, token.getAccessToken(), agentid));
 
 		return response.getAsJsonResult();

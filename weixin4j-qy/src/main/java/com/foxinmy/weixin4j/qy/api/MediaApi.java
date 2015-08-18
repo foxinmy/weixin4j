@@ -21,11 +21,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.PropertyFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.ContentType;
-import com.foxinmy.weixin4j.http.Header;
-import com.foxinmy.weixin4j.http.HttpGet;
+import com.foxinmy.weixin4j.http.HttpClientException;
+import com.foxinmy.weixin4j.http.HttpHeaders;
+import com.foxinmy.weixin4j.http.HttpMethod;
+import com.foxinmy.weixin4j.http.HttpParams;
+import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
-import com.foxinmy.weixin4j.http.apache.HttpHeaders;
 import com.foxinmy.weixin4j.http.apache.InputStreamBody;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
@@ -43,13 +45,13 @@ import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
-import com.foxinmy.weixin4j.util.ConfigUtil;
-import com.foxinmy.weixin4j.util.ErrorUtil;
 import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConst;
+import com.foxinmy.weixin4j.util.WeixinErrorUtil;
 
 /**
  * 媒体相关API
@@ -124,7 +126,7 @@ public class MediaApi extends QyApi {
 			WeixinResponse response = null;
 			if (agentid > 0) {
 				String material_media_upload_uri = getRequestUri("material_media_upload_uri");
-				response = weixinClient.post(String.format(
+				response = weixinExecutor.post(String.format(
 						material_media_upload_uri, token.getAccessToken(),
 						mediaType.name(), agentid), new FormBodyPart("media",
 						new InputStreamBody(new ByteArrayInputStream(content),
@@ -133,8 +135,8 @@ public class MediaApi extends QyApi {
 				return new MediaUploadResult(response.getAsJson().getString(
 						"media_id"), mediaType, new Date());
 			} else {
-				String file_upload_uri = getRequestUri("file_upload_uri");
-				response = weixinClient.post(String.format(file_upload_uri,
+				String media_upload_uri = getRequestUri("media_upload_uri");
+				response = weixinExecutor.post(String.format(media_upload_uri,
 						token.getAccessToken(), mediaType.name()),
 						new FormBodyPart("media", new InputStreamBody(
 								new ByteArrayInputStream(content), mediaType
@@ -145,8 +147,8 @@ public class MediaApi extends QyApi {
 						obj.getObject("type", MediaType.class), new Date(
 								obj.getLong("created_at") * 1000l));
 				/*
-				 * return response.getAsObject(new TypeReference<MediaResult>()
-				 * { });
+				 * return response.getAsObject(new
+				 * TypeReference<MediaUploadResult>() { });
 				 */
 			}
 		} finally {
@@ -174,7 +176,7 @@ public class MediaApi extends QyApi {
 	 */
 	public File downloadMediaFile(int agentid, String mediaId)
 			throws WeixinException {
-		String media_path = ConfigUtil.getValue("media_path",
+		String media_path = Weixin4jConfigUtil.getValue("media_path",
 				Weixin4jConst.DEFAULT_MEDIA_PATH);
 		final String prefixName = String.format("%d_%s.", agentid, mediaId);
 		File[] files = new File(media_path).listFiles(new FilenameFilter() {
@@ -230,45 +232,48 @@ public class MediaApi extends QyApi {
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		try {
-			HttpGet method = null;
+			HttpRequest request = null;
 			if (agentid > 0) {
 				String material_media_download_uri = getRequestUri("material_media_download_uri");
-				method = new HttpGet(String.format(material_media_download_uri,
-						token.getAccessToken(), mediaId, agentid));
+				request = new HttpRequest(HttpMethod.GET, String.format(
+						material_media_download_uri, token.getAccessToken(),
+						mediaId, agentid));
 			} else {
-				String meida_download_uri = getRequestUri("meida_download_uri");
-				method = new HttpGet(String.format(meida_download_uri,
-						token.getAccessToken(), mediaId));
+				String media_download_uri = getRequestUri("media_download_uri");
+				request = new HttpRequest(HttpMethod.GET, String.format(
+						media_download_uri, token.getAccessToken(), mediaId));
 			}
-			HttpResponse response = weixinClient.execute(method);
-			byte[] content = response.getContent();
-			String fileName = "";
-			Header contentType = response
-					.getFirstHeader(HttpHeaders.CONTENT_TYPE);
-			Header disposition = response.getFirstHeader("Content-disposition");
-			if (contentType.getValue().contains(
-					ContentType.APPLICATION_JSON.getMimeType())
-					|| (disposition != null && disposition.getValue().indexOf(
-							".json") > 0)) {
+			HttpParams params = weixinExecutor.getExecuteParams();
+			request.setParams(params);
+			HttpResponse response = weixinExecutor.getExecuteClient().execute(
+					request);
+			byte[] content = IOUtil.toByteArray(response.getBody());
+			HttpHeaders headers = response.getHeaders();
+			String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
+			String disposition = headers
+					.getFirst(HttpHeaders.CONTENT_DISPOSITION);
+			if (contentType
+					.contains(ContentType.APPLICATION_JSON.getMimeType())
+					|| (disposition != null && disposition.indexOf(".json") > 0)) {
 				JsonResult jsonResult = JSON.parseObject(content, 0,
 						content.length, Consts.UTF_8.newDecoder(),
 						JsonResult.class);
 				if (jsonResult.getCode() != 0) {
 					if (StringUtil.isBlank(jsonResult.getDesc())) {
-						jsonResult.setDesc(ErrorUtil.getText(Integer
+						jsonResult.setDesc(WeixinErrorUtil.getText(Integer
 								.toString(jsonResult.getCode())));
 					}
 					throw new WeixinException(Integer.toString(jsonResult
 							.getCode()), jsonResult.getDesc());
 				}
 			}
-			if (StringUtil.isBlank(fileName)) {
-				fileName = String.format("%s.%s", mediaId, contentType
-						.getValue().split("/")[1]);
-			}
+			String fileName = String.format("%s.%s", mediaId,
+					contentType.split("/")[1]);
 			return new MediaDownloadResult(content,
-					ContentType.create(contentType.getValue()), fileName);
+					ContentType.create(contentType), fileName);
 		} catch (IOException e) {
+			throw new WeixinException("I/O Error on getBody");
+		} catch (HttpClientException e) {
 			throw new WeixinException(e);
 		}
 	}
@@ -299,7 +304,7 @@ public class MediaApi extends QyApi {
 		JSONObject news = new JSONObject();
 		news.put("articles", articles);
 		obj.put("mpnews", news);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(material_article_upload_uri,
 						token.getAccessToken()), obj.toJSONString());
 
@@ -322,7 +327,7 @@ public class MediaApi extends QyApi {
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String material_media_del_uri = getRequestUri("material_media_del_uri");
-		WeixinResponse response = weixinClient.get(String.format(
+		WeixinResponse response = weixinExecutor.get(String.format(
 				material_media_del_uri, token.getAccessToken(), mediaId,
 				agentid));
 		return response.getAsJsonResult();
@@ -375,7 +380,7 @@ public class MediaApi extends QyApi {
 		news.put("articles", articles);
 		obj.put("mpnews", news);
 		obj.put("media_id", mediaId);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(material_article_update_uri,
 						token.getAccessToken()), obj.toJSONString());
 
@@ -396,7 +401,7 @@ public class MediaApi extends QyApi {
 	public MediaCounter countMaterialMedia(int agentid) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String material_media_count_uri = getRequestUri("material_media_count_uri");
-		WeixinResponse response = weixinClient.get(String.format(
+		WeixinResponse response = weixinExecutor.get(String.format(
 				material_media_count_uri, token.getAccessToken(), agentid));
 		JSONObject result = response.getAsJson();
 		MediaCounter counter = JSON.toJavaObject(result, MediaCounter.class);
@@ -433,7 +438,7 @@ public class MediaApi extends QyApi {
 				mediaType == MediaType.news ? "mpnews" : mediaType.name());
 		obj.put("offset", pageable.getOffset());
 		obj.put("count", pageable.getPageSize());
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(material_media_list_uri, token.getAccessToken()),
 				obj.toJSONString());
 		obj = response.getAsJson();

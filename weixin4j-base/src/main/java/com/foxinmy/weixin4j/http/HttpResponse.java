@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.http;
 
+import java.io.InputStream;
+
 /**
  * HTTP 响应
  * 
@@ -9,44 +11,30 @@ package com.foxinmy.weixin4j.http;
  * @since JDK 1.7
  * @see
  */
-public class HttpResponse extends AbstractHttpMessage implements HttpMessage {
+public interface HttpResponse extends HttpMessage {
+	/**
+	 * HTTP协议
+	 * 
+	 * @return
+	 */
+	HttpVersion getProtocol();
 
-	private HttpVersion httpVersion;
-	private StatusLine statusLine;
-	private byte[] content;
+	/**
+	 * 响应状态
+	 * 
+	 * @return
+	 */
+	HttpStatus getStatus() throws HttpClientException;
 
-	@Override
-	public HttpVersion getProtocolVersion() {
-		return httpVersion;
-	}
+	/**
+	 * 响应内容
+	 * 
+	 * @return
+	 */
+	InputStream getBody() throws HttpClientException;
 
-	public StatusLine getStatusLine() {
-		return statusLine;
-	}
-
-	public byte[] getContent() {
-		return content;
-	}
-
-	public void setStatusLine(StatusLine statusLine) {
-		this.statusLine = statusLine;
-	}
-
-	public void setContent(byte[] content) {
-		this.content = content;
-	}
-
-	public HttpVersion getHttpVersion() {
-		return httpVersion;
-	}
-
-	public void setHttpVersion(HttpVersion httpVersion) {
-		this.httpVersion = httpVersion;
-	}
-
-	@Override
-	public String toString() {
-		return "HttpResponse [httpVersion=" + httpVersion + ", statusLine="
-				+ statusLine + "]";
-	}
+	/**
+	 * 释放资源
+	 */
+	void close();
 }

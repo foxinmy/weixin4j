@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.qy.token;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  */
 public class WeixinProviderTokenCreator implements TokenCreator {
 
-	private final WeixinHttpClient httpClient;
+	private final WeixinRequestExecutor httpClient;
 	private final String corpid;
 	private final String providersecret;
 
@@ -35,7 +35,7 @@ public class WeixinProviderTokenCreator implements TokenCreator {
 	public WeixinProviderTokenCreator(String corpid, String providersecret) {
 		this.corpid = corpid;
 		this.providersecret = providersecret;
-		this.httpClient = new WeixinHttpClient();
+		this.httpClient = new WeixinRequestExecutor();
 	}
 
 	@Override

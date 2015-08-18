@@ -39,13 +39,13 @@ public class Music implements NotifyTuple {
 	/**
 	 * 音乐链接
 	 */
-	@JSONField(name = "music_url")
+	@JSONField(name = "musicurl")
 	@XmlElement(name = "MusicUrl")
 	private String musicUrl;
 	/**
 	 * 高质量音乐链接，WIFI环境优先使用该链接播放音乐
 	 */
-	@JSONField(name = "hq_music_url")
+	@JSONField(name = "hqmusicurl")
 	@XmlElement(name = "HQMusicUrl")
 	private String hqMusicUrl;
 	/**
@@ -60,10 +60,10 @@ public class Music implements NotifyTuple {
 	}
 
 	public Music(@JSONField(name = "title") String title,
-			@JSONField(name = "description") String desc,
-			@JSONField(name = "music_url") String musicUrl,
-			@JSONField(name = "hq_music_url") String hqMusicUrl,
-			@JSONField(name = "thumb_media_id") String thumbMediaId) {
+			@JSONField(name = "desc") String desc,
+			@JSONField(name = "musicUrl") String musicUrl,
+			@JSONField(name = "hqMusicUrl") String hqMusicUrl,
+			@JSONField(name = "thumbMediaId") String thumbMediaId) {
 		this.title = title;
 		this.desc = desc;
 		this.musicUrl = musicUrl;

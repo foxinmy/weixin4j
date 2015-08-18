@@ -11,13 +11,13 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 /**
  * 公众号配置信息 class路径下weixin4j.properties文件
  * 
- * @className ConfigUtil
+ * @className Weixin4jConfigUtil
  * @author jy
  * @date 2014年10月31日
  * @since JDK 1.7
  * @see
  */
-public class ConfigUtil {
+public class Weixin4jConfigUtil {
 	private final static String CLASSPATH_PREFIX = "classpath:";
 	private final static String CLASSPATH_VALUE;
 	private final static ResourceBundle weixinBundle;

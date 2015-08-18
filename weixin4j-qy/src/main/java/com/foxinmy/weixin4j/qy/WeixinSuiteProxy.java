@@ -66,13 +66,11 @@ public class WeixinSuiteProxy {
 					new SuiteTicketHolder(suite.getId(), suite.getSecret(),
 							tokenStorager)));
 		}
-		if (suites.length == 1) {
-			this.suiteMap.put(null, suiteMap.get(suites[0].getId()));
-		}
+		this.suiteMap.put(null, suiteMap.get(suites[0].getId()));
 	}
 
 	/**
-	 * 单一套件获取API
+	 * 只关注第一个套件获取API(如果只有一个套件
 	 * 
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi
 	 * @return API实例
@@ -92,6 +90,6 @@ public class WeixinSuiteProxy {
 	public SuiteApi api(String suiteId) {
 		return this.suiteMap.get(suiteId);
 	}
-	
+
 	public final static String VERSION = "1.5.3";
 }

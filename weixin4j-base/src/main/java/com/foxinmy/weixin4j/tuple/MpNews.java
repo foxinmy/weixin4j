@@ -52,7 +52,7 @@ public class MpNews implements MassTuple, NotifyTuple {
 	}
 
 	@JSONCreator
-	public MpNews(@JSONField(name = "media_id") String mediaId) {
+	public MpNews(@JSONField(name = "mediaId") String mediaId) {
 		this.mediaId = mediaId;
 		this.articles = new LinkedList<MpArticle>();
 	}

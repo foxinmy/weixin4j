@@ -45,6 +45,8 @@ public class MediaRecord implements Serializable {
 	 */
 	@JSONField(serialize = false, deserialize = false)
 	private Pageable pageable;
+	@JSONField(serialize = false, deserialize = false)
+	private Pagedata<MediaItem> pagedata;
 
 	public int getTotalCount() {
 		return totalCount;
@@ -86,9 +88,11 @@ public class MediaRecord implements Serializable {
 		this.pageable = pageable;
 	}
 
-	@JSONField(serialize = false)
 	public Pagedata<MediaItem> getPagedata() {
-		return new Pagedata<MediaItem>(pageable, totalCount, items);
+		if (pagedata == null) {
+			pagedata = new Pagedata<MediaItem>(pageable, totalCount, items);
+		}
+		return pagedata;
 	}
 
 	@Override

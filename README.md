@@ -57,7 +57,7 @@ weixin4j
 
 ###2.直接下载jar包
 
-  * [weixin4j-mp-xx-full.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-mp%22)&nbsp;[weixin4j-qy-xx-full.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-qy%22)&nbsp;[weixin4j-server.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-server%22)
+  * [weixin4j-mp-xx-full.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-mp%22)&nbsp;[weixin4j-qy-xx-full.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-qy%22)&nbsp;[weixin4j-server-xx.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-server%22)
 
   * weixin4j-mp & weixin4j-qy 所需的依赖包: [fastjson1.2.x](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.alibaba%22%20AND%20a%3A%22fastjson%22)
   

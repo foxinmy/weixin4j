@@ -46,7 +46,7 @@ public class GroupApi extends MpApi {
 		String group_create_uri = getRequestUri("group_create_uri");
 		Token token = tokenHolder.getToken();
 		Group group = new Group(name);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(group_create_uri, token.getAccessToken()),
 				group.toCreateJson());
 
@@ -65,7 +65,7 @@ public class GroupApi extends MpApi {
 	public List<Group> getGroups() throws WeixinException {
 		String group_get_uri = getRequestUri("group_get_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.get(String.format(group_get_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(group_get_uri,
 				token.getAccessToken()));
 
 		return JSON.parseArray(response.getAsJson().getString("groups"),
@@ -86,7 +86,7 @@ public class GroupApi extends MpApi {
 	public int getGroupByOpenId(String openId) throws WeixinException {
 		String group_getid_uri = getRequestUri("group_getid_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(group_getid_uri, token.getAccessToken()),
 				String.format("{\"openid\":\"%s\"}", openId));
 
@@ -112,7 +112,7 @@ public class GroupApi extends MpApi {
 		Token token = tokenHolder.getToken();
 		Group group = new Group(groupId, name);
 
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(group_modify_uri, token.getAccessToken()),
 				group.toModifyJson());
 		return response.getAsJsonResult();
@@ -134,7 +134,7 @@ public class GroupApi extends MpApi {
 			throws WeixinException {
 		String group_move_uri = getRequestUri("group_move_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(group_move_uri,
+		WeixinResponse response = weixinExecutor.post(String.format(group_move_uri,
 				token.getAccessToken()), String.format(
 				"{\"openid\":\"%s\",\"to_groupid\":%d}", openId, groupId));
 
@@ -160,7 +160,7 @@ public class GroupApi extends MpApi {
 		JSONObject obj = new JSONObject();
 		obj.put("to_groupid", groupId);
 		obj.put("openid_list", openIds);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(group_batchmove_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -180,7 +180,7 @@ public class GroupApi extends MpApi {
 	public JsonResult deleteGroup(int groupId) throws WeixinException {
 		String group_delete_uri = getRequestUri("group_delete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(group_delete_uri, token.getAccessToken()),
 				String.format("{\"group\":{\"id\":%d}}", groupId));
 

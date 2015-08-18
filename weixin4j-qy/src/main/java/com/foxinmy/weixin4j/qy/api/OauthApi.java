@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * 企业号oauth授权
@@ -35,7 +35,7 @@ public class OauthApi extends QyApi {
 	 */
 	public String getUserAuthorizeURL() {
 		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = ConfigUtil.getValue("user_oauth_redirect_uri");
+		String redirectUri = Weixin4jConfigUtil.getValue("user_oauth_redirect_uri");
 		return getUserAuthorizeURL(corpId, redirectUri, "state");
 	}
 
@@ -73,7 +73,7 @@ public class OauthApi extends QyApi {
 	 */
 	public String getThirdAuthorizeURL() {
 		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = ConfigUtil.getValue("third_oauth_redirect_uri");
+		String redirectUri = Weixin4jConfigUtil.getValue("third_oauth_redirect_uri");
 		return getThirdAuthorizeURL(corpId, redirectUri, "state");
 	}
 
@@ -118,7 +118,7 @@ public class OauthApi extends QyApi {
 	public OUserInfo getOUserInfoByCode(String providerToken, String authCode)
 			throws WeixinException {
 		String oauth_logininfo_uri = getRequestUri("oauth_logininfo_uri");
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(oauth_logininfo_uri, providerToken),
 				String.format("{\"auth_code\":\"%s\"}", authCode));
 		return JSON.parseObject(response.getAsString(), OUserInfo.class);
@@ -135,7 +135,7 @@ public class OauthApi extends QyApi {
 	 * @return
 	 */
 	public String getSuiteAuthorizeURL(String suiteId, String preAuthCode) {
-		String redirectUri = ConfigUtil.getValue("suite_oauth_redirect_uri");
+		String redirectUri = Weixin4jConfigUtil.getValue("suite_oauth_redirect_uri");
 		return getSuiteAuthorizeURL(suiteId, preAuthCode, redirectUri, "state");
 	}
 

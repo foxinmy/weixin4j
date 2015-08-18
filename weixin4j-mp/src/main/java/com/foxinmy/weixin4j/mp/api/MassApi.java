@@ -53,7 +53,7 @@ public class MassApi extends MpApi {
 		Token token = tokenHolder.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("articles", articles);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(article_upload_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -113,7 +113,7 @@ public class MassApi extends MpApi {
 		obj.put("msgtype", msgtype);
 		String mass_group_uri = getRequestUri("mass_group_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_group_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -182,7 +182,7 @@ public class MassApi extends MpApi {
 		obj.put("msgtype", msgtype);
 		String mass_openid_uri = getRequestUri("mass_openid_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_openid_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -230,7 +230,7 @@ public class MassApi extends MpApi {
 		obj.put("msgid", msgid);
 		String mass_delete_uri = getRequestUri("mass_delete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_delete_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -262,7 +262,7 @@ public class MassApi extends MpApi {
 		obj.put("msgtype", msgtype);
 		String mass_preview_uri = getRequestUri("mass_preview_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_preview_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -284,7 +284,7 @@ public class MassApi extends MpApi {
 		obj.put("msg_id", msgId);
 		String mass_get_uri = getRequestUri("mass_get_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_get_uri, token.getAccessToken()),
 				obj.toJSONString());
 

@@ -24,7 +24,7 @@ import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.TradeType;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 public class PayTest {
 	private final static Pay2Api PAY2;
@@ -35,7 +35,7 @@ public class PayTest {
 		ACCOUNT2 = new WeixinPayAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
 				"请填入v2版本的paysignkey", null, null, null, "请填入v2版本的partnerId",
 				"请填入v2版本的partnerKey");
-		PAY2 = new Pay2Api(ACCOUNT2, new FileTokenStorager(ConfigUtil.getValue(
+		PAY2 = new Pay2Api(ACCOUNT2, new FileTokenStorager(Weixin4jConfigUtil.getValue(
 				"token_path", "/tmp/weixin4j/token")));
 		ACCOUNT3 = new WeixinPayAccount("请填入v3版本的appid", "请填入v3版本的appSecret",
 				"请填入v3版本的paysignkey", "请填入v3版本的mchid", null, null, null, null);

@@ -4,11 +4,11 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenStorager;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConst;
 
 /**
@@ -23,12 +23,12 @@ import com.foxinmy.weixin4j.util.Weixin4jConst;
  */
 public abstract class BaseApi {
 
-	protected final WeixinHttpClient weixinClient;
+	protected final WeixinRequestExecutor weixinExecutor;
 
 	protected abstract ResourceBundle weixinBundle();
 
 	public BaseApi() {
-		this.weixinClient = new WeixinHttpClient();
+		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	protected String getRequestUri(String key) {
@@ -57,8 +57,9 @@ public abstract class BaseApi {
 	public final static TokenStorager DEFAULT_TOKEN_STORAGER;
 
 	static {
-		DEFAULT_WEIXIN_ACCOUNT = ConfigUtil.getWeixinAccount();
-		DEFAULT_TOKEN_STORAGER = new FileTokenStorager(ConfigUtil.getValue(
-				"token_path", Weixin4jConst.DEFAULT_TOKEN_PATH));
+		DEFAULT_WEIXIN_ACCOUNT = Weixin4jConfigUtil.getWeixinAccount();
+		DEFAULT_TOKEN_STORAGER = new FileTokenStorager(
+				Weixin4jConfigUtil.getValue("token_path",
+						Weixin4jConst.DEFAULT_TOKEN_PATH));
 	}
 }

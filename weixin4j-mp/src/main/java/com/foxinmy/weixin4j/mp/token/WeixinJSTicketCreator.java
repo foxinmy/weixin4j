@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.mp.token;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.type.URLConsts;
@@ -24,7 +24,7 @@ public class WeixinJSTicketCreator implements TokenCreator {
 
 	private final String appid;
 	private final TokenHolder weixinTokenHolder;
-	private final WeixinHttpClient httpClient;
+	private final WeixinRequestExecutor httpClient;
 
 	/**
 	 * jssdk
@@ -37,7 +37,7 @@ public class WeixinJSTicketCreator implements TokenCreator {
 	public WeixinJSTicketCreator(String appid, TokenHolder weixinTokenHolder) {
 		this.appid = appid;
 		this.weixinTokenHolder = weixinTokenHolder;
-		this.httpClient = new WeixinHttpClient();
+		this.httpClient = new WeixinRequestExecutor();
 	}
 
 	@Override

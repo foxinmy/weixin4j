@@ -334,6 +334,10 @@
 		<text>不合法的第三方应用appid</text>
 	</error>
 	<error>
+		<code>40092</code>
+		<text>导入文件存在不合法的内容</text>
+	</error>
+	<error>
 		<code>40117</code>
 		<text>分组名字不合法</text>
 	</error>

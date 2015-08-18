@@ -134,7 +134,7 @@ public class SuiteApi extends QyApi {
 		JSONObject appid = new JSONObject();
 		appid.put("appid", appids);
 		para.put("session_info", appid);
-		WeixinResponse response = weixinClient
+		WeixinResponse response = weixinExecutor
 				.post(String.format(suite_set_session_uri,
 						suiteTokenHolder.getAccessToken()), para.toJSONString());
 		return response.getAsJsonResult();
@@ -158,7 +158,7 @@ public class SuiteApi extends QyApi {
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", suiteTicketHolder.getSuiteId());
 		obj.put("auth_code", authCode);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(suite_get_permanent_uri,
 						suiteTokenHolder.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
@@ -196,7 +196,7 @@ public class SuiteApi extends QyApi {
 		obj.put("suite_id", suiteTicketHolder.getSuiteId());
 		obj.put("auth_corpid", authCorpid);
 		obj.put("permanent_code", suitePerCodeHolder.getPermanentCode());
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(suite_get_authinfo_uri,
 						suiteTokenHolder.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
@@ -226,7 +226,7 @@ public class SuiteApi extends QyApi {
 		obj.put("auth_corpid", authCorpid);
 		obj.put("permanent_code", suitePerCodeHolder.getPermanentCode());
 		obj.put("agentid", agentid);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(suite_get_agent_uri,
 						suiteTokenHolder.getAccessToken()), obj.toJSONString());
 		JSONObject jsonObj = response.getAsJson();
@@ -263,7 +263,7 @@ public class SuiteApi extends QyApi {
 		obj.put("auth_corpid", authCorpid);
 		obj.put("permanent_code", suitePerCodeHolder.getPermanentCode());
 		obj.put("agent", agentSet);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(suite_set_agent_uri,
 						suiteTokenHolder.getAccessToken()),
 				JSON.toJSONString(obj, AgentApi.typeFilter));

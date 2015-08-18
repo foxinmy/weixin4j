@@ -34,7 +34,7 @@ public class Card implements MassTuple {
 	private String cardId;
 
 	@JSONCreator
-	public Card(@JSONField(name = "card_id") String cardId) {
+	public Card(@JSONField(name = "cardId") String cardId) {
 		this.cardId = cardId;
 	}
 

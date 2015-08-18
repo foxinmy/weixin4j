@@ -50,7 +50,7 @@ public class PartyApi extends QyApi {
 			obj.remove("id");
 		}
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(department_create_uri, token.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJson().getIntValue("id");
@@ -80,7 +80,7 @@ public class PartyApi extends QyApi {
 			obj.remove("order");
 		}
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(department_update_uri, token.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJsonResult();
@@ -103,7 +103,7 @@ public class PartyApi extends QyApi {
 			department_list_uri += String.format("&id=%d", partId);
 		}
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(
+		WeixinResponse response = weixinExecutor.post(String.format(
 				department_list_uri, token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("department"),
 				Party.class);
@@ -122,7 +122,7 @@ public class PartyApi extends QyApi {
 	public JsonResult deleteParty(int partId) throws WeixinException {
 		String department_delete_uri = getRequestUri("department_delete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(
+		WeixinResponse response = weixinExecutor.post(String.format(
 				department_delete_uri, token.getAccessToken(), partId));
 		return response.getAsJsonResult();
 	}

@@ -34,7 +34,7 @@ public class File implements NotifyTuple, ChatTuple {
 	private String mediaId;
 
 	@JSONCreator
-	public File(@JSONField(name = "media_id") String mediaId) {
+	public File(@JSONField(name = "mediaId") String mediaId) {
 		this.mediaId = mediaId;
 	}
 

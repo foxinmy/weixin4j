@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.api;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,9 +18,9 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.SSLHttpClinet;
-import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
+import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
@@ -36,10 +35,10 @@ import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
-import com.foxinmy.weixin4j.util.ConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
@@ -54,13 +53,13 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  */
 public class Pay3Api {
 
-	private final WeixinHttpClient weixinClient;
+	private final WeixinRequestExecutor weixinClient;
 
 	private final WeixinPayAccount weixinAccount;
 
 	public Pay3Api(WeixinPayAccount weixinAccount) {
 		this.weixinAccount = weixinAccount;
-		this.weixinClient = new WeixinHttpClient();
+		this.weixinClient = new WeixinRequestExecutor();
 	}
 
 	/**
@@ -144,9 +143,10 @@ public class Pay3Api {
 					.paysignMd5(map, weixinAccount.getPaySignKey());
 			map.put("sign", sign);
 			String param = XmlStream.map2xml(map);
-			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
-					ca);
-			response = request.post(PayURLConsts.MCH_REFUNDAPPLY_URL, param);
+			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
+					weixinAccount.getMchId(), ca);
+			response = weixinExecutor.post(PayURLConsts.MCH_REFUNDAPPLY_URL,
+					param);
 		} finally {
 			if (ca != null) {
 				try {
@@ -210,14 +210,14 @@ public class Pay3Api {
 	public ApiResult reverseOrder(InputStream ca, IdQuery idQuery)
 			throws WeixinException {
 		try {
-			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
-					ca);
+			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
+					weixinAccount.getMchId(), ca);
 			Map<String, String> map = baseMap(idQuery);
 			String sign = PayUtil
 					.paysignMd5(map, weixinAccount.getPaySignKey());
 			map.put("sign", sign);
 			String param = XmlStream.map2xml(map);
-			WeixinResponse response = request.post(
+			WeixinResponse response = weixinExecutor.post(
 					PayURLConsts.MCH_ORDERREVERSE_URL, param);
 			return response.getAsObject(new TypeReference<ApiResult>() {
 			});
@@ -315,7 +315,7 @@ public class Pay3Api {
 			billType = BillType.ALL;
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
-		String bill_path = ConfigUtil.getValue("bill_path");
+		String bill_path = Weixin4jConfigUtil.getValue("bill_path");
 		String fileName = String.format("%s_%s_%s.txt", formatBillDate,
 				billType.name().toLowerCase(), weixinAccount.getId());
 		File file = new File(String.format("%s/%s", bill_path, fileName));
@@ -337,8 +337,7 @@ public class Pay3Api {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(file), Consts.GBK));
 			reader = new BufferedReader(new InputStreamReader(
-					new ByteArrayInputStream(response.getContent()),
-					com.foxinmy.weixin4j.model.Consts.GBK));
+					response.getBody(), com.foxinmy.weixin4j.model.Consts.GBK));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				writer.write(line);

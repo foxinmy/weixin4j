@@ -79,7 +79,7 @@ public class NotifyApi extends MpApi {
 		}
 		String custom_notify_uri = getRequestUri("custom_notify_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(custom_notify_uri, token.getAccessToken()),
 				obj.toJSONString());
 

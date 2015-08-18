@@ -34,7 +34,7 @@ public class Article implements Serializable {
 	/**
 	 * 图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
 	 */
-	@JSONField(name = "pic_url")
+	@JSONField(name = "picurl")
 	@XmlElement(name = "PicUrl")
 	private String picUrl;
 	/**
@@ -46,7 +46,7 @@ public class Article implements Serializable {
 	@JSONCreator
 	public Article(@JSONField(name = "title") String title,
 			@JSONField(name = "description") String desc,
-			@JSONField(name = "pic_url") String picUrl,
+			@JSONField(name = "picUrl") String picUrl,
 			@JSONField(name = "url") String url) {
 		this.title = title;
 		this.desc = desc;

@@ -1,83 +1,119 @@
 package com.foxinmy.weixin4j.http;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.Proxy;
 
-public class HttpParams {
-	private Map<String, String> params;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
 
-	public HttpParams() {
-		this.params = new HashMap<String, String>();
+/**
+ * Http 参数
+ * 
+ * @className HttpParams
+ * @author jy
+ * @date 2015年8月13日
+ * @since JDK 1.7
+ * @see
+ */
+public final class HttpParams {
+
+	private boolean allowUserInteraction = true;
+	private int connectTimeout = 5000;
+	private int socketTimeout = 5000;
+	private int readTimeout = 5000;
+	private int chunkSize = 4096;
+	private long ifModifiedSince = 0l;
+	private boolean followRedirects = false;
+
+	/**
+	 * 代理对象
+	 */
+	private Proxy proxy;
+	/**
+	 * SSL对象
+	 */
+	private SSLContext sslContext;
+	/**
+	 * hostname对象
+	 */
+	private HostnameVerifier hostnameVerifier;
+
+	public boolean isAllowUserInteraction() {
+		return allowUserInteraction;
 	}
 
 	public void setAllowUserInteraction(boolean allowUserInteraction) {
-		params.put(HttpProtocolParams.ALLOW_USER_INTERACTION,
-				Boolean.toString(allowUserInteraction));
-	}
-
-	public boolean getAllowUserInteraction() {
-		String allowUserInteraction = params
-				.get(HttpProtocolParams.ALLOW_USER_INTERACTION);
-		return allowUserInteraction != null
-				&& Boolean.parseBoolean(allowUserInteraction);
-	}
-
-	public void setConnectTimeout(int timeout) {
-		if (timeout < 0) {
-			timeout = 0;
-		}
-		params.put(HttpProtocolParams.CONNECT_TIMEOUT,
-				Integer.toString(timeout));
+		this.allowUserInteraction = allowUserInteraction;
 	}
 
 	public int getConnectTimeout() {
-		String timeout = params.get(HttpProtocolParams.CONNECT_TIMEOUT);
-		if (timeout == null) {
-			return 5000;
-		}
-		return Integer.parseInt(timeout);
+		return connectTimeout;
 	}
 
-	public void setReadTimeout(int timeout) {
-		if (timeout < 0) {
-			timeout = 5000;
-		}
-		params.put(HttpProtocolParams.READ_TIMEOUT, Integer.toString(timeout));
+	public void setConnectTimeout(int connectTimeout) {
+		this.connectTimeout = connectTimeout;
+	}
+
+	public int getSocketTimeout() {
+		return socketTimeout;
+	}
+
+	public void setSocketTimeout(int socketTimeout) {
+		this.socketTimeout = socketTimeout;
 	}
 
 	public int getReadTimeout() {
-		String timeout = params.get(HttpProtocolParams.READ_TIMEOUT);
-		if (timeout == null) {
-			return 5000;
-		}
-		return Integer.parseInt(timeout);
+		return readTimeout;
 	}
 
-	public void setIfmodifiedsince(long ifmodifiedsince) {
-		if (ifmodifiedsince < 0) {
-			ifmodifiedsince = 5000;
-		}
-		params.put(HttpProtocolParams.IFMODIFIED_SINCE,
-				Long.toString(ifmodifiedsince));
+	public void setReadTimeout(int readTimeout) {
+		this.readTimeout = readTimeout;
 	}
 
-	public long getIfmodifiedsince() {
-		String ifmodifiedsince = params
-				.get(HttpProtocolParams.IFMODIFIED_SINCE);
-		if (ifmodifiedsince == null) {
-			return 0l;
-		}
-		return Long.parseLong(ifmodifiedsince);
+	public int getChunkSize() {
+		return chunkSize;
+	}
+
+	public void setChunkSize(int chunkSize) {
+		this.chunkSize = chunkSize;
+	}
+
+	public long getIfModifiedSince() {
+		return ifModifiedSince;
+	}
+
+	public void setIfModifiedSince(long ifModifiedSince) {
+		this.ifModifiedSince = ifModifiedSince;
+	}
+
+	public boolean isFollowRedirects() {
+		return followRedirects;
 	}
 
 	public void setFollowRedirects(boolean followRedirects) {
-		params.put(HttpProtocolParams.FOLLOW_REDIRECTS,
-				Boolean.toString(followRedirects));
+		this.followRedirects = followRedirects;
 	}
 
-	public boolean getFollowRedirects() {
-		String followRedirects = params
-				.get(HttpProtocolParams.FOLLOW_REDIRECTS);
-		return followRedirects != null && Boolean.parseBoolean(followRedirects);
+	public Proxy getProxy() {
+		return proxy;
+	}
+
+	public void setProxy(Proxy proxy) {
+		this.proxy = proxy;
+	}
+
+	public SSLContext getSSLContext() {
+		return sslContext;
+	}
+
+	public void setSSLContext(SSLContext sslContext) {
+		this.sslContext = sslContext;
+	}
+
+	public HostnameVerifier getHostnameVerifier() {
+		return hostnameVerifier;
+	}
+
+	public void setHostnameVerifier(HostnameVerifier hostnameVerifier) {
+		this.hostnameVerifier = hostnameVerifier;
 	}
 }

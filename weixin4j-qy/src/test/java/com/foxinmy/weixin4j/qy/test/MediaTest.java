@@ -33,11 +33,10 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void upload() throws IOException, WeixinException {
-		File file = new File("/Users/jy/Downloads/uu-logo.png");
+		File file = new File("/Users/jy/Downloads/weixin4j.png");
 		MediaUploadResult mediaResult = mediaApi.uploadMedia(0, new FileInputStream(
 				file), file.getName());
-		// 1-1gpykXsR8bhNvO13-ZvskptCBxQF1UE535jFdCF63N2inGRAqEb-psF6eppjIIl
-		// 1CF6sBgWWFGY9s4JCEet5ASszsTuyHpeN1f2LWXADveqBlKoxSgb3cO401NEM7dNY
+		// 1gJ0vRLQp_o7L9hsVm6sviuGWc0qaPOd-KjkUZ6KQ7IrFVui8b2ZZd9F5szLCUkkD8gxk65lwW2SV72XO1RGZTQ
 		Assert.assertNotNull(mediaResult.getMediaId());
 		System.out.println(mediaResult);
 	}
