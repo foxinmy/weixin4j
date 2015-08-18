@@ -74,8 +74,7 @@ public class MenuTest extends TokenTest {
 		for (Button btn : btnList) {
 			System.out.println(btn);
 		}
-		System.err.println(menuApi.getMenu());
-		Assert.assertEquals(1, btnList.size());
+		Assert.assertEquals(3, btnList.size());
 	}
 
 	@Test
