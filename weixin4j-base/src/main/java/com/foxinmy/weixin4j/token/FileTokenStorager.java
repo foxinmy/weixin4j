@@ -1,17 +1,17 @@
 package com.foxinmy.weixin4j.token;
 
+import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.xml.XmlStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.xml.XmlStream;
-
 /**
  * 用FILE保存TOKEN
- * 
+ *
  * @className FileTokenStorager
  * @author jy
  * @date 2015年1月9日
@@ -28,7 +28,7 @@ public class FileTokenStorager implements TokenStorager {
 	@Override
 	public Token lookup(String cacheKey) throws WeixinException {
 		File token_file = new File(String.format("%s/%s.xml", cachePath,
-				cacheKey));
+												 cacheKey));
 		try {
 			if (token_file.exists()) {
 				Token token = XmlStream.fromXML(
@@ -53,7 +53,7 @@ public class FileTokenStorager implements TokenStorager {
 			XmlStream.toXML(
 					token,
 					new FileOutputStream(new File(String.format("%s/%s.xml",
-							cachePath, cacheKey))));
+																cachePath, cacheKey))));
 		} catch (IOException e) {
 			throw new WeixinException(e.getMessage());
 		}

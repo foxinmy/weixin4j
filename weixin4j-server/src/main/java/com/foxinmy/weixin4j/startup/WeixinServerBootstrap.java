@@ -140,10 +140,14 @@ public final class WeixinServerBootstrap {
 			throw new IllegalArgumentException("AesToken not be null");
 		}
 		this.aesTokenMap = new HashMap<String, AesToken>();
-		for (AesToken aesToken : aesTokens) {
-			this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
+		if (aesTokens.length == 1) {
+			this.aesTokenMap.put(aesTokens[0].getWeixinId(), aesTokens[0]);
+			this.aesTokenMap.put(null, aesTokens[0]);
+		} else {
+			for (AesToken aesToken : aesTokens) {
+				this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
+			}
 		}
-		this.aesTokenMap.put(null, aesTokens[0]);
 		this.messageHandlerList = new LinkedList<WeixinMessageHandler>();
 		this.messageInterceptorList = new LinkedList<WeixinMessageInterceptor>();
 		this.messageDispatcher = new WeixinMessageDispatcher(messageMatcher);

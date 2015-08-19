@@ -1,16 +1,15 @@
 package com.foxinmy.weixin4j.qy.test;
 
-import java.util.Arrays;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.qy.api.ChatApi;
 import com.foxinmy.weixin4j.qy.message.ChatMessage;
 import com.foxinmy.weixin4j.qy.model.ChatInfo;
 import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.tuple.Text;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Arrays;
 
 public class ChatTest extends TokenTest {
 
@@ -23,8 +22,7 @@ public class ChatTest extends TokenTest {
 
 	@Test
 	public void createChat() throws WeixinException {
-		ChatInfo chatInfo = new ChatInfo("test", "jinyu", "jinyu", "jiaolong",
-				"keneng");
+		ChatInfo chatInfo = new ChatInfo("junjie", "sonliyv", "zhangbin", "zhangshi","keneng");
 		String chatId = chatApi.createChat(chatInfo);
 		System.err.println(chatId);
 		// 55c87507d4c64543a62583f7

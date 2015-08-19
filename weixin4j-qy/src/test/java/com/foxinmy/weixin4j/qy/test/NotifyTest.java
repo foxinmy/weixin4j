@@ -37,13 +37,13 @@ public class NotifyTest extends TokenTest {
 
 	@Test
 	public void text() throws WeixinException {
-		NotifyMessage notify = new NotifyMessage(0, new Text("content"));
+		NotifyMessage notify = new NotifyMessage(0, new Text("hello content"));
 		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 
 	@Test
 	public void image() throws WeixinException {
-		NotifyMessage notify = new NotifyMessage(0, new Image("123"));
+		NotifyMessage notify = new NotifyMessage(0, new Image("1FnZZ7XJPrzdxmJbgp-KrLsLWyZjqrCh_NpTRW_xBq7UdIs_BUjC4pNk1KoSfjyXjojLznWvIlu1-4vkjaQt-JQ"));
 		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 
@@ -62,7 +62,7 @@ public class NotifyTest extends TokenTest {
 
 	@Test
 	public void file() throws WeixinException {
-		File file = new File("file");
+		File file = new File("1iDcWtBp5su_DqsqxKL6K_VFDRdakluU8PQgxyiBDQzG8-xZQ6QP7TpPz8UxxRk-3");
 		NotifyMessage notify = new NotifyMessage(0, file);
 		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
@@ -88,7 +88,7 @@ public class NotifyTest extends TokenTest {
 	@Test
 	public void send1() throws WeixinException {
 		Text text = new Text("this is a text");
-		JSONObject result = notifyApi.sendNotifyMessage(new NotifyMessage(1,
+		JSONObject result = notifyApi.sendNotifyMessage(new NotifyMessage(0,
 				text));
 		Assert.assertEquals(0, result.getIntValue("errcode"));
 	}
