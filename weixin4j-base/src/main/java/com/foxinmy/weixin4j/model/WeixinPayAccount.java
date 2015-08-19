@@ -55,11 +55,32 @@ public class WeixinPayAccount extends WeixinAccount {
 	 * @param paySignKey
 	 *            支付密钥字符串(必填)
 	 * @param mchId
+	 *            微信支付分配的商户号(必填)
+	 */
+	public WeixinPayAccount(String appId, String appSecret, String paySignKey,
+			String mchId) {
+		this(appId, appSecret, paySignKey, mchId, null, null, null, null);
+	}
+
+	/**
+	 * 支付商户信息
+	 * 
+	 * @param appId
+	 *            公众号唯一的身份ID
+	 * @param appSecret
+	 *            调用接口的凭证
+	 * @param paySignKey
+	 *            支付密钥字符串(必填)
+	 * @param mchId
 	 *            微信支付分配的商户号(V3版本必填)
-	 * @param partnerId 财付通的商户号(V2版本必填)
-	 * @param partnerKey 财付通商户权限密钥Key(V2版本必填)
-	 * @param subMchId 微信支付分配的子商户号，受理模式下必填(商户平台版)
-	 * @param deviceInfo 微信支付分配的设备号(商户平台版)
+	 * @param partnerId
+	 *            财付通的商户号(V2版本必填)
+	 * @param partnerKey
+	 *            财付通商户权限密钥Key(V2版本必填)
+	 * @param subMchId
+	 *            微信支付分配的子商户号，受理模式下必填(商户平台版)
+	 * @param deviceInfo
+	 *            微信支付分配的设备号(商户平台版)
 	 */
 	@JSONCreator
 	public WeixinPayAccount(@JSONField(name = "id") String appId,

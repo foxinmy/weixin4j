@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.mp.test;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -10,8 +9,6 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
-import com.foxinmy.weixin4j.payment.WeixinPayProxy;
 import com.foxinmy.weixin4j.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.payment.coupon.CouponStock;
@@ -26,34 +23,26 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @since JDK 1.7
  * @see
  */
-public class CouponTest {
-	protected final static WeixinPayProxy WEIXINPAY;
-	protected final static WeixinPayAccount ACCOUNT;
-	static {
-		ACCOUNT = new WeixinPayAccount("appid", "appsecret", "paysign",
-				"mchid", null, null, null, null);
-		WEIXINPAY = new WeixinPayProxy(ACCOUNT);
-	}
-	protected final File caFile = new File("证书文件路径(*.p12)");
+public class CouponTest extends PayTest {
 
 	@Test
 	public void sendCoupon() throws WeixinException, IOException {
-		String partnerTradeNo = String.format("%s%s%s", ACCOUNT.getMchId(),
+		String partnerTradeNo = String.format("%s%s%s", ACCOUNT3.getMchId(),
 				DateUtil.fortmat2yyyyMMdd(new Date()), "1");
-		CouponResult result = WEIXINPAY.sendCoupon(new FileInputStream(caFile),
+		CouponResult result = PAY3.sendCoupon(new FileInputStream(caFile),
 				"123", partnerTradeNo, "oyFLst1bqtuTcxK-ojF8hOGtLQao", null);
 		Assert.assertTrue(result.getRetCode().equalsIgnoreCase(Consts.SUCCESS));
 	}
 
 	@Test
 	public void queryCouponStock() throws WeixinException {
-		CouponStock couponStock = WEIXINPAY.queryCouponStock("couponStockId");
+		CouponStock couponStock = PAY3.queryCouponStock("couponStockId");
 		System.err.println(couponStock);
 	}
 
 	@Test
 	public void queryCouponDetail() throws WeixinException {
-		CouponDetail couponDetail = WEIXINPAY.queryCouponDetail("couponId");
+		CouponDetail couponDetail = PAY3.queryCouponDetail("couponId");
 		System.err.println(couponDetail);
 	}
 }

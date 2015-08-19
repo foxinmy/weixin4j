@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.type.MPPaymentCheckNameType;
  * @since JDK 1.7
  * @see
  */
-public class CashTest extends CouponTest {
+public class CashTest extends PayTest {
 
 	@Test
 	public void sendRedpacket() throws WeixinException, IOException {
@@ -35,7 +35,7 @@ public class CashTest extends CouponTest {
 		redpacket.setRemark("快来领取红包吧！");
 		redpacket.setTotalNum(1);
 		redpacket.setWishing("来就送钱");
-		RedpacketSendResult result = WEIXINPAY.sendRedpack(new FileInputStream(
+		RedpacketSendResult result = PAY3.sendRedpack(new FileInputStream(
 				caFile), redpacket);
 		System.err.println(result);
 	}
@@ -43,7 +43,7 @@ public class CashTest extends CouponTest {
 	@Test
 	public void queryRedpacket() throws WeixinException, IOException {
 		String outTradeNo = "HB001";
-		RedpacketRecord record = WEIXINPAY.queryRedpack(new FileInputStream(
+		RedpacketRecord record = PAY3.queryRedpack(new FileInputStream(
 				caFile), outTradeNo);
 		System.err.println(record);
 	}
@@ -53,7 +53,7 @@ public class CashTest extends CouponTest {
 		MPPayment payment = new MPPayment("MP001",
 				"oyFLst1bqtuTcxK-ojF8hOGtLQao",
 				MPPaymentCheckNameType.NO_CHECK, "企业付款测试", 0.01d, "127.0.0.1");
-		MPPaymentResult result = WEIXINPAY.mpPayment(
+		MPPaymentResult result = PAY3.mpPayment(
 				new FileInputStream(caFile), payment);
 		System.err.println(result);
 	}
