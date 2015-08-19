@@ -24,7 +24,7 @@ public class WeixinJSTicketCreator implements TokenCreator {
 
 	private final String appid;
 	private final TokenHolder weixinTokenHolder;
-	private final WeixinRequestExecutor httpClient;
+	private final WeixinRequestExecutor weixinExecutor;
 
 	/**
 	 * jssdk
@@ -37,7 +37,7 @@ public class WeixinJSTicketCreator implements TokenCreator {
 	public WeixinJSTicketCreator(String appid, TokenHolder weixinTokenHolder) {
 		this.appid = appid;
 		this.weixinTokenHolder = weixinTokenHolder;
-		this.httpClient = new WeixinRequestExecutor();
+		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class WeixinJSTicketCreator implements TokenCreator {
 
 	@Override
 	public Token createToken() throws WeixinException {
-		WeixinResponse response = httpClient.get(String.format(
+		WeixinResponse response = weixinExecutor.get(String.format(
 				URLConsts.JS_TICKET_URL, weixinTokenHolder.getToken()
 						.getAccessToken()));
 		JSONObject result = response.getAsJson();

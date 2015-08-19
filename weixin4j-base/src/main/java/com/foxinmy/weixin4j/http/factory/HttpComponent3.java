@@ -46,6 +46,15 @@ import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 
+/**
+ * Apache HttpComponent 3.x
+ * 
+ * @className HttpComponent3
+ * @author jy
+ * @date 2015年8月18日
+ * @since JDK 1.7
+ * @see
+ */
 public class HttpComponent3 extends AbstractHttpClient implements HttpClient {
 
 	private final org.apache.commons.httpclient.HttpClient httpClient;

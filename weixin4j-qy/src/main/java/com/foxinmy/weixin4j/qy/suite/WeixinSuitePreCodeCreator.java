@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  */
 public class WeixinSuitePreCodeCreator implements TokenCreator {
 
-	private final WeixinRequestExecutor httpClient;
+	private final WeixinRequestExecutor weixinExecutor;
 	private final TokenHolder suiteTokenHolder;
 	private final String suiteId;
 
@@ -37,7 +37,7 @@ public class WeixinSuitePreCodeCreator implements TokenCreator {
 			String suiteId) {
 		this.suiteTokenHolder = suiteTokenHolder;
 		this.suiteId = suiteId;
-		this.httpClient = new WeixinRequestExecutor();
+		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class WeixinSuitePreCodeCreator implements TokenCreator {
 
 	@Override
 	public Token createToken() throws WeixinException {
-		WeixinResponse response = httpClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(URLConsts.SUITE_PRE_CODE_URL,
 						suiteTokenHolder.getAccessToken()),
 				String.format("{\"suite_id\":\"%s\"}", suiteId));

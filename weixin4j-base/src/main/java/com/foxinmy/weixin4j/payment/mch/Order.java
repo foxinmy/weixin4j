@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.payment.coupon.CouponInfo;
+import com.foxinmy.weixin4j.type.BankType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.TradeState;
 import com.foxinmy.weixin4j.type.TradeType;
@@ -136,7 +137,8 @@ public class Order extends ApiResult {
 
 	@JSONField(serialize = false)
 	public TradeState getFormatTradeState() {
-		return tradeState != null ? TradeState.valueOf(tradeState.toUpperCase()) : null;
+		return tradeState != null ? TradeState
+				.valueOf(tradeState.toUpperCase()) : null;
 	}
 
 	public String getOpenId() {
@@ -154,11 +156,18 @@ public class Order extends ApiResult {
 
 	@JSONField(serialize = false)
 	public TradeType getFormatTradeType() {
-		return tradeType != null ? TradeType.valueOf(tradeType.toUpperCase()) : null;
+		return tradeType != null ? TradeType.valueOf(tradeType.toUpperCase())
+				: null;
 	}
 
 	public String getBankType() {
 		return bankType;
+	}
+
+	@JSONField(serialize = false)
+	public BankType getFormatBankType() {
+		return bankType != null ? BankType.valueOf(bankType.toUpperCase())
+				: null;
 	}
 
 	public int getTotalFee() {
@@ -209,7 +218,8 @@ public class Order extends ApiResult {
 
 	@JSONField(serialize = false)
 	public CurrencyType getFormatFeeType() {
-		return feeType != null ? CurrencyType.valueOf(feeType.toUpperCase()) : null;
+		return feeType != null ? CurrencyType.valueOf(feeType.toUpperCase())
+				: null;
 	}
 
 	public String getTradeState() {

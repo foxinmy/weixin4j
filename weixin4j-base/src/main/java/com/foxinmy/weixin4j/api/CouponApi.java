@@ -31,13 +31,13 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  */
 public class CouponApi {
 
-	private final WeixinRequestExecutor weixinClient;
+	private final WeixinRequestExecutor weixinExecutor;
 
 	private final WeixinPayAccount weixinAccount;
 
 	public CouponApi(WeixinPayAccount weixinAccount) {
 		this.weixinAccount = weixinAccount;
-		this.weixinClient = new WeixinRequestExecutor();
+		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class CouponApi {
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				PayURLConsts.MCH_COUPONSTOCKQUERY_URL, param);
 		return response.getAsObject(new TypeReference<CouponStock>() {
 		});
@@ -139,7 +139,7 @@ public class CouponApi {
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				PayURLConsts.MCH_COUPONDETAILQUERY_URL, param);
 		return response.getAsObject(new TypeReference<CouponDetail>() {
 		});

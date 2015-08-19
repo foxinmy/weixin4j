@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  */
 public class WeixinTokenCreator implements TokenCreator {
 
-	private final WeixinRequestExecutor httpClient;
+	private final WeixinRequestExecutor weixinExecutor;
 	private final String appid;
 	private final String secret;
 
@@ -35,7 +35,7 @@ public class WeixinTokenCreator implements TokenCreator {
 	public WeixinTokenCreator(String appid, String secret) {
 		this.appid = appid;
 		this.secret = secret;
-		this.httpClient = new WeixinRequestExecutor();
+		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class WeixinTokenCreator implements TokenCreator {
 	public Token createToken() throws WeixinException {
 		String tokenUrl = String.format(URLConsts.ASSESS_TOKEN_URL, appid,
 				secret);
-		WeixinResponse response = httpClient.get(tokenUrl);
+		WeixinResponse response = weixinExecutor.get(tokenUrl);
 		Token token = response.getAsObject(new TypeReference<Token>() {
 		});
 		token.setTime(System.currentTimeMillis());

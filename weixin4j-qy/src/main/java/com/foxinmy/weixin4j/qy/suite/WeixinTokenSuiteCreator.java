@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  */
 public class WeixinTokenSuiteCreator implements TokenCreator {
 
-	private final WeixinRequestExecutor httpClient;
+	private final WeixinRequestExecutor weixinExecutor;
 	private final String authCorpid;
 	private final SuitePerCodeHolder perCodeHolder;
 	private final TokenHolder suiteTokenHolder;
@@ -41,7 +41,7 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 		this.authCorpid = authCorpid;
 		this.perCodeHolder = perCodeHolder;
 		this.suiteTokenHolder = suiteTokenHolder;
-		this.httpClient = new WeixinRequestExecutor();
+		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 		obj.put("suite_id", perCodeHolder.getSuiteId());
 		obj.put("auth_corpid", authCorpid);
 		obj.put("permanent_code", perCodeHolder.getPermanentCode());
-		WeixinResponse response = httpClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(URLConsts.TOKEN_SUITE_URL,
 						suiteTokenHolder.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();

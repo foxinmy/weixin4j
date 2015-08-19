@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  */
 public class WeixinProviderTokenCreator implements TokenCreator {
 
-	private final WeixinRequestExecutor httpClient;
+	private final WeixinRequestExecutor weixinExecutor;
 	private final String corpid;
 	private final String providersecret;
 
@@ -35,7 +35,7 @@ public class WeixinProviderTokenCreator implements TokenCreator {
 	public WeixinProviderTokenCreator(String corpid, String providersecret) {
 		this.corpid = corpid;
 		this.providersecret = providersecret;
-		this.httpClient = new WeixinRequestExecutor();
+		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class WeixinProviderTokenCreator implements TokenCreator {
 		JSONObject obj = new JSONObject();
 		obj.put("corpid", corpid);
 		obj.put("provider_secret", providersecret);
-		WeixinResponse response = httpClient.post(URLConsts.PROVIDER_TOKEN_URL,
+		WeixinResponse response = weixinExecutor.post(URLConsts.PROVIDER_TOKEN_URL,
 				obj.toJSONString());
 		obj = response.getAsJson();
 		Token token = new Token(obj.getString("provider_access_token"));
