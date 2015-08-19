@@ -238,7 +238,7 @@ public class Pay2Api extends MpApi {
 		} catch (WeixinException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new WeixinException(e.getMessage());
+			throw new WeixinException(e);
 		} finally {
 			if (ca != null) {
 				try {
@@ -389,7 +389,7 @@ public class Pay2Api extends MpApi {
 				writer.newLine();
 			}
 		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
+			throw new WeixinException(e);
 		} finally {
 			try {
 				if (reader != null) {

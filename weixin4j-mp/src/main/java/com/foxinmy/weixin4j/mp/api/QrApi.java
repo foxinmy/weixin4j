@@ -95,7 +95,7 @@ public class QrApi extends MpApi {
 			os = new FileOutputStream(file);
 			os.write(qrResult.getContent());
 		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
+			throw new WeixinException(e);
 		} finally {
 			try {
 				if (os != null) {

@@ -1,7 +1,9 @@
 package com.foxinmy.weixin4j.http.weixin;
 
 import java.io.InputStream;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -34,7 +36,7 @@ public class WeixinSSLRequestExecutor extends WeixinRequestExecutor {
 			sslContext.init(kmf.getKeyManagers(), null,
 					new java.security.SecureRandom());
 		} catch (Exception e) {
-			throw new WeixinException(e.getMessage());
+			throw new WeixinException("Key load error", e);
 		}
 		params.setSSLContext(sslContext);
 	}

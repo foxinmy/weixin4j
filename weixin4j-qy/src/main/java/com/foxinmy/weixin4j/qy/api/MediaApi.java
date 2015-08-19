@@ -200,7 +200,7 @@ public class MediaApi extends QyApi {
 						file.getAbsolutePath()));
 			}
 		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
+			throw new WeixinException(e);
 		} finally {
 			try {
 				if (os != null) {
@@ -272,7 +272,7 @@ public class MediaApi extends QyApi {
 			return new MediaDownloadResult(content,
 					ContentType.create(contentType), fileName);
 		} catch (IOException e) {
-			throw new WeixinException("I/O Error on getBody");
+			throw new WeixinException("I/O Error on getBody", e);
 		} catch (HttpClientException e) {
 			throw new WeixinException(e);
 		}

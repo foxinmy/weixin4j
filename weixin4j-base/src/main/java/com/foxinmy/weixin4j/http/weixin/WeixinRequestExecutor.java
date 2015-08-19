@@ -20,6 +20,7 @@ import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.http.entity.StringEntity;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
+import com.foxinmy.weixin4j.http.factory.SimpleHttpClientFactory;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.WeixinErrorUtil;
@@ -44,6 +45,7 @@ public class WeixinRequestExecutor {
 	}
 
 	public WeixinRequestExecutor(HttpParams params) {
+		HttpClientFactory.setDefaultFactory(new SimpleHttpClientFactory());
 		this.httpClient = HttpClientFactory.getInstance();
 		this.params = params;
 	}

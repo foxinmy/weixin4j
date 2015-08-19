@@ -344,7 +344,7 @@ public class Pay3Api {
 				writer.newLine();
 			}
 		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
+			throw new WeixinException(e);
 		} finally {
 			try {
 				if (reader != null) {

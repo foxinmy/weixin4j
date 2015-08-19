@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.exception;
 
-import java.io.IOException;
-
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
@@ -34,8 +32,8 @@ public class WeixinException extends Exception {
 		super(e);
 	}
 
-	public WeixinException(String msg, IOException ex) {
-		super(msg, ex);
+	public WeixinException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
 	public String getErrorCode() {
