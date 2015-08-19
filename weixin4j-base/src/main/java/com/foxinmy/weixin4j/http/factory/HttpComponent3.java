@@ -31,7 +31,7 @@ import org.apache.commons.httpclient.methods.TraceMethod;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.ControllerThreadSocketFactory;
 import org.apache.commons.httpclient.protocol.Protocol;
-import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
+import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 
 import com.foxinmy.weixin4j.http.AbstractHttpClient;
 import com.foxinmy.weixin4j.http.HttpClient;
@@ -97,10 +97,8 @@ public class HttpComponent3 extends AbstractHttpClient implements HttpClient {
 				}
 				SSLContext sslContext = params.getSSLContext();
 				if (sslContext != null) {
-					Protocol protocol = new Protocol("https",
-							new SSLProtocolSocketFactory(sslContext), 443);
-					httpClient.getHostConfiguration().setHost(uri.getHost(),
-							uri.getPort(), protocol);
+					Protocol.registerProtocol("https", new Protocol("https",
+							new SSLProtocolSocketFactory(sslContext), 443));
 				}
 				httpClient.getHttpConnectionManager().getParams()
 						.setConnectionTimeout(params.getConnectTimeout());
@@ -169,7 +167,7 @@ public class HttpComponent3 extends AbstractHttpClient implements HttpClient {
 	}
 
 	private static class SSLProtocolSocketFactory implements
-			ProtocolSocketFactory {
+			SecureProtocolSocketFactory {
 
 		private final SSLContext sslContext;
 
@@ -206,6 +204,13 @@ public class HttpComponent3 extends AbstractHttpClient implements HttpClient {
 		public Socket createSocket(String host, int port) throws IOException,
 				UnknownHostException {
 			return sslContext.getSocketFactory().createSocket(host, port);
+		}
+
+		@Override
+		public Socket createSocket(Socket socket, String host, int port,
+				boolean autoClose) throws IOException, UnknownHostException {
+			return sslContext.getSocketFactory().createSocket(socket, host,
+					port, autoClose);
 		}
 	}
 }

@@ -2,11 +2,17 @@ package com.foxinmy.weixin4j.http.factory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
 
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -17,6 +23,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.InputStreamEntity;
 
@@ -84,6 +91,35 @@ public abstract class HttpComponent4 extends AbstractHttpClient {
 			}
 			httpEntity.setContentType(entity.getContentType().toString());
 			((HttpEntityEnclosingRequestBase) uriRequest).setEntity(httpEntity);
+		}
+	}
+
+	protected static class CustomHostnameVerifier implements
+			X509HostnameVerifier {
+
+		private final HostnameVerifier hostnameVerifier;
+
+		public CustomHostnameVerifier(HostnameVerifier hostnameVerifier) {
+			this.hostnameVerifier = hostnameVerifier;
+		}
+
+		@Override
+		public boolean verify(String hostname, SSLSession session) {
+			return hostnameVerifier.verify(hostname, session);
+		}
+
+		@Override
+		public void verify(String host, SSLSocket ssl) throws IOException {
+		}
+
+		@Override
+		public void verify(String host, X509Certificate cert)
+				throws SSLException {
+		}
+
+		@Override
+		public void verify(String host, String[] cns, String[] subjectAlts)
+				throws SSLException {
 		}
 	}
 }

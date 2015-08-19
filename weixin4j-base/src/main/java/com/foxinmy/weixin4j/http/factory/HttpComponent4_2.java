@@ -8,6 +8,8 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.config.RequestConfig.Builder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
@@ -54,7 +56,13 @@ public class HttpComponent4_2 extends HttpComponent4 implements HttpClient {
 					requestConfig.setProxy(proxy);
 				}
 				if (params.getSSLContext() != null) {
+					X509HostnameVerifier hostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+					if (params.getHostnameVerifier() != null) {
+						hostnameVerifier = new CustomHostnameVerifier(
+								params.getHostnameVerifier());
+					}
 					httpClient = HttpClients.custom()
+							.setHostnameVerifier(hostnameVerifier)
 							.setSslcontext(params.getSSLContext()).build();
 				}
 				uriRequest.setConfig(requestConfig.build());

@@ -20,7 +20,6 @@ import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.http.entity.StringEntity;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
-import com.foxinmy.weixin4j.http.factory.SimpleHttpClientFactory;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.WeixinErrorUtil;
@@ -45,7 +44,6 @@ public class WeixinRequestExecutor {
 	}
 
 	public WeixinRequestExecutor(HttpParams params) {
-		HttpClientFactory.setDefaultFactory(new SimpleHttpClientFactory());
 		this.httpClient = HttpClientFactory.getInstance();
 		this.params = params;
 	}
@@ -153,32 +151,30 @@ public class WeixinRequestExecutor {
 	}
 
 	protected void checkXml(WeixinResponse response) throws WeixinException {
-		XmlResult xmlResult = null;
-		try {
-			xmlResult = response.getAsXmlResult();
-		} catch (IllegalArgumentException ex) {
+		String xmlContent = response.getAsString();
+		if (xmlContent.length() != xmlContent.replaceFirst("<retcode>",
+				"<return_code>").length()) {
 			// <?xml><root><data..../data></root>
-			String newXml = response.getAsString()
-					.replaceFirst("<root>", "<xml>")
+			xmlContent = xmlContent.replaceFirst("<root>", "<xml>")
 					.replaceFirst("<retcode>", "<return_code>")
 					.replaceFirst("</retcode>", "</return_code>")
 					.replaceFirst("<retmsg>", "<return_msg>")
 					.replaceFirst("</retmsg>", "</return_msg>")
 					.replaceFirst("</root>", "</xml>");
-			xmlResult = XmlStream.fromXML(newXml, XmlResult.class);
-			response.setText(newXml);
 		}
+		XmlResult xmlResult = XmlStream.fromXML(xmlContent, XmlResult.class);
+		response.setText(xmlContent);
 		response.setXmlResult(true);
-		if (xmlResult.getReturnCode().equals("0")) {
+		if ("0".equals(xmlResult.getReturnCode())) {
 			return;
 		}
-		if (!xmlResult.getReturnCode().equalsIgnoreCase(
-				com.foxinmy.weixin4j.model.Consts.SUCCESS)) {
+		if (!com.foxinmy.weixin4j.model.Consts.SUCCESS
+				.equalsIgnoreCase(xmlResult.getReturnCode())) {
 			throw new WeixinException(xmlResult.getReturnCode(),
 					xmlResult.getReturnMsg());
 		}
-		if (!xmlResult.getResultCode().equalsIgnoreCase(
-				com.foxinmy.weixin4j.model.Consts.SUCCESS)) {
+		if (!com.foxinmy.weixin4j.model.Consts.SUCCESS
+				.equalsIgnoreCase(xmlResult.getResultCode())) {
 			throw new WeixinException(xmlResult.getErrCode(),
 					xmlResult.getErrCodeDes());
 		}

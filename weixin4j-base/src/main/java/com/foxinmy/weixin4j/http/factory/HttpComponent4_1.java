@@ -8,6 +8,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
@@ -71,7 +72,13 @@ public class HttpComponent4_1 extends HttpComponent4 implements HttpClient {
 				if (params.getSSLContext() != null) {
 					SSLSocketFactory socketFactory = new SSLSocketFactory(
 							params.getSSLContext());
-					Scheme scheme = new Scheme("https", socketFactory, 433);
+					X509HostnameVerifier hostnameVerifier = SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+					if (params.getHostnameVerifier() != null) {
+						hostnameVerifier = new CustomHostnameVerifier(
+								params.getHostnameVerifier());
+					}
+					socketFactory.setHostnameVerifier(hostnameVerifier);
+					Scheme scheme = new Scheme("https", socketFactory, 443);
 					httpClient.getConnectionManager().getSchemeRegistry()
 							.register(scheme);
 				}
