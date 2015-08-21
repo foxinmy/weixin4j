@@ -64,7 +64,7 @@ weixin4j.properties说明
 	account={"id":"corpid","secret":"corpsecret",\
 		"suites":[{"id":"应用套件的id","secret":"应用套件的secret"}],\
 		"providerSecret:"第三方提供商secret(企业号登陆)",\
-		"chatSecret":"消息服务secret(企业号聊天,暂时没用)"}
+		"chatSecret":"消息服务secret(企业号消息服务,暂时没用到)"}
 	
 	token_path=/tmp/weixin4j/token
 	media_path=/tmp/weixin4j/media
