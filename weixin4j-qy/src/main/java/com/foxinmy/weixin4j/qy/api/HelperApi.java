@@ -35,7 +35,7 @@ public class HelperApi extends QyApi {
 	public List<String> getCallbackip() throws WeixinException {
 		String getcallbackip_uri = getRequestUri("getcallbackip_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.post(String.format(getcallbackip_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(getcallbackip_uri,
 				token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("ip_list"),
 				String.class);

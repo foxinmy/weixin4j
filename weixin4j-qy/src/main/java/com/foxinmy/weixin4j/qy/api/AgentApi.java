@@ -46,7 +46,7 @@ public class AgentApi extends QyApi {
 	public AgentInfo getAgent(int agentid) throws WeixinException {
 		String agent_get_uri = getRequestUri("agent_get_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.post(String.format(agent_get_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(agent_get_uri,
 				token.getAccessToken(), agentid));
 		JSONObject jsonObj = response.getAsJson();
 		AgentInfo agent = JSON.toJavaObject(jsonObj, AgentInfo.class);

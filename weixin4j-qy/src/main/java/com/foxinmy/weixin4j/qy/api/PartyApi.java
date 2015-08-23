@@ -103,7 +103,7 @@ public class PartyApi extends QyApi {
 			department_list_uri += String.format("&id=%d", partId);
 		}
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.post(String.format(
+		WeixinResponse response = weixinExecutor.get(String.format(
 				department_list_uri, token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("department"),
 				Party.class);
