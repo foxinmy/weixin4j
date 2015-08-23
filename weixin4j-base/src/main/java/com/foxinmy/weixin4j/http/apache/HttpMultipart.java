@@ -36,7 +36,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.foxinmy.weixin4j.http.NameValue;
+import com.foxinmy.weixin4j.util.NameValue;
 
 /**
  * HttpMultipart represents a collection of MIME multipart encoded content

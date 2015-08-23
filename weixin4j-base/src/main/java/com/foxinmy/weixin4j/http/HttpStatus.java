@@ -172,4 +172,24 @@ public final class HttpStatus {
 	/** <tt>507 Insufficient Storage</tt> (WebDAV - RFC 2518) */
 	public static final int SC_INSUFFICIENT_STORAGE = 507;
 
+	private final int statusCode;
+	private final String statusText;
+
+	public HttpStatus(int statusCode, String statusText) {
+		this.statusCode = statusCode;
+		this.statusText = statusText;
+	}
+
+	public int getStatusCode() {
+		return statusCode;
+	}
+
+	public String getStatusText() {
+		return statusText;
+	}
+
+	@Override
+	public String toString() {
+		return "[" + statusCode + "," + statusText + "]";
+	}
 }

@@ -12,7 +12,8 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.QRResult;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.IOUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConst;
 
 /**
@@ -48,14 +49,18 @@ public class QrApi extends MpApi {
 	public QRResult createQR(QRParameter parameter) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String qr_uri = getRequestUri("qr_ticket_uri");
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(qr_uri, token.getAccessToken()),
 				parameter.getContent());
 		QRResult result = response.getAsObject(new TypeReference<QRResult>() {
 		});
 		qr_uri = getRequestUri("qr_image_uri");
-		response = weixinClient.get(String.format(qr_uri, result.getTicket()));
-		result.setContent(response.getContent());
+		response = weixinExecutor.get(String.format(qr_uri, result.getTicket()));
+		try {
+			result.setContent(IOUtil.toByteArray(response.getBody()));
+		} catch (IOException e) {
+			throw new WeixinException(e);
+		}
 		return result;
 	}
 
@@ -75,7 +80,7 @@ public class QrApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 */
 	public File createQRFile(QRParameter parameter) throws WeixinException {
-		String qr_path = ConfigUtil.getValue("qr_path",
+		String qr_path = Weixin4jConfigUtil.getValue("qr_path",
 				Weixin4jConst.DEFAULT_QRCODE_PATH);
 		String filename = String.format("%s_%s_%d.jpg", parameter.getQrType()
 				.name(), parameter.getSceneValue(), parameter
@@ -90,7 +95,7 @@ public class QrApi extends MpApi {
 			os = new FileOutputStream(file);
 			os.write(qrResult.getContent());
 		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
+			throw new WeixinException(e);
 		} finally {
 			try {
 				if (os != null) {

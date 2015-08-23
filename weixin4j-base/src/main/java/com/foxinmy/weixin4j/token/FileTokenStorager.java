@@ -43,7 +43,7 @@ public class FileTokenStorager implements TokenStorager {
 			}
 			return null;
 		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
+			throw new WeixinException(e);
 		}
 	}
 
@@ -55,7 +55,7 @@ public class FileTokenStorager implements TokenStorager {
 					new FileOutputStream(new File(String.format("%s/%s.xml",
 																cachePath, cacheKey))));
 		} catch (IOException e) {
-			throw new WeixinException(e.getMessage());
+			throw new WeixinException(e);
 		}
 	}
 }

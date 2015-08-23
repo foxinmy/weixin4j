@@ -7,9 +7,9 @@ import java.util.Map;
 
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.SSLHttpClinet;
-import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
+import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayURLConsts;
 import com.foxinmy.weixin4j.payment.PayUtil;
@@ -31,13 +31,13 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  */
 public class CouponApi {
 
-	private final WeixinHttpClient weixinClient;
+	private final WeixinRequestExecutor weixinExecutor;
 
 	private final WeixinPayAccount weixinAccount;
 
 	public CouponApi(WeixinPayAccount weixinAccount) {
 		this.weixinAccount = weixinAccount;
-		this.weixinClient = new WeixinHttpClient();
+		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	/**
@@ -80,9 +80,10 @@ public class CouponApi {
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = null;
 		try {
-			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
-					ca);
-			response = request.post(PayURLConsts.MCH_COUPONSEND_URL, param);
+			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
+					weixinAccount.getMchId(), ca);
+			response = weixinExecutor.post(PayURLConsts.MCH_COUPONSEND_URL,
+					param);
 		} finally {
 			if (ca != null) {
 				try {
@@ -114,7 +115,7 @@ public class CouponApi {
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				PayURLConsts.MCH_COUPONSTOCKQUERY_URL, param);
 		return response.getAsObject(new TypeReference<CouponStock>() {
 		});
@@ -138,7 +139,7 @@ public class CouponApi {
 		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				PayURLConsts.MCH_COUPONDETAILQUERY_URL, param);
 		return response.getAsObject(new TypeReference<CouponDetail>() {
 		});

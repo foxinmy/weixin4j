@@ -1,17 +1,33 @@
 package com.foxinmy.weixin4j.http.weixin;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.foxinmy.weixin4j.http.HttpResponse;
+import com.foxinmy.weixin4j.http.HttpHeaders;
+import com.foxinmy.weixin4j.http.HttpStatus;
+import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
-public class WeixinResponse extends HttpResponse {
+public class WeixinResponse {
 
 	private boolean isJsonResult;
 	private boolean isXmlResult;
-	private String text;
+	private volatile String text;
+
+	private final HttpHeaders headers;
+	private final HttpStatus status;
+	private final InputStream body;
+
+	public WeixinResponse(HttpHeaders headers, HttpStatus status,
+			InputStream body) {
+		this.headers = headers;
+		this.status = status;
+		this.body = body;
+	}
 
 	public void setJsonResult(boolean isJsonResult) {
 		this.isJsonResult = isJsonResult;
@@ -23,9 +39,17 @@ public class WeixinResponse extends HttpResponse {
 
 	public String getAsString() {
 		if (text == null) {
-			text = StringUtil.newStringUtf8(getContent());
+			try {
+				text = StringUtil.newStringUtf8(IOUtil.toByteArray(body));
+			} catch (IOException e) {
+				;
+			}
 		}
 		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public JsonResult getAsJsonResult() {
@@ -50,5 +74,17 @@ public class WeixinResponse extends HttpResponse {
 
 	public XmlResult getAsXmlResult() {
 		return XmlStream.fromXML(getAsString(), XmlResult.class);
+	}
+
+	public HttpHeaders getHeaders() {
+		return headers;
+	}
+
+	public HttpStatus getStatus() {
+		return status;
+	}
+
+	public InputStream getBody() {
+		return body;
 	}
 }

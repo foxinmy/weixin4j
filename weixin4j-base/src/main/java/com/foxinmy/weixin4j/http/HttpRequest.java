@@ -2,6 +2,8 @@ package com.foxinmy.weixin4j.http;
 
 import java.net.URI;
 
+import com.foxinmy.weixin4j.http.entity.HttpEntity;
+
 /**
  * HTTP 请求
  * 
@@ -11,49 +13,74 @@ import java.net.URI;
  * @since JDK 1.7
  * @see
  */
-public interface HttpRequest extends HttpMessage {
-
+public class HttpRequest implements HttpMessage {
 	/**
 	 * 请求方式
 	 * 
 	 * @return
 	 */
-	HttpMethod getMethod();
+	private final HttpMethod method;
 
 	/**
 	 * 请求路径
 	 * 
 	 * @return
 	 */
-	URI getURI();
-
+	private final URI uri;
 	/**
-	 * 请求参数
+	 * 协议参数
 	 * 
 	 * @return
 	 */
-	HttpParams getParams();
-
+	private HttpParams params;
 	/**
-	 * 新增表头
-	 * 
-	 * @param header
+	 * 内容参数
 	 */
-	void addHeader(Header header);
-
+	private HttpEntity entity;
 	/**
-	 * 移除表头
-	 * 
-	 * @param name
-	 * @return
+	 * 请求表头
 	 */
-	boolean removeHeader(String name);
+	private HttpHeaders headers;
 
-	/**
-	 * 移除表头
-	 * 
-	 * @param name
-	 * @return
-	 */
-	boolean removeHeader(Header name);
+	public HttpRequest(HttpMethod method, URI uri) {
+		this.method = method;
+		this.uri = uri;
+	}
+
+	public HttpRequest(HttpMethod method, String url) {
+		this(method, URI.create(url));
+	}
+
+	public HttpMethod getMethod() {
+		return method;
+	}
+
+	public URI getURI() {
+		return uri;
+	}
+
+	public HttpParams getParams() {
+		return params;
+	}
+
+	public void setParams(HttpParams params) {
+		this.params = params;
+	}
+
+	public HttpEntity getEntity() {
+		return entity;
+	}
+
+	public void setEntity(HttpEntity entity) {
+		this.entity = entity;
+	}
+
+	public void setHeaders(HttpHeaders headers) {
+		this.headers = headers;
+	}
+
+	@Override
+	public HttpHeaders getHeaders() {
+		return headers;
+	}
 }

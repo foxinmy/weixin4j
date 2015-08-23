@@ -34,7 +34,7 @@ public class Image implements MassTuple, NotifyTuple, ChatTuple {
 	private String mediaId;
 
 	@JSONCreator
-	public Image(@JSONField(name = "media_id") String mediaId) {
+	public Image(@JSONField(name = "mediaId") String mediaId) {
 		this.mediaId = mediaId;
 	}
 

@@ -46,7 +46,7 @@ public class AgentApi extends QyApi {
 	public AgentInfo getAgent(int agentid) throws WeixinException {
 		String agent_get_uri = getRequestUri("agent_get_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(String.format(agent_get_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(agent_get_uri,
 				token.getAccessToken(), agentid));
 		JSONObject jsonObj = response.getAsJson();
 		AgentInfo agent = JSON.toJavaObject(jsonObj, AgentInfo.class);
@@ -75,7 +75,7 @@ public class AgentApi extends QyApi {
 	public JsonResult setAgent(AgentSetter agentSet) throws WeixinException {
 		String agent_set_uri = getRequestUri("agent_set_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(agent_set_uri, token.getAccessToken()),
 				JSON.toJSONString(agentSet, typeFilter));
 		return response.getAsJsonResult();
@@ -109,7 +109,7 @@ public class AgentApi extends QyApi {
 	public List<AgentOverview> listAgentOverview() throws WeixinException {
 		String agent_list_uri = getRequestUri("agent_list_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.get(String.format(agent_list_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(agent_list_uri,
 				token.getAccessToken()));
 
 		return JSON.parseArray(response.getAsJson().getString("agentlist"),

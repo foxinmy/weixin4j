@@ -446,3 +446,7 @@
   + `release`: weixin4j-[mp|qy] upgrade to 1.5.3,weixin4j-server upgrade to 1.0.5
   
  + **weixin4j-[mp|qy]**: 媒体接口类(MediaApi)查询素材接口调整:去掉offset,count替换为Pageable类
+ 
+* 2015-08-18
+  
+ + 比较大的改动:重构了HttpClient部分

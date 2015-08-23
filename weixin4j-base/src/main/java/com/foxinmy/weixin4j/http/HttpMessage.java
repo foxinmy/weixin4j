@@ -11,57 +11,10 @@ package com.foxinmy.weixin4j.http;
  * @see
  */
 public interface HttpMessage {
-
 	/**
-	 * HTTP版本
+	 * HTTP报头
 	 * 
 	 * @return
 	 */
-	HttpVersion getProtocolVersion();
-
-	/**
-	 * 全部表头
-	 * 
-	 * @return
-	 */
-	Header[] getAllHeaders();
-
-	/**
-	 * 设置表头
-	 * 
-	 * @param headers
-	 */
-	void setHeaders(Header... headers);
-
-	/**
-	 * 是否包含某一表头
-	 * 
-	 * @param name
-	 * @return
-	 */
-	boolean containsHeader(String name);
-
-	/**
-	 * 名称查找表头
-	 * 
-	 * @param name
-	 * @return
-	 */
-	Header[] getHeaders(String name);
-
-	/**
-	 * 查找最先匹配表头
-	 * 
-	 * @param name
-	 * @return
-	 */
-	Header getFirstHeader(String name);
-
-	/**
-	 * 查找最后匹配表头
-	 * 
-	 * @param name
-	 * @return
-	 */
-	Header getLastHeader(String name);
+	HttpHeaders getHeaders();
 }

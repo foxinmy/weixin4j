@@ -1,16 +1,15 @@
 package com.foxinmy.weixin4j.http;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URI;
-import java.net.URL;
-import java.security.GeneralSecurityException;
+import java.net.URLConnection;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +24,7 @@ import javax.net.ssl.X509TrustManager;
 
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * HTTP 简单实现
@@ -35,7 +35,7 @@ import com.foxinmy.weixin4j.model.Consts;
  * @since JDK 1.7
  * @see
  */
-public class SimpleHttpClient implements HttpClient {
+public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 
 	protected HostnameVerifier createHostnameVerifier() {
 		return new HostnameVerifier() {
@@ -67,142 +67,147 @@ public class SimpleHttpClient implements HttpClient {
 		};
 	}
 
-	protected HttpURLConnection createHttpConnection(URI uri)
+	protected HttpURLConnection createHttpConnection(HttpRequest request)
 			throws IOException {
-		URL url = uri.toURL();
+		URI uri = request.getURI();
+		HttpParams params = request.getParams();
+		Proxy proxy = params != null ? params.getProxy() : null;
+		URLConnection urlConnection = proxy != null ? uri.toURL()
+				.openConnection(proxy) : uri.toURL().openConnection();
 		if (uri.getScheme().equals("https")) {
-			HttpsURLConnection connection = (HttpsURLConnection) url
-					.openConnection();
-			SSLContext sslContext = null;
 			try {
-				sslContext = SSLContext.getInstance("TLS");
-				sslContext.init(null,
-						new X509TrustManager[] { createX509TrustManager() },
-						new java.security.SecureRandom());
-			} catch (GeneralSecurityException e) {
-				throw new IOException(e);
+				SSLContext sslContext = null;
+				HostnameVerifier hostnameVerifier = null;
+				if (params != null) {
+					sslContext = params.getSSLContext();
+					hostnameVerifier = params.getHostnameVerifier();
+				}
+				if (sslContext == null) {
+					sslContext = SSLContext.getInstance("TLS");
+					sslContext
+							.init(null,
+									new X509TrustManager[] { createX509TrustManager() },
+									new java.security.SecureRandom());
+				}
+				if (hostnameVerifier == null) {
+					hostnameVerifier = createHostnameVerifier();
+				}
+				HttpsURLConnection connection = (HttpsURLConnection) urlConnection;
+				connection.setSSLSocketFactory(sslContext.getSocketFactory());
+				connection.setHostnameVerifier(hostnameVerifier);
+				return connection;
+			} catch (NoSuchAlgorithmException | KeyManagementException e) {
+				throw new IOException(e.getMessage());
 			}
-			connection.setSSLSocketFactory(sslContext.getSocketFactory());
-			connection.setHostnameVerifier(createHostnameVerifier());
-			return connection;
 		} else {
-			return (HttpURLConnection) url.openConnection();
+			return (HttpURLConnection) urlConnection;
 		}
 	}
 
 	protected Map<String, String> createDefualtHeader() {
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("User-Agent", "simple httpclient/java 1.5");
-		params.put("Accept", "text/xml,text/javascript");
-		params.put("Accept-Charset", Consts.UTF_8.name());
-		params.put("Accept-Encoding", Consts.UTF_8.name());
-		return params;
+		Map<String, String> header = new HashMap<String, String>();
+		header.put("User-Agent", "simple-httpclient");
+		header.put("Accept", "text/xml,text/javascript");
+		header.put("Accept-Charset", Consts.UTF_8.name());
+		header.put("Accept-Encoding", Consts.UTF_8.name());
+		return header;
 	}
 
 	@Override
-	public HttpResponse execute(HttpRequest request) throws IOException {
-		// create connection object
-		HttpURLConnection connection = createHttpConnection(request.getURI());
-		// set parameters
-		HttpParams params = request.getParams();
-		connection.setRequestMethod(request.getMethod().name());
-		connection.setAllowUserInteraction(params.getAllowUserInteraction());
-		connection.setConnectTimeout(params.getConnectTimeout());
-		connection.setReadTimeout(params.getReadTimeout());
-		connection.setIfModifiedSince(params.getIfmodifiedsince());
-		connection.setInstanceFollowRedirects(params.getFollowRedirects());
-		connection.setDoInput(true);
-		connection.setDoOutput(true);
-		// set headers
-		Header[] headers = request.getAllHeaders();
-		for (Header header : headers) {
-			connection.setRequestProperty(header.getName(), header.getValue());
-		}
-		for (Iterator<Entry<String, String>> headerIterator = createDefualtHeader()
-				.entrySet().iterator(); headerIterator.hasNext();) {
-			Entry<String, String> header = headerIterator.next();
-			connection.setRequestProperty(header.getKey(), header.getValue());
-		}
-		HttpEntity httpEntity = null;
-		if (request instanceof HttpEntityRequest) {
-			httpEntity = ((HttpEntityRequest) request).getEntity();
-			connection.setUseCaches(false);
-			if (httpEntity != null) {
-				if (httpEntity.getContentLength() > 0l) {
-					connection.setFixedLengthStreamingMode(httpEntity
-							.getContentLength());
-				}
-				if (httpEntity.getContentType() != null) {
-					connection.setRequestProperty("Content-Type", httpEntity
-							.getContentType().getMimeType());
-				}
+	public HttpResponse execute(HttpRequest request) throws HttpClientException {
+		HttpResponse response = null;
+		try {
+			// create connection object
+			HttpURLConnection connection = createHttpConnection(request);
+			String method = request.getMethod().name();
+			// set parameters
+			HttpParams params = request.getParams();
+			if (params != null) {
+				connection.setAllowUserInteraction(params
+						.isAllowUserInteraction());
+				connection.setConnectTimeout(params.getConnectTimeout());
+				connection.setReadTimeout(params.getReadTimeout());
+				connection.setIfModifiedSince(params.getIfModifiedSince());
+				connection.setInstanceFollowRedirects(params
+						.isFollowRedirects());
 			}
-		}
-		connection.connect();
-		// open stream
-		if (httpEntity != null) {
-			OutputStream output = connection.getOutputStream();
-			httpEntity.writeTo(output);
-			output.flush();
-			output.close();
-		}
-		// building response object
-		StatusLine statusLine = new StatusLine(connection.getResponseCode(),
-				connection.getResponseMessage());
-		byte[] content = null;
-		if (statusLine.getStatusCode() < 300) {
-			ByteArrayOutputStream os = null;
-			InputStream is = null;
-			try {
-				is = connection.getInputStream();
-				os = new ByteArrayOutputStream();
-				byte[] buffer = new byte[4096];
-				int n = 0;
-				while (-1 != (n = is.read(buffer))) {
-					os.write(buffer, 0, n);
-				}
-				content = os.toByteArray();
-			} catch (IOException e) {
-				;
-			} finally {
-				if (os != null) {
-					os.close();
-				}
-				if (is != null) {
-					is.close();
-				}
-			}
-		}
-		HttpResponse response = new HttpResponse();
-		String httpVersion = connection.getHeaderField(null);
-		if (httpVersion != null) {
-			if (httpVersion.contains(HttpVersion.HTTP_1_0_STRING)) {
-				response.setHttpVersion(HttpVersion.HTTP_1_0);
-			} else if (httpVersion.contains(HttpVersion.HTTP_1_1_STRING)) {
-				response.setHttpVersion(HttpVersion.HTTP_1_1);
+			connection.setRequestMethod(method);
+			connection.setDoInput(true);
+			connection.setInstanceFollowRedirects("GET".equals(method));
+			if ("PUT".equals(method) || "POST".equals(method)
+					|| "PATCH".equals(method) || "DELETE".equals(method)) {
+				connection.setDoOutput(true);
 			} else {
-				response.setHttpVersion(new HttpVersion(httpVersion, true));
+				connection.setDoOutput(false);
+			}
+			// set headers
+			for (Iterator<Entry<String, String>> headerIterator = createDefualtHeader()
+					.entrySet().iterator(); headerIterator.hasNext();) {
+				Entry<String, String> header = headerIterator.next();
+				connection.setRequestProperty(header.getKey(),
+						header.getValue());
+			}
+			HttpHeaders headers = request.getHeaders();
+			if (headers != null) {
+				for (Iterator<Entry<String, List<String>>> headerIterator = headers
+						.entrySet().iterator(); headerIterator.hasNext();) {
+					Entry<String, List<String>> header = headerIterator.next();
+					if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
+						connection.setRequestProperty(header.getKey(),
+								StringUtil.join(header.getValue(), ';'));
+					} else {
+						for (String headerValue : header.getValue()) {
+							connection.addRequestProperty(header.getKey(),
+									headerValue != null ? headerValue : "");
+						}
+					}
+				}
+			}
+			// set inputstream
+			HttpEntity httpEntity = request.getEntity();
+			if (httpEntity != null) {
+				connection.setUseCaches(false);
+				if (httpEntity != null) {
+					// Read Out Exception when connection.disconnect();
+					/*
+					if (httpEntity.getContentLength() > 0l) {
+						 connection.setFixedLengthStreamingMode(httpEntity
+								.getContentLength());
+					} else {
+						connection
+						.setChunkedStreamingMode(params != null ? params
+								.getChunkSize() : 4096);
+					}*/
+					if (httpEntity.getContentLength() > 0l) {
+						connection.setRequestProperty(HttpHeaders.CONTENT_LENGTH,
+								Long.toString(httpEntity.getContentLength()));
+					}
+					if (httpEntity.getContentType() != null) {
+						connection.setRequestProperty(HttpHeaders.CONTENT_TYPE,
+								httpEntity.getContentType().getMimeType());
+					}
+				}
+			}
+			// connect
+			connection.connect();
+			// open stream
+			if (httpEntity != null) {
+				OutputStream output = connection.getOutputStream();
+				httpEntity.writeTo(output);
+				output.flush();
+				output.close();
+			}
+			// building response
+			response = new SimpleHttpResponse(connection);
+		} catch (IOException e) {
+			throw new HttpClientException("I/O error on "
+					+ request.getMethod().name() + " request for \""
+					+ request.getURI().toString() + "\":" + e.getMessage(), e);
+		} finally {
+			if (response != null) {
+				response.close();
 			}
 		}
-		List<Header> responseHeaders = new ArrayList<Header>();
-		Map<String, List<String>> headerFields = connection.getHeaderFields();
-		for (Iterator<Entry<String, List<String>>> headerIterator = headerFields
-				.entrySet().iterator(); headerIterator.hasNext();) {
-			Entry<String, List<String>> headerEntry = headerIterator.next();
-			for (String value : headerEntry.getValue()) {
-				responseHeaders.add(new Header(headerEntry.getKey(), value));
-			}
-		}
-		response.setHeaders(responseHeaders.toArray(new Header[responseHeaders
-				.size()]));
-		response.setStatusLine(statusLine);
-		response.setContent(content);
 		return response;
-	}
-
-	@Override
-	public <T> T execute(HttpRequest request,
-			ResponseHandler<? extends T> handler) throws IOException {
-		return handler.handleResponse(execute(request));
 	}
 }

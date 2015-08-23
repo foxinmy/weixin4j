@@ -71,7 +71,7 @@ public class CustomApi extends MpApi {
 		obj.put("pageindex", pageindex);
 		String custom_record_uri = getRequestUri("custom_record_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(custom_record_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -101,12 +101,12 @@ public class CustomApi extends MpApi {
 		String text = "";
 		if (isOnline) {
 			String getonlinekflist_uri = getRequestUri("getonlinekflist_uri");
-			WeixinResponse response = weixinClient.get(String.format(getonlinekflist_uri,
+			WeixinResponse response = weixinExecutor.get(String.format(getonlinekflist_uri,
 					token.getAccessToken()));
 			text = response.getAsJson().getString("kf_online_list");
 		} else {
 			String getkflist_uri = getRequestUri("getkflist_uri");
-			WeixinResponse response = weixinClient.get(String.format(getkflist_uri,
+			WeixinResponse response = weixinExecutor.get(String.format(getkflist_uri,
 					token.getAccessToken()));
 			text = response.getAsJson().getString("kf_list");
 		}
@@ -138,7 +138,7 @@ public class CustomApi extends MpApi {
 		obj.put("password", DigestUtil.MD5(pwd));
 		String custom_add_uri = getRequestUri("custom_add_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(custom_add_uri, token.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJsonResult();
@@ -169,7 +169,7 @@ public class CustomApi extends MpApi {
 		obj.put("password", DigestUtil.MD5(pwd));
 		String custom_update_uri = getRequestUri("custom_update_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(custom_update_uri, token.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJsonResult();
@@ -195,7 +195,7 @@ public class CustomApi extends MpApi {
 		Token token = tokenHolder.getToken();
 		String custom_uploadheadimg_uri = getRequestUri("custom_uploadheadimg_uri");
 		byte[] bytes = IOUtil.toByteArray(new FileInputStream(headimg));
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(custom_uploadheadimg_uri, token.getAccessToken(),
 						id),
 				new FormBodyPart("media", new ByteArrayBody(bytes, headimg
@@ -219,7 +219,7 @@ public class CustomApi extends MpApi {
 	public JsonResult deleteAccount(String id) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String custom_delete_uri = getRequestUri("custom_delete_uri");
-		WeixinResponse response = weixinClient.get(String.format(custom_delete_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(custom_delete_uri,
 				token.getAccessToken(), id));
 
 		return response.getAsJsonResult();
@@ -251,7 +251,7 @@ public class CustomApi extends MpApi {
 		obj.put("openid", userOpenId);
 		obj.put("kf_account", kfAccount);
 		obj.put("text", text);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(kfsession_create_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -280,7 +280,7 @@ public class CustomApi extends MpApi {
 		obj.put("openid", userOpenId);
 		obj.put("kf_account", kfAccount);
 		obj.put("text", text);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(kfsession_close_uri, token.getAccessToken()),
 				obj.toJSONString());
 
@@ -301,7 +301,7 @@ public class CustomApi extends MpApi {
 	public KfSession getKfSession(String userOpenId) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_get_uri = getRequestUri("kfsession_get_uri");
-		WeixinResponse response = weixinClient.get(String.format(kfsession_get_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(kfsession_get_uri,
 				token.getAccessToken(), userOpenId));
 
 		KfSession session = response
@@ -326,7 +326,7 @@ public class CustomApi extends MpApi {
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_list_uri = getRequestUri("kfsession_list_uri");
-		WeixinResponse response = weixinClient.get(String.format(kfsession_list_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(kfsession_list_uri,
 				token.getAccessToken(), kfAccount));
 
 		List<KfSession> sessionList = JSON.parseArray(response.getAsJson()
@@ -346,7 +346,7 @@ public class CustomApi extends MpApi {
 	public List<KfSession> listKfSessionWait() throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_wait_uri = getRequestUri("kfsession_wait_uri");
-		WeixinResponse response = weixinClient.get(String.format(kfsession_wait_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(kfsession_wait_uri,
 				token.getAccessToken()));
 
 		List<KfSession> sessionList = JSON.parseArray(response.getAsJson()

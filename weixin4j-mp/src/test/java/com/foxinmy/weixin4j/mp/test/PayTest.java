@@ -24,23 +24,28 @@ import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.TradeType;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 public class PayTest {
-	private final static Pay2Api PAY2;
-	private final static WeixinPayProxy PAY3;
-	private final static WeixinPayAccount ACCOUNT2;
-	private final static WeixinPayAccount ACCOUNT3;
+	protected final static Pay2Api PAY2;
+	protected final static WeixinPayProxy PAY3;
+	protected final static WeixinPayAccount ACCOUNT2;
+	protected final static WeixinPayAccount ACCOUNT3;
 	static {
 		ACCOUNT2 = new WeixinPayAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
 				"请填入v2版本的paysignkey", null, null, null, "请填入v2版本的partnerId",
 				"请填入v2版本的partnerKey");
-		PAY2 = new Pay2Api(ACCOUNT2, new FileTokenStorager(ConfigUtil.getValue(
-				"token_path", "/tmp/weixin4j/token")));
+		PAY2 = new Pay2Api(ACCOUNT2, new FileTokenStorager(
+				Weixin4jConfigUtil
+						.getValue("token_path", "/tmp/weixin4j/token")));
 		ACCOUNT3 = new WeixinPayAccount("请填入v3版本的appid", "请填入v3版本的appSecret",
 				"请填入v3版本的paysignkey", "请填入v3版本的mchid", null, null, null, null);
 		PAY3 = new WeixinPayProxy(ACCOUNT3);
 	}
+	/**
+	 * 商户证书文件
+	 */
+	protected File caFile = new File("证书文件，如12333.p12");
 
 	@Test
 	public void orderQueryV2() throws WeixinException {
@@ -50,7 +55,7 @@ public class PayTest {
 
 	@Test
 	public void refundV2() throws WeixinException {
-		File caFile = new File("签名文件，如12333.pfx");
+		File caFile = new File("证书文件，如12333.pfx");
 		IdQuery idQuery = new IdQuery("D15020300005", IdType.TRADENO);
 		System.err.println(PAY2.refundApply(caFile, idQuery, "1422925555037",
 				16d, 16d, "1221928801", "111111", null, null, null));

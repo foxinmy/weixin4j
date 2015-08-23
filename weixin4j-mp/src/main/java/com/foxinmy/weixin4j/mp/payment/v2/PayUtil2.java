@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.type.SignType;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
@@ -152,14 +152,14 @@ public class PayUtil2 {
 
 	private static String JSAPIV2() {
 		WeixinPayAccount weixinAccount = JSON.parseObject(
-				ConfigUtil.getValue("account"), WeixinPayAccount.class);
+				Weixin4jConfigUtil.getValue("account"), WeixinPayAccount.class);
 		return createPayJsRequestJsonV2("支付测试", "JSAPI01", 0.01d, "127.0.0.0",
 				"http://127.0.0.1/jsapi/notify", weixinAccount);
 	}
 
 	private static String NATIVEV2() {
 		WeixinPayAccount weixinAccount = JSON.parseObject(
-				ConfigUtil.getValue("account"), WeixinPayAccount.class);
+				Weixin4jConfigUtil.getValue("account"), WeixinPayAccount.class);
 		return createNativePayRequestURLV2(weixinAccount, "P1");
 	}
 

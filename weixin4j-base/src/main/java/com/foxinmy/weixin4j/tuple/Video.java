@@ -66,10 +66,10 @@ public class Video implements NotifyTuple {
 	}
 
 	@JSONCreator
-	public Video(@JSONField(name = "media_id") String mediaId,
-			@JSONField(name = "thumb_media_id") String thumbMediaId,
+	public Video(@JSONField(name = "mediaId") String mediaId,
+			@JSONField(name = "thumbMediaId") String thumbMediaId,
 			@JSONField(name = "title") String title,
-			@JSONField(name = "description") String desc) {
+			@JSONField(name = "desc") String desc) {
 		this.mediaId = mediaId;
 		this.thumbMediaId = thumbMediaId;
 		this.title = title;

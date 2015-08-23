@@ -29,7 +29,7 @@ import com.foxinmy.weixin4j.payment.mch.RefundRecord;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.IdQuery;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConst;
 
 /**
@@ -55,7 +55,7 @@ public class WeixinPayProxy {
 	 * 使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinPayProxy() {
-		this(JSON.parseObject(ConfigUtil.getValue("account"),
+		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
 				WeixinPayAccount.class));
 	}
 
@@ -69,7 +69,7 @@ public class WeixinPayProxy {
 		this.pay3Api = new Pay3Api(weixinAccount);
 		this.couponApi = new CouponApi(weixinAccount);
 		this.cashApi = new CashApi(weixinAccount);
-		this.DEFAULT_CA_FILE = ConfigUtil.getClassPathValue("ca_file",
+		this.DEFAULT_CA_FILE = Weixin4jConfigUtil.getClassPathValue("ca_file",
 				Weixin4jConst.DEFAULT_CAFILE_PATH);
 	}
 

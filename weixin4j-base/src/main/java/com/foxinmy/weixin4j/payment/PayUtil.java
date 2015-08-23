@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.PayException;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.payment.mch.PrePay;
 import com.foxinmy.weixin4j.type.SignType;
 import com.foxinmy.weixin4j.type.TradeType;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
@@ -122,7 +122,7 @@ public class PayUtil {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1">统一下单接口</a>
 	 * @return 预支付对象
 	 */
-	private final static WeixinHttpClient httpClient = new WeixinHttpClient();
+	private final static WeixinRequestExecutor httpClient = new WeixinRequestExecutor();
 
 	public static PrePay createPrePay(MchPayPackage payPackage,
 			String paySignKey) throws PayException {
@@ -305,7 +305,7 @@ public class PayUtil {
 
 	private static String JSAPI() throws PayException {
 		WeixinPayAccount weixinAccount = JSON.parseObject(
-				ConfigUtil.getValue("account"), WeixinPayAccount.class);
+				Weixin4jConfigUtil.getValue("account"), WeixinPayAccount.class);
 		return createPayJsRequestJson("oyFLst1bqtuTcxK-ojF8hOGtLQao", "支付测试",
 				"JSAPI01", 0.01d, "http://127.0.0.1/jsapi/notify", "127.0.0.0",
 				weixinAccount);
@@ -313,7 +313,7 @@ public class PayUtil {
 
 	private static String NATIVE() {
 		WeixinPayAccount weixinAccount = JSON.parseObject(
-				ConfigUtil.getValue("account"), WeixinPayAccount.class);
+				Weixin4jConfigUtil.getValue("account"), WeixinPayAccount.class);
 		return createNativePayRequestURL(weixinAccount, "P1");
 	}
 

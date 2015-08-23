@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * token测试
@@ -25,11 +25,11 @@ public class TokenTest {
 
 	@Before
 	public void setUp() {
-		WeixinAccount weixinAccount = ConfigUtil.getWeixinAccount();
+		WeixinAccount weixinAccount = Weixin4jConfigUtil.getWeixinAccount();
 		tokenHolder = new TokenHolder(new WeixinTokenCreator(
 				weixinAccount.getId(), weixinAccount.getSecret()),
-				new FileTokenStorager(ConfigUtil.getValue(
-						"token_path", "/tmp/weixin4j/token")));
+				new FileTokenStorager(Weixin4jConfigUtil.getValue("token_path",
+						"/tmp/weixin4j/token")));
 	}
 
 	@Test

@@ -50,7 +50,7 @@ public class MenuApi extends MpApi {
 		Token token = tokenHolder.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("button", btnList);
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(menu_create_uri, token.getAccessToken()),
 				JSON.toJSONString(obj, new NameFilter() {
 					@Override
@@ -88,7 +88,7 @@ public class MenuApi extends MpApi {
 	public List<Button> getMenu() throws WeixinException {
 		String menu_get_uri = getRequestUri("menu_get_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.get(String.format(menu_get_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(menu_get_uri,
 				token.getAccessToken()));
 
 		JSONArray buttons = response.getAsJson().getJSONObject("menu")
@@ -118,7 +118,7 @@ public class MenuApi extends MpApi {
 	public JsonResult deleteMenu() throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.get(String.format(
+		WeixinResponse response = weixinExecutor.get(String.format(
 				menu_delete_uri, token.getAccessToken()));
 
 		return response.getAsJsonResult();

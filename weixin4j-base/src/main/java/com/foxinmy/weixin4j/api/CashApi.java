@@ -9,8 +9,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.SSLHttpClinet;
+import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
+import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayURLConsts;
 import com.foxinmy.weixin4j.payment.PayUtil;
@@ -69,9 +70,10 @@ public class CashApi {
 		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;
 		try {
-			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
-					ca);
-			response = request.post(PayURLConsts.MCH_REDPACKSEND_URL, param);
+			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
+					weixinAccount.getMchId(), ca);
+			response = weixinExecutor.post(PayURLConsts.MCH_REDPACKSEND_URL,
+					param);
 		} finally {
 			if (ca != null) {
 				try {
@@ -111,9 +113,10 @@ public class CashApi {
 		String param = XmlStream.map2xml(para);
 		WeixinResponse response = null;
 		try {
-			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
-					ca);
-			response = request.post(PayURLConsts.MCH_REDPACKQUERY_URL, param);
+			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
+					weixinAccount.getMchId(), ca);
+			response = weixinExecutor.post(PayURLConsts.MCH_REDPACKQUERY_URL,
+					param);
 		} finally {
 			if (ca != null) {
 				try {
@@ -154,9 +157,10 @@ public class CashApi {
 		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;
 		try {
-			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
-					ca);
-			response = request.post(PayURLConsts.MCH_ENPAYMENT_URL, param);
+			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
+					weixinAccount.getMchId(), ca);
+			response = weixinExecutor.post(PayURLConsts.MCH_ENPAYMENT_URL,
+					param);
 		} finally {
 			if (ca != null) {
 				try {
@@ -199,9 +203,10 @@ public class CashApi {
 		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;
 		try {
-			SSLHttpClinet request = new SSLHttpClinet(weixinAccount.getMchId(),
-					ca);
-			response = request.post(PayURLConsts.MCH_ENPAYQUERY_URL, param);
+			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
+					weixinAccount.getMchId(), ca);
+			response = weixinExecutor.post(PayURLConsts.MCH_ENPAYQUERY_URL,
+					param);
 		} finally {
 			if (ca != null) {
 				try {

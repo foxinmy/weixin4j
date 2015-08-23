@@ -80,7 +80,7 @@ public class NotifyApi extends QyApi {
 		}
 		String message_send_uri = getRequestUri("message_send_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinClient.post(
+		WeixinResponse response = weixinExecutor.post(
 				String.format(message_send_uri, token.getAccessToken()),
 				obj.toJSONString());
 

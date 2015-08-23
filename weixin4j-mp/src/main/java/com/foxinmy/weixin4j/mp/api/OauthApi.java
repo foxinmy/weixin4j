@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.type.Lang;
-import com.foxinmy.weixin4j.util.ConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
@@ -32,7 +32,7 @@ public class OauthApi extends MpApi {
 	 */
 	public String getAuthorizeURL() {
 		String appId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = ConfigUtil.getValue("user_oauth_redirect_uri");
+		String redirectUri = Weixin4jConfigUtil.getValue("user_oauth_redirect_uri");
 		return getAuthorizeURL(appId, redirectUri, "state", "snsapi_login");
 	}
 
@@ -86,7 +86,7 @@ public class OauthApi extends MpApi {
 	public OauthToken getOauthToken(String code, String appid, String appsecret)
 			throws WeixinException {
 		String user_token_uri = getRequestUri("sns_user_token_uri");
-		WeixinResponse response = weixinClient.get(String.format(
+		WeixinResponse response = weixinExecutor.get(String.format(
 				user_token_uri, appid, appsecret, code));
 
 		return response.getAsObject(new TypeReference<OauthToken>() {
@@ -115,7 +115,7 @@ public class OauthApi extends MpApi {
 	public OauthToken refreshToken(String appId, String refreshToken)
 			throws WeixinException {
 		String sns_token_refresh_uri = getRequestUri("sns_token_refresh_uri");
-		WeixinResponse response = weixinClient.get(String.format(
+		WeixinResponse response = weixinExecutor.get(String.format(
 				sns_token_refresh_uri, appId, refreshToken));
 
 		return response.getAsObject(new TypeReference<OauthToken>() {
@@ -134,7 +134,7 @@ public class OauthApi extends MpApi {
 	public boolean authAccessToken(String accessToken, String openId) {
 		String sns_auth_token_uri = getRequestUri("sns_auth_token_uri");
 		try {
-			weixinClient.get(String.format(sns_auth_token_uri, accessToken,
+			weixinExecutor.get(String.format(sns_auth_token_uri, accessToken,
 					openId));
 			return true;
 		} catch (WeixinException e) {
@@ -179,7 +179,7 @@ public class OauthApi extends MpApi {
 	public User getUser(String oauthToken, String openid, Lang lang)
 			throws WeixinException {
 		String user_info_uri = getRequestUri("sns_user_info_uri");
-		WeixinResponse response = weixinClient.get(String.format(user_info_uri,
+		WeixinResponse response = weixinExecutor.get(String.format(user_info_uri,
 				oauthToken, openid, lang.name()));
 
 		return response.getAsObject(new TypeReference<User>() {

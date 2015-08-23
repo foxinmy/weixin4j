@@ -27,7 +27,7 @@
 
 package com.foxinmy.weixin4j.http.apache;
 
-import com.foxinmy.weixin4j.http.NameValue;
+import com.foxinmy.weixin4j.util.NameValue;
 
 
 /**

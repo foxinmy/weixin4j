@@ -10,5 +10,5 @@ package com.foxinmy.weixin4j.http;
  * @see
  */
 public enum HttpMethod {
-	GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACE
+	GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACE, CONNECT
 }

@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.foxinmy.weixin4j.http.NameValue;
+import com.foxinmy.weixin4j.util.NameValue;
 
 /**
  * The header of an entity (see RFC 2045).

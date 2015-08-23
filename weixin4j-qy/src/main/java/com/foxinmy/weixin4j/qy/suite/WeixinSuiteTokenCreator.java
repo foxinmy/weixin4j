@@ -2,7 +2,7 @@
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinHttpClient;
+import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  */
 public class WeixinSuiteTokenCreator implements TokenCreator {
 
-	private final WeixinHttpClient httpClient;
+	private final WeixinRequestExecutor weixinExecutor;
 	private final SuiteTicketHolder ticketHolder;
 
 	/**
@@ -31,7 +31,7 @@ public class WeixinSuiteTokenCreator implements TokenCreator {
 	 */
 	public WeixinSuiteTokenCreator(SuiteTicketHolder ticketHolder) {
 		this.ticketHolder = ticketHolder;
-		this.httpClient = new WeixinHttpClient();
+		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class WeixinSuiteTokenCreator implements TokenCreator {
 		obj.put("suite_id", ticketHolder.getSuiteId());
 		obj.put("suite_secret", ticketHolder.getSuiteSecret());
 		obj.put("suite_ticket", ticketHolder.getTicket());
-		WeixinResponse response = httpClient.post(URLConsts.SUITE_TOKEN_URL,
+		WeixinResponse response = weixinExecutor.post(URLConsts.SUITE_TOKEN_URL,
 				obj.toJSONString());
 		obj = response.getAsJson();
 		Token token = new Token(obj.getString("suite_access_token"));
