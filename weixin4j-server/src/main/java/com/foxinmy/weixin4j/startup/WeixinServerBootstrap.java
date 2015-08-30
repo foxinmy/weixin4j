@@ -49,11 +49,11 @@ public final class WeixinServerBootstrap {
 	/**
 	 * boss线程数,默认设置为cpu的核数
 	 */
-	public static int DEFAULT_BOSSTHREADS;
+	public final static int DEFAULT_BOSSTHREADS;
 	/**
 	 * worker线程数,默认设置为DEFAULT_BOSSTHREADS * 4
 	 */
-	public static int DEFAULT_WORKERTHREADS;
+	public final static int DEFAULT_WORKERTHREADS;
 	/**
 	 * 服务启动的默认端口
 	 */
