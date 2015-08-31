@@ -47,13 +47,13 @@ public final class WeixinServerBootstrap {
 			.getInstance(getClass());
 
 	/**
-	 * 默认boss线程数,一般设置为cpu的核数
+	 * boss线程数,默认设置为cpu的核数
 	 */
-	public final static int DEFAULT_BOSSTHREADS = 1;
+	public final static int DEFAULT_BOSSTHREADS;
 	/**
-	 * 默认worker线程数
+	 * worker线程数,默认设置为DEFAULT_BOSSTHREADS * 4
 	 */
-	public final static int DEFAULT_WORKERTHREADS = 20;
+	public final static int DEFAULT_WORKERTHREADS;
 	/**
 	 * 服务启动的默认端口
 	 */
@@ -76,6 +76,11 @@ public final class WeixinServerBootstrap {
 	 * 
 	 */
 	private final Map<String, AesToken> aesTokenMap;
+
+	static {
+		DEFAULT_BOSSTHREADS = Runtime.getRuntime().availableProcessors();
+		DEFAULT_WORKERTHREADS = DEFAULT_BOSSTHREADS * 4;
+	}
 
 	/**
 	 * 
@@ -173,7 +178,7 @@ public final class WeixinServerBootstrap {
 	 * 接受参数启动服务
 	 * 
 	 * @param bossThreads
-	 *            boss线程数,一般设置为cpu的核数
+	 *            boss线程数
 	 * @param workerThreads
 	 *            worker线程数
 	 * @param serverPort
