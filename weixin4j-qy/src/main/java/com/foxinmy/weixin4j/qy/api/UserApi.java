@@ -110,11 +110,15 @@ public class UserApi extends QyApi {
 	private JsonResult excute(String uri, User user, InputStream avatar)
 			throws WeixinException {
 		JSONObject obj = (JSONObject) JSON.toJSON(user);
-		Object extattr = obj.remove("extattr");
-		if (extattr != null) {
+		Object val = obj.remove("extattr");
+		if (val != null) {
 			JSONObject attrs = new JSONObject();
-			attrs.put("attrs", extattr);
+			attrs.put("attrs", val);
 			obj.put("extattr", attrs);
+		}
+		val = obj.remove("status");
+		if (val != null) {
+			obj.put("enable", val);
 		}
 		if (avatar != null) {
 			obj.put("avatar_mediaid", mediaApi.uploadMedia(0, avatar, null));
@@ -141,8 +145,8 @@ public class UserApi extends QyApi {
 	public User getUser(String userid) throws WeixinException {
 		String user_get_uri = getRequestUri("user_get_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.get(String.format(user_get_uri,
-				token.getAccessToken(), userid));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				user_get_uri, token.getAccessToken(), userid));
 		JSONObject obj = response.getAsJson();
 		Object attrs = obj.getJSONObject("extattr").remove("attrs");
 		if (attrs != null) {

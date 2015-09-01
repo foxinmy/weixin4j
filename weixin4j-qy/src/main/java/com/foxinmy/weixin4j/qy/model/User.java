@@ -69,10 +69,6 @@ public class User implements Serializable {
 	 */
 	private Integer status;
 	/**
-	 * 启用/禁用成员。1表示启用成员，0表示禁用成员
-	 */
-	private Integer enable;
-	/**
 	 * 非必须 扩展属性。扩展属性需要在WEB管理端创建后才生效，否则忽略未知属性的赋值
 	 */
 	private List<NameValue> extattr;
@@ -159,20 +155,16 @@ public class User implements Serializable {
 		return status;
 	}
 
-	public Integer getEnable() {
-		return enable;
+	@JSONField(serialize = false)
+	public Boolean getFormatEnable() {
+		if (status != null) {
+			return status.intValue() != 2;
+		}
+		return null;
 	}
 
 	public void setEnable(boolean enable) {
-		this.enable = enable ? 1 : 0;
-	}
-
-	@JSONField(serialize = false)
-	public boolean getFormatEnable() {
-		if (enable != null) {
-			return enable.intValue() == 1;
-		}
-		return false;
+		this.status = enable ? 1 : 0;
 	}
 
 	public List<NameValue> getExtattr() {
@@ -237,16 +229,12 @@ public class User implements Serializable {
 		this.status = status;
 	}
 
-	public void setEnable(Integer enable) {
-		this.enable = enable;
-	}
-
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", name=" + name + ", partyIds="
 				+ partyIds + ", position=" + position + ", mobile=" + mobile
 				+ ", gender=" + gender + ", tel=" + tel + ", email=" + email
 				+ ", weixinId=" + weixinId + ", avatar=" + avatar + ", status="
-				+ status + ", enable=" + enable + ", extattr=" + extattr + "]";
+				+ status + ", extattr=" + extattr + "]";
 	}
 }
