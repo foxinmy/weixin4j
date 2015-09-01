@@ -471,8 +471,12 @@ public class MediaApi extends QyApi {
 		MediaRecord mediaRecord = null;
 		for (;;) {
 			mediaRecord = listMaterialMedia(agentid, mediaType, pageable);
+			if (mediaRecord.getItems() == null
+					|| !mediaRecord.getItems().isEmpty()) {
+				break;
+			}
 			mediaList.addAll(mediaRecord.getItems());
-			if (pageable.getOffset() >= mediaRecord.getTotalCount()) {
+			if (!mediaRecord.getPagedata().hasNext()) {
 				break;
 			}
 			pageable = pageable.next();

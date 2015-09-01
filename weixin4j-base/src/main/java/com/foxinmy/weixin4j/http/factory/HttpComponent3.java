@@ -34,7 +34,6 @@ import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 
 import com.foxinmy.weixin4j.http.AbstractHttpClient;
-import com.foxinmy.weixin4j.http.HttpClient;
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
@@ -55,7 +54,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @since JDK 1.7
  * @see
  */
-public class HttpComponent3 extends AbstractHttpClient implements HttpClient {
+public class HttpComponent3 extends AbstractHttpClient {
 
 	private final org.apache.commons.httpclient.HttpClient httpClient;
 

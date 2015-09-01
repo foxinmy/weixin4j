@@ -19,7 +19,7 @@ public abstract class HttpClientFactory {
 	private static volatile HttpClientFactory defaultFactory = newDefaultFactory();
 
 	/**
-	 * ApachHttpClient -> SimpleHttpClient(HttpURLConnection)
+	 * NettyHttpClient -> ApachHttpClient -> SimpleHttpClient(HttpURLConnection)
 	 * 
 	 * @return
 	 */
@@ -27,10 +27,10 @@ public abstract class HttpClientFactory {
 		HttpClientFactory f;
 		try {
 			f = new HttpComponent4Factory();
-		} catch (Throwable e1) {
+		} catch (Throwable e2) {
 			try {
 				f = new HttpComponent3Factory();
-			} catch (Throwable e2) {
+			} catch (Throwable e3) {
 				f = new SimpleHttpClientFactory();
 			}
 		}

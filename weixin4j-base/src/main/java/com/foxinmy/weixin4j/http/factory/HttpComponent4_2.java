@@ -13,7 +13,6 @@ import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import com.foxinmy.weixin4j.http.HttpClient;
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
@@ -28,7 +27,7 @@ import com.foxinmy.weixin4j.http.HttpResponse;
  * @since JDK 1.7
  * @see
  */
-public class HttpComponent4_2 extends HttpComponent4 implements HttpClient {
+public class HttpComponent4_2 extends HttpComponent4 {
 
 	private CloseableHttpClient httpClient;
 

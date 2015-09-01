@@ -30,7 +30,7 @@ import com.foxinmy.weixin4j.model.Consts;
  * @since JDK 1.7
  * @see
  */
-public class HttpComponent4_1 extends HttpComponent4 implements HttpClient {
+public class HttpComponent4_1 extends HttpComponent4 {
 
 	private final org.apache.http.client.HttpClient httpClient;
 
