@@ -39,9 +39,6 @@ public class UserApi extends MpApi {
 	 *            用户对应的ID
 	 * @return 用户对象
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户信息</a>
-	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @see {@link #getUser(String,Lang)}
 	 */
 	public User getUser(String openId) throws WeixinException {
@@ -69,11 +66,62 @@ public class UserApi extends MpApi {
 	public User getUser(String openId, Lang lang) throws WeixinException {
 		String user_info_uri = getRequestUri("api_user_info_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.get(String.format(user_info_uri,
-				token.getAccessToken(), openId, lang.name()));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				user_info_uri, token.getAccessToken(), openId, lang.name()));
 
 		return response.getAsObject(new TypeReference<User>() {
 		});
+	}
+
+	/**
+	 * 批量获取用户信息
+	 * 
+	 * @param openIds
+	 *            用户ID
+	 * @return 用户列表
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户信息</a>
+	 * @see com.foxinmy.weixin4j.mp.model.User
+	 * @throws WeixinException
+	 * @see {@link #getUsers(Lang,String[])}
+	 */
+	public List<User> getUsers(String... openIds) throws WeixinException {
+		return getUsers(Lang.zh_CN, openIds);
+	}
+
+	/**
+	 * 批量获取用户信息
+	 * 
+	 * @param lang
+	 *            国家地区语言版本
+	 * @param openIds
+	 *            用户ID
+	 * @return 用户列表
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户信息</a>
+	 * @see com.foxinmy.weixin4j.mp.type.Lang
+	 * @see com.foxinmy.weixin4j.mp.model.User
+	 * @throws WeixinException
+	 */
+	public List<User> getUsers(Lang lang, String... openIds)
+			throws WeixinException {
+		String api_users_info_uri = getRequestUri("api_users_info_uri");
+		StringBuilder parameter = new StringBuilder();
+		parameter.append("{\"user_list\": [");
+		for (String openId : openIds) {
+			parameter.append("{\"openid\": \"").append(openId).append("\"");
+			parameter.append(",\"lang\": \"").append(lang.name()).append("\"")
+					.append("},");
+		}
+		parameter.delete(parameter.length() - 1, parameter.length());
+		parameter.append("]}");
+		Token token = tokenHolder.getToken();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(api_users_info_uri, token.getAccessToken()),
+				parameter.toString());
+
+		return JSON.parseArray(
+				response.getAsJson().getString("user_info_list"), User.class);
 	}
 
 	/**
@@ -90,8 +138,9 @@ public class UserApi extends MpApi {
 	public Following getFollowing(String nextOpenId) throws WeixinException {
 		String following_uri = getRequestUri("following_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.get(String.format(following_uri,
-				token.getAccessToken(), nextOpenId == null ? "" : nextOpenId));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				following_uri, token.getAccessToken(), nextOpenId == null ? ""
+						: nextOpenId));
 
 		Following following = response
 				.getAsObject(new TypeReference<Following>() {

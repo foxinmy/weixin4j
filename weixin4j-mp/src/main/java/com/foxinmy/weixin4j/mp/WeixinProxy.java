@@ -865,6 +865,43 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 批量获取用户信息
+	 * 
+	 * @param openIds
+	 *            用户ID
+	 * @return 用户列表
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户信息</a>
+	 * @see com.foxinmy.weixin4j.mp.model.User
+	 * @see com.foxinmy.weixin4j.mp.api.UserApi
+	 * @throws WeixinException
+	 * @see {@link #getUsers(Lang,String[])}
+	 */
+	public List<User> getUsers(String... openIds) throws WeixinException {
+		return userApi.getUsers(openIds);
+	}
+
+	/**
+	 * 批量获取用户信息
+	 * 
+	 * @param lang
+	 *            国家地区语言版本
+	 * @param openIds
+	 *            用户ID
+	 * @return 用户列表
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户信息</a>
+	 * @see com.foxinmy.weixin4j.mp.type.Lang
+	 * @see com.foxinmy.weixin4j.mp.model.User
+	 * @see com.foxinmy.weixin4j.mp.api.UserApi
+	 * @throws WeixinException
+	 */
+	public List<User> getUsers(Lang lang, String... openIds)
+			throws WeixinException {
+		return userApi.getUsers(lang, openIds);
+	}
+
+	/**
 	 * 获取用户一定数量(10000)的关注者列表
 	 * 
 	 * @param nextOpenId
