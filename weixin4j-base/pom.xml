@@ -29,5 +29,11 @@
 			<version>4.3</version>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.0.30.Final</version>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 </project>

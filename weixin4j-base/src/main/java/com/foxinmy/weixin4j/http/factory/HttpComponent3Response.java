@@ -1,16 +1,13 @@
 package com.foxinmy.weixin4j.http.factory;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.protocol.Protocol;
 
-import com.foxinmy.weixin4j.http.HttpClientException;
+import com.foxinmy.weixin4j.http.AbstractHttpResponse;
 import com.foxinmy.weixin4j.http.HttpHeaders;
-import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.HttpStatus;
 import com.foxinmy.weixin4j.http.HttpVersion;
 
@@ -23,22 +20,17 @@ import com.foxinmy.weixin4j.http.HttpVersion;
  * @since JDK 1.7
  * @see
  */
-public class HttpComponent3Response implements HttpResponse {
+public class HttpComponent3Response extends AbstractHttpResponse {
 
 	private final HttpMethod httpMethod;
 
 	private HttpHeaders headers;
 	private HttpVersion protocol;
 	private HttpStatus status;
-	private InputStream body;
 
-	public HttpComponent3Response(HttpMethod httpMethod) {
+	public HttpComponent3Response(HttpMethod httpMethod) throws IOException {
+		super(httpMethod.getResponseBody());
 		this.httpMethod = httpMethod;
-		try {
-			this.body = new ByteArrayInputStream(httpMethod.getResponseBody());
-		} catch (IOException e) {
-			;
-		}
 	}
 
 	@Override
@@ -71,17 +63,12 @@ public class HttpComponent3Response implements HttpResponse {
 	}
 
 	@Override
-	public HttpStatus getStatus() throws HttpClientException {
+	public HttpStatus getStatus() {
 		if (status == null) {
 			status = new HttpStatus(httpMethod.getStatusCode(),
 					httpMethod.getStatusText());
 		}
 		return status;
-	}
-
-	@Override
-	public InputStream getBody() throws HttpClientException {
-		return body;
 	}
 
 	@Override

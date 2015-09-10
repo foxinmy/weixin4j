@@ -26,6 +26,7 @@ import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.util.EntityUtils;
 
 import com.foxinmy.weixin4j.http.AbstractHttpClient;
 import com.foxinmy.weixin4j.http.HttpHeaders;
@@ -57,18 +58,27 @@ public abstract class HttpComponent4 extends AbstractHttpClient {
 	}
 
 	protected void addHeaders(HttpHeaders headers, HttpRequestBase uriRequest) {
-		if (headers != null) {
-			for (Iterator<Entry<String, List<String>>> headerIterator = headers
-					.entrySet().iterator(); headerIterator.hasNext();) {
-				Entry<String, List<String>> header = headerIterator.next();
-				if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
+		if (headers == null) {
+			headers = new HttpHeaders();
+		}
+		// Add default accept headers
+		if (!headers.containsKey(HttpHeaders.ACCEPT)) {
+			headers.set(HttpHeaders.ACCEPT, "*/*");
+		}
+		// Add default user agent
+		if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
+			headers.set(HttpHeaders.USER_AGENT, "apache/httpclient4");
+		}
+		for (Iterator<Entry<String, List<String>>> headerIterator = headers
+				.entrySet().iterator(); headerIterator.hasNext();) {
+			Entry<String, List<String>> header = headerIterator.next();
+			if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
+				uriRequest.addHeader(header.getKey(),
+						StringUtil.join(header.getValue(), ';'));
+			} else {
+				for (String headerValue : header.getValue()) {
 					uriRequest.addHeader(header.getKey(),
-							StringUtil.join(header.getValue(), ';'));
-				} else {
-					for (String headerValue : header.getValue()) {
-						uriRequest.addHeader(header.getKey(),
-								headerValue != null ? headerValue : "");
-					}
+							headerValue != null ? headerValue : "");
 				}
 			}
 		}
@@ -92,6 +102,11 @@ public abstract class HttpComponent4 extends AbstractHttpClient {
 			httpEntity.setContentType(entity.getContentType().toString());
 			((HttpEntityEnclosingRequestBase) uriRequest).setEntity(httpEntity);
 		}
+	}
+
+	protected byte[] getContent(org.apache.http.HttpResponse httpResponse)
+			throws IOException {
+		return EntityUtils.toByteArray(httpResponse.getEntity());
 	}
 
 	protected static class CustomHostnameVerifier implements

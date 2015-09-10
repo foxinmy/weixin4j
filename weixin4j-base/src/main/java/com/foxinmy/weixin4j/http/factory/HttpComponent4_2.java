@@ -69,7 +69,9 @@ public class HttpComponent4_2 extends HttpComponent4 {
 			addHeaders(request.getHeaders(), uriRequest);
 			addEntity(request.getEntity(), uriRequest);
 			CloseableHttpResponse httpResponse = httpClient.execute(uriRequest);
-			response = new HttpComponent4_2Response(httpResponse);
+			response = new HttpComponent4_2Response(httpResponse,
+					getContent(httpResponse));
+			handleResponse(response);
 		} catch (IOException e) {
 			throw new HttpClientException("I/O error on "
 					+ request.getMethod().name() + " request for \""

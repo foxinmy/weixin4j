@@ -42,6 +42,7 @@ public class WeixinResponse {
 			try {
 				text = StringUtil.newStringUtf8(IOUtil.toByteArray(body));
 			} catch (IOException e) {
+				e.printStackTrace();
 				;
 			}
 		}

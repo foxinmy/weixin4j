@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.http;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.Map.Entry;
  * @since JDK 1.7
  * @see
  */
-public class SimpleHttpResponse implements HttpResponse {
+public class SimpleHttpResponse extends AbstractHttpResponse {
 
 	private final HttpURLConnection connection;
 
@@ -25,7 +24,8 @@ public class SimpleHttpResponse implements HttpResponse {
 	private HttpVersion protocol;
 	private HttpStatus status;
 
-	public SimpleHttpResponse(HttpURLConnection connection) {
+	public SimpleHttpResponse(HttpURLConnection connection, byte[] content) {
+		super(content);
 		this.connection = connection;
 	}
 
@@ -65,26 +65,16 @@ public class SimpleHttpResponse implements HttpResponse {
 	}
 
 	@Override
-	public HttpStatus getStatus() throws HttpClientException {
+	public HttpStatus getStatus() {
 		if (status == null) {
 			try {
 				status = new HttpStatus(connection.getResponseCode(),
 						connection.getResponseMessage());
 			} catch (IOException e) {
-				throw new HttpClientException("I/O Error on getStatus", e);
+				throw new RuntimeException("I/O Error on getStatus", e);
 			}
 		}
 		return status;
-	}
-
-	@Override
-	public InputStream getBody() throws HttpClientException {
-		try {
-			return connection.getErrorStream() != null ? connection
-					.getErrorStream() : connection.getInputStream();
-		} catch (IOException e) {
-			throw new HttpClientException("I/O Error on getBody", e);
-		}
 	}
 
 	@Override

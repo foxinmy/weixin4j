@@ -13,7 +13,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 
-import com.foxinmy.weixin4j.http.HttpClient;
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpParams;
@@ -87,7 +86,9 @@ public class HttpComponent4_1 extends HttpComponent4 {
 			addEntity(request.getEntity(), uriRequest);
 			org.apache.http.HttpResponse httpResponse = httpClient
 					.execute(uriRequest);
-			response = new HttpComponent4_1Response(httpClient, httpResponse);
+			response = new HttpComponent4_1Response(httpResponse,
+					getContent(httpResponse));
+			handleResponse(response);
 		} catch (IOException e) {
 			throw new HttpClientException("I/O error on "
 					+ request.getMethod().name() + " request for \""

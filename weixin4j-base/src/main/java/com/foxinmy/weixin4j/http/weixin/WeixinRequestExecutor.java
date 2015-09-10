@@ -20,6 +20,7 @@ import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.http.entity.StringEntity;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
+import com.foxinmy.weixin4j.http.factory.Netty4HttpClientFactory;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.WeixinErrorUtil;
@@ -44,6 +45,7 @@ public class WeixinRequestExecutor {
 	}
 
 	public WeixinRequestExecutor(HttpParams params) {
+		HttpClientFactory.setDefaultFactory(new Netty4HttpClientFactory());
 		this.httpClient = HttpClientFactory.getInstance();
 		this.params = params;
 	}
@@ -97,10 +99,6 @@ public class WeixinRequestExecutor {
 			HttpResponse httpResponse = httpClient.execute(request);
 			HttpStatus status = httpResponse.getStatus();
 			HttpHeaders headers = httpResponse.getHeaders();
-			if (status.getStatusCode() >= HttpStatus.SC_MULTIPLE_CHOICES) {
-				throw new WeixinException(String.format("request fail : %d-%s",
-						status.getStatusCode(), status.getStatusText()));
-			}
 			WeixinResponse response = new WeixinResponse(headers, status,
 					httpResponse.getBody());
 			String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);

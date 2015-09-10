@@ -47,7 +47,7 @@ public class ScanEventMessage extends EventMessage {
 	}
 
 	public String getParameter() {
-		return eventKey.replace("qrscene_", "");
+		return eventKey.replaceFirst("qrscene_", "");
 	}
 
 	@Override

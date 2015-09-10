@@ -106,4 +106,25 @@ public abstract class AbstractHttpClient implements HttpClient {
 		}
 		return execute(new HttpRequest(method, buf.toString()));
 	}
+
+	protected boolean hasError(HttpStatus status) {
+		return (status.series() == HttpStatus.Series.CLIENT_ERROR || status
+				.series() == HttpStatus.Series.SERVER_ERROR);
+	}
+
+	protected void handleResponse(HttpResponse response)
+			throws HttpClientException {
+		HttpStatus status = response.getStatus();
+		if (hasError(status)) {
+			switch (status.series()) {
+			case CLIENT_ERROR:
+			case SERVER_ERROR:
+				throw new HttpClientException(String.format("%d %s",
+						status.getStatusCode(), status.getStatusText()));
+			default:
+				throw new HttpClientException("Unknown status code [" + status
+						+ "]");
+			}
+		}
+	}
 }

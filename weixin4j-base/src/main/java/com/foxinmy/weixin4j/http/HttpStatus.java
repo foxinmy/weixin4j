@@ -31,7 +31,6 @@ package com.foxinmy.weixin4j.http;
  * Constants enumerating the HTTP status codes. All status codes defined in
  * RFC1945 (HTTP/1.0), RFC2616 (HTTP/1.1), and RFC2518 (WebDAV) are listed.
  *
- * @see StatusLine
  *
  * @since 4.0
  */
@@ -186,6 +185,54 @@ public final class HttpStatus {
 
 	public String getStatusText() {
 		return statusText;
+	}
+
+	/**
+	 * Returns the HTTP status series of this status code.
+	 * 
+	 * @see HttpStatus.Series
+	 */
+	public Series series() {
+		return Series.valueOf(this);
+	}
+
+	/**
+	 * Java 5 enumeration of HTTP status series.
+	 * <p>
+	 * Retrievable via {@link HttpStatus#series()}.
+	 */
+	public static enum Series {
+
+		INFORMATIONAL(1), SUCCESSFUL(2), REDIRECTION(3), CLIENT_ERROR(4), SERVER_ERROR(
+				5);
+
+		private final int value;
+
+		private Series(int value) {
+			this.value = value;
+		}
+
+		/**
+		 * Return the integer value of this status series. Ranges from 1 to 5.
+		 */
+		public int value() {
+			return this.value;
+		}
+
+		public static Series valueOf(int status) {
+			int seriesCode = status / 100;
+			for (Series series : values()) {
+				if (series.value == seriesCode) {
+					return series;
+				}
+			}
+			throw new IllegalArgumentException("No matching constant for ["
+					+ status + "]");
+		}
+
+		public static Series valueOf(HttpStatus status) {
+			return valueOf(status.statusCode);
+		}
 	}
 
 	@Override

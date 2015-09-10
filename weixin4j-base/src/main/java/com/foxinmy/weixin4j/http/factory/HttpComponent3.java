@@ -109,18 +109,30 @@ public class HttpComponent3 extends AbstractHttpClient {
 			}
 			com.foxinmy.weixin4j.http.HttpHeaders headers = request
 					.getHeaders();
-			if (headers != null) {
-				for (Iterator<Entry<String, List<String>>> headerIterator = headers
-						.entrySet().iterator(); headerIterator.hasNext();) {
-					Entry<String, List<String>> header = headerIterator.next();
-					if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
-						httpMethod.setRequestHeader(header.getKey(),
-								StringUtil.join(header.getValue(), ';'));
-					} else {
-						for (String headerValue : header.getValue()) {
-							httpMethod.addRequestHeader(header.getKey(),
-									headerValue != null ? headerValue : "");
-						}
+			if (headers == null) {
+				headers = new HttpHeaders();
+			}
+			if (!headers.containsKey(HttpHeaders.HOST)) {
+				headers.set(HttpHeaders.HOST, uri.getHost());
+			}
+			// Add default accept headers
+			if (!headers.containsKey(HttpHeaders.ACCEPT)) {
+				headers.set(HttpHeaders.ACCEPT, "*/*");
+			}
+			// Add default user agent
+			if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
+				headers.set(HttpHeaders.USER_AGENT, "apache/httpclient3");
+			}
+			for (Iterator<Entry<String, List<String>>> headerIterator = headers
+					.entrySet().iterator(); headerIterator.hasNext();) {
+				Entry<String, List<String>> header = headerIterator.next();
+				if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
+					httpMethod.setRequestHeader(header.getKey(),
+							StringUtil.join(header.getValue(), ';'));
+				} else {
+					for (String headerValue : header.getValue()) {
+						httpMethod.addRequestHeader(header.getKey(),
+								headerValue != null ? headerValue : "");
 					}
 				}
 			}
@@ -153,6 +165,7 @@ public class HttpComponent3 extends AbstractHttpClient {
 			}
 			httpClient.executeMethod(httpMethod);
 			response = new HttpComponent3Response(httpMethod);
+			handleResponse(response);
 		} catch (IOException e) {
 			throw new HttpClientException("I/O error on "
 					+ request.getMethod().name() + " request for \""

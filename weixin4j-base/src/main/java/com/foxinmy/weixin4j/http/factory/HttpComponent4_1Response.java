@@ -1,16 +1,13 @@
 package com.foxinmy.weixin4j.http.factory;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 
-import com.foxinmy.weixin4j.http.HttpClientException;
+import com.foxinmy.weixin4j.http.AbstractHttpResponse;
 import com.foxinmy.weixin4j.http.HttpHeaders;
-import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.HttpStatus;
 import com.foxinmy.weixin4j.http.HttpVersion;
 
@@ -23,18 +20,16 @@ import com.foxinmy.weixin4j.http.HttpVersion;
  * @since JDK 1.7
  * @see
  */
-public class HttpComponent4_1Response implements HttpResponse {
-	private final org.apache.http.client.HttpClient httpClient;
+public class HttpComponent4_1Response extends AbstractHttpResponse {
 	private final org.apache.http.HttpResponse httpResponse;
 
 	private HttpHeaders headers;
 	private HttpVersion protocol;
 	private HttpStatus status;
 
-	public HttpComponent4_1Response(
-			org.apache.http.client.HttpClient httpClient,
-			org.apache.http.HttpResponse httpResponse) {
-		this.httpClient = httpClient;
+	public HttpComponent4_1Response(org.apache.http.HttpResponse httpResponse,
+			byte[] content) throws IOException {
+		super(content);
 		this.httpResponse = httpResponse;
 	}
 
@@ -64,7 +59,7 @@ public class HttpComponent4_1Response implements HttpResponse {
 	}
 
 	@Override
-	public HttpStatus getStatus() throws HttpClientException {
+	public HttpStatus getStatus() {
 		if (status == null) {
 			StatusLine statusLine = httpResponse.getStatusLine();
 			status = new HttpStatus(statusLine.getStatusCode(),
@@ -74,17 +69,11 @@ public class HttpComponent4_1Response implements HttpResponse {
 	}
 
 	@Override
-	public InputStream getBody() throws HttpClientException {
-		try {
-			HttpEntity entity = this.httpResponse.getEntity();
-			return (entity != null ? entity.getContent() : null);
-		} catch (IOException e) {
-			throw new HttpClientException("I/O Error on getBody", e);
-		}
-	}
-
-	@Override
 	public void close() {
-		httpClient.getConnectionManager().closeExpiredConnections();
+		try {
+			httpResponse.getEntity().consumeContent();
+		} catch (IOException e) {
+			;
+		}
 	}
 }

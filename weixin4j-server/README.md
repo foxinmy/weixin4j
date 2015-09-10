@@ -54,7 +54,7 @@ base on netty.
 				}
 			};
 			// 当消息类型为文本(text)时回复「HelloWorld」, 否则回复调试消息
-			new WeixinServerBootstrap(token,appid, aesKey).addHandler(
+			new WeixinServerBootstrap(token, appid, aesKey).addHandler(
 					messageHandler, DebugMessageHandler.global).startup();
 			}
 		}

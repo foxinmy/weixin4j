@@ -149,3 +149,7 @@
   + version upgrade to 1.5.3
   
   + 媒体接口类(MediaApi)查询素材接口调整:去掉offset,count替换为Pageable类
+  
+* 2015-09-08
+  
+  + 新增批量获取用户信息接口
