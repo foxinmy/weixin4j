@@ -12,7 +12,6 @@ import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
-import com.foxinmy.weixin4j.http.HttpStatus;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
 import com.foxinmy.weixin4j.http.apache.HttpMultipartMode;
 import com.foxinmy.weixin4j.http.apache.MultipartEntity;
@@ -97,10 +96,8 @@ public class WeixinRequestExecutor {
 		request.setParams(params);
 		try {
 			HttpResponse httpResponse = httpClient.execute(request);
-			HttpStatus status = httpResponse.getStatus();
 			HttpHeaders headers = httpResponse.getHeaders();
-			WeixinResponse response = new WeixinResponse(headers, status,
-					httpResponse.getBody());
+			WeixinResponse response = new WeixinResponse(httpResponse);
 			String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
 			String disposition = headers
 					.getFirst(HttpHeaders.CONTENT_DISPOSITION);

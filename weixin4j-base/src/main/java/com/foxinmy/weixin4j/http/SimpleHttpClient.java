@@ -105,17 +105,17 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 			HttpHeaders headers = request.getHeaders();
 			if (headers == null) {
 				headers = new HttpHeaders();
-				if (!headers.containsKey(HttpHeaders.HOST)) {
-					headers.set(HttpHeaders.HOST, request.getURI().getHost());
-				}
-				// Add default accept headers
-				if (!headers.containsKey(HttpHeaders.ACCEPT)) {
-					headers.set(HttpHeaders.ACCEPT, "*/*");
-				}
-				// Add default user agent
-				if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
-					headers.set(HttpHeaders.USER_AGENT, "jdk/httpclient");
-				}
+			}
+			if (!headers.containsKey(HttpHeaders.HOST)) {
+				headers.set(HttpHeaders.HOST, request.getURI().getHost());
+			}
+			// Add default accept headers
+			if (!headers.containsKey(HttpHeaders.ACCEPT)) {
+				headers.set(HttpHeaders.ACCEPT, "*/*");
+			}
+			// Add default user agent
+			if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
+				headers.set(HttpHeaders.USER_AGENT, "jdk/httpclient");
 			}
 			for (Iterator<Entry<String, List<String>>> headerIterator = headers
 					.entrySet().iterator(); headerIterator.hasNext();) {
