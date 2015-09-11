@@ -87,3 +87,7 @@
 * 2015-08-13
 
   + version upgrade to 1.0.5
+  
+* 2015-09-11
+
+  + version upgrade to 1.1.0

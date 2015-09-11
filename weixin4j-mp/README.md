@@ -43,12 +43,12 @@ weixin4j-mp
 
 如何使用
 --------
-0.maven依赖(1.5.3,2015-08-13 released)
+0.maven依赖(1.6.0,2015-09-11 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.5.3</version>
+	    <version>1.6.0</version>
 	</dependency>
 1.需新增或拷贝`weixin4j.properties`文件到项目的`classpath`中
 
