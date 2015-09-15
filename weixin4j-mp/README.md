@@ -60,7 +60,7 @@ weixin4j.properties说明
 | token_path  	| 使用FileTokenStorager时token保存的物理路径 |
 | qr_path     	| 调用二维码接口时保存二维码图片的物理路径 |
 | media_path  	| 调用媒体接口时保存媒体文件的物理路径 |
-| bill_path   	| 调用下载对账单接口保存excel文件的物理路径 |
+| bill_path   	| 调用下载对账单接口保存文件的物理路径 |
 | ca_file     	| 调用某些接口(支付相关)强制需要auth的ca授权文件 |
 | user_oauth_redirect_uri     | 调用OauthApi接口时需要填写的重定向路径 |
 

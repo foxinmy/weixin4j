@@ -11,5 +11,7 @@ weixin4j-base
 
 `通用消息实体`
 
+`HttpClient的实现`
+
 [更新LOG](./CHANGE.md)
 ---------------------
