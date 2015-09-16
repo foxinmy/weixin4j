@@ -15,12 +15,12 @@ base on netty.
 
 如何使用
 -------
-###maven依赖(1.1.0,2015-09-11 released)
+###maven依赖(1.1.1,2015-09-16 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.1.0</version>
+	    <version>1.1.1</version>
 	</dependency>
 ###编写服务启动类
 明文模式并总是调试输出微信请求信息的服务启动类.
