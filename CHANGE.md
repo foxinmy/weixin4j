@@ -464,3 +464,9 @@
   + weixin4j-[mp|qy]:version upgrade to 1.6.0
   
   + weixin4j-server:version upgrade to 1.1.0
+  
+* 2015-09-16
+
+  + weixin4j-[mp|qy]:version upgrade to 1.6.1
+  
+  + weixin4j-server:version upgrade to 1.1.1
