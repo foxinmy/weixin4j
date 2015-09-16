@@ -37,12 +37,12 @@ weixin4j-qy
 
 如何使用
 --------
-0.maven依赖(1.6.0,2015-09-11 released)
+0.maven依赖(1.6.1,2015-09-16 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-qy</artifactId>
-	    <version>1.6.0</version>
+	    <version>1.6.1</version>
 	</dependency>
 1.需新增或拷贝`weixin4j.properties`文件到项目的`classpath`中
 
