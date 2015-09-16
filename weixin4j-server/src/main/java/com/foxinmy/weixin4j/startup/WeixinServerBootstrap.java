@@ -97,15 +97,16 @@ public final class WeixinServerBootstrap {
 	/**
 	 * 明文模式 & 兼容模式 & 密文模式
 	 * 
+	 * @param weixinId
+	 *            公众号的应用ID(appid/corpid) 密文&兼容模式下需要填写
+	 * 
 	 * @param token
 	 *            开发者填写的token 无论哪种模式都需要填写
-	 * @param appid
-	 *            公众号的应用ID(appid/corpid) 密文&兼容模式下需要填写
 	 * @param aesKey
 	 *            消息加密的密钥 密文&兼容模式下需要填写
 	 */
-	public WeixinServerBootstrap(String token, String appid, String aesKey) {
-		this(new AesToken(appid, token, aesKey));
+	public WeixinServerBootstrap(String weixinId, String token, String aesKey) {
+		this(new AesToken(weixinId, token, aesKey));
 	}
 
 	/**
