@@ -94,8 +94,12 @@ public abstract class HttpClientFactory {
 					new X509TrustManager[] { createX509TrustManager() },
 					new java.security.SecureRandom());
 			return sslContext;
-		} catch (NoSuchAlgorithmException | KeyManagementException e) {
-			throw new HttpClientException("Create SSLContext Error:", e);
+		} catch (NoSuchAlgorithmException e) {
+			throw new HttpClientException(
+					"Create SSLContext NoSuchAlgorithmException:", e);
+		} catch (KeyManagementException e) {
+			throw new HttpClientException(
+					"Create SSLContext KeyManagementException:", e);
 		}
 	}
 

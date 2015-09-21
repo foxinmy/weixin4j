@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.qy.chat;
 
-import java.beans.Transient;
 import java.io.Serializable;
 import java.util.List;
 
@@ -61,7 +60,6 @@ public class WeixinChatMessage implements Serializable {
 		return agentType;
 	}
 
-	@Transient
 	@XmlTransient
 	public AgentType getFormatAgentType() {
 		return AgentType.valueOf(agentType);

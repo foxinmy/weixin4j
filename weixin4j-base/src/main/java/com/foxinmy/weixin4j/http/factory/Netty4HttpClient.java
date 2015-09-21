@@ -108,8 +108,16 @@ public class Netty4HttpClient extends AbstractHttpClient {
 					.addListener(listener);
 			response = future.get();
 			handleResponse(response);
-		} catch (IOException | InterruptedException | ExecutionException e) {
+		} catch (IOException e) {
 			throw new HttpClientException("I/O error on "
+					+ request.getMethod().name() + " request for \""
+					+ request.getURI().toString() + "\":" + e.getMessage(), e);
+		} catch (InterruptedException e) {
+			throw new HttpClientException("Execute error on "
+					+ request.getMethod().name() + " request for \""
+					+ request.getURI().toString() + "\":" + e.getMessage(), e);
+		} catch (ExecutionException e) {
+			throw new HttpClientException("Execute error on "
 					+ request.getMethod().name() + " request for \""
 					+ request.getURI().toString() + "\":" + e.getMessage(), e);
 		} finally {
@@ -135,9 +143,9 @@ public class Netty4HttpClient extends AbstractHttpClient {
 		HttpEntity entity = request.getEntity();
 		if (entity != null) {
 			ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer();
-			try (ByteBufOutputStream out = new ByteBufOutputStream(byteBuf)) {
-				entity.writeTo(out);
-			}
+			ByteBufOutputStream out = new ByteBufOutputStream(byteBuf);
+			entity.writeTo(out);
+			out.close();
 			uriRequest = new DefaultFullHttpRequest(
 					uriRequest.getProtocolVersion(), uriRequest.getMethod(),
 					uriRequest.getUri(), byteBuf);

@@ -470,3 +470,7 @@
   + weixin4j-[mp|qy]:version upgrade to 1.6.1
   
   + weixin4j-server:version upgrade to 1.1.1
+  
+* 2015-09-21
+
+  重要:工程运行环境由jdk1.7调整为jdk1.6

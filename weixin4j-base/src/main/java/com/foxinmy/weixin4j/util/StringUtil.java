@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.util;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;
-import java.util.Objects;
 
 import com.foxinmy.weixin4j.model.Consts;
 
@@ -159,8 +158,7 @@ public final class StringUtil {
 		}
 		final Object first = iterator.next();
 		if (!iterator.hasNext()) {
-			String result = Objects.toString(first);
-			return result;
+			return String.valueOf(first);
 		}
 
 		// two or more elements

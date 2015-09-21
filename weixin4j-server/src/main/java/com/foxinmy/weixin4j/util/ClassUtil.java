@@ -139,7 +139,9 @@ public final class ClassUtil {
 			bis = new ByteArrayInputStream(bos.toByteArray());
 			ois = new ObjectInputStream(bis);
 			return ois.readObject();
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		} finally {
 			try {

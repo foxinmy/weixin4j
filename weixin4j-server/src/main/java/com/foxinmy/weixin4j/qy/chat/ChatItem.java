@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.qy.chat;
 
-import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
@@ -111,7 +110,6 @@ public class ChatItem implements Serializable {
 		return createTime;
 	}
 
-	@Transient
 	@XmlTransient
 	public Date getFormatCreateTime() {
 		return createTime > 0l ? new Date(createTime * 1000l) : null;
@@ -121,7 +119,6 @@ public class ChatItem implements Serializable {
 		return msgType;
 	}
 
-	@Transient
 	@XmlTransient
 	public MessageType getFormatMsgType() {
 		return msgType != null ? MessageType.valueOf(msgType) : null;
@@ -131,7 +128,6 @@ public class ChatItem implements Serializable {
 		return eventType;
 	}
 
-	@Transient
 	@XmlTransient
 	public ChatEventType getFormatEventType() {
 		return eventType != null ? ChatEventType.valueOf(eventType) : null;
@@ -153,7 +149,6 @@ public class ChatItem implements Serializable {
 		return members;
 	}
 
-	@Transient
 	@XmlTransient
 	public List<String> getFormatMembers() {
 		return members != null ? Arrays.asList(members.split(LIST_SEPARATOR))
@@ -164,7 +159,6 @@ public class ChatItem implements Serializable {
 		return addMembers;
 	}
 
-	@Transient
 	@XmlTransient
 	public List<String> getFormatAddMembers() {
 		return addMembers != null ? Arrays.asList(addMembers
@@ -175,7 +169,6 @@ public class ChatItem implements Serializable {
 		return deleteMembers;
 	}
 
-	@Transient
 	@XmlTransient
 	public List<String> getFormatDeleteMembers() {
 		return deleteMembers != null ? Arrays.asList(deleteMembers
