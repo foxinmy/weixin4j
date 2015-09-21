@@ -13,6 +13,11 @@ import org.apache.commons.httpclient.HttpClient;
  */
 public class HttpComponent3Factory extends HttpClientFactory {
 
+	public HttpComponent3Factory() {
+		// odd bug
+		Class _ = HttpClient.class;
+	}
+
 	@Override
 	public com.foxinmy.weixin4j.http.HttpClient newInstance() {
 		return new HttpComponent3(new HttpClient());
