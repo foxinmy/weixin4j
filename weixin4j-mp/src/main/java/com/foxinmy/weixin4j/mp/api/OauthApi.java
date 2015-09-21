@@ -159,7 +159,7 @@ public class OauthApi extends MpApi {
 	 * @see {@link #getUser(String,Sring,Lang)}
 	 */
 	public User getUser(OauthToken token) throws WeixinException {
-		return getUser(token.getAccessToken(), token.getOpenid(), Lang.zh_CN);
+		return getUser(token.getAccessToken(), token.getOpenId(), Lang.zh_CN);
 	}
 
 	/**
