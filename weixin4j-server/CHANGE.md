@@ -91,3 +91,11 @@
 * 2015-09-11
 
   + version upgrade to 1.1.0
+  
+* 2015-09-16
+
+  + version upgrade to 1.1.1
+  
+* 2015-09-21
+
+  + version upgrade to 1.1.2
