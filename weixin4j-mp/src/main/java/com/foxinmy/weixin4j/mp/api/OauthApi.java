@@ -34,7 +34,7 @@ public class OauthApi extends MpApi {
 		String appId = DEFAULT_WEIXIN_ACCOUNT.getId();
 		String redirectUri = Weixin4jConfigUtil
 				.getValue("user_oauth_redirect_uri");
-		return getAuthorizeURL(appId, redirectUri, "state", "snsapi_login");
+		return getAuthorizeURL(appId, redirectUri, "state", "snsapi_base");
 	}
 
 	/**
