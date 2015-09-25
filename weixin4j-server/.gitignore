@@ -30,3 +30,4 @@ target/*
 Thumbs.db
 /target/
 .DS_Store
+/target/

@@ -51,13 +51,13 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void addUsers() throws WeixinException {
-		JsonResult result = tagApi.addTagUsers(1, Arrays.asList("jinyu"));
+		JsonResult result = tagApi.addTagUsers(1, Arrays.asList("jinyu"), null);
 		Assert.assertEquals("ok", result.getDesc());
 	}
 
 	@Test
 	public void deleteUsers() throws WeixinException {
-		JsonResult result = tagApi.deleteTagUsers(1, Arrays.asList("jinyu"));
+		JsonResult result = tagApi.deleteTagUsers(1, Arrays.asList("jinyu"), null);
 		Assert.assertEquals("ok", result.getDesc());
 		System.out.println(result);
 	}
