@@ -12,7 +12,6 @@ import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
-import com.foxinmy.weixin4j.http.factory.HttpComponent3Factory;
 import com.foxinmy.weixin4j.http.factory.HttpComponent4Factory;
 import com.foxinmy.weixin4j.util.IOUtil;
 
@@ -34,7 +33,6 @@ public class HttpClientTest {
 	}
 
 	public static void test2() throws HttpClientException {
-		HttpClientFactory.setDefaultFactory(new HttpComponent3Factory());
 		HttpClient httpClient = HttpClientFactory.getInstance();
 		HttpResponse response = httpClient.execute(request);
 		print(response);

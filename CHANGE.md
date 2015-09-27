@@ -478,3 +478,7 @@
   + weixin4j-[mp|qy]:version upgrade to 1.6.2
   
   + weixin4j-server:version upgrade to 1.1.2
+  
+* 2015-09-27
+
+ + 新增手动刷新token方法

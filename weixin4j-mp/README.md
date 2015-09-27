@@ -43,7 +43,7 @@ weixin4j-mp
 
 如何使用
 --------
-0.maven依赖(1.6.2,2015-09-21 released)
+0.maven依赖(1.6.2,2015-09-27 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
