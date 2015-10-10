@@ -1,14 +1,13 @@
 package com.foxinmy.weixin4j.http.weixin;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.http.HttpHeaders;
+import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.HttpStatus;
-import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
@@ -18,15 +17,10 @@ public class WeixinResponse {
 	private boolean isXmlResult;
 	private volatile String text;
 
-	private final HttpHeaders headers;
-	private final HttpStatus status;
-	private final InputStream body;
+	private final HttpResponse response;
 
-	public WeixinResponse(HttpHeaders headers, HttpStatus status,
-			InputStream body) {
-		this.headers = headers;
-		this.status = status;
-		this.body = body;
+	public WeixinResponse(HttpResponse response) {
+		this.response = response;
 	}
 
 	public void setJsonResult(boolean isJsonResult) {
@@ -39,11 +33,7 @@ public class WeixinResponse {
 
 	public String getAsString() {
 		if (text == null) {
-			try {
-				text = StringUtil.newStringUtf8(IOUtil.toByteArray(body));
-			} catch (IOException e) {
-				;
-			}
+			text = StringUtil.newStringUtf8(response.getContent());
 		}
 		return text;
 	}
@@ -77,14 +67,14 @@ public class WeixinResponse {
 	}
 
 	public HttpHeaders getHeaders() {
-		return headers;
+		return response.getHeaders();
 	}
 
 	public HttpStatus getStatus() {
-		return status;
+		return response.getStatus();
 	}
 
 	public InputStream getBody() {
-		return body;
+		return response.getBody();
 	}
 }

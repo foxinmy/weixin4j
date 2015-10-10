@@ -61,4 +61,17 @@ public final class TokenHolder {
 	public String getAccessToken() throws WeixinException {
 		return getToken().getAccessToken();
 	}
+
+	/**
+	 * 手动刷新token
+	 * 
+	 * @return 刷新后的token
+	 * @throws WeixinException
+	 */
+	public Token refreshToken() throws WeixinException {
+		String cacheKey = tokenCreator.getCacheKey();
+		Token token = tokenCreator.createToken();
+		tokenStorager.caching(cacheKey, token);
+		return token;
+	}
 }

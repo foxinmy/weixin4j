@@ -11,13 +11,13 @@ weixin4j
 
   `公众平台API封装`
 	
-  `微信支付(刷卡/扫码/公众号)`
+  `微信支付(刷卡/扫码/公众号/现金红包/企业付款)`
 	
 * **weixin4j-qy**
 
   `企业号API封装`
   
-  `微信支付(刷卡/扫码/公众号)`
+  `微信支付(刷卡/扫码/公众号/现金红包/企业付款)`
   
 * **weixin4j-server**
   
@@ -26,26 +26,26 @@ weixin4j
 如何获取
 ----------
 ###1.maven依赖
-微信公众平台API(1.5.3,2015-08-13 released)
+微信公众平台API(1.6.2,2015-09-27 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.5.3</version>
+	    <version>1.6.2</version>
 	</dependency>
-微信企业号API(1.5.3,2015-08-13 released)
+微信企业号API(1.6.2,2015-09-27 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-qy</artifactId>
-	    <version>1.5.3</version>
+	    <version>1.6.2</version>
 	</dependency>
-微信回调消息服务器(1.0.5,2015-08-13 released)
+微信回调消息服务器(1.1.2,2015-09-21 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.0.5</version>
+	    <version>1.1.2</version>
 	</dependency>
 
 以上依赖如果出现Missing artifact错误 请尝试在eclipse里这么做

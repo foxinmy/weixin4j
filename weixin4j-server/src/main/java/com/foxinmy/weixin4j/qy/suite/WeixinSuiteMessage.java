@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.qy.suite;
 
-import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -58,7 +57,6 @@ public class WeixinSuiteMessage implements Serializable {
 		return eventType;
 	}
 
-	@Transient
 	@XmlTransient
 	public SuiteEventType getFormatEventType() {
 		return SuiteEventType.valueOf(eventType);
@@ -68,7 +66,6 @@ public class WeixinSuiteMessage implements Serializable {
 		return timeStamp;
 	}
 
-	@Transient
 	@XmlTransient
 	public Date getFormatTimeStamp() {
 		return timeStamp > 0l ? new Date(timeStamp * 1000l) : null;

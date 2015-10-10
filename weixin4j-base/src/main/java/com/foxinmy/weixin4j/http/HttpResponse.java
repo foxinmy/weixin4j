@@ -24,14 +24,21 @@ public interface HttpResponse extends HttpMessage {
 	 * 
 	 * @return
 	 */
-	HttpStatus getStatus() throws HttpClientException;
+	HttpStatus getStatus();
 
 	/**
 	 * 响应内容
 	 * 
 	 * @return
 	 */
-	InputStream getBody() throws HttpClientException;
+	InputStream getBody();
+
+	/**
+	 * 响应内容
+	 * 
+	 * @return
+	 */
+	byte[] getContent();
 
 	/**
 	 * 释放资源

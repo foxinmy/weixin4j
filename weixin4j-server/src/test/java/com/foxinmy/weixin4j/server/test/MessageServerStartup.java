@@ -25,7 +25,7 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 public class MessageServerStartup {
 
 	// 公众号ID
-	final String appid = "wx4ab8f8de58159a57";
+	final String weixinId = "wx4ab8f8de58159a57";
 	// 开发者token
 	final String token = "weixin4j";
 	// AES密钥(安全模式)
@@ -49,7 +49,7 @@ public class MessageServerStartup {
 	 */
 	public void test2() throws WeixinException {
 		// 所有请求都回复调试的文本消息
-		new WeixinServerBootstrap(appid, token, aesKey).addHandler(
+		new WeixinServerBootstrap(weixinId, token, aesKey).addHandler(
 				DebugMessageHandler.global).startup();
 	}
 
@@ -68,7 +68,7 @@ public class MessageServerStartup {
 			}
 		};
 		// 当消息类型为文本(text)时回复「HelloWorld」, 否则回复调试消息
-		new WeixinServerBootstrap(appid, token, aesKey).addHandler(
+		new WeixinServerBootstrap(weixinId, token, aesKey).addHandler(
 				messageHandler, DebugMessageHandler.global).startup();
 	}
 

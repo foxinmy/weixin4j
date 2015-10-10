@@ -37,12 +37,12 @@ weixin4j-qy
 
 如何使用
 --------
-0.maven依赖(1.5.3,2015-08-13 released)
+0.maven依赖(1.6.2,2015-09-27 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-qy</artifactId>
-	    <version>1.5.3</version>
+	    <version>1.6.2</version>
 	</dependency>
 1.需新增或拷贝`weixin4j.properties`文件到项目的`classpath`中
 
@@ -53,7 +53,7 @@ weixin4j.properties说明
 | account     | 微信企业号信息 `json格式`(按需填写) |
 | token_path  | 使用FileTokenStorager时token保存的物理路径 |
 | media_path  | 调用媒体接口时保存媒体文件的物理路径 |
-| bill_path   	| 调用下载对账单接口保存excel文件的物理路径 |
+| bill_path   	| 调用下载对账单接口保存文件的物理路径 |
 | ca_file     	| 调用某些接口(支付相关)强制需要auth的ca授权文件 |
 | user_oauth_redirect_uri     | 企业号用户身份授权后重定向的url(OauthApi接口) |
 | third_oauth_redirect_uri	  | 企业号第三方提供商授权后重定向的url(OauthApi接口) |

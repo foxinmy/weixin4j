@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.server.test;
 
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -13,6 +12,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+
+import com.foxinmy.weixin4j.util.Consts;
 
 /**
  * 发送消息请求到服务器
@@ -51,7 +52,7 @@ public class MessagePush {
 
 	public String push(String para, String xml) throws IOException {
 		httpPost.setURI(URI.create(server + para));
-		httpPost.setEntity(new StringEntity(xml, StandardCharsets.UTF_8));
+		httpPost.setEntity(new StringEntity(xml, Consts.UTF_8));
 		HttpResponse httpResponse = httpClient.execute(httpPost);
 		return entity(httpResponse);
 	}
@@ -68,6 +69,6 @@ public class MessagePush {
 			throw new IOException(Integer.toString(status) + "uri moved");
 		}
 		return EntityUtils.toString(httpResponse.getEntity(),
-				StandardCharsets.UTF_8);
+				Consts.UTF_8);
 	}
 }

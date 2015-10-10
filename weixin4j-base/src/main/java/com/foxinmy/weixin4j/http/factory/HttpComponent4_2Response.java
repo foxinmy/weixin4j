@@ -1,17 +1,15 @@
 package com.foxinmy.weixin4j.http.factory;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.util.EntityUtils;
 
-import com.foxinmy.weixin4j.http.HttpClientException;
+import com.foxinmy.weixin4j.http.AbstractHttpResponse;
 import com.foxinmy.weixin4j.http.HttpHeaders;
-import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.HttpStatus;
 import com.foxinmy.weixin4j.http.HttpVersion;
 
@@ -24,7 +22,7 @@ import com.foxinmy.weixin4j.http.HttpVersion;
  * @since JDK 1.7
  * @see
  */
-public class HttpComponent4_2Response implements HttpResponse {
+public class HttpComponent4_2Response extends AbstractHttpResponse {
 
 	private final CloseableHttpResponse httpResponse;
 
@@ -32,7 +30,9 @@ public class HttpComponent4_2Response implements HttpResponse {
 	private HttpVersion protocol;
 	private HttpStatus status;
 
-	public HttpComponent4_2Response(CloseableHttpResponse httpResponse) {
+	public HttpComponent4_2Response(CloseableHttpResponse httpResponse,
+			byte[] content) {
+		super(content);
 		this.httpResponse = httpResponse;
 	}
 
@@ -62,7 +62,7 @@ public class HttpComponent4_2Response implements HttpResponse {
 	}
 
 	@Override
-	public HttpStatus getStatus() throws HttpClientException {
+	public HttpStatus getStatus() {
 		if (status == null) {
 			StatusLine statusLine = httpResponse.getStatusLine();
 			status = new HttpStatus(statusLine.getStatusCode(),
@@ -72,19 +72,9 @@ public class HttpComponent4_2Response implements HttpResponse {
 	}
 
 	@Override
-	public InputStream getBody() throws HttpClientException {
-		try {
-			HttpEntity entity = this.httpResponse.getEntity();
-			return (entity != null ? entity.getContent() : null);
-		} catch (IOException e) {
-			throw new HttpClientException("I/O Error on getBody", e);
-		}
-	}
-
-	@Override
 	public void close() {
 		try {
-			// EntityUtils.consume(httpResponse.getEntity());
+			EntityUtils.consume(httpResponse.getEntity());
 			httpResponse.close();
 		} catch (IOException ex) {
 			;

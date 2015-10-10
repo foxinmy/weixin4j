@@ -1,29 +1,24 @@
 package com.foxinmy.weixin4j.http;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URLConnection;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
-import javax.net.ssl.X509TrustManager;
 
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
+import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
@@ -46,27 +41,6 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 		};
 	}
 
-	protected X509TrustManager createX509TrustManager() {
-		return new X509TrustManager() {
-			@Override
-			public X509Certificate[] getAcceptedIssuers() {
-				return null;
-			}
-
-			@Override
-			public void checkServerTrusted(
-					X509Certificate[] paramArrayOfX509Certificate,
-					String paramString) throws CertificateException {
-			}
-
-			@Override
-			public void checkClientTrusted(
-					X509Certificate[] paramArrayOfX509Certificate,
-					String paramString) throws CertificateException {
-			}
-		};
-	}
-
 	protected HttpURLConnection createHttpConnection(HttpRequest request)
 			throws IOException {
 		URI uri = request.getURI();
@@ -83,11 +57,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 					hostnameVerifier = params.getHostnameVerifier();
 				}
 				if (sslContext == null) {
-					sslContext = SSLContext.getInstance("TLS");
-					sslContext
-							.init(null,
-									new X509TrustManager[] { createX509TrustManager() },
-									new java.security.SecureRandom());
+					sslContext = HttpClientFactory.allowSSLContext();
 				}
 				if (hostnameVerifier == null) {
 					hostnameVerifier = createHostnameVerifier();
@@ -96,21 +66,12 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 				connection.setSSLSocketFactory(sslContext.getSocketFactory());
 				connection.setHostnameVerifier(hostnameVerifier);
 				return connection;
-			} catch (NoSuchAlgorithmException | KeyManagementException e) {
-				throw new IOException(e.getMessage());
+			} catch (HttpClientException e) {
+				throw new IOException(e);
 			}
 		} else {
 			return (HttpURLConnection) urlConnection;
 		}
-	}
-
-	protected Map<String, String> createDefualtHeader() {
-		Map<String, String> header = new HashMap<String, String>();
-		header.put("User-Agent", "simple-httpclient");
-		header.put("Accept", "text/xml,text/javascript");
-		header.put("Accept-Charset", Consts.UTF_8.name());
-		header.put("Accept-Encoding", Consts.UTF_8.name());
-		return header;
 	}
 
 	@Override
@@ -141,25 +102,31 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 				connection.setDoOutput(false);
 			}
 			// set headers
-			for (Iterator<Entry<String, String>> headerIterator = createDefualtHeader()
-					.entrySet().iterator(); headerIterator.hasNext();) {
-				Entry<String, String> header = headerIterator.next();
-				connection.setRequestProperty(header.getKey(),
-						header.getValue());
-			}
 			HttpHeaders headers = request.getHeaders();
-			if (headers != null) {
-				for (Iterator<Entry<String, List<String>>> headerIterator = headers
-						.entrySet().iterator(); headerIterator.hasNext();) {
-					Entry<String, List<String>> header = headerIterator.next();
-					if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
-						connection.setRequestProperty(header.getKey(),
-								StringUtil.join(header.getValue(), ';'));
-					} else {
-						for (String headerValue : header.getValue()) {
-							connection.addRequestProperty(header.getKey(),
-									headerValue != null ? headerValue : "");
-						}
+			if (headers == null) {
+				headers = new HttpHeaders();
+			}
+			if (!headers.containsKey(HttpHeaders.HOST)) {
+				headers.set(HttpHeaders.HOST, request.getURI().getHost());
+			}
+			// Add default accept headers
+			if (!headers.containsKey(HttpHeaders.ACCEPT)) {
+				headers.set(HttpHeaders.ACCEPT, "*/*");
+			}
+			// Add default user agent
+			if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
+				headers.set(HttpHeaders.USER_AGENT, "jdk/httpclient");
+			}
+			for (Iterator<Entry<String, List<String>>> headerIterator = headers
+					.entrySet().iterator(); headerIterator.hasNext();) {
+				Entry<String, List<String>> header = headerIterator.next();
+				if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
+					connection.setRequestProperty(header.getKey(),
+							StringUtil.join(header.getValue(), ';'));
+				} else {
+					for (String headerValue : header.getValue()) {
+						connection.addRequestProperty(header.getKey(),
+								headerValue != null ? headerValue : "");
 					}
 				}
 			}
@@ -170,16 +137,15 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 				if (httpEntity != null) {
 					// Read Out Exception when connection.disconnect();
 					/*
+					 * if (httpEntity.getContentLength() > 0l) {
+					 * connection.setFixedLengthStreamingMode(httpEntity
+					 * .getContentLength()); } else { connection
+					 * .setChunkedStreamingMode(params != null ? params
+					 * .getChunkSize() : 4096); }
+					 */
 					if (httpEntity.getContentLength() > 0l) {
-						 connection.setFixedLengthStreamingMode(httpEntity
-								.getContentLength());
-					} else {
-						connection
-						.setChunkedStreamingMode(params != null ? params
-								.getChunkSize() : 4096);
-					}*/
-					if (httpEntity.getContentLength() > 0l) {
-						connection.setRequestProperty(HttpHeaders.CONTENT_LENGTH,
+						connection.setRequestProperty(
+								HttpHeaders.CONTENT_LENGTH,
 								Long.toString(httpEntity.getContentLength()));
 					}
 					if (httpEntity.getContentType() != null) {
@@ -198,7 +164,12 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 				output.close();
 			}
 			// building response
-			response = new SimpleHttpResponse(connection);
+			InputStream input = connection.getErrorStream() != null ? connection
+					.getErrorStream() : connection.getInputStream();
+			byte[] content = IOUtil.toByteArray(input);
+			response = new SimpleHttpResponse(connection, content);
+			input.close();
+			handleResponse(response);
 		} catch (IOException e) {
 			throw new HttpClientException("I/O error on "
 					+ request.getMethod().name() + " request for \""

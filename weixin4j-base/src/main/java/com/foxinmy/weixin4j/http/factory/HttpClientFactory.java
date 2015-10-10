@@ -1,6 +1,15 @@
 package com.foxinmy.weixin4j.http.factory;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
+
 import com.foxinmy.weixin4j.http.HttpClient;
+import com.foxinmy.weixin4j.http.HttpClientException;
 
 /**
  * HttpClient工厂生产类:参考netty的InternalLoggerFactory
@@ -19,19 +28,23 @@ public abstract class HttpClientFactory {
 	private static volatile HttpClientFactory defaultFactory = newDefaultFactory();
 
 	/**
-	 * ApachHttpClient -> SimpleHttpClient(HttpURLConnection)
+	 * NettyHttpClient -> ApachHttpClient -> SimpleHttpClient(HttpURLConnection)
 	 * 
 	 * @return
 	 */
 	private static HttpClientFactory newDefaultFactory() {
 		HttpClientFactory f;
 		try {
-			f = new HttpComponent4Factory();
+			f = new Netty4HttpClientFactory();
 		} catch (Throwable e1) {
 			try {
-				f = new HttpComponent3Factory();
+				f = new HttpComponent4Factory();
 			} catch (Throwable e2) {
-				f = new SimpleHttpClientFactory();
+				try {
+					f = new HttpComponent3Factory();
+				} catch (Throwable e3) {
+					f = new SimpleHttpClientFactory();
+				}
 			}
 		}
 		return f;
@@ -73,4 +86,41 @@ public abstract class HttpClientFactory {
 	 * @return
 	 */
 	public abstract HttpClient newInstance();
+
+	public static SSLContext allowSSLContext() throws HttpClientException {
+		try {
+			SSLContext sslContext = SSLContext.getInstance("TLS");
+			sslContext.init(null,
+					new X509TrustManager[] { createX509TrustManager() },
+					new java.security.SecureRandom());
+			return sslContext;
+		} catch (NoSuchAlgorithmException e) {
+			throw new HttpClientException(
+					"Create SSLContext NoSuchAlgorithmException:", e);
+		} catch (KeyManagementException e) {
+			throw new HttpClientException(
+					"Create SSLContext KeyManagementException:", e);
+		}
+	}
+
+	protected static X509TrustManager createX509TrustManager() {
+		return new X509TrustManager() {
+			@Override
+			public X509Certificate[] getAcceptedIssuers() {
+				return null;
+			}
+
+			@Override
+			public void checkServerTrusted(
+					X509Certificate[] paramArrayOfX509Certificate,
+					String paramString) throws CertificateException {
+			}
+
+			@Override
+			public void checkClientTrusted(
+					X509Certificate[] paramArrayOfX509Certificate,
+					String paramString) throws CertificateException {
+			}
+		};
+	}
 }

@@ -13,7 +13,6 @@ import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import com.foxinmy.weixin4j.http.HttpClient;
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
@@ -28,7 +27,7 @@ import com.foxinmy.weixin4j.http.HttpResponse;
  * @since JDK 1.7
  * @see
  */
-public class HttpComponent4_2 extends HttpComponent4 implements HttpClient {
+public class HttpComponent4_2 extends HttpComponent4 {
 
 	private CloseableHttpClient httpClient;
 
@@ -70,7 +69,9 @@ public class HttpComponent4_2 extends HttpComponent4 implements HttpClient {
 			addHeaders(request.getHeaders(), uriRequest);
 			addEntity(request.getEntity(), uriRequest);
 			CloseableHttpResponse httpResponse = httpClient.execute(uriRequest);
-			response = new HttpComponent4_2Response(httpResponse);
+			response = new HttpComponent4_2Response(httpResponse,
+					getContent(httpResponse));
+			handleResponse(response);
 		} catch (IOException e) {
 			throw new HttpClientException("I/O error on "
 					+ request.getMethod().name() + " request for \""

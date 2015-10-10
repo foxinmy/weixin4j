@@ -1,10 +1,9 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
-import java.beans.Transient;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
@@ -13,8 +12,7 @@ import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 
 /**
- * V2微信JS支付:get_brand_wcpay_request</br>
- * <font color="red">所列参数均为非空字符串</font>
+ * V2微信JS支付:get_brand_wcpay_request</br> <font color="red">所列参数均为非空字符串</font>
  * <p>
  * get_brand_wcpay_request:ok 支付成功<br>
  * get_brand_wcpay_request:cancel 支付过程中用户取消<br>
@@ -33,17 +31,18 @@ public class JsPayRequestV2 extends PayRequest {
 
 	private static final long serialVersionUID = -5972173459255255197L;
 
-	protected JsPayRequestV2(){
+	protected JsPayRequestV2() {
 		// jaxb required
 	}
-	
-	public JsPayRequestV2(WeixinPayAccount weixinAccount, PayPackageV2 payPackage) {
+
+	public JsPayRequestV2(WeixinPayAccount weixinAccount,
+			PayPackageV2 payPackage) {
 		this.setAppId(weixinAccount.getId());
 		this.setPackageInfo(package2string(payPackage,
 				weixinAccount.getPartnerKey()));
 	}
 
-	@Transient
+	@XmlTransient
 	@JSONField(serialize = false)
 	private String package2string(PayPackageV2 payPackage, String partnerKey) {
 		StringBuilder sb = new StringBuilder();

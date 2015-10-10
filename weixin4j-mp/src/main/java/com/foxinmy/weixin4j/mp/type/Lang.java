@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.mp.type;
 
+
 /**
  * 国家地区语言版本
  * @className Lang

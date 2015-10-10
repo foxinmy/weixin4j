@@ -586,8 +586,12 @@ public class MediaApi extends MpApi {
 		MediaRecord mediaRecord = null;
 		for (;;) {
 			mediaRecord = listMaterialMedia(mediaType, pageable);
+			if (mediaRecord.getItems() == null
+					|| !mediaRecord.getItems().isEmpty()) {
+				break;
+			}
 			mediaList.addAll(mediaRecord.getItems());
-			if (pageable.getOffset() >= mediaRecord.getTotalCount()) {
+			if (!mediaRecord.getPagedata().hasNext()) {
 				break;
 			}
 			pageable = pageable.next();

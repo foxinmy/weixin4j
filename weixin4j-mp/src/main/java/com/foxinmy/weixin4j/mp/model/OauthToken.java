@@ -20,11 +20,13 @@ public class OauthToken extends Token {
 	/**
 	 * 用户的openid
 	 */
-	private String openid;
+	@JSONField(name = "openId")
+	private String openId;
 	/**
 	 * 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段
 	 */
-	private String unionid;
+	@JSONField(name = "unionid")
+	private String unionId;
 
 	/**
 	 * 刷新token时的凭证
@@ -34,20 +36,20 @@ public class OauthToken extends Token {
 
 	private String scope;
 
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
 	}
 
-	public void setOpenid(String openid) {
-		this.openid = openid;
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
-	public String getUnionid() {
-		return unionid;
+	public String getUnionId() {
+		return unionId;
 	}
 
-	public void setUnionid(String unionid) {
-		this.unionid = unionid;
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
 	}
 
 	public String getRefreshToken() {
@@ -68,7 +70,7 @@ public class OauthToken extends Token {
 
 	@Override
 	public String toString() {
-		return "OauthToken [openid=" + openid + ", unionid=" + unionid
+		return "OauthToken [openId=" + openId + ", unionId=" + unionId
 				+ ", refreshToken=" + refreshToken + ", scope=" + scope
 				+ ", getAccessToken()=" + getAccessToken()
 				+ ", getExpiresIn()=" + getExpiresIn() + ", getTime()="

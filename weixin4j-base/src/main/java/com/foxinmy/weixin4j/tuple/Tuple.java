@@ -1,9 +1,8 @@
 package com.foxinmy.weixin4j.tuple;
 
-import java.beans.Transient;
 import java.io.Serializable;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * 消息元件
@@ -21,7 +20,6 @@ public interface Tuple extends Serializable {
 	 * 
 	 * @return
 	 */
-	@Transient
-	@JSONField(deserialize = false, serialize = false)
+	@XmlTransient
 	public String getMessageType();
 }

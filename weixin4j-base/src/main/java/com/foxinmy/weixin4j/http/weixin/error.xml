@@ -1058,6 +1058,22 @@
 		<code>86222</code>
 		<text>不允许消息服务访问的API</text>
 	</error>
+	<error>
+		<code>90001</code>
+		<text>未开通摇一摇周边</text>
+	</error>
+	<error>
+		<code>90002</code>
+		<text>缺少ticket参数</text>
+	</error>
+	<error>
+		<code>90003</code>
+		<text>ticket参数不合法</text>
+	</error>
+	<error>
+		<code>90004</code>
+		<text>ticket过期</text>
+	</error>
 	<!-- 语义理解API错误 -->
 	<error>
 		<code>7000000</code>

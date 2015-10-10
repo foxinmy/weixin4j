@@ -32,8 +32,9 @@ public class OauthApi extends MpApi {
 	 */
 	public String getAuthorizeURL() {
 		String appId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("user_oauth_redirect_uri");
-		return getAuthorizeURL(appId, redirectUri, "state", "snsapi_login");
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("user_oauth_redirect_uri");
+		return getAuthorizeURL(appId, redirectUri, "state", "snsapi_base");
 	}
 
 	/**
@@ -158,7 +159,7 @@ public class OauthApi extends MpApi {
 	 * @see {@link #getUser(String,Sring,Lang)}
 	 */
 	public User getUser(OauthToken token) throws WeixinException {
-		return getUser(token.getAccessToken(), token.getOpenid(), Lang.zh_CN);
+		return getUser(token.getAccessToken(), token.getOpenId(), Lang.zh_CN);
 	}
 
 	/**
@@ -179,8 +180,8 @@ public class OauthApi extends MpApi {
 	public User getUser(String oauthToken, String openid, Lang lang)
 			throws WeixinException {
 		String user_info_uri = getRequestUri("sns_user_info_uri");
-		WeixinResponse response = weixinExecutor.get(String.format(user_info_uri,
-				oauthToken, openid, lang.name()));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				user_info_uri, oauthToken, openid, lang.name()));
 
 		return response.getAsObject(new TypeReference<User>() {
 		});

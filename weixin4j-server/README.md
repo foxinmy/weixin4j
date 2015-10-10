@@ -15,12 +15,12 @@ base on netty.
 
 如何使用
 -------
-###maven依赖(1.0.5,2015-08-13 released)
+###maven依赖(1.1.2,2015-09-21 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.0.5</version>
+	    <version>1.1.2</version>
 	</dependency>
 ###编写服务启动类
 明文模式并总是调试输出微信请求信息的服务启动类.
@@ -36,7 +36,7 @@ base on netty.
 
 	public class MessageServerStartup{
 		public static void main(String[] args) {
-			new WeixinServerBootstrap("token","appid","aesKey").addHandler(
+			new WeixinServerBootstrap("appid/corpid","token","aesKey").addHandler(
 					DebugMessageHandler.global).startup();
 		}
 	}
@@ -54,7 +54,7 @@ base on netty.
 				}
 			};
 			// 当消息类型为文本(text)时回复「HelloWorld」, 否则回复调试消息
-			new WeixinServerBootstrap(token,appid, aesKey).addHandler(
+			new WeixinServerBootstrap(appid, token, aesKey).addHandler(
 					messageHandler, DebugMessageHandler.global).startup();
 			}
 		}

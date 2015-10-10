@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.qy.chat;
 
-import java.beans.Transient;
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -37,7 +36,6 @@ public class ChatReceiver implements Serializable {
 		return chatType;
 	}
 
-	@Transient
 	@XmlTransient
 	public ChatType getFormatChatType() {
 		return ChatType.valueOf(chatType);
