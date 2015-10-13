@@ -57,8 +57,7 @@ public class WeixinPayAccount extends WeixinAccount {
 	 * @param mchId
 	 *            微信支付分配的商户号(必填)
 	 */
-	public WeixinPayAccount(String appId, String appSecret, String paySignKey,
-			String mchId) {
+	public WeixinPayAccount(String appId, String appSecret, String paySignKey, String mchId) {
 		this(appId, appSecret, paySignKey, mchId, null, null, null, null);
 	}
 
@@ -66,31 +65,27 @@ public class WeixinPayAccount extends WeixinAccount {
 	 * 支付商户信息
 	 * 
 	 * @param appId
-	 *            公众号唯一的身份ID
+	 *            公众号唯一的身份ID(必填)
 	 * @param appSecret
-	 *            调用接口的凭证
+	 *            调用接口的凭证(必填)
 	 * @param paySignKey
 	 *            支付密钥字符串(必填)
 	 * @param mchId
-	 *            微信支付分配的商户号(V3版本必填)
+	 *            微信支付分配的商户号(V3商户平台版必填)
+	 * @param subMchId
+	 *            微信支付分配的子商户号，受理模式下必填(V3商户平台版 非必须)
+	 * @param deviceInfo
+	 *            微信支付分配的设备号(V3商户平台版 非必须)
 	 * @param partnerId
 	 *            财付通的商户号(V2版本必填)
 	 * @param partnerKey
 	 *            财付通商户权限密钥Key(V2版本必填)
-	 * @param subMchId
-	 *            微信支付分配的子商户号，受理模式下必填(商户平台版)
-	 * @param deviceInfo
-	 *            微信支付分配的设备号(商户平台版)
 	 */
 	@JSONCreator
-	public WeixinPayAccount(@JSONField(name = "id") String appId,
-			@JSONField(name = "secret") String appSecret,
-			@JSONField(name = "paySignKey") String paySignKey,
-			@JSONField(name = "mchId") String mchId,
-			@JSONField(name = "subMchId") String subMchId,
-			@JSONField(name = "deviceInfo") String deviceInfo,
-			@JSONField(name = "partnerId") String partnerId,
-			@JSONField(name = "partnerKey") String partnerKey) {
+	public WeixinPayAccount(@JSONField(name = "id") String appId, @JSONField(name = "secret") String appSecret,
+			@JSONField(name = "paySignKey") String paySignKey, @JSONField(name = "mchId") String mchId,
+			@JSONField(name = "subMchId") String subMchId, @JSONField(name = "deviceInfo") String deviceInfo,
+			@JSONField(name = "partnerId") String partnerId, @JSONField(name = "partnerKey") String partnerKey) {
 		super(appId, appSecret);
 		this.paySignKey = paySignKey;
 		this.mchId = mchId;
@@ -133,10 +128,8 @@ public class WeixinPayAccount extends WeixinAccount {
 
 	@Override
 	public String toString() {
-		return "WeixinPayAccount [" + super.toString() + ", paySignKey="
-				+ paySignKey + ", partnerId=" + partnerId + ", partnerKey="
-				+ partnerKey + ", mchId=" + mchId + ", subMchId=" + subMchId
-				+ ", deviceInfo=" + deviceInfo + ", version=" + getVersion()
-				+ "]";
+		return "WeixinPayAccount [" + super.toString() + ", paySignKey=" + paySignKey + ", partnerId=" + partnerId
+				+ ", partnerKey=" + partnerKey + ", mchId=" + mchId + ", subMchId=" + subMchId + ", deviceInfo="
+				+ deviceInfo + ", version=" + getVersion() + "]";
 	}
 }
