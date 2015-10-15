@@ -91,5 +91,5 @@ public class WeixinSuiteProxy {
 		return this.suiteMap.get(suiteId);
 	}
 
-	public final static String VERSION = "1.6.1";
+	public final static String VERSION = "1.6.2";
 }

@@ -110,6 +110,12 @@ public class WeixinProxy {
 				tokenStorager));
 	}
 
+	/**
+	 * 注意：TokenCreator 需为 <font color="red">WeixinTokenCreator</font>
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator.WeixinTokenCreator
+	 * @param tokenHolder
+	 */
 	public WeixinProxy(TokenHolder tokenHolder) {
 		this.tokenHolder = tokenHolder;
 		this.mediaApi = new MediaApi(tokenHolder);
