@@ -4,7 +4,7 @@
 
 * TokenStorager 负责查找已缓存的token或者缓存新的token
 
-* TokenHolder 负责获取token(屏蔽了获取方式)
+* TokenHolder 负责获取token(屏蔽了获取细节)
 
 * FileTokenStorager 是系统默认的token存储策略实现
 
