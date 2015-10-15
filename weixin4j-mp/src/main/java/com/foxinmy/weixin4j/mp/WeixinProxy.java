@@ -104,6 +104,12 @@ public class WeixinProxy {
 		this(appid, appsecret, MpApi.DEFAULT_TOKEN_STORAGER);
 	}
 
+	/**
+	 * 
+	 * @param appid
+	 * @param appsecret
+	 * @param tokenStorager
+	 */
 	public WeixinProxy(String appid, String appsecret,
 			TokenStorager tokenStorager) {
 		this(new TokenHolder(new WeixinTokenCreator(appid, appsecret),
