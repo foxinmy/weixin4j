@@ -77,12 +77,21 @@ public class User implements Serializable {
 	 */
 	@JSONField(name = "unionid")
 	private String unionId;
+	/**
+	 * 公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注
+	 */
+	private String remark;
+	/**
+	 * 用户所在的分组ID
+	 */
+	@JSONField(name = "groupid")
+	private int groupId;
 
 	public String getOpenId() {
 		return openId;
 	}
 
-	public void setOpenid(String openId) {
+	public void setOpenId(String openId) {
 		this.openId = openId;
 	}
 
@@ -204,6 +213,22 @@ public class User implements Serializable {
 		this.unionId = unionId;
 	}
 
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public int getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
+	}
+
 	@Override
 	public int hashCode() {
 		return super.hashCode();
@@ -224,6 +249,7 @@ public class User implements Serializable {
 				+ city + ", country=" + country + ", headimgurl=" + headimgurl
 				+ ", privilege=" + privilege + ", isSubscribe=" + isSubscribe
 				+ ", subscribeTime=" + subscribeTime + ", language=" + language
-				+ ", unionId=" + unionId + "]";
+				+ ", unionId=" + unionId + ", remark=" + remark + ", groupId="
+				+ groupId + "]";
 	}
 }
