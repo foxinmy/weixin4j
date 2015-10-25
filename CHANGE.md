@@ -481,4 +481,8 @@
   
 * 2015-09-27
 
- + 新增手动刷新token方法
+ + weixin4j-base:新增手动刷新token方法
+ 
+* 2015-10-25
+
+ + weixin4j-server:新增认证通知事件

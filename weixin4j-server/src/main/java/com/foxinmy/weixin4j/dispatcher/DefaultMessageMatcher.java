@@ -19,6 +19,8 @@ import com.foxinmy.weixin4j.mp.event.KfCreateEventMessage;
 import com.foxinmy.weixin4j.mp.event.KfSwitchEventMessage;
 import com.foxinmy.weixin4j.mp.event.MassEventMessage;
 import com.foxinmy.weixin4j.mp.event.TemplatesendjobfinishMessage;
+import com.foxinmy.weixin4j.mp.event.VerifyExpireEventMessage;
+import com.foxinmy.weixin4j.mp.event.VerifyFailEventMessage;
 import com.foxinmy.weixin4j.qy.event.BatchjobresultMessage;
 import com.foxinmy.weixin4j.qy.event.EnterAgentEventMessage;
 import com.foxinmy.weixin4j.request.WeixinMessage;
@@ -151,6 +153,22 @@ public class DefaultMessageMatcher implements WeixinMessageMatcher {
 		messageClassMap.put(new WeixinMessageKey(messageType,
 				EventType.kf_switch_session.name(), accountType),
 				KfSwitchEventMessage.class);
+		EventType[] eventTypes = new EventType[] {
+				EventType.qualification_verify_success,
+				EventType.naming_verify_success, EventType.annual_renew,
+				EventType.verify_expired };
+		for (EventType eventType : eventTypes) {
+			messageClassMap.put(
+					new WeixinMessageKey(messageType, eventType.name(),
+							accountType), VerifyExpireEventMessage.class);
+		}
+		eventTypes = new EventType[] { EventType.qualification_verify_success,
+				EventType.naming_verify_fail };
+		for (EventType eventType : eventTypes) {
+			messageClassMap.put(
+					new WeixinMessageKey(messageType, eventType.name(),
+							accountType), VerifyFailEventMessage.class);
+		}
 	}
 
 	private void initQyEventMessageClass() {
