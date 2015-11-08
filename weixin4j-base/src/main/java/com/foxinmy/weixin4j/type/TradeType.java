@@ -19,7 +19,7 @@ public enum TradeType {
 	 */
 	MICROPAY,
 	/**
-	 * 扫描支付
+	 * 扫码支付
 	 */
 	NATIVE,
 	/**

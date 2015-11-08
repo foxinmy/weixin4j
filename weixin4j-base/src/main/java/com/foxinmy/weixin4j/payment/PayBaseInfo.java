@@ -28,31 +28,31 @@ public class PayBaseInfo implements Serializable {
 	/**
 	 * 公众号ID
 	 */
-	@JSONField(name = "AppId")
+	@JSONField(name = "appId")
 	@XmlElement(name = "AppId")
 	private String appId;
 	/**
 	 * 时间戳
 	 */
-	@JSONField(name = "TimeStamp")
+	@JSONField(name = "timeStamp")
 	@XmlElement(name = "TimeStamp")
 	private String timeStamp;
 	/**
 	 * 随机字符串
 	 */
-	@JSONField(name = "NonceStr")
+	@JSONField(name = "nonceStr")
 	@XmlElement(name = "NonceStr")
 	private String nonceStr;
 	/**
 	 * 签名结果
 	 */
-	@JSONField(name = "AppSignature")
+	@JSONField(name = "paySign")
 	@XmlElement(name = "AppSignature")
 	private String paySign;
 	/**
 	 * 签名方式
 	 */
-	@JSONField(name = "SignMethod")
+	@JSONField(name = "signType")
 	@XmlElement(name = "SignMethod")
 	private String signType;
 

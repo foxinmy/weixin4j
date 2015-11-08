@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.mp.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.Gender;
 import com.foxinmy.weixin4j.mp.type.FaceSize;
@@ -57,7 +58,7 @@ public class User implements Serializable {
 	/**
 	 * 用户特权信息，json 数组，如微信沃卡用户为（chinaunicom）
 	 */
-	private String privilege;
+	private JSONArray privilege;
 	/**
 	 * 用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。
 	 */
@@ -163,11 +164,11 @@ public class User implements Serializable {
 		this.headimgurl = headimgurl;
 	}
 
-	public String getPrivilege() {
+	public JSONArray getPrivilege() {
 		return privilege;
 	}
 
-	public void setPrivilege(String privilege) {
+	public void setPrivilege(JSONArray privilege) {
 		this.privilege = privilege;
 	}
 
@@ -237,7 +238,13 @@ public class User implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof User) {
-			return openId.equals(((User) obj).getOpenId());
+			User another = (User) obj;
+			if (unionId != null && another.getUnionId() != null) {
+				return unionId.equals(another.getUnionId());
+			}
+			if (openId != null && another.getOpenId() != null) {
+				return openId.equals(another.getOpenId());
+			}
 		}
 		return false;
 	}
