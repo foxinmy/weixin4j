@@ -7,10 +7,8 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.net.ssl.SSLContext;
@@ -58,17 +56,27 @@ public class HttpComponent3 extends AbstractHttpClient {
 
 	private final org.apache.commons.httpclient.HttpClient httpClient;
 
-	private final Map<HttpMethod, org.apache.commons.httpclient.HttpMethod> methodMap;
-
 	public HttpComponent3(org.apache.commons.httpclient.HttpClient httpClient) {
 		this.httpClient = httpClient;
-		this.methodMap = new HashMap<HttpMethod, org.apache.commons.httpclient.HttpMethod>();
-		methodMap.put(HttpMethod.GET, new GetMethod());
-		methodMap.put(HttpMethod.HEAD, new HeadMethod());
-		methodMap.put(HttpMethod.POST, new PostMethod());
-		methodMap.put(HttpMethod.PUT, new PutMethod());
-		methodMap.put(HttpMethod.DELETE, new DeleteMethod());
-		methodMap.put(HttpMethod.OPTIONS, new OptionsMethod());
+	}
+
+	private org.apache.commons.httpclient.HttpMethod method2method(
+			HttpMethod method) {
+		if (method == HttpMethod.GET) {
+			return new GetMethod();
+		} else if (method == HttpMethod.HEAD) {
+			return new HeadMethod();
+		} else if (method == HttpMethod.POST) {
+			return new PostMethod();
+		} else if (method == HttpMethod.PUT) {
+			return new PutMethod();
+		} else if (method == HttpMethod.DELETE) {
+			return new DeleteMethod();
+		} else if (method == HttpMethod.OPTIONS) {
+			return new OptionsMethod();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -77,8 +85,8 @@ public class HttpComponent3 extends AbstractHttpClient {
 		try {
 			URI uri = new URI(request.getURI().toString(), false,
 					Consts.UTF_8.name());
-			org.apache.commons.httpclient.HttpMethod httpMethod = methodMap
-					.get(request.getMethod());
+			org.apache.commons.httpclient.HttpMethod httpMethod = method2method(request
+					.getMethod());
 			if (request.getMethod() == HttpMethod.TRACE) {
 				httpMethod = new TraceMethod(uri.getEscapedURI());
 			} else {
