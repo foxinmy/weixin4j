@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
- * 刷卡支付
+ * 刷卡支付订单详情
  * 
  * @className MicroPayPackage
  * @author jy

@@ -39,7 +39,6 @@ import com.foxinmy.weixin4j.util.Weixin4jConst;
  * @author jy
  * @date 2015年1月3日
  * @since JDK 1.7
- * @see com.foxinmy.weixin4j.api.Pay2Api
  * @see com.foxinmy.weixin4j.api.Pay3Api
  * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台支付API</a>
  */

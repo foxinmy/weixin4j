@@ -21,7 +21,7 @@ public class IdQuery implements Serializable {
 	/**
 	 * id类型
 	 * 
-	 * @see com.foxinmy.weixin4j.mp.type.IdType
+	 * @see com.foxinmy.weixin4j.type.IdType
 	 */
 	private IdType type;
 

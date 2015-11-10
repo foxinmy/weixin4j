@@ -11,7 +11,7 @@ package com.foxinmy.weixin4j.type;
  */
 public enum TradeType {
 	/**
-	 * H5页面上的JSAPI支付
+	 * JS支付
 	 */
 	JSAPI,
 	/**

@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
- * 支付的订单详情
+ * JS支付订单详情
  * 
  * @className MchPayPackage
  * @author jy
