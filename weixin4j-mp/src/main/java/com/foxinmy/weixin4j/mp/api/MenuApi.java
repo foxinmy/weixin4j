@@ -88,8 +88,8 @@ public class MenuApi extends MpApi {
 	public List<Button> getMenu() throws WeixinException {
 		String menu_get_uri = getRequestUri("menu_get_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.get(String.format(menu_get_uri,
-				token.getAccessToken()));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				menu_get_uri, token.getAccessToken()));
 
 		JSONArray buttons = response.getAsJson().getJSONObject("menu")
 				.getJSONArray("button");
