@@ -486,3 +486,9 @@
 * 2015-10-25
 
  + weixin4j-server:新增认证通知事件
+ 
+* 2015-11-09
+  
+  + weixin4j-[mp|qy]:version upgrade to 1.6.3
+  
+  + weixin4j-server:version upgrade to 1.1.3
