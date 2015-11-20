@@ -23,7 +23,7 @@ public class ChatReceiver implements Serializable {
 	@XmlElement(name = "id")
 	private String targetId;
 	/**
-	 * 群聊|单聊
+	 * 群聊|单聊|userid|openid
 	 */
 	@XmlElement(name = "type")
 	private String chatType;

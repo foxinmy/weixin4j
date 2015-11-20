@@ -34,20 +34,12 @@ public class MenuTest extends TokenTest {
 	@Test
 	public void create() throws WeixinException {
 		btnList = new ArrayList<Button>();
+		String domain = "http://dianzhang.canyi.net";
+		btnList.add(new Button("立即下单", domain, ButtonType.view));
 
-		Button b1 = new Button("会员中心", "", ButtonType.click);
-		b1.pushSub(new Button("我的信息", "U:INFO", ButtonType.click));
-		b1.pushSub(new Button("修改信息", "U:UP:INFO", ButtonType.click));
-		btnList.add(b1);
+		btnList.add(new Button("个人中心", domain + "/user", ButtonType.view));
 
-		Button b2 = new Button("最新兼职", "PART:NEWEST", ButtonType.click);
-		btnList.add(b2);
-
-		Button b3 = new Button("功能", "", ButtonType.click);
-		b3.pushSub(new Button("附近兼职", "PART:NEAR", ButtonType.click));
-		b3.pushSub(new Button("搜索兼职", "PART:SO", ButtonType.click));
-		b3.pushSub(new Button("公交查询", "BUS:SO", ButtonType.click));
-		btnList.add(b3);
+		btnList.add(new Button("小哥介绍", domain, ButtonType.view));
 
 		JsonResult result = menuApi.createMenu(btnList);
 		Assert.assertEquals(0, result.getCode());
@@ -75,6 +67,14 @@ public class MenuTest extends TokenTest {
 			System.out.println(btn);
 		}
 		Assert.assertEquals(3, btnList.size());
+		// Button [name=我的门店, type=view,
+		// content=http://dianzhang.canyi.net/setting/index, subs=[]]
+		// Button [name=每日签到, type=click, content=CHECKIN, subs=[]]
+		// Button [name=今日订单, type=null, content=null, subs=[Button [name=今日订单,
+		// type=view, content=http://dianzhang.canyi.net/order/index, subs=[]],
+		// Button [name=营业统计, type=view,
+		// content=http://dianzhang.canyi.net/stats/index, subs=[]]]]
+
 	}
 
 	@Test

@@ -492,3 +492,7 @@
   + weixin4j-[mp|qy]:version upgrade to 1.6.3
   
   + weixin4j-server:version upgrade to 1.1.3
+  
+* 2015-11-20
+
+  + weixin4j-qy:新增客服消息

@@ -639,6 +639,10 @@
 		<text>组数量过多</text>
 	</error>
 	<error>
+		<code>45022</code>
+		<text>应用名字长度不合法，合法长度为2-16个字</text>
+	</error>
+	<error>
 		<code>45024</code>
 		<text>账号数量超过上限</text>
 	</error>
@@ -1057,6 +1061,70 @@
 	<error>
 		<code>86222</code>
 		<text>不允许消息服务访问的API</text>
+	</error>
+	<error>
+		<code>86304</code>
+		<text>不合法的消息类型</text>
+	</error>
+	<error>
+		<code>86305</code>
+		<text>客服服务未启用</text>
+	</error>
+	<error>
+		<code>86306</code>
+		<text>缺少发送人</text>
+	</error>
+	<error>
+		<code>86307</code>
+		<text>缺少发送人类型</text>
+	</error>
+	<error>
+		<code>86308</code>
+		<text>缺少发送人id</text>
+	</error>
+	<error>
+		<code>86309</code>
+		<text>缺少接收人</text>
+	</error>
+	<error>
+		<code>86310</code>
+		<text>缺少接收人类型</text>
+	</error>
+	<error>
+		<code>86311</code>
+		<text>缺少接收人id</text>
+	</error>
+	<error>
+		<code>86312</code>
+		<text>缺少消息类型</text>
+	</error>
+	<error>
+		<code>86313</code>
+		<text>缺少客服，发送人或接收人类型，必须有一个为kf</text>
+	</error>
+	<error>
+		<code>86314</code>
+		<text>客服不唯一，发送人或接收人类型，必须只有一个为kf</text>
+	</error>
+	<error>
+		<code>86315</code>
+		<text>不合法的发送人类型</text>
+	</error>
+	<error>
+		<code>86316</code>
+		<text>不合法的发送人id。Userid不存在、openid不存在、kf不存在</text>
+	</error>
+	<error>
+		<code>86317</code>
+		<text>不合法的接收人类型</text>
+	</error>
+	<error>
+		<code>86318</code>
+		<text>不合法的接收人id。Userid不存在、openid不存在、kf不存在</text>
+	</error>
+	<error>
+		<code>86319</code>
+		<text>不合法的客服，kf不在客服列表中</text>
 	</error>
 	<error>
 		<code>90001</code>

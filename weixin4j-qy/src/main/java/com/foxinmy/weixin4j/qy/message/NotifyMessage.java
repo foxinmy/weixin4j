@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.tuple.NotifyTuple;
 
 /**
- * 客服消息对象
+ * 消息提醒对象
  * 
  * @className NotifyMessage
  * @author jy

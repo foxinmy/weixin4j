@@ -34,7 +34,7 @@ public class Order extends ApiResult {
 	/**
 	 * 交易状态
 	 * 
-	 * @see com.foxinmy.weixin4j.mp.type.TradeState
+	 * @see com.foxinmy.weixin4j.type.TradeState
 	 */
 	@XmlElement(name = "trade_state")
 	@JSONField(name = "trade_state")
@@ -54,7 +54,7 @@ public class Order extends ApiResult {
 	/**
 	 * 交易类型
 	 * 
-	 * @see com.foxinmy.weixin4j.mp.type.TradeType
+	 * @see com.foxinmy.weixin4j.type.TradeType
 	 */
 	@XmlElement(name = "trade_type")
 	@JSONField(name = "trade_type")

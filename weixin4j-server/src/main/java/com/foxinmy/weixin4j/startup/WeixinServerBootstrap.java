@@ -159,16 +159,16 @@ public final class WeixinServerBootstrap {
 	 * 默认端口启动服务
 	 * 
 	 */
-	public void startup() throws WeixinException {
-		startup(DEFAULT_SERVERPORT);
+	public Channel startup() throws WeixinException {
+		return startup(DEFAULT_SERVERPORT);
 	}
 
 	/**
 	 * 指定端口启动服务
 	 * 
 	 */
-	public void startup(int serverPort) throws WeixinException {
-		startup(DEFAULT_BOSSTHREADS, DEFAULT_WORKERTHREADS, serverPort);
+	public Channel startup(int serverPort) throws WeixinException {
+		return startup(DEFAULT_BOSSTHREADS, DEFAULT_WORKERTHREADS, serverPort);
 	}
 
 	/**
@@ -180,9 +180,10 @@ public final class WeixinServerBootstrap {
 	 *            worker线程数
 	 * @param serverPort
 	 *            服务启动端口
+	 * @return
 	 * @throws WeixinException
 	 */
-	public void startup(int bossThreads, int workerThreads, int serverPort)
+	public Channel startup(int bossThreads, int workerThreads, int serverPort)
 			throws WeixinException {
 		messageDispatcher.setMessageHandlerList(messageHandlerList);
 		messageDispatcher.setMessageInterceptorList(messageInterceptorList);
@@ -200,7 +201,7 @@ public final class WeixinServerBootstrap {
 									messageDispatcher));
 			Channel ch = b.bind(serverPort).sync().channel();
 			logger.info("weixin4j server startup OK:{}", serverPort);
-			ch.closeFuture().sync();
+			return ch.closeFuture().channel();
 		} catch (WeixinException e) {
 			throw e;
 		} catch (InterruptedException e) {

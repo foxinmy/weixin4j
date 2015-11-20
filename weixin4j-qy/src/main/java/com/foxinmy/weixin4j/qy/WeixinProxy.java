@@ -26,6 +26,7 @@ import com.foxinmy.weixin4j.qy.api.QyApi;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
 import com.foxinmy.weixin4j.qy.message.ChatMessage;
+import com.foxinmy.weixin4j.qy.message.CustomeMessage;
 import com.foxinmy.weixin4j.qy.message.NotifyMessage;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentOverview;
@@ -171,6 +172,28 @@ public class WeixinProxy {
 	public JSONObject sendNotifyMessage(NotifyMessage message)
 			throws WeixinException {
 		return notifyApi.sendNotifyMessage(message);
+	}
+
+	/**
+	 * 发送客服消息
+	 * 
+	 * @param message
+	 *            客服消息对象
+	 * @return 发送结果
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%AE%A2%E6%9C%8D%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E">客服接口说明</a>
+	 * @see com.foxinmy.weixin4j.qy.api.NotifyApi
+	 * @see com.foxinmy.weixin4j.tuple.Text
+	 * @see com.foxinmy.weixin4j.tuple.Image
+	 * @see com.foxinmy.weixin4j.tuple.Voice
+	 * @see com.foxinmy.weixin4j.tuple.Video
+	 * @see com.foxinmy.weixin4j.tuple.File
+	 * @see com.foxinmy.weixin4j.qy.message.CustomeMessage
+	 * @throws WeixinException
+	 */
+	public JsonResult sendCustomeMessage(CustomeMessage message)
+			throws WeixinException {
+		return notifyApi.sendCustomeMessage(message);
 	}
 
 	/**
