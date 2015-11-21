@@ -209,7 +209,7 @@ public class PayUtil {
 		map.put("nonce_str", noncestr);
 		map.put("product_id", productId);
 		String sign = paysignMd5(map, weixinAccount.getPaySignKey());
-		return String.format(PayURLConsts.MCH_NATIVE_URL1, sign,
+		return String.format(PayURLConsts.MCH_NATIVE_URL, sign,
 				weixinAccount.getId(), weixinAccount.getMchId(), productId,
 				timestamp, noncestr);
 	}
@@ -242,12 +242,12 @@ public class PayUtil {
 			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp) throws PayException {
 		MchPayPackage payPackage = new MchPayPackage(weixinAccount, null, body,
-				outTradeNo, totalFee, createIp, notifyUrl, TradeType.NATIVE);
+				outTradeNo, totalFee, notifyUrl, createIp, TradeType.NATIVE);
 		payPackage.setProductId(productId);
 		String paySignKey = weixinAccount.getPaySignKey();
 		payPackage.setSign(paysignMd5(payPackage, paySignKey));
 		PrePay prePay = createPrePay(payPackage, paySignKey);
-		return String.format(PayURLConsts.MCH_NATIVE_URL2, prePay.getCodeUrl());
+		return prePay.getCodeUrl();
 	}
 
 	/**
