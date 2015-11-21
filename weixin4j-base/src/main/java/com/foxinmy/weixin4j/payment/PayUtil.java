@@ -17,12 +17,12 @@ import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.payment.mch.PrePay;
 import com.foxinmy.weixin4j.type.SignType;
 import com.foxinmy.weixin4j.type.TradeType;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
@@ -81,8 +81,7 @@ public class PayUtil {
 			String orderNo, double orderFee, String notifyUrl, String ip,
 			WeixinPayAccount weixinAccount) throws PayException {
 		MchPayPackage payPackage = new MchPayPackage(weixinAccount, openId,
-				body, orderNo, orderFee, ip, TradeType.JSAPI);
-		payPackage.setNotifyUrl(notifyUrl);
+				body, orderNo, orderFee, notifyUrl, ip, TradeType.JSAPI);
 		return createPayJsRequestJson(payPackage, weixinAccount);
 	}
 
@@ -228,6 +227,8 @@ public class PayUtil {
 	 *            商户内部唯一订单号
 	 * @param totalFee
 	 *            商品总额 单位元
+	 * @param notifyUrl
+	 *            支付回调URL
 	 * @param createIp
 	 *            订单生成的机器 IP
 	 * @return 支付链接
@@ -238,10 +239,10 @@ public class PayUtil {
 	 */
 	public static String createNativePayRequestURL(
 			WeixinPayAccount weixinAccount, String productId, String body,
-			String outTradeNo, double totalFee, String createIp)
-			throws PayException {
+			String outTradeNo, double totalFee, String notifyUrl,
+			String createIp) throws PayException {
 		MchPayPackage payPackage = new MchPayPackage(weixinAccount, null, body,
-				outTradeNo, totalFee, createIp, TradeType.NATIVE);
+				outTradeNo, totalFee, createIp, notifyUrl, TradeType.NATIVE);
 		payPackage.setProductId(productId);
 		String paySignKey = weixinAccount.getPaySignKey();
 		payPackage.setSign(paysignMd5(payPackage, paySignKey));

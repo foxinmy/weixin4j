@@ -69,7 +69,7 @@ public class MchPayPackage extends PayPackage {
 	@JSONField(name = "openid")
 	private String openId;
 	/**
-	 * 只在 trade_type 为 NATIVE 时需要填写 非必须
+	 * 只在 trade_type 为 NATIVE 且【模式一】 时需要填写 非必须
 	 */
 	@XmlElement(name = "product_id")
 	@JSONField(name = "product_id")
@@ -80,10 +80,10 @@ public class MchPayPackage extends PayPackage {
 	}
 
 	public MchPayPackage(WeixinPayAccount weixinAccount, String openId,
-			String body, String outTradeNo, double totalFee,
+			String body, String outTradeNo, double totalFee, String notifyUrl,
 			String spbillCreateIp, TradeType tradeType) {
-		this(weixinAccount, openId, body, null, outTradeNo, totalFee, null,
-				spbillCreateIp, tradeType);
+		this(weixinAccount, openId, body, null, outTradeNo, totalFee,
+				notifyUrl, spbillCreateIp, tradeType);
 	}
 
 	public MchPayPackage(WeixinPayAccount weixinAccount, String openId,
