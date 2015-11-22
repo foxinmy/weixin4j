@@ -82,21 +82,6 @@ public class PayUtil {
 			WeixinPayAccount weixinAccount) throws PayException {
 		MchPayPackage payPackage = new MchPayPackage(weixinAccount, openId,
 				body, orderNo, orderFee, notifyUrl, ip, TradeType.JSAPI);
-		return createPayJsRequestJson(payPackage, weixinAccount);
-	}
-
-	/**
-	 * 生成V3.x版本JSAPI支付字符串
-	 * 
-	 * @param payPackage
-	 *            订单信息
-	 * @param weixinAccount
-	 *            商户信息
-	 * @return 支付json串
-	 * @throws PayException
-	 */
-	public static String createPayJsRequestJson(MchPayPackage payPackage,
-			WeixinPayAccount weixinAccount) throws PayException {
 		String paySignKey = weixinAccount.getPaySignKey();
 		payPackage.setSign(paysignMd5(payPackage, paySignKey));
 		PrePay prePay = createPrePay(payPackage, paySignKey);
