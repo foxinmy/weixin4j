@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.exception.PayException;
+import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.payment.PayUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
@@ -44,7 +44,7 @@ public class NativePayResponse extends ApiResult {
 	 *            失败消息
 	 * @param resultMsg
 	 *            结果消息
-	 * @throws PayException
+	 * @throws WeixinPayException
 	 */
 	public NativePayResponse(String returnMsg, String resultMsg) {
 		super.setReturnMsg(returnMsg);
@@ -58,10 +58,10 @@ public class NativePayResponse extends ApiResult {
 	 * 
 	 * @param payPackage
 	 *            订单信息
-	 * @throws PayException
+	 * @throws WeixinPayException
 	 */
 	public NativePayResponse(MchPayPackage payPackage, String paysignKey)
-			throws PayException {
+			throws WeixinPayException {
 		super.setReturnCode(Consts.SUCCESS);
 		this.setResultCode(Consts.SUCCESS);
 		this.setMchId(payPackage.getMchId());

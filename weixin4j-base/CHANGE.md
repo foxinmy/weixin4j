@@ -69,3 +69,20 @@
 * 2015-09-27
 
  + 新增手动刷新token方法
+ 
+ 
+* 2015-11-23
+
+  + PayException重命名为WeixinPayException
+  
+  + 调整PayPackageV2构造函数：从主到次
+  
+  + 调整PayUtil2#createPayJsRequestJsonV2参数位置：从主到次
+  
+  + 调整MicroPayPackage构造函数：从主到次
+  
+  + 调整MicroPayPackage构造函数：从主到次
+  
+  + 调整PayUtil#createPayJsRequestJson参数位置：从主到次
+  
+  + 调整PayUtil#createNativePayRequestURL参数位置：从主到次

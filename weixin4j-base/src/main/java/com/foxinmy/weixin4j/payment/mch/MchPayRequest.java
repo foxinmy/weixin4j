@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.foxinmy.weixin4j.exception.PayException;
+import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.payment.PayRequest;
 
 /**
@@ -34,7 +34,7 @@ public class MchPayRequest extends PayRequest {
 		// jaxb required
 	}
 	
-	public MchPayRequest(PrePay prePay) throws PayException {
+	public MchPayRequest(PrePay prePay) throws WeixinPayException {
 		this.setAppId(prePay.getAppId());
 		this.setPackageInfo("prepay_id=" + prePay.getPrepayId());
 	}

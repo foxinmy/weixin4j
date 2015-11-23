@@ -74,6 +74,12 @@ public class MchPayPackage extends PayPackage {
 	@XmlElement(name = "product_id")
 	@JSONField(name = "product_id")
 	private String productId;
+	/**
+	 * 指定支付方式:no_credit--指定不能使用信用卡支付
+	 */
+	@XmlElement(name = "limit_pay")
+	@JSONField(name = "limit_pay")
+	private String limitPay;
 
 	protected MchPayPackage() {
 		// jaxb required
@@ -81,34 +87,35 @@ public class MchPayPackage extends PayPackage {
 
 	public MchPayPackage(WeixinPayAccount weixinAccount, String openId,
 			String body, String outTradeNo, double totalFee, String notifyUrl,
-			String spbillCreateIp, TradeType tradeType) {
-		this(weixinAccount, openId, body, null, outTradeNo, totalFee,
-				notifyUrl, spbillCreateIp, tradeType);
+			String createIp, TradeType tradeType) {
+		this(weixinAccount, openId, body, outTradeNo, totalFee, notifyUrl,
+				createIp, tradeType, null);
 	}
 
 	public MchPayPackage(WeixinPayAccount weixinAccount, String openId,
-			String body, String attach, String outTradeNo, double totalFee,
-			String notifyUrl, String spbillCreateIp, TradeType tradeType) {
+			String body, String outTradeNo, double totalFee, String notifyUrl,
+			String createIp, TradeType tradeType, String attach) {
 		this(weixinAccount.getId(), weixinAccount.getMchId(), weixinAccount
-				.getDeviceInfo(), RandomUtil.generateString(16), body, attach,
-				outTradeNo, totalFee, spbillCreateIp, null, null, null,
-				notifyUrl, tradeType, openId, null);
+				.getDeviceInfo(), body, outTradeNo, totalFee, notifyUrl,
+				createIp, tradeType, openId, attach, null, null, null, null,
+				null);
 	}
 
 	public MchPayPackage(String appId, String mchId, String deviceInfo,
-			String nonceStr, String body, String attach, String outTradeNo,
-			double totalFee, String spbillCreateIp, Date timeStart,
-			Date timeExpire, String goodsTag, String notifyUrl,
-			TradeType tradeType, String openId, String productId) {
-		super(body, attach, outTradeNo, totalFee, spbillCreateIp, timeStart,
-				timeExpire, goodsTag, notifyUrl);
+			String body, String outTradeNo, double totalFee, String notifyUrl,
+			String createIp, TradeType tradeType, String openId, String attach,
+			Date timeStart, Date timeExpire, String goodsTag, String productId,
+			String limitPay) {
+		super(body, outTradeNo, totalFee, notifyUrl, createIp, attach,
+				timeStart, timeExpire, goodsTag);
 		this.appId = appId;
 		this.mchId = mchId;
 		this.deviceInfo = deviceInfo;
-		this.nonceStr = nonceStr;
+		this.nonceStr = RandomUtil.generateString(16);
 		this.tradeType = tradeType.name();
 		this.openId = openId;
 		this.productId = productId;
+		this.limitPay = limitPay;
 	}
 
 	public String getAppId() {
@@ -149,6 +156,14 @@ public class MchPayPackage extends PayPackage {
 
 	public void setProductId(String productId) {
 		this.productId = productId;
+	}
+
+	public String getLimitPay() {
+		return limitPay;
+	}
+
+	public void setLimitPay(String limitPay) {
+		this.limitPay = limitPay;
 	}
 
 	@Override

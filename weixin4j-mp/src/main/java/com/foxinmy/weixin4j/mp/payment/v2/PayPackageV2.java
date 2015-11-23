@@ -65,33 +65,22 @@ public class PayPackageV2 extends PayPackage {
 		// jaxb required
 	}
 
-	public PayPackageV2(String outTradeNo, double totalFee,
-			String spbillCreateIp) {
-		this(null, null, null, outTradeNo, totalFee, null, spbillCreateIp,
+	public PayPackageV2(String partner, String body, String outTradeNo,
+			double totalFee, String notifyUrl, String createIp) {
+		this(partner, body, outTradeNo, totalFee, notifyUrl, createIp, null,
 				null, null, 0d, 0d, null);
 	}
 
-	public PayPackageV2(String body, String outTradeNo, double totalFee,
-			String notifyUrl, String spbillCreateIp) {
-		this(body, null, null, outTradeNo, totalFee, notifyUrl, spbillCreateIp,
-				null, null, 0d, 0d, null);
-	}
-
-	public PayPackageV2(String body, String partner, String outTradeNo,
-			double totalFee, String notifyUrl, String spbillCreateIp) {
-		this(body, null, partner, outTradeNo, totalFee, notifyUrl,
-				spbillCreateIp, null, null, 0d, 0d, null);
-	}
-
-	public PayPackageV2(String body, String attach, String partner,
-			String outTradeNo, double totalFee, String notifyUrl,
-			String spbillCreateIp, Date timeStart, Date timeExpire,
-			double transportFee, double productFee, String goodsTag) {
-		super(body, attach, outTradeNo, totalFee, spbillCreateIp, timeStart,
-				timeExpire, goodsTag, notifyUrl);
+	public PayPackageV2(String partner, String body, String outTradeNo,
+			double totalFee, String notifyUrl, String createIp, String attach,
+			Date timeStart, Date timeExpire, double transportFee,
+			double productFee, String goodsTag) {
+		super(body, outTradeNo, totalFee, notifyUrl, createIp, attach,
+				timeStart, timeExpire, goodsTag);
 		this.bankType = "WX";
 		this.feeType = "1";
 		this.inputCharset = "UTF-8";
+		this.partner = partner;
 		this.transportFee = transportFee > 0d ? DateUtil
 				.formaFee2Fen(transportFee) : null;
 		this.productFee = productFee > 0 ? DateUtil.formaFee2Fen(productFee)

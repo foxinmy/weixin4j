@@ -9,7 +9,7 @@ import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foxinmy.weixin4j.exception.PayException;
+import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
@@ -143,7 +143,7 @@ public class PayTest {
 		try {
 			prePay = PayUtil.createPrePay(payPackageV3,
 					ACCOUNT3.getPaySignKey());
-		} catch (PayException e) {
+		} catch (WeixinPayException e) {
 			e.printStackTrace();
 		}
 		System.err.println(prePay);

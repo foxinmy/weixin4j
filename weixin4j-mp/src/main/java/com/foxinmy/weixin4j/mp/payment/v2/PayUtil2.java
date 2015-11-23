@@ -1,18 +1,18 @@
 package com.foxinmy.weixin4j.mp.payment.v2;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
-import com.foxinmy.weixin4j.exception.PayException;
+import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.type.SignType;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
-import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
@@ -25,49 +25,80 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @see
  */
 public class PayUtil2 {
-	/**
-	 * 生成V2.x版本JSAPI支付字符串
-	 * 
-	 * @param payPackage
-	 *            订单信息
-	 * @param weixinAccount
-	 *            商户信息
-	 * @return 支付json串
-	 */
-	public static String createPayJsRequestJsonV2(PayPackageV2 payPackage,
-			WeixinPayAccount weixinAccount) {
-		if (StringUtil.isBlank(payPackage.getPartner())) {
-			payPackage.setPartner(weixinAccount.getPartnerId());
-		}
-		JsPayRequestV2 jsPayRequest = new JsPayRequestV2(weixinAccount,
-				payPackage);
-		jsPayRequest.setPaySign(paysignSha(jsPayRequest,
-				weixinAccount.getPaySignKey()));
-		jsPayRequest.setSignType(SignType.SHA1);
-		return JSON.toJSONString(jsPayRequest);
-	}
 
 	/**
 	 * 生成V2.x版本JSAPI支付字符串
 	 * 
 	 * @param body
 	 *            支付详情
-	 * @param orderNo
+	 * @param outTradeNo
 	 *            订单号
-	 * @param orderFee
+	 * @param totalFee
 	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
-	 * @param ip
+	 * @param notifyUrl
+	 *            支付回调URL
+	 * @param createIp
+	 *            订单生成的机器 IP
 	 * @param weixinAccount
 	 *            商户信息
 	 * @return 支付json串
 	 */
-	public static String createPayJsRequestJsonV2(String body, String orderNo,
-			double orderFee, String notify_url, String ip,
-			WeixinPayAccount weixinAccount) {
-		PayPackageV2 payPackage = new PayPackageV2(body, orderNo, orderFee,
-				notify_url, ip);
-		payPackage.setPartner(weixinAccount.getPartnerId());
-		return createPayJsRequestJsonV2(payPackage, weixinAccount);
+	public static String createPayJsRequestJsonV2(String body,
+			String outTradeNo, double totalFee, String notifyUrl,
+			String createIp, WeixinPayAccount weixinAccount) {
+		return createPayJsRequestJsonV2(weixinAccount, body, outTradeNo,
+				totalFee, notifyUrl, createIp, null, null, null, 0d, 0d, null);
+	}
+
+	/**
+	 * 生成V2.x版本JSAPI支付字符串
+	 * 
+	 * @param weixinAccount
+	 *            商户信息
+	 * @param body
+	 *            支付详情
+	 * @param outTradeNo
+	 *            订单号
+	 * @param totalFee
+	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
+	 * @param notifyUrl
+	 *            支付回调URL
+	 * @param createIp
+	 *            订单生成的机器 IP
+	 * @param attach
+	 *            附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
+	 * @param timeStart
+	 *            订单生成时间，格式为yyyyMMddHHmmss
+	 * @param timeExpire
+	 *            订单失效时间，格式为yyyyMMddHHmmss;注意：最短失效时间间隔必须大于5分钟
+	 * @param transportFee
+	 *            物流费用 如有值 必须保证 transportFee+productFee=totalFee
+	 * @param transportFee
+	 *            商品费用 如有值 必须保证 transportFee+productFee=totalFee
+	 * @param goodsTag
+	 *            商品标记，代金券或立减优惠功能的参数
+	 * @return 支付json串
+	 */
+	public static String createPayJsRequestJsonV2(
+			WeixinPayAccount weixinAccount, String body, String outTradeNo,
+			double totalFee, String notifyUrl, String createIp, String attach,
+			Date timeStart, Date timeExpire, double transportFee,
+			double productFee, String goodsTag) {
+		PayPackageV2 payPackage = new PayPackageV2(
+				weixinAccount.getPartnerId(), body, outTradeNo, totalFee,
+				notifyUrl, createIp);
+		payPackage.setAttach(attach);
+		payPackage.setTimeStart(timeStart);
+		payPackage.setTimeExpire(timeExpire);
+		payPackage.setTransportFee(transportFee);
+		payPackage.setProductFee(productFee);
+		payPackage.setGoodsTag(goodsTag);
+		JsPayRequestV2 jsPayRequest = new JsPayRequestV2(weixinAccount,
+				payPackage);
+		jsPayRequest.setPaySign(paysignSha(jsPayRequest,
+				weixinAccount.getPaySignKey()));
+		jsPayRequest.setSignType(SignType.SHA1);
+		return JSON.toJSONString(jsPayRequest);
 	}
 
 	/**
@@ -163,7 +194,7 @@ public class PayUtil2 {
 		return createNativePayRequestURLV2(weixinAccount, "P1");
 	}
 
-	public static void main(String[] args) throws PayException {
+	public static void main(String[] args) throws WeixinPayException {
 		// V2版本下的JS支付
 		System.out.println(JSAPIV2());
 		// V2版本下的原生支付

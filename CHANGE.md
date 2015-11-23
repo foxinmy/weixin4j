@@ -496,3 +496,19 @@
 * 2015-11-20
 
   + weixin4j-qy:新增客服消息
+  
+* 2015-11-23
+
+  + weixin4j-base:PayException重命名为WeixinPayException
+  
+  + weixin4j-base:调整PayPackageV2构造函数：从主到次
+  
+  + weixin4j-base:调整PayUtil2#createPayJsRequestJsonV2参数位置：从主到次
+  
+  + weixin4j-base:调整MicroPayPackage构造函数：从主到次
+  
+  + weixin4j-base:调整MicroPayPackage构造函数：从主到次
+  
+  + weixin4j-base:调整PayUtil#createPayJsRequestJson参数位置：从主到次
+  
+  + weixin4j-base:调整PayUtil#createNativePayRequestURL参数位置：从主到次

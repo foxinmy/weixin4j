@@ -35,10 +35,6 @@ public class PayPackage implements Serializable {
 	 */
 	private String detail;
 	/**
-	 * 附加数据,原样返回 非必须
-	 */
-	private String attach;
-	/**
 	 * 商户系统内部的订单号 ,32 个字符内 、可包含字母 ,确保 在商户系统唯一 必须
 	 */
 	@XmlElement(name = "out_trade_no")
@@ -51,11 +47,21 @@ public class PayPackage implements Serializable {
 	@JSONField(name = "total_fee")
 	private String totalFee;
 	/**
+	 * 通知地址接收微信支付成功通知 必须
+	 */
+	@XmlElement(name = "notify_url")
+	@JSONField(name = "notify_url")
+	private String notifyUrl;
+	/**
 	 * 订单生成的机器 IP 必须
 	 */
 	@XmlElement(name = "spbill_create_ip")
 	@JSONField(name = "spbill_create_ip")
 	private String createIp;
+	/**
+	 * 附加数据,原样返回 非必须
+	 */
+	private String attach;
 	/**
 	 * 订单生成时间,格式为 yyyyMMddHHmmss,如 2009 年 12月25日9点10分10秒表示为 20091225091010。时区 为
 	 * GMT+8 beijing。该时间取 自商户服务器 非必须
@@ -76,12 +82,48 @@ public class PayPackage implements Serializable {
 	@XmlElement(name = "goods_tag")
 	@JSONField(name = "goods_tag")
 	private String goodsTag;
+
+	protected PayPackage() {
+		// jaxb required
+	}
+
 	/**
-	 * 通知地址接收微信支付成功通知 必须
+	 * 订单对象
+	 * 
+	 * @param body
+	 *            订单描述
+	 * @param outTradeNo
+	 *            商户内部ID
+	 * @param totalFee
+	 *            订单总额 <font color="red">单位为元</font>
+	 * @param notifyUrl
+	 *            回调地址
+	 * @param createIp
+	 *            生成订单数据的机器IP
+	 * @param attach
+	 *            附加数据
+	 * @param timeStart
+	 *            订单生成时间
+	 * @param timeExpire
+	 *            订单失效时间
+	 * @param goodsTag
+	 *            订单标记
 	 */
-	@XmlElement(name = "notify_url")
-	@JSONField(name = "notify_url")
-	private String notifyUrl;
+	public PayPackage(String body, String outTradeNo, double totalFee,
+			String notifyUrl, String createIp, String attach, Date timeStart,
+			Date timeExpire, String goodsTag) {
+		this.body = body;
+		this.outTradeNo = outTradeNo;
+		this.totalFee = DateUtil.formaFee2Fen(totalFee);
+		this.notifyUrl = notifyUrl;
+		this.createIp = createIp;
+		this.attach = attach;
+		this.timeStart = timeStart != null ? DateUtil
+				.fortmat2yyyyMMddHHmmss(timeStart) : null;
+		this.timeExpire = timeExpire != null ? DateUtil
+				.fortmat2yyyyMMddHHmmss(timeExpire) : null;
+		this.goodsTag = goodsTag;
+	}
 
 	public String getBody() {
 		return body;
@@ -97,14 +139,6 @@ public class PayPackage implements Serializable {
 
 	public void setDetail(String detail) {
 		this.detail = detail;
-	}
-
-	public String getAttach() {
-		return attach;
-	}
-
-	public void setAttach(String attach) {
-		this.attach = attach;
 	}
 
 	public String getOutTradeNo() {
@@ -129,12 +163,28 @@ public class PayPackage implements Serializable {
 		this.totalFee = DateUtil.formaFee2Fen(totalFee);
 	}
 
+	public String getNotifyUrl() {
+		return notifyUrl;
+	}
+
+	public void setNotifyUrl(String notifyUrl) {
+		this.notifyUrl = notifyUrl;
+	}
+
 	public String getCreateIp() {
 		return createIp;
 	}
 
 	public void setCreateIp(String createIp) {
 		this.createIp = createIp;
+	}
+
+	public String getAttach() {
+		return attach;
+	}
+
+	public void setAttach(String attach) {
+		this.attach = attach;
 	}
 
 	public String getTimeStart() {
@@ -171,62 +221,12 @@ public class PayPackage implements Serializable {
 		this.goodsTag = goodsTag;
 	}
 
-	public String getNotifyUrl() {
-		return notifyUrl;
-	}
-
-	public void setNotifyUrl(String notifyUrl) {
-		this.notifyUrl = notifyUrl;
-	}
-
-	protected PayPackage(){
-		// jaxb required
-	}
-	
-	/**
-	 * 订单对象
-	 * 
-	 * @param body
-	 *            订单描述
-	 * @param attach
-	 *            附加数据
-	 * @param outTradeNo
-	 *            商户内部ID
-	 * @param totalFee
-	 *            订单总额 <font color="red">单位为元</font>
-	 * @param spbillCreateIp
-	 *            生成订单数据的机器IP
-	 * @param timeStart
-	 *            订单生成时间
-	 * @param timeExpire
-	 *            订单失效时间
-	 * @param goodsTag
-	 *            订单标记
-	 * @param notifyUrl
-	 *            回调地址
-	 */
-	public PayPackage(String body, String attach, String outTradeNo,
-			double totalFee, String createIp, Date timeStart,
-			Date timeExpire, String goodsTag, String notifyUrl) {
-		this.body = body;
-		this.attach = attach;
-		this.outTradeNo = outTradeNo;
-		this.totalFee = DateUtil.formaFee2Fen(totalFee);
-		this.createIp = createIp;
-		this.timeStart = timeStart != null ? DateUtil
-				.fortmat2yyyyMMddHHmmss(timeStart) : null;
-		this.timeExpire = timeExpire != null ? DateUtil
-				.fortmat2yyyyMMddHHmmss(timeExpire) : null;
-		this.goodsTag = goodsTag;
-		this.notifyUrl = notifyUrl;
-	}
-
 	@Override
 	public String toString() {
-		return "PayPackage [body=" + body + ", detail=" + detail + ", attach="
-				+ attach + ", outTradeNo=" + outTradeNo + ", totalFee="
-				+ totalFee + ", createIp=" + createIp
-				+ ", timeStart=" + timeStart + ", timeExpire=" + timeExpire
-				+ ", goodsTag=" + goodsTag + ", notifyUrl=" + notifyUrl + "]";
+		return "PayPackage [body=" + body + ", detail=" + detail
+				+ ", outTradeNo=" + outTradeNo + ", totalFee=" + totalFee
+				+ ", notifyUrl=" + notifyUrl + ", createIp=" + createIp
+				+ ", attach=" + attach + ", timeStart=" + timeStart
+				+ ", timeExpire=" + timeExpire + ", goodsTag=" + goodsTag + "]";
 	}
 }
