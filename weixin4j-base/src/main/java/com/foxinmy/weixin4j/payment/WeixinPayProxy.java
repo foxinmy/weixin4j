@@ -523,5 +523,5 @@ public class WeixinPayProxy {
 		return pay3Api.authCode2openId(authCode);
 	}
 	
-	public final static String VERSION = "1.6.3";
+	public final static String VERSION = "1.6.4";
 }

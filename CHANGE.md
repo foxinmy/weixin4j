@@ -512,3 +512,9 @@
   + weixin4j-base:调整PayUtil#createPayJsRequestJson参数位置：从主到次
   
   + weixin4j-base:调整PayUtil#createNativePayRequestURL参数位置：从主到次
+  
+* 2015-12-01
+  
+  + weixin4j-[mp|qy]:version upgrade to 1.6.4
+  
+  + weixin4j-server:version upgrade to 1.1.4
