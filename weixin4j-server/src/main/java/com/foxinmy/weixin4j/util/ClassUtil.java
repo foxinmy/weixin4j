@@ -38,8 +38,7 @@ public final class ClassUtil {
 	public static List<Class<?>> getClasses(String packageName)
 			throws RuntimeException {
 		String packageFileName = packageName.replace(".", File.separator);
-		URL fullPath = Thread.currentThread().getContextClassLoader()
-				.getResource(packageFileName);
+		URL fullPath = getDefaultClassLoader().getResource(packageFileName);
 		String protocol = fullPath.getProtocol();
 		if (protocol.equals(Consts.PROTOCOL_FILE)) {
 			File dir = new File(fullPath.getPath());
@@ -178,6 +177,30 @@ public final class ClassUtil {
 			clazz = (Class<?>) args[0];
 		}
 		return clazz;
+	}
+
+	public static ClassLoader getDefaultClassLoader() {
+		ClassLoader cl = null;
+		try {
+			cl = Thread.currentThread().getContextClassLoader();
+		} catch (Throwable ex) {
+			// Cannot access thread context ClassLoader - falling back...
+		}
+		if (cl == null) {
+			// No thread context class loader -> use class loader of this class.
+			cl = ClassUtil.class.getClassLoader();
+			if (cl == null) {
+				// getClassLoader() returning null indicates the bootstrap
+				// ClassLoader
+				try {
+					cl = ClassLoader.getSystemClassLoader();
+				} catch (Throwable ex) {
+					// Cannot access system ClassLoader - oh well, maybe the
+					// caller can live with null...
+				}
+			}
+		}
+		return cl;
 	}
 
 	public static void main(String[] args) {

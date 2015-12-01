@@ -45,7 +45,7 @@ public class Article implements Serializable {
 
 	@JSONCreator
 	public Article(@JSONField(name = "title") String title,
-			@JSONField(name = "description") String desc,
+			@JSONField(name = "desc") String desc,
 			@JSONField(name = "picUrl") String picUrl,
 			@JSONField(name = "url") String url) {
 		this.title = title;

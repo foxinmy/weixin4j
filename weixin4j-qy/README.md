@@ -50,11 +50,11 @@ weixin4j.properties说明
 
 | 属性名       |       说明      |
 | :---------- | :-------------- |
-| account     | 微信企业号信息 `json格式`(按需填写) |
-| token_path  | 使用FileTokenStorager时token保存的物理路径 |
-| media_path  | 调用媒体接口时保存媒体文件的物理路径 |
-| bill_path   	| 调用下载对账单接口保存文件的物理路径 |
-| ca_file     	| 调用某些接口(支付相关)强制需要auth的ca授权文件 |
+| account     | 微信企业号信息 `json格式`(使用new WeixinProxy()缺省构造器时须填写) |
+| token_path  | 使用FileTokenStorager时token保存的物理路径(非必须填写) |
+| media_path  | 调用媒体接口时保存媒体文件的物理路径(非必须填写) |
+| bill_path   	| 调用下载对账单接口保存文件的物理路径(非必须填写) |
+| ca_file     	| 调用某些接口(支付相关)强制需要auth的ca授权文件(非必须填写) |
 | user_oauth_redirect_uri     | 企业号用户身份授权后重定向的url(OauthApi接口) |
 | third_oauth_redirect_uri	  | 企业号第三方提供商授权后重定向的url(OauthApi接口) |
 | suite_oauth_redirect_uri     | 企业号第三方应用套件授权后重定向的url(OauthApi接口) |
@@ -84,12 +84,19 @@ weixin4j.properties说明
 
 2.实例化微信企业号接口代理对象,调用具体的API方法
 
-	// 微信企业号API
+	// 微信企业号API 使用classpath的weixin4j.properties
     WeixinProxy weixinProxy = new WeixinProxy();
+     // 直接传入企业号信息
     // weixinProxy = new WeixinProxy(corpid,corpsecret);
     weixinProxy.getUser(userid);
-    // 微信第三方应用API
+     // 微信支付API 使用classpath的weixin4j.properties
+    WeixinPayProxy weixinPayProxy = new WeixinPayProxy();
+    // 直接构造WexinAccount对象
+    // weixinPayProxy = new WeixinPayProxy(weixinAccount);
+    weixinPayProxy.orderQuery(idQuery);
+    // 微信第三方应用API 使用classpath的weixin4j.properties
     WeixinSuiteProxy weixinSuiteProxy = new WeixinSuiteProxy();
+    // 直接传入套件信息
     //weixinSuiteProxy = new WeixinSuiteProxy(suiteId,suiteSecret);
     weixinSuiteProxy.api().getOAuthInfo(authCorpid);
 
