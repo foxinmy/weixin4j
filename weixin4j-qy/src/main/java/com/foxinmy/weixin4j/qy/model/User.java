@@ -7,6 +7,7 @@ import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.Gender;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
+import com.foxinmy.weixin4j.util.NameValue;
 
 /**
  * 部门成员对象
