@@ -3,8 +3,10 @@ package com.foxinmy.weixin4j.payment.mch;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-import com.foxinmy.weixin4j.exception.WeixinPayException;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.payment.PayRequest;
 
 /**
@@ -18,7 +20,7 @@ import com.foxinmy.weixin4j.payment.PayRequest;
  * NATIVE支付:PayRequest.TradeType=NATIVE
  * </p>
  * 
- * @className PayRequest
+ * @className MchPayRequest
  * @author jy
  * @date 2014年8月17日
  * @since JDK 1.7
@@ -29,18 +31,43 @@ import com.foxinmy.weixin4j.payment.PayRequest;
 public class MchPayRequest extends PayRequest {
 
 	private static final long serialVersionUID = -5972173459255255197L;
-	
+
+	@XmlTransient
+	@JSONField(serialize = false)
+	private PrePay prePay;
+
 	protected MchPayRequest() {
 		// jaxb required
 	}
-	
-	public MchPayRequest(PrePay prePay) throws WeixinPayException {
-		this.setAppId(prePay.getAppId());
+
+	public MchPayRequest(PrePay prePay) {
+		this(prePay.getAppId(), prePay.getPrepayId());
+		this.prePay = prePay;
+	}
+
+	public MchPayRequest(String appId, String prepayId) {
+		this.setAppId(appId);
 		this.setPackageInfo("prepay_id=" + prePay.getPrepayId());
+	}
+
+	/**
+	 * 注意：MchPayRequest(String appId, String prepayId) 构造时 为空
+	 * 
+	 * @return 预支付对象
+	 */
+	public PrePay getPrePay() {
+		return prePay;
+	}
+
+	@XmlTransient
+	@JSONField(serialize = false)
+	public String asPayJsRequestJson() {
+		return JSON.toJSONString(this);
 	}
 
 	@Override
 	public String toString() {
 		return "MchPayRequest [" + super.toString() + "]";
 	}
+
 }

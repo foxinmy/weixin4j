@@ -22,7 +22,7 @@ public class QRParameter implements Serializable {
 	private static final long serialVersionUID = 6611187606558274253L;
 
 	/**
-	 * 临时二维码的有效时间,以秒为单位,最大不超过604800（即7天）
+	 * 临时二维码的有效时间, 最大不超过2592000（即30天），此字段如果不填，则默认有效期为30秒
 	 */
 	private int expireSeconds;
 	/**

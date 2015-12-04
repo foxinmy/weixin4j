@@ -23,22 +23,22 @@ import com.foxinmy.weixin4j.token.TokenHolder;
 public class WeixinTokenSuiteCreator implements TokenCreator {
 
 	private final WeixinRequestExecutor weixinExecutor;
-	private final String authCorpid;
+	private final String authCorpId;
 	private final SuitePerCodeHolder perCodeHolder;
 	private final TokenHolder suiteTokenHolder;
 
 	/**
 	 * 
-	 * @param suiteSecret
+	 * @param authCorpId
 	 *            授权方corpid
 	 * @param perCodeHolder
 	 *            永久授权码
 	 * @param suiteTokenHolder
 	 *            套件token
 	 */
-	public WeixinTokenSuiteCreator(String authCorpid,
+	public WeixinTokenSuiteCreator(String authCorpId,
 			SuitePerCodeHolder perCodeHolder, TokenHolder suiteTokenHolder) {
-		this.authCorpid = authCorpid;
+		this.authCorpId = authCorpId;
 		this.perCodeHolder = perCodeHolder;
 		this.suiteTokenHolder = suiteTokenHolder;
 		this.weixinExecutor = new WeixinRequestExecutor();
@@ -46,14 +46,15 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("qy_token_suite_%s", perCodeHolder.getSuiteId());
+		return String.format("qy_token_suite_%s:%s",
+				perCodeHolder.getSuiteId(), authCorpId);
 	}
 
 	@Override
 	public Token createToken() throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", perCodeHolder.getSuiteId());
-		obj.put("auth_corpid", authCorpid);
+		obj.put("auth_corpid", authCorpId);
 		obj.put("permanent_code", perCodeHolder.getPermanentCode());
 		WeixinResponse response = weixinExecutor.post(
 				String.format(URLConsts.TOKEN_SUITE_URL,

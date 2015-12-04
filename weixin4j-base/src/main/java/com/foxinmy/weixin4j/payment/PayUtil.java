@@ -82,12 +82,13 @@ public class PayUtil {
 			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp, WeixinPayAccount weixinAccount)
 			throws WeixinPayException {
-		return createPayJsRequestJson(weixinAccount, openId, body, outTradeNo,
-				totalFee, notifyUrl, createIp, null, null, null, null, null);
+		return JSON.toJSONString(createPayJsRequest(weixinAccount, openId,
+				body, outTradeNo, totalFee, notifyUrl, createIp, null, null,
+				null, null, null));
 	}
 
 	/**
-	 * 生成V3.x版本JSAPI支付字符串【完整参数】
+	 * 生成V3.x版本JSAPI支付对象【完整参数】
 	 * 
 	 * @param weixinAccount
 	 *            支付配置信息
@@ -113,14 +114,17 @@ public class PayUtil {
 	 *            商品标记，代金券或立减优惠功能的参数
 	 * @param limitPay
 	 *            指定支付方式:no_credit--指定不能使用信用卡支付
-	 * @return 支付json串
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest
+	 * @return MchPayRequest对象；<font
+	 *         color="red">注意：如果要转换为JSON格式请使用fastjson包或者直接用MchPayRequest#
+	 *         asPayJsRequestJson方法</font>
 	 * @throws WeixinPayException
 	 */
-	public static String createPayJsRequestJson(WeixinPayAccount weixinAccount,
-			String openId, String body, String outTradeNo, double totalFee,
-			String notifyUrl, String createIp, String attach, Date timeStart,
-			Date timeExpire, String goodsTag, String limitPay)
-			throws WeixinPayException {
+	public static MchPayRequest createPayJsRequest(
+			WeixinPayAccount weixinAccount, String openId, String body,
+			String outTradeNo, double totalFee, String notifyUrl,
+			String createIp, String attach, Date timeStart, Date timeExpire,
+			String goodsTag, String limitPay) throws WeixinPayException {
 		MchPayPackage payPackage = new MchPayPackage(weixinAccount, openId,
 				body, outTradeNo, totalFee, notifyUrl, createIp,
 				TradeType.JSAPI);
@@ -135,7 +139,7 @@ public class PayUtil {
 		MchPayRequest jsPayRequest = new MchPayRequest(prePay);
 		jsPayRequest.setSignType(SignType.MD5);
 		jsPayRequest.setPaySign(paysignMd5(jsPayRequest, paySignKey));
-		return JSON.toJSONString(jsPayRequest);
+		return jsPayRequest;
 	}
 
 	/**
