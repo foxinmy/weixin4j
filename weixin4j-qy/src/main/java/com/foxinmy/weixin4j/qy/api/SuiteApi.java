@@ -108,7 +108,7 @@ public class SuiteApi extends QyApi {
 	 * @return 企业号token
 	 */
 	public TokenHolder createTokenHolder(String authCorpId) {
-		return new TokenHolder(new WeixinTokenSuiteCreator(authCorpId,
+		return new TokenHolder(new WeixinTokenSuiteCreator(
 				getPerCodeHolder(authCorpId), suiteTokenHolder),
 				suiteTicketHolder.getTokenStorager());
 	}
@@ -166,7 +166,7 @@ public class SuiteApi extends QyApi {
 		SuitePerCodeHolder suitePerCodeHolder = getPerCodeHolder(oInfo
 				.getCorpInfo().getCorpId());
 		// 缓存微信企业号access_token
-		TokenCreator tokenCreator = new WeixinTokenSuiteCreator(null,
+		TokenCreator tokenCreator = new WeixinTokenSuiteCreator(
 				suitePerCodeHolder, suiteTokenHolder);
 		Token token = new Token(obj.getString("access_token"));
 		token.setExpiresIn(obj.getIntValue("expires_in"));
