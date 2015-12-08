@@ -141,19 +141,17 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * 退款申请采用properties中配置的ca文件
+	 * 退款申请(全额退款)采用properties中配置的ca文件
 	 * 
 	 * @throws IOException
 	 * 
-	 * @see {@link #refundApply(InputStream, IdQuery, String, double, double,CurrencyType, String)}
+	 * @see {@link #refundApply(InputStream, IdQuery, String, double, double, String,CurrencyType)}
 	 */
 	public com.foxinmy.weixin4j.payment.mch.RefundResult refundApply(
-			IdQuery idQuery, String outRefundNo, double totalFee,
-			double refundFee, String opUserId) throws WeixinException,
-			IOException {
+			IdQuery idQuery, String outRefundNo, double totalFee)
+			throws WeixinException, IOException {
 		return pay3Api.refundApply(new FileInputStream(DEFAULT_CA_FILE),
-				idQuery, outRefundNo, totalFee, refundFee, CurrencyType.CNY,
-				opUserId);
+				idQuery, outRefundNo, totalFee);
 	}
 
 	/**
@@ -522,6 +520,6 @@ public class WeixinPayProxy {
 			throws WeixinException {
 		return pay3Api.authCode2openId(authCode);
 	}
-	
+
 	public final static String VERSION = "1.6.4";
 }

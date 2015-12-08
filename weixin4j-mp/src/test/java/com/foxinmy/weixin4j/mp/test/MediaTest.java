@@ -55,7 +55,7 @@ public class MediaTest extends TokenTest {
 	@Test
 	public void download1() throws WeixinException, IOException {
 		MediaDownloadResult content = mediaApi.downloadMedia(
-				"zloeIROuS3YJFZwugGNM5oGBolqJmU_8FKTUmJwTFbSjfky904S9OPly5Wq0BRn2", true);
+				"V4GvAetzQQjj_ECx1Siqvccgm80a32tk1gRusOBYMk8Uouybl-CwSkGk8w7wKgvI", false);
 		Assert.assertTrue(content != null);
 		System.err.println(content);
 	}

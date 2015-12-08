@@ -527,3 +527,9 @@
   + weixin4j-[mp|qy]:version upgrade to 1.6.4
   
   + weixin4j-server:version upgrade to 1.1.4
+  
+  + weixin4j-base:新增RegexUtil类
+  
+  + weixin4j-base:调整Pay3Api退款方法名为 refundApply
+  
+  + weixin4j-base:调整Pay3Api#refundApply参数个数

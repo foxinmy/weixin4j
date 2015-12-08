@@ -113,9 +113,10 @@ public class Pay3Api {
 	 *            订单总金额,单位为元
 	 * @param refundFee
 	 *            退款总金额,单位为元,可以做部分退款
+	 * @param refundFeeType
+	 *            货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
 	 * @param opUserId
 	 *            操作员帐号, 默认为商户号
-	 * 
 	 * @return 退款申请结果
 	 * @see com.foxinmy.weixin4j.payment.mch.RefundResult
 	 * @see <a
@@ -123,9 +124,9 @@ public class Pay3Api {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	protected RefundResult refundApply(InputStream ca, IdQuery idQuery,
+	public RefundResult refundApply(InputStream ca, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
-			String opUserId, Map<String, String> mopara) throws WeixinException {
+			CurrencyType refundFeeType, String opUserId) throws WeixinException {
 		WeixinResponse response = null;
 		try {
 			Map<String, String> map = baseMap(idQuery);
@@ -136,9 +137,10 @@ public class Pay3Api {
 				opUserId = weixinAccount.getMchId();
 			}
 			map.put("op_user_id", opUserId);
-			if (mopara != null && !mopara.isEmpty()) {
-				map.putAll(mopara);
+			if (refundFeeType == null) {
+				refundFeeType = CurrencyType.CNY;
 			}
+			map.put("refund_fee_type", refundFeeType.name());
 			String sign = PayUtil
 					.paysignMd5(map, weixinAccount.getPaySignKey());
 			map.put("sign", sign);
@@ -161,7 +163,7 @@ public class Pay3Api {
 	}
 
 	/**
-	 * 退款申请
+	 * 退款申请(全额退款)
 	 * 
 	 * @param ca
 	 *            证书文件(V3版本后缀为*.p12)
@@ -172,24 +174,12 @@ public class Pay3Api {
 	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
 	 * @param totalFee
 	 *            订单总金额,单位为元
-	 * @param refundFee
-	 *            退款总金额,单位为元,可以做部分退款
-	 * @param refundFeeType
-	 *            货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
-	 * @param opUserId
-	 *            操作员帐号, 默认为商户号
-	 * @see {@link #refundApply(InputStream, IdQuery, String, double, double, String, Map)}
+	 * @see {@link #refundApply(InputStream, IdQuery, String, double, double, String, CurrencyType)}
 	 */
 	public RefundResult refundApply(InputStream ca, IdQuery idQuery,
-			String outRefundNo, double totalFee, double refundFee,
-			CurrencyType refundFeeType, String opUserId) throws WeixinException {
-		Map<String, String> mopara = new HashMap<String, String>();
-		if (refundFeeType == null) {
-			refundFeeType = CurrencyType.CNY;
-		}
-		mopara.put("refund_fee_type", refundFeeType.name());
-		return refundApply(ca, idQuery, outRefundNo, totalFee, refundFee,
-				opUserId, mopara);
+			String outRefundNo, double totalFee) throws WeixinException {
+		return refundApply(ca, idQuery, outRefundNo, totalFee, totalFee, null,
+				null);
 	}
 
 	/**

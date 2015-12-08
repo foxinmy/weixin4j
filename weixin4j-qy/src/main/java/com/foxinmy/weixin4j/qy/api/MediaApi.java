@@ -48,6 +48,7 @@ import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
+import com.foxinmy.weixin4j.util.RegexUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConst;
@@ -267,8 +268,12 @@ public class MediaApi extends QyApi {
 							.getCode()), jsonResult.getDesc());
 				}
 			}
-			String fileName = String.format("%s.%s", mediaId,
-					contentType.split("/")[1]);
+			String fileName = RegexUtil
+					.regexFileNameFromContentDispositionHeader(disposition);
+			if (StringUtil.isBlank(fileName)) {
+				fileName = String.format("%s.%s", mediaId,
+						contentType.split("/")[1]);
+			}
 			return new MediaDownloadResult(content,
 					ContentType.create(contentType), fileName);
 		} catch (IOException e) {
