@@ -14,7 +14,7 @@ import org.apache.commons.httpclient.HttpClient;
 public class HttpComponent3Factory extends HttpClientFactory {
 
 	public HttpComponent3Factory() {
-		// odd bug
+		// odd code
 		Class<HttpClient> _dead = HttpClient.class;
 	}
 
