@@ -93,7 +93,7 @@ public class PayTest {
 	@Test
 	public void refundQueryV3() throws WeixinException {
 		com.foxinmy.weixin4j.payment.mch.RefundRecord record = PAY3
-				.refundQueryV3(new IdQuery("TT_1427183696238", IdType.TRADENO));
+				.refundQuery(new IdQuery("TT_1427183696238", IdType.TRADENO));
 		System.err.println(record);
 		// 这里的验证签名需要把details循环拼接
 		String sign = record.getSign();
@@ -112,7 +112,7 @@ public class PayTest {
 		c.set(Calendar.MONTH, 2);
 		c.set(Calendar.DAY_OF_MONTH, 24);
 		System.err.println(c.getTime());
-		File file = PAY3.downloadbill(c.getTime(), null);
+		File file = PAY3.downloadBill(c.getTime(), null);
 		System.err.println(file);
 	}
 

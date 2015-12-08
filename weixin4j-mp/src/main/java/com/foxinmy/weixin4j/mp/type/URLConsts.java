@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.mp.type;
 
-
 /**
  * URL常量类
  * 
