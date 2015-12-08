@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.http.HttpClientException;
  * @className HttpClientFactory
  * @author jy
  * @date 2015年8月12日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public abstract class HttpClientFactory {

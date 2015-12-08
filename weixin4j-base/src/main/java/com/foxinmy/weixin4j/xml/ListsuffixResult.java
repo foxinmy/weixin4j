@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @className ListsuffixResult
  * @author jy
  * @date 2015年6月15日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @Target(ElementType.FIELD)

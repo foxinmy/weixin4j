@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.qy.type.ReportLocationType;
  * @className AgentSetter
  * @author jy
  * @date 2015年3月16日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%AE%BE%E7%BD%AE%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%BA%94%E7%94%A8">设置企业号应用</a>
  */

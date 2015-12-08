@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.http.SimpleHttpClient;
  * @className SimpleHttpClientFactory
  * @author jy
  * @date 2015年8月12日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.http.SimpleHttpClient
  */
 public class SimpleHttpClientFactory extends HttpClientFactory {

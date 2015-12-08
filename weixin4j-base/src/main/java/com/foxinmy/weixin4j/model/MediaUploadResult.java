@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * @className MediaUploadResult
  * @author jy
  * @date 2015年7月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class MediaUploadResult implements Serializable {

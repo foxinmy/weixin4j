@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.qy.type.ReportLocationType;
  * @className AgentTest
  * @author jy
  * @date 2015年03月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class AgentTest extends TokenTest {

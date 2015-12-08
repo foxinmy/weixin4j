@@ -15,7 +15,7 @@ import java.nio.charset.Charset;
  * @className IOUtil
  * @author jy.hu
  * @date 2014年9月22日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see org.apache.commons.io.IOUtils
  */
 public class IOUtil {

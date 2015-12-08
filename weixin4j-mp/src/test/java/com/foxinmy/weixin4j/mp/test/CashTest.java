@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.type.MPPaymentCheckNameType;
  * @className CashTest
  * @author jy
  * @date 2015年4月1日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class CashTest extends PayTest {

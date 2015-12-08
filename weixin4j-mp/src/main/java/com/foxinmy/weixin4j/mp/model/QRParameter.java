@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.type.QRType;
  * @className QRParameter
  * @author jy.hu
  * @date 2014年4月8日
- * @since JDK 1.7
+ * @since JDK 1.6
  * 
  */
 public class QRParameter implements Serializable {

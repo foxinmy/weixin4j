@@ -8,7 +8,7 @@ import java.io.InputStream;
  * @className AbstractHttpResponse
  * @author jy
  * @date 2015年9月7日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public abstract class AbstractHttpResponse implements HttpResponse {

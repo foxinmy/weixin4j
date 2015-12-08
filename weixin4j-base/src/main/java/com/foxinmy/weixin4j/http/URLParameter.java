@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.util.URLEncodingUtil;
  * @className UrlParameter
  * @author jy
  * @date 2015年5月29日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class URLParameter extends NameValue {

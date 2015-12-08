@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.type;
  * @className BillType
  * @author jy
  * @date 2014年10月31日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum BillType {

@@ -14,7 +14,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className Card
  * @author jy
  * @date 2015年6月8日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class Card implements MassTuple {

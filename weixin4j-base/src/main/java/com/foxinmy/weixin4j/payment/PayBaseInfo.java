@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.type.SignType;
  * @className PayBaseInfo
  * @author jy
  * @date 2014年11月5日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement

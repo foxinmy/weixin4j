@@ -34,7 +34,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  * @className WeixinServerBootstrap
  * @author jy
  * @date 2014年10月12日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
  * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor

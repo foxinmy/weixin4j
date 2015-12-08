@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.response;
  * @className BlankResponse
  * @author jy
  * @date 2015年5月7日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class BlankResponse extends SingleResponse {

@@ -23,7 +23,7 @@ import com.foxinmy.weixin4j.payment.PayRequest;
  * @className MchPayRequest
  * @author jy
  * @date 2014年8月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.payment.mch.PrePay
  */
 @XmlRootElement
@@ -41,20 +41,19 @@ public class MchPayRequest extends PayRequest {
 	}
 
 	public MchPayRequest(PrePay prePay) {
-		this(prePay.getAppId(), prePay.getPrepayId());
+		this.setAppId(prePay.getAppId());
+		this.setPackageInfo("prepay_id=" + prePay.getPrepayId());
 		this.prePay = prePay;
 	}
 
 	public MchPayRequest(String appId, String prepayId) {
 		this.setAppId(appId);
-		this.setPackageInfo("prepay_id=" + prePay.getPrepayId());
+		this.setPackageInfo("prepay_id=" + prepayId);
+		this.prePay = new PrePay();
+		this.prePay.setAppId(appId);
+		this.prePay.setPrepayId(prepayId);
 	}
 
-	/**
-	 * 注意：MchPayRequest(String appId, String prepayId) 构造时 为空
-	 * 
-	 * @return 预支付对象
-	 */
 	public PrePay getPrePay() {
 		return prePay;
 	}
@@ -69,5 +68,4 @@ public class MchPayRequest extends PayRequest {
 	public String toString() {
 		return "MchPayRequest [" + super.toString() + "]";
 	}
-
 }

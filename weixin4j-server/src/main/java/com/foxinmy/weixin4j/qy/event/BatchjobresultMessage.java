@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * @className BatchjobresultMessage
  * @author jy
  * @date 2015年3月31日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6#.E5.BC.82.E6.AD.A5.E4.BB.BB.E5.8A.A1.E5.AE.8C.E6.88.90.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81">异步任务事件完成通知</a>
  */
@@ -41,7 +41,7 @@ public class BatchjobresultMessage extends EventMessage {
 	 * @className BatchJob
 	 * @author jy
 	 * @date 2015年4月1日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class BatchJob implements Serializable {

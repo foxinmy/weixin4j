@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 
  * @author jy.hu
  * @date 2014年4月8日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public class User implements Serializable {
 

@@ -48,7 +48,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @className Pay3Api
  * @author jy
  * @date 2014年10月28日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台API</a>
  */
 public class Pay3Api {
@@ -304,7 +304,7 @@ public class Pay3Api {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6">下载对账单API</a>
 	 * @throws WeixinException
 	 */
-	public File downloadbill(Date billDate, BillType billType)
+	public File downloadBill(Date billDate, BillType billType)
 			throws WeixinException {
 		if (billDate == null) {
 			Calendar now = Calendar.getInstance();

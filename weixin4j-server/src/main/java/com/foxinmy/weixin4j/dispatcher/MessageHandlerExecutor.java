@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * @className MessageHandlerExecutor
  * @author jy
  * @date 2015年5月7日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
  * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
  */

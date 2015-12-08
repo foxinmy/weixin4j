@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.qy.api.HelperApi;
  * @className HelperTest
  * @author jy
  * @date 2014年12月28日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class HelperTest extends TokenTest {

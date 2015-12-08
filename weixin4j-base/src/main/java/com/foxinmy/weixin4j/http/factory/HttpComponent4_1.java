@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.model.Consts;
  * @className HttpComponent4_1
  * @author jy
  * @date 2015年8月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class HttpComponent4_1 extends HttpComponent4 {

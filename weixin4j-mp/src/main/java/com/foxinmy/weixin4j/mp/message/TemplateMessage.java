@@ -13,7 +13,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className TemplateMessage
  * @author jy
  * @date 2014年9月29日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html">模板消息</a>
  */
@@ -64,7 +64,7 @@ public class TemplateMessage implements Serializable {
 	 * @className Item
 	 * @author jy
 	 * @date 2015年3月29日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	private static class Item implements Serializable {

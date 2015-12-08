@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * @className WeixinMessage
  * @author jy
  * @date 2015年5月6日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.message.ImageMessage
  * @see com.foxinmy.weixin4j.message.LinkMessage
  * @see com.foxinmy.weixin4j.message.LocationMessage

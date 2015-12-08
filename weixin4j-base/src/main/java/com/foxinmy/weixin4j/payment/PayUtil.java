@@ -32,7 +32,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @className PayUtil
  * @author jy
  * @date 2014年10月28日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class PayUtil {

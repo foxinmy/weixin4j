@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className Token
  * @author jy.hu
  * @date 2014年4月5日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/11/0e4b294685f817b95cbed85ba5e82b8f.html">微信公众平台获取token</a>
  * @see <a

@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.tuple.MpArticle;
  * @className MediaItem
  * @author jy
  * @date 2015年3月22日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class MediaItem implements Serializable {

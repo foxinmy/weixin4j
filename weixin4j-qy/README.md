@@ -37,7 +37,7 @@ weixin4j-qy
 
 如何使用
 --------
-0.maven依赖(1.6.4,2015-12-01 released)
+0.maven依赖(1.6.4,2015-12-08 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>

@@ -10,7 +10,7 @@ import org.junit.Test;
  * 
  * @author jy.hu
  * @date 2014年3月24日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public class EventMessageRequestTest extends MessagePush {
 

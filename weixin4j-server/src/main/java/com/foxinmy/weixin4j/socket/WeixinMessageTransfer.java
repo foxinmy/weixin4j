@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  * @className WeixinMessageTransfer
  * @author jy
  * @date 2015年6月23日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class WeixinMessageTransfer implements Serializable {

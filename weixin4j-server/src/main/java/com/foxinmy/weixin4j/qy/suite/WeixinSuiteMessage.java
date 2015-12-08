@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @className WeixinSuiteMessage
  * @author jy
  * @date 2015年6月23日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement(name = "xml")

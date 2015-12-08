@@ -9,7 +9,7 @@ import java.util.List;
  * @className NewsResponse
  * @author jy
  * @date 2015年5月5日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class NewsResponse implements WeixinResponse {
@@ -86,7 +86,7 @@ public class NewsResponse implements WeixinResponse {
 	 * @className Article
 	 * @author jy
 	 * @date 2015年5月5日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class Article {

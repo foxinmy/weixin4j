@@ -59,7 +59,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * @className WeixinProxy
  * @author jy.hu
  * @date 2014年3月23日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a href="http://mp.weixin.qq.com/wiki/index.php">api文档</a>
  */
 public class WeixinProxy {

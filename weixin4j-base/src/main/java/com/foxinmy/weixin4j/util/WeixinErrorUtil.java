@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
  * @className WeixinErrorUtil
  * @author jy
  * @date 2015年5月12日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public final class WeixinErrorUtil {

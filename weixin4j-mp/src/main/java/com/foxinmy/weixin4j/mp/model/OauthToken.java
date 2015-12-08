@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.model.Token;
  * @className OauthToken
  * @author jy.hu
  * @date 2014年4月6日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.mp.model.AuthResult
  * @see com.foxinmy.weixin4j.mp.model.AuthResult.AuthScope
  */

@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.http.weixin.JsonResult;
  * @className SemResult
  * @author jy
  * @date 2014年11月7日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/0/0ce78b3c9524811fee34aba3e33f3448.html">语义理解</a>
  */

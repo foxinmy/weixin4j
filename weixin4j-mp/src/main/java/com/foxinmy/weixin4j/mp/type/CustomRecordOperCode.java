@@ -9,7 +9,7 @@ import java.util.Map;
  * @className CustomRecordOperCode
  * @author jy
  * @date 2014年11月16日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum CustomRecordOperCode {

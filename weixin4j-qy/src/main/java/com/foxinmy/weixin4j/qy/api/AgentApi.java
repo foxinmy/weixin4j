@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @className AgentApi
  * @author jy
  * @date 2015年3月16日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%BA%94%E7%94%A8">管理应用接口说明</a>
  */

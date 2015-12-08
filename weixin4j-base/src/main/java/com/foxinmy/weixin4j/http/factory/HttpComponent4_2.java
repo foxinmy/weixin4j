@@ -24,7 +24,7 @@ import com.foxinmy.weixin4j.http.HttpResponse;
  * @className HttpComponent4_2
  * @author jy
  * @date 2015年8月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class HttpComponent4_2 extends HttpComponent4 {

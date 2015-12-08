@@ -10,7 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 
  * @author jy.hu
  * @date 2014年4月26日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public class MpArticle implements Serializable {
 

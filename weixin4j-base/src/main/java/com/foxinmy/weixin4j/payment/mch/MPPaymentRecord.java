@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @className MPPaymentRecord
  * @author jy
  * @date 2015年6月23日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement

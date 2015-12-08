@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
  * @className NotifyApi
  * @author jy.hu
  * @date 2014年11月21日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%8F%91%E9%80%81%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E">发送接口说明</a>
  * @see <a

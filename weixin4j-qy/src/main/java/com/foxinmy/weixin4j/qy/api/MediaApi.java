@@ -59,7 +59,7 @@ import com.foxinmy.weixin4j.util.WeixinErrorUtil;
  * @className MediaApi
  * @author jy.hu
  * @date 2014年9月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">管理素材文件</a>
  * @see com.foxinmy.weixin4j.type.MediaType

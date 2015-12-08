@@ -513,11 +513,6 @@
   
   + weixin4j-base:调整PayUtil#createNativePayRequestURL参数位置：从主到次
   
-* 2015-12-01
-  
-  + weixin4j-[mp|qy]:version upgrade to 1.6.4
-  
-  + weixin4j-server:version upgrade to 1.1.4
   
 * 2015-12-04
 
@@ -526,3 +521,9 @@
   + weixin4j-base:【重要】添加MchPayRequest的构造函数，便于二次发起支付。
   
   + weixin4j-qy:【重要】第三方应用授权时获取永久授权码覆盖问题。
+  
+* 2015-12-08
+  
+  + weixin4j-[mp|qy]:version upgrade to 1.6.4
+  
+  + weixin4j-server:version upgrade to 1.1.4

@@ -23,7 +23,7 @@ import java.util.jar.JarFile;
  * @className ClassUtil
  * @author jy
  * @date 2014年10月31日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public final class ClassUtil {

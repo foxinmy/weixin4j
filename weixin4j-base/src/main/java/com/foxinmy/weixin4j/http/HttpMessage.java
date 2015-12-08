@@ -7,7 +7,7 @@ package com.foxinmy.weixin4j.http;
  * @className HttpMessage
  * @author jy
  * @date 2015年5月29日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public interface HttpMessage {

@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.response;
  * @className TransferCustomerResponse
  * @author jy
  * @date 2015年5月5日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/5/ae230189c9bd07a6b221f48619aeef35.html">转移消息到多客服</a>
  */

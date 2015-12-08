@@ -11,7 +11,7 @@ import javax.net.ssl.SSLContext;
  * @className HttpParams
  * @author jy
  * @date 2015年8月13日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public final class HttpParams {

@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.mp.type.AutoreplyMode;
  * @className AutoReplySetting
  * @author jy
  * @date 2015年4月15日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class AutoReplySetting implements Serializable {
@@ -109,7 +109,7 @@ public class AutoReplySetting implements Serializable {
 	 * @className Rule
 	 * @author jy
 	 * @date 2015年4月15日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class Rule implements Serializable {
@@ -202,7 +202,7 @@ public class AutoReplySetting implements Serializable {
 	 * @className Entry
 	 * @author jy
 	 * @date 2015年4月15日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class Entry implements Serializable {

@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.payment.PayBaseInfo;
  * @className PayWarn
  * @author jy
  * @date 2014年12月31日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement

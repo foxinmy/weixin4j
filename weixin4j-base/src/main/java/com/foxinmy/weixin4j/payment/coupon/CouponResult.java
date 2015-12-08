@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.payment.mch.ApiResult;
  * @className CouponResult
  * @author jy
  * @date 2015年3月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement

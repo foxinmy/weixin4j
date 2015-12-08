@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.tuple;
  * @className ChatTuple
  * @author jy
  * @date 2015年8月1日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.tuple.Text
  * @see com.foxinmy.weixin4j.tuple.Image
  * @see com.foxinmy.weixin4j.tuple.File

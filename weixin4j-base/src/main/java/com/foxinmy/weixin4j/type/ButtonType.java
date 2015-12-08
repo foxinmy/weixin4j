@@ -10,7 +10,7 @@ package com.foxinmy.weixin4j.type;
  * @className ButtonType
  * @author jy
  * @date 2014年9月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">按钮类型</a>
  */

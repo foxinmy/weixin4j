@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.type;
  * @className EventType
  * @author jy
  * @date 2014年9月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum EventType {

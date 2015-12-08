@@ -10,7 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className ArticleSummary
  * @author jy
  * @date 2015年1月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class ArticleSummary extends ArticleDatacube1 {

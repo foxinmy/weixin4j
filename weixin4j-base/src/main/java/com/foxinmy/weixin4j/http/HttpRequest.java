@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.http.entity.HttpEntity;
  * @className HttpRequest
  * @author jy
  * @date 2015年5月29日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class HttpRequest implements HttpMessage {

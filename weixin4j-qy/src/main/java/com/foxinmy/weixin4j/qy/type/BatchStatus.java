@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.qy.type;
  * @className BatchStatus
  * @author jy
  * @date 2015年3月31日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum BatchStatus {

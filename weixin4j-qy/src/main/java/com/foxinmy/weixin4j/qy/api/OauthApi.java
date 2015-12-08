@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @className OauthApi
  * @author jy
  * @date 2015年6月11日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=OAuth%E9%AA%8C%E8%AF%81%E6%8E%A5%E5%8F%A3">企业号用户身份授权说明</a>
  * @see <a

@@ -7,7 +7,7 @@ package com.foxinmy.weixin4j.mp.type;
  * @className URLConsts
  * @author jy
  * @date 2014年12月3日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public final class URLConsts {

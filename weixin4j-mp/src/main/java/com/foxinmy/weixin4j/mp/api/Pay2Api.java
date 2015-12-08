@@ -59,7 +59,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
  * @className Pay2Api
  * @author jy
  * @date 2014年10月28日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class Pay2Api extends MpApi {

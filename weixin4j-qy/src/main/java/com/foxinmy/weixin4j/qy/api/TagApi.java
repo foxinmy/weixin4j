@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @className TagApi
  * @author jy
  * @date 2014年11月19日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a href=
  *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE">
  *      管理标签</a>

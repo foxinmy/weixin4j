@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConst;
  * @className QrApi
  * @author jy.hu
  * @date 2014年9月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">二维码支持</a>
  */

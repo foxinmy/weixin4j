@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.type.ButtonType;
  * @className MenuTest
  * @author jy.hu
  * @date 2014年4月10日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public class MenuTest extends TokenTest {
 
@@ -34,12 +34,16 @@ public class MenuTest extends TokenTest {
 	@Test
 	public void create() throws WeixinException {
 		btnList = new ArrayList<Button>();
-		String domain = "http://dianzhang.canyi.net";
+		String domain = "http://wx.jdxg.doubimeizhi.com";
 		btnList.add(new Button("立即下单", domain, ButtonType.view));
 
 		btnList.add(new Button("个人中心", domain + "/user", ButtonType.view));
 
-		btnList.add(new Button("小哥介绍", domain, ButtonType.view));
+		Button button = new Button("小哥介绍", domain, ButtonType.view);
+		button.pushSub(new Button("小哥介绍", "http://mp.weixin.qq.com/s?__biz=MzI2MTA5OTM4OQ==&mid=400990970&idx=1&sn=5c7fd72e782c49f7c933b91c63eddc80#rd", ButtonType.view));
+		button.pushSub(new Button("服务流程", "FLOW", ButtonType.click));
+		button.pushSub(new Button("在线客服", "KF", ButtonType.click));
+		btnList.add(button);
 
 		JsonResult result = menuApi.createMenu(btnList);
 		Assert.assertEquals(0, result.getCode());

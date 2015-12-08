@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.mp.model.QRParameter;
  * @className QRTest
  * @author jy.hu
  * @date 2014年4月10日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public class QRTest extends TokenTest {
 	private QrApi qrApi;
@@ -35,7 +35,7 @@ public class QRTest extends TokenTest {
 
 	@Test
 	public void forever_qr_int() throws WeixinException, IOException {
-		File file = qrApi.createQRFile(QRParameter.createPermanenceInt(1200));
+		File file = qrApi.createQRFile(QRParameter.createPermanenceInt(2));
 		Assert.assertTrue(file.exists());
 	}
 

@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.request.WeixinMessage;
  * @className WeixinMessageMatcher
  * @author jy
  * @date 2015年5月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see DefaultMessageMatcher
  */
 public interface WeixinMessageMatcher {

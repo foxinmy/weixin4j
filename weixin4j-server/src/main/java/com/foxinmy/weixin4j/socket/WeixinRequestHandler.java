@@ -28,7 +28,7 @@ import com.foxinmy.weixin4j.xml.MessageTransferHandler;
  * @className WeixinRequestHandler
  * @author jy
  * @date 2014年11月16日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher
  */
 public class WeixinRequestHandler extends

@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.http.ContentType;
  * @className MediaDownloadResult
  * @author jy
  * @date 2015年7月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class MediaDownloadResult implements Serializable {

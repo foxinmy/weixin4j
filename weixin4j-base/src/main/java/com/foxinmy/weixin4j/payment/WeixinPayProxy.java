@@ -38,7 +38,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConst;
  * @className WeixinPayProxy
  * @author jy
  * @date 2015年1月3日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.api.Pay3Api
  * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台支付API</a>
  */
@@ -175,7 +175,7 @@ public class WeixinPayProxy {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public RefundRecord refundQueryV3(IdQuery idQuery) throws WeixinException {
+	public RefundRecord refundQuery(IdQuery idQuery) throws WeixinException {
 		return pay3Api.refundQuery(idQuery);
 	}
 
@@ -198,9 +198,9 @@ public class WeixinPayProxy {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6">下载对账单API</a>
 	 * @throws WeixinException
 	 */
-	public File downloadbill(Date billDate, BillType billType)
+	public File downloadBill(Date billDate, BillType billType)
 			throws WeixinException {
-		return pay3Api.downloadbill(billDate, billType);
+		return pay3Api.downloadBill(billDate, billType);
 	}
 
 	/**

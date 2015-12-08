@@ -42,7 +42,7 @@ import com.foxinmy.weixin4j.util.ReflectionUtil;
  * @className WeixinMessageDispatcher
  * @author jy
  * @date 2015年5月7日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
  * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher

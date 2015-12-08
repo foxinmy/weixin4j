@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @className QyApi
  * @author jy.hu
  * @date 2014年11月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.api.BaseApi
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">api文档</a>
  */

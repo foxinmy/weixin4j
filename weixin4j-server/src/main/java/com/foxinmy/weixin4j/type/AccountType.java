@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.type;
  * @className AccountType
  * @author jy
  * @date 2015年5月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum AccountType {

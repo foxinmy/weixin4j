@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @className FileTokenStorager
  * @author jy
  * @date 2015年1月9日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public class FileTokenStorager implements TokenStorager {
 

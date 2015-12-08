@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.mp.type.CustomRecordOperCode;
  * @className CustomRecord
  * @author jy
  * @date 2014年6月28日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public class CustomRecord implements Serializable {
 

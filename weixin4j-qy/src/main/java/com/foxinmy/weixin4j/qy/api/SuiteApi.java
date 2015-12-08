@@ -24,7 +24,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @className SuiteApi
  * @author jy
  * @date 2015年6月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%88%E6%9D%83">第三方应用授权</a>
  */

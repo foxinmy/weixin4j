@@ -10,7 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className JsonResult
  * @author jy.hu
  * @date 2014年9月24日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/17/fa4e1434e57290788bde25603fa2fcbd.html">公众平台全局返回码说明</a>
  * @see <a

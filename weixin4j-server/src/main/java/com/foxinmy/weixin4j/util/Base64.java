@@ -10,7 +10,7 @@ import io.netty.handler.codec.base64.Base64Dialect;
  * @className Base64
  * @author jy
  * @date 2015年5月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public final class Base64 {

@@ -24,7 +24,7 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
  * @className HttpUtil
  * @author jy
  * @date 2014年11月15日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class HttpUtil {

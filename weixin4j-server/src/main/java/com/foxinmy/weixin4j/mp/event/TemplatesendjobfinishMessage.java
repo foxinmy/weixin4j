@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * @className TemplatesendjobfinishMessage
  * @author jy
  * @date 2014年9月19日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81">模板消息事件推送</a>
  */

@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  * @className WeixinQyAccount
  * @author jy
  * @date 2014年11月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a href=
  *      "https://qy.weixin.qq.com/cgi-bin/home?lang=zh_CN&token=685923034#setting"
  *      >企业号设置</a>

@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 
  * @author jy.hu
  * @date 2014年4月4日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public class Group implements Serializable {
 

@@ -24,7 +24,7 @@ import com.foxinmy.weixin4j.type.ButtonType;
  * @className MenuApi
  * @author jy.hu
  * @date 2014年9月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.model.Button
  */
 public class MenuApi extends QyApi {

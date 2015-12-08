@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.model.Consts;
  * @className ContentType
  * @author jy
  * @date 2015年5月29日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public final class ContentType implements Serializable {

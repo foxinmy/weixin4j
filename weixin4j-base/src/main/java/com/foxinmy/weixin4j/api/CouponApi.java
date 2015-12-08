@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @className CouponApi
  * @author jy
  * @date 2015年3月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/sp_coupon.php">代金券文档</a>
  */
 public class CouponApi {

@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @className WeixinMessageKey
  * @author jy
  * @date 2015年6月9日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class WeixinMessageKey implements Serializable {

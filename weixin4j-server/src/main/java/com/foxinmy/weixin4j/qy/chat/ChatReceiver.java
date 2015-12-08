@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @className ChatReceiver
  * @author jy
  * @date 2015年8月1日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class ChatReceiver implements Serializable {

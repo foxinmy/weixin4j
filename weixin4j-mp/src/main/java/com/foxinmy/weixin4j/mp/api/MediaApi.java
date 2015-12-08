@@ -56,7 +56,7 @@ import com.foxinmy.weixin4j.util.WeixinErrorUtil;
  * @className MediaApi
  * @author jy.hu
  * @date 2014年9月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.type.MediaType
  */
 public class MediaApi extends MpApi {

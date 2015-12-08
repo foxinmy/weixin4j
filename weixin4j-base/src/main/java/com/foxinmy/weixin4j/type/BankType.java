@@ -7,7 +7,7 @@ package com.foxinmy.weixin4j.type;
  * @className BankType
  * @author jy
  * @date 2015年8月19日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum BankType {
