@@ -65,7 +65,7 @@ public class MchPayRequest extends PayRequest {
 	 * 
 	 * @param paySignKey
 	 *            支付签名密钥
-	 * @return
+	 * @return JSAPI支付JSON串
 	 */
 	@XmlTransient
 	@JSONField(serialize = false)
@@ -78,7 +78,7 @@ public class MchPayRequest extends PayRequest {
 	/**
 	 * 针对已签名的 MchPayRequest
 	 * 
-	 * @return
+	 * @return JSAPI支付JSON串
 	 */
 	@XmlTransient
 	@JSONField(serialize = false)
