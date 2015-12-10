@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.model.Token;
  * @see TokenCreator
  * @see TokenStorager
  */
-public final class TokenHolder {
+public class TokenHolder {
 
 	/**
 	 * token的创建

@@ -83,7 +83,7 @@ weixin4j.properties说明
 	#公众号登陆授权的重定向路径(使用OauthApi时需要填写)
 	weixin4j.user.oauth.redirect.uri=http://xxx
 
-2.实例化微信企业号接口代理对象,调用具体的API方法
+2.实例化微信公众号接口代理对象,调用具体的API方法
 
 	// 微信公众号API 使用classpath的weixin4j.properties
     WeixinProxy weixinProxy = new WeixinProxy();
