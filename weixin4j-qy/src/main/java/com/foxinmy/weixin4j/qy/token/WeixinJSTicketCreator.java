@@ -41,7 +41,7 @@ public class WeixinJSTicketCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("qy_jsticket_%s", corpid);
+		return String.format("wx_qy_jsticket_%s", corpid);
 	}
 
 	@Override

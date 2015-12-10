@@ -24,7 +24,7 @@ public interface TokenCreator {
 	 * 创建token
 	 * 
 	 * @return
-	 * @throws MeetException
+	 * @throws WeixinException
 	 */
 	public Token createToken() throws WeixinException;
 }

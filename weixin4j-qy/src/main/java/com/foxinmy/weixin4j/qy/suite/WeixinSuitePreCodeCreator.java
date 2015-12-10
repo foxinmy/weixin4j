@@ -42,7 +42,7 @@ public class WeixinSuitePreCodeCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("qy_suite_precode_%s", suiteId);
+		return String.format("wx_qy_suite_precode_%s", suiteId);
 	}
 
 	@Override

@@ -533,3 +533,10 @@
   + weixin4j-base:调整Pay3Api退款方法名为 refundApply
   
   + weixin4j-base:调整Pay3Api#refundApply参数个数
+  
+  
+* 2015-12-10
+
+  + 添加可选[RedisTokenStorager](weixin4j-base/src/main/java/com/foxinmy/weixin4j/token/RedisTokenStorager.java)
+  
+  + 添加缓存token时的前缀`wx`

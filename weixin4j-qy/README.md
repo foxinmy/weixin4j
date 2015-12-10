@@ -100,7 +100,7 @@ weixin4j.properties说明
     //weixinSuiteProxy = new WeixinSuiteProxy(suiteId,suiteSecret);
     weixinSuiteProxy.api().getOAuthInfo(authCorpid);
 
-> 针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenStorager`,默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用[RedisTokenStorager](https://github.com/foxinmy/weixin4j/wiki/%E7%94%A8redis%E4%BF%9D%E5%AD%98token).
+> 针对`token`存储有两种方案,`File存储`/`Redis存储`,当然也可自己实现`TokenStorager`,默认使用文件(xml)的方式保存token,如果环境中支持`redis`,建议使用[RedisTokenStorager](../weixin4j-base/src/main/java/com/foxinmy/weixin4j/token/RedisTokenStorager.java).
 
 >   WeixinProxy weixinProxy = new WeixinProxy(new RedisTokenStorager());
 
