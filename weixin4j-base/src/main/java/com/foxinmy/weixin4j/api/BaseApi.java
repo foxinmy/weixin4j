@@ -59,7 +59,7 @@ public abstract class BaseApi {
 	static {
 		DEFAULT_WEIXIN_ACCOUNT = Weixin4jConfigUtil.getWeixinAccount();
 		DEFAULT_TOKEN_STORAGER = new FileTokenStorager(
-				Weixin4jConfigUtil.getValue("token_path",
+				Weixin4jConfigUtil.getValue("token.path",
 						Weixin4jConst.DEFAULT_TOKEN_PATH));
 	}
 }

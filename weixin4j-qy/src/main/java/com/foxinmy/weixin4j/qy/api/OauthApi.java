@@ -35,7 +35,7 @@ public class OauthApi extends QyApi {
 	 */
 	public String getUserAuthorizeURL() {
 		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("user_oauth_redirect_uri");
+		String redirectUri = Weixin4jConfigUtil.getValue("user.oauth.redirect.uri");
 		return getUserAuthorizeURL(corpId, redirectUri, "state");
 	}
 
@@ -73,7 +73,7 @@ public class OauthApi extends QyApi {
 	 */
 	public String getThirdAuthorizeURL() {
 		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("third_oauth_redirect_uri");
+		String redirectUri = Weixin4jConfigUtil.getValue("third.oauth.redirect.uri");
 		return getThirdAuthorizeURL(corpId, redirectUri, "state");
 	}
 
@@ -135,7 +135,7 @@ public class OauthApi extends QyApi {
 	 * @return
 	 */
 	public String getSuiteAuthorizeURL(String suiteId, String preAuthCode) {
-		String redirectUri = Weixin4jConfigUtil.getValue("suite_oauth_redirect_uri");
+		String redirectUri = Weixin4jConfigUtil.getValue("suite.oauth.redirect.uri");
 		return getSuiteAuthorizeURL(suiteId, preAuthCode, redirectUri, "state");
 	}
 

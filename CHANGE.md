@@ -540,3 +540,5 @@
   + 添加可选[RedisTokenStorager](weixin4j-base/src/main/java/com/foxinmy/weixin4j/token/RedisTokenStorager.java)
   
   + 添加缓存token时的前缀`wx`
+  
+  + 【特大注意】weixin4j.properties全部的属性名添加`weixin4j`前缀，并用`.`代替原来的`_`

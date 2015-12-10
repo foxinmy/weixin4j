@@ -249,7 +249,7 @@ public class MediaApi extends MpApi {
 	 */
 	public File downloadMediaFile(String mediaId, boolean isMaterial)
 			throws WeixinException {
-		String media_path = Weixin4jConfigUtil.getValue("media_path",
+		String media_path = Weixin4jConfigUtil.getValue("media.path",
 				Weixin4jConst.DEFAULT_MEDIA_PATH);
 		final String prefixName = String.format("%s.", mediaId);
 		File[] files = new File(media_path).listFiles(new FilenameFilter() {

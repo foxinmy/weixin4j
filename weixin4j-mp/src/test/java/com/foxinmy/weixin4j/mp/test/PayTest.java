@@ -37,7 +37,7 @@ public class PayTest {
 				"请填入v2版本的partnerKey");
 		PAY2 = new Pay2Api(ACCOUNT2, new FileTokenStorager(
 				Weixin4jConfigUtil
-						.getValue("token_path", "/tmp/weixin4j/token")));
+						.getValue("token.path", "/tmp/weixin4j/token")));
 		ACCOUNT3 = new WeixinPayAccount("请填入v3版本的appid", "请填入v3版本的appSecret",
 				"请填入v3版本的paysignkey", "请填入v3版本的mchid", null, null, null, null);
 		PAY3 = new WeixinPayProxy(ACCOUNT3);
@@ -74,7 +74,7 @@ public class PayTest {
 		c.set(Calendar.YEAR, 2014);
 		c.set(Calendar.MONTH, 11);
 		c.set(Calendar.DAY_OF_MONTH, 22);
-		File file = PAY2.downloadbill(c.getTime(), null);
+		File file = PAY2.downloadBill(c.getTime(), null);
 		System.err.println(file);
 	}
 

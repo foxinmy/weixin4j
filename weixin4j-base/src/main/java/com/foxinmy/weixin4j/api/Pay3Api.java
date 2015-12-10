@@ -39,6 +39,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConst;
 import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
@@ -305,7 +306,8 @@ public class Pay3Api {
 			billType = BillType.ALL;
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
-		String bill_path = Weixin4jConfigUtil.getValue("bill_path");
+		String bill_path = Weixin4jConfigUtil.getValue("bill.path",
+				Weixin4jConst.DEFAULT_BILL_PATH);
 		String fileName = String.format("%s_%s_%s.txt", formatBillDate,
 				billType.name().toLowerCase(), weixinAccount.getId());
 		File file = new File(String.format("%s/%s", bill_path, fileName));

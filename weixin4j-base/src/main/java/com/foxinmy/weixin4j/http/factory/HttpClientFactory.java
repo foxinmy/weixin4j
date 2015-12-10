@@ -28,7 +28,7 @@ public abstract class HttpClientFactory {
 	private static volatile HttpClientFactory defaultFactory = newDefaultFactory();
 
 	/**
-	 * NettyHttpClient -> ApachHttpClient -> SimpleHttpClient(HttpURLConnection)
+	 * NettyHttpClient -> ApacheHttpClient -> SimpleHttpClient(HttpURLConnection)
 	 * 
 	 * @return
 	 */

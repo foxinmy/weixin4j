@@ -115,7 +115,12 @@ public abstract class AbstractHttpClient implements HttpClient {
 	protected void handleResponse(HttpResponse response)
 			throws HttpClientException {
 		HttpStatus status = response.getStatus();
-		if (hasError(status)) {
+		HttpHeaders headers = response.getHeaders();
+		String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
+		boolean jsonResult = contentType != null
+				&& contentType.contains(ContentType.APPLICATION_JSON
+						.getMimeType());
+		if (!jsonResult && hasError(status)) {
 			switch (status.series()) {
 			case CLIENT_ERROR:
 			case SERVER_ERROR:

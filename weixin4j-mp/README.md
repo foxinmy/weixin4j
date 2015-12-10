@@ -43,7 +43,7 @@ weixin4j-mp
 
 如何使用
 --------
-0.maven依赖(1.6.4,2015-12-08 released)
+0.maven依赖(1.6.4,2015-12-10 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
@@ -56,32 +56,32 @@ weixin4j.properties说明
 
 | 属性名         |       说明      |
 | :----------	| :-------------- |
-| account     	| 微信公众号信息 `json格式`(使用new WeixinProxy()缺省构造器时须填写)  |
-| token_path  	| 使用FileTokenStorager时token保存的物理路径(非必须填写) |
-| qr_path     	| 调用二维码接口时保存二维码图片的物理路径(非必须填写) |
-| media_path  	| 调用媒体接口时保存媒体文件的物理路径(非必须填写) |
-| bill_path   	| 调用下载对账单接口保存文件的物理路径(非必须填写) |
-| ca_file     	| 调用某些接口(支付相关)强制需要auth的ca授权文件(按须填写) |
-| user_oauth_redirect_uri     | 调用OauthApi接口时需要填写的重定向路径(非必须填写) |
+| weixin4j.account     	| 微信公众号信息 `json格式`(使用new WeixinProxy()缺省构造器时须填写)  |
+| weixin4j.token.path  	| 使用FileTokenStorager时token保存的物理路径(非必须填写) |
+| weixin4j.qrcode.path     	| 调用二维码接口时保存二维码图片的物理路径(非必须填写) |
+| weixin4j.media.path  	| 调用媒体接口时保存媒体文件的物理路径(非必须填写) |
+| weixin4j.bill.path   	| 调用下载对账单接口保存文件的物理路径(非必须填写) |
+| weixin4j.certificate.file     	| 调用某些接口(支付相关)强制需要auth的ca授权文件(按须填写) |
+| weixin4j.user.oauth.redirect.uri     | 调用OauthApi接口时需要填写的重定向路径(非必须填写) |
 
 完整填写示例(properties中换行用右斜杆\\)
 
-	account={"id":"appId","secret":"appSecret",\
+	weixin4j.account={"id":"appId","secret":"appSecret",\
 		"mchId":"V3.x版本下的微信商户号",\
 		"partnerId":"V2版本下的财付通的商户号",\
 		"partnerKey":"V2版本下的财付通商户权限密钥Key",\
 		"paySignKey":"微信支付中调用API的密钥"}
 	
-	token_path=/tmp/weixin4j/token
-	qr_path=/tmp/weixin4j/qrcode
-	media_path=/tmp/weixin4j/media
-	bill_path=/tmp/weixin4j/bill
+	weixin4j.token.path=/tmp/weixin4j/token
+	weixin4j.qrcode.path=/tmp/weixin4j/qrcode
+	weixin4j.media.path=/tmp/weixin4j/media
+	weixin4j.bill.path=/tmp/weixin4j/bill
 	# ca证书存放的完整路径 (V2版本后缀为*.pfx,V3版本后缀为*.p12)
-	ca_file=/tmp/weixin4j/xxxxx.p12
-	#classpath路径下:ca_file=classpath:xxxxx.p12
+	weixin4j.certificate.file=/tmp/weixin4j/xxxxx.p12
+	#classpath路径下:weixin4j.certificate.file=classpath:xxxxx.p12
 	
 	#公众号登陆授权的重定向路径(使用OauthApi时需要填写)
-	user_oauth_redirect_uri=http://xxx
+	weixin4j.user.oauth.redirect.uri=http://xxx
 
 2.实例化微信企业号接口代理对象,调用具体的API方法
 

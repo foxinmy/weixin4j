@@ -80,7 +80,7 @@ public class QrApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 */
 	public File createQRFile(QRParameter parameter) throws WeixinException {
-		String qr_path = Weixin4jConfigUtil.getValue("qr_path",
+		String qr_path = Weixin4jConfigUtil.getValue("qrcode.path",
 				Weixin4jConst.DEFAULT_QRCODE_PATH);
 		String filename = String.format("%s_%s_%d.jpg", parameter.getQrType()
 				.name(), parameter.getSceneValue(), parameter

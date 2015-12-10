@@ -48,7 +48,7 @@ public class MenuTest extends TokenTest {
 
 	@Test
 	public void get() throws WeixinException {
-		btnList = menuApi.getMenu(1);
+		btnList = menuApi.getMenu(0);
 		for (Button btn : btnList) {
 			System.out.println(btn);
 		}

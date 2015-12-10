@@ -51,6 +51,7 @@ import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConst;
 import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 
 /**
@@ -346,7 +347,7 @@ public class Pay2Api extends MpApi {
 	 * @since V2
 	 * @throws WeixinException
 	 */
-	public File downloadbill(Date billDate, BillType billType)
+	public File downloadBill(Date billDate, BillType billType)
 			throws WeixinException {
 		if (billDate == null) {
 			Calendar now = Calendar.getInstance();
@@ -357,7 +358,8 @@ public class Pay2Api extends MpApi {
 			billType = BillType.ALL;
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
-		String bill_path = Weixin4jConfigUtil.getValue("bill_path");
+		String bill_path = Weixin4jConfigUtil.getValue("bill.path",
+				Weixin4jConst.DEFAULT_BILL_PATH);
 		String fileName = String.format("%s_%s_%s.txt", formatBillDate,
 				billType.name().toLowerCase(), weixinAccount.getId());
 		File file = new File(String.format("%s/%s", bill_path, fileName));

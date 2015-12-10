@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.util;
 import java.io.File;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.model.WeixinAccount;
@@ -23,12 +22,11 @@ public class Weixin4jConfigUtil {
 	private final static ResourceBundle weixinBundle;
 	static {
 		weixinBundle = ResourceBundle.getBundle("weixin4j");
-		Set<String> keySet = weixinBundle.keySet();
 		File file = null;
 		CLASSPATH_VALUE = Thread.currentThread().getContextClassLoader()
 				.getResource("").getPath();
-		for (String key : keySet) {
-			if (!key.endsWith("_path")) {
+		for (String key : weixinBundle.keySet()) {
+			if (!key.endsWith(".path")) {
 				continue;
 			}
 			file = new File(getValue(key).replaceFirst(CLASSPATH_PREFIX,
@@ -40,6 +38,15 @@ public class Weixin4jConfigUtil {
 		}
 	}
 
+	private final static String WEIXIN4J_PREFIX = "weixin4j";
+
+	private static String wrapKeyName(String key) {
+		if (!key.startsWith(WEIXIN4J_PREFIX)) {
+			return String.format("%s.%s", WEIXIN4J_PREFIX, key);
+		}
+		return key;
+	}
+	
 	/**
 	 * 获取weixin4j.properties文件中的key值
 	 * 
@@ -47,7 +54,8 @@ public class Weixin4jConfigUtil {
 	 * @return
 	 */
 	public static String getValue(String key) {
-		return weixinBundle.getString(key);
+		String wrapKey = wrapKeyName(key);
+		return System.getProperty(wrapKey, weixinBundle.getString(wrapKey));
 	}
 
 	/**
@@ -60,7 +68,7 @@ public class Weixin4jConfigUtil {
 	public static String getValue(String key, String defaultValue) {
 		String value = defaultValue;
 		try {
-			value = weixinBundle.getString(key);
+			value = getValue(key);
 		} catch (MissingResourceException e) {
 			System.err.println("'" + key
 					+ "' key not found in weixin4j.properties file.");
@@ -101,7 +109,8 @@ public class Weixin4jConfigUtil {
 	public static WeixinAccount getWeixinAccount() {
 		WeixinAccount account = null;
 		try {
-			account = JSON.parseObject(getValue("account"), WeixinAccount.class);
+			account = JSON
+					.parseObject(getValue("account"), WeixinAccount.class);
 		} catch (MissingResourceException e) {
 			System.err
 					.println("'account' key not found in weixin4j.properties file.");
