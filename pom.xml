@@ -116,6 +116,12 @@
 							</goals>
 						</execution>
 					</executions>
+					<configuration>
+						<excludes>
+							<exclude>*.properties</exclude>
+							<exclude>*.xml</exclude>
+						</excludes>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
