@@ -15,7 +15,7 @@ base on netty.
 
 如何使用
 -------
-###maven依赖(1.1.4,2015-12-08 released)
+###maven依赖(1.1.4,2015-12-10 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
