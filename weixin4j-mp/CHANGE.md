@@ -175,3 +175,7 @@
   + version upgrade to 1.6.4
   
   + 【特大注意】weixin4j.properties全部的属性名添加`weixin4j`前缀，并用`.`代替原来的`_`
+  
+* 2015-12-15
+  
+  + version upgrade to 1.6.5
