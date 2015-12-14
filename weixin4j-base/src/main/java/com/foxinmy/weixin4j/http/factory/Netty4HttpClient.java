@@ -145,6 +145,7 @@ public class Netty4HttpClient extends AbstractHttpClient {
 			ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer();
 			ByteBufOutputStream out = new ByteBufOutputStream(byteBuf);
 			entity.writeTo(out);
+			out.flush();
 			out.close();
 			uriRequest = new DefaultFullHttpRequest(
 					uriRequest.getProtocolVersion(), uriRequest.getMethod(),

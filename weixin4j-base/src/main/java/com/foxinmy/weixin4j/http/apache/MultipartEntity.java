@@ -165,5 +165,6 @@ public class MultipartEntity implements HttpEntity {
 
 	public void writeTo(final OutputStream outstream) throws IOException {
 		this.multipart.writeTo(outstream);
+		outstream.flush();
 	}
 }

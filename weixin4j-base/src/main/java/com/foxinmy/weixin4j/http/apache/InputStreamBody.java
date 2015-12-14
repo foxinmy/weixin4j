@@ -85,7 +85,7 @@ public class InputStreamBody extends AbstractContentBody {
 	}
 
 	public long getContentLength() {
-		return contentLength;
+		return this.contentLength;
 	}
 
 	public String getFilename() {
