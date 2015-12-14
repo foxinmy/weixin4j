@@ -92,6 +92,8 @@ public class HttpComponent3 extends AbstractHttpClient {
 			} else {
 				httpMethod.setURI(uri);
 			}
+			boolean useSSL = "https".equals(uri.getScheme());
+			SSLContext sslContext = null;
 			HttpParams params = request.getParams();
 			if (params != null) {
 				Proxy proxy = params.getProxy();
@@ -101,12 +103,9 @@ public class HttpComponent3 extends AbstractHttpClient {
 					httpClient.getHostConfiguration().setProxy(
 							socketAddress.getHostName(),
 							socketAddress.getPort());
+					useSSL = false;
 				}
-				SSLContext sslContext = params.getSSLContext();
-				if (sslContext != null) {
-					Protocol.registerProtocol("https", new Protocol("https",
-							new SSLProtocolSocketFactory(sslContext), 443));
-				}
+				sslContext = params.getSSLContext();
 				httpClient.getHttpConnectionManager().getParams()
 						.setConnectionTimeout(params.getConnectTimeout());
 				httpClient.getHttpConnectionManager().getParams()
@@ -114,6 +113,13 @@ public class HttpComponent3 extends AbstractHttpClient {
 				httpMethod.getParams().setUriCharset(Consts.UTF_8.name());
 				httpMethod.getParams().setSoTimeout(params.getSocketTimeout());
 				httpMethod.getParams().setContentCharset(Consts.UTF_8.name());
+			}
+			if (useSSL) {
+				if (sslContext == null) {
+					sslContext = HttpClientFactory.allowSSLContext();
+				}
+				Protocol.registerProtocol("https", new Protocol("https",
+						new SSLProtocolSocketFactory(sslContext), 443));
 			}
 			com.foxinmy.weixin4j.http.HttpHeaders headers = request
 					.getHeaders();

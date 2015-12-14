@@ -3,6 +3,8 @@ package com.foxinmy.weixin4j.http.factory;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import javax.net.ssl.SSLContext;
+
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.config.RequestConfig.Builder;
@@ -41,6 +43,9 @@ public class HttpComponent4_2 extends HttpComponent4 {
 		try {
 			HttpRequestBase uriRequest = methodMap.get(request.getMethod());
 			uriRequest.setURI(request.getURI());
+			boolean useSSL = "https".equals(request.getURI().getScheme());
+			SSLContext sslContext = null;
+			X509HostnameVerifier hostnameVerifier = null;
 			HttpParams params = request.getParams();
 			if (params != null) {
 				Builder requestConfig = RequestConfig.custom()
@@ -53,18 +58,23 @@ public class HttpComponent4_2 extends HttpComponent4 {
 					HttpHost proxy = new HttpHost(socketAddress.getHostName(),
 							socketAddress.getPort());
 					requestConfig.setProxy(proxy);
-				}
-				if (params.getSSLContext() != null) {
-					X509HostnameVerifier hostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
-					if (params.getHostnameVerifier() != null) {
-						hostnameVerifier = new CustomHostnameVerifier(
-								params.getHostnameVerifier());
-					}
-					httpClient = HttpClients.custom()
-							.setHostnameVerifier(hostnameVerifier)
-							.setSslcontext(params.getSSLContext()).build();
+					useSSL = false;
 				}
 				uriRequest.setConfig(requestConfig.build());
+				sslContext = params.getSSLContext();
+				hostnameVerifier = new CustomHostnameVerifier(
+						params.getHostnameVerifier());
+			}
+			if (useSSL) {
+				if (sslContext == null) {
+					sslContext = HttpClientFactory.allowSSLContext();
+				}
+				if (hostnameVerifier == null) {
+					hostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+				}
+				httpClient = HttpClients.custom()
+						.setHostnameVerifier(hostnameVerifier)
+						.setSslcontext(sslContext).build();
 			}
 			addHeaders(request.getHeaders(), uriRequest);
 			addEntity(request.getEntity(), uriRequest);
