@@ -207,7 +207,7 @@ public class MediaApi extends MpApi {
 				String media_upload_uri = getRequestUri("media_upload_uri");
 				response = weixinExecutor.post(String.format(media_upload_uri,
 						token.getAccessToken(), mediaType.name()),
-						new FormBodyPart("media", new ByteArrayBody(content, mediaType
+						new FormBodyPart("media", new InputStreamBody(new ByteArrayInputStream(content), mediaType
 										.getContentType().getMimeType(),
 								fileName)));
 				JSONObject obj = response.getAsJson();
