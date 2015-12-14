@@ -24,6 +24,7 @@ import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
+import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
 import com.foxinmy.weixin4j.http.apache.InputStreamBody;
 import com.foxinmy.weixin4j.http.apache.StringBody;
@@ -195,8 +196,7 @@ public class MediaApi extends MpApi {
 				response = weixinExecutor
 						.post(String.format(material_media_upload_uri,
 								token.getAccessToken()), new FormBodyPart(
-								"media", new InputStreamBody(
-										new ByteArrayInputStream(content),
+								"media", new ByteArrayBody(content,
 										mediaType.getContentType()
 												.getMimeType(), fileName)),
 								new FormBodyPart("type", new StringBody(
@@ -207,8 +207,7 @@ public class MediaApi extends MpApi {
 				String media_upload_uri = getRequestUri("media_upload_uri");
 				response = weixinExecutor.post(String.format(media_upload_uri,
 						token.getAccessToken(), mediaType.name()),
-						new FormBodyPart("media", new InputStreamBody(
-								new ByteArrayInputStream(content), mediaType
+						new FormBodyPart("media", new ByteArrayBody(content, mediaType
 										.getContentType().getMimeType(),
 								fileName)));
 				JSONObject obj = response.getAsJson();

@@ -27,8 +27,8 @@ import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
+import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
-import com.foxinmy.weixin4j.http.apache.InputStreamBody;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
@@ -130,18 +130,16 @@ public class MediaApi extends QyApi {
 				response = weixinExecutor.post(String.format(
 						material_media_upload_uri, token.getAccessToken(),
 						mediaType.name(), agentid), new FormBodyPart("media",
-						new InputStreamBody(new ByteArrayInputStream(content),
-								mediaType.getContentType().getMimeType(),
-								fileName)));
+						new ByteArrayBody(content, mediaType.getContentType()
+								.getMimeType(), fileName)));
 				return new MediaUploadResult(response.getAsJson().getString(
 						"media_id"), mediaType, new Date());
 			} else {
 				String media_upload_uri = getRequestUri("media_upload_uri");
 				response = weixinExecutor.post(String.format(media_upload_uri,
 						token.getAccessToken(), mediaType.name()),
-						new FormBodyPart("media", new InputStreamBody(
-								new ByteArrayInputStream(content), mediaType
-										.getContentType().getMimeType(),
+						new FormBodyPart("media", new ByteArrayBody(content,
+								mediaType.getContentType().getMimeType(),
 								fileName)));
 				JSONObject obj = response.getAsJson();
 				return new MediaUploadResult(obj.getString("media_id"),
