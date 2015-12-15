@@ -41,8 +41,8 @@ public class HttpComponent4_2 extends HttpComponent4 {
 	public HttpResponse execute(HttpRequest request) throws HttpClientException {
 		HttpResponse response = null;
 		try {
-			HttpRequestBase uriRequest = methodMap.get(request.getMethod());
-			uriRequest.setURI(request.getURI());
+			HttpRequestBase uriRequest = createHttpRequest(request.getMethod(),
+					request.getURI());
 			boolean useSSL = "https".equals(request.getURI().getScheme());
 			SSLContext sslContext = null;
 			X509HostnameVerifier hostnameVerifier = null;
