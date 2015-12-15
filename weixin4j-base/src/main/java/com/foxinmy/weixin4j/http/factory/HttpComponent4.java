@@ -62,7 +62,7 @@ public abstract class HttpComponent4 extends AbstractHttpClient {
 			return new HttpTrace(uri);
 		} else {
 			throw new HttpClientException("unknown request method " + method
-					+ "for" + uri);
+					+ " for " + uri);
 		}
 	}
 

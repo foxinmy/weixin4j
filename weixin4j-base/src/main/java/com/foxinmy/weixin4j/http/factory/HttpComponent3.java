@@ -81,7 +81,7 @@ public class HttpComponent3 extends AbstractHttpClient {
 				return new TraceMethod(uri.getEscapedURI());
 			} else {
 				throw new HttpClientException("unknown request method "
-						+ method + "for" + uri);
+						+ method + " for " + uri);
 			}
 			httpMethod.setURI(uri);
 		} catch (IOException e) {
