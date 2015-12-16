@@ -150,5 +150,10 @@ public enum EventType {
 	 * 
 	 * @see com.foxinmy.weixin4j.qy.event.EnterAgentEventMessage
 	 */
-	enter_agent;
+	enter_agent,
+	/**
+	 * 第三方应用套件消息
+	 * @see com.foxinmy.weixin4j.qy.suite.WeixinSuiteMessage
+	 */
+	suite;
 }

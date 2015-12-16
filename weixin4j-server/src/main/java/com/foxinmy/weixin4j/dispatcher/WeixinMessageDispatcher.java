@@ -30,7 +30,6 @@ import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.BlankResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
-import com.foxinmy.weixin4j.type.AccountType;
 import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
@@ -115,9 +114,7 @@ public class WeixinMessageDispatcher {
 	public void doDispatch(final ChannelHandlerContext context,
 			final WeixinRequest request,
 			final WeixinMessageTransfer messageTransfer) throws WeixinException {
-		WeixinMessageKey messageKey = defineMessageKey(
-				messageTransfer.getMsgType(), messageTransfer.getEventType(),
-				messageTransfer.getAccountType());
+		WeixinMessageKey messageKey = defineMessageKey(messageTransfer, request);
 		Class<? extends WeixinMessage> targetClass = messageMatcher
 				.match(messageKey);
 		Object message = messageRead(request.getOriginalContent(), targetClass);
@@ -149,17 +146,17 @@ public class WeixinMessageDispatcher {
 	/**
 	 * 声明messagekey
 	 * 
-	 * @param messageType
-	 *            消息类型
-	 * @param eventType
-	 *            事件类型
-	 * @param accountType
-	 *            账号类型
+	 * @param messageTransfer
+	 *            基础消息
+	 * @param request
+	 *            请求信息
 	 * @return
 	 */
-	protected WeixinMessageKey defineMessageKey(String messageType,
-			String eventType, AccountType accountType) {
-		return new WeixinMessageKey(messageType, eventType, accountType);
+	protected WeixinMessageKey defineMessageKey(
+			WeixinMessageTransfer messageTransfer, WeixinRequest request) {
+		return new WeixinMessageKey(messageTransfer.getMsgType(),
+				messageTransfer.getEventType(),
+				messageTransfer.getAccountType());
 	}
 
 	/**
