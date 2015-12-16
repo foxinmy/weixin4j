@@ -31,18 +31,18 @@
 
 * closeOrder: 关闭订单接口
 
-* downloadbill: 下载对账单接口
+* downloadBill: 下载对账单接口
 
 * refundQuery: 退款查询接口
 
 
-[Pay2Api](../api/Pay2Api.java)
+[Pay2Api](https://github.com/foxinmy/weixin4j/blob/master/weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/Pay2Api.java)
 -------------------------
 
 * orderQuery: 订单查询接口
 
 * refundOrder: 退款申请接口
 
-* downloadbill: 下载对账单接口
+* downloadBill: 下载对账单接口
 
 * refundQuery: 退款查询接口

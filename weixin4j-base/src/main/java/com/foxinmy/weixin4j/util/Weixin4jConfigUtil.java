@@ -46,7 +46,7 @@ public class Weixin4jConfigUtil {
 		}
 		return key;
 	}
-	
+
 	/**
 	 * 获取weixin4j.properties文件中的key值
 	 * 
@@ -70,9 +70,8 @@ public class Weixin4jConfigUtil {
 		try {
 			value = getValue(key);
 		} catch (MissingResourceException e) {
-			System.err.println("'" + key
-					+ "' key not found in weixin4j.properties file.");
-			; // error
+			System.err.println("'" + wrapKeyName(key)
+					+ "' key not found in weixin4j.properties.");
 		}
 		return value;
 	}
@@ -95,15 +94,8 @@ public class Weixin4jConfigUtil {
 	 * @return
 	 */
 	public static String getClassPathValue(String key, String defaultValue) {
-		String value = defaultValue;
-		try {
-			value = getClassPathValue(key);
-		} catch (MissingResourceException e) {
-			System.err.println("'" + key
-					+ "' key not found in weixin4j.properties file.");
-			; // error
-		}
-		return value;
+		return new File(getValue(key, defaultValue).replaceFirst(
+				CLASSPATH_PREFIX, CLASSPATH_VALUE)).getPath();
 	}
 
 	public static WeixinAccount getWeixinAccount() {
@@ -113,8 +105,7 @@ public class Weixin4jConfigUtil {
 					.parseObject(getValue("account"), WeixinAccount.class);
 		} catch (MissingResourceException e) {
 			System.err
-					.println("'account' key not found in weixin4j.properties file.");
-			; // error
+					.println("'weixin4j.account' key not found in weixin4j.properties.");
 		}
 		return account;
 	}
