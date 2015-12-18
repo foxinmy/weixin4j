@@ -547,3 +547,7 @@
 * 2015-12-15
   
   + weixin4j-[mp|qy]:version upgrade to 1.6.5
+  
+* 2015-12-18
+
+  + weixin4j-mp:新增个性化菜单接口

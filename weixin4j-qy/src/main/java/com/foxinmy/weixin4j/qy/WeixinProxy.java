@@ -199,7 +199,7 @@ public class WeixinProxy {
 	/**
 	 * 自定义菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
 	 * 
-	 * @param btnList
+	 * @param buttons
 	 *            菜单列表
 	 * @param agentid
 	 *            应用ID
@@ -210,9 +210,9 @@ public class WeixinProxy {
 	 *      创建自定义菜单</a>
 	 * @see com.foxinmy.weixin4j.model.Button
 	 */
-	public JsonResult createMenu(List<Button> btnList, int agentid)
+	public JsonResult createMenu(List<Button> buttons, int agentid)
 			throws WeixinException {
-		return menuApi.createMenu(btnList, agentid);
+		return menuApi.createMenu(buttons, agentid);
 	}
 
 	/**

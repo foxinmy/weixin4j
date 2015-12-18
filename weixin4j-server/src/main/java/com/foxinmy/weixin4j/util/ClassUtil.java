@@ -205,7 +205,6 @@ public final class ClassUtil {
 
 	public static void main(String[] args) {
 		System.err
-				.println(getClasses(com.foxinmy.weixin4j.handler.WeixinMessageHandler.class
-						.getPackage().getName()));
+				.println(getClasses("com.foxinmy.weixin4j.qy.event"));
 	}
 }

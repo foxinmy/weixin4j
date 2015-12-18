@@ -35,6 +35,7 @@ import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
+import com.foxinmy.weixin4j.mp.model.Menu;
 import com.foxinmy.weixin4j.mp.model.MenuSetting;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.QRResult;
@@ -1084,7 +1085,7 @@ public class WeixinProxy {
 	/**
 	 * 自定义菜单
 	 * 
-	 * @param btnList
+	 * @param buttons
 	 *            菜单列表
 	 * @throws WeixinException
 	 * @see <a
@@ -1093,8 +1094,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.type.ButtonType
 	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
 	 */
-	public JsonResult createMenu(List<Button> btnList) throws WeixinException {
-		return menuApi.createMenu(btnList);
+	public JsonResult createMenu(List<Button> buttons) throws WeixinException {
+		return menuApi.createMenu(buttons);
 	}
 
 	/**
@@ -1112,16 +1113,61 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 查询全部菜单(包含个性化菜单)
+	 * 
+	 * @return 菜单集合
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/16/ff9b7b85220e1396ffa16794a9d95adc.html">查询菜单</a>
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/0/c48ccd12b69ae023159b4bfaa7c39c20.html">个性化菜单</a>
+	 * @see com.foxinmy.weixin4j.model.Button
+	 * @see com.foxinmy.weixin4j.mp.model.Menu
+	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
+	 */
+	public List<Menu> getAllMenu() throws WeixinException {
+		return menuApi.getAllMenu();
+	}
+
+	/**
 	 * 删除菜单
 	 * 
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/16/8ed41ba931e4845844ad6d1eeb8060c8.html">删除菜单</a>
-	 * @see com.foxinmy.weixin4j.model.Button
 	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
 	 */
 	public JsonResult deleteMenu() throws WeixinException {
 		return menuApi.deleteMenu();
+	}
+
+	/**
+	 * 删除个性化菜单
+	 * 
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/0/c48ccd12b69ae023159b4bfaa7c39c20.html#.E5.88.A0.E9.99.A4.E4.B8.AA.E6.80.A7.E5.8C.96.E8.8F.9C.E5.8D.95">删除个性化菜单</a>
+	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
+	 * @return 处理结果
+	 */
+	public JsonResult deleteCustomMenu(String menuId) throws WeixinException {
+		return menuApi.deleteCustomMenu(menuId);
+	}
+
+	/**
+	 * 测试个性化菜单匹配结果
+	 * 
+	 * @param userId
+	 *            可以是粉丝的OpenID，也可以是粉丝的微信号。
+	 * @return 匹配到的菜单配置
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/0/c48ccd12b69ae023159b4bfaa7c39c20.html#.E6.B5.8B.E8.AF.95.E4.B8.AA.E6.80.A7.E5.8C.96.E8.8F.9C.E5.8D.95.E5.8C.B9.E9.85.8D.E7.BB.93.E6.9E.9C">测试个性化菜单</a>
+	 * @see com.foxinmy.weixin4j.model.Button
+	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
+	 * @throws WeixinException
+	 */
+	public List<Button> matchCustomMenu(String userId) throws WeixinException {
+		return menuApi.matchCustomMenu(userId);
 	}
 
 	/**
