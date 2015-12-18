@@ -551,3 +551,5 @@
 * 2015-12-18
 
   + weixin4j-mp:新增个性化菜单接口
+  
+  + weixin4j-mp:WeixinProxy.getCustomRecord 参数变更为 Date startTime, Date endTime, Pageable pageable

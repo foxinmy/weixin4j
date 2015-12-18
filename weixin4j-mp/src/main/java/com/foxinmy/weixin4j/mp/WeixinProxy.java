@@ -440,16 +440,12 @@ public class WeixinProxy {
 	/**
 	 * 客服聊天记录
 	 * 
-	 * @param openId
-	 *            用户标识 为空时则查询全部记录
-	 * @param starttime
+	 * @param startTime
 	 *            查询开始时间
-	 * @param endtime
+	 * @param endTime
 	 *            查询结束时间 每次查询不能跨日查询
-	 * @param pagesize
-	 *            每页大小 每页最多拉取50条
-	 * @param pageindex
-	 *            查询第几页 从1开始
+	 * @param pageable
+	 *            分页数据
 	 * @see com.foxinmy.weixin4j.mp.model.CustomRecord
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
 	 * @see <a href="http://dkf.qq.com/document-1_1.html">查询客服聊天记录</a>
@@ -457,10 +453,9 @@ public class WeixinProxy {
 	 *      href="http://mp.weixin.qq.com/wiki/19/7c129ec71ddfa60923ea9334557e8b23.html">查询客服聊天记录</a>
 	 * @throws WeixinException
 	 */
-	public List<CustomRecord> getCustomRecord(String openId, Date starttime,
-			Date endtime, int pagesize, int pageindex) throws WeixinException {
-		return customApi.getCustomRecord(openId, starttime, endtime, pagesize,
-				pageindex);
+	public List<CustomRecord> getCustomRecord(Date startTime, Date endTime,
+			Pageable pageable) throws WeixinException {
+		return customApi.getCustomRecord(startTime, endTime, pageable);
 	}
 
 	/**
