@@ -33,6 +33,10 @@ public class NativePayResponse extends ApiResult {
 	@JSONField(name = "prepay_id")
 	private String prepayId;
 
+	@XmlTransient
+	@JSONField(serialize = false)
+	private WeixinPayAccount weixinAccount;
+
 	protected NativePayResponse() {
 		// jaxb required
 	}
@@ -40,17 +44,21 @@ public class NativePayResponse extends ApiResult {
 	/**
 	 * 作为return_code 为 FAIL 的时候返回
 	 * 
+	 * @param weixinAccount
+	 *            商户信息
 	 * @param returnMsg
 	 *            失败消息
 	 * @param resultMsg
 	 *            结果消息
 	 * @throws WeixinPayException
 	 */
-	public NativePayResponse(String returnMsg, String resultMsg) {
+	public NativePayResponse(WeixinPayAccount weixinAccount, String returnMsg,
+			String resultMsg) {
 		super.setReturnMsg(returnMsg);
 		super.setReturnCode(Consts.FAIL);
 		super.setErrCodeDes(resultMsg);
 		super.setResultCode(Consts.FAIL);
+		this.weixinAccount = weixinAccount;
 	}
 
 	/**
@@ -69,6 +77,7 @@ public class NativePayResponse extends ApiResult {
 		this.setAppId(weixinAccount.getId());
 		this.setNonceStr(RandomUtil.generateString(16));
 		this.prepayId = prepayId;
+		this.weixinAccount = weixinAccount;
 	}
 
 	public String getPrepayId() {
@@ -76,18 +85,7 @@ public class NativePayResponse extends ApiResult {
 	}
 
 	/**
-	 * 针对已签名的 NativePayResponse
-	 * 
-	 * @return native回调字符串
-	 */
-	@XmlTransient
-	@JSONField(serialize = false)
-	public String asRequestXml() {
-		return XmlStream.toXML(this);
-	}
-
-	/**
-	 * 针对未签名的 NativePayResponse
+	 * 生成 回调字符串
 	 * 
 	 * @param paySignKey
 	 *            支付签名密钥
@@ -95,8 +93,8 @@ public class NativePayResponse extends ApiResult {
 	 */
 	@XmlTransient
 	@JSONField(serialize = false)
-	public String asRequestXml(String paysignKey) {
-		this.setSign(DigestUtil.paysignMd5(this, paysignKey));
+	public String asRequestXml() {
+		this.setSign(DigestUtil.paysignMd5(this, weixinAccount.getPaySignKey()));
 		return XmlStream.toXML(this);
 	}
 

@@ -109,7 +109,7 @@ public class Pay3Api {
 	}
 
 	/**
-	 * 生成V3.x版本JSAPI支付字符串
+	 * 生成V3.x版本JSAPI支付请求对象
 	 * 
 	 * @param openId
 	 *            用户ID
@@ -123,21 +123,19 @@ public class Pay3Api {
 	 *            支付通知地址
 	 * @param createIp
 	 *            ip地址
-	 * @param weixinAccount
-	 *            商户信息
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest
 	 * @return 支付json串
 	 * @throws WeixinPayException
 	 */
-	public String createPayJsRequestJson(String openId, String body,
+	public MchPayRequest createPayJsRequestJson(String openId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, WeixinPayAccount weixinAccount)
-			throws WeixinPayException {
-		return JSON.toJSONString(createPayJsRequest(openId, body, outTradeNo,
-				totalFee, notifyUrl, createIp, null, null, null, null, null));
+			String createIp) throws WeixinPayException {
+		return createPayJsRequest(openId, body, outTradeNo, totalFee,
+				notifyUrl, createIp, null, null, null, null, null);
 	}
 
 	/**
-	 * 生成V3.x版本JSAPI支付对象【完整参数】
+	 * 生成V3.x版本JSAPI支付请求对象【完整参数】
 	 * 
 	 * @param openId
 	 *            用户ID
