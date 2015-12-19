@@ -7,7 +7,7 @@
 **在`2014年10月9号`之前申请并审核通过的支付接口应该属于`V2版本`支付,而之后申请的接口则为`V3版本(商户平台)`支付**
 
 
-[Pay3Api](../api/Pay3Api.java)
+[WeixinPayProxy](WeixinPayProxy.java)
 -------------------------
 
 * createPayJsRequestJson: 创建V3版本(商户平台)的JSAPI支付串
