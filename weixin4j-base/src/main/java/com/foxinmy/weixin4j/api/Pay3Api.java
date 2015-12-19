@@ -127,7 +127,7 @@ public class Pay3Api {
 	 * @return 支付json串
 	 * @throws WeixinPayException
 	 */
-	public MchPayRequest createPayJsRequestJson(String openId, String body,
+	public MchPayRequest createPayJsRequest(String openId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp) throws WeixinPayException {
 		return createPayJsRequest(openId, body, outTradeNo, totalFee,

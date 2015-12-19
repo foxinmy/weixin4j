@@ -111,11 +111,11 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest
 	 * @throws WeixinPayException
 	 */
-	public MchPayRequest createPayJsRequestJson(String openId, String body,
+	public MchPayRequest createPayJsRequest(String openId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp) throws WeixinPayException {
-		return pay3Api.createPayJsRequestJson(openId, body, outTradeNo,
-				totalFee, notifyUrl, createIp);
+		return pay3Api.createPayJsRequest(openId, body, outTradeNo, totalFee,
+				notifyUrl, createIp);
 	}
 
 	/**

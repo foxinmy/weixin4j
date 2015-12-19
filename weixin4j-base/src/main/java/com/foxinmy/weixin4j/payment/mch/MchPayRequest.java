@@ -43,14 +43,12 @@ public class MchPayRequest extends PayRequest {
 	}
 
 	public MchPayRequest(PrePay prePay) {
-		this.setAppId(prePay.getAppId());
-		this.setPackageInfo("prepay_id=" + prePay.getPrepayId());
+		super(prePay.getAppId(), "prepay_id=" + prePay.getPrepayId());
 		this.prePay = prePay;
 	}
 
 	public MchPayRequest(String appId, String prepayId) {
-		this.setAppId(appId);
-		this.setPackageInfo("prepay_id=" + prepayId);
+		super(appId, "prepay_id=" + prepayId);
 		this.prePay = new PrePay();
 		this.prePay.setAppId(appId);
 		this.prePay.setPrepayId(prepayId);
