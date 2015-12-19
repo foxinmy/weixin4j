@@ -92,3 +92,7 @@
   +【重要】修改PayUtil中的createPayJsRequest方法的返回值为MchPayRequest，便于二次发起支付。
   
   +【重要】添加MchPayRequest的构造函数，便于二次发起支付。
+  
+* 2015-12-19
+
+  + 删除PayUtil类,接口转移到PayApi类

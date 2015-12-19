@@ -2,19 +2,22 @@ package com.foxinmy.weixin4j.payment.mch;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.payment.PayUtil;
+import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * Native支付时的回调响应
  * 
- * @className NativePayResponseV3
+ * @className NativePayResponse
  * @author jy
  * @date 2014年10月28日
  * @since JDK 1.6
@@ -26,10 +29,7 @@ public class NativePayResponse extends ApiResult {
 
 	private static final long serialVersionUID = 6119895998783333012L;
 
-	@XmlTransient
-	@JSONField(serialize = false)
-	private PrePay prePay;
-
+	@XmlElement(name = "prepay_id")
 	@JSONField(name = "prepay_id")
 	private String prepayId;
 
@@ -38,7 +38,7 @@ public class NativePayResponse extends ApiResult {
 	}
 
 	/**
-	 * 一般作为校验失败时返回
+	 * 作为return_code 为 FAIL 的时候返回
 	 * 
 	 * @param returnMsg
 	 *            失败消息
@@ -56,33 +56,53 @@ public class NativePayResponse extends ApiResult {
 	/**
 	 * 作为return_code 为 SUCCESS 的时候返回
 	 * 
-	 * @param payPackage
-	 *            订单信息
+	 * @param weixinAccount
+	 *            商户信息
+	 * @param prepayId
+	 *            调用统一下单接口生成的预支付ID
 	 * @throws WeixinPayException
 	 */
-	public NativePayResponse(MchPayPackage payPackage, String paysignKey)
-			throws WeixinPayException {
+	public NativePayResponse(WeixinPayAccount weixinAccount, String prepayId) {
 		super.setReturnCode(Consts.SUCCESS);
 		this.setResultCode(Consts.SUCCESS);
-		this.setMchId(payPackage.getMchId());
-		this.setAppId(payPackage.getAppId());
+		this.setMchId(weixinAccount.getMchId());
+		this.setAppId(weixinAccount.getId());
 		this.setNonceStr(RandomUtil.generateString(16));
-		this.prePay = PayUtil.createPrePay(payPackage, paysignKey);
-		this.prepayId = prePay.getPrepayId();
+		this.prepayId = prepayId;
 	}
 
 	public String getPrepayId() {
 		return prepayId;
 	}
 
-	public void setPrepayId(String prepayId) {
-		this.prepayId = prepayId;
+	/**
+	 * 针对已签名的 NativePayResponse
+	 * 
+	 * @return native回调字符串
+	 */
+	@XmlTransient
+	@JSONField(serialize = false)
+	public String asRequestXml() {
+		return XmlStream.toXML(this);
+	}
+
+	/**
+	 * 针对未签名的 NativePayResponse
+	 * 
+	 * @param paySignKey
+	 *            支付签名密钥
+	 * @return native回调字符串
+	 */
+	@XmlTransient
+	@JSONField(serialize = false)
+	public String asRequestXml(String paysignKey) {
+		this.setSign(DigestUtil.paysignMd5(this, paysignKey));
+		return XmlStream.toXML(this);
 	}
 
 	@Override
 	public String toString() {
-		return "NativePayResponseV3 [prePay=" + prePay + ", prepayId="
-				+ prepayId + ", " + super.toString() + "]";
+		return "NativePayResponse [prepayId=" + prepayId + ", "
+				+ super.toString() + "]";
 	}
-
 }

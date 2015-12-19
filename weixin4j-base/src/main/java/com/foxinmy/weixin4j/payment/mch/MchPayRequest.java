@@ -8,8 +8,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.payment.PayRequest;
-import com.foxinmy.weixin4j.payment.PayUtil;
 import com.foxinmy.weixin4j.type.SignType;
+import com.foxinmy.weixin4j.util.DigestUtil;
 
 /**
  * JS支付:get_brand_wcpay_request</br>
@@ -71,7 +71,7 @@ public class MchPayRequest extends PayRequest {
 	@JSONField(serialize = false)
 	public String asPayJsRequestJson(String paySignKey) {
 		this.setSignType(SignType.MD5);
-		this.setPaySign(PayUtil.paysignMd5(this, paySignKey));
+		this.setPaySign(DigestUtil.paysignMd5(this, paySignKey));
 		return asPayJsRequestJson();
 	}
 

@@ -6,7 +6,8 @@
 
 **在`2014年10月9号`之前申请并审核通过的支付接口应该属于`V2版本`支付,而之后申请的接口则为`V3版本(商户平台)`支付**
 
-[PayUtil](./PayUtil.java)
+
+[Pay3Api](../api/Pay3Api.java)
 -------------------------
 
 * createPayJsRequestJson: 创建V3版本(商户平台)的JSAPI支付串
@@ -16,12 +17,6 @@
 * createPrePay: 调用V3版本(商户平台)的统一订单接口生成预订单数据
 
 * createMicroPay: 创建刷卡支付(商户平台)请求
-
-* createAddressRequestJson: 生成编辑收货地址请求串
-
-
-[Pay3Api](../api/Pay3Api.java)
--------------------------
 
 * orderQuery: 订单查询接口
 
@@ -38,6 +33,10 @@
 
 [Pay2Api](https://github.com/foxinmy/weixin4j/blob/master/weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/Pay2Api.java)
 -------------------------
+
+* createPayJsRequestJson: 创建V2版本的JSAPI支付串
+
+* createNativePayRequestURL: 创建V2版本的扫码支付链接
 
 * orderQuery: 订单查询接口
 

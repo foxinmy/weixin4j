@@ -12,10 +12,10 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayURLConsts;
-import com.foxinmy.weixin4j.payment.PayUtil;
 import com.foxinmy.weixin4j.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.payment.coupon.CouponStock;
+import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
@@ -75,7 +75,7 @@ public class CouponApi {
 		map.put("op_user_id", opUserId);
 		map.put("version", "1.0");
 		map.put("type", "XML");
-		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
+		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = null;
@@ -112,7 +112,7 @@ public class CouponApi {
 			throws WeixinException {
 		Map<String, String> map = baseMap();
 		map.put("coupon_stock_id", couponStockId);
-		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
+		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
@@ -136,7 +136,7 @@ public class CouponApi {
 			throws WeixinException {
 		Map<String, String> map = baseMap();
 		map.put("coupon_id", couponId);
-		String sign = PayUtil.paysignMd5(map, weixinAccount.getPaySignKey());
+		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
 		map.put("sign", sign);
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(

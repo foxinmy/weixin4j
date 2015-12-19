@@ -553,3 +553,8 @@
   + weixin4j-mp:新增个性化菜单接口
   
   + weixin4j-mp:WeixinProxy.getCustomRecord 参数变更为 Date startTime, Date endTime, Pageable pageable
+  
+  
+* 2015-12-19
+
+  + weixin4j-base:删除PayUtil类,接口转移到PayApi类
