@@ -124,7 +124,9 @@ public class Pay3Api {
 	 * @param createIp
 	 *            ip地址
 	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest
-	 * @return 支付json串
+	 * @return MchPayRequest对象；<font
+	 *         color="red">注意：如果要转换为JSON格式请使用fastjson中的JSON
+	 *         #toJSONString方法或直接用MchPayRequest#asPayJsRequestJson方法</font>
 	 * @throws WeixinPayException
 	 */
 	public MchPayRequest createPayJsRequest(String openId, String body,
@@ -241,7 +243,7 @@ public class Pay3Api {
 	}
 
 	/**
-	 * 创建V3.x NativePay支付(扫码支付)链接【模式二】【完整参数】
+	 * 创建V3.x Native支付(扫码支付)链接【模式二】【完整参数】
 	 * 
 	 * @param productId
 	 *            商品ID

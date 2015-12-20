@@ -106,7 +106,9 @@ public class WeixinPayProxy {
 	 *            支付通知地址
 	 * @param createIp
 	 *            ip地址
-	 * @return 支付json串
+	 * @return MchPayRequest对象；<font
+	 *         color="red">注意：如果要转换为JSON格式请使用fastjson中的JSON
+	 *         #toJSONString方法或直接用MchPayRequest#asPayJsRequestJson方法</font>
 	 * @see com.foxinmy.weixin4j.api.Pay3Api
 	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest
 	 * @throws WeixinPayException
@@ -146,8 +148,8 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.api.Pay3Api
 	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest
 	 * @return MchPayRequest对象；<font
-	 *         color="red">注意：如果要转换为JSON格式请使用fastjson中的JSON对象或者直接用MchPayRequest#
-	 *         asPayJsRequestJson方法</font>
+	 *         color="red">注意：如果要转换为JSON格式请使用fastjson中的JSON
+	 *         #toJSONString方法或直接用MchPayRequest#asPayJsRequestJson方法</font>
 	 * @throws WeixinPayException
 	 */
 	public MchPayRequest createPayJsRequest(String openId, String body,
@@ -204,7 +206,7 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * 创建V3.x NativePay支付(扫码支付)链接【模式二】【完整参数】
+	 * 创建Native支付(扫码支付)链接【模式二】【完整参数】
 	 * 
 	 * @param productId
 	 *            商品ID
