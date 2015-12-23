@@ -558,3 +558,8 @@
 * 2015-12-19
 
   + weixin4j-base:删除PayUtil类,接口转移到PayApi类
+  
+  
+* 2015-12-21
+  
+  + weixin4j-server:WeixinMessageHanlder中新增weight接口

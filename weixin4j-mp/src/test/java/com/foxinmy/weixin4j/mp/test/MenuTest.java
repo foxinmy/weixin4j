@@ -47,6 +47,7 @@ public class MenuTest extends TokenTest {
 				"小哥介绍",
 				"http://mp.weixin.qq.com/s?__biz=MzI2MTA5OTM4OQ==&mid=400990970&idx=1&sn=5c7fd72e782c49f7c933b91c63eddc80#rd",
 				ButtonType.view));
+		button.pushSub(new Button("兴趣部落", "http://buluo.qq.com/p/barindex.html?from=share&bid=282651", ButtonType.view));
 		button.pushSub(new Button("服务流程", "FLOW", ButtonType.click));
 		button.pushSub(new Button("在线客服", "KF", ButtonType.click));
 		buttons.add(button);

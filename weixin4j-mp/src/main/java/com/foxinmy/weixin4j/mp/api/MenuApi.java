@@ -58,7 +58,7 @@ public class MenuApi extends MpApi {
 	private JsonResult createMenu0(String url, JSONObject data)
 			throws WeixinException {
 		WeixinResponse response = weixinExecutor.post(
-				String.format(url, tokenHolder.getAccessToken()),
+				String.format(url, "h5hb64iP9mBzt0rK6DW1OuOpE066F6iQXmHUqJ83fxTHkDaA0tNOjMMuUrWGwAves4Vi5bfwPKdp3IVhCsZCOHhsX74GXnrTtMg_oFPgiUwSXEhAIABGN"),
 				JSON.toJSONString(data, new NameFilter() {
 					@Override
 					public String process(Object object, String name,
