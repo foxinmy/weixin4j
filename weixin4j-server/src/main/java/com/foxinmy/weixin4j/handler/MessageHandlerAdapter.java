@@ -62,4 +62,11 @@ public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements
 	public abstract WeixinResponse doHandle0(WeixinRequest request, M message)
 			throws WeixinException;
 
+	/**
+	 * 存在多个匹配到的MessageHandler则比较
+	 */
+	@Override
+	public int weight() {
+		return 1;
+	}
 }

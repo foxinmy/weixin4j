@@ -111,3 +111,7 @@
 * 2015-12-08
   
   + version upgrade to 1.1.4
+  
+* 2015-12-21
+  
+  + WeixinMessageHanlder中新增weight接口

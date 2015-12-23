@@ -9,6 +9,9 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -204,13 +207,24 @@ public class WeixinMessageDispatcher {
 		if (messageHandlers == null) {
 			return null;
 		}
-		WeixinMessageHandler messageHandler = null;
+		List<WeixinMessageHandler> matchingMessageHandlers = new ArrayList<WeixinMessageHandler>();
 		for (WeixinMessageHandler handler : messageHandlers) {
 			if (handler.canHandle(request, message, nodeNames)) {
-				messageHandler = handler;
-				break;
+				matchingMessageHandlers.add(handler);
 			}
 		}
+		if (matchingMessageHandlers.isEmpty()) {
+			return null;
+		}
+		Collections.sort(matchingMessageHandlers,
+				new Comparator<WeixinMessageHandler>() {
+					@Override
+					public int compare(WeixinMessageHandler m1,
+							WeixinMessageHandler m2) {
+						return m2.weight() - m1.weight();
+					}
+				});
+		WeixinMessageHandler messageHandler = matchingMessageHandlers.get(0);
 		return new MessageHandlerExecutor(context, messageHandler,
 				getMessageInterceptors());
 	}

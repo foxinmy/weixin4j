@@ -38,4 +38,9 @@ public class DebugMessageHandler implements WeixinMessageHandler {
 				: message.toString();
 		return new TextResponse(content);
 	}
+
+	@Override
+	public int weight() {
+		return 0;
+	}
 }

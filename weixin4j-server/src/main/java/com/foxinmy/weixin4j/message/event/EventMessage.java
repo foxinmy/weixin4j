@@ -21,6 +21,10 @@ public class EventMessage extends WeixinMessage {
 
 	private static final long serialVersionUID = 7703667223814088865L;
 
+	protected EventMessage() {
+		// jaxb requried
+	}
+
 	public EventMessage(String eventType) {
 		super(MessageType.event.name());
 		this.eventType = eventType;
