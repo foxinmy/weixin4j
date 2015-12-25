@@ -40,9 +40,11 @@ import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.suite.WeixinTokenSuiteCreator;
+import com.foxinmy.weixin4j.qy.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.qy.type.InviteType;
+import com.foxinmy.weixin4j.qy.type.TicketType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
@@ -162,15 +164,15 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 获取JSSDK的tokenHolder
+	 * 获取JSSDK Ticket的tokenHolder
 	 * 
+	 * @param ticketType
+	 *            票据类型
 	 * @return
 	 */
-	public TokenHolder getJSTicketHolder() {
-		return new TokenHolder(
-				new com.foxinmy.weixin4j.qy.token.WeixinJSTicketCreator(
-						this.corpId, this.tokenHolder),
-				this.tokenHolder.getTokenStorager());
+	public TokenHolder getTicketHolder(TicketType ticketType) {
+		return new TokenHolder(new WeixinTicketCreator(this.corpId, ticketType,
+				this.tokenHolder), this.tokenHolder.getTokenStorager());
 	}
 
 	/**

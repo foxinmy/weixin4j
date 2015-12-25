@@ -48,7 +48,7 @@ public class NotifyMessage implements Serializable {
 	private IdParameter target;
 
 	public NotifyMessage(int agentid, NotifyTuple tuple) {
-		this(agentid, tuple, IdParameter.get(), false);
+		this(agentid, tuple, new IdParameter(), false);
 	}
 
 	public NotifyMessage(int agentId, NotifyTuple tuple, IdParameter target,

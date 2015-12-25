@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
- * JSSDK帮助类
+ * JSSDK配置类
  * 
  * @className JSSDKConfigurator
  * @author jy
@@ -30,7 +30,7 @@ public class JSSDKConfigurator {
 	private Set<JSSDKAPI> apis;
 
 	/**
-	 * ticket保存类 可调用WeixinProxy#getJSTicketHolder获取
+	 * ticket保存类 可调用WeixinProxy#getTicketHolder获取
 	 * 
 	 * @param ticketTokenHolder
 	 */
@@ -93,7 +93,7 @@ public class JSSDKConfigurator {
 	}
 
 	/**
-	 * 生成config字符串
+	 * 生成config配置JSON串
 	 * 
 	 * @param url
 	 *            当前网页的URL，不包含#及其后面部分

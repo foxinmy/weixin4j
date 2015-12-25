@@ -571,6 +571,10 @@
   
   + weixin4j-base:新增JSSDK的config生成类
   
+  + weixin4j-base:JSSDKHelper 重命名为 JSSDKConfigurator
+  
+  + weixin4j-base:重构了token类
+  
   + weixin4j-mp:WeixinProxy新增获取appid(getAppId)方法
   
   + weixin4j-mp:WeixinProxy新增获取jsticket(getJSTicketHolder)方法
@@ -584,3 +588,10 @@
   + weixin4j-qy:私有化WeixinProxy(TokenHolder)构造器
   
   + weixin4j-qy:SuiteApi新增获取Weixinproxy对象(getWeixinProxy)方法
+  
+  + weixin4j-qy:删除WeixinJSTicketCreator类
+  
+  + weixin4j-qy:新增企业号联系人筛选配置类(JSSDKContactConfigurator)
+  
+  + weixin4j-server:DigestUtil 重命名为 DigestUtils
+  

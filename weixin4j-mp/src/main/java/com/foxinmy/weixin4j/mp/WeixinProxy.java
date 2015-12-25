@@ -160,7 +160,7 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 获取JSSDK的tokenHolder
+	 * 获取JSSDK JSTicket的tokenHolder
 	 * 
 	 * @return
 	 */
