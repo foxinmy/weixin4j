@@ -1,7 +1,7 @@
-package com.foxinmy.weixin4j.qy.type;
+package com.foxinmy.weixin4j.type;
 
 /**
- * 票据类型
+ * 票据类型(一般用于JSSDK
  * 
  * @className TicketType
  * @author jy
@@ -11,11 +11,15 @@ package com.foxinmy.weixin4j.qy.type;
  */
 public enum TicketType {
 	/**
-	 * jsticket
+	 * jsapi
 	 */
-	jsticket,
+	jsapi,
 	/**
-	 * 选取联系人
+	 * 公众平台-卡券
+	 */
+	wx_card,
+	/**
+	 * 企业号-选取联系人
 	 */
 	contact;
 }

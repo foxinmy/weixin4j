@@ -42,7 +42,7 @@ import com.foxinmy.weixin4j.mp.model.QRResult;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.User;
-import com.foxinmy.weixin4j.mp.token.WeixinJSTicketCreator;
+import com.foxinmy.weixin4j.mp.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
@@ -54,6 +54,7 @@ import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.tuple.Tuple;
 import com.foxinmy.weixin4j.type.MediaType;
+import com.foxinmy.weixin4j.type.TicketType;
 
 /**
  * 微信公众平台接口实现
@@ -160,13 +161,16 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 获取JSSDK JSTicket的tokenHolder
+	 * 获取JSSDK Ticket的tokenHolder
 	 * 
+	 * @param ticketType
+	 *            票据类型
 	 * @return
 	 */
-	public TokenHolder getJSTicketHolder() {
-		return new TokenHolder(new WeixinJSTicketCreator(this.appId,
-				this.tokenHolder), this.tokenHolder.getTokenStorager());
+	public TokenHolder getTicketHolder(TicketType ticketType) {
+		return new TokenHolder(new WeixinTicketCreator(this.appId,
+				ticketType, this.tokenHolder),
+				this.tokenHolder.getTokenStorager());
 	}
 
 	/**

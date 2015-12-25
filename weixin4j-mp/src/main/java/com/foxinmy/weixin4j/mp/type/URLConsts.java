@@ -19,6 +19,6 @@ public final class URLConsts {
 	/**
 	 * 公众平台jssdk获取token的url
 	 */
-	public static final String JS_TICKET_URL = BASE_URL
-			+ "/ticket/getticket?access_token=%s&type=jsapi";
+	public static final String TICKET_URL = BASE_URL
+			+ "/ticket/getticket?access_token=%s&type=%s";
 }

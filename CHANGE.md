@@ -581,6 +581,8 @@
   
   + weixin4j-mp:私有化WeixinProxy(TokenHolder)构造器
   
+  + weixin4j-mp:调整WeixinTicketCreator类
+  
   + weixin4j-qy:WeixinProxy新增获取corpid(getCorpId)方法
   
   + weixin4j-qy:WeixinProxy新增获取jsticket(getJSTicketHolder)方法
