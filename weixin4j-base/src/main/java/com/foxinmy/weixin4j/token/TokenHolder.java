@@ -74,4 +74,8 @@ public class TokenHolder {
 		tokenStorager.caching(cacheKey, token);
 		return token;
 	}
+
+	public TokenStorager getTokenStorager() {
+		return tokenStorager;
+	}
 }

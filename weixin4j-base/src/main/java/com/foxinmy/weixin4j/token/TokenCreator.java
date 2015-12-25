@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.model.Token;
  */
 public interface TokenCreator {
 	/**
-	 * 返回缓存KEY的名称:Prefix+UniqueId的组合
+	 * 返回缓存KEY的名称
 	 * 
 	 * @return
 	 */

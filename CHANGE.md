@@ -563,3 +563,24 @@
 * 2015-12-21
   
   + weixin4j-server:WeixinMessageHanlder中新增weight接口
+  
+  
+* 2015-12-25
+  
+  + weixin4j-base:WeixinPayProxy类新增获取支付信息#getWeixinAccount方法
+  
+  + weixin4j-base:新增JSSDK的config生成类
+  
+  + weixin4j-mp:WeixinProxy新增获取appid(getAppId)方法
+  
+  + weixin4j-mp:WeixinProxy新增获取jsticket(getJSTicketHolder)方法
+  
+  + weixin4j-mp:私有化WeixinProxy(TokenHolder)构造器
+  
+  + weixin4j-qy:WeixinProxy新增获取corpid(getCorpId)方法
+  
+  + weixin4j-qy:WeixinProxy新增获取jsticket(getJSTicketHolder)方法
+  
+  + weixin4j-qy:私有化WeixinProxy(TokenHolder)构造器
+  
+  + weixin4j-qy:SuiteApi新增获取Weixinproxy对象(getWeixinProxy)方法

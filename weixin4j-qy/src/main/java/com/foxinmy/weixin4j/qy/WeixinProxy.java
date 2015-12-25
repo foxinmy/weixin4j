@@ -39,6 +39,7 @@ import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
+import com.foxinmy.weixin4j.qy.suite.WeixinTokenSuiteCreator;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.qy.type.InviteType;
@@ -71,6 +72,7 @@ public class WeixinProxy {
 	private final ChatApi chatApi;
 
 	private final TokenHolder tokenHolder;
+	private String corpId;
 
 	/**
 	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
@@ -113,6 +115,21 @@ public class WeixinProxy {
 			TokenStorager tokenStorager) {
 		this(new TokenHolder(new WeixinTokenCreator(corpid, corpsecret),
 				tokenStorager));
+		this.corpId = corpid;
+	}
+
+	/**
+	 * 第三方套件(永久授权码机制)
+	 * 
+	 * @param tokenCreator
+	 *            微信企业号token创建(永久授权码)
+	 * @param tokenStorager
+	 *            token存储
+	 */
+	public WeixinProxy(WeixinTokenSuiteCreator tokenCreator,
+			TokenStorager tokenStorager) {
+		this(new TokenHolder(tokenCreator, tokenStorager));
+		this.corpId = tokenCreator.getAuthCorpId();
 	}
 
 	/**
@@ -121,7 +138,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.qy.token.WeixinTokenCreator.WeixinTokenCreator
 	 * @param tokenHolder
 	 */
-	public WeixinProxy(TokenHolder tokenHolder) {
+	private WeixinProxy(TokenHolder tokenHolder) {
 		this.tokenHolder = tokenHolder;
 		this.partyApi = new PartyApi(tokenHolder);
 		this.userApi = new UserApi(tokenHolder);
@@ -135,8 +152,25 @@ public class WeixinProxy {
 		this.chatApi = new ChatApi(tokenHolder);
 	}
 
+	/**
+	 * token获取
+	 * 
+	 * @return
+	 */
 	public TokenHolder getTokenHolder() {
 		return this.tokenHolder;
+	}
+
+	/**
+	 * 获取JSSDK的tokenHolder
+	 * 
+	 * @return
+	 */
+	public TokenHolder getJSTicketHolder() {
+		return new TokenHolder(
+				new com.foxinmy.weixin4j.qy.token.WeixinJSTicketCreator(
+						this.corpId, this.tokenHolder),
+				this.tokenHolder.getTokenStorager());
 	}
 
 	/**

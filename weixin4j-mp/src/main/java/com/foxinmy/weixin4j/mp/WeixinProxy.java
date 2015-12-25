@@ -42,6 +42,7 @@ import com.foxinmy.weixin4j.mp.model.QRResult;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.User;
+import com.foxinmy.weixin4j.mp.token.WeixinJSTicketCreator;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
@@ -78,6 +79,7 @@ public class WeixinProxy {
 	private final DataApi dataApi;
 
 	private final TokenHolder tokenHolder;
+	private String appId;
 
 	/**
 	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
@@ -115,15 +117,16 @@ public class WeixinProxy {
 			TokenStorager tokenStorager) {
 		this(new TokenHolder(new WeixinTokenCreator(appid, appsecret),
 				tokenStorager));
+		this.appId = appid;
 	}
 
 	/**
 	 * 注意：TokenCreator 需为 <font color="red">WeixinTokenCreator</font>
 	 * 
-	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator.WeixinTokenCreator
+	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator
 	 * @param tokenHolder
 	 */
-	public WeixinProxy(TokenHolder tokenHolder) {
+	private WeixinProxy(TokenHolder tokenHolder) {
 		this.tokenHolder = tokenHolder;
 		this.mediaApi = new MediaApi(tokenHolder);
 		this.notifyApi = new NotifyApi(tokenHolder);
@@ -138,8 +141,32 @@ public class WeixinProxy {
 		this.dataApi = new DataApi(tokenHolder);
 	}
 
+	/**
+	 * 获取appid
+	 * 
+	 * @return
+	 */
+	public String getAppId() {
+		return this.appId;
+	}
+
+	/**
+	 * token获取
+	 * 
+	 * @return
+	 */
 	public TokenHolder getTokenHolder() {
 		return this.tokenHolder;
+	}
+
+	/**
+	 * 获取JSSDK的tokenHolder
+	 * 
+	 * @return
+	 */
+	public TokenHolder getJSTicketHolder() {
+		return new TokenHolder(new WeixinJSTicketCreator(this.appId,
+				this.tokenHolder), this.tokenHolder.getTokenStorager());
 	}
 
 	/**

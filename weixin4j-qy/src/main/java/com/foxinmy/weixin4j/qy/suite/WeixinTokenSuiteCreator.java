@@ -63,4 +63,13 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 		token.setTime(System.currentTimeMillis());
 		return token;
 	}
+
+	/**
+	 * 获取授权放的corpid
+	 * 
+	 * @return
+	 */
+	public String getAuthCorpId() {
+		return this.perCodeHolder.getAuthCorpId();
+	}
 }

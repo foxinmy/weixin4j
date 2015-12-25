@@ -52,6 +52,8 @@ public class WeixinPayProxy {
 	private final CouponApi couponApi;
 	private final CashApi cashApi;
 
+	private final WeixinPayAccount weixinAccount;
+
 	/**
 	 * 使用weixin4j.properties配置的账号信息
 	 */
@@ -67,9 +69,21 @@ public class WeixinPayProxy {
 	 * 
 	 */
 	public WeixinPayProxy(WeixinPayAccount weixinAccount) {
+		this.weixinAccount = weixinAccount;
 		this.pay3Api = new Pay3Api(weixinAccount);
 		this.couponApi = new CouponApi(weixinAccount);
 		this.cashApi = new CashApi(weixinAccount);
+	}
+
+	/**
+	 * 获取微信商户支付信息
+	 * 
+	 * @return
+	 */
+	public WeixinPayAccount getWeixinAccount() {
+		// clone ...
+		String text = JSON.toJSONString(weixinAccount);
+		return JSON.parseObject(text, WeixinPayAccount.class);
 	}
 
 	/**
