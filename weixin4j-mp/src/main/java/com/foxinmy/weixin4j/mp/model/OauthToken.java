@@ -72,8 +72,8 @@ public class OauthToken extends Token {
 	public String toString() {
 		return "OauthToken [openId=" + openId + ", unionId=" + unionId
 				+ ", refreshToken=" + refreshToken + ", scope=" + scope
-				+ ", getAccessToken()=" + getAccessToken()
-				+ ", getExpiresIn()=" + getExpiresIn() + ", getTime()="
-				+ getTime() + "]";
+				+ ", accessToken=" + getAccessToken()
+				+ ", expiresIn=" + getExpiresIn() + ", createTime="
+				+ getCreateTime() + "]";
 	}
 }

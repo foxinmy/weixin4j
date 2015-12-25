@@ -50,7 +50,8 @@ public class WeixinSuiteTokenCreator implements TokenCreator {
 		obj = response.getAsJson();
 		Token token = new Token(obj.getString("suite_access_token"));
 		token.setExpiresIn(obj.getIntValue("expires_in"));
-		token.setTime(System.currentTimeMillis());
+		token.setCreateTime(System.currentTimeMillis());
+		token.setOriginalResult(response.getAsString());
 		return token;
 	}
 }

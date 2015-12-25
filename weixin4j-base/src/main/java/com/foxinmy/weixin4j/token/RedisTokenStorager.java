@@ -1,12 +1,14 @@
 package com.foxinmy.weixin4j.token;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 用REDIS保存TOKEN
@@ -54,9 +56,9 @@ public class RedisTokenStorager implements TokenStorager {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
-			String accessToken = jedis.get(cacheKey);
-			if (!StringUtil.isBlank(accessToken)) {
-				return new Token(accessToken);
+			Map<String, String> map = jedis.hgetAll(cacheKey);
+			if (map != null && !map.isEmpty()) {
+				return map2token(map);
 			}
 		} finally {
 			if (jedis != null) {
@@ -71,16 +73,31 @@ public class RedisTokenStorager implements TokenStorager {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
+			jedis.hmset(cacheKey, token2map(token));
 			if (token.getExpiresIn() > 0) {
-				jedis.setex(cacheKey, (int) token.getExpiresIn(),
-						token.getAccessToken());
-			} else {
-				jedis.set(cacheKey, token.getAccessToken());
+				jedis.expire(cacheKey, token.getExpiresIn());
 			}
 		} finally {
 			if (jedis != null) {
 				jedis.close();
 			}
 		}
+	}
+
+	protected Map<String, String> token2map(Token token) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("accessToken", token.getAccessToken());
+		map.put("originalResult", token.getOriginalResult());
+		map.put("createTime", Long.toString(token.getCreateTime()));
+		map.put("expiresIn", Integer.toString(token.getExpiresIn()));
+		return map;
+	}
+
+	protected Token map2token(Map<String, String> map) {
+		Token token = new Token(map.get("accessToken"));
+		token.setCreateTime(Long.parseLong(map.get("createTime")));
+		token.setExpiresIn(Integer.parseInt(map.get("expiresIn")));
+		token.setOriginalResult(map.get("originalResult"));
+		return token;
 	}
 }

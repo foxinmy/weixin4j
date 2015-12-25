@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
  * @since JDK 1.6
  * @see
  */
-public final class DigestUtil {
+public final class DigestUtils {
 
 	private static MessageDigest getDigest(final String algorithm) {
 		try {

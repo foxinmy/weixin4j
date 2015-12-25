@@ -30,6 +30,11 @@ public final class URLConsts {
 	public static final String JS_TICKET_URL = BASE_URL
 			+ "/get_jsapi_ticket?access_token=%s";
 	/**
+	 * 企业号获取ticket的url
+	 */
+	public static final String TICKET_URL = BASE_URL
+			+ "/ticket/get?access_token=%s&type=%s";
+	/**
 	 * 企业号第三方应用套件获取token的url
 	 */
 	public static final String SUITE_TOKEN_URL = BASE_URL

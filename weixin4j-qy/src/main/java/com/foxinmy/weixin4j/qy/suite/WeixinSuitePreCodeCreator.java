@@ -54,7 +54,8 @@ public class WeixinSuitePreCodeCreator implements TokenCreator {
 		JSONObject result = response.getAsJson();
 		Token token = new Token(result.getString("pre_auth_code"));
 		token.setExpiresIn(result.getIntValue("expires_in"));
-		token.setTime(System.currentTimeMillis());
+		token.setCreateTime(System.currentTimeMillis());
+		token.setOriginalResult(response.getAsString());
 		return token;
 	}
 }

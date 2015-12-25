@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.util;
+package com.foxinmy.weixin4j.jssdk;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,17 +8,23 @@ import java.util.Set;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.util.DateUtil;
+import com.foxinmy.weixin4j.util.DigestUtil;
+import com.foxinmy.weixin4j.util.MapUtil;
+import com.foxinmy.weixin4j.util.RandomUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * JSSDK帮助类
  * 
- * @className JSSDKHelper
+ * @className JSSDKConfigurator
  * @author jy
  * @date 2015年12月23日
  * @since JDK 1.6
  * @see
  */
-public class JSSDKHelper {
+public class JSSDKConfigurator {
 	private final TokenHolder ticketTokenHolder;
 	private JSONObject config;
 	private Set<JSSDKAPI> apis;
@@ -28,7 +34,7 @@ public class JSSDKHelper {
 	 * 
 	 * @param ticketTokenHolder
 	 */
-	public JSSDKHelper(TokenHolder ticketTokenHolder) {
+	public JSSDKConfigurator(TokenHolder ticketTokenHolder) {
 		this.ticketTokenHolder = ticketTokenHolder;
 		this.config = new JSONObject();
 		this.apis = new HashSet<JSSDKAPI>();
@@ -40,7 +46,7 @@ public class JSSDKHelper {
 	 * 
 	 * @return
 	 */
-	public JSSDKHelper debugMode() {
+	public JSSDKConfigurator debugMode() {
 		config.put("debug", true);
 		return this;
 	}
@@ -51,7 +57,7 @@ public class JSSDKHelper {
 	 * @param appId
 	 * @return
 	 */
-	public JSSDKHelper appId(String appId) {
+	public JSSDKConfigurator appId(String appId) {
 		config.put("appId", appId);
 		return this;
 	}
@@ -63,7 +69,7 @@ public class JSSDKHelper {
 	 * @param apis
 	 * @return
 	 */
-	public JSSDKHelper apis(JSSDKAPI... apis) {
+	public JSSDKConfigurator apis(JSSDKAPI... apis) {
 		for (JSSDKAPI api : apis) {
 			this.apis.add(api);
 		}
@@ -77,7 +83,7 @@ public class JSSDKHelper {
 	 * @param apis
 	 * @return
 	 */
-	public JSSDKHelper apis(JSSDKAPI[]... apis) {
+	public JSSDKConfigurator apis(JSSDKAPI[]... apis) {
 		for (JSSDKAPI[] api : apis) {
 			for (JSSDKAPI apii : api) {
 				this.apis.add(apii);

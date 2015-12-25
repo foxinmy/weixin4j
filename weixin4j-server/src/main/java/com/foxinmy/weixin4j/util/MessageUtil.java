@@ -35,7 +35,7 @@ public final class MessageUtil {
 		for (String str : para) {
 			sb.append(str);
 		}
-		return DigestUtil.SHA1(sb.toString());
+		return DigestUtils.SHA1(sb.toString());
 	}
 
 	/**

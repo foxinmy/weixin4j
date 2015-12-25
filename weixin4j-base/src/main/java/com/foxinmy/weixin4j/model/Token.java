@@ -32,9 +32,13 @@ public class Token implements Serializable {
 	@JSONField(name = "expires_in")
 	private int expiresIn;
 	/**
-	 * token创建的时间 只在FileTokenStorager模式下有效
+	 * token创建的时间
 	 */
-	private long time;
+	private long createTime;
+	/**
+	 * 请求返回的原始结果
+	 */
+	private String originalResult;
 
 	public Token() {
 
@@ -60,17 +64,25 @@ public class Token implements Serializable {
 		this.expiresIn = expiresIn;
 	}
 
-	public long getTime() {
-		return time;
+	public long getCreateTime() {
+		return createTime;
 	}
 
-	public void setTime(long time) {
-		this.time = time;
+	public void setCreateTime(long createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getOriginalResult() {
+		return originalResult;
+	}
+
+	public void setOriginalResult(String originalResult) {
+		this.originalResult = originalResult;
 	}
 
 	@Override
 	public String toString() {
 		return "Token [accessToken=" + accessToken + ", expiresIn=" + expiresIn
-				+ ", time=" + time + "]";
+				+ ", createTime=" + createTime + "]";
 	}
 }

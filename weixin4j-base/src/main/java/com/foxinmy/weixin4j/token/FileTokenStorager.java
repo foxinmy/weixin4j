@@ -33,10 +33,10 @@ public class FileTokenStorager implements TokenStorager {
 			if (token_file.exists()) {
 				Token token = XmlStream.fromXML(
 						new FileInputStream(token_file), Token.class);
-				if (token.getTime() < 0) {
+				if (token.getCreateTime() < 0) {
 					return token;
 				}
-				if ((token.getTime() + (token.getExpiresIn() * 1000l) - 2) > System
+				if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - 2) > System
 						.currentTimeMillis()) {
 					return token;
 				}
