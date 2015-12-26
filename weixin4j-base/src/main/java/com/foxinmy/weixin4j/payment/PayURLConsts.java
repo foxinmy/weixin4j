@@ -114,11 +114,18 @@ public final class PayURLConsts {
 	public static final String MCH_NATIVE_URL = "weixin://wxpay/bizpayurl?sign=%s&appid=%s&mch_id=%s&product_id=%s&time_stamp=%s&nonce_str=%s";
 
 	/**
+	 * WAP支付
+	 * 
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付说明</a>
+	 */
+	public static final String MCH_WAP_URL = "weixin://wap/pay?%s";
+	/**
 	 * 授权码查询OPENID接口
 	 */
 	public static final String MCH_AUTHCODE_OPENID_URL = MCH_BASE_URL
 			+ "/tools/authcodetoopenid";
-	
+
 	/**
 	 * <p>
 	 * 生成编辑地址请求

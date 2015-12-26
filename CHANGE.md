@@ -597,3 +597,8 @@
   
   + weixin4j-server:DigestUtil 重命名为 DigestUtils
   
+  
+* 2015-12-26
+  
+  + weixin4j-base:MchPayRequest抽象化
+  

@@ -66,7 +66,6 @@ public class WeixinPayProxy {
 	 *
 	 * @param weixinAccount
 	 *            支付相关的公众号账号信息
-	 * 
 	 */
 	public WeixinPayProxy(WeixinPayAccount weixinAccount) {
 		this.weixinAccount = weixinAccount;
@@ -106,7 +105,25 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * 生成JSAPI支付请求对象
+	 * 创建支付请求对象
+	 * 
+	 * @param payPackage
+	 *            支付详情
+	 * @return 支付请求对象
+	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest JS支付
+	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest 扫码支付
+	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
+	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
+	 * @throws WeixinPayException
+	 */
+	public MchPayRequest createPayRequest(MchPayPackage payPackage)
+			throws WeixinPayException {
+		return pay3Api.createPayRequest(payPackage);
+	}
+
+	/**
+	 * 创建JSAPI支付请求对象
 	 * 
 	 * @param openId
 	 *            用户ID
@@ -120,59 +137,16 @@ public class WeixinPayProxy {
 	 *            支付通知地址
 	 * @param createIp
 	 *            ip地址
-	 * @return MchPayRequest对象；<font
-	 *         color="red">注意：如果要转换为JSON格式请使用fastjson中的JSON
-	 *         #toJSONString方法或直接用MchPayRequest#asPayJsRequestJson方法</font>
 	 * @see com.foxinmy.weixin4j.api.Pay3Api
-	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest
+	 * @return JSAPI支付对象
 	 * @throws WeixinPayException
 	 */
-	public MchPayRequest createPayJsRequest(String openId, String body,
+	public MchPayRequest createJsPayRequest(String openId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp) throws WeixinPayException {
-		return pay3Api.createPayJsRequest(openId, body, outTradeNo, totalFee,
+		return pay3Api.createJsPayRequest(openId, body, outTradeNo, totalFee,
 				notifyUrl, createIp);
-	}
-
-	/**
-	 * 生成JSAPI支付请求对象【完整参数】
-	 * 
-	 * @param openId
-	 *            用户ID
-	 * @param body
-	 *            商品描述
-	 * @param outTradeNo
-	 *            商户内部唯一订单号
-	 * @param totalFee
-	 *            商品总额 单位元
-	 * @param notifyUrl
-	 *            支付回调URL
-	 * @param createIp
-	 *            订单生成的机器 IP
-	 * @param attach
-	 *            附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
-	 * @param timeStart
-	 *            订单生成时间，格式为yyyyMMddHHmmss
-	 * @param timeExpire
-	 *            订单失效时间，格式为yyyyMMddHHmmss;注意：最短失效时间间隔必须大于5分钟
-	 * @param goodsTag
-	 *            商品标记，代金券或立减优惠功能的参数
-	 * @param limitPay
-	 *            指定支付方式:no_credit--指定不能使用信用卡支付
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
-	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest
-	 * @return MchPayRequest对象；<font
-	 *         color="red">注意：如果要转换为JSON格式请使用fastjson中的JSON
-	 *         #toJSONString方法或直接用MchPayRequest#asPayJsRequestJson方法</font>
-	 * @throws WeixinPayException
-	 */
-	public MchPayRequest createPayJsRequest(String openId, String body,
-			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach, Date timeStart, Date timeExpire,
-			String goodsTag, String limitPay) throws WeixinPayException {
-		return pay3Api.createPayJsRequest(openId, body, outTradeNo, totalFee,
-				notifyUrl, createIp, attach, timeStart, timeExpire, goodsTag,
-				limitPay);
 	}
 
 	/**
@@ -191,7 +165,7 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * 创建V3.x NativePay支付(扫码支付)链接【模式二】【必填参数】
+	 * 创建Native支付(扫码支付)链接【模式二】
 	 * 
 	 * @param productId
 	 *            商品ID
@@ -205,25 +179,24 @@ public class WeixinPayProxy {
 	 *            支付回调URL
 	 * @param createIp
 	 *            订单生成的机器 IP
-	 * @return 支付链接
+	 * @return Native支付对象
 	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest
 	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5">模式二</a>
 	 * @throws WeixinPayException
 	 */
-	public String createNativePayRequestURL(String productId, String body,
+	public MchPayRequest createNativePayRequest(String productId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp) throws WeixinPayException {
-		return pay3Api.createNativePayRequestURL(productId, body, outTradeNo,
+		return pay3Api.createNativePayRequest(productId, body, outTradeNo,
 				totalFee, notifyUrl, createIp);
 	}
 
 	/**
-	 * 创建Native支付(扫码支付)链接【模式二】【完整参数】
+	 * 创建APP支付请求对象
 	 * 
-	 * @param productId
-	 *            商品ID
 	 * @param body
 	 *            商品描述
 	 * @param outTradeNo
@@ -234,30 +207,45 @@ public class WeixinPayProxy {
 	 *            支付回调URL
 	 * @param createIp
 	 *            订单生成的机器 IP
-	 * @param attach
-	 *            附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
-	 * @param timeStart
-	 *            订单生成时间，格式为yyyyMMddHHmmss
-	 * @param timeExpire
-	 *            订单失效时间，格式为yyyyMMddHHmmss;注意：最短失效时间间隔必须大于5分钟
-	 * @param goodsTag
-	 *            商品标记，代金券或立减优惠功能的参数
-	 * @param limitPay
-	 *            指定支付方式:no_credit--指定不能使用信用卡支付
-	 * @return 支付链接
+	 * @return APP支付对象
 	 * @see com.foxinmy.weixin4j.api.Pay3Api
-	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
+	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest
 	 * @see <a
-	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5">模式二</a>
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=8_1">APP支付</a>
 	 * @throws WeixinPayException
 	 */
-	public String createNativePayRequestURL(String productId, String body,
-			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach, Date timeStart, Date timeExpire,
-			String goodsTag, String limitPay) throws WeixinPayException {
-		return pay3Api.createNativePayRequestURL(productId, body, outTradeNo,
-				totalFee, notifyUrl, createIp, attach, timeStart, timeExpire,
-				goodsTag, limitPay);
+	public MchPayRequest createAppPayRequest(String body, String outTradeNo,
+			double totalFee, String notifyUrl, String createIp)
+			throws WeixinPayException {
+		return pay3Api.createAppPayRequest(body, outTradeNo, totalFee,
+				notifyUrl, createIp);
+	}
+
+	/**
+	 * 创建WAP支付请求对象
+	 * 
+	 * @param body
+	 *            商品描述
+	 * @param outTradeNo
+	 *            商户内部唯一订单号
+	 * @param totalFee
+	 *            商品总额 单位元
+	 * @param notifyUrl
+	 *            支付回调URL
+	 * @param createIp
+	 *            订单生成的机器 IP
+	 * @return WAP支付对象
+	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付</a>
+	 * @throws WeixinPayException
+	 */
+	public MchPayRequest createWAPPayRequest(String body, String outTradeNo,
+			double totalFee, String notifyUrl, String createIp)
+			throws WeixinPayException {
+		return pay3Api.createWAPPayRequest(body, outTradeNo, totalFee,
+				notifyUrl, createIp);
 	}
 
 	/**
