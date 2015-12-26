@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
-import com.foxinmy.weixin4j.util.RandomUtil;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
  * 微信回复编码类
@@ -55,7 +55,7 @@ public class WeixinResponseEncoder extends
 		content.append("</xml>");
 		if (encryptType == EncryptType.AES) {
 			AesToken aesToken = messageTransfer.getAesToken();
-			String nonce = RandomUtil.generateString(32);
+			String nonce = ServerToolkits.generateRandomString(32);
 			String timestamp = Long
 					.toString(System.currentTimeMillis() / 1000l);
 			String encrtypt = MessageUtil.aesEncrypt(aesToken.getWeixinId(),

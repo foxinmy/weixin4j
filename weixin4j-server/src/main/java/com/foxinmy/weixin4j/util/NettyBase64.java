@@ -5,15 +5,15 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64Dialect;
 
 /**
- * Base64
+ * NettyBase64
  * 
- * @className Base64
+ * @className NettyBase64
  * @author jy
  * @date 2015年5月17日
  * @since JDK 1.6
  * @see
  */
-public final class Base64 {
+public final class NettyBase64 {
 
 	private static byte[] byteBuf2Array(ByteBuf byteBuf) {
 		if (byteBuf.hasArray()) {
@@ -26,7 +26,7 @@ public final class Base64 {
 	}
 
 	public static byte[] decodeBase64(final String content) {
-		byte[] data = StringUtil.getBytesUtf8(content);
+		byte[] data = ServerToolkits.getBytesUtf8(content);
 		ByteBuf des = io.netty.handler.codec.base64.Base64.decode(
 				Unpooled.copiedBuffer(data), Base64Dialect.STANDARD);
 		return byteBuf2Array(des);
@@ -40,6 +40,6 @@ public final class Base64 {
 
 	public static String encodeBase64String(final byte[] bytes) {
 		byte[] data = encodeBase64(bytes);
-		return StringUtil.newStringUtf8(data);
+		return ServerToolkits.newStringUtf8(data);
 	}
 }

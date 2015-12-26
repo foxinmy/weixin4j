@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
-import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 import com.foxinmy.weixin4j.xml.MessageTransferHandler;
 
 /**
@@ -57,8 +57,8 @@ public class WeixinRequestHandler extends
 			throws WeixinException {
 		final AesToken aesToken = request.getAesToken();
 		if (aesToken == null
-				|| (StringUtil.isBlank(request.getSignature()) && StringUtil
-						.isBlank(request.getMsgSignature()))) {
+				|| (ServerToolkits.hasText(request.getSignature()) && ServerToolkits
+						.hasText(request.getMsgSignature()))) {
 			ctx.writeAndFlush(HttpUtil.createHttpResponse(BAD_REQUEST))
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
@@ -68,14 +68,14 @@ public class WeixinRequestHandler extends
 		 * 企业号:无论Get,Post都带msg_signature参数
 		 **/
 		if (request.getMethod().equals(HttpMethod.GET.name())) {
-			if (!StringUtil.isBlank(request.getSignature())
+			if (!ServerToolkits.hasText(request.getSignature())
 					&& MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce()).equals(
 							request.getSignature())) {
 				ctx.write(new SingleResponse(request.getEchoStr()));
 				return;
 			}
-			if (!StringUtil.isBlank(request.getMsgSignature())
+			if (!ServerToolkits.hasText(request.getMsgSignature())
 					&& MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce(),
 							request.getEchoStr()).equals(
@@ -88,7 +88,7 @@ public class WeixinRequestHandler extends
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		} else if (request.getMethod().equals(HttpMethod.POST.name())) {
-			if (!StringUtil.isBlank(request.getSignature())
+			if (!ServerToolkits.hasText(request.getSignature())
 					&& !MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce()).equals(
 							request.getSignature())) {

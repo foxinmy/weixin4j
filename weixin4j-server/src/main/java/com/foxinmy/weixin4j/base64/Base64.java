@@ -19,7 +19,7 @@ package com.foxinmy.weixin4j.base64;
 
 import java.math.BigInteger;
 
-import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
  * <p>
@@ -313,7 +313,7 @@ public class Base64 extends BaseNCodec {
 		// @see test case Base64Test.testConstructors()
 		if (lineSeparator != null) {
 			if (containsAlphabetOrPad(lineSeparator)) {
-				final String sep = StringUtil.newStringUtf8(lineSeparator);
+				final String sep = ServerToolkits.newStringUtf8(lineSeparator);
 				throw new IllegalArgumentException(
 						"lineSeparator must not contain base64 characters: ["
 								+ sep + "]");
@@ -600,7 +600,7 @@ public class Base64 extends BaseNCodec {
 	 * @since 1.5
 	 */
 	public static boolean isBase64(final String base64) {
-		return isBase64(StringUtil.getBytesUtf8(base64));
+		return isBase64(ServerToolkits.getBytesUtf8(base64));
 	}
 
 	/**
@@ -649,7 +649,7 @@ public class Base64 extends BaseNCodec {
 	 * @since 1.4 (NOTE: 1.4 chunked the output, whereas 1.5 does not).
 	 */
 	public static String encodeBase64String(final byte[] binaryData) {
-		return StringUtil.newStringUtf8(encodeBase64(binaryData, false));
+		return ServerToolkits.newStringUtf8(encodeBase64(binaryData, false));
 	}
 
 	/**
@@ -678,7 +678,7 @@ public class Base64 extends BaseNCodec {
 	 * @since 1.4
 	 */
 	public static String encodeBase64URLSafeString(final byte[] binaryData) {
-		return StringUtil.newStringUtf8(encodeBase64(binaryData, false, true));
+		return ServerToolkits.newStringUtf8(encodeBase64(binaryData, false, true));
 	}
 
 	/**

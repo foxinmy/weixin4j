@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.MessageUtil;
-import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 import com.foxinmy.weixin4j.xml.EncryptMessageHandler;
 
 /**
@@ -68,9 +68,9 @@ public class WeixinMessageDecoder extends
 				"weixin_id").get(0) : null;
 		AesToken aesToken = aesTokenMap.get(weixinId);
 		String encryptContent = null;
-		if (!StringUtil.isBlank(messageContent)
+		if (!ServerToolkits.hasText(messageContent)
 				&& encryptType == EncryptType.AES) {
-			if (StringUtil.isBlank(aesToken.getAesKey())) {
+			if (ServerToolkits.hasText(aesToken.getAesKey())) {
 				throw new WeixinException(
 						"AESEncodingKey not be null in AES mode");
 			}

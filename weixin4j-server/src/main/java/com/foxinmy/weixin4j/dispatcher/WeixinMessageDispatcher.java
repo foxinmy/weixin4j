@@ -35,7 +35,7 @@ import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
 import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
-import com.foxinmy.weixin4j.util.ReflectionUtil;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
  * 微信消息分发器
@@ -247,7 +247,7 @@ public class WeixinMessageDispatcher {
 						try {
 							Constructor<?> ctor = clazz
 									.getDeclaredConstructor();
-							ReflectionUtil.makeAccessible(ctor);
+							ServerToolkits.makeConstructorAccessible(ctor);
 							messageHandlerList.add((WeixinMessageHandler) ctor
 									.newInstance((Object[]) null));
 						} catch (Exception ex) {
@@ -306,7 +306,7 @@ public class WeixinMessageDispatcher {
 						try {
 							Constructor<?> ctor = clazz
 									.getDeclaredConstructor();
-							ReflectionUtil.makeAccessible(ctor);
+							ServerToolkits.makeConstructorAccessible(ctor);
 							messageInterceptorList
 									.add((WeixinMessageInterceptor) ctor
 											.newInstance((Object[]) null));
