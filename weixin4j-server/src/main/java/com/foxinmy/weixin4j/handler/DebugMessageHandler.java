@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * @className DebugMessageHandler
  * @author jy
  * @date 2015年5月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class DebugMessageHandler implements WeixinMessageHandler {
@@ -37,5 +37,10 @@ public class DebugMessageHandler implements WeixinMessageHandler {
 				.replaceAll("\\!\\[CDATA\\[", "").replaceAll("\\]\\]", "")
 				: message.toString();
 		return new TextResponse(content);
+	}
+
+	@Override
+	public int weight() {
+		return 0;
 	}
 }

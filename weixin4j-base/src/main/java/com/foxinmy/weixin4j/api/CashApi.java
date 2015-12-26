@@ -14,13 +14,13 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayURLConsts;
-import com.foxinmy.weixin4j.payment.PayUtil;
 import com.foxinmy.weixin4j.payment.mch.MPPayment;
 import com.foxinmy.weixin4j.payment.mch.MPPaymentRecord;
 import com.foxinmy.weixin4j.payment.mch.MPPaymentResult;
 import com.foxinmy.weixin4j.payment.mch.Redpacket;
 import com.foxinmy.weixin4j.payment.mch.RedpacketRecord;
 import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
+import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
@@ -30,7 +30,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @className CashApi
  * @author jy
  * @date 2015年3月28日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_1">现金红包</a>
  * @see <a
@@ -65,7 +65,7 @@ public class CashApi {
 		obj.put("mch_id", weixinAccount.getMchId());
 		obj.put("sub_mch_id", weixinAccount.getSubMchId());
 		obj.put("wxappid", weixinAccount.getId());
-		String sign = PayUtil.paysignMd5(obj, weixinAccount.getPaySignKey());
+		String sign = DigestUtil.paysignMd5(obj, weixinAccount.getPaySignKey());
 		obj.put("sign", sign);
 		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;
@@ -108,7 +108,7 @@ public class CashApi {
 		para.put("bill_type", "MCHT");
 		para.put("appid", weixinAccount.getId());
 		para.put("mch_billno", outTradeNo);
-		String sign = PayUtil.paysignMd5(para, weixinAccount.getPaySignKey());
+		String sign = DigestUtil.paysignMd5(para, weixinAccount.getPaySignKey());
 		para.put("sign", sign);
 		String param = XmlStream.map2xml(para);
 		WeixinResponse response = null;
@@ -152,7 +152,7 @@ public class CashApi {
 		obj.put("sub_mch_id", weixinAccount.getSubMchId());
 		obj.put("mch_appid", weixinAccount.getId());
 		obj.put("device_info", weixinAccount.getDeviceInfo());
-		String sign = PayUtil.paysignMd5(obj, weixinAccount.getPaySignKey());
+		String sign = DigestUtil.paysignMd5(obj, weixinAccount.getPaySignKey());
 		obj.put("sign", sign);
 		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;
@@ -198,7 +198,7 @@ public class CashApi {
 		obj.put("mch_id", weixinAccount.getMchId());
 		obj.put("appid", weixinAccount.getId());
 		obj.put("partner_trade_no", outTradeNo);
-		String sign = PayUtil.paysignMd5(obj, weixinAccount.getPaySignKey());
+		String sign = DigestUtil.paysignMd5(obj, weixinAccount.getPaySignKey());
 		obj.put("sign", sign);
 		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;

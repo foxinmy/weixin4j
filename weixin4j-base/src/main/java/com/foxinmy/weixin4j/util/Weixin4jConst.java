@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.util;
  * @className Weixin4jConst
  * @author jy
  * @date 2015年7月1日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public final class Weixin4jConst {

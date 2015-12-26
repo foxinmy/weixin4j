@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.type.ButtonType;
  * @className MenuTest
  * @author jy.hu
  * @date 2014年4月10日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public class MenuTest extends TokenTest {
 
@@ -48,7 +48,7 @@ public class MenuTest extends TokenTest {
 
 	@Test
 	public void get() throws WeixinException {
-		btnList = menuApi.getMenu(1);
+		btnList = menuApi.getMenu(0);
 		for (Button btn : btnList) {
 			System.out.println(btn);
 		}

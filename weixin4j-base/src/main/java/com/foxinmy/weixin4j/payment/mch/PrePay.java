@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.type.TradeType;
  * @className PrePay
  * @author jy
  * @date 2014年10月21日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement

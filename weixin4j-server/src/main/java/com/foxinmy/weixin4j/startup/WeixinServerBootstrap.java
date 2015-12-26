@@ -34,7 +34,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  * @className WeixinServerBootstrap
  * @author jy
  * @date 2014年10月12日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler
  * @see com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor
@@ -226,19 +226,6 @@ public final class WeixinServerBootstrap {
 	}
 
 	/**
-	 * 将某个消息处理器插入到头部
-	 * 
-	 * @param messageHandler
-	 *            消息处理器
-	 * @return
-	 */
-	public WeixinServerBootstrap insertFirstHandler(
-			WeixinMessageHandler messageHandler) {
-		messageHandlerList.add(0, messageHandler);
-		return this;
-	}
-
-	/**
 	 * 插入一个或多个消息拦截器
 	 * 
 	 * @param messageInterceptor
@@ -248,19 +235,6 @@ public final class WeixinServerBootstrap {
 	public WeixinServerBootstrap addInterceptor(
 			WeixinMessageInterceptor... messageInterceptor) {
 		messageInterceptorList.addAll(Arrays.asList(messageInterceptor));
-		return this;
-	}
-
-	/**
-	 * 将某个消息拦截器插入到头部
-	 * 
-	 * @param messageInterceptor
-	 *            消息拦截器
-	 * @return
-	 */
-	public WeixinServerBootstrap insertFirstInterceptor(
-			WeixinMessageInterceptor messageInterceptor) {
-		messageInterceptorList.add(0, messageInterceptor);
 		return this;
 	}
 
@@ -327,5 +301,5 @@ public final class WeixinServerBootstrap {
 		return this;
 	}
 
-	public final static String VERSION = "1.1.3";
+	public final static String VERSION = "1.1.4";
 }

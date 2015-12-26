@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  * @className WeixinTokenCreator
  * @author jy
  * @date 2015年1月10日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%BB%E5%8A%A8%E8%B0%83%E7%94%A8">微信企业号获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
@@ -40,7 +40,7 @@ public class WeixinTokenCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("qy_token_%s", corpid);
+		return String.format("wx_qy_token_%s", corpid);
 	}
 
 	@Override
@@ -50,7 +50,8 @@ public class WeixinTokenCreator implements TokenCreator {
 		WeixinResponse response = weixinExecutor.get(tokenUrl);
 		Token token = response.getAsObject(new TypeReference<Token>() {
 		});
-		token.setTime(System.currentTimeMillis());
+		token.setCreateTime(System.currentTimeMillis());
+		token.setOriginalResult(response.getAsString());
 		return token;
 	}
 }

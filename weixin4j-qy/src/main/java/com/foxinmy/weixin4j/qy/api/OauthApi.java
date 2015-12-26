@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @className OauthApi
  * @author jy
  * @date 2015年6月11日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=OAuth%E9%AA%8C%E8%AF%81%E6%8E%A5%E5%8F%A3">企业号用户身份授权说明</a>
  * @see <a
@@ -35,7 +35,7 @@ public class OauthApi extends QyApi {
 	 */
 	public String getUserAuthorizeURL() {
 		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("user_oauth_redirect_uri");
+		String redirectUri = Weixin4jConfigUtil.getValue("user.oauth.redirect.uri");
 		return getUserAuthorizeURL(corpId, redirectUri, "state");
 	}
 
@@ -73,7 +73,7 @@ public class OauthApi extends QyApi {
 	 */
 	public String getThirdAuthorizeURL() {
 		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("third_oauth_redirect_uri");
+		String redirectUri = Weixin4jConfigUtil.getValue("third.oauth.redirect.uri");
 		return getThirdAuthorizeURL(corpId, redirectUri, "state");
 	}
 
@@ -135,7 +135,7 @@ public class OauthApi extends QyApi {
 	 * @return
 	 */
 	public String getSuiteAuthorizeURL(String suiteId, String preAuthCode) {
-		String redirectUri = Weixin4jConfigUtil.getValue("suite_oauth_redirect_uri");
+		String redirectUri = Weixin4jConfigUtil.getValue("suite.oauth.redirect.uri");
 		return getSuiteAuthorizeURL(suiteId, preAuthCode, redirectUri, "state");
 	}
 

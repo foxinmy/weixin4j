@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @className WeixinException
  * @author jy.hu
  * @date 2014年4月10日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class WeixinException extends Exception {

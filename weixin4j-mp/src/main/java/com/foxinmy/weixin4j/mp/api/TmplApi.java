@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @className TemplApi
  * @author jy
  * @date 2014年9月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class TmplApi extends MpApi {

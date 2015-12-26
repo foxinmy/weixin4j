@@ -49,7 +49,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @className HttpComponent3
  * @author jy
  * @date 2015年8月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class HttpComponent3 extends AbstractHttpClient {
@@ -60,38 +60,46 @@ public class HttpComponent3 extends AbstractHttpClient {
 		this.httpClient = httpClient;
 	}
 
-	private org.apache.commons.httpclient.HttpMethod method2method(
-			HttpMethod method) {
-		if (method == HttpMethod.GET) {
-			return new GetMethod();
-		} else if (method == HttpMethod.HEAD) {
-			return new HeadMethod();
-		} else if (method == HttpMethod.POST) {
-			return new PostMethod();
-		} else if (method == HttpMethod.PUT) {
-			return new PutMethod();
-		} else if (method == HttpMethod.DELETE) {
-			return new DeleteMethod();
-		} else if (method == HttpMethod.OPTIONS) {
-			return new OptionsMethod();
-		} else {
-			return null;
+	private org.apache.commons.httpclient.HttpMethod createHttpMethod(
+			HttpMethod method, java.net.URI url) throws HttpClientException {
+		org.apache.commons.httpclient.HttpMethod httpMethod = null;
+		try {
+			URI uri = new URI(url.toString(), false, Consts.UTF_8.name());
+			if (method == HttpMethod.GET) {
+				httpMethod = new GetMethod();
+			} else if (method == HttpMethod.HEAD) {
+				httpMethod = new HeadMethod();
+			} else if (method == HttpMethod.POST) {
+				httpMethod = new PostMethod();
+			} else if (method == HttpMethod.PUT) {
+				return new PutMethod();
+			} else if (method == HttpMethod.DELETE) {
+				httpMethod = new DeleteMethod();
+			} else if (method == HttpMethod.OPTIONS) {
+				httpMethod = new OptionsMethod();
+			} else if (method == HttpMethod.TRACE) {
+				return new TraceMethod(uri.getEscapedURI());
+			} else {
+				throw new HttpClientException("unknown request method "
+						+ method + " for " + uri);
+			}
+			httpMethod.setURI(uri);
+		} catch (IOException e) {
+			throw new HttpClientException("I/O error on " + method.name()
+					+ " setURI for \"" + url.toString() + "\":"
+					+ e.getMessage(), e);
 		}
+		return httpMethod;
 	}
 
 	@Override
 	public HttpResponse execute(HttpRequest request) throws HttpClientException {
 		HttpResponse response = null;
 		try {
-			URI uri = new URI(request.getURI().toString(), false,
-					Consts.UTF_8.name());
-			org.apache.commons.httpclient.HttpMethod httpMethod = method2method(request
-					.getMethod());
-			if (request.getMethod() == HttpMethod.TRACE) {
-				httpMethod = new TraceMethod(uri.getEscapedURI());
-			} else {
-				httpMethod.setURI(uri);
-			}
+			org.apache.commons.httpclient.HttpMethod httpMethod = createHttpMethod(
+					request.getMethod(), request.getURI());
+			boolean useSSL = "https".equals(request.getURI().getScheme());
+			SSLContext sslContext = null;
 			HttpParams params = request.getParams();
 			if (params != null) {
 				Proxy proxy = params.getProxy();
@@ -101,12 +109,9 @@ public class HttpComponent3 extends AbstractHttpClient {
 					httpClient.getHostConfiguration().setProxy(
 							socketAddress.getHostName(),
 							socketAddress.getPort());
+					useSSL = false;
 				}
-				SSLContext sslContext = params.getSSLContext();
-				if (sslContext != null) {
-					Protocol.registerProtocol("https", new Protocol("https",
-							new SSLProtocolSocketFactory(sslContext), 443));
-				}
+				sslContext = params.getSSLContext();
 				httpClient.getHttpConnectionManager().getParams()
 						.setConnectionTimeout(params.getConnectTimeout());
 				httpClient.getHttpConnectionManager().getParams()
@@ -115,13 +120,20 @@ public class HttpComponent3 extends AbstractHttpClient {
 				httpMethod.getParams().setSoTimeout(params.getSocketTimeout());
 				httpMethod.getParams().setContentCharset(Consts.UTF_8.name());
 			}
+			if (useSSL) {
+				if (sslContext == null) {
+					sslContext = HttpClientFactory.allowSSLContext();
+				}
+				Protocol.registerProtocol("https", new Protocol("https",
+						new SSLProtocolSocketFactory(sslContext), 443));
+			}
 			com.foxinmy.weixin4j.http.HttpHeaders headers = request
 					.getHeaders();
 			if (headers == null) {
 				headers = new HttpHeaders();
 			}
 			if (!headers.containsKey(HttpHeaders.HOST)) {
-				headers.set(HttpHeaders.HOST, uri.getHost());
+				headers.set(HttpHeaders.HOST, request.getURI().getHost());
 			}
 			// Add default accept headers
 			if (!headers.containsKey(HttpHeaders.ACCEPT)) {

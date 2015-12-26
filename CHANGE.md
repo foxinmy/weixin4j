@@ -512,3 +512,88 @@
   + weixin4j-base:调整PayUtil#createPayJsRequestJson参数位置：从主到次
   
   + weixin4j-base:调整PayUtil#createNativePayRequestURL参数位置：从主到次
+  
+  
+* 2015-12-04
+
+  + weixin4j-base:【重要】修改PayUtil中的createPayJsRequest方法的返回值为MchPayRequest，便于二次发起支付。
+  
+  + weixin4j-base:【重要】添加MchPayRequest的构造函数，便于二次发起支付。
+  
+  + weixin4j-qy:【重要】第三方应用授权时获取永久授权码覆盖问题。
+  
+* 2015-12-08
+  
+  + weixin4j-[mp|qy]:version upgrade to 1.6.4
+  
+  + weixin4j-server:version upgrade to 1.1.4
+  
+  + weixin4j-base:新增RegexUtil类
+  
+  + weixin4j-base:调整Pay3Api退款方法名为 refundApply
+  
+  + weixin4j-base:调整Pay3Api#refundApply参数个数
+  
+  
+* 2015-12-10
+
+  + 添加可选[RedisTokenStorager](weixin4j-base/src/main/java/com/foxinmy/weixin4j/token/RedisTokenStorager.java)
+  
+  + 添加缓存token时的前缀`wx`
+  
+  + 【特大注意】weixin4j.properties全部的属性名添加`weixin4j`前缀，并用`.`代替原来的`_`
+  
+
+* 2015-12-15
+  
+  + weixin4j-[mp|qy]:version upgrade to 1.6.5
+  
+* 2015-12-18
+
+  + weixin4j-mp:新增个性化菜单接口
+  
+  + weixin4j-mp:WeixinProxy.getCustomRecord 参数变更为 Date startTime, Date endTime, Pageable pageable
+  
+  
+* 2015-12-19
+
+  + weixin4j-base:删除PayUtil类,接口转移到PayApi类
+  
+  
+* 2015-12-21
+  
+  + weixin4j-server:WeixinMessageHanlder中新增weight接口
+  
+  
+* 2015-12-25
+  
+  + weixin4j-base:WeixinPayProxy类新增获取支付信息#getWeixinAccount方法
+  
+  + weixin4j-base:新增JSSDK的config生成类
+  
+  + weixin4j-base:JSSDKHelper 重命名为 JSSDKConfigurator
+  
+  + weixin4j-base:重构了token类
+  
+  + weixin4j-mp:WeixinProxy新增获取appid(getAppId)方法
+  
+  + weixin4j-mp:WeixinProxy新增获取jsticket(getJSTicketHolder)方法
+  
+  + weixin4j-mp:私有化WeixinProxy(TokenHolder)构造器
+  
+  + weixin4j-mp:调整WeixinTicketCreator类
+  
+  + weixin4j-qy:WeixinProxy新增获取corpid(getCorpId)方法
+  
+  + weixin4j-qy:WeixinProxy新增获取jsticket(getJSTicketHolder)方法
+  
+  + weixin4j-qy:私有化WeixinProxy(TokenHolder)构造器
+  
+  + weixin4j-qy:SuiteApi新增获取Weixinproxy对象(getWeixinProxy)方法
+  
+  + weixin4j-qy:删除WeixinJSTicketCreator类
+  
+  + weixin4j-qy:新增企业号联系人筛选配置类(JSSDKContactConfigurator)
+  
+  + weixin4j-server:DigestUtil 重命名为 DigestUtils
+  

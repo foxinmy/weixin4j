@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @className Tuple
  * @author jy
  * @date 2015年4月19日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public interface Tuple extends Serializable {

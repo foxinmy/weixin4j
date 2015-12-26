@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className QRResult
  * @author jy
  * @date 2015年7月29日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class QRResult implements Serializable {

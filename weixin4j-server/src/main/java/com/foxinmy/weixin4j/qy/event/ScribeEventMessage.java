@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * @className ScribeEventMessage
  * @author jy.hu
  * @date 2014年4月6日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6#.E6.88.90.E5.91.98.E5.85.B3.E6.B3.A8.2F.E5.8F.96.E6.B6.88.E5.85.B3.E6.B3.A8.E4.BA.8B.E4.BB.B6">成员关注/取消关注事件</a>
  */

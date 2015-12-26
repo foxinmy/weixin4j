@@ -8,7 +8,7 @@ import java.io.InputStream;
  * @className HttpResponse
  * @author jy
  * @date 2015年5月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public interface HttpResponse extends HttpMessage {

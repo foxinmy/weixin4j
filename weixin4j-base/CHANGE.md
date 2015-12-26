@@ -86,3 +86,13 @@
   + 调整PayUtil#createPayJsRequestJson参数位置：从主到次
   
   + 调整PayUtil#createNativePayRequestURL参数位置：从主到次
+  
+* 2015-12-04
+
+  +【重要】修改PayUtil中的createPayJsRequest方法的返回值为MchPayRequest，便于二次发起支付。
+  
+  +【重要】添加MchPayRequest的构造函数，便于二次发起支付。
+  
+* 2015-12-19
+
+  + 删除PayUtil类,接口转移到PayApi类

@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
  * @className CustomeMessage
  * @author jy
  * @date 2015年11月20日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.tuple.Text
  * @see com.foxinmy.weixin4j.tuple.Image
  * @see com.foxinmy.weixin4j.tuple.Voice
@@ -57,7 +57,7 @@ public class CustomeMessage implements Serializable {
 	 * @className CustomeIdType
 	 * @author jy
 	 * @date 2015年11月20日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public enum CustomeIdType {
@@ -81,7 +81,7 @@ public class CustomeMessage implements Serializable {
 	 * @className CustomeTarget
 	 * @author jy
 	 * @date 2015年11月20日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class CustomeTarget implements Serializable {

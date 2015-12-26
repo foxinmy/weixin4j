@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.api.BaseApi;
  * @className MpApi
  * @author jy.hu
  * @date 2014年9月26日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.api.BaseApi
  * @see <a href="http://mp.weixin.qq.com/wiki/index.php">api文档</a>
  */

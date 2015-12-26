@@ -13,7 +13,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className Article
  * @author jy
  * @date 2014年9月29日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class Article implements Serializable {
@@ -45,7 +45,7 @@ public class Article implements Serializable {
 
 	@JSONCreator
 	public Article(@JSONField(name = "title") String title,
-			@JSONField(name = "description") String desc,
+			@JSONField(name = "desc") String desc,
 			@JSONField(name = "picUrl") String picUrl,
 			@JSONField(name = "url") String url) {
 		this.title = title;

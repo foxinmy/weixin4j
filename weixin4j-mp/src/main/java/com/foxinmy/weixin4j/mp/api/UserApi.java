@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @className UserApi
  * @author jy.hu
  * @date 2014年9月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.mp.model.User
  */
 public class UserApi extends MpApi {

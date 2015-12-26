@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.mp.type;
  * @className IndustryType
  * @author jy
  * @date 2014年12月12日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see<a href=
  *        "http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1.9E.E8.A1.8C.E4.B8.9A"
  *        >所处行业</a>

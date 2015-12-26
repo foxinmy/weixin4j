@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.type;
  * @className EncryptType
  * @author jy
  * @date 2014年11月23日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum EncryptType {

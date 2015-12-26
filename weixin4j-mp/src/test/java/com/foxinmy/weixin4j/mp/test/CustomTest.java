@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
@@ -23,7 +24,7 @@ import com.foxinmy.weixin4j.mp.model.KfSession;
  * @className MessageNotifyTest
  * @author jy.hu
  * @date 2014年4月10日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class CustomTest extends TokenTest {
@@ -37,17 +38,14 @@ public class CustomTest extends TokenTest {
 
 	@Test
 	public void customRecord() throws WeixinException {
-		String openId = "";
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, 9);
 		calendar.add(Calendar.DAY_OF_MONTH, -2);
 		Date starttime = calendar.getTime();
 		calendar.set(Calendar.HOUR_OF_DAY, 21);
 		Date endtime = calendar.getTime();
-		int pagesize = 10;
-		int pageindex = 1;
-		List<CustomRecord> recordList = customApi.getCustomRecord(openId,
-				starttime, endtime, pagesize, pageindex);
+		List<CustomRecord> recordList = customApi.getCustomRecord(starttime,
+				endtime, new Pageable(1, 70));
 		System.out.println(recordList);
 	}
 
@@ -61,7 +59,8 @@ public class CustomTest extends TokenTest {
 
 	@Test
 	public void addAccount() throws WeixinException {
-		JsonResult result = customApi.createAccount("test@test", "test", "123456");
+		JsonResult result = customApi.createAccount("test@test", "test",
+				"123456");
 		Assert.assertEquals(0, result.getCode());
 	}
 

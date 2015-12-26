@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.http.HttpVersion;
  * @className HttpComponent4_2Response
  * @author jy
  * @date 2015年8月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class HttpComponent4_2Response extends AbstractHttpResponse {

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.foxinmy</groupId>
 	<artifactId>weixin4j</artifactId>
-	<version>1.6.4</version>
+	<version>1.6.5</version>
 	<packaging>pom</packaging>
 	<name>weixin4j</name>
 	<url>https://github.com/foxinmy/weixin4j</url>
@@ -116,6 +116,12 @@
 							</goals>
 						</execution>
 					</executions>
+					<configuration>
+						<excludes>
+							<exclude>*.properties</exclude>
+							<exclude>*.xml</exclude>
+						</excludes>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

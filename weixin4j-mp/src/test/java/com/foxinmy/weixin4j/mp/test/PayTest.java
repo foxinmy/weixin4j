@@ -9,12 +9,11 @@ import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.mp.api.Pay2Api;
-import com.foxinmy.weixin4j.payment.PayUtil;
 import com.foxinmy.weixin4j.payment.WeixinPayProxy;
 import com.foxinmy.weixin4j.payment.mch.ApiResult;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
@@ -24,6 +23,7 @@ import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.TradeType;
+import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 public class PayTest {
@@ -37,7 +37,7 @@ public class PayTest {
 				"请填入v2版本的partnerKey");
 		PAY2 = new Pay2Api(ACCOUNT2, new FileTokenStorager(
 				Weixin4jConfigUtil
-						.getValue("token_path", "/tmp/weixin4j/token")));
+						.getValue("token.path", "/tmp/weixin4j/token")));
 		ACCOUNT3 = new WeixinPayAccount("请填入v3版本的appid", "请填入v3版本的appSecret",
 				"请填入v3版本的paysignkey", "请填入v3版本的mchid", null, null, null, null);
 		PAY3 = new WeixinPayProxy(ACCOUNT3);
@@ -74,7 +74,7 @@ public class PayTest {
 		c.set(Calendar.YEAR, 2014);
 		c.set(Calendar.MONTH, 11);
 		c.set(Calendar.DAY_OF_MONTH, 22);
-		File file = PAY2.downloadbill(c.getTime(), null);
+		File file = PAY2.downloadBill(c.getTime(), null);
 		System.err.println(file);
 	}
 
@@ -84,7 +84,7 @@ public class PayTest {
 		System.err.println(order);
 		String sign = order.getSign();
 		order.setSign(null);
-		String valiSign = PayUtil.paysignMd5(order, ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil.paysignMd5(order, ACCOUNT3.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
@@ -93,12 +93,12 @@ public class PayTest {
 	@Test
 	public void refundQueryV3() throws WeixinException {
 		com.foxinmy.weixin4j.payment.mch.RefundRecord record = PAY3
-				.refundQueryV3(new IdQuery("TT_1427183696238", IdType.TRADENO));
+				.refundQuery(new IdQuery("TT_1427183696238", IdType.TRADENO));
 		System.err.println(record);
 		// 这里的验证签名需要把details循环拼接
 		String sign = record.getSign();
 		record.setSign(null);
-		String valiSign = PayUtil.paysignMd5(record, ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil.paysignMd5(record, ACCOUNT3.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
@@ -112,7 +112,7 @@ public class PayTest {
 		c.set(Calendar.MONTH, 2);
 		c.set(Calendar.DAY_OF_MONTH, 24);
 		System.err.println(c.getTime());
-		File file = PAY3.downloadbill(c.getTime(), null);
+		File file = PAY3.downloadBill(c.getTime(), null);
 		System.err.println(file);
 	}
 
@@ -127,7 +127,7 @@ public class PayTest {
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
-		String valiSign = PayUtil.paysignMd5(result, ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil.paysignMd5(result, ACCOUNT3.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
@@ -141,8 +141,7 @@ public class PayTest {
 		payPackageV3.setProductId("0001");
 		PrePay prePay = null;
 		try {
-			prePay = PayUtil.createPrePay(payPackageV3,
-					ACCOUNT3.getPaySignKey());
+			prePay = PAY3.createPrePay(payPackageV3);
 		} catch (WeixinPayException e) {
 			e.printStackTrace();
 		}
@@ -155,7 +154,7 @@ public class PayTest {
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
-		String valiSign = PayUtil.paysignMd5(result, ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil.paysignMd5(result, ACCOUNT3.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);

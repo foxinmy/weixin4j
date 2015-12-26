@@ -6,6 +6,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.qy.WeixinProxy;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentSetter;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
@@ -24,7 +25,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @className SuiteApi
  * @author jy
  * @date 2015年6月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%88%E6%9D%83">第三方应用授权</a>
  */
@@ -37,10 +38,6 @@ public class SuiteApi extends QyApi {
 	 * 应用套件ticket
 	 */
 	private final SuiteTicketHolder suiteTicketHolder;
-	/**
-	 * 应用套件永久授权码
-	 */
-	private final SuitePerCodeHolder suitePerCodeHolder;
 	/**
 	 * 应用套件pre_code
 	 */
@@ -62,9 +59,6 @@ public class SuiteApi extends QyApi {
 				new WeixinSuitePreCodeCreator(suiteTokenHolder,
 						suiteTicketHolder.getSuiteId()),
 				suiteTicketHolder.getTokenStorager());
-		this.suitePerCodeHolder = new SuitePerCodeHolder(
-				suiteTicketHolder.getSuiteId(),
-				suiteTicketHolder.getTokenStorager());
 	}
 
 	/**
@@ -72,7 +66,7 @@ public class SuiteApi extends QyApi {
 	 * 
 	 * @return
 	 */
-	public TokenHolder getTokenHolder() {
+	public TokenHolder getSuiteTokenHolder() {
 		return this.suiteTokenHolder;
 	}
 
@@ -95,12 +89,16 @@ public class SuiteApi extends QyApi {
 	}
 
 	/**
-	 * 应用套件永久授权码
+	 * 应用套件永久授权码：企业号的永久授权码
 	 * 
+	 * @param authCorpid
+	 *            授权方corpid
 	 * @return
 	 */
-	public SuitePerCodeHolder getPerCodeHolder() {
-		return this.suitePerCodeHolder;
+	public SuitePerCodeHolder getPerCodeHolder(String authCorpId) {
+		return new SuitePerCodeHolder(authCorpId,
+				suiteTicketHolder.getSuiteId(),
+				suiteTicketHolder.getTokenStorager());
 	}
 
 	/**
@@ -110,9 +108,22 @@ public class SuiteApi extends QyApi {
 	 *            授权方corpid
 	 * @return 企业号token
 	 */
-	public TokenHolder createTokenHolder(String authCorpid) {
-		return new TokenHolder(new WeixinTokenSuiteCreator(authCorpid,
-				suitePerCodeHolder, suiteTokenHolder),
+	public TokenHolder getTokenSuiteHolder(String authCorpId) {
+		return new TokenHolder(new WeixinTokenSuiteCreator(
+				getPerCodeHolder(authCorpId), suiteTokenHolder),
+				suiteTicketHolder.getTokenStorager());
+	}
+
+	/**
+	 * 创建WeixinProxy对象
+	 * 
+	 * @param authCorpId
+	 *            已授权的corpid
+	 * @return
+	 */
+	public WeixinProxy getWeixinProxy(String authCorpId) {
+		return new WeixinProxy(new WeixinTokenSuiteCreator(
+				getPerCodeHolder(authCorpId), suiteTokenHolder),
 				suiteTicketHolder.getTokenStorager());
 	}
 
@@ -165,12 +176,15 @@ public class SuiteApi extends QyApi {
 		obj.put("corp_info", obj.remove("auth_corp_info"));
 		obj.put("user_info", obj.remove("auth_user_info"));
 		OUserInfo oInfo = JSON.toJavaObject(obj, OUserInfo.class);
+		// 微信授权企业号的永久授权码
+		SuitePerCodeHolder suitePerCodeHolder = getPerCodeHolder(oInfo
+				.getCorpInfo().getCorpId());
 		// 缓存微信企业号access_token
-		TokenCreator tokenCreator = new WeixinTokenSuiteCreator(null,
+		TokenCreator tokenCreator = new WeixinTokenSuiteCreator(
 				suitePerCodeHolder, suiteTokenHolder);
 		Token token = new Token(obj.getString("access_token"));
 		token.setExpiresIn(obj.getIntValue("expires_in"));
-		token.setTime(System.currentTimeMillis());
+		token.setCreateTime(System.currentTimeMillis());
 		suiteTicketHolder.getTokenStorager().caching(
 				tokenCreator.getCacheKey(), token);
 		// 缓存微信企业号永久授权码
@@ -182,7 +196,7 @@ public class SuiteApi extends QyApi {
 	/**
 	 * 获取企业号的授权信息
 	 * 
-	 * @param authCorpid
+	 * @param authCorpId
 	 *            授权方corpid
 	 * @return 授权方信息
 	 * @throws WeixinException
@@ -190,12 +204,13 @@ public class SuiteApi extends QyApi {
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E8.8E.B7.E5.8F.96.E4.BC.81.E4.B8.9A.E5.8F.B7.E7.9A.84.E6.8E.88.E6.9D.83.E4.BF.A1.E6.81.AF">获取企业号的授权信息</a>
 	 */
-	public OUserInfo getOAuthInfo(String authCorpid) throws WeixinException {
+	public OUserInfo getOAuthInfo(String authCorpId) throws WeixinException {
 		String suite_get_authinfo_uri = getRequestUri("suite_get_authinfo_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", suiteTicketHolder.getSuiteId());
-		obj.put("auth_corpid", authCorpid);
-		obj.put("permanent_code", suitePerCodeHolder.getPermanentCode());
+		obj.put("auth_corpid", authCorpId);
+		obj.put("permanent_code", getPerCodeHolder(authCorpId)
+				.getPermanentCode());
 		WeixinResponse response = weixinExecutor.post(
 				String.format(suite_get_authinfo_uri,
 						suiteTokenHolder.getAccessToken()), obj.toJSONString());
@@ -208,7 +223,7 @@ public class SuiteApi extends QyApi {
 	/**
 	 * 获取企业号应用
 	 * 
-	 * @param authCorpid
+	 * @param authCorpId
 	 *            授权方corpid
 	 * @param agentid
 	 *            授权方应用id
@@ -218,13 +233,14 @@ public class SuiteApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E8.8E.B7.E5.8F.96.E4.BC.81.E4.B8.9A.E5.8F.B7.E5.BA.94.E7.94.A8">获取企业号应用</a>
 	 * @throws WeixinException
 	 */
-	public AgentInfo getAgent(String authCorpid, int agentid)
+	public AgentInfo getAgent(String authCorpId, int agentid)
 			throws WeixinException {
 		String suite_get_agent_uri = getRequestUri("suite_get_agent_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", suiteTicketHolder.getSuiteId());
-		obj.put("auth_corpid", authCorpid);
-		obj.put("permanent_code", suitePerCodeHolder.getPermanentCode());
+		obj.put("auth_corpid", authCorpId);
+		obj.put("permanent_code", getPerCodeHolder(authCorpId)
+				.getPermanentCode());
 		obj.put("agentid", agentid);
 		WeixinResponse response = weixinExecutor.post(
 				String.format(suite_get_agent_uri,
@@ -245,7 +261,7 @@ public class SuiteApi extends QyApi {
 	/**
 	 * 设置企业应用的选项设置信息，如：地理位置上报等
 	 * 
-	 * @param authCorpid
+	 * @param authCorpId
 	 *            授权方corpid
 	 * @param agentSet
 	 *            设置信息
@@ -255,13 +271,14 @@ public class SuiteApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult setAgent(String authCorpid, AgentSetter agentSet)
+	public JsonResult setAgent(String authCorpId, AgentSetter agentSet)
 			throws WeixinException {
 		String suite_set_agent_uri = getRequestUri("suite_set_agent_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", suiteTicketHolder.getSuiteId());
-		obj.put("auth_corpid", authCorpid);
-		obj.put("permanent_code", suitePerCodeHolder.getPermanentCode());
+		obj.put("auth_corpid", authCorpId);
+		obj.put("permanent_code", getPerCodeHolder(authCorpId)
+				.getPermanentCode());
 		obj.put("agent", agentSet);
 		WeixinResponse response = weixinExecutor.post(
 				String.format(suite_set_agent_uri,

@@ -8,14 +8,14 @@ import org.apache.commons.httpclient.HttpClient;
  * @className HttpComponent3Factory
  * @author jy
  * @date 2015年8月12日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class HttpComponent3Factory extends HttpClientFactory {
 
 	public HttpComponent3Factory() {
-		// odd bug
-		Class _ = HttpClient.class;
+		// odd code
+		Class<HttpClient> _dead = HttpClient.class;
 	}
 
 	@Override

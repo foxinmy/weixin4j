@@ -9,7 +9,7 @@ import java.util.BitSet;
  * @className URLEncodingUtil
  * @author jy
  * @date 2015年8月15日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public final class URLEncodingUtil {

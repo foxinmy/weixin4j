@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.model.Token;
  * @className OauthToken
  * @author jy.hu
  * @date 2014年4月6日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.mp.model.AuthResult
  * @see com.foxinmy.weixin4j.mp.model.AuthResult.AuthScope
  */
@@ -72,8 +72,8 @@ public class OauthToken extends Token {
 	public String toString() {
 		return "OauthToken [openId=" + openId + ", unionId=" + unionId
 				+ ", refreshToken=" + refreshToken + ", scope=" + scope
-				+ ", getAccessToken()=" + getAccessToken()
-				+ ", getExpiresIn()=" + getExpiresIn() + ", getTime()="
-				+ getTime() + "]";
+				+ ", accessToken=" + getAccessToken()
+				+ ", expiresIn=" + getExpiresIn() + ", createTime="
+				+ getCreateTime() + "]";
 	}
 }

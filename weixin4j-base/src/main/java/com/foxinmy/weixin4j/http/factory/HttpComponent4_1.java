@@ -3,6 +3,8 @@ package com.foxinmy.weixin4j.http.factory;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import javax.net.ssl.SSLContext;
+
 import org.apache.http.HttpHost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.params.ConnRoutePNames;
@@ -26,7 +28,7 @@ import com.foxinmy.weixin4j.model.Consts;
  * @className HttpComponent4_1
  * @author jy
  * @date 2015年8月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class HttpComponent4_1 extends HttpComponent4 {
@@ -41,8 +43,11 @@ public class HttpComponent4_1 extends HttpComponent4 {
 	public HttpResponse execute(HttpRequest request) throws HttpClientException {
 		HttpResponse response = null;
 		try {
-			HttpRequestBase uriRequest = methodMap.get(request.getMethod());
-			uriRequest.setURI(request.getURI());
+			HttpRequestBase uriRequest = createHttpRequest(request.getMethod(),
+					request.getURI());
+			boolean useSSL = "https".equals(request.getURI().getScheme());
+			SSLContext sslContext = null;
+			X509HostnameVerifier hostnameVerifier = null;
 			HttpParams params = request.getParams();
 			if (params != null) {
 				if (params.getProxy() != null) {
@@ -52,6 +57,7 @@ public class HttpComponent4_1 extends HttpComponent4 {
 							socketAddress.getPort());
 					uriRequest.getParams().setParameter(
 							ConnRoutePNames.DEFAULT_PROXY, proxy);
+					useSSL = false;
 				}
 				uriRequest.getParams().setIntParameter(
 						CoreConnectionPNames.SOCKET_BUFFER_SIZE,
@@ -68,19 +74,23 @@ public class HttpComponent4_1 extends HttpComponent4 {
 						HttpHeaders.CONTENT_ENCODING, Consts.UTF_8);
 				uriRequest.getParams().setParameter(HttpHeaders.ACCEPT_CHARSET,
 						Consts.UTF_8);
-				if (params.getSSLContext() != null) {
-					SSLSocketFactory socketFactory = new SSLSocketFactory(
-							params.getSSLContext());
-					X509HostnameVerifier hostnameVerifier = SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
-					if (params.getHostnameVerifier() != null) {
-						hostnameVerifier = new CustomHostnameVerifier(
-								params.getHostnameVerifier());
-					}
-					socketFactory.setHostnameVerifier(hostnameVerifier);
-					Scheme scheme = new Scheme("https", socketFactory, 443);
-					httpClient.getConnectionManager().getSchemeRegistry()
-							.register(scheme);
+				sslContext = params.getSSLContext();
+				hostnameVerifier = new CustomHostnameVerifier(
+						params.getHostnameVerifier());
+			}
+			if (useSSL) {
+				if (sslContext == null) {
+					sslContext = HttpClientFactory.allowSSLContext();
 				}
+				if (hostnameVerifier == null) {
+					hostnameVerifier = SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+				}
+				SSLSocketFactory socketFactory = new SSLSocketFactory(
+						sslContext);
+				socketFactory.setHostnameVerifier(hostnameVerifier);
+				Scheme scheme = new Scheme("https", socketFactory, 443);
+				httpClient.getConnectionManager().getSchemeRegistry()
+						.register(scheme);
 			}
 			addHeaders(request.getHeaders(), uriRequest);
 			addEntity(request.getEntity(), uriRequest);

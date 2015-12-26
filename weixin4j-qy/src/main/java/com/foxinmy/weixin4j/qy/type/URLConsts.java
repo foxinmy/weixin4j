@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.qy.type;
  * @className URLConsts
  * @author jy
  * @date 2014年12月3日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public final class URLConsts {
@@ -29,6 +29,11 @@ public final class URLConsts {
 	 */
 	public static final String JS_TICKET_URL = BASE_URL
 			+ "/get_jsapi_ticket?access_token=%s";
+	/**
+	 * 企业号获取ticket的url
+	 */
+	public static final String TICKET_URL = BASE_URL
+			+ "/ticket/get?access_token=%s&type=%s";
 	/**
 	 * 企业号第三方应用套件获取token的url
 	 */

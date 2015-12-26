@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  * @className RefundDetail
  * @author jy
  * @date 2014年11月6日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement

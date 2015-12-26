@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.http.entity.HttpEntity;
  * @className HttpClient
  * @author jy
  * @date 2015年5月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public interface HttpClient {

@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * @className ImageMessage
  * @author jy.hu
  * @date 2014年4月6日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/10/79502792eef98d6e0c6e1739da387346.html#.E5.9B.BE.E7.89.87.E6.B6.88.E6.81.AF">订阅号、服务号的图片消息</a>
  * @see <a

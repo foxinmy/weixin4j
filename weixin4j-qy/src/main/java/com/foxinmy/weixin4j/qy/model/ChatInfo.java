@@ -12,7 +12,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className ChatInfo
  * @author jy
  * @date 2015年7月31日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class ChatInfo implements Serializable {

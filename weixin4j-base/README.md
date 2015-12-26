@@ -13,5 +13,7 @@ weixin4j-base
 
 `HttpClient的实现`
 
+`微信支付的实现`
+
 [更新LOG](./CHANGE.md)
 ---------------------

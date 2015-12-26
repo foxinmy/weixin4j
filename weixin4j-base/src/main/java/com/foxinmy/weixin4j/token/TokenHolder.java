@@ -9,11 +9,11 @@ import com.foxinmy.weixin4j.model.Token;
  * @className TokenHolder
  * @author jy
  * @date 2015年6月12日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see TokenCreator
  * @see TokenStorager
  */
-public final class TokenHolder {
+public class TokenHolder {
 
 	/**
 	 * token的创建
@@ -73,5 +73,9 @@ public final class TokenHolder {
 		Token token = tokenCreator.createToken();
 		tokenStorager.caching(cacheKey, token);
 		return token;
+	}
+
+	public TokenStorager getTokenStorager() {
+		return tokenStorager;
 	}
 }

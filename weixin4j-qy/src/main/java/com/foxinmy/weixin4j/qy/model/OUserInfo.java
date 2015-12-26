@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.qy.type.AgentAuthType;
  * @className OUserInfo
  * @author jy
  * @date 2015年6月12日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class OUserInfo implements Serializable {
@@ -113,7 +113,7 @@ public class OUserInfo implements Serializable {
 	 * @className AuthInfo
 	 * @author jy
 	 * @date 2015年6月22日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class AuthInfo implements Serializable {
@@ -161,7 +161,7 @@ public class OUserInfo implements Serializable {
 	 * @className AgentItem
 	 * @author jy
 	 * @date 2015年6月22日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class AgentItem extends AgentOverview {
@@ -232,7 +232,7 @@ public class OUserInfo implements Serializable {
 	 * @className DepartItem
 	 * @author jy
 	 * @date 2015年6月22日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class DepartItem extends Party {

@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.http.ContentType;
  * 
  * @author jy.hu
  * @date 2014年4月2日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public enum MediaType {
 	image(ContentType.IMAGE_JPG), voice(ContentType.AUDIO_MP3), video(

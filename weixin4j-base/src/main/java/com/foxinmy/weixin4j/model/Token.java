@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className Token
  * @author jy.hu
  * @date 2014年4月5日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/11/0e4b294685f817b95cbed85ba5e82b8f.html">微信公众平台获取token</a>
  * @see <a
@@ -32,9 +32,13 @@ public class Token implements Serializable {
 	@JSONField(name = "expires_in")
 	private int expiresIn;
 	/**
-	 * token创建的时间 只在FileTokenStorager模式下有效
+	 * token创建的时间
 	 */
-	private long time;
+	private long createTime;
+	/**
+	 * 请求返回的原始结果
+	 */
+	private String originalResult;
 
 	public Token() {
 
@@ -60,17 +64,25 @@ public class Token implements Serializable {
 		this.expiresIn = expiresIn;
 	}
 
-	public long getTime() {
-		return time;
+	public long getCreateTime() {
+		return createTime;
 	}
 
-	public void setTime(long time) {
-		this.time = time;
+	public void setCreateTime(long createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getOriginalResult() {
+		return originalResult;
+	}
+
+	public void setOriginalResult(String originalResult) {
+		this.originalResult = originalResult;
 	}
 
 	@Override
 	public String toString() {
 		return "Token [accessToken=" + accessToken + ", expiresIn=" + expiresIn
-				+ ", time=" + time + "]";
+				+ ", createTime=" + createTime + "]";
 	}
 }

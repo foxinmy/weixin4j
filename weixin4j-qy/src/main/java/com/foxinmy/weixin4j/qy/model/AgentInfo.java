@@ -10,7 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className AgentInfo
  * @author jy
  * @date 2015年3月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class AgentInfo extends AgentSetter {

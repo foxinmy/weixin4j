@@ -39,6 +39,7 @@ public class InputStreamBody extends AbstractContentBody {
 
 	private final InputStream in;
 	private final String filename;
+	private int contentLength;
 
 	public InputStreamBody(final InputStream in, final String mimeType,
 			final String filename) {
@@ -67,6 +68,7 @@ public class InputStreamBody extends AbstractContentBody {
 			int l;
 			while ((l = this.in.read(tmp)) != -1) {
 				out.write(tmp, 0, l);
+				contentLength += l;
 			}
 			out.flush();
 		} finally {
@@ -83,12 +85,7 @@ public class InputStreamBody extends AbstractContentBody {
 	}
 
 	public long getContentLength() {
-		try {
-			return in.available();
-		} catch (IOException e) {
-			;
-		}
-		return -1;
+		return this.contentLength;
 	}
 
 	public String getFilename() {

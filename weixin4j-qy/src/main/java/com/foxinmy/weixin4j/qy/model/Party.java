@@ -10,7 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className Party
  * @author jy
  * @date 2014年11月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8">管理部门说明</a>
  */

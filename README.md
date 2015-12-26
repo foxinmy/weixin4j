@@ -5,7 +5,7 @@ weixin4j
 -------------
  > `weixin4j`是一个用java编写针对微信开发的工具包,包含[weixin4j-mp](./weixin4j-mp)(微信公众平台API)、[weixin4j-qy](./weixin4j-qy)(微信企业号API)以及[weixin4j-server](./weixin4j-server)(微信回调消息服务器)三个工程.
 
-功能列表
+模块说明
 -------
 * **weixin4j-base**
 
@@ -26,34 +26,27 @@ weixin4j
 如何获取
 ----------
 ###1.maven依赖
-微信公众平台API(1.6.3,2015-11-09 released)
+微信公众平台API(1.6.5,2015-12-15 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.6.3</version>
+	    <version>1.6.5</version>
 	</dependency>
-微信企业号API(1.6.3,2015-11-09 released)
+微信企业号API(1.6.5,2015-12-15 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-qy</artifactId>
-	    <version>1.6.3</version>
+	    <version>1.6.5</version>
 	</dependency>
-微信回调消息服务器(1.1.3,2015-11-09 released)
+微信回调消息服务器(1.1.4,2015-12-08 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.1.3</version>
+	    <version>1.1.4</version>
 	</dependency>
-
-以上依赖如果出现Missing artifact错误 请尝试在eclipse里这么做
-
-  + 进入 Window > Show View > Other > Maven Repositories 展开 Global Repositories 在group或者central上右键执行`update index` 操作
-  
-  + 或者进入 Windows > Preferences > Maven 选中 `Download repository index updates on startup` 即可
-
 
 ###2.直接下载jar包
 
@@ -72,10 +65,18 @@ weixin4j
   
 接下来
 ------
-* 公众号第三方服务应用
+* [公众号第三方服务应用](https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318292&token=&lang=zh_CN)
 
-* 硬件设备 & 摇一摇周边
+* [微信硬件平台](http://iot.weixin.qq.com/)
 
-* 微信小店&门店
+* [微信小店](http://mp.weixin.qq.com/wiki/6/ae98ac4a7219405153cedc9dddccacca.html)
 
-* 微信卡券
+* [微信卡券](http://mp.weixin.qq.com/wiki/10/597cb57750f375a4b37e2536fd3331ea.html)
+
+* [微信门店](http://mp.weixin.qq.com/wiki/11/081986f089826bf94393bef9bf287b8b.html)
+
+* [微信摇一摇周边](http://mp.weixin.qq.com/wiki/19/9fe9fdbb50fee9f9660438c551142ccf.html)
+
+* [微信连WI-FI](http://mp.weixin.qq.com/wiki/9/fd2d692e28b938a8d618f57cf9c79fb1.html)
+
+* [微信扫一扫](http://mp.weixin.qq.com/wiki/19/e833eb10470cc25cad4719677c46ecdb.html)

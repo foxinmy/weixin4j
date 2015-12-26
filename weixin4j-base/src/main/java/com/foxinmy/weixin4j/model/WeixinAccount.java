@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className WeixinAccount
  * @author jy
  * @date 2014年11月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class WeixinAccount implements Serializable {

@@ -14,7 +14,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className Image
  * @author jy
  * @date 2014年9月29日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class Image implements MassTuple, NotifyTuple, ChatTuple {

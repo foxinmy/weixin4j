@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.util.ClassUtil;
  * @className MessageHandlerAdapter
  * @author jy
  * @date 2015年5月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @SuppressWarnings("unchecked")
@@ -62,4 +62,11 @@ public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements
 	public abstract WeixinResponse doHandle0(WeixinRequest request, M message)
 			throws WeixinException;
 
+	/**
+	 * 存在多个匹配到的MessageHandler则比较
+	 */
+	@Override
+	public int weight() {
+		return 1;
+	}
 }

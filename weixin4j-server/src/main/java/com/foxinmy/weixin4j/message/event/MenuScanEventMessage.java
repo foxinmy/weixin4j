@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
  * @className MenuScanEventMessage
  * @author jy
  * @date 2014年9月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/9/981d772286d10d153a3dc4286c1ee5b5.html#scancode_push.EF.BC.9A.E6.89.AB.E7.A0.81.E6.8E.A8.E4.BA.8B.E4.BB.B6.E7.9A.84.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81">订阅号、服务号的扫码推事件</a>
  * @see <a
@@ -36,7 +36,7 @@ public class MenuScanEventMessage extends MenuEventMessage {
 	 * @className ScanInfo
 	 * @author jy
 	 * @date 2015年3月29日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class ScanInfo implements Serializable {

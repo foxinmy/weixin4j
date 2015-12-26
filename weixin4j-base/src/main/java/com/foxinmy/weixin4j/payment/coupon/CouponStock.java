@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @className CouponStock
  * @author jy
  * @date 2015年3月27日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement

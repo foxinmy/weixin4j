@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.token.TokenStorager;
  * @className WeixinSuiteProxy
  * @author jy
  * @date 2015年6月22日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.qy.api.SuiteApi
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%88%E6%9D%83">企业号第三方应用</a>
@@ -91,5 +91,5 @@ public class WeixinSuiteProxy {
 		return this.suiteMap.get(suiteId);
 	}
 
-	public final static String VERSION = "1.6.3";
+	public final static String VERSION = "1.6.5";
 }

@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.type;
  * @className RedpacketType
  * @author jy
  * @date 2015年6月4日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum RedpacketType {

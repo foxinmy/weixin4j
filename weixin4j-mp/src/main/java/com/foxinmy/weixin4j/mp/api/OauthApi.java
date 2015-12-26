@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @className OauthApi
  * @author jy
  * @date 2015年3月6日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&lang=zh_CN">微信登陆</a>
  */
@@ -33,7 +33,7 @@ public class OauthApi extends MpApi {
 	public String getAuthorizeURL() {
 		String appId = DEFAULT_WEIXIN_ACCOUNT.getId();
 		String redirectUri = Weixin4jConfigUtil
-				.getValue("user_oauth_redirect_uri");
+				.getValue("user.oauth.redirect.uri");
 		return getAuthorizeURL(appId, redirectUri, "state", "snsapi_base");
 	}
 

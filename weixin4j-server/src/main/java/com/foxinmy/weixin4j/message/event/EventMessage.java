@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * @className EventMessage
  * @author jy.hu
  * @date 2014年4月6日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/9/981d772286d10d153a3dc4286c1ee5b5.html">订阅号、服务号的事件推送</a>
  * @see <a
@@ -20,6 +20,10 @@ import com.foxinmy.weixin4j.type.MessageType;
 public class EventMessage extends WeixinMessage {
 
 	private static final long serialVersionUID = 7703667223814088865L;
+
+	protected EventMessage() {
+		// jaxb requried
+	}
 
 	public EventMessage(String eventType) {
 		super(MessageType.event.name());

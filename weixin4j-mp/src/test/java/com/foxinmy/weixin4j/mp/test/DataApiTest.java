@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.mp.type.DatacubeType;
  * @className DataApiTest
  * @author jy
  * @date 2015年1月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @SuppressWarnings("unchecked")

@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className ChatMute
  * @author jy
  * @date 2015年8月1日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class ChatMute implements Serializable {

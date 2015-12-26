@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * @className ChatItem
  * @author jy
  * @date 2015年8月1日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class ChatItem implements Serializable {

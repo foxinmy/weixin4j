@@ -30,7 +30,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * @className MediaTest
  * @author jy.hu
  * @date 2014年4月10日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class MediaTest extends TokenTest {
@@ -55,7 +55,7 @@ public class MediaTest extends TokenTest {
 	@Test
 	public void download1() throws WeixinException, IOException {
 		MediaDownloadResult content = mediaApi.downloadMedia(
-				"zloeIROuS3YJFZwugGNM5oGBolqJmU_8FKTUmJwTFbSjfky904S9OPly5Wq0BRn2", true);
+				"BmzcrM2jaJXZCjBqxLwyC03kh5pge3CbrBqXP4XbYBCeKr7xz-rHuwPf4vYLVdL1", false);
 		Assert.assertTrue(content != null);
 		System.err.println(content);
 	}

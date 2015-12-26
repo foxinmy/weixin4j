@@ -25,7 +25,7 @@ import com.foxinmy.weixin4j.tuple.Text;
  * @className MpNewsTest
  * @author jy
  * @date 2014年4月27日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class MassTest extends TokenTest {

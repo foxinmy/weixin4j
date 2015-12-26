@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.mp.type.KfOnlineStatus;
  * @className KfAccount
  * @author jy
  * @date 2014年11月16日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a href="http://dkf.qq.com/document-3_1.html">多客服账号信息</a>
  */
 public class KfAccount implements Serializable {

@@ -39,6 +39,8 @@ import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
+import com.foxinmy.weixin4j.qy.suite.WeixinTokenSuiteCreator;
+import com.foxinmy.weixin4j.qy.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.qy.type.InviteType;
@@ -47,6 +49,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
+import com.foxinmy.weixin4j.type.TicketType;
 
 /**
  * 微信企业号接口实现
@@ -54,7 +57,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * @className WeixinProxy
  * @author jy
  * @date 2014年11月19日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">api文档</a>
  */
 public class WeixinProxy {
@@ -71,6 +74,7 @@ public class WeixinProxy {
 	private final ChatApi chatApi;
 
 	private final TokenHolder tokenHolder;
+	private String corpId;
 
 	/**
 	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
@@ -113,6 +117,21 @@ public class WeixinProxy {
 			TokenStorager tokenStorager) {
 		this(new TokenHolder(new WeixinTokenCreator(corpid, corpsecret),
 				tokenStorager));
+		this.corpId = corpid;
+	}
+
+	/**
+	 * 第三方套件(永久授权码机制)
+	 * 
+	 * @param tokenCreator
+	 *            微信企业号token创建(永久授权码)
+	 * @param tokenStorager
+	 *            token存储
+	 */
+	public WeixinProxy(WeixinTokenSuiteCreator tokenCreator,
+			TokenStorager tokenStorager) {
+		this(new TokenHolder(tokenCreator, tokenStorager));
+		this.corpId = tokenCreator.getAuthCorpId();
 	}
 
 	/**
@@ -121,7 +140,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.qy.token.WeixinTokenCreator.WeixinTokenCreator
 	 * @param tokenHolder
 	 */
-	public WeixinProxy(TokenHolder tokenHolder) {
+	private WeixinProxy(TokenHolder tokenHolder) {
 		this.tokenHolder = tokenHolder;
 		this.partyApi = new PartyApi(tokenHolder);
 		this.userApi = new UserApi(tokenHolder);
@@ -135,8 +154,25 @@ public class WeixinProxy {
 		this.chatApi = new ChatApi(tokenHolder);
 	}
 
+	/**
+	 * token获取
+	 * 
+	 * @return
+	 */
 	public TokenHolder getTokenHolder() {
 		return this.tokenHolder;
+	}
+
+	/**
+	 * 获取JSSDK Ticket的tokenHolder
+	 * 
+	 * @param ticketType
+	 *            票据类型
+	 * @return
+	 */
+	public TokenHolder getTicketHolder(TicketType ticketType) {
+		return new TokenHolder(new WeixinTicketCreator(this.corpId, ticketType,
+				this.tokenHolder), this.tokenHolder.getTokenStorager());
 	}
 
 	/**
@@ -199,7 +235,7 @@ public class WeixinProxy {
 	/**
 	 * 自定义菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
 	 * 
-	 * @param btnList
+	 * @param buttons
 	 *            菜单列表
 	 * @param agentid
 	 *            应用ID
@@ -210,9 +246,9 @@ public class WeixinProxy {
 	 *      创建自定义菜单</a>
 	 * @see com.foxinmy.weixin4j.model.Button
 	 */
-	public JsonResult createMenu(List<Button> btnList, int agentid)
+	public JsonResult createMenu(List<Button> buttons, int agentid)
 			throws WeixinException {
-		return menuApi.createMenu(btnList, agentid);
+		return menuApi.createMenu(buttons, agentid);
 	}
 
 	/**
@@ -1267,5 +1303,5 @@ public class WeixinProxy {
 		return chatApi.sendChatMessage(message);
 	}
 
-	public final static String VERSION = "1.6.3";
+	public final static String VERSION = "1.6.5";
 }

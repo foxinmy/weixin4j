@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.util.MapUtil;
  * @className JsPayRequestV2
  * @author jy
  * @date 2014年8月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement

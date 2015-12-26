@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * @className MicroPayPackage
  * @author jy
  * @date 2014年11月17日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement

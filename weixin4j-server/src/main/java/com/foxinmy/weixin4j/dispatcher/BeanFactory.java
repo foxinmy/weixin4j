@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
  * @className BeanFactory
  * @author jy
  * @date 2015年5月7日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public interface BeanFactory {

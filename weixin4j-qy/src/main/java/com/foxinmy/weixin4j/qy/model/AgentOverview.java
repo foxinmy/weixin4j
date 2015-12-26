@@ -10,7 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className AgentOverview
  * @author jy
  * @date 2015年4月9日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class AgentOverview implements Serializable {

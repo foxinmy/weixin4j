@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * @className MenuLocationEventMessage
  * @author jy
  * @date 2014年9月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/9/981d772286d10d153a3dc4286c1ee5b5.html#location_select.EF.BC.9A.E5.BC.B9.E5.87.BA.E5.9C.B0.E7.90.86.E4.BD.8D.E7.BD.AE.E9.80.89.E6.8B.A9.E5.99.A8.E7.9A.84.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81">订阅号、服务号的弹出地理位置选择事件推送</a>
  * @see <a
@@ -42,7 +42,7 @@ public class MenuLocationEventMessage extends MenuEventMessage {
 	 * @className LocationInfo
 	 * @author jy
 	 * @date 2015年3月29日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class LocationInfo implements Serializable {

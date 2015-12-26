@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @className Redpacket
  * @author jy
  * @date 2015年3月28日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_1">红包简介</a>
  */

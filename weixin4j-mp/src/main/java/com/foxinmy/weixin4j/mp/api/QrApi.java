@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConst;
  * @className QrApi
  * @author jy.hu
  * @date 2014年9月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">二维码支持</a>
  */
@@ -80,7 +80,7 @@ public class QrApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 */
 	public File createQRFile(QRParameter parameter) throws WeixinException {
-		String qr_path = Weixin4jConfigUtil.getValue("qr_path",
+		String qr_path = Weixin4jConfigUtil.getValue("qrcode.path",
 				Weixin4jConst.DEFAULT_QRCODE_PATH);
 		String filename = String.format("%s_%s_%d.jpg", parameter.getQrType()
 				.name(), parameter.getSceneValue(), parameter

@@ -35,12 +35,14 @@ import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
+import com.foxinmy.weixin4j.mp.model.Menu;
 import com.foxinmy.weixin4j.mp.model.MenuSetting;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.QRResult;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.User;
+import com.foxinmy.weixin4j.mp.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
@@ -52,6 +54,7 @@ import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.tuple.Tuple;
 import com.foxinmy.weixin4j.type.MediaType;
+import com.foxinmy.weixin4j.type.TicketType;
 
 /**
  * 微信公众平台接口实现
@@ -59,7 +62,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * @className WeixinProxy
  * @author jy.hu
  * @date 2014年3月23日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a href="http://mp.weixin.qq.com/wiki/index.php">api文档</a>
  */
 public class WeixinProxy {
@@ -77,6 +80,7 @@ public class WeixinProxy {
 	private final DataApi dataApi;
 
 	private final TokenHolder tokenHolder;
+	private String appId;
 
 	/**
 	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
@@ -114,15 +118,16 @@ public class WeixinProxy {
 			TokenStorager tokenStorager) {
 		this(new TokenHolder(new WeixinTokenCreator(appid, appsecret),
 				tokenStorager));
+		this.appId = appid;
 	}
 
 	/**
 	 * 注意：TokenCreator 需为 <font color="red">WeixinTokenCreator</font>
 	 * 
-	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator.WeixinTokenCreator
+	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator
 	 * @param tokenHolder
 	 */
-	public WeixinProxy(TokenHolder tokenHolder) {
+	private WeixinProxy(TokenHolder tokenHolder) {
 		this.tokenHolder = tokenHolder;
 		this.mediaApi = new MediaApi(tokenHolder);
 		this.notifyApi = new NotifyApi(tokenHolder);
@@ -137,8 +142,35 @@ public class WeixinProxy {
 		this.dataApi = new DataApi(tokenHolder);
 	}
 
+	/**
+	 * 获取appid
+	 * 
+	 * @return
+	 */
+	public String getAppId() {
+		return this.appId;
+	}
+
+	/**
+	 * token获取
+	 * 
+	 * @return
+	 */
 	public TokenHolder getTokenHolder() {
 		return this.tokenHolder;
+	}
+
+	/**
+	 * 获取JSSDK Ticket的tokenHolder
+	 * 
+	 * @param ticketType
+	 *            票据类型
+	 * @return
+	 */
+	public TokenHolder getTicketHolder(TicketType ticketType) {
+		return new TokenHolder(new WeixinTicketCreator(this.appId,
+				ticketType, this.tokenHolder),
+				this.tokenHolder.getTokenStorager());
 	}
 
 	/**
@@ -439,16 +471,12 @@ public class WeixinProxy {
 	/**
 	 * 客服聊天记录
 	 * 
-	 * @param openId
-	 *            用户标识 为空时则查询全部记录
-	 * @param starttime
+	 * @param startTime
 	 *            查询开始时间
-	 * @param endtime
+	 * @param endTime
 	 *            查询结束时间 每次查询不能跨日查询
-	 * @param pagesize
-	 *            每页大小 每页最多拉取50条
-	 * @param pageindex
-	 *            查询第几页 从1开始
+	 * @param pageable
+	 *            分页数据
 	 * @see com.foxinmy.weixin4j.mp.model.CustomRecord
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
 	 * @see <a href="http://dkf.qq.com/document-1_1.html">查询客服聊天记录</a>
@@ -456,10 +484,9 @@ public class WeixinProxy {
 	 *      href="http://mp.weixin.qq.com/wiki/19/7c129ec71ddfa60923ea9334557e8b23.html">查询客服聊天记录</a>
 	 * @throws WeixinException
 	 */
-	public List<CustomRecord> getCustomRecord(String openId, Date starttime,
-			Date endtime, int pagesize, int pageindex) throws WeixinException {
-		return customApi.getCustomRecord(openId, starttime, endtime, pagesize,
-				pageindex);
+	public List<CustomRecord> getCustomRecord(Date startTime, Date endTime,
+			Pageable pageable) throws WeixinException {
+		return customApi.getCustomRecord(startTime, endTime, pageable);
 	}
 
 	/**
@@ -1084,7 +1111,7 @@ public class WeixinProxy {
 	/**
 	 * 自定义菜单
 	 * 
-	 * @param btnList
+	 * @param buttons
 	 *            菜单列表
 	 * @throws WeixinException
 	 * @see <a
@@ -1093,8 +1120,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.type.ButtonType
 	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
 	 */
-	public JsonResult createMenu(List<Button> btnList) throws WeixinException {
-		return menuApi.createMenu(btnList);
+	public JsonResult createMenu(List<Button> buttons) throws WeixinException {
+		return menuApi.createMenu(buttons);
 	}
 
 	/**
@@ -1112,16 +1139,61 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 查询全部菜单(包含个性化菜单)
+	 * 
+	 * @return 菜单集合
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/16/ff9b7b85220e1396ffa16794a9d95adc.html">查询菜单</a>
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/0/c48ccd12b69ae023159b4bfaa7c39c20.html">个性化菜单</a>
+	 * @see com.foxinmy.weixin4j.model.Button
+	 * @see com.foxinmy.weixin4j.mp.model.Menu
+	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
+	 */
+	public List<Menu> getAllMenu() throws WeixinException {
+		return menuApi.getAllMenu();
+	}
+
+	/**
 	 * 删除菜单
 	 * 
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/16/8ed41ba931e4845844ad6d1eeb8060c8.html">删除菜单</a>
-	 * @see com.foxinmy.weixin4j.model.Button
 	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
 	 */
 	public JsonResult deleteMenu() throws WeixinException {
 		return menuApi.deleteMenu();
+	}
+
+	/**
+	 * 删除个性化菜单
+	 * 
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/0/c48ccd12b69ae023159b4bfaa7c39c20.html#.E5.88.A0.E9.99.A4.E4.B8.AA.E6.80.A7.E5.8C.96.E8.8F.9C.E5.8D.95">删除个性化菜单</a>
+	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
+	 * @return 处理结果
+	 */
+	public JsonResult deleteCustomMenu(String menuId) throws WeixinException {
+		return menuApi.deleteCustomMenu(menuId);
+	}
+
+	/**
+	 * 测试个性化菜单匹配结果
+	 * 
+	 * @param userId
+	 *            可以是粉丝的OpenID，也可以是粉丝的微信号。
+	 * @return 匹配到的菜单配置
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/0/c48ccd12b69ae023159b4bfaa7c39c20.html#.E6.B5.8B.E8.AF.95.E4.B8.AA.E6.80.A7.E5.8C.96.E8.8F.9C.E5.8D.95.E5.8C.B9.E9.85.8D.E7.BB.93.E6.9E.9C">测试个性化菜单</a>
+	 * @see com.foxinmy.weixin4j.model.Button
+	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
+	 * @throws WeixinException
+	 */
+	public List<Button> matchCustomMenu(String userId) throws WeixinException {
+		return menuApi.matchCustomMenu(userId);
 	}
 
 	/**
@@ -1364,5 +1436,5 @@ public class WeixinProxy {
 		return dataApi.datacube(datacubeType, date);
 	}
 
-	public final static String VERSION = "1.6.3";
+	public final static String VERSION = "1.6.5";
 }

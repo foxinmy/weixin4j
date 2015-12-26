@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * @className VerifyExpireEventMessage
  * @author jy
  * @date 2015年10月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/1/7f81dec16b801b34629091094c099439.html">认证事件</a>
  */

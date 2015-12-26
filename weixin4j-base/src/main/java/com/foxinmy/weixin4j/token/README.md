@@ -8,4 +8,4 @@
 
 * FileTokenStorager 是系统默认的token存储策略实现
 
-* RedisTokenStorager 如果服务器支持redis,推荐使用(需要自己添加jar包和[java类](https://github.com/foxinmy/weixin4j/wiki/%E7%94%A8redis%E4%BF%9D%E5%AD%98token))
+* RedisTokenStorager 如果服务器支持redis,推荐使用(需要自己添加jedis包)

@@ -24,6 +24,7 @@ import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
+import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
 import com.foxinmy.weixin4j.http.apache.InputStreamBody;
 import com.foxinmy.weixin4j.http.apache.StringBody;
@@ -45,6 +46,7 @@ import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
+import com.foxinmy.weixin4j.util.RegexUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConst;
@@ -56,7 +58,7 @@ import com.foxinmy.weixin4j.util.WeixinErrorUtil;
  * @className MediaApi
  * @author jy.hu
  * @date 2014年9月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.type.MediaType
  */
 public class MediaApi extends MpApi {
@@ -194,8 +196,7 @@ public class MediaApi extends MpApi {
 				response = weixinExecutor
 						.post(String.format(material_media_upload_uri,
 								token.getAccessToken()), new FormBodyPart(
-								"media", new InputStreamBody(
-										new ByteArrayInputStream(content),
+								"media", new ByteArrayBody(content,
 										mediaType.getContentType()
 												.getMimeType(), fileName)),
 								new FormBodyPart("type", new StringBody(
@@ -206,8 +207,7 @@ public class MediaApi extends MpApi {
 				String media_upload_uri = getRequestUri("media_upload_uri");
 				response = weixinExecutor.post(String.format(media_upload_uri,
 						token.getAccessToken(), mediaType.name()),
-						new FormBodyPart("media", new InputStreamBody(
-								new ByteArrayInputStream(content), mediaType
+						new FormBodyPart("media", new InputStreamBody(new ByteArrayInputStream(content), mediaType
 										.getContentType().getMimeType(),
 								fileName)));
 				JSONObject obj = response.getAsJson();
@@ -248,7 +248,7 @@ public class MediaApi extends MpApi {
 	 */
 	public File downloadMediaFile(String mediaId, boolean isMaterial)
 			throws WeixinException {
-		String media_path = Weixin4jConfigUtil.getValue("media_path",
+		String media_path = Weixin4jConfigUtil.getValue("media.path",
 				Weixin4jConst.DEFAULT_MEDIA_PATH);
 		final String prefixName = String.format("%s.", mediaId);
 		File[] files = new File(media_path).listFiles(new FilenameFilter() {
@@ -341,8 +341,12 @@ public class MediaApi extends MpApi {
 							.getCode()), jsonResult.getDesc());
 				}
 			}
-			String fileName = String.format("%s.%s", mediaId,
-					contentType.split("/")[1]);
+			String fileName = RegexUtil
+					.regexFileNameFromContentDispositionHeader(disposition);
+			if (StringUtil.isBlank(fileName)) {
+				fileName = String.format("%s.%s", mediaId,
+						contentType.split("/")[1]);
+			}
 			return new MediaDownloadResult(content,
 					ContentType.create(contentType), fileName);
 		} catch (IOException e) {

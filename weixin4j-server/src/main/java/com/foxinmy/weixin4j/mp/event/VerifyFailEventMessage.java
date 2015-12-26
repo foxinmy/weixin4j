@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
  * @className VerifyFailEventMessage
  * @author jy
  * @date 2015年10月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class VerifyFailEventMessage extends VerifyExpireEventMessage {

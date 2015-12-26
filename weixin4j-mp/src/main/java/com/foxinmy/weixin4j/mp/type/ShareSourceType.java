@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.mp.type;
  * @className ShareSourceType
  * @author jy
  * @date 2015年1月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum ShareSourceType {

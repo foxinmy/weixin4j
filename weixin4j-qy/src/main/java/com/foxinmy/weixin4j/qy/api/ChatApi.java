@@ -23,7 +23,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @className ChatApi
  * @author jy
  * @date 2015年7月31日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%9C%8D%E5%8A%A1">企业号消息服务</a>
  */

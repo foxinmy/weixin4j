@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConst;
  * @className BaseApi
  * @author jy.hu
  * @date 2014年9月26日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a href="http://mp.weixin.qq.com/wiki/index.php">微信公众平台API文档</a>
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">微信企业号API文档</a>
  */
@@ -59,7 +59,7 @@ public abstract class BaseApi {
 	static {
 		DEFAULT_WEIXIN_ACCOUNT = Weixin4jConfigUtil.getWeixinAccount();
 		DEFAULT_TOKEN_STORAGER = new FileTokenStorager(
-				Weixin4jConfigUtil.getValue("token_path",
+				Weixin4jConfigUtil.getValue("token.path",
 						Weixin4jConst.DEFAULT_TOKEN_PATH));
 	}
 }

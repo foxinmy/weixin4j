@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @className BatchApi
  * @author jy
  * @date 2015年3月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3">批量任务</a>
  */

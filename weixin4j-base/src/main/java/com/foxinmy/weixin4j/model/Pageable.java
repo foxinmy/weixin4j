@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.model.Sort.Direction;
  * @className Pageable
  * @author jy
  * @date 2014年12月27日
- * @since JDK 1.7
+ * @since JDK 1.6
  */
 public class Pageable implements Serializable {
 

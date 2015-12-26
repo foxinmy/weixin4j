@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
  * @className MenuPhotoEventMessage
  * @author jy
  * @date 2014年9月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/9/981d772286d10d153a3dc4286c1ee5b5.html#pic_sysphoto.EF.BC.9A.E5.BC.B9.E5.87.BA.E7.B3.BB.E7.BB.9F.E6.8B.8D.E7.85.A7.E5.8F.91.E5.9B.BE.E7.9A.84.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81">订阅号、服务号的系统发图的事件推送</a>
  * @see <a
@@ -38,7 +38,7 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 	 * @className PictureInfo
 	 * @author jy
 	 * @date 2015年3月29日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class PictureInfo implements Serializable {
@@ -77,7 +77,7 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 	 * @className PictureItem
 	 * @author jy
 	 * @date 2015年3月29日
-	 * @since JDK 1.7
+	 * @since JDK 1.6
 	 * @see
 	 */
 	public static class PictureItem implements Serializable {

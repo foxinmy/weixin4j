@@ -9,7 +9,7 @@ import java.util.UUID;
  * @className RandomUtil
  * @author jy
  * @date 2014年10月22日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class RandomUtil {

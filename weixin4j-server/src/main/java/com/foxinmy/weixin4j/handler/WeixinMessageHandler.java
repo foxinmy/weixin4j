@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * @className WeixinMessageHandler
  * @author jy
  * @date 2015年5月7日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see MessageHandlerAdapter
  */
 public interface WeixinMessageHandler {
@@ -44,4 +44,11 @@ public interface WeixinMessageHandler {
 	 */
 	public WeixinResponse doHandle(WeixinRequest request, Object message,
 			Set<String> nodeNames) throws WeixinException;
+
+	/**
+	 * 用于匹配到多个MessageHandler时权重降序排列,数字越大优先级越高
+	 * 
+	 * @return 权重
+	 */
+	public int weight();
 }

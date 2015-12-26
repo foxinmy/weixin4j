@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.qy.type.CorpType;
  * @className CorpInfo
  * @author jy
  * @date 2015年6月12日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class CorpInfo implements Serializable {

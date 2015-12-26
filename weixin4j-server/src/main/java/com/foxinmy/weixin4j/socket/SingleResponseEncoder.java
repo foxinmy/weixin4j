@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.util.HttpUtil;
  * @className SingleResponseEncoder
  * @author jy
  * @date 2015年08月02日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.response.SingleResponse
  */
 public class SingleResponseEncoder extends

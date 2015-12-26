@@ -24,7 +24,7 @@ import com.foxinmy.weixin4j.type.ButtonType;
  * @className MenuApi
  * @author jy.hu
  * @date 2014年9月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see com.foxinmy.weixin4j.model.Button
  */
 public class MenuApi extends QyApi {
@@ -38,7 +38,7 @@ public class MenuApi extends QyApi {
 	/**
 	 * 自定义菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
 	 * 
-	 * @param btnList
+	 * @param buttons
 	 *            菜单列表
 	 * @param agentid
 	 *            应用ID
@@ -47,12 +47,12 @@ public class MenuApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8%E8%8F%9C%E5%8D%95">创建自定义菜单</a>
 	 * @see com.foxinmy.weixin4j.model.Button
 	 */
-	public JsonResult createMenu(List<Button> btnList, int agentid)
+	public JsonResult createMenu(List<Button> buttons, int agentid)
 			throws WeixinException {
 		String menu_create_uri = getRequestUri("menu_create_uri");
 		Token token = tokenHolder.getToken();
 		JSONObject obj = new JSONObject();
-		obj.put("button", btnList);
+		obj.put("button", buttons);
 		WeixinResponse response = weixinExecutor
 				.post(String.format(menu_create_uri, token.getAccessToken(),
 						agentid), JSON.toJSONString(obj, new NameFilter() {

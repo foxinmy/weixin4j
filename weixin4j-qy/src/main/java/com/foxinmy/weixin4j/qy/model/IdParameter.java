@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @className IdParameter
  * @author jy
  * @date 2015年3月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class IdParameter implements Serializable {
@@ -25,17 +25,13 @@ public class IdParameter implements Serializable {
 	private static final char SEPARATOR = '|';
 
 	private List<String> userIds;
-	private List<Integer> partyIds;
+	private List<Integer> departmentIds;
 	private List<Integer> tagIds;
 
-	private IdParameter() {
+	public IdParameter() {
 		this.userIds = new ArrayList<String>();
-		this.partyIds = new ArrayList<Integer>();
+		this.departmentIds = new ArrayList<Integer>();
 		this.tagIds = new ArrayList<Integer>();
-	}
-
-	public static IdParameter get() {
-		return new IdParameter();
 	}
 
 	/**
@@ -63,22 +59,22 @@ public class IdParameter implements Serializable {
 	/**
 	 * 新增部门ID列表，最多支持100个
 	 * 
-	 * @param partyIds
+	 * @param departmentIds
 	 * @return
 	 */
-	public IdParameter putPartyIds(Integer... partyIds) {
-		this.partyIds.addAll(Arrays.asList(partyIds));
+	public IdParameter putDepartmentIds(Integer... departmentIds) {
+		this.departmentIds.addAll(Arrays.asList(departmentIds));
 		return this;
 	}
 
 	/**
 	 * 设置部门ID列表，最多支持100个
 	 * 
-	 * @param partyIds
+	 * @param departmentIds
 	 * @return
 	 */
-	public IdParameter setPartyIds(List<Integer> partyIds) {
-		this.partyIds = partyIds;
+	public IdParameter setDepartmentIds(List<Integer> departmentIds) {
+		this.departmentIds = departmentIds;
 		return this;
 	}
 
@@ -114,12 +110,18 @@ public class IdParameter implements Serializable {
 		if (userIds != null && !userIds.isEmpty()) {
 			parameterMap.put("touser", StringUtil.join(userIds, SEPARATOR));
 		}
-		if (partyIds != null && !partyIds.isEmpty()) {
-			parameterMap.put("toparty", StringUtil.join(partyIds, SEPARATOR));
+		if (departmentIds != null && !departmentIds.isEmpty()) {
+			parameterMap.put("toparty", StringUtil.join(departmentIds, SEPARATOR));
 		}
 		if (tagIds != null && !tagIds.isEmpty()) {
 			parameterMap.put("totag", StringUtil.join(tagIds, SEPARATOR));
 		}
 		return parameterMap;
+	}
+
+	@Override
+	public String toString() {
+		return "IdParameter [userIds=" + userIds + ", departmentIds="
+				+ departmentIds + ", tagIds=" + tagIds + "]";
 	}
 }

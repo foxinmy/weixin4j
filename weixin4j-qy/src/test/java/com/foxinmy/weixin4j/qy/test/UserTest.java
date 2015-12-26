@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.qy.type.UserStatus;
  * @className UserTest
  * @author jy
  * @date 2014年11月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class UserTest extends TokenTest {
@@ -61,7 +61,7 @@ public class UserTest extends TokenTest {
 
 	@Test
 	public void get() throws WeixinException {
-		User user = userApi.getUser("u001");
+		User user = userApi.getUser("jinyu");
 		Assert.assertTrue(user != null);
 		System.out.println(user);
 	}

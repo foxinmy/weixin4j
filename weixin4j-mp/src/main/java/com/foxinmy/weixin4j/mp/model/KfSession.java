@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className KfSession
  * @author jy
  * @date 2015年3月22日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class KfSession implements Serializable {

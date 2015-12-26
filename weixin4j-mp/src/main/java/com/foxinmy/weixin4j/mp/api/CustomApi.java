@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.mp.api;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
+import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
@@ -21,6 +23,7 @@ import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 多客服API
@@ -28,7 +31,7 @@ import com.foxinmy.weixin4j.util.IOUtil;
  * @className CustomApi
  * @author jy
  * @date 2014年11月16日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see <a href="http://dkf.qq.com">多客服说明</a>
  * @see<a 
  *        href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html"
@@ -45,38 +48,43 @@ public class CustomApi extends MpApi {
 	/**
 	 * 客服聊天记录
 	 * 
-	 * @param openId
-	 *            用户标识 可为空
-	 * @param starttime
+	 * @param startTime
 	 *            查询开始时间
-	 * @param endtime
+	 * @param endTime
 	 *            查询结束时间 每次查询不能跨日查询
-	 * @param pagesize
-	 *            每页大小 每页最多拉取50条
-	 * @param pageindex
-	 *            查询第几页 从1开始
+	 * @param pageable
+	 *            分页数据
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.CustomRecord
 	 * @see <a href="http://dkf.qq.com/document-1_1.html">查询客服聊天记录</a>
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/19/7c129ec71ddfa60923ea9334557e8b23.html">查询客服聊天记录</a>
 	 */
-	public List<CustomRecord> getCustomRecord(String openId, Date starttime,
-			Date endtime, int pagesize, int pageindex) throws WeixinException {
-		JSONObject obj = new JSONObject();
-		obj.put("openId", openId == null ? "" : openId);
-		obj.put("starttime", starttime.getTime() / 1000);
-		obj.put("endtime", endtime.getTime() / 1000);
-		obj.put("pagesize", pagesize > 1000 ? 1000 : pagesize);
-		obj.put("pageindex", pageindex);
+	public List<CustomRecord> getCustomRecord(Date startTime, Date endTime,
+			Pageable pageable) throws WeixinException {
+		List<CustomRecord> records = new ArrayList<CustomRecord>();
 		String custom_record_uri = getRequestUri("custom_record_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.post(
-				String.format(custom_record_uri, token.getAccessToken()),
-				obj.toJSONString());
+		JSONObject obj = new JSONObject();
+		obj.put("starttime", startTime.getTime() / 1000);
+		obj.put("endtime", endTime.getTime() / 1000);
+		for (int i = 0; i < (int) Math.ceil(pageable.getPageSize() / 50d); i++) {
+			obj.put("pagesize", Math.min(50, pageable.getPageSize()));
+			obj.put("pageindex", pageable.getPageNumber());
+			WeixinResponse response = weixinExecutor.post(
+					String.format(custom_record_uri, token.getAccessToken()),
+					obj.toJSONString());
 
-		String text = response.getAsJson().getString("recordlist");
-		return JSON.parseArray(text, CustomRecord.class);
+			String text = response.getAsJson().getString("recordlist");
+			if (StringUtil.isBlank(text) || "[]".equals(text)) {
+				break;
+			}
+			records.addAll(JSON.parseArray(text, CustomRecord.class));
+
+			pageable = new Pageable(pageable.getPageNumber() + 1, Math.min(50,
+					Math.max(1, pageable.getPageSize() - ((i + 1) * 50))));
+		}
+		return records;
 	}
 
 	/**
@@ -101,13 +109,13 @@ public class CustomApi extends MpApi {
 		String text = "";
 		if (isOnline) {
 			String getonlinekflist_uri = getRequestUri("getonlinekflist_uri");
-			WeixinResponse response = weixinExecutor.get(String.format(getonlinekflist_uri,
-					token.getAccessToken()));
+			WeixinResponse response = weixinExecutor.get(String.format(
+					getonlinekflist_uri, token.getAccessToken()));
 			text = response.getAsJson().getString("kf_online_list");
 		} else {
 			String getkflist_uri = getRequestUri("getkflist_uri");
-			WeixinResponse response = weixinExecutor.get(String.format(getkflist_uri,
-					token.getAccessToken()));
+			WeixinResponse response = weixinExecutor.get(String.format(
+					getkflist_uri, token.getAccessToken()));
 			text = response.getAsJson().getString("kf_list");
 		}
 		return JSON.parseArray(text, KfAccount.class);
@@ -219,8 +227,8 @@ public class CustomApi extends MpApi {
 	public JsonResult deleteAccount(String id) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String custom_delete_uri = getRequestUri("custom_delete_uri");
-		WeixinResponse response = weixinExecutor.get(String.format(custom_delete_uri,
-				token.getAccessToken(), id));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				custom_delete_uri, token.getAccessToken(), id));
 
 		return response.getAsJsonResult();
 	}
@@ -301,8 +309,8 @@ public class CustomApi extends MpApi {
 	public KfSession getKfSession(String userOpenId) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_get_uri = getRequestUri("kfsession_get_uri");
-		WeixinResponse response = weixinExecutor.get(String.format(kfsession_get_uri,
-				token.getAccessToken(), userOpenId));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				kfsession_get_uri, token.getAccessToken(), userOpenId));
 
 		KfSession session = response
 				.getAsObject(new TypeReference<KfSession>() {
@@ -326,8 +334,8 @@ public class CustomApi extends MpApi {
 			throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_list_uri = getRequestUri("kfsession_list_uri");
-		WeixinResponse response = weixinExecutor.get(String.format(kfsession_list_uri,
-				token.getAccessToken(), kfAccount));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				kfsession_list_uri, token.getAccessToken(), kfAccount));
 
 		List<KfSession> sessionList = JSON.parseArray(response.getAsJson()
 				.getString("sessionlist"), KfSession.class);
@@ -335,8 +343,9 @@ public class CustomApi extends MpApi {
 	}
 
 	/**
-	 * 获取未接入会话列表:获取当前正在等待队列中的会话列表，此接口最多返回最早进入队列的100个未接入会话。</br>
-	 * <font color="red">缺陷：没有count字段</font>
+	 * 获取未接入会话列表:获取当前正在等待队列中的会话列表，此接口最多返回最早进入队列的100个未接入会话。</br> <font
+	 * color="red">缺陷：没有count字段</font>
+	 * 
 	 * @return 会话列表
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.KfSession
@@ -346,8 +355,8 @@ public class CustomApi extends MpApi {
 	public List<KfSession> listKfSessionWait() throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_wait_uri = getRequestUri("kfsession_wait_uri");
-		WeixinResponse response = weixinExecutor.get(String.format(kfsession_wait_uri,
-				token.getAccessToken()));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				kfsession_wait_uri, token.getAccessToken()));
 
 		List<KfSession> sessionList = JSON.parseArray(response.getAsJson()
 				.getString("waitcaselist"), KfSession.class);

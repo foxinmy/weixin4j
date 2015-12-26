@@ -13,7 +13,7 @@ import java.util.Map.Entry;
  * @className SimpleHttpResponse
  * @author jy
  * @date 2015年8月14日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class SimpleHttpResponse extends AbstractHttpResponse {

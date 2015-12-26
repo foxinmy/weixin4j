@@ -17,7 +17,7 @@ public class XmlstreamTest {
 		Token token = new Token();
 		token.setAccessToken("accessToken");
 		token.setExpiresIn(12);
-		token.setTime(13l);
+		token.setCreateTime(13l);
 		String content = XmlStream.toXML(token);
 		System.err.println(content);
 	}

@@ -3,10 +3,8 @@ package com.foxinmy.weixin4j.http.factory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.net.ssl.HostnameVerifier;
@@ -29,6 +27,7 @@ import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.util.EntityUtils;
 
 import com.foxinmy.weixin4j.http.AbstractHttpClient;
+import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.apache.MultipartEntity;
@@ -41,20 +40,30 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @className HttpComponent4
  * @author jy
  * @date 2015年8月18日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public abstract class HttpComponent4 extends AbstractHttpClient {
-	protected static final Map<HttpMethod, HttpRequestBase> methodMap;
-	static {
-		methodMap = new HashMap<HttpMethod, HttpRequestBase>();
-		methodMap.put(HttpMethod.GET, new HttpGet());
-		methodMap.put(HttpMethod.HEAD, new HttpHead());
-		methodMap.put(HttpMethod.POST, new HttpPost());
-		methodMap.put(HttpMethod.PUT, new HttpPut());
-		methodMap.put(HttpMethod.DELETE, new HttpDelete());
-		methodMap.put(HttpMethod.OPTIONS, new HttpOptions());
-		methodMap.put(HttpMethod.TRACE, new HttpTrace());
+	protected HttpRequestBase createHttpRequest(HttpMethod method,
+			java.net.URI uri) throws HttpClientException {
+		if (method == HttpMethod.GET) {
+			return new HttpGet(uri);
+		} else if (method == HttpMethod.HEAD) {
+			return new HttpHead(uri);
+		} else if (method == HttpMethod.POST) {
+			return new HttpPost(uri);
+		} else if (method == HttpMethod.PUT) {
+			return new HttpPut(uri);
+		} else if (method == HttpMethod.DELETE) {
+			return new HttpDelete(uri);
+		} else if (method == HttpMethod.OPTIONS) {
+			return new HttpOptions(uri);
+		} else if (method == HttpMethod.TRACE) {
+			return new HttpTrace(uri);
+		} else {
+			throw new HttpClientException("unknown request method " + method
+					+ " for " + uri);
+		}
 	}
 
 	protected void addHeaders(HttpHeaders headers, HttpRequestBase uriRequest) {

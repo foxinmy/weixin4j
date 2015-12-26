@@ -15,7 +15,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @className CouponInfo
  * @author jy
  * @date 2015年3月24日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 @XmlRootElement

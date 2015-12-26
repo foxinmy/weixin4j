@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.model.Button;
  * @className MenuSetting
  * @author jy
  * @date 2015年4月14日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class MenuSetting implements Serializable {

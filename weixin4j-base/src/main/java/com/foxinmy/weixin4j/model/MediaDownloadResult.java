@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.model;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 import com.foxinmy.weixin4j.http.ContentType;
 
@@ -11,7 +10,7 @@ import com.foxinmy.weixin4j.http.ContentType;
  * @className MediaDownloadResult
  * @author jy
  * @date 2015年7月25日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class MediaDownloadResult implements Serializable {
@@ -51,8 +50,7 @@ public class MediaDownloadResult implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MediaDownloadResult [content=" + Arrays.toString(content)
-				+ ", contentType=" + contentType + ", fileName=" + fileName
-				+ "]";
+		return "MediaDownloadResult [content=..., contentType=" + contentType
+				+ ", fileName=" + fileName + "]";
 	}
 }
