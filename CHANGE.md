@@ -602,3 +602,5 @@
   
   + weixin4j-base:MchPayRequest抽象化
   
+  + weixin4j-server:WeixinMessageInterceptor加入weight权重接口
+  

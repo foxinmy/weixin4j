@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.util.Consts;
  */
 public class MessagePush {
 
-	private final String server = "http://localhost:30000";
+	private final String server = "http://localhost:10003";
 	private final HttpClient httpClient;
 	private final HttpPost httpPost;
 	private final HttpGet httpGet;

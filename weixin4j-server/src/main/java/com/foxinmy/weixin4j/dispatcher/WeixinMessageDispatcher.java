@@ -9,7 +9,6 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -207,24 +206,13 @@ public class WeixinMessageDispatcher {
 		if (messageHandlers == null) {
 			return null;
 		}
-		List<WeixinMessageHandler> matchingMessageHandlers = new ArrayList<WeixinMessageHandler>();
+		WeixinMessageHandler messageHandler = null;
 		for (WeixinMessageHandler handler : messageHandlers) {
 			if (handler.canHandle(request, message, nodeNames)) {
-				matchingMessageHandlers.add(handler);
+				messageHandler = handler;
+				break;
 			}
 		}
-		if (matchingMessageHandlers.isEmpty()) {
-			return null;
-		}
-		Collections.sort(matchingMessageHandlers,
-				new Comparator<WeixinMessageHandler>() {
-					@Override
-					public int compare(WeixinMessageHandler m1,
-							WeixinMessageHandler m2) {
-						return m2.weight() - m1.weight();
-					}
-				});
-		WeixinMessageHandler messageHandler = matchingMessageHandlers.get(0);
 		return new MessageHandlerExecutor(context, messageHandler,
 				getMessageInterceptors());
 	}
@@ -246,8 +234,8 @@ public class WeixinMessageDispatcher {
 				}
 				if (beanFactory != null) {
 					for (Class<?> clazz : messageHandlerClass) {
-						messageHandlerList.add(0,
-								(WeixinMessageHandler) beanFactory
+						messageHandlerList
+								.add((WeixinMessageHandler) beanFactory
 										.getBean(clazz));
 					}
 				} else {
@@ -260,9 +248,8 @@ public class WeixinMessageDispatcher {
 							Constructor<?> ctor = clazz
 									.getDeclaredConstructor();
 							ReflectionUtil.makeAccessible(ctor);
-							messageHandlerList.add(0,
-									(WeixinMessageHandler) ctor
-											.newInstance((Object[]) null));
+							messageHandlerList.add((WeixinMessageHandler) ctor
+									.newInstance((Object[]) null));
 						} catch (Exception ex) {
 							throw new WeixinException(clazz.getName()
 									+ " instantiate fail", ex);
@@ -272,6 +259,14 @@ public class WeixinMessageDispatcher {
 			}
 			if (messageHandlerList != null
 					&& !this.messageHandlerList.isEmpty()) {
+				Collections.sort(messageHandlerList,
+						new Comparator<WeixinMessageHandler>() {
+							@Override
+							public int compare(WeixinMessageHandler m1,
+									WeixinMessageHandler m2) {
+								return m2.weight() - m1.weight();
+							}
+						});
 				this.messageHandlers = this.messageHandlerList
 						.toArray(new WeixinMessageHandler[this.messageHandlerList
 								.size()]);
@@ -298,8 +293,8 @@ public class WeixinMessageDispatcher {
 				}
 				if (beanFactory != null) {
 					for (Class<?> clazz : messageInterceptorClass) {
-						messageInterceptorList.add(0,
-								(WeixinMessageInterceptor) beanFactory
+						messageInterceptorList
+								.add((WeixinMessageInterceptor) beanFactory
 										.getBean(clazz));
 					}
 				} else {
@@ -312,8 +307,8 @@ public class WeixinMessageDispatcher {
 							Constructor<?> ctor = clazz
 									.getDeclaredConstructor();
 							ReflectionUtil.makeAccessible(ctor);
-							messageInterceptorList.add(0,
-									(WeixinMessageInterceptor) ctor
+							messageInterceptorList
+									.add((WeixinMessageInterceptor) ctor
 											.newInstance((Object[]) null));
 						} catch (Exception ex) {
 							throw new WeixinException(clazz.getName()
@@ -324,6 +319,14 @@ public class WeixinMessageDispatcher {
 			}
 			if (this.messageInterceptorList != null
 					&& !this.messageInterceptorList.isEmpty()) {
+				Collections.sort(messageInterceptorList,
+						new Comparator<WeixinMessageInterceptor>() {
+							@Override
+							public int compare(WeixinMessageInterceptor m1,
+									WeixinMessageInterceptor m2) {
+								return m2.weight() - m1.weight();
+							}
+						});
 				this.messageInterceptors = this.messageInterceptorList
 						.toArray(new WeixinMessageInterceptor[this.messageInterceptorList
 								.size()]);

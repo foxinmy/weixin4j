@@ -38,4 +38,8 @@ public abstract class MessageInterceptorAdapter implements
 			WeixinMessageHandler handler, Exception exception)
 			throws WeixinException {
 	}
+
+	public int weight() {
+		return 0;
+	}
 }
