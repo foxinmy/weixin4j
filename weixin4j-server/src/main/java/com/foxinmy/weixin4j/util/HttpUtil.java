@@ -62,13 +62,13 @@ public class HttpUtil {
 		FullHttpResponse httpResponse = null;
 
 		httpResponse = new DefaultFullHttpResponse(HTTP_1_1, status,
-				Unpooled.copiedBuffer(content, Consts.UTF_8));
+				Unpooled.copiedBuffer(content, ServerToolkits.UTF_8));
 		httpResponse.headers().set(
 				CONTENT_TYPE,
 				String.format("%s;encoding=%s", contentType,
-						Consts.UTF_8.displayName()));
+						ServerToolkits.UTF_8.displayName()));
 		httpResponse.headers().set(CONTENT_LENGTH,
-				content.getBytes(Consts.UTF_8).length);
+				content.getBytes(ServerToolkits.UTF_8).length);
 		createHeaders(httpResponse);
 		return httpResponse;
 	}

@@ -92,7 +92,7 @@ public final class MessageUtil {
 			byte[] aesKey = NettyBase64.decodeBase64(encodingAesKey + "=");
 			// 设置加密模式为AES的CBC模式
 			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-			SecretKeySpec keySpec = new SecretKeySpec(aesKey, Consts.AES);
+			SecretKeySpec keySpec = new SecretKeySpec(aesKey, ServerToolkits.AES);
 			IvParameterSpec iv = new IvParameterSpec(aesKey, 0, 16);
 			cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
 			// 加密
@@ -124,7 +124,7 @@ public final class MessageUtil {
 		try {
 			// 设置解密模式为AES的CBC模式
 			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-			SecretKeySpec key_spec = new SecretKeySpec(aesKey, Consts.AES);
+			SecretKeySpec key_spec = new SecretKeySpec(aesKey, ServerToolkits.AES);
 			IvParameterSpec iv = new IvParameterSpec(Arrays.copyOfRange(aesKey,
 					0, 16));
 			cipher.init(Cipher.DECRYPT_MODE, key_spec, iv);

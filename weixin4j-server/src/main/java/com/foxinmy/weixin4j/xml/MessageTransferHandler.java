@@ -14,7 +14,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
 import com.foxinmy.weixin4j.type.AccountType;
-import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
@@ -90,7 +89,7 @@ public class MessageTransferHandler extends DefaultHandler {
 			XMLReader xmlReader = XMLReaderFactory.createXMLReader();
 			xmlReader.setContentHandler(global);
 			xmlReader.parse(new InputSource(new ByteArrayInputStream(request
-					.getOriginalContent().getBytes(Consts.UTF_8))));
+					.getOriginalContent().getBytes(ServerToolkits.UTF_8))));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} catch (SAXException e) {

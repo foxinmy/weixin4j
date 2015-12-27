@@ -12,7 +12,6 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.AesToken;
-import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.ServerToolkits;
@@ -38,7 +37,7 @@ public class WeixinResponseEncoder extends
 	protected void encode(ChannelHandlerContext ctx, WeixinResponse response,
 			List<Object> out) throws WeixinException {
 		WeixinMessageTransfer messageTransfer = ctx.channel()
-				.attr(Consts.MESSAGE_TRANSFER_KEY).get();
+				.attr(ServerToolkits.MESSAGE_TRANSFER_KEY).get();
 		EncryptType encryptType = messageTransfer.getEncryptType();
 		StringBuilder content = new StringBuilder();
 		content.append("<xml>");
@@ -76,7 +75,7 @@ public class WeixinResponseEncoder extends
 			content.append("</xml>");
 		}
 		ctx.writeAndFlush(HttpUtil.createHttpResponse(content.toString(), OK,
-				Consts.CONTENTTYPE$APPLICATION_XML));
+				ServerToolkits.CONTENTTYPE$APPLICATION_XML));
 		logger.info("{} encode weixin response:{}", encryptType, content);
 	}
 }

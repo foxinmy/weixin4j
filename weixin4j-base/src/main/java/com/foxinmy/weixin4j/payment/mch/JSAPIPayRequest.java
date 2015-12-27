@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.payment.mch;
 
+import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.type.SignType;
@@ -24,17 +25,22 @@ import com.foxinmy.weixin4j.util.DigestUtil;
  */
 public class JSAPIPayRequest extends AbstractPayRequest {
 
-	public JSAPIPayRequest(PrePay prePay, WeixinPayAccount payAccount) {
-		super(prePay, payAccount);
+	public JSAPIPayRequest(String prePayId, WeixinPayAccount payAccount) {
+		super(prePayId, payAccount);
 	}
 
 	@Override
 	public PayRequest toRequestObject() {
 		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
-				"prepay_id=" + getPrePay().getPrepayId());
+				"prepay_id=" + getPrePayId());
 		payRequest.setSignType(SignType.MD5);
 		payRequest.setPaySign(DigestUtil.paysignMd5(payRequest, getPayAccount()
 				.getPaySignKey()));
 		return payRequest;
+	}
+
+	@Override
+	public String toRequestString() {
+		return JSON.toJSONString(toRequestObject());
 	}
 }

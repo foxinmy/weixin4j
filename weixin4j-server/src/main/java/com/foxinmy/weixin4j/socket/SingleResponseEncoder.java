@@ -10,8 +10,8 @@ import java.util.List;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.response.SingleResponse;
-import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
  * 单一回复编码类
@@ -33,7 +33,7 @@ public class SingleResponseEncoder extends
 			List<Object> out) throws WeixinException {
 		String content = response.toContent();
 		ctx.writeAndFlush(HttpUtil.createHttpResponse(content, OK,
-				Consts.CONTENTTYPE$TEXT_PLAIN));
+				ServerToolkits.CONTENTTYPE$TEXT_PLAIN));
 		logger.info("encode single response:{}", content);
 	}
 }

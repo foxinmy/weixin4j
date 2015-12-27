@@ -19,8 +19,8 @@ import com.foxinmy.weixin4j.util.MapUtil;
  */
 public class APPPayRequest extends AbstractPayRequest {
 
-	public APPPayRequest(PrePay prePay, WeixinPayAccount payAccount) {
-		super(prePay, payAccount);
+	public APPPayRequest(String prePayId, WeixinPayAccount payAccount) {
+		super(prePayId, payAccount);
 	}
 
 	/**
@@ -30,7 +30,7 @@ public class APPPayRequest extends AbstractPayRequest {
 	public PayRequest toRequestObject() {
 		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
 				"Sign=WXPay");
-		payRequest.setPrepayId(getPrePay().getPrepayId());
+		payRequest.setPrepayId(getPrePayId());
 		payRequest.setPartnerId(getPayAccount().getPartnerId());
 		return payRequest;
 	}

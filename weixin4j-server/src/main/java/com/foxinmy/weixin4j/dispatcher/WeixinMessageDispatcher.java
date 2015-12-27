@@ -33,7 +33,6 @@ import com.foxinmy.weixin4j.response.BlankResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
 import com.foxinmy.weixin4j.util.ClassUtil;
-import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.ServerToolkits;
 
@@ -352,7 +351,7 @@ public class WeixinMessageDispatcher {
 		}
 		try {
 			Source source = new StreamSource(new ByteArrayInputStream(
-					message.getBytes(Consts.UTF_8)));
+					ServerToolkits.getBytesUtf8(message)));
 			JAXBElement<M> jaxbElement = getUnmarshaller(clazz).unmarshal(
 					source, clazz);
 			return jaxbElement.getValue();

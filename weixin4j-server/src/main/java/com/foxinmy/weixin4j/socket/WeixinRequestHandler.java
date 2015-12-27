@@ -16,7 +16,6 @@ import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.SingleResponse;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.AesToken;
-import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.ServerToolkits;
@@ -112,7 +111,7 @@ public class WeixinRequestHandler extends
 		}
 		WeixinMessageTransfer messageTransfer = MessageTransferHandler
 				.parser(request);
-		ctx.channel().attr(Consts.MESSAGE_TRANSFER_KEY).set(messageTransfer);
+		ctx.channel().attr(ServerToolkits.MESSAGE_TRANSFER_KEY).set(messageTransfer);
 		messageDispatcher.doDispatch(ctx, request, messageTransfer);
 	}
 }

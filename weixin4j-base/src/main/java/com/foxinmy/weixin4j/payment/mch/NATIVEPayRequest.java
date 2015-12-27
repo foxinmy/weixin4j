@@ -17,8 +17,12 @@ import com.foxinmy.weixin4j.payment.PayRequest;
  */
 public class NATIVEPayRequest extends AbstractPayRequest {
 
-	public NATIVEPayRequest(PrePay prePay, WeixinPayAccount payAccount) {
-		super(prePay, payAccount);
+	private final String codeUrl;
+
+	public NATIVEPayRequest(String prePayId, String codeUrl,
+			WeixinPayAccount payAccount) {
+		super(prePayId, payAccount);
+		this.codeUrl = codeUrl;
 	}
 
 	/**
@@ -26,12 +30,11 @@ public class NATIVEPayRequest extends AbstractPayRequest {
 	 */
 	@Override
 	public PayRequest toRequestObject() {
-		return new PayRequest(getPayAccount().getId(), "code_url="
-				+ getPrePay().getCodeUrl());
+		return new PayRequest(getPayAccount().getId(), "code_url=" + codeUrl);
 	}
 
 	@Override
 	public String toRequestString() {
-		return getPrePay().getCodeUrl();
+		return this.codeUrl;
 	}
 }

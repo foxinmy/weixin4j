@@ -17,11 +17,11 @@ import com.foxinmy.weixin4j.payment.PayRequest;
  */
 public interface MchPayRequest {
 	/**
-	 * 预支付对象
+	 * 预支付交易ID
 	 * 
 	 * @return
 	 */
-	public PrePay getPrePay();
+	public String getPrePayId();
 
 	/**
 	 * 商户信息

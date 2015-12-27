@@ -1,11 +1,15 @@
 package com.foxinmy.weixin4j.util;
 
+import io.netty.util.AttributeKey;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+
+import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
 
 /**
  * 工具包
@@ -18,6 +22,16 @@ import java.util.Random;
  */
 public final class ServerToolkits {
 	private static final String ALLCHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static final Charset UTF_8 = Charset.forName("UTF-8");
+	public static final String AES = "AES";
+	public static final String SHA1 = "SHA-1";
+	public static final String PROTOCOL_FILE = "file";
+	public static final String PROTOCOL_JAR = "jar";
+	public static final String CONTENTTYPE$APPLICATION_XML = "application/xml";
+	public static final String CONTENTTYPE$TEXT_PLAIN = "text/plain";
+
+	public static final AttributeKey<WeixinMessageTransfer> MESSAGE_TRANSFER_KEY = AttributeKey
+			.valueOf("$_MESSAGETRANSFER");
 
 	/**
 	 * 返回一个定长的随机字符串(包含数字和大小写字母)
@@ -57,8 +71,8 @@ public final class ServerToolkits {
 	public static String digestSHA1(String content) {
 		byte[] data = ServerToolkits.getBytesUtf8(content);
 		try {
-			return HexUtil.encodeHexString(MessageDigest.getInstance(
-					Consts.SHA1).digest(data));
+			return HexUtil.encodeHexString(MessageDigest.getInstance(SHA1)
+					.digest(data));
 		} catch (NoSuchAlgorithmException e) {
 			return null;
 		}
@@ -69,11 +83,11 @@ public final class ServerToolkits {
 	}
 
 	public static byte[] getBytesUtf8(final String content) {
-		return content != null ? content.getBytes(Consts.UTF_8) : null;
+		return content != null ? content.getBytes(UTF_8) : null;
 	}
 
 	public static String newStringUtf8(final byte[] bytes) {
-		return newString(bytes, Consts.UTF_8);
+		return newString(bytes, UTF_8);
 	}
 
 	/**

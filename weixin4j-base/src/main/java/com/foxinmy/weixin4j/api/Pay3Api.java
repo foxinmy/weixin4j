@@ -130,13 +130,14 @@ public class Pay3Api {
 		PrePay prePay = createPrePay(payPackage);
 		String tradeType = payPackage.getTradeType();
 		if (TradeType.APP.name().equalsIgnoreCase(tradeType)) {
-			return new APPPayRequest(prePay, weixinAccount);
+			return new APPPayRequest(prePay.getPrepayId(), weixinAccount);
 		} else if (TradeType.JSAPI.name().equalsIgnoreCase(tradeType)) {
-			return new JSAPIPayRequest(prePay, weixinAccount);
+			return new JSAPIPayRequest(prePay.getPrepayId(), weixinAccount);
 		} else if (TradeType.NATIVE.name().equalsIgnoreCase(tradeType)) {
-			return new NATIVEPayRequest(prePay, weixinAccount);
+			return new NATIVEPayRequest(prePay.getPrepayId(),
+					prePay.getCodeUrl(), weixinAccount);
 		} else if (TradeType.WAP.name().equalsIgnoreCase(tradeType)) {
-			return new WAPPayRequest(prePay, weixinAccount);
+			return new WAPPayRequest(prePay.getPrepayId(), weixinAccount);
 		} else if (TradeType.MICROPAY.name().equalsIgnoreCase(tradeType)) {
 			throw new WeixinPayException("maybe use createMicroPay method?");
 		} else {

@@ -14,7 +14,6 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.AesToken;
-import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.ServerToolkits;
 import com.foxinmy.weixin4j.xml.EncryptMessageHandler;
@@ -44,7 +43,7 @@ public class WeixinMessageDecoder extends
 	@Override
 	protected void decode(ChannelHandlerContext ctx, FullHttpRequest req,
 			List<Object> out) throws WeixinException {
-		String messageContent = req.content().toString(Consts.UTF_8);
+		String messageContent = req.content().toString(ServerToolkits.UTF_8);
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
 				true);
 		String methodName = req.getMethod().name();
