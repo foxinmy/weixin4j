@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.http.factory;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.HttpHost;
@@ -46,7 +45,7 @@ public class HttpComponent4_2 extends HttpComponent4 {
 					request.getURI());
 			boolean useSSL = "https".equals(request.getURI().getScheme());
 			SSLContext sslContext = null;
-			HostnameVerifier hostnameVerifier = null;
+			X509HostnameVerifier hostnameVerifier = null;
 			HttpParams params = request.getParams();
 			if (params != null) {
 				Builder requestConfig = RequestConfig.custom()
@@ -63,21 +62,20 @@ public class HttpComponent4_2 extends HttpComponent4 {
 				}
 				uriRequest.setConfig(requestConfig.build());
 				sslContext = params.getSSLContext();
-				hostnameVerifier = params.getHostnameVerifier();
+				if (params.getHostnameVerifier() != null) {
+					hostnameVerifier = new CustomHostnameVerifier(
+							params.getHostnameVerifier());
+				}
 			}
 			if (useSSL) {
 				if (sslContext == null) {
 					sslContext = HttpClientFactory.allowSSLContext();
 				}
-				X509HostnameVerifier x509HostnameVerifier = null;
 				if (hostnameVerifier == null) {
-					x509HostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
-				} else {
-					x509HostnameVerifier = new CustomHostnameVerifier(
-							hostnameVerifier);
+					hostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
 				}
 				httpClient = HttpClients.custom()
-						.setHostnameVerifier(x509HostnameVerifier)
+						.setHostnameVerifier(hostnameVerifier)
 						.setSslcontext(sslContext).build();
 			}
 			addHeaders(request.getHeaders(), uriRequest);
