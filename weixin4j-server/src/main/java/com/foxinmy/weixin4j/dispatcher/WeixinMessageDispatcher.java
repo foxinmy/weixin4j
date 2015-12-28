@@ -9,10 +9,10 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -226,7 +226,7 @@ public class WeixinMessageDispatcher {
 	public WeixinMessageHandler[] getMessageHandlers() throws WeixinException {
 		if (this.messageHandlers == null) {
 			if (messageHandlerPackages != null) {
-				List<Class<?>> messageHandlerClass = new LinkedList<Class<?>>();
+				List<Class<?>> messageHandlerClass = new ArrayList<Class<?>>();
 				for (String packageName : messageHandlerPackages) {
 					messageHandlerClass.addAll(ClassUtil
 							.getClasses(packageName));
@@ -285,7 +285,7 @@ public class WeixinMessageDispatcher {
 			throws WeixinException {
 		if (this.messageInterceptors == null) {
 			if (this.messageInterceptorPackages != null) {
-				List<Class<?>> messageInterceptorClass = new LinkedList<Class<?>>();
+				List<Class<?>> messageInterceptorClass = new ArrayList<Class<?>>();
 				for (String packageName : messageInterceptorPackages) {
 					messageInterceptorClass.addAll(ClassUtil
 							.getClasses(packageName));
