@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.server.test;
 import java.io.IOException;
 import java.net.URI;
 
+import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -13,7 +14,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
  * 发送消息请求到服务器
@@ -26,7 +27,7 @@ import com.foxinmy.weixin4j.util.Consts;
  */
 public class MessagePush {
 
-	private final String server = "http://localhost:30000";
+	private final String server = "http://localhost:10003";
 	private final HttpClient httpClient;
 	private final HttpPost httpPost;
 	private final HttpGet httpGet;
@@ -69,6 +70,6 @@ public class MessagePush {
 			throw new IOException(Integer.toString(status) + "uri moved");
 		}
 		return EntityUtils.toString(httpResponse.getEntity(),
-				Consts.UTF_8);
+				ServerToolkits.UTF_8);
 	}
 }

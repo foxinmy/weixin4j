@@ -25,5 +25,9 @@ public enum TradeType {
 	/**
 	 * APP支付
 	 */
-	APP;
+	APP,
+	/**
+	 * WAP支付
+	 */
+	WAP;
 }

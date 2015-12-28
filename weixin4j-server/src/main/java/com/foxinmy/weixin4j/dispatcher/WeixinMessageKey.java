@@ -3,7 +3,7 @@ package com.foxinmy.weixin4j.dispatcher;
 import java.io.Serializable;
 
 import com.foxinmy.weixin4j.type.AccountType;
-import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
  * 微信消息key
@@ -48,10 +48,10 @@ public class WeixinMessageKey implements Serializable {
 		result = prime * result
 				+ ((accountType == null) ? 0 : accountType.hashCode());
 		result = prime * result
-				+ ((StringUtil.isBlank(eventType)) ? 0 : eventType.hashCode());
+				+ ((ServerToolkits.hasText(eventType)) ? 0 : eventType.hashCode());
 		result = prime
 				* result
-				+ ((StringUtil.isBlank(messageType)) ? 0 : messageType
+				+ ((ServerToolkits.hasText(messageType)) ? 0 : messageType
 						.hashCode());
 		return result;
 	}

@@ -50,7 +50,7 @@ public class PKCS7Encoder {
 		for (int index = 0; index < amountToPad; index++) {
 			tmp.append(padChr);
 		}
-		return tmp.toString().getBytes(Consts.UTF_8);
+		return tmp.toString().getBytes(ServerToolkits.UTF_8);
 	}
 
 	/**

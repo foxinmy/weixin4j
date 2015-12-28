@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.foxinmy</groupId>
 	<artifactId>weixin4j</artifactId>
-	<version>1.6.5</version>
+	<version>1.6.6</version>
 	<packaging>pom</packaging>
 	<name>weixin4j</name>
 	<url>https://github.com/foxinmy/weixin4j</url>
@@ -43,6 +43,7 @@
 		<module>weixin4j-base</module>
 		<module>weixin4j-mp</module>
 		<module>weixin4j-qy</module>
+		<module>weixin4j-server</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -224,10 +225,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>

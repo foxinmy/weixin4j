@@ -14,8 +14,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
 import com.foxinmy.weixin4j.type.AccountType;
-import com.foxinmy.weixin4j.util.Consts;
-import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
  * 微信消息
@@ -76,7 +75,7 @@ public class MessageTransferHandler extends DefaultHandler {
 		if (isQY) {
 			return AccountType.QY;
 		}
-		if (StringUtil.isBlank(msgType) && StringUtil.isBlank(eventType)) {
+		if (ServerToolkits.hasText(msgType) && ServerToolkits.hasText(eventType)) {
 			return null;
 		}
 		return AccountType.MP;
@@ -90,7 +89,7 @@ public class MessageTransferHandler extends DefaultHandler {
 			XMLReader xmlReader = XMLReaderFactory.createXMLReader();
 			xmlReader.setContentHandler(global);
 			xmlReader.parse(new InputSource(new ByteArrayInputStream(request
-					.getOriginalContent().getBytes(Consts.UTF_8))));
+					.getOriginalContent().getBytes(ServerToolkits.UTF_8))));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} catch (SAXException e) {

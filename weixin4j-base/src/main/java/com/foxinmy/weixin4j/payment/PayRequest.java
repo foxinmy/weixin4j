@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.util.DateUtil;
@@ -22,6 +23,19 @@ public class PayRequest extends PayBaseInfo {
 	@JSONField(name = "package")
 	private String packageInfo;
 
+	/**
+	 * 冗余字段
+	 */
+	@XmlTransient
+	@JSONField(serialize = false)
+	private String prepayId;
+	/**
+	 * 冗余字段
+	 */
+	@XmlTransient
+	@JSONField(serialize = false)
+	private String partnerId;
+
 	public PayRequest() {
 		super(null, DateUtil.timestamp2string(), RandomUtil.generateString(16));
 	}
@@ -37,6 +51,22 @@ public class PayRequest extends PayBaseInfo {
 
 	public void setPackageInfo(String packageInfo) {
 		this.packageInfo = packageInfo;
+	}
+
+	public String getPrepayId() {
+		return prepayId;
+	}
+
+	public void setPrepayId(String prepayId) {
+		this.prepayId = prepayId;
+	}
+
+	public String getPartnerId() {
+		return partnerId;
+	}
+
+	public void setPartnerId(String partnerId) {
+		this.partnerId = partnerId;
 	}
 
 	@Override

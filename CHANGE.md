@@ -597,3 +597,14 @@
   
   + weixin4j-server:DigestUtil 重命名为 DigestUtils
   
+  
+* 2015-12-26
+  
+  + weixin4j-base:MchPayRequest抽象化
+  
+  + weixin4j-server:WeixinMessageInterceptor加入weight权重接口
+  
+  + weixin4j-server:移入weixin4j下模块化
+  
+  + weixin4j-server:删除无用的工具类并重新整理
+  

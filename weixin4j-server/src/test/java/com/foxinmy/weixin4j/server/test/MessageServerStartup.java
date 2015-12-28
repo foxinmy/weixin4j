@@ -105,6 +105,11 @@ public class MessageServerStartup {
 					Exception exception) throws WeixinException {
 				System.err.println("请求处理完毕");
 			}
+
+			@Override
+			public int weight() {
+				return 0;
+			}
 		};
 		new WeixinServerBootstrap(token).addInterceptor(interceptor)
 				.openAlwaysResponse().startup();

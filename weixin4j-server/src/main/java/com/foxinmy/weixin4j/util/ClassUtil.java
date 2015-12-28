@@ -40,10 +40,10 @@ public final class ClassUtil {
 		String packageFileName = packageName.replace(".", File.separator);
 		URL fullPath = getDefaultClassLoader().getResource(packageFileName);
 		String protocol = fullPath.getProtocol();
-		if (protocol.equals(Consts.PROTOCOL_FILE)) {
+		if (protocol.equals(ServerToolkits.PROTOCOL_FILE)) {
 			File dir = new File(fullPath.getPath());
 			return findClassesByFile(dir, packageName);
-		} else if (protocol.equals(Consts.PROTOCOL_JAR)) {
+		} else if (protocol.equals(ServerToolkits.PROTOCOL_JAR)) {
 			try {
 				return findClassesByJar(
 						((JarURLConnection) fullPath.openConnection())

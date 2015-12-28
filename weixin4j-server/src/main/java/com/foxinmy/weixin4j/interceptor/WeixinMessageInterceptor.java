@@ -74,4 +74,11 @@ public interface WeixinMessageInterceptor {
 			WeixinResponse response, Object message,
 			WeixinMessageHandler handler, Exception exception)
 			throws WeixinException;
+
+	/**
+	 * 用于匹配到多个MessageHandler时权重降序排列,数字越大优先级越高
+	 * 
+	 * @return 权重
+	 */
+	int weight();
 }
