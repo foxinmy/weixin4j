@@ -3,7 +3,7 @@ package com.foxinmy.weixin4j.jssdk;
 /**
  * JSSDK接口列表
  * 
- * @className JSSDKAPIs
+ * @className JSSDKAPI
  * @author jy
  * @date 2015年12月23日
  * @since JDK 1.7

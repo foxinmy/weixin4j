@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -36,13 +36,7 @@ public class MapUtil {
 	 */
 	public static String toJoinString(Object object, boolean encoder,
 			boolean lowerCase, Map<String, String> extra) {
-		Map<String, String> map = new TreeMap<String, String>(
-				new Comparator<String>() {
-					@Override
-					public int compare(String o1, String o2) {
-						return o1.compareTo(o2);
-					}
-				});
+		Map<String, String> map = new HashMap<String, String>();
 		JSONObject obj = null;
 		if (object instanceof String) {
 			obj = JSONObject.parseObject(object.toString());
@@ -72,6 +66,7 @@ public class MapUtil {
 	public static String toJoinString(Map<String, String> map, boolean encoder,
 			boolean lowerCase) {
 		map.remove("sign");
+		map = new TreeMap<String, String>(map);
 		StringBuilder sb = new StringBuilder();
 		Set<Map.Entry<String, String>> set = map.entrySet();
 		try {
