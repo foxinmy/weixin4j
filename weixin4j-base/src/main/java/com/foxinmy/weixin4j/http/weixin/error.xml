@@ -338,6 +338,14 @@
 		<text>导入文件存在不合法的内容</text>
 	</error>
 	<error>
+		<code>40093</code>
+		<text>不合法的跳转target</text>
+	</error>
+	<error>
+		<code>40094</code>
+		<text>不合法的URL</text>
+	</error>
+	<error>
 		<code>40117</code>
 		<text>分组名字不合法</text>
 	</error>
@@ -462,6 +470,14 @@
 	<error>
 		<code>41025</code>
 		<text>缺少永久授权码</text>
+	</error>
+	<error>
+		<code>41034</code>
+		<text>缺少login_ticket</text>
+	</error>
+	<error>
+		<code>41035</code>
+		<text>缺少跳转target</text>
 	</error>
 	<error>
 		<code>42001</code>
@@ -820,6 +836,30 @@
 	<error>
 		<code>60017</code>
 		<text>不允许设置企业</text>
+	</error>
+	<error>
+		<code>60019</code>
+		<text>不允许设置应用地理位置上报开关</text>
+	</error>
+	<error>
+		<code>60020</code>
+		<text>访问ip不在白名单之中</text>
+	</error>
+	<error>
+		<code>60025</code>
+		<text>主页型应用不支持的消息类型</text>
+	</error>
+	<error>
+		<code>60027</code>
+		<text>主页型应用不支持调用该接口</text>
+	</error>
+	<error>
+		<code>60028</code>
+		<text>应用已授权予第三方，不允许通过分级管理员主页url</text>
+	</error>
+	<error>
+		<code>60029</code>
+		<text>应用已授权予第三方，不允许通过分级管理员修改可信域名</text>
 	</error>
 	<error>
 		<code>60102</code>

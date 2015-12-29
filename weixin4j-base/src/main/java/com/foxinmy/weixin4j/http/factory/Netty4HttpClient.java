@@ -181,7 +181,7 @@ public class Netty4HttpClient extends AbstractHttpClient {
 		for (Iterator<Entry<String, List<String>>> headerIterator = headers
 				.entrySet().iterator(); headerIterator.hasNext();) {
 			Entry<String, List<String>> header = headerIterator.next();
-			uriRequest.headers().add(header.getKey(), header.getValue());
+			uriRequest.headers().set(header.getKey(), header.getValue());
 		}
 		uriRequest.headers().set(HttpHeaders.CONNECTION,
 				io.netty.handler.codec.http.HttpHeaders.Values.CLOSE);

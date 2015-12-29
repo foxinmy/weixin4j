@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
@@ -35,7 +36,8 @@ public class OauthApi extends QyApi {
 	 */
 	public String getUserAuthorizeURL() {
 		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("user.oauth.redirect.uri");
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("user.oauth.redirect.uri");
 		return getUserAuthorizeURL(corpId, redirectUri, "state");
 	}
 
@@ -73,7 +75,8 @@ public class OauthApi extends QyApi {
 	 */
 	public String getThirdAuthorizeURL() {
 		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("third.oauth.redirect.uri");
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("third.oauth.redirect.uri");
 		return getThirdAuthorizeURL(corpId, redirectUri, "state");
 	}
 
@@ -121,7 +124,12 @@ public class OauthApi extends QyApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(oauth_logininfo_uri, providerToken),
 				String.format("{\"auth_code\":\"%s\"}", authCode));
-		return JSON.parseObject(response.getAsString(), OUserInfo.class);
+		JSONObject obj = response.getAsJson();
+		OUserInfo oUser = JSON.toJavaObject(obj, OUserInfo.class);
+		oUser.getRedirectLoginInfo().setAccessToken(
+				obj.getJSONObject("redirect_login_info").getString(
+						"login_ticket"));
+		return oUser;
 	}
 
 	/**
@@ -135,7 +143,8 @@ public class OauthApi extends QyApi {
 	 * @return
 	 */
 	public String getSuiteAuthorizeURL(String suiteId, String preAuthCode) {
-		String redirectUri = Weixin4jConfigUtil.getValue("suite.oauth.redirect.uri");
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("suite.oauth.redirect.uri");
 		return getSuiteAuthorizeURL(suiteId, preAuthCode, redirectUri, "state");
 	}
 
