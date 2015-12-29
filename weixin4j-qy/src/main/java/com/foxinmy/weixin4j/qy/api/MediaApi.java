@@ -475,7 +475,7 @@ public class MediaApi extends QyApi {
 		for (;;) {
 			mediaRecord = listMaterialMedia(agentid, mediaType, pageable);
 			if (mediaRecord.getItems() == null
-					|| !mediaRecord.getItems().isEmpty()) {
+					|| mediaRecord.getItems().isEmpty()) {
 				break;
 			}
 			mediaList.addAll(mediaRecord.getItems());
