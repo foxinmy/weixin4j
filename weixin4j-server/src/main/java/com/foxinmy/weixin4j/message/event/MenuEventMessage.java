@@ -31,16 +31,25 @@ public class MenuEventMessage extends EventMessage {
 	/**
 	 * 事件KEY值，与自定义菜单接口中KEY值对应
 	 */
-	@XmlElement(name="EventKey")
+	@XmlElement(name = "EventKey")
 	private String eventKey;
+	/**
+	 * 指菜单ID，如果是个性化菜单，则可以通过这个字段，知道是哪个规则的菜单被点击了。
+	 */
+	@XmlElement(name = "MenuID")
+	private String menuId;
 
 	public String getEventKey() {
 		return eventKey;
 	}
 
+	public String getMenuId() {
+		return menuId;
+	}
+
 	@Override
 	public String toString() {
-		return "MenuEventMessage [eventKey=" + eventKey + ", "
-				+ super.toString() + "]";
+		return "MenuEventMessage [eventKey=" + eventKey + ", menuId=" + menuId
+				+ ", " + super.toString() + "]";
 	}
 }
