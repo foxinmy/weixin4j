@@ -205,15 +205,26 @@ public class WeixinMessageDispatcher {
 		if (messageHandlers == null) {
 			return null;
 		}
-		WeixinMessageHandler messageHandler = null;
+		List<WeixinMessageHandler> matchedMessageHandlers = new ArrayList<WeixinMessageHandler>();
 		for (WeixinMessageHandler handler : messageHandlers) {
 			if (handler.canHandle(request, message, nodeNames)) {
-				messageHandler = handler;
+				matchedMessageHandlers.add(handler);
 				break;
 			}
 		}
-		return new MessageHandlerExecutor(context, messageHandler,
-				getMessageInterceptors());
+		if (matchedMessageHandlers.isEmpty()) {
+			return null;
+		}
+		Collections.sort(matchedMessageHandlers,
+				new Comparator<WeixinMessageHandler>() {
+					@Override
+					public int compare(WeixinMessageHandler m1,
+							WeixinMessageHandler m2) {
+						return m2.weight() - m1.weight();
+					}
+				});
+		return new MessageHandlerExecutor(context,
+				matchedMessageHandlers.get(0), getMessageInterceptors());
 	}
 
 	/**
@@ -258,14 +269,6 @@ public class WeixinMessageDispatcher {
 			}
 			if (messageHandlerList != null
 					&& !this.messageHandlerList.isEmpty()) {
-				Collections.sort(messageHandlerList,
-						new Comparator<WeixinMessageHandler>() {
-							@Override
-							public int compare(WeixinMessageHandler m1,
-									WeixinMessageHandler m2) {
-								return m2.weight() - m1.weight();
-							}
-						});
 				this.messageHandlers = this.messageHandlerList
 						.toArray(new WeixinMessageHandler[this.messageHandlerList
 								.size()]);
