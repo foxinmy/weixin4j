@@ -2,8 +2,6 @@ package com.foxinmy.weixin4j.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,8 +11,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -34,7 +30,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
@@ -305,26 +300,6 @@ public final class XmlStream {
 					;
 				}
 			}
-		}
-	}
-
-	public static void main(String[] args) {
-		ExecutorService executor = Executors.newFixedThreadPool(10);
-		for (int i = 0; i < 100; i++) {
-			executor.submit(new Runnable() {
-				public void run() {
-					try {
-						System.err.println(XmlStream
-								.fromXML(
-										new FileInputStream(
-												new File(
-														"/tmp/weixin4j/token/wx_mp_token_wx4ab8f8de58159a57.xml")),
-										Token.class));
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
 		}
 	}
 }
