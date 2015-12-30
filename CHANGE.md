@@ -608,3 +608,8 @@
   
   + weixin4j-server:删除无用的工具类并重新整理
   
+  
+* 2015-12-30
+
+  + weixin4j-qy:新增服务商接口(ProviderApi)
+  

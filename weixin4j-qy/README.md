@@ -7,33 +7,32 @@ weixin4j-qy
 功能列表
 -------
 
-  * PartyApi `部门管理API`
-	
-  * UserApi `成员管理API`
-  
-  * TagApi `标签管理API`
-  
+  * AgentApi `应用设置API`
+
+  * BatchApi `批量任务API`
+
+  * ChatApi `会话服务API`
+
+  * Helper `辅助API`
+
   * MediaApi `媒体素材API`
   
   * MenuApi `菜单管理API`
   
   * NotifyApi `消息发送API`
-  
-  * AgentApi `应用设置API`
-  
-  * BatchApi `批量任务API`
-  
+
   * OauthApi `oauth授权登陆API`
-  
-  * SuiteApi `第三方应用API`
-  
-  * Pay3Api `商户平台支付API`
+
+  * PartyApi `部门管理API`
+
+* ProviderApi `服务商API`
+
+* SuiteApi `第三方应用API`
+
+* TagApi `标签管理API`
 	
-  * CouponApi `代金券API`
-	
-  * CashApi `现金API`
+* UserApi `成员管理API`
   
-  * ChatApi `会话服务API`
 
 如何使用
 --------
