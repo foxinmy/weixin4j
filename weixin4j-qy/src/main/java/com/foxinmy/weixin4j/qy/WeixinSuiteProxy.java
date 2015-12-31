@@ -160,5 +160,5 @@ public class WeixinSuiteProxy {
 		return providerApi.getLoingUrl(corpId, targetType, agentId);
 	}
 
-	public final static String VERSION = "1.6.5";
+	public final static String VERSION = "1.6.6";
 }

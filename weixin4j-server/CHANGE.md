@@ -115,3 +115,19 @@
 * 2015-12-21
   
   + WeixinMessageHanlder中新增weight接口
+  
+* 2015-12-25
+  
+  + DigestUtil 重命名为 DigestUtils
+  
+* 2015-12-26
+  
+  + WeixinMessageInterceptor加入weight权重接口
+  
+  + 移入weixin4j下模块化
+  
+  + 删除无用的工具类并重新整理
+  
+* 2015-12-31
+  
+  + version upgrade to 1.1.5

@@ -96,3 +96,17 @@
 * 2015-12-19
 
   + 删除PayUtil类,接口转移到PayApi类
+  
+* 2015-12-25
+  
+  + WeixinPayProxy类新增获取支付信息#getWeixinAccount方法
+  
+  + 新增JSSDK的config生成类
+  
+  + JSSDKHelper 重命名为 JSSDKConfigurator
+  
+  + 重构了token类
+  
+* 2015-12-26
+  
+  + MchPayRequest抽象化

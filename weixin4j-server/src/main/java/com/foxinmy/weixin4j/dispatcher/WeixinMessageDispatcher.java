@@ -86,7 +86,7 @@ public class WeixinMessageDispatcher {
 	/**
 	 * 消息转换
 	 */
-	private Map<Class<? extends WeixinMessage>, Unmarshaller> messageUnmarshaller;
+	private ThreadLocal<Map<Class<? extends WeixinMessage>, Unmarshaller>> messageUnmarshaller;
 	/**
 	 * 是否总是响应请求,如未匹配到MessageHandler时回复空白消息
 	 */
@@ -98,7 +98,12 @@ public class WeixinMessageDispatcher {
 
 	public WeixinMessageDispatcher(WeixinMessageMatcher messageMatcher) {
 		this.messageMatcher = messageMatcher;
-		this.messageUnmarshaller = new HashMap<Class<? extends WeixinMessage>, Unmarshaller>();
+		this.messageUnmarshaller = new ThreadLocal<Map<Class<? extends WeixinMessage>, Unmarshaller>>() {
+			@Override
+			protected Map<Class<? extends WeixinMessage>, Unmarshaller> initialValue() {
+				return new HashMap<Class<? extends WeixinMessage>, Unmarshaller>();
+			}
+		};
 	}
 
 	/**
@@ -373,12 +378,12 @@ public class WeixinMessageDispatcher {
 	 */
 	protected Unmarshaller getUnmarshaller(Class<? extends WeixinMessage> clazz)
 			throws WeixinException {
-		Unmarshaller unmarshaller = messageUnmarshaller.get(clazz);
+		Unmarshaller unmarshaller = messageUnmarshaller.get().get(clazz);
 		if (unmarshaller == null) {
 			try {
 				JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 				unmarshaller = jaxbContext.createUnmarshaller();
-				messageUnmarshaller.put(clazz, unmarshaller);
+				messageUnmarshaller.get().put(clazz, unmarshaller);
 			} catch (JAXBException e) {
 				throw new WeixinException(e);
 			}
