@@ -16,6 +16,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.ssl.SslHandler;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -25,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -91,6 +93,12 @@ public class Netty4HttpClient extends AbstractHttpClient {
 							sslEngine.setUseClientMode(true);
 							channel.pipeline().addFirst(
 									new SslHandler(sslEngine));
+							if (params != null && params.getReadTimeout() > 0) {
+								channel.pipeline().addFirst(
+										new ReadTimeoutHandler(params
+												.getReadTimeout(),
+												TimeUnit.MILLISECONDS));
+							}
 						}
 						channel.pipeline().addLast(new RequestHandler(future));
 						channel.writeAndFlush(uriRequest);
@@ -181,7 +189,7 @@ public class Netty4HttpClient extends AbstractHttpClient {
 		for (Iterator<Entry<String, List<String>>> headerIterator = headers
 				.entrySet().iterator(); headerIterator.hasNext();) {
 			Entry<String, List<String>> header = headerIterator.next();
-			uriRequest.headers().add(header.getKey(), header.getValue());
+			uriRequest.headers().set(header.getKey(), header.getValue());
 		}
 		uriRequest.headers().set(HttpHeaders.CONNECTION,
 				io.netty.handler.codec.http.HttpHeaders.Values.CLOSE);

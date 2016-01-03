@@ -110,8 +110,8 @@ public class JSSDKConfigurator {
 		signMap.put("noncestr", noncestr);
 		signMap.put("jsapi_ticket", this.ticketTokenHolder.getAccessToken());
 		signMap.put("url", url);
-		String sign = DigestUtil.SHA1(MapUtil
-				.toJoinString(signMap, false, true));
+		String sign = DigestUtil.SHA1(MapUtil.toJoinString(signMap, false,
+				false));
 		if (StringUtil.isBlank(config.getString("appId"))) {
 			config.put("appId", Weixin4jConfigUtil.getWeixinAccount().getId());
 		}
@@ -122,7 +122,7 @@ public class JSSDKConfigurator {
 			throw new WeixinException("jsapilist not be empty");
 		}
 		config.put("timestamp", timestamp);
-		config.put("noncestr", noncestr);
+		config.put("nonceStr", noncestr);
 		config.put("signature", sign);
 		config.put("jsApiList", apis.toArray());
 		return config.toJSONString();

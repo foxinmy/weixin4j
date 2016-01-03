@@ -75,8 +75,10 @@ public class HttpComponent4_1 extends HttpComponent4 {
 				uriRequest.getParams().setParameter(HttpHeaders.ACCEPT_CHARSET,
 						Consts.UTF_8);
 				sslContext = params.getSSLContext();
-				hostnameVerifier = new CustomHostnameVerifier(
-						params.getHostnameVerifier());
+				if (params.getHostnameVerifier() != null) {
+					hostnameVerifier = new CustomHostnameVerifier(
+							params.getHostnameVerifier());
+				}
 			}
 			if (useSSL) {
 				if (sslContext == null) {

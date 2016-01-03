@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.AgentAuthType;
 
 /**
@@ -48,6 +49,11 @@ public class OUserInfo implements Serializable {
 	 */
 	@JSONField(name = "auth_info")
 	private AuthInfo authInfo;
+	/**
+	 * 登录跳转的票据信息
+	 */
+	@JSONField(name = "redirect_login_info")
+	private Token redirectLoginInfo;
 
 	public boolean isSysAdmin() {
 		return isSysAdmin;
@@ -71,6 +77,10 @@ public class OUserInfo implements Serializable {
 
 	public AuthInfo getAuthInfo() {
 		return authInfo;
+	}
+
+	public Token getRedirectLoginInfo() {
+		return redirectLoginInfo;
 	}
 
 	// ---------- setter 应该全部去掉
@@ -99,12 +109,16 @@ public class OUserInfo implements Serializable {
 		this.authInfo = authInfo;
 	}
 
+	public void setRedirectLoginInfo(Token redirectLoginInfo) {
+		this.redirectLoginInfo = redirectLoginInfo;
+	}
+
 	@Override
 	public String toString() {
 		return "OUserInfo [isSysAdmin=" + isSysAdmin + ", isInnerAdmin="
 				+ isInnerAdmin + ", adminInfo=" + adminInfo + ", corpInfo="
 				+ corpInfo + ", agentInfo=" + agentInfo + ", authInfo="
-				+ authInfo + "]";
+				+ authInfo + ", redirectLoginInfo=" + redirectLoginInfo + "]";
 	}
 
 	/**

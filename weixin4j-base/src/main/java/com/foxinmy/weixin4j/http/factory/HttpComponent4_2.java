@@ -62,8 +62,10 @@ public class HttpComponent4_2 extends HttpComponent4 {
 				}
 				uriRequest.setConfig(requestConfig.build());
 				sslContext = params.getSSLContext();
-				hostnameVerifier = new CustomHostnameVerifier(
-						params.getHostnameVerifier());
+				if (params.getHostnameVerifier() != null) {
+					hostnameVerifier = new CustomHostnameVerifier(
+							params.getHostnameVerifier());
+				}
 			}
 			if (useSSL) {
 				if (sslContext == null) {

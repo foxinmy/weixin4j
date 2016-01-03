@@ -44,12 +44,21 @@ import com.foxinmy.weixin4j.util.StringUtil;
 public final class XmlStream {
 	private final static String ROOT_ELEMENT_XML = "xml";
 	private final static String XML_VERSION = "1.0";
-	private final static Map<Class<?>, Unmarshaller> messageUnmarshaller;
-	private final static Map<Class<?>, Marshaller> messageMarshaller;
-
+	private static ThreadLocal<Map<Class<?>, Unmarshaller>> messageUnmarshaller;
+	private static ThreadLocal<Map<Class<?>, Marshaller>> messageMarshaller;
 	static {
-		messageUnmarshaller = new HashMap<Class<?>, Unmarshaller>();
-		messageMarshaller = new HashMap<Class<?>, Marshaller>();
+		messageUnmarshaller = new ThreadLocal<Map<Class<?>, Unmarshaller>>() {
+			@Override
+			protected Map<Class<?>, Unmarshaller> initialValue() {
+				return new HashMap<Class<?>, Unmarshaller>();
+			}
+		};
+		messageMarshaller = new ThreadLocal<Map<Class<?>, Marshaller>>() {
+			@Override
+			protected Map<Class<?>, Marshaller> initialValue() {
+				return new HashMap<Class<?>, Marshaller>();
+			}
+		};
 	}
 
 	/**
@@ -63,22 +72,26 @@ public final class XmlStream {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T fromXML(InputStream content, Class<T> clazz) {
-		Unmarshaller unmarshaller = messageUnmarshaller.get(clazz);
+		Unmarshaller unmarshaller = messageUnmarshaller.get().get(clazz);
 		if (unmarshaller == null) {
 			try {
 				JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 				unmarshaller = jaxbContext.createUnmarshaller();
-				messageUnmarshaller.put(clazz, unmarshaller);
+				messageUnmarshaller.get().put(clazz, unmarshaller);
 			} catch (JAXBException e) {
 				throw new IllegalArgumentException(e);
 			}
 		}
 		try {
 			Source source = new StreamSource(content);
-			XmlRootElement rootElement = clazz.getAnnotation(XmlRootElement.class);
+			XmlRootElement rootElement = clazz
+					.getAnnotation(XmlRootElement.class);
 			if (rootElement == null
-					|| rootElement.name().equals(XmlRootElement.class.getMethod("name").getDefaultValue().toString())) {
-				JAXBElement<T> jaxbElement = unmarshaller.unmarshal(source, clazz);
+					|| rootElement.name().equals(
+							XmlRootElement.class.getMethod("name")
+									.getDefaultValue().toString())) {
+				JAXBElement<T> jaxbElement = unmarshaller.unmarshal(source,
+						clazz);
 				return jaxbElement.getValue();
 			} else {
 				return (T) unmarshaller.unmarshal(source);
@@ -106,7 +119,8 @@ public final class XmlStream {
 	 * @return
 	 */
 	public static <T> T fromXML(String content, Class<T> clazz) {
-		return fromXML(new ByteArrayInputStream(content.getBytes(Consts.UTF_8)), clazz);
+		return fromXML(
+				new ByteArrayInputStream(content.getBytes(Consts.UTF_8)), clazz);
 	}
 
 	/**
@@ -119,10 +133,12 @@ public final class XmlStream {
 	public static String map2xml(Map<String, String> map) {
 		StringWriter sw = new StringWriter();
 		try {
-			XMLStreamWriter xw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
+			XMLStreamWriter xw = XMLOutputFactory.newInstance()
+					.createXMLStreamWriter(sw);
 			xw.writeStartDocument(Consts.UTF_8.name(), XML_VERSION);
 			xw.writeStartElement(ROOT_ELEMENT_XML);
-			for (Iterator<Entry<String, String>> it = map.entrySet().iterator(); it.hasNext();) {
+			for (Iterator<Entry<String, String>> it = map.entrySet().iterator(); it
+					.hasNext();) {
 				Entry<String, String> entry = it.next();
 				if (StringUtil.isBlank(entry.getValue())) {
 					continue;
@@ -156,10 +172,12 @@ public final class XmlStream {
 	public static String map2xml(JSONObject json) {
 		StringWriter sw = new StringWriter();
 		try {
-			XMLStreamWriter xw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
+			XMLStreamWriter xw = XMLOutputFactory.newInstance()
+					.createXMLStreamWriter(sw);
 			xw.writeStartDocument(Consts.UTF_8.name(), XML_VERSION);
 			xw.writeStartElement(ROOT_ELEMENT_XML);
-			for (Iterator<Entry<String, Object>> it = json.entrySet().iterator(); it.hasNext();) {
+			for (Iterator<Entry<String, Object>> it = json.entrySet()
+					.iterator(); it.hasNext();) {
 				Entry<String, Object> entry = it.next();
 				if (StringUtil.isBlank(json.getString(entry.getKey()))) {
 					continue;
@@ -194,7 +212,8 @@ public final class XmlStream {
 		Map<String, String> map = new HashMap<String, String>();
 		StringReader sr = new StringReader(content);
 		try {
-			XMLStreamReader xr = XMLInputFactory.newInstance().createXMLStreamReader(sr);
+			XMLStreamReader xr = XMLInputFactory.newInstance()
+					.createXMLStreamReader(sr);
 			while (true) {
 				int event = xr.next();
 				if (event == XMLStreamConstants.END_DOCUMENT) {
@@ -247,22 +266,27 @@ public final class XmlStream {
 	@SuppressWarnings("unchecked")
 	public static <T> void toXML(T t, OutputStream os) {
 		Class<T> clazz = (Class<T>) t.getClass();
-		Marshaller marshaller = messageMarshaller.get(clazz);
+		Marshaller marshaller = messageMarshaller.get().get(clazz);
 		if (marshaller == null) {
 			try {
 				JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 				marshaller = jaxbContext.createMarshaller();
-				marshaller.setProperty(Marshaller.JAXB_ENCODING, Consts.UTF_8.name());
-				messageMarshaller.put(clazz, marshaller);
+				marshaller.setProperty(Marshaller.JAXB_ENCODING,
+						Consts.UTF_8.name());
+				messageMarshaller.get().put(clazz, marshaller);
 			} catch (JAXBException e) {
 				throw new IllegalArgumentException(e);
 			}
 		}
 		try {
-			XmlRootElement rootElement = clazz.getAnnotation(XmlRootElement.class);
+			XmlRootElement rootElement = clazz
+					.getAnnotation(XmlRootElement.class);
 			if (rootElement == null
-					|| rootElement.name().equals(XmlRootElement.class.getMethod("name").getDefaultValue().toString())) {
-				marshaller.marshal(new JAXBElement<T>(new QName(ROOT_ELEMENT_XML), clazz, t), os);
+					|| rootElement.name().equals(
+							XmlRootElement.class.getMethod("name")
+									.getDefaultValue().toString())) {
+				marshaller.marshal(new JAXBElement<T>(new QName(
+						ROOT_ELEMENT_XML), clazz, t), os);
 			} else {
 				marshaller.marshal(t, os);
 			}

@@ -7,48 +7,40 @@ weixin4j-mp
 功能列表
 -------
 
-* MediaApi `媒体素材API`
+  * CustomApi `多客服API`
 
-* NotifyApi `客服消息API`
+  * DataApi `数据统计API`
 
-* CustomApi `多客服API`
+  * GroupApi `分组管理API`
 
-* MassApi `群发消息API`
+  * HelperApi `辅助API`
 
-* UserApi `用户管理API`
+  * MassApi `群发消息API`
 
-* GroupApi `分组管理API`
+  * MediaApi `上传/下载媒体文件API`
 
-* MenuApi `底部菜单API`
+  * MenuApi `底部菜单API`
 
-* QrApi `二维码API`
+  * NotifyApi `客服消息API`
 
-* TmplApi `模板消息API`
+  * OauthApi `oauth授权API`
 
-* HelperApi `辅助API`
+  * Pay2Api `V2支付API`
 
-* Pay2Api `V2支付API`
-  
-* Pay3Api `V3(商户平台)支付API`
+  * QrApi `二维码API`
 
-* CouponApi `代金券API`
+  * TmplApi `模板消息API`
 
-* DataApi `数据统计API`
-
-* OauthApi `oauth授权API`
-
-* CashApi `现金API`
-
-* PayUtil [微信支付工具类](https://github.com/foxinmy/weixin4j/tree/master/weixin4j-base/src/main/java/com/foxinmy/weixin4j/payment/PayUtil.java)
+  * UserApi `用户管理API`
 
 如何使用
 --------
-0.maven依赖(1.6.5,2015-12-15 released)
+0.maven依赖(1.6.6,2015-12-31 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.6.5</version>
+	    <version>1.6.6</version>
 	</dependency>
 1.需新增或拷贝`weixin4j.properties`文件到项目的`classpath`中
 

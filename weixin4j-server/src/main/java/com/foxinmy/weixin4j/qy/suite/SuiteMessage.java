@@ -42,7 +42,7 @@ public class SuiteMessage implements Serializable {
 	 * Ticket内容
 	 */
 	@XmlElement(name = "SuiteTicket")
-	private String SuiteTicket;
+	private String suiteTicket;
 	/**
 	 * 授权方企业号的corpid
 	 */
@@ -72,7 +72,7 @@ public class SuiteMessage implements Serializable {
 	}
 
 	public String getSuiteTicket() {
-		return SuiteTicket;
+		return suiteTicket;
 	}
 
 	public String getAuthCorpId() {
@@ -82,7 +82,7 @@ public class SuiteMessage implements Serializable {
 	@Override
 	public String toString() {
 		return "SuiteMessage [suiteId=" + suiteId + ", eventType="
-				+ eventType + ", timeStamp=" + timeStamp + ", SuiteTicket="
-				+ SuiteTicket + ", authCorpId=" + authCorpId + "]";
+				+ eventType + ", timeStamp=" + timeStamp + ", suiteTicket="
+				+ suiteTicket + ", authCorpId=" + authCorpId + "]";
 	}
 }

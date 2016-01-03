@@ -9,10 +9,10 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -86,7 +86,7 @@ public class WeixinMessageDispatcher {
 	/**
 	 * 消息转换
 	 */
-	private Map<Class<? extends WeixinMessage>, Unmarshaller> messageUnmarshaller;
+	private ThreadLocal<Map<Class<? extends WeixinMessage>, Unmarshaller>> messageUnmarshaller;
 	/**
 	 * 是否总是响应请求,如未匹配到MessageHandler时回复空白消息
 	 */
@@ -98,7 +98,12 @@ public class WeixinMessageDispatcher {
 
 	public WeixinMessageDispatcher(WeixinMessageMatcher messageMatcher) {
 		this.messageMatcher = messageMatcher;
-		this.messageUnmarshaller = new HashMap<Class<? extends WeixinMessage>, Unmarshaller>();
+		this.messageUnmarshaller = new ThreadLocal<Map<Class<? extends WeixinMessage>, Unmarshaller>>() {
+			@Override
+			protected Map<Class<? extends WeixinMessage>, Unmarshaller> initialValue() {
+				return new HashMap<Class<? extends WeixinMessage>, Unmarshaller>();
+			}
+		};
 	}
 
 	/**
@@ -205,15 +210,26 @@ public class WeixinMessageDispatcher {
 		if (messageHandlers == null) {
 			return null;
 		}
-		WeixinMessageHandler messageHandler = null;
+		List<WeixinMessageHandler> matchedMessageHandlers = new ArrayList<WeixinMessageHandler>();
 		for (WeixinMessageHandler handler : messageHandlers) {
 			if (handler.canHandle(request, message, nodeNames)) {
-				messageHandler = handler;
+				matchedMessageHandlers.add(handler);
 				break;
 			}
 		}
-		return new MessageHandlerExecutor(context, messageHandler,
-				getMessageInterceptors());
+		if (matchedMessageHandlers.isEmpty()) {
+			return null;
+		}
+		Collections.sort(matchedMessageHandlers,
+				new Comparator<WeixinMessageHandler>() {
+					@Override
+					public int compare(WeixinMessageHandler m1,
+							WeixinMessageHandler m2) {
+						return m2.weight() - m1.weight();
+					}
+				});
+		return new MessageHandlerExecutor(context,
+				matchedMessageHandlers.get(0), getMessageInterceptors());
 	}
 
 	/**
@@ -226,7 +242,7 @@ public class WeixinMessageDispatcher {
 	public WeixinMessageHandler[] getMessageHandlers() throws WeixinException {
 		if (this.messageHandlers == null) {
 			if (messageHandlerPackages != null) {
-				List<Class<?>> messageHandlerClass = new LinkedList<Class<?>>();
+				List<Class<?>> messageHandlerClass = new ArrayList<Class<?>>();
 				for (String packageName : messageHandlerPackages) {
 					messageHandlerClass.addAll(ClassUtil
 							.getClasses(packageName));
@@ -258,14 +274,6 @@ public class WeixinMessageDispatcher {
 			}
 			if (messageHandlerList != null
 					&& !this.messageHandlerList.isEmpty()) {
-				Collections.sort(messageHandlerList,
-						new Comparator<WeixinMessageHandler>() {
-							@Override
-							public int compare(WeixinMessageHandler m1,
-									WeixinMessageHandler m2) {
-								return m2.weight() - m1.weight();
-							}
-						});
 				this.messageHandlers = this.messageHandlerList
 						.toArray(new WeixinMessageHandler[this.messageHandlerList
 								.size()]);
@@ -285,7 +293,7 @@ public class WeixinMessageDispatcher {
 			throws WeixinException {
 		if (this.messageInterceptors == null) {
 			if (this.messageInterceptorPackages != null) {
-				List<Class<?>> messageInterceptorClass = new LinkedList<Class<?>>();
+				List<Class<?>> messageInterceptorClass = new ArrayList<Class<?>>();
 				for (String packageName : messageInterceptorPackages) {
 					messageInterceptorClass.addAll(ClassUtil
 							.getClasses(packageName));
@@ -370,12 +378,12 @@ public class WeixinMessageDispatcher {
 	 */
 	protected Unmarshaller getUnmarshaller(Class<? extends WeixinMessage> clazz)
 			throws WeixinException {
-		Unmarshaller unmarshaller = messageUnmarshaller.get(clazz);
+		Unmarshaller unmarshaller = messageUnmarshaller.get().get(clazz);
 		if (unmarshaller == null) {
 			try {
 				JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 				unmarshaller = jaxbContext.createUnmarshaller();
-				messageUnmarshaller.put(clazz, unmarshaller);
+				messageUnmarshaller.get().put(clazz, unmarshaller);
 			} catch (JAXBException e) {
 				throw new WeixinException(e);
 			}

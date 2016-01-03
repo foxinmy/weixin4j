@@ -151,7 +151,7 @@ public class HttpComponent3 extends AbstractHttpClient {
 							StringUtil.join(header.getValue(), ';'));
 				} else {
 					for (String headerValue : header.getValue()) {
-						httpMethod.addRequestHeader(header.getKey(),
+						httpMethod.setRequestHeader(header.getKey(),
 								headerValue != null ? headerValue : "");
 					}
 				}

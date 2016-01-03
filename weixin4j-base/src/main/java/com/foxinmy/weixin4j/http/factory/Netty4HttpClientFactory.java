@@ -39,26 +39,30 @@ public class Netty4HttpClientFactory extends HttpClientFactory {
 		this.workerThreads = workerThreads;
 	}
 
+	private volatile Bootstrap bootstrap;
+
 	@Override
 	public HttpClient newInstance() {
-		Bootstrap b = new Bootstrap();
-		b.option(ChannelOption.SO_KEEPALIVE, true).option(
-				ChannelOption.TCP_NODELAY, true);
-		EventLoopGroup workerGroup = new NioEventLoopGroup(workerThreads);
-		b.group(workerGroup).channel(NioSocketChannel.class)
-				.handler(new ChannelInitializer<SocketChannel>() {
-					@Override
-					protected void initChannel(SocketChannel channel)
-							throws Exception {
-						ChannelPipeline pipeline = channel.pipeline();
-						pipeline.addLast(new HttpClientCodec());
-						pipeline.addLast(new HttpContentDecompressor());
-						pipeline.addLast(new ChunkedWriteHandler());
-						pipeline.addLast(new HttpResponseDecoder());
-						pipeline.addLast(new HttpObjectAggregator(
-								Integer.MAX_VALUE));
-					}
-				});
-		return new Netty4HttpClient(b);
+		if (bootstrap == null) {
+			bootstrap = new Bootstrap();
+			bootstrap.option(ChannelOption.SO_KEEPALIVE, true).option(
+					ChannelOption.TCP_NODELAY, true);
+			EventLoopGroup workerGroup = new NioEventLoopGroup(workerThreads);
+			bootstrap.group(workerGroup).channel(NioSocketChannel.class)
+					.handler(new ChannelInitializer<SocketChannel>() {
+						@Override
+						protected void initChannel(SocketChannel channel)
+								throws Exception {
+							ChannelPipeline pipeline = channel.pipeline();
+							pipeline.addLast(new HttpClientCodec());
+							pipeline.addLast(new HttpContentDecompressor());
+							pipeline.addLast(new ChunkedWriteHandler());
+							pipeline.addLast(new HttpResponseDecoder());
+							pipeline.addLast(new HttpObjectAggregator(
+									Integer.MAX_VALUE));
+						}
+					});
+		}
+		return new Netty4HttpClient(bootstrap);
 	}
 }
