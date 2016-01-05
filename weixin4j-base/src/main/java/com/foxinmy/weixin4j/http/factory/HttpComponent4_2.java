@@ -10,15 +10,18 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.config.RequestConfig.Builder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.config.ConnectionConfig;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
+import com.foxinmy.weixin4j.model.Consts;
 
 /**
  * Requires Apache HttpComponents 4.3 or higher
@@ -34,7 +37,11 @@ public class HttpComponent4_2 extends HttpComponent4 {
 	private CloseableHttpClient httpClient;
 
 	public HttpComponent4_2() {
-		this.httpClient = HttpClients.createDefault();
+		this.httpClient = HttpClientBuilder
+				.create()
+				.setDefaultConnectionConfig(
+						ConnectionConfig.custom().setCharset(Consts.UTF_8)
+								.build()).build();
 	}
 
 	@Override
@@ -74,8 +81,12 @@ public class HttpComponent4_2 extends HttpComponent4 {
 				if (hostnameVerifier == null) {
 					hostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
 				}
-				httpClient = HttpClients.custom()
+				httpClient = HttpClients
+						.custom()
 						.setHostnameVerifier(hostnameVerifier)
+						.setDefaultConnectionConfig(
+								ConnectionConfig.custom()
+										.setCharset(Consts.UTF_8).build())
 						.setSslcontext(sslContext).build();
 			}
 			addHeaders(request.getHeaders(), uriRequest);

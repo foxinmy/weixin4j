@@ -116,8 +116,9 @@ public class HttpComponent3 extends AbstractHttpClient {
 						.setConnectionTimeout(params.getConnectTimeout());
 				httpClient.getHttpConnectionManager().getParams()
 						.setSendBufferSize(params.getChunkSize());
-				httpMethod.getParams().setUriCharset(Consts.UTF_8.name());
 				httpMethod.getParams().setSoTimeout(params.getSocketTimeout());
+				httpMethod.getParams().setHttpElementCharset(Consts.UTF_8.name());
+				httpMethod.getParams().setUriCharset(Consts.UTF_8.name());
 				httpMethod.getParams().setContentCharset(Consts.UTF_8.name());
 			}
 			if (useSSL) {
