@@ -56,8 +56,8 @@ public class WeixinRequestHandler extends
 			throws WeixinException {
 		final AesToken aesToken = request.getAesToken();
 		if (aesToken == null
-				|| (ServerToolkits.hasText(request.getSignature()) && ServerToolkits
-						.hasText(request.getMsgSignature()))) {
+				|| (ServerToolkits.isBlank(request.getSignature()) && ServerToolkits
+						.isBlank(request.getMsgSignature()))) {
 			ctx.writeAndFlush(HttpUtil.createHttpResponse(BAD_REQUEST))
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
@@ -67,14 +67,14 @@ public class WeixinRequestHandler extends
 		 * 企业号:无论Get,Post都带msg_signature参数
 		 **/
 		if (request.getMethod().equals(HttpMethod.GET.name())) {
-			if (!ServerToolkits.hasText(request.getSignature())
+			if (!ServerToolkits.isBlank(request.getSignature())
 					&& MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce()).equals(
 							request.getSignature())) {
 				ctx.write(new SingleResponse(request.getEchoStr()));
 				return;
 			}
-			if (!ServerToolkits.hasText(request.getMsgSignature())
+			if (!ServerToolkits.isBlank(request.getMsgSignature())
 					&& MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce(),
 							request.getEchoStr()).equals(
@@ -87,7 +87,7 @@ public class WeixinRequestHandler extends
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		} else if (request.getMethod().equals(HttpMethod.POST.name())) {
-			if (!ServerToolkits.hasText(request.getSignature())
+			if (!ServerToolkits.isBlank(request.getSignature())
 					&& !MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce()).equals(
 							request.getSignature())) {
