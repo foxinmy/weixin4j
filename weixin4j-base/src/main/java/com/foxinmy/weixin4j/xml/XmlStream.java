@@ -44,8 +44,8 @@ import com.foxinmy.weixin4j.util.StringUtil;
 public final class XmlStream {
 	private final static String ROOT_ELEMENT_XML = "xml";
 	private final static String XML_VERSION = "1.0";
-	private static ThreadLocal<Map<Class<?>, Unmarshaller>> messageUnmarshaller;
-	private static ThreadLocal<Map<Class<?>, Marshaller>> messageMarshaller;
+	private final static ThreadLocal<Map<Class<?>, Unmarshaller>> messageUnmarshaller;
+	private final static ThreadLocal<Map<Class<?>, Marshaller>> messageMarshaller;
 	static {
 		messageUnmarshaller = new ThreadLocal<Map<Class<?>, Unmarshaller>>() {
 			@Override
