@@ -107,11 +107,8 @@ public class Netty4HttpClient extends AbstractHttpClient {
 					}
 				}
 			};
-			InetSocketAddress address = new InetSocketAddress(
+			InetSocketAddress address = useProxy ? (InetSocketAddress) params.getProxy().address() : new InetSocketAddress(
 					InetAddress.getByName(uri.getHost()), getPort(uri));
-			if (useProxy) {
-				address = (InetSocketAddress) params.getProxy().address();
-			}
 			bootstrap.connect(address).syncUninterruptibly()
 					.addListener(listener);
 			response = future.get();

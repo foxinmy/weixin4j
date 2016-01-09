@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.mp;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
@@ -168,9 +167,8 @@ public class WeixinProxy {
 	 * @return
 	 */
 	public TokenHolder getTicketHolder(TicketType ticketType) {
-		return new TokenHolder(new WeixinTicketCreator(this.appId,
-				ticketType, this.tokenHolder),
-				this.tokenHolder.getTokenStorager());
+		return new TokenHolder(new WeixinTicketCreator(this.appId, ticketType,
+				this.tokenHolder), this.tokenHolder.getTokenStorager());
 	}
 
 	/**
@@ -381,7 +379,7 @@ public class WeixinProxy {
 	/**
 	 * 获取永久媒体素材的总数</br> .图片和图文消息素材（包括单图文和多图文）的总数上限为5000，其他素材的总数上限为1000
 	 * 
-	 * @return 总数对象        
+	 * @return 总数对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.MediaCounter
 	 * @see <a
@@ -560,22 +558,23 @@ public class WeixinProxy {
 	/**
 	 * 上传客服头像
 	 * 
-	 * @param id
+	 * @param accountId
 	 *            完整客服账号，格式为：账号前缀@公众号微信号
-	 * @param headimg
+	 * @param is
 	 *            头像图片文件必须是jpg格式，推荐使用640*640大小的图片以达到最佳效果
+	 * @param fileName
+	 *            文件名 为空时将自动生成
 	 * @return 处理结果
-	 * @throws WeixinException
-	 * @throws IOException
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
+	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.AE.A2.E6.9C.8D.E7.AE.A1.E7.90.86.E6.8E.A5.E5.8F.A3.E8.BF.94.E5.9B.9E.E7.A0.81.E8.AF.B4.E6.98.8E">客服管理接口返回码</a>
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E4.B8.8A.E4.BC.A0.E5.AE.A2.E6.9C.8D.E5.A4.B4.E5.83.8F">上传客服头像</a>
 	 */
-	public JsonResult uploadAccountHeadimg(String id, File headimg)
-			throws WeixinException, IOException {
-		return customApi.uploadAccountHeadimg(id, headimg);
+	public JsonResult uploadAccountHeadimg(String accountId, InputStream is,
+			String fileName) throws WeixinException {
+		return customApi.uploadAccountHeadimg(accountId, is, fileName);
 	}
 
 	/**
