@@ -96,7 +96,7 @@ public final class ServerToolkits {
 	 * @param cs
 	 * @return
 	 */
-	public static boolean hasText(final CharSequence cs) {
+	public static boolean isBlank(final CharSequence cs) {
 		int strLen;
 		if (cs == null || (strLen = cs.length()) == 0) {
 			return true;

@@ -75,9 +75,9 @@ public class MessageTransferHandler extends DefaultHandler {
 		if (isQY) {
 			return AccountType.QY;
 		}
-		if (ServerToolkits.hasText(msgType) && ServerToolkits.hasText(eventType)) {
+		if (ServerToolkits.isBlank(msgType) && ServerToolkits.isBlank(eventType)) {
 			return null;
-		}
+		} 
 		return AccountType.MP;
 	}
 

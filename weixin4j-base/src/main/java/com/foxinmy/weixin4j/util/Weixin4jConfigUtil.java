@@ -19,22 +19,26 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 public class Weixin4jConfigUtil {
 	private final static String CLASSPATH_PREFIX = "classpath:";
 	private final static String CLASSPATH_VALUE;
-	private final static ResourceBundle weixinBundle;
+	private static ResourceBundle weixinBundle;
 	static {
-		weixinBundle = ResourceBundle.getBundle("weixin4j");
-		File file = null;
 		CLASSPATH_VALUE = Thread.currentThread().getContextClassLoader()
 				.getResource("").getPath();
-		for (String key : weixinBundle.keySet()) {
-			if (!key.endsWith(".path")) {
-				continue;
+		try {
+			weixinBundle = ResourceBundle.getBundle("weixin4j");
+			File file = null;
+			for (String key : weixinBundle.keySet()) {
+				if (!key.endsWith(".path")) {
+					continue;
+				}
+				file = new File(getValue(key).replaceFirst(CLASSPATH_PREFIX,
+						CLASSPATH_VALUE));
+				if (!file.exists() && !file.mkdirs()) {
+					System.err.append(String.format("%s create fail.%n",
+							file.getAbsolutePath()));
+				}
 			}
-			file = new File(getValue(key).replaceFirst(CLASSPATH_PREFIX,
-					CLASSPATH_VALUE));
-			if (!file.exists() && !file.mkdirs()) {
-				System.err.append(String.format("%s create fail.%n",
-						file.getAbsolutePath()));
-			}
+		} catch (MissingResourceException e) {
+			;
 		}
 	}
 
@@ -70,8 +74,9 @@ public class Weixin4jConfigUtil {
 		try {
 			value = getValue(key);
 		} catch (MissingResourceException e) {
-			System.err.println("'" + wrapKeyName(key)
-					+ "' key not found in weixin4j.properties.");
+			;
+		}catch (NullPointerException e){
+			;
 		}
 		return value;
 	}
@@ -99,6 +104,9 @@ public class Weixin4jConfigUtil {
 	}
 
 	public static WeixinAccount getWeixinAccount() {
+		if (weixinBundle == null) {
+			return null;
+		}
 		WeixinAccount account = null;
 		try {
 			account = JSON

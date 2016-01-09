@@ -67,9 +67,9 @@ public class WeixinMessageDecoder extends
 				"weixin_id").get(0) : null;
 		AesToken aesToken = aesTokenMap.get(weixinId);
 		String encryptContent = null;
-		if (!ServerToolkits.hasText(messageContent)
+		if (!ServerToolkits.isBlank(messageContent)
 				&& encryptType == EncryptType.AES) {
-			if (ServerToolkits.hasText(aesToken.getAesKey())) {
+			if (ServerToolkits.isBlank(aesToken.getAesKey())) {
 				throw new WeixinException(
 						"AESEncodingKey not be null in AES mode");
 			}

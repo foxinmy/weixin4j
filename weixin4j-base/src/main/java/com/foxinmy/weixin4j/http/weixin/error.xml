@@ -499,6 +499,10 @@
 		<text>插件token超时</text>
 	</error>
 	<error>
+		<code>42007</code>
+		<text>用户修改微信密码，accesstoken和refreshtoken失效，需要重新授权</text>
+	</error>
+	<error>
 		<code>43001</code>
 		<desc>require GET method</desc>
 		<text>需要使用GET方法请求</text>

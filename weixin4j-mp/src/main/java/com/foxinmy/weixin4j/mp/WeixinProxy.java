@@ -381,7 +381,7 @@ public class WeixinProxy {
 	/**
 	 * 获取永久媒体素材的总数</br> .图片和图文消息素材（包括单图文和多图文）的总数上限为5000，其他素材的总数上限为1000
 	 * 
-	 * @return 总数对象
+	 * @return 总数对象        
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.MediaCounter
 	 * @see <a
@@ -855,7 +855,6 @@ public class WeixinProxy {
 	 * @return 消息发送状态
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
-	 * @see {@link com.foxinmy.weixin4j.util.MessageUtil#getStatusDesc(String)}
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.9F.A5.E8.AF.A2.E7.BE.A4.E5.8F.91.E6.B6.88.E6.81.AF.E5.8F.91.E9.80.81.E7.8A.B6.E6.80.81.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">查询群发状态</a>
 	 */
