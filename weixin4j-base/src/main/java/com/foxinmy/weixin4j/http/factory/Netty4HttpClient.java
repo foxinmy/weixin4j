@@ -107,7 +107,8 @@ public class Netty4HttpClient extends AbstractHttpClient {
 					}
 				}
 			};
-			InetSocketAddress address = useProxy ? (InetSocketAddress) params.getProxy().address() : new InetSocketAddress(
+			InetSocketAddress address = useProxy ? (InetSocketAddress) params
+					.getProxy().address() : new InetSocketAddress(
 					InetAddress.getByName(uri.getHost()), getPort(uri));
 			bootstrap.connect(address).syncUninterruptibly()
 					.addListener(listener);
@@ -188,6 +189,7 @@ public class Netty4HttpClient extends AbstractHttpClient {
 			Entry<String, List<String>> header = headerIterator.next();
 			uriRequest.headers().set(header.getKey(), header.getValue());
 		}
+		uriRequest.headers().set(HttpHeaders.ACCEPT_CHARSET, "utf-8");
 		uriRequest.headers().set(HttpHeaders.CONNECTION,
 				io.netty.handler.codec.http.HttpHeaders.Values.CLOSE);
 		return uriRequest;
