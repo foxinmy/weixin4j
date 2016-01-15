@@ -44,7 +44,6 @@ public class RedpacketRecord extends XmlResult {
 	@XmlElement(name = "mch_id")
 	@JSONField(name = "mch_id")
 	private String mchId;
-
 	/**
 	 * 红包单号
 	 */

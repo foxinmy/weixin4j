@@ -69,10 +69,15 @@ public final class PayURLConsts {
 	public static final String MCH_PAYREPORT_URL = MCH_BASE_URL
 			+ "/payitil/report";
 	/**
-	 * 发送现金红包(商户平台)
+	 * 发送现金红包-普通红包(商户平台)
 	 */
 	public static final String MCH_REDPACKSEND_URL = MCH_BASE_URL
 			+ "/mmpaymkttransfers/sendredpack";
+	/**
+	 * 发送现金红包-裂变红包(商户平台)
+	 */
+	public static final String MCH_REDPACK_GROUPSEND_URL = MCH_BASE_URL
+			+ "/mmpaymkttransfers/sendgroupredpack";
 	/**
 	 * 查询现金红包(商户平台)
 	 */

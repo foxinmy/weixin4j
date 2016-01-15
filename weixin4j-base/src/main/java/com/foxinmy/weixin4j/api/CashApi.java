@@ -72,8 +72,9 @@ public class CashApi {
 		try {
 			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
 					weixinAccount.getMchId(), ca);
-			response = weixinExecutor.post(PayURLConsts.MCH_REDPACKSEND_URL,
-					param);
+			response = weixinExecutor
+					.post(redpacket.getTotalNum() > 1 ? PayURLConsts.MCH_REDPACK_GROUPSEND_URL
+							: PayURLConsts.MCH_REDPACKSEND_URL, param);
 		} finally {
 			if (ca != null) {
 				try {
@@ -108,7 +109,8 @@ public class CashApi {
 		para.put("bill_type", "MCHT");
 		para.put("appid", weixinAccount.getId());
 		para.put("mch_billno", outTradeNo);
-		String sign = DigestUtil.paysignMd5(para, weixinAccount.getPaySignKey());
+		String sign = DigestUtil
+				.paysignMd5(para, weixinAccount.getPaySignKey());
 		para.put("sign", sign);
 		String param = XmlStream.map2xml(para);
 		WeixinResponse response = null;

@@ -18,7 +18,9 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @date 2015年3月28日
  * @since JDK 1.6
  * @see <a
- *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_1">红包简介</a>
+ *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_1">普通红包</a>
+ * @see <a
+ *      href="https://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=16_1">裂变红包</a>
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -31,12 +33,6 @@ public class Redpacket implements Serializable {
 	@XmlElement(name = "mch_billno")
 	@JSONField(name = "mch_billno")
 	private String outTradeNo;
-	/**
-	 * 提供方名称 必填
-	 */
-	@XmlElement(name = "nick_name")
-	@JSONField(name = "nick_name")
-	private String nickName;
 	/**
 	 * 红包发送者名称 必填
 	 */
@@ -56,23 +52,17 @@ public class Redpacket implements Serializable {
 	@JSONField(name = "total_amount")
 	private String totalAmount;
 	/**
-	 * 最小红包金额，单位分
-	 */
-	@XmlElement(name = "min_value")
-	@JSONField(name = "min_value")
-	private String minValue;
-	/**
-	 * 最大红包金额，单位分（ 最小金额等于最大金额： min_value=max_value =total_amount）
-	 */
-	@XmlElement(name = "max_value")
-	@JSONField(name = "max_value")
-	private String maxValue;
-	/**
 	 * 红包发放总人数
 	 */
 	@XmlElement(name = "total_num")
 	@JSONField(name = "total_num")
 	private int totalNum;
+	/**
+	 * 红包金额设置方式(裂变红包) ALL_RAND—全部随机,商户指定总金额和红包发放总人数，由微信支付随机计算出各红包金额
+	 */
+	@XmlElement(name = "amt_type")
+	@JSONField(name = "amt_type")
+	private String amtType;
 	/**
 	 * 红包祝福语
 	 */
@@ -93,30 +83,6 @@ public class Redpacket implements Serializable {
 	 * 备注
 	 */
 	private String remark;
-	/**
-	 * 商户logo的url 非必填
-	 */
-	@XmlElement(name = "logo_imgurl")
-	@JSONField(name = "logo_imgurl")
-	private String logoUrl;
-	/**
-	 * 分享文案 非必填
-	 */
-	@XmlElement(name = "share_content")
-	@JSONField(name = "share_content")
-	private String shareContent;
-	/**
-	 * 分享链接 非必填
-	 */
-	@XmlElement(name = "share_url")
-	@JSONField(name = "share_url")
-	private String shareUrl;
-	/**
-	 * 分享的图片 非必填
-	 */
-	@XmlElement(name = "share_imgurl")
-	@JSONField(name = "share_imgurl")
-	private String shareImageUrl;
 
 	protected Redpacket() {
 		// jaxb required
@@ -127,30 +93,27 @@ public class Redpacket implements Serializable {
 	 * 
 	 * @param outTradeNo
 	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用
-	 * @param nickName
-	 *            提供方名称
 	 * @param sendName
 	 *            红包发送者名称
 	 * @param openid
 	 *            接受收红包的用户的openid
 	 * @param totalAmount
 	 *            付款金额 <font color="red">单位为元,自动格式化为分</font>
+	 * @param totalNum
+	 *            红包发放总人数 大于1视为裂变红包
 	 */
-	public Redpacket(String outTradeNo, String nickName, String sendName,
-			String openid, double totalAmount) {
+	public Redpacket(String outTradeNo, String sendName, String openid,
+			double totalAmount, int totalNum) {
 		this.outTradeNo = outTradeNo;
-		this.nickName = nickName;
 		this.sendName = sendName;
 		this.openid = openid;
 		this.totalAmount = DateUtil.formaFee2Fen(totalAmount);
+		this.totalNum = totalNum;
+		this.amtType = totalNum > 1 ? "ALL_RAND" : null;
 	}
 
 	public String getOutTradeNo() {
 		return outTradeNo;
-	}
-
-	public String getNickName() {
-		return nickName;
 	}
 
 	public String getSendName() {
@@ -165,40 +128,8 @@ public class Redpacket implements Serializable {
 		return totalAmount;
 	}
 
-	public String getMinValue() {
-		return minValue;
-	}
-
-	/**
-	 * <font color="red">单位为元,自动格式化为分</font>
-	 * 
-	 * @param minValue
-	 *            最小红包 单位为元
-	 */
-	public void setMinValue(double minValue) {
-		this.minValue = DateUtil.formaFee2Fen(minValue);
-	}
-
-	public String getMaxValue() {
-		return maxValue;
-	}
-
-	/**
-	 * <font color="red">单位为元,自动格式化为分</font>
-	 * 
-	 * @param minValue
-	 *            最大红包 单位为元
-	 */
-	public void setMaxValue(double maxValue) {
-		this.maxValue = DateUtil.formaFee2Fen(maxValue);
-	}
-
 	public int getTotalNum() {
 		return totalNum;
-	}
-
-	public void setTotalNum(int totalNum) {
-		this.totalNum = totalNum;
 	}
 
 	public String getWishing() {
@@ -207,6 +138,14 @@ public class Redpacket implements Serializable {
 
 	public void setWishing(String wishing) {
 		this.wishing = wishing;
+	}
+
+	public String getAmtType() {
+		return amtType;
+	}
+
+	public void setAmtType(String amtType) {
+		this.amtType = amtType;
 	}
 
 	public String getClientIp() {
@@ -233,47 +172,12 @@ public class Redpacket implements Serializable {
 		this.remark = remark;
 	}
 
-	public String getLogoUrl() {
-		return logoUrl;
-	}
-
-	public void setLogoUrl(String logoUrl) {
-		this.logoUrl = logoUrl;
-	}
-
-	public String getShareContent() {
-		return shareContent;
-	}
-
-	public void setShareContent(String shareContent) {
-		this.shareContent = shareContent;
-	}
-
-	public String getShareUrl() {
-		return shareUrl;
-	}
-
-	public void setShareUrl(String shareUrl) {
-		this.shareUrl = shareUrl;
-	}
-
-	public String getShareImageUrl() {
-		return shareImageUrl;
-	}
-
-	public void setShareImageUrl(String shareImageUrl) {
-		this.shareImageUrl = shareImageUrl;
-	}
-
 	@Override
 	public String toString() {
-		return "Redpacket [ nickName=" + nickName + ", sendName=" + sendName
-				+ ", openid=" + openid + ", totalAmount=" + totalAmount
-				+ ", minValue=" + minValue + ", maxValue=" + maxValue
+		return "Redpacket [ sendName=" + sendName + ", openid=" + openid
+				+ ", amtType=" + amtType + ", totalAmount=" + totalAmount
 				+ ", totalNum=" + totalNum + ", wishing=" + wishing
 				+ ", clientIp=" + clientIp + ", actName=" + actName
-				+ ", remark=" + remark + ", logoUrl=" + logoUrl
-				+ ", shareContent=" + shareContent + ", shareUrl=" + shareUrl
-				+ ", shareImageUrl=" + shareImageUrl + "]";
+				+ ", remark=" + remark + "]";
 	}
 }
