@@ -9,7 +9,15 @@ weixin4j
 -------
 * **weixin4j-base**
 
- `Http Client实现&微信支付(刷卡/扫码/JS/APP/WAP/现金红包/企业付款)`
+ + `Http Client实现`
+ 
+ + `token实现`
+ 
+ + `jssdk辅助`
+ 
+ + `微信支付(刷卡/扫码/JS/APP/WAP/现金红包/企业付款)`
+ 
+ + `xml及其他工具类`
 
 * **weixin4j-mp**
 
