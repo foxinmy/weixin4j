@@ -191,10 +191,10 @@ public class WeixinPayProxy {
 	 * @return JSAPI支付对象
 	 * @throws WeixinPayException
 	 */
-	public MchPayRequest createJsPayRequest(String openId, String body,
+	public MchPayRequest createJSPayRequest(String openId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp) throws WeixinPayException {
-		return pay3Api.createJsPayRequest(openId, body, outTradeNo, totalFee,
+		return pay3Api.createJSPayRequest(openId, body, outTradeNo, totalFee,
 				notifyUrl, createIp);
 	}
 

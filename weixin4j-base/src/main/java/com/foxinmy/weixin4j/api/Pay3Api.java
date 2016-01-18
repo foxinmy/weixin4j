@@ -218,7 +218,7 @@ public class Pay3Api {
 	 * @return JSAPI支付对象
 	 * @throws WeixinPayException
 	 */
-	public MchPayRequest createJsPayRequest(String openId, String body,
+	public MchPayRequest createJSPayRequest(String openId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp) throws WeixinPayException {
 		MchPayPackage payPackage = new MchPayPackage(weixinAccount, openId,
