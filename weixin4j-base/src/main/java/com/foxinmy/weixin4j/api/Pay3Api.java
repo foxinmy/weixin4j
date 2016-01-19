@@ -43,9 +43,11 @@ import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
+import com.foxinmy.weixin4j.type.SignType;
 import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
+import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
@@ -225,6 +227,42 @@ public class Pay3Api {
 				body, outTradeNo, totalFee, notifyUrl, createIp,
 				TradeType.JSAPI);
 		return createPayRequest(payPackage);
+	}
+
+	/**
+	 * <p>
+	 * 生成编辑地址请求
+	 * </p>
+	 * 
+	 * err_msg edit_address:ok获取编辑收货地址成功</br> edit_address:fail获取编辑收货地址失败</br>
+	 * userName 收货人姓名</br> telNumber 收货人电话</br> addressPostalCode 邮编</br>
+	 * proviceFirstStageName 国标收货地址第一级地址</br> addressCitySecondStageName
+	 * 国标收货地址第二级地址</br> addressCountiesThirdStageName 国标收货地址第三级地址</br>
+	 * addressDetailInfo 详细收货地址信息</br> nationalCode 收货地址国家码</br>
+	 * 
+	 * @param url
+	 *            当前访问页的URL
+	 * @param oauthToken
+	 *            oauth授权时产生的token
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_8&index=7">收货地址共享</a>
+	 * @return 编辑地址请求JSON串
+	 */
+	public String createAddressRequestJSON(String url, String oauthToken) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("appId", weixinAccount.getId());
+		map.put("timeStamp", DateUtil.timestamp2string());
+		map.put("nonceStr", RandomUtil.generateString(16));
+		map.put("url", url);
+		map.put("accessToken", oauthToken);
+		String sign = DigestUtil.SHA1(MapUtil.toJoinString(map, false, true,
+				null));
+		map.remove("url");
+		map.remove("accessToken");
+		map.put("scope", "jsapi_address");
+		map.put("signType", SignType.SHA1.name().toLowerCase());
+		map.put("addrSign", sign);
+		return JSON.toJSONString(map);
 	}
 
 	/**

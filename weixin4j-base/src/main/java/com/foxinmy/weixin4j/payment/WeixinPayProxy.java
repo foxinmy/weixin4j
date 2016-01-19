@@ -199,6 +199,30 @@ public class WeixinPayProxy {
 	}
 
 	/**
+	 * <p>
+	 * 生成编辑地址请求
+	 * </p>
+	 * 
+	 * err_msg edit_address:ok获取编辑收货地址成功</br> edit_address:fail获取编辑收货地址失败</br>
+	 * userName 收货人姓名</br> telNumber 收货人电话</br> addressPostalCode 邮编</br>
+	 * proviceFirstStageName 国标收货地址第一级地址</br> addressCitySecondStageName
+	 * 国标收货地址第二级地址</br> addressCountiesThirdStageName 国标收货地址第三级地址</br>
+	 * addressDetailInfo 详细收货地址信息</br> nationalCode 收货地址国家码</br>
+	 * 
+	 * @param url
+	 *            当前访问页的URL
+	 * @param oauthToken
+	 *            oauth授权时产生的token
+	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_8&index=7">收货地址共享</a>
+	 * @return 编辑地址请求JSON串
+	 */
+	public String createAddressRequestJSON(String url, String oauthToken) {
+		return pay3Api.createAddressRequestJSON(url, oauthToken);
+	}
+
+	/**
 	 * 创建Native支付(扫码支付)链接【模式一】
 	 * 
 	 * @param productId
