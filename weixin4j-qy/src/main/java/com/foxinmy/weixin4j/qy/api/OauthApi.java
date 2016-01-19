@@ -25,7 +25,7 @@ public class OauthApi extends QyApi {
 	/**
 	 * 企业号用户身份授权
 	 * 
-	 * @see {@link OauthApi#getUserAuthorizeURL(String, String,String)}
+	 * @see {@link #getUserAuthorizeURL(String, String,String)}
 	 * 
 	 * @return 请求授权的URL
 	 */

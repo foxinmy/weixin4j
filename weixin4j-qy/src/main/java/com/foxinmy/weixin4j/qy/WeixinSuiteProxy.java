@@ -155,9 +155,9 @@ public class WeixinSuiteProxy {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%99%BB%E5%BD%95%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%AE%98%E7%BD%91%E7%9A%84url">获取登录企业号官网的url</a>
 	 * @throws WeixinException
 	 */
-	public String getLoingUrl(String corpId, LoginTargetType targetType,
+	public String getLoginUrl(String corpId, LoginTargetType targetType,
 			int agentId) throws WeixinException {
-		return providerApi.getLoingUrl(corpId, targetType, agentId);
+		return providerApi.getLoginUrl(corpId, targetType, agentId);
 	}
 
 	public final static String VERSION = "1.6.6";

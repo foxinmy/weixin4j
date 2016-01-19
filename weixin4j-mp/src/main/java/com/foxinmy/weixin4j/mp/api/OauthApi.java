@@ -126,16 +126,16 @@ public class OauthApi extends MpApi {
 	/**
 	 * 验证access_token是否正确
 	 * 
-	 * @param accessToken
+	 * @param oauthToken
 	 *            接口调用凭证
 	 * @param openId
 	 *            用户标识
 	 * @return 验证结果
 	 */
-	public boolean authAccessToken(String accessToken, String openId) {
+	public boolean authAccessToken(String oauthToken, String openId) {
 		String sns_auth_token_uri = getRequestUri("sns_auth_token_uri");
 		try {
-			weixinExecutor.get(String.format(sns_auth_token_uri, accessToken,
+			weixinExecutor.get(String.format(sns_auth_token_uri, oauthToken,
 					openId));
 			return true;
 		} catch (WeixinException e) {
