@@ -610,3 +610,7 @@
   + weixin4j-[mp|qy]:version upgrade to 1.6.6
   
   + weixin4j-server:version upgrade to 1.1.5
+  
+* 2016-01-20
+
+  + weixin4j-mp:新增获取模板和删除模板接口

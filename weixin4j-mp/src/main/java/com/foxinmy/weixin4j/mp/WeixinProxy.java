@@ -40,6 +40,7 @@ import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.QRResult;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
+import com.foxinmy.weixin4j.mp.model.TemplateMessageInfo;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
@@ -1224,7 +1225,7 @@ public class WeixinProxy {
 	/**
 	 * 设置所属行业(每月可修改行业1次，账号仅可使用所属行业中相关的模板)
 	 * 
-	 * @param industryType
+	 * @param industryTypes
 	 *            所处行业 目前不超过两个
 	 * @return 操作结果
 	 * @throws WeixinException
@@ -1233,9 +1234,9 @@ public class WeixinProxy {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1.9E.E8.A1.8C.E4.B8.9A">设置所处行业</a>
 	 */
-	public JsonResult setTmplIndustry(IndustryType... industryType)
+	public JsonResult setTmplIndustry(IndustryType... industryTypes)
 			throws WeixinException {
-		return tmplApi.setTmplIndustry(industryType);
+		return tmplApi.setTmplIndustry(industryTypes);
 	}
 
 	/**
@@ -1251,6 +1252,35 @@ public class WeixinProxy {
 	 */
 	public String getTemplateId(String shortId) throws WeixinException {
 		return tmplApi.getTemplateId(shortId);
+	}
+
+	/**
+	 * 获取模板列表
+	 * 
+	 * @return 模板列表
+	 * @see com.foxinmy.weixin4j.mp.model.TemplateMessageInfo
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/5/6dde9eaa909f83354e0094dc3ad99e05.html#.E8.8E.B7.E5.8F.96.E6.A8.A1.E6.9D.BF.E5.88.97.E8.A1.A8">获取模板列表</a>
+	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
+	 * @throws WeixinException
+	 */
+	public List<TemplateMessageInfo> getAllTemplates() throws WeixinException {
+		return tmplApi.getAllTemplates();
+	}
+
+	/**
+	 * 删除模板
+	 * 
+	 * @param templateId
+	 *            公众帐号下模板消息ID
+	 * @return 处理结果
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki/5/6dde9eaa909f83354e0094dc3ad99e05.html#.E5.88.A0.E9.99.A4.E6.A8.A1.E6.9D.BF">删除模板</a>
+	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
+	 * @throws WeixinException
+	 */
+	public JsonResult deleteTemplate(String templateId) throws WeixinException {
+		return tmplApi.deleteTemplate(templateId);
 	}
 
 	/**

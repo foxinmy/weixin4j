@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.util.NameValue;
 
 /**
  * 模板消息
@@ -36,14 +37,23 @@ public class TemplateMessage implements Serializable {
 	 */
 	private String url;
 	/**
-	 * 顶部的颜色值
+	 * 头部信息(first第一行)
 	 */
-	@JSONField(name = "topcolor")
-	private String topColor = "#FF0000";
+	@JSONField(serialize = false)
+	private NameValue head;
+	/**
+	 * 尾部信息(remark最后行)
+	 */
+	@JSONField(serialize = false)
+	private NameValue tail;
 	/**
 	 * 数据项
 	 */
-	private Map<String, Item> data;
+	@JSONField(name = "data")
+	private Map<String, NameValue> content;
+
+	private final String HEAD_KEY = "first";
+	private final String TAIL_KEY = "remark";
 
 	@JSONCreator
 	public TemplateMessage(@JSONField(name = "toUser") String toUser,
@@ -53,52 +63,7 @@ public class TemplateMessage implements Serializable {
 		this.toUser = toUser;
 		this.templateId = templateId;
 		this.url = url;
-		this.topColor = "#FF0000";
-		this.data = new HashMap<String, Item>();
-		pushData("first", title);
-	}
-
-	/**
-	 * 模板消息的数据项
-	 * 
-	 * @className Item
-	 * @author jy
-	 * @date 2015年3月29日
-	 * @since JDK 1.6
-	 * @see
-	 */
-	private static class Item implements Serializable {
-		private static final long serialVersionUID = 1L;
-		/**
-		 * 字段值
-		 */
-		private String value;
-		/**
-		 * 颜色值
-		 */
-		private String color;
-
-		public Item(String value) {
-			this(value, "#173177");
-		}
-
-		public Item(String value, String color) {
-			this.value = value;
-			this.color = color;
-		}
-
-		public String getValue() {
-			return value;
-		}
-
-		public String getColor() {
-			return color;
-		}
-
-		@Override
-		public String toString() {
-			return "$ [value=" + getValue() + ", color=" + getColor() + "]";
-		}
+		this.content = new HashMap<String, NameValue>();
 	}
 
 	public String getToUser() {
@@ -113,30 +78,103 @@ public class TemplateMessage implements Serializable {
 		return url;
 	}
 
-	public String getTopColor() {
-		return topColor;
+	public NameValue getHead() {
+		return head == null ? content.get(HEAD_KEY) : head;
 	}
 
-	public void setTopColor(String topColor) {
-		this.topColor = topColor;
+	public NameValue getTail() {
+		return tail == null ? content.get(TAIL_KEY) : tail;
 	}
 
-	public Map<String, Item> getData() {
-		return data;
+	public Map<String, NameValue> getContent() {
+		return content;
 	}
 
-	public void setData(Map<String, Item> data) {
-		this.data = data;
+	/**
+	 * 新增头部字段(默认颜色为#FF0000)
+	 * 
+	 * @param text
+	 *            字段文本
+	 * @return
+	 */
+	public TemplateMessage pushHead(String text) {
+		return pushHead("#FF0000", text);
 	}
 
-	public void pushData(String key, String value) {
-		this.data.put(key, new Item(value));
+	/**
+	 * 新增头部字段
+	 * 
+	 * @param color
+	 *            文字颜色
+	 * @param text
+	 *            字段文本
+	 * @return
+	 */
+	public TemplateMessage pushHead(String color, String text) {
+		head = new NameValue(color, text);
+		content.put(HEAD_KEY, head);
+		return this;
+	}
+
+	/**
+	 * 新增尾部字段(默认颜色为#173177)
+	 * 
+	 * @param text
+	 *            字段文本
+	 * @return
+	 */
+	public TemplateMessage pushTail(String text) {
+		return pushTail("#173177", text);
+	}
+
+	/**
+	 * 新增尾部字段
+	 * 
+	 * @param color
+	 *            文字颜色
+	 * @param text
+	 *            字段文本
+	 * @return
+	 */
+	public TemplateMessage pushTail(String color, String text) {
+		tail = new NameValue(color, text);
+		content.put(TAIL_KEY, tail);
+		return this;
+	}
+
+	/**
+	 * 新增字段项(默认颜色为#173177)
+	 * 
+	 * @param key
+	 *            预留的字段名
+	 * @param text
+	 *            字段文本
+	 * @return
+	 */
+	public TemplateMessage pushItem(String key, String text) {
+		return pushItem(key, "#173177", text);
+	}
+
+	/**
+	 * 新增字段项
+	 * 
+	 * @param key
+	 *            预留的字段名
+	 * @param color
+	 *            文字颜色
+	 * @param text
+	 *            字段文本
+	 * @return
+	 */
+	public TemplateMessage pushItem(String key, String color, String text) {
+		content.put(key, new NameValue(color, text));
+		return this;
 	}
 
 	@Override
 	public String toString() {
 		return "TemplateMessage [toUser=" + toUser + ", templateId="
-				+ templateId + ", url=" + url + ", topColor=" + topColor
-				+ ", data=" + data + "]";
+				+ templateId + ", url=" + url + ", head=" + head + ", tail="
+				+ tail + ", content=" + content + "]";
 	}
 }
