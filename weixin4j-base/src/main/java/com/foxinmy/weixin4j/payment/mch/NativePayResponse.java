@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.exception.WeixinPayException;
@@ -12,7 +11,6 @@ import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
-import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * Native支付时的回调响应
@@ -33,10 +31,6 @@ public class NativePayResponse extends ApiResult {
 	@JSONField(name = "prepay_id")
 	private String prepayId;
 
-	@XmlTransient
-	@JSONField(serialize = false)
-	private WeixinPayAccount weixinAccount;
-
 	protected NativePayResponse() {
 		// jaxb required
 	}
@@ -44,21 +38,17 @@ public class NativePayResponse extends ApiResult {
 	/**
 	 * 作为return_code 为 FAIL 的时候返回
 	 * 
-	 * @param weixinAccount
-	 *            商户信息
 	 * @param returnMsg
 	 *            失败消息
 	 * @param resultMsg
 	 *            结果消息
 	 * @throws WeixinPayException
 	 */
-	public NativePayResponse(WeixinPayAccount weixinAccount, String returnMsg,
-			String resultMsg) {
+	public NativePayResponse(String returnMsg, String resultMsg) {
 		super.setReturnMsg(returnMsg);
 		super.setReturnCode(Consts.FAIL);
 		super.setErrCodeDes(resultMsg);
 		super.setResultCode(Consts.FAIL);
-		this.weixinAccount = weixinAccount;
 	}
 
 	/**
@@ -77,25 +67,11 @@ public class NativePayResponse extends ApiResult {
 		this.setAppId(weixinAccount.getId());
 		this.setNonceStr(RandomUtil.generateString(16));
 		this.prepayId = prepayId;
-		this.weixinAccount = weixinAccount;
+		this.setSign(DigestUtil.paysignMd5(this, weixinAccount.getPaySignKey()));
 	}
 
 	public String getPrepayId() {
 		return prepayId;
-	}
-
-	/**
-	 * 生成 回调字符串
-	 * 
-	 * @param paySignKey
-	 *            支付签名密钥
-	 * @return native回调字符串
-	 */
-	@XmlTransient
-	@JSONField(serialize = false)
-	public String asRequestXml() {
-		this.setSign(DigestUtil.paysignMd5(this, weixinAccount.getPaySignKey()));
-		return XmlStream.toXML(this);
 	}
 
 	@Override

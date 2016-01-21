@@ -171,10 +171,9 @@ public class Pay2Api extends MpApi {
 		map.put("productid", productId);
 		map.put("appkey", weixinAccount.getPaySignKey());
 		String sign = DigestUtil.paysignSha(map, null);
-		return String
-				.format("􏳈􏳈􏳈􏳈􏱗􏱗􏱗􏱗􏱕􏱕􏱕􏱕􏳉􏳉􏳉􏳉􏱕􏱕􏱕􏱕􏱩􏱩􏱩􏱩􏰛􏰛􏰛􏰛􏳊􏳊􏳊􏳊􏳊􏳊􏳊􏳊􏳈􏳈􏳈􏳈􏳉􏳉􏳉􏳉􏱶􏱶􏱶􏱶􏱓􏱓􏱓􏱓􏱭􏱭􏱭􏱭􏳊􏳊􏳊􏳊􏳋􏳋􏳋􏳋􏱕􏱕􏱕􏱕􏳌􏳌􏳌􏳌􏱶􏱶􏱶􏱶􏱓􏱓􏱓􏱓􏱭􏱭􏱭􏱭􏱰􏱰􏱰􏱰􏱨􏱨􏱨􏱨􏳍􏳍􏳍􏳍􏳎􏳎􏳎􏳎􏱱􏱱􏱱􏱱􏱕􏱕􏱕􏱕􏱦􏱦􏱦􏱦􏱩􏱩􏱩􏱩􏳜􏳜􏳜􏳜􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳞􏳞􏳞􏳞􏱓􏱓􏱓􏱓􏱶􏱶􏱶􏱶􏱶􏱶􏱶􏱶􏱕􏱕􏱕􏱕􏱪􏱪􏱪􏱪􏳜􏳜􏳜􏳜􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳞􏳞􏳞􏳞􏱶􏱶􏱶􏱶􏱨􏱨􏱨􏱨􏳟􏳟􏳟􏳟􏱪􏱪􏱪􏱪􏱰􏱰􏱰􏱰􏱷􏱷􏱷􏱷􏱔􏱔􏱔􏱔􏱕􏱕􏱕􏱕􏱪􏱪􏱪􏱪􏳜􏳜􏳜􏳜􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳞􏳞􏳞􏳞􏱔􏱔􏱔􏱔􏱕􏱕􏱕􏱕􏳈􏳈􏳈􏳈􏱗􏱗􏱗􏱗􏱕􏱕􏱕􏱕􏳉􏳉􏳉􏳉􏱕􏱕􏱕􏱕􏱩􏱩􏱩􏱩􏰛􏰛􏰛􏰛􏳊􏳊􏳊􏳊􏳊􏳊􏳊􏳊􏳈􏳈􏳈􏳈􏳉􏳉􏳉􏳉􏱶􏱶􏱶􏱶􏱓􏱓􏱓􏱓􏱭􏱭􏱭􏱭􏳊􏳊􏳊􏳊􏳋􏳋􏳋􏳋􏱕􏱕􏱕􏱕􏳌􏳌􏳌􏳌􏱶􏱶􏱶􏱶􏱓􏱓􏱓􏱓􏱭􏱭􏱭􏱭􏱰􏱰􏱰􏱰􏱨􏱨􏱨􏱨􏳍􏳍􏳍􏳍􏳎􏳎􏳎􏳎􏱱􏱱􏱱􏱱􏱕􏱕􏱕􏱕􏱦􏱦􏱦􏱦􏱩􏱩􏱩􏱩􏳜􏳜􏳜􏳜􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳞􏳞􏳞􏳞􏱓􏱓􏱓􏱓􏱶􏱶􏱶􏱶􏱶􏱶􏱶􏱶􏱕􏱕􏱕􏱕􏱪􏱪􏱪􏱪􏳜􏳜􏳜􏳜􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳞􏳞􏳞􏳞􏱶􏱶􏱶􏱶􏱨􏱨􏱨􏱨􏳟􏳟􏳟􏳟􏱪􏱪􏱪􏱪􏱰􏱰􏱰􏱰􏱷􏱷􏱷􏱷􏱔􏱔􏱔􏱔􏱕􏱕􏱕􏱕􏱪􏱪􏱪􏱪􏳜􏳜􏳜􏳜􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳞􏳞􏳞􏳞􏱔􏱔􏱔􏱔􏱕􏱕􏱕􏱕􏳠􏳠􏳠􏳠􏱗􏱗􏱗􏱗􏱱􏱱􏱱􏱱􏱔􏱔􏱔􏱔􏱓􏱓􏱓􏱓􏳠􏳠􏳠􏳠􏱶􏱶􏱶􏱶􏳜􏳜􏳜􏳜􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳞􏳞􏳞􏳞􏱩􏱩􏱩􏱩􏳟􏳟􏳟􏳟􏱩􏱩􏱩􏱩􏱷􏱷􏱷􏱷􏱗􏱗􏱗􏱗􏱱􏱱􏱱􏱱􏱔􏱔􏱔􏱔􏱨􏱨􏱨􏱨􏳜􏳜􏳜􏳜􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝weixin://wxpay/bizpayurl?sign=%s&appid=%s&productid=%s&timestamp=%s&nocestr=%s􏳠􏳠􏳠􏳠􏱗􏱗􏱗􏱗􏱱􏱱􏱱􏱱􏱔􏱔􏱔􏱔􏱓􏱓􏱓􏱓􏳠􏳠􏳠􏳠􏱶􏱶􏱶􏱶􏳜􏳜􏳜􏳜􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳞􏳞􏳞􏳞􏱩􏱩􏱩􏱩􏳟􏳟􏳟􏳟􏱩􏱩􏱩􏱩􏱷􏱷􏱷􏱷􏱗􏱗􏱗􏱗􏱱􏱱􏱱􏱱􏱔􏱔􏱔􏱔􏱨􏱨􏱨􏱨􏳜􏳜􏳜􏳜􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝􏳝",
-						sign, weixinAccount.getId(), productId, timestamp,
-						noncestr);
+		String ordernative_v2_uri = getRequestUri("ordernative_v2_uri");
+		return String.format(ordernative_v2_uri, sign, weixinAccount.getId(),
+				productId, timestamp, noncestr);
 	}
 
 	/**

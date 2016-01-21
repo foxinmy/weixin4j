@@ -34,6 +34,7 @@ import com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
 import com.foxinmy.weixin4j.payment.mch.MchPayRequest;
 import com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest;
+import com.foxinmy.weixin4j.payment.mch.NativePayResponse;
 import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.payment.mch.PrePay;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
@@ -288,6 +289,38 @@ public class Pay3Api {
 		return String.format(PayURLConsts.MCH_NATIVE_URL, sign,
 				weixinAccount.getId(), weixinAccount.getMchId(), productId,
 				timestamp, noncestr);
+	}
+
+	/**
+	 * 创建Native支付(扫码支付)回调对象【模式一】
+	 * 
+	 * @param productId
+	 *            商品ID
+	 * @param body
+	 *            商品描述
+	 * @param outTradeNo
+	 *            商户内部唯一订单号
+	 * @param totalFee
+	 *            商品总额 单位元
+	 * @param notifyUrl
+	 *            支付回调URL
+	 * @param createIp
+	 *            订单生成的机器 IP
+	 * @return Native回调对象
+	 * @see com.foxinmy.weixin4j.payment.mch.NativePayResponse
+	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一</a>
+	 * @throws WeixinPayException
+	 */
+	public NativePayResponse createNativePayResponse(String productId,
+			String body, String outTradeNo, double totalFee, String notifyUrl,
+			String createIp) throws WeixinPayException {
+		MchPayPackage payPackage = new MchPayPackage(weixinAccount, null, body,
+				outTradeNo, totalFee, notifyUrl, createIp, TradeType.NATIVE);
+		payPackage.setProductId(productId);
+		PrePay prePay = createPrePay(payPackage);
+		return new NativePayResponse(weixinAccount, prePay.getPrepayId());
 	}
 
 	/**

@@ -37,7 +37,7 @@ public class JsPayRequestV2 extends PayRequest {
 
 	public JsPayRequestV2(WeixinPayAccount weixinAccount,
 			PayPackageV2 payPackage) {
-		this.setAppId(weixinAccount.getId());
+		super(weixinAccount.getId(), "");
 		this.setPackageInfo(package2string(payPackage,
 				weixinAccount.getPartnerKey()));
 	}
