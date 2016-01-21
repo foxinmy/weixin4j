@@ -1,6 +1,9 @@
 package com.foxinmy.weixin4j.mp.event;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * 认证失败事件(资质认证失败/名称认证失败)
@@ -31,6 +34,11 @@ public class VerifyFailEventMessage extends VerifyExpireEventMessage {
 
 	public long getFailTime() {
 		return failTime;
+	}
+	
+	@XmlTransient
+	public Date getFormatFailTime() {
+		return new Date(failTime * 1000l);
 	}
 
 	public String getFailReason() {

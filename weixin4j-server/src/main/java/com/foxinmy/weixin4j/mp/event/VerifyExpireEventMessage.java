@@ -1,6 +1,9 @@
 package com.foxinmy.weixin4j.mp.event;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.foxinmy.weixin4j.message.event.EventMessage;
 import com.foxinmy.weixin4j.type.EventType;
@@ -31,6 +34,11 @@ public class VerifyExpireEventMessage extends EventMessage {
 
 	public long getExpiredTime() {
 		return expiredTime;
+	}
+
+	@XmlTransient
+	public Date getFormatExpiredTime() {
+		return new Date(expiredTime * 1000l);
 	}
 
 	@Override
