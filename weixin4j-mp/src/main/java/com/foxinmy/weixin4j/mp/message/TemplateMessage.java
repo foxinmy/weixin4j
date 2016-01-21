@@ -174,7 +174,7 @@ public class TemplateMessage implements Serializable {
 	@Override
 	public String toString() {
 		return "TemplateMessage [toUser=" + toUser + ", templateId="
-				+ templateId + ", url=" + url + ", head=" + head + ", tail="
-				+ tail + ", content=" + content + "]";
+				+ templateId + ", url=" + url + ", head=" + getHead()
+				+ ", tail=" + getTail() + ", content=" + content + "]";
 	}
 }
