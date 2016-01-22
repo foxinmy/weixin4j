@@ -44,6 +44,7 @@ import com.foxinmy.weixin4j.qy.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.qy.type.InviteType;
+import com.foxinmy.weixin4j.qy.type.KfType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
@@ -240,6 +241,22 @@ public class WeixinProxy {
 	public JsonResult sendCustomeMessage(CustomeMessage message)
 			throws WeixinException {
 		return notifyApi.sendCustomeMessage(message);
+	}
+
+	/**
+	 * 获取客服列表
+	 * 
+	 * @param kfType
+	 *            客服类型 为空时返回全部类型的客服
+	 * @return 第一个元素为内部客服(internal),第二个参数为外部客服(external)
+	 * @see com.foxinmy.weixin4j.qy.api.NotifyApi
+	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%AE%A2%E6%9C%8D%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E">客服列表</a>
+	 * @throws WeixinException
+	 */
+	public IdParameter[] getKfList(KfType kfType) throws WeixinException {
+		return notifyApi.getKfList(kfType);
 	}
 
 	/**

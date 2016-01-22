@@ -37,13 +37,13 @@ public class JSSDKContactConfigurator {
 	}
 
 	/**
-	 * 可选范围：部门ID列表(如果departmentIds为0则表示显示管理组下所有部门)
+	 * 可选范围：部门ID列表(如果partyIds为0则表示显示管理组下所有部门)
 	 * 
 	 * @param departmentIds
 	 * @return
 	 */
-	public JSSDKContactConfigurator departmentIds(Integer... departmentIds) {
-		contactParameter.putDepartmentIds(departmentIds);
+	public JSSDKContactConfigurator partyIds(Integer... partyIds) {
+		contactParameter.putPartyIds(partyIds);
 		return this;
 	}
 

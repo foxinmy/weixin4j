@@ -65,8 +65,8 @@ public class JSSDKContactParameter extends IdParameter {
 		this.limitTypes = limitTypes;
 	}
 
-	public void putLimitType(String type) {
-		this.limitTypes.add(type);
+	public void putLimitType(String... limitTypes) {
+		this.limitTypes.addAll(Arrays.asList(limitTypes));
 	}
 
 	public List<String> getSelectedUserIds() {
