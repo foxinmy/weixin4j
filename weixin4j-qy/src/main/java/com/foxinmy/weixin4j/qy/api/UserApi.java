@@ -62,7 +62,7 @@ public class UserApi extends QyApi {
 	 * @param user
 	 *            成员对象
 	 * @param avatar
-	 *            头像文件
+	 *            头像文件 可为空
 	 * @see com.foxinmy.weixin4j.qy.model.User
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E5.88.9B.E5.BB.BA.E6.88.90.E5.91.98">

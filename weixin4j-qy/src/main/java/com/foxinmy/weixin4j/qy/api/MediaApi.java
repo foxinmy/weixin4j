@@ -492,8 +492,8 @@ public class MediaApi extends QyApi {
 	 * 
 	 * @param users
 	 *            成员列表
-	 * @see {@link BatchApi#syncuser(String,Callback)}
-	 * @see {@link BatchApi#replaceuser(String,Callback)}
+	 * @see {@link BatchApi#syncUser(String,Callback)}
+	 * @see {@link BatchApi#replaceUser(String,Callback)}
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
 	 * @return 上传后的mediaId
@@ -508,7 +508,7 @@ public class MediaApi extends QyApi {
 	 * 
 	 * @param parties
 	 *            部门列表
-	 * @see {@link BatchApi#replaceparty(String,Callback)}
+	 * @see {@link BatchApi#replaceParty(String,Callback)}
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
 	 * @return 上传后的mediaId

@@ -135,7 +135,8 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 注意：TokenCreator 需为 <font color="red">WeixinTokenCreator</font>
+	 * 注意：TokenCreator 需为 <font
+	 * color="red">WeixinTokenCreator或WeixinTokenSuiteCreator</font>
 	 * 
 	 * @see com.foxinmy.weixin4j.qy.token.WeixinTokenCreator.WeixinTokenCreator
 	 * @param tokenHolder
@@ -161,6 +162,15 @@ public class WeixinProxy {
 	 */
 	public TokenHolder getTokenHolder() {
 		return this.tokenHolder;
+	}
+
+	/**
+	 * 企业号ID
+	 * 
+	 * @return
+	 */
+	public String getCorpId() {
+		return this.corpId;
 	}
 
 	/**
@@ -571,7 +581,7 @@ public class WeixinProxy {
 	 *            部门列表
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
-	 * @see {@link #replaceparty(String,Callback)}
+	 * @see {@link #batchReplaceParty(String,Callback)}
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">
 	 *      批量任务</a>
@@ -606,7 +616,7 @@ public class WeixinProxy {
 	 * @param user
 	 *            成员对象
 	 * @param avatar
-	 *            头像文件
+	 *            头像文件 可为空
 	 * @see com.foxinmy.weixin4j.qy.model.User
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98#.E5.88.9B.E5.BB.BA.E6.88.90.E5.91.98">
@@ -1076,8 +1086,8 @@ public class WeixinProxy {
 	 *            成员列表
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see com.foxinmy.weixin4j.qy.api.BatchApi
-	 * @see {@link #syncuser(String,Callback)}
-	 * @see {@link #replaceuser(String,Callback)}
+	 * @see {@link #batchSyncUser(String,Callback)}
+	 * @see {@link #batchReplaceUser(String,Callback)}
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">
 	 *      批量任务</a>
