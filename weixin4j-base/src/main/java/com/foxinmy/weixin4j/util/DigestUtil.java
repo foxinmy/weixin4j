@@ -100,4 +100,34 @@ public final class DigestUtil {
 		}
 		return SHA1(MapUtil.toJoinString(obj, false, true, extra));
 	}
+
+	/**
+	 * package拼接签名(一般用于V2.x支付接口)
+	 * 
+	 * @param signObj
+	 *            签名对象 如 PayPackageV2
+	 * @param signKey
+	 *            签名key
+	 * @return
+	 */
+	public static String packageSign(Object signObj, String signKey) {
+		StringBuilder sb = new StringBuilder();
+		// a.对所有传入参数按照字段名的 ASCII 码从小到大排序(字典序) 后,
+		// 使用 URL 键值 对的格式(即 key1=value1&key2=value2...)拼接成字符串 string1
+		// 注意:值为空的参数不参与签名
+		sb.append(MapUtil.toJoinString(signObj, false, false, null));
+		// b--->
+		// 在 string1 最后拼接上 key=signKey 得到 stringSignTemp 字符串,并 对
+		// stringSignTemp 进行 md5 运算
+		// 再将得到的 字符串所有字符转换为大写 ,得到 sign 值 signValue。
+		sb.append("&key=").append(signKey);
+		// c---> & d---->
+		String sign = DigestUtil.MD5(sb.toString()).toUpperCase();
+		sb.delete(0, sb.length());
+		// c.对传入参数中所有键值对的 value 进行 urlencode 转码后重新拼接成字符串 string2
+		sb.append(MapUtil.toJoinString(signObj, true, false, null))
+				.append("&sign=").append(sign);
+
+		return sb.toString();
+	}
 }

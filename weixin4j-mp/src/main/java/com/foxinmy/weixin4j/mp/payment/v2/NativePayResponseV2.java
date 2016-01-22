@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.util.DigestUtil;
 
 /**
@@ -23,7 +24,7 @@ import com.foxinmy.weixin4j.util.DigestUtil;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NativePayResponseV2 extends JsPayRequestV2 {
+public class NativePayResponseV2 extends PayRequest {
 
 	private static final long serialVersionUID = 6119895998783333012L;
 	/**
@@ -63,7 +64,8 @@ public class NativePayResponseV2 extends JsPayRequestV2 {
 	 */
 	public NativePayResponseV2(WeixinPayAccount weixinAccount,
 			PayPackageV2 payPackage) {
-		super(weixinAccount, payPackage);
+		super(weixinAccount.getId(), DigestUtil.packageSign(payPackage,
+				weixinAccount.getPartnerKey()));
 		this.retCode = "0";
 		this.retMsg = "OK";
 		Map<String, String> map = new HashMap<String, String>();

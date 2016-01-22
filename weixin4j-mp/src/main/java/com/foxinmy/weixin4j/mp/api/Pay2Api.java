@@ -34,12 +34,12 @@ import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
-import com.foxinmy.weixin4j.mp.payment.v2.JsPayRequestV2;
 import com.foxinmy.weixin4j.mp.payment.v2.OrderV2;
 import com.foxinmy.weixin4j.mp.payment.v2.PayPackageV2;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundResultV2;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
+import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.type.BillType;
@@ -146,12 +146,13 @@ public class Pay2Api extends MpApi {
 		payPackage.setTransportFee(transportFee);
 		payPackage.setProductFee(productFee);
 		payPackage.setGoodsTag(goodsTag);
-		JsPayRequestV2 jsPayRequest = new JsPayRequestV2(weixinAccount,
-				payPackage);
-		jsPayRequest.setPaySign(DigestUtil.paysignSha(jsPayRequest,
+		PayRequest payRequest = new PayRequest(weixinAccount.getId(),
+				DigestUtil.packageSign(payPackage,
+						weixinAccount.getPartnerKey()));
+		payRequest.setPaySign(DigestUtil.paysignSha(payRequest,
 				weixinAccount.getPaySignKey()));
-		jsPayRequest.setSignType(SignType.SHA1);
-		return JSON.toJSONString(jsPayRequest);
+		payRequest.setSignType(SignType.SHA1);
+		return JSON.toJSONString(payRequest);
 	}
 
 	/**
