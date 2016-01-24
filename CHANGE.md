@@ -620,3 +620,9 @@
 * 2016-01-23
 
   + weixin4j-qy:新增获取客服列表接口
+  
+* 2016-01-24
+
+  + weixin4j-base:新增MemoryTokenStorager(内存保存token)类
+  
+  + weixin4j-base:TokenStorager类新增evict和clear接口
