@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
 
 /**
- * 用REDIS保存TOKEN
+ * 用REDIS保存TOKEN(推荐使用)
  * 
  * @className RedisTokenStorager
  * @author jy
