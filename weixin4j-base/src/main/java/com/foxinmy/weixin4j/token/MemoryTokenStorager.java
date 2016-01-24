@@ -39,4 +39,14 @@ public class MemoryTokenStorager implements TokenStorager {
 	public void caching(String cacheKey, Token token) throws WeixinException {
 		this.CONMAP.put(cacheKey, token);
 	}
+
+	@Override
+	public Token evict(String cacheKey) {
+		return this.CONMAP.remove(cacheKey);
+	}
+
+	@Override
+	public void clear() {
+		this.CONMAP.clear();
+	}
 }

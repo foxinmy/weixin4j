@@ -22,6 +22,7 @@ public class RedisTokenStorager implements TokenStorager {
 
 	private JedisPool jedisPool;
 
+	public final static int PORT = 6379;
 	public final static int MAX_TOTAL = 50;
 	public final static int MAX_IDLE = 5;
 	public final static int MAX_WAIT_MILLIS = 2000;
@@ -29,7 +30,7 @@ public class RedisTokenStorager implements TokenStorager {
 	public final static boolean TEST_ON_RETURN = true;
 
 	public RedisTokenStorager() {
-		this("localhost", 6379);
+		this("localhost", PORT);
 	}
 
 	public RedisTokenStorager(String host, int port) {
@@ -99,5 +100,30 @@ public class RedisTokenStorager implements TokenStorager {
 		token.setExpiresIn(Integer.parseInt(map.get("expiresIn")));
 		token.setOriginalResult(map.get("originalResult"));
 		return token;
+	}
+
+	@Override
+	public Token evict(String cacheKey) {
+		Token token = null;
+		try {
+			token = lookup(cacheKey);
+		} catch (WeixinException e) {
+			; // never
+		}
+		Jedis jedis = null;
+		try {
+			jedis = jedisPool.getResource();
+			jedis.del(cacheKey);
+		} finally {
+			if (jedis != null) {
+				jedis.close();
+			}
+		}
+		return token;
+	}
+
+	@Override
+	public void clear() {
+		// en....
 	}
 }
