@@ -23,7 +23,7 @@ public class IdParameter implements Serializable {
 
 	private static final long serialVersionUID = -2689758682205591133L;
 
-	private static final char SEPARATOR = '|';
+	public static final char SEPARATOR = '|';
 
 	@JSONField(name = "user")
 	private List<String> userIds;

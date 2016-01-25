@@ -35,6 +35,7 @@ import com.foxinmy.weixin4j.qy.model.BatchResult;
 import com.foxinmy.weixin4j.qy.model.Callback;
 import com.foxinmy.weixin4j.qy.model.ChatInfo;
 import com.foxinmy.weixin4j.qy.model.ChatMute;
+import com.foxinmy.weixin4j.qy.model.Contacts;
 import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.Tag;
@@ -908,10 +909,11 @@ public class WeixinProxy {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E8.8E.B7.E5.8F.96.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
 	 *      获取标签成员说明</a>
 	 * @see com.foxinmy.weixin4j.qy.api.TagApi
-	 * @return 成员列表
+	 * @return 成员列表<font color="red">Contacts#getUsers</font>和部门列表<font
+	 *         color="red">Contacts#getPartyIds</font>
 	 * @throws WeixinException
 	 */
-	public List<User> getTagUsers(int tagId) throws WeixinException {
+	public Contacts getTagUsers(int tagId) throws WeixinException {
 		return tagApi.getTagUsers(tagId);
 	}
 
@@ -929,10 +931,11 @@ public class WeixinProxy {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.A2.9E.E5.8A.A0.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
 	 *      新增标签成员说明</a>
 	 * @see com.foxinmy.weixin4j.qy.api.TagApi
+	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult addTagUsers(int tagId, List<String> userIds,
+	public IdParameter addTagUsers(int tagId, List<String> userIds,
 			List<Integer> partyIds) throws WeixinException {
 		return tagApi.addTagUsers(tagId, userIds, partyIds);
 	}
@@ -951,10 +954,11 @@ public class WeixinProxy {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.A0.E9.99.A4.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
 	 *      删除标签成员说明</a>
 	 * @see com.foxinmy.weixin4j.qy.api.TagApi
+	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteTagUsers(int tagId, List<String> userIds,
+	public IdParameter deleteTagUsers(int tagId, List<String> userIds,
 			List<Integer> partyIds) throws WeixinException {
 		return tagApi.deleteTagUsers(tagId, userIds, partyIds);
 	}
