@@ -626,3 +626,7 @@
   + weixin4j-base:新增MemoryTokenStorager(内存保存token)类
   
   + weixin4j-base:TokenStorager类新增evict和clear接口
+  
+* 2016-01-26
+
+  + weixin4j-qy:新增上传图文消息内的图片接口
