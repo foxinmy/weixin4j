@@ -40,6 +40,7 @@ import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
+import com.foxinmy.weixin4j.qy.suite.SuitePerCodeHolder;
 import com.foxinmy.weixin4j.qy.suite.WeixinTokenSuiteCreator;
 import com.foxinmy.weixin4j.qy.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
@@ -49,7 +50,6 @@ import com.foxinmy.weixin4j.qy.type.KfType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.settings.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
@@ -103,15 +103,21 @@ public class WeixinProxy {
 	/**
 	 * 第三方套件(永久授权码机制)
 	 * 
-	 * @param tokenCreator
-	 *            微信企业号token创建(永久授权码)
-	 * @param tokenStorager
-	 *            token存储
+	 * @param perCodeHolder
+	 *            第三方套件永久授权码
+	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getPerCodeHolder(String)}
+	 * @param suiteTokenHolder
+	 *            第三方套件凭证token
+	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getTokenSuiteHolder(String)}
+	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi
+	 * @see WeixinSuiteProxy#getWeixinProxy(String, String)
 	 */
-	public WeixinProxy(WeixinTokenSuiteCreator tokenCreator,
-			TokenStorager tokenStorager) {
-		this(new TokenHolder(tokenCreator, tokenStorager));
-		this.settings = new Weixin4jSettings(tokenCreator.getAuthCorpId(), null);
+	public WeixinProxy(SuitePerCodeHolder perCodeHolder,
+			TokenHolder suiteTokenHolder) {
+		this(new TokenHolder(new WeixinTokenSuiteCreator(perCodeHolder,
+				suiteTokenHolder), suiteTokenHolder.getTokenStorager()));
+		this.settings = new Weixin4jSettings(perCodeHolder.getAuthCorpId(),
+				null);
 	}
 
 	/**

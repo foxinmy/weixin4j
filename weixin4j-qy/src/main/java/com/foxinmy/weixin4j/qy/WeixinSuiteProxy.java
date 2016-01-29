@@ -160,5 +160,20 @@ public class WeixinSuiteProxy {
 		return providerApi.getLoginUrl(corpId, targetType, agentId);
 	}
 
+	/**
+	 * 创建WeixinProxy对象
+	 * 
+	 * @param suiteId
+	 *            套件ID
+	 * @param authCorpId
+	 *            已授权的corpid
+	 * @see com.foxinmy.weixin4j.qy.WeixinProxy
+	 * @return
+	 */
+	public WeixinProxy getWeixinProxy(String suiteId, String authCorpId) {
+		return new WeixinProxy(api(suiteId).getPerCodeHolder(authCorpId), api(
+				suiteId).getSuiteTokenHolder());
+	}
+
 	public final static String VERSION = "1.6.7";
 }
