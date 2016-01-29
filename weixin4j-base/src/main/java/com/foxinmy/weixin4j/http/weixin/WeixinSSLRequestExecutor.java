@@ -7,6 +7,7 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.Consts;
 
 /**
  * 微信ssl请求
@@ -24,11 +25,10 @@ public class WeixinSSLRequestExecutor extends WeixinRequestExecutor {
 	public WeixinSSLRequestExecutor(String password, InputStream inputStream)
 			throws WeixinException {
 		try {
-			KeyStore keyStore = KeyStore
-					.getInstance(com.foxinmy.weixin4j.model.Consts.PKCS12);
+			KeyStore keyStore = KeyStore.getInstance(Consts.PKCS12);
 			keyStore.load(inputStream, password.toCharArray());
 			KeyManagerFactory kmf = KeyManagerFactory
-					.getInstance(com.foxinmy.weixin4j.model.Consts.SunX509);
+					.getInstance(Consts.SunX509);
 			kmf.init(keyStore, password.toCharArray());
 			sslContext = SSLContext.getInstance("TLS");
 			sslContext.init(kmf.getKeyManagers(), null,

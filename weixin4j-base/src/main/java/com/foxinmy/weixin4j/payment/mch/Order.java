@@ -70,7 +70,7 @@ public class Order extends ApiResult {
 	 */
 	@XmlElement(name = "total_fee")
 	@JSONField(name = "total_fee")
-	private int totalFee;
+	private Integer totalFee;
 	/**
 	 * 现金券支付金额<=订单总金 额,订单总金额-现金券金额 为现金支付金额
 	 */
@@ -93,7 +93,7 @@ public class Order extends ApiResult {
 	 */
 	@XmlElement(name = "cash_fee")
 	@JSONField(name = "cash_fee")
-	private int cashFee;
+	private Integer cashFee;
 	/**
 	 * 货币类型,符合 ISO 4217 标准的三位字母代码,默认人民币:CNY
 	 * 
@@ -170,7 +170,7 @@ public class Order extends ApiResult {
 				: null;
 	}
 
-	public int getTotalFee() {
+	public Integer getTotalFee() {
 		return totalFee;
 	}
 
@@ -181,7 +181,7 @@ public class Order extends ApiResult {
 	 */
 	@JSONField(serialize = false)
 	public double getFormatTotalFee() {
-		return totalFee / 100d;
+		return totalFee != null ? totalFee / 100d : 0d;
 	}
 
 	public Integer getCouponFee() {
@@ -202,7 +202,7 @@ public class Order extends ApiResult {
 		return couponCount;
 	}
 
-	public int getCashFee() {
+	public Integer getCashFee() {
 		return cashFee;
 	}
 
@@ -213,7 +213,7 @@ public class Order extends ApiResult {
 	 */
 	@JSONField(serialize = false)
 	public double getFormatCashFee() {
-		return cashFee / 100d;
+		return cashFee != null ? cashFee / 100d : 0d;
 	}
 
 	@JSONField(serialize = false)
@@ -270,8 +270,8 @@ public class Order extends ApiResult {
 	@Override
 	public String toString() {
 		return "Order [tradeState=" + tradeState + ", openId=" + openId
-				+ ", isSubscribe=" + getFormatIsSubscribe() + ", tradeType="
-				+ tradeType + ", bankType=" + bankType + ", feeType=" + feeType
+				+ ", isSubscribe=" + isSubscribe + ", tradeType=" + tradeType
+				+ ", bankType=" + bankType + ", feeType=" + feeType
 				+ ", transactionId=" + transactionId + ", outTradeNo="
 				+ outTradeNo + ", attach=" + attach + ", timeEnd=" + timeEnd
 				+ ", totalFee=" + getFormatTotalFee() + ", couponFee="
