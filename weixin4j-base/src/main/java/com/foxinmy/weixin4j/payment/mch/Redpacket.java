@@ -144,10 +144,6 @@ public class Redpacket implements Serializable {
 		return amtType;
 	}
 
-	public void setAmtType(String amtType) {
-		this.amtType = amtType;
-	}
-
 	public String getClientIp() {
 		return clientIp;
 	}

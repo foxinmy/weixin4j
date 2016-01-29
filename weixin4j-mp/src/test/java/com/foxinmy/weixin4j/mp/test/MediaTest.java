@@ -94,7 +94,8 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void download2() throws WeixinException, IOException {
-		File file = mediaApi.downloadMediaFile("8790403529", true);
+		File file = mediaApi.downloadMediaFile("8790403529", true,
+				"/tmp/weixin4j/media");
 		Assert.assertTrue(file.exists());
 	}
 

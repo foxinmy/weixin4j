@@ -29,12 +29,12 @@ import com.foxinmy.weixin4j.payment.MicroPayPackage;
 import com.foxinmy.weixin4j.payment.PayURLConsts;
 import com.foxinmy.weixin4j.payment.mch.APPPayRequest;
 import com.foxinmy.weixin4j.payment.mch.ApiResult;
-import com.foxinmy.weixin4j.payment.mch.AuthCodeOpenIdResult;
 import com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
 import com.foxinmy.weixin4j.payment.mch.MchPayRequest;
 import com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest;
 import com.foxinmy.weixin4j.payment.mch.NativePayResponse;
+import com.foxinmy.weixin4j.payment.mch.OpenIdResult;
 import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.payment.mch.PrePay;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
@@ -51,8 +51,6 @@ import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConst;
 import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
@@ -496,7 +494,7 @@ public class Pay3Api {
 	 * </p>
 	 * 
 	 * @param ca
-	 *            证书文件(V3版本后缀为*.p12)
+	 *            后缀为*.p12的证书文件
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
@@ -539,7 +537,7 @@ public class Pay3Api {
 			map.put("sign", sign);
 			String param = XmlStream.map2xml(map);
 			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
-					weixinAccount.getMchId(), ca);
+					weixinAccount.getCertificateKey(), ca);
 			response = weixinExecutor.post(PayURLConsts.MCH_REFUNDAPPLY_URL,
 					param);
 		} finally {
@@ -559,7 +557,7 @@ public class Pay3Api {
 	 * 退款申请(全额退款)
 	 * 
 	 * @param ca
-	 *            证书文件(V3版本后缀为*.p12)
+	 *            后缀为*.p12的证书文件
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
@@ -582,7 +580,7 @@ public class Pay3Api {
 	 * color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font></br>
 	 * 
 	 * @param ca
-	 *            证书文件(V3版本后缀为*.p12)
+	 *            后缀为*.p12的证书文件
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
@@ -594,7 +592,7 @@ public class Pay3Api {
 			throws WeixinException {
 		try {
 			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
-					weixinAccount.getMchId(), ca);
+					weixinAccount.getCertificateKey(), ca);
 			Map<String, String> map = baseMap(idQuery);
 			String sign = DigestUtil.paysignMd5(map,
 					weixinAccount.getPaySignKey());
@@ -681,13 +679,15 @@ public class Pay3Api {
 	 * @param billType
 	 *            下载对账单的类型 ALL,返回当日所有订单信息, 默认值 SUCCESS,返回当日成功支付的订单
 	 *            REFUND,返回当日退款订单
+	 * @param billPath
+	 *            对账单保存路径
 	 * @return excel表格
 	 * @since V3
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6">下载对账单API</a>
 	 * @throws WeixinException
 	 */
-	public File downloadBill(Date billDate, BillType billType)
+	public File downloadBill(Date billDate, BillType billType, String billPath)
 			throws WeixinException {
 		if (billDate == null) {
 			Calendar now = Calendar.getInstance();
@@ -698,11 +698,9 @@ public class Pay3Api {
 			billType = BillType.ALL;
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
-		String bill_path = Weixin4jConfigUtil.getValue("bill.path",
-				Weixin4jConst.DEFAULT_BILL_PATH);
 		String fileName = String.format("%s_%s_%s.txt", formatBillDate,
 				billType.name().toLowerCase(), weixinAccount.getId());
-		File file = new File(String.format("%s/%s", bill_path, fileName));
+		File file = new File(String.format("%s/%s", billPath, fileName));
 		if (file.exists()) {
 			return file;
 		}
@@ -820,13 +818,12 @@ public class Pay3Api {
 	 * @param authCode
 	 *            扫码支付授权码，设备读取用户微信中的条码或者二维码信息
 	 * @return 查询结果
-	 * @see com.foxinmy.weixin4j.payment.mch.AuthCodeOpenIdResult
+	 * @see com.foxinmy.weixin4j.payment.mch.OpenIdResult
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_13&index=9">授权码查询OPENID</a>
 	 * @throws WeixinException
 	 */
-	public AuthCodeOpenIdResult authCode2openId(String authCode)
-			throws WeixinException {
+	public OpenIdResult authCode2openId(String authCode) throws WeixinException {
 		Map<String, String> map = baseMap(null);
 		map.put("auth_code", authCode);
 		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
@@ -834,7 +831,7 @@ public class Pay3Api {
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
 				PayURLConsts.MCH_AUTHCODE_OPENID_URL, param);
-		return response.getAsObject(new TypeReference<AuthCodeOpenIdResult>() {
+		return response.getAsObject(new TypeReference<OpenIdResult>() {
 		});
 	}
 

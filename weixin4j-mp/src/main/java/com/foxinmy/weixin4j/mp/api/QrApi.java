@@ -13,8 +13,6 @@ import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.QRResult;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.IOUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConst;
 
 /**
  * 二维码相关API
@@ -55,7 +53,8 @@ public class QrApi extends MpApi {
 		QRResult result = response.getAsObject(new TypeReference<QRResult>() {
 		});
 		qr_uri = getRequestUri("qr_image_uri");
-		response = weixinExecutor.get(String.format(qr_uri, result.getTicket()));
+		response = weixinExecutor
+				.get(String.format(qr_uri, result.getTicket()));
 		try {
 			result.setContent(IOUtil.toByteArray(response.getBody()));
 		} catch (IOException e) {
@@ -72,6 +71,8 @@ public class QrApi extends MpApi {
 	 * 
 	 * @param parameter
 	 *            二维码参数
+	 * @param qrcodePath
+	 *            二维码保存路径
 	 * @return 硬盘存储的文件对象
 	 * @throws WeixinException
 	 * @see <a
@@ -79,13 +80,12 @@ public class QrApi extends MpApi {
 	 * @see #createQR(QRParameter)
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 */
-	public File createQRFile(QRParameter parameter) throws WeixinException {
-		String qr_path = Weixin4jConfigUtil.getValue("qrcode.path",
-				Weixin4jConst.DEFAULT_QRCODE_PATH);
+	public File createQRFile(QRParameter parameter, String qrcodePath)
+			throws WeixinException {
 		String filename = String.format("%s_%s_%d.jpg", parameter.getQrType()
 				.name(), parameter.getSceneValue(), parameter
 				.getExpireSeconds());
-		File file = new File(qr_path + File.separator + filename);
+		File file = new File(qrcodePath + File.separator + filename);
 		if (parameter.getQrType().ordinal() > 0 && file.exists()) {
 			return file;
 		}

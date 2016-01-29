@@ -3,19 +3,22 @@ package com.foxinmy.weixin4j.qy;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.qy.api.ProviderApi;
-import com.foxinmy.weixin4j.qy.api.QyApi;
 import com.foxinmy.weixin4j.qy.api.SuiteApi;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
 import com.foxinmy.weixin4j.qy.model.WeixinQyAccount;
 import com.foxinmy.weixin4j.qy.suite.SuiteTicketHolder;
 import com.foxinmy.weixin4j.qy.token.WeixinProviderTokenCreator;
 import com.foxinmy.weixin4j.qy.type.LoginTargetType;
+import com.foxinmy.weixin4j.settings.Weixin4jSettings;
+import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * 微信第三方应用接口实现
@@ -34,20 +37,16 @@ public class WeixinSuiteProxy {
 	private ProviderApi providerApi;
 
 	public WeixinSuiteProxy() {
-		this(QyApi.DEFAULT_TOKEN_STORAGER);
+		this(Weixin4jSettings.DEFAULT_TOKEN_PATH);
 	}
 
 	/**
 	 * 
-	 * @param suiteId
-	 *            应用ID
-	 * @param suiteSecret
-	 *            应用secret
-	 * @throws WeixinException
+	 * @param tokenPath
+	 *            使用文件存储token的保存路径
 	 */
-	public WeixinSuiteProxy(String suiteId, String suiteSecret) {
-		this(QyApi.DEFAULT_TOKEN_STORAGER, null, null, new WeixinAccount(
-				suiteId, suiteSecret));
+	public WeixinSuiteProxy(String tokenPath) {
+		this(new FileTokenStorager(tokenPath));
 	}
 
 	/**
@@ -56,7 +55,8 @@ public class WeixinSuiteProxy {
 	 *            token存储
 	 */
 	public WeixinSuiteProxy(TokenStorager tokenStorager) {
-		this(tokenStorager, QyApi.DEFAULT_WEIXIN_ACCOUNT);
+		this(tokenStorager, JSON.parseObject(
+				Weixin4jConfigUtil.getValue("account"), WeixinQyAccount.class));
 	}
 
 	/**
@@ -76,14 +76,14 @@ public class WeixinSuiteProxy {
 	 * 
 	 * @param tokenStorager
 	 *            token存储
-	 * @param corpId
+	 * @param providerCorpId
 	 *            服务商的企业号ID <font color="red">使用服务商API时必填项</font>
 	 * @param providerSecret
 	 *            服务商secret <font color="red">使用服务商API时必填项</font>
 	 * @param suites
 	 *            套件信息 <font color="red">使用套件API时必填项</font>
 	 */
-	public WeixinSuiteProxy(TokenStorager tokenStorager, String corpId,
+	public WeixinSuiteProxy(TokenStorager tokenStorager, String providerCorpId,
 			String providerSecret, WeixinAccount... suites) {
 		if (suites != null) {
 			this.suiteMap = new HashMap<String, SuiteApi>();
@@ -94,11 +94,11 @@ public class WeixinSuiteProxy {
 				this.suiteMap.put(null, suiteMap.get(suites[0].getId()));
 			}
 		}
-		if (StringUtil.isNotBlank(corpId)
+		if (StringUtil.isNotBlank(providerCorpId)
 				&& StringUtil.isNotBlank(providerSecret)) {
 			this.providerApi = new ProviderApi(new TokenHolder(
-					new WeixinProviderTokenCreator(corpId, providerSecret),
-					tokenStorager));
+					new WeixinProviderTokenCreator(providerCorpId,
+							providerSecret), tokenStorager));
 		}
 	}
 
@@ -160,5 +160,5 @@ public class WeixinSuiteProxy {
 		return providerApi.getLoginUrl(corpId, targetType, agentId);
 	}
 
-	public final static String VERSION = "1.6.6";
+	public final static String VERSION = "1.6.7";
 }

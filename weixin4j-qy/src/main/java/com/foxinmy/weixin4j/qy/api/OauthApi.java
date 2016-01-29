@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
@@ -21,6 +22,15 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%88%E6%9D%83">企业号第三方套件应用授权说明</a>
  */
 public class OauthApi extends QyApi {
+	private final WeixinAccount account;
+
+	public OauthApi() {
+		this(Weixin4jConfigUtil.getWeixinAccount());
+	}
+
+	public OauthApi(WeixinAccount account) {
+		this.account = account;
+	}
 
 	/**
 	 * 企业号用户身份授权
@@ -30,7 +40,7 @@ public class OauthApi extends QyApi {
 	 * @return 请求授权的URL
 	 */
 	public String getUserAuthorizeURL() {
-		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
+		String corpId = account.getId();
 		String redirectUri = Weixin4jConfigUtil
 				.getValue("user.oauth.redirect.uri");
 		return getUserAuthorizeURL(corpId, redirectUri, "state");
@@ -69,7 +79,7 @@ public class OauthApi extends QyApi {
 	 * @return 请求授权的URL
 	 */
 	public String getThirdAuthorizeURL() {
-		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
+		String corpId = account.getId();
 		String redirectUri = Weixin4jConfigUtil
 				.getValue("third.oauth.redirect.uri");
 		return getThirdAuthorizeURL(corpId, redirectUri, "state");

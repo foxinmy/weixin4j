@@ -14,6 +14,7 @@ import com.foxinmy.weixin4j.model.MediaItem;
 import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.model.Pageable;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.api.DataApi;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
@@ -21,7 +22,6 @@ import com.foxinmy.weixin4j.mp.api.HelperApi;
 import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.MenuApi;
-import com.foxinmy.weixin4j.mp.api.MpApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
 import com.foxinmy.weixin4j.mp.api.QrApi;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
@@ -47,8 +47,8 @@ import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.mp.type.Lang;
+import com.foxinmy.weixin4j.settings.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
@@ -80,45 +80,26 @@ public class WeixinProxy {
 	private final DataApi dataApi;
 
 	private final TokenHolder tokenHolder;
-	private String appId;
+	private Weixin4jSettings settings;
 
 	/**
 	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinProxy() {
-		this(MpApi.DEFAULT_TOKEN_STORAGER);
-	}
-
-	/**
-	 * 默认使用weixin4j.properties配置的账号信息
-	 * 
-	 * @param tokenStorager
-	 */
-	public WeixinProxy(TokenStorager tokenStorager) {
-		this(MpApi.DEFAULT_WEIXIN_ACCOUNT.getId(), MpApi.DEFAULT_WEIXIN_ACCOUNT
-				.getSecret(), tokenStorager);
+		this(new Weixin4jSettings());
 	}
 
 	/**
 	 * 
-	 * @param appid
-	 * @param appsecret
+	 * @param settings
+	 *            配置信息
+	 * @see com.foxinmy.weixin4j.settings.Weixin4jSettings
 	 */
-	public WeixinProxy(String appid, String appsecret) {
-		this(appid, appsecret, MpApi.DEFAULT_TOKEN_STORAGER);
-	}
-
-	/**
-	 * 
-	 * @param appid
-	 * @param appsecret
-	 * @param tokenStorager
-	 */
-	public WeixinProxy(String appid, String appsecret,
-			TokenStorager tokenStorager) {
-		this(new TokenHolder(new WeixinTokenCreator(appid, appsecret),
-				tokenStorager));
-		this.appId = appid;
+	public WeixinProxy(Weixin4jSettings settings) {
+		this(new TokenHolder(new WeixinTokenCreator(settings.getAccount()
+				.getId(), settings.getAccount().getSecret()),
+				settings.getTokenStorager()));
+		this.settings = settings;
 	}
 
 	/**
@@ -143,12 +124,12 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 获取appid
+	 * 获取微信账号信息
 	 * 
 	 * @return
 	 */
-	public String getAppId() {
-		return this.appId;
+	public WeixinAccount getWeixinAccount() {
+		return this.settings.getAccount();
 	}
 
 	/**
@@ -168,8 +149,9 @@ public class WeixinProxy {
 	 * @return
 	 */
 	public TokenHolder getTicketHolder(TicketType ticketType) {
-		return new TokenHolder(new WeixinTicketCreator(this.appId, ticketType,
-				this.tokenHolder), this.tokenHolder.getTokenStorager());
+		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount()
+				.getId(), ticketType, this.tokenHolder),
+				this.tokenHolder.getTokenStorager());
 	}
 
 	/**
@@ -248,10 +230,8 @@ public class WeixinProxy {
 	 * 
 	 * @param mediaId
 	 *            存储在微信服务器上的媒体标识
-	 * @param mediaType
-	 *            媒体类型
 	 * @param isMaterial
-	 *            是否永久素材
+	 *            是否下载永久素材
 	 * @return 写入硬盘后的文件对象
 	 * @throws WeixinException
 	 * @see <a
@@ -261,7 +241,8 @@ public class WeixinProxy {
 	 */
 	public File downloadMediaFile(String mediaId, boolean isMaterial)
 			throws WeixinException {
-		return mediaApi.downloadMediaFile(mediaId, isMaterial);
+		return mediaApi.downloadMediaFile(mediaId, isMaterial,
+				settings.getMediaPath());
 	}
 
 	/**
@@ -1215,11 +1196,13 @@ public class WeixinProxy {
 	 * 生成带参数的二维码
 	 * 
 	 * @return 硬盘存储的文件对象
+	 * @param parameter
+	 *            二维码参数
 	 * @throws WeixinException
 	 * @see {@link #createQR(QRParameter)}
 	 */
 	public File createQRFile(QRParameter parameter) throws WeixinException {
-		return qrApi.createQRFile(parameter);
+		return qrApi.createQRFile(parameter, settings.getQrcodePath());
 	}
 
 	/**
@@ -1463,5 +1446,5 @@ public class WeixinProxy {
 		return dataApi.datacube(datacubeType, date);
 	}
 
-	public final static String VERSION = "1.6.6";
+	public final static String VERSION = "1.6.7";
 }

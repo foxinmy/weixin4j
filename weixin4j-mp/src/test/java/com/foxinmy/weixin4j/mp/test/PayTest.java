@@ -19,12 +19,11 @@ import com.foxinmy.weixin4j.payment.mch.ApiResult;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
 import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.payment.mch.PrePay;
-import com.foxinmy.weixin4j.token.FileTokenStorager;
+import com.foxinmy.weixin4j.settings.Weixin4jPaySettings;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.DigestUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 public class PayTest {
 	protected final static Pay2Api PAY2;
@@ -33,14 +32,13 @@ public class PayTest {
 	protected final static WeixinPayAccount ACCOUNT3;
 	static {
 		ACCOUNT2 = new WeixinPayAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
-				"请填入v2版本的paysignkey", null, null, null, "请填入v2版本的partnerId",
-				"请填入v2版本的partnerKey");
-		PAY2 = new Pay2Api(ACCOUNT2, new FileTokenStorager(
-				Weixin4jConfigUtil
-						.getValue("token.path", "/tmp/weixin4j/token")));
+				"请填入v2版本的paysignkey", null, null, null, null,
+				"请填入v2版本的partnerId", "请填入v2版本的partnerKey");
+		PAY2 = new Pay2Api(new Weixin4jPaySettings(ACCOUNT2));
 		ACCOUNT3 = new WeixinPayAccount("请填入v3版本的appid", "请填入v3版本的appSecret",
-				"请填入v3版本的paysignkey", "请填入v3版本的mchid", null, null, null, null);
-		PAY3 = new WeixinPayProxy(ACCOUNT3);
+				"请填入v3版本的paysignkey", "请填入v3版本的mchid", null, null, null, null,
+				null);
+		PAY3 = new WeixinPayProxy(new Weixin4jPaySettings(ACCOUNT3));
 	}
 	/**
 	 * 商户证书文件
@@ -55,7 +53,6 @@ public class PayTest {
 
 	@Test
 	public void refundV2() throws WeixinException {
-		File caFile = new File("证书文件，如12333.pfx");
 		IdQuery idQuery = new IdQuery("D15020300005", IdType.TRADENO);
 		System.err.println(PAY2.refundApply(caFile, idQuery, "1422925555037",
 				16d, 16d, "1221928801", "111111", null, null, null));
@@ -84,7 +81,8 @@ public class PayTest {
 		System.err.println(order);
 		String sign = order.getSign();
 		order.setSign(null);
-		String valiSign = DigestUtil.paysignMd5(order, ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil
+				.paysignMd5(order, ACCOUNT3.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
@@ -98,7 +96,8 @@ public class PayTest {
 		// 这里的验证签名需要把details循环拼接
 		String sign = record.getSign();
 		record.setSign(null);
-		String valiSign = DigestUtil.paysignMd5(record, ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil.paysignMd5(record,
+				ACCOUNT3.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
@@ -118,7 +117,6 @@ public class PayTest {
 
 	@Test
 	public void refundV3() throws WeixinException, IOException {
-		File caFile = new File("签名文件如123.p12");
 		IdQuery idQuery = new IdQuery("TT_1427183696238", IdType.TRADENO);
 		com.foxinmy.weixin4j.payment.mch.RefundResult result = PAY3
 				.refundApply(new FileInputStream(caFile), idQuery, "TT_R"
@@ -127,7 +125,8 @@ public class PayTest {
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
-		String valiSign = DigestUtil.paysignMd5(result, ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil.paysignMd5(result,
+				ACCOUNT3.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
@@ -154,7 +153,8 @@ public class PayTest {
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
-		String valiSign = DigestUtil.paysignMd5(result, ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil.paysignMd5(result,
+				ACCOUNT3.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);

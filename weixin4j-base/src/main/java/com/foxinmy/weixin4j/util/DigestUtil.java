@@ -1,11 +1,16 @@
 package com.foxinmy.weixin4j.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.payment.mch.NativePayNotify;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 签名工具类
@@ -129,5 +134,13 @@ public final class DigestUtil {
 				.append("&sign=").append(sign);
 
 		return sb.toString();
+	}
+
+	public static void main(String[] args) throws FileNotFoundException {
+		NativePayNotify notify = XmlStream.fromXML(new FileInputStream(
+				new File("/Users/jy/Downloads/weixin4j.xml")),
+				NativePayNotify.class);
+		notify.setSign(null);
+		System.err.println(paysignMd5(notify, "GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ"));
 	}
 }

@@ -33,6 +33,10 @@ public class WeixinPayAccount extends WeixinAccount {
 	 */
 	private String mchId;
 	/**
+	 * 加载支付证书文件的密码(商户平台版)
+	 */
+	private String certificateKey;
+	/**
 	 * 微信支付分配的子商户号，受理模式下必填(商户平台版)
 	 */
 	private String subMchId;
@@ -40,10 +44,6 @@ public class WeixinPayAccount extends WeixinAccount {
 	 * 微信支付分配的设备号(商户平台版)
 	 */
 	private String deviceInfo;
-	/**
-	 * 微信支付版本号(如果无则按照mchId来做判断)
-	 */
-	private int version;
 
 	/**
 	 * 商户平台版本(V3)字段
@@ -57,8 +57,9 @@ public class WeixinPayAccount extends WeixinAccount {
 	 * @param mchId
 	 *            微信支付分配的商户号(必填)
 	 */
-	public WeixinPayAccount(String appId, String appSecret, String paySignKey, String mchId) {
-		this(appId, appSecret, paySignKey, mchId, null, null, null, null);
+	public WeixinPayAccount(String appId, String appSecret, String paySignKey,
+			String mchId) {
+		this(appId, appSecret, paySignKey, mchId, null, null, null, null, null);
 	}
 
 	/**
@@ -72,6 +73,8 @@ public class WeixinPayAccount extends WeixinAccount {
 	 *            支付密钥字符串(必填)
 	 * @param mchId
 	 *            微信支付分配的商户号(V3商户平台版必填)
+	 * @param certificateKey
+	 *            加载支付证书文件的密码(商户平台版)
 	 * @param subMchId
 	 *            微信支付分配的子商户号，受理模式下必填(V3商户平台版 非必须)
 	 * @param deviceInfo
@@ -82,13 +85,19 @@ public class WeixinPayAccount extends WeixinAccount {
 	 *            财付通商户权限密钥Key(V2版本必填)
 	 */
 	@JSONCreator
-	public WeixinPayAccount(@JSONField(name = "id") String appId, @JSONField(name = "secret") String appSecret,
-			@JSONField(name = "paySignKey") String paySignKey, @JSONField(name = "mchId") String mchId,
-			@JSONField(name = "subMchId") String subMchId, @JSONField(name = "deviceInfo") String deviceInfo,
-			@JSONField(name = "partnerId") String partnerId, @JSONField(name = "partnerKey") String partnerKey) {
+	public WeixinPayAccount(@JSONField(name = "id") String appId,
+			@JSONField(name = "secret") String appSecret,
+			@JSONField(name = "paySignKey") String paySignKey,
+			@JSONField(name = "mchId") String mchId,
+			@JSONField(name = "certificateKey") String certificateKey,
+			@JSONField(name = "subMchId") String subMchId,
+			@JSONField(name = "deviceInfo") String deviceInfo,
+			@JSONField(name = "partnerId") String partnerId,
+			@JSONField(name = "partnerKey") String partnerKey) {
 		super(appId, appSecret);
 		this.paySignKey = paySignKey;
 		this.mchId = mchId;
+		this.certificateKey = certificateKey;
 		this.subMchId = subMchId;
 		this.deviceInfo = deviceInfo;
 		this.partnerId = partnerId;
@@ -119,17 +128,16 @@ public class WeixinPayAccount extends WeixinAccount {
 		return deviceInfo;
 	}
 
-	public int getVersion() {
-		if (version == 0) {
-			return StringUtil.isNotBlank(mchId) ? 3 : 2;
-		}
-		return version;
+	public String getCertificateKey() {
+		return StringUtil.isBlank(certificateKey) ? mchId : certificateKey;
 	}
 
 	@Override
 	public String toString() {
-		return "WeixinPayAccount [" + super.toString() + ", paySignKey=" + paySignKey + ", partnerId=" + partnerId
-				+ ", partnerKey=" + partnerKey + ", mchId=" + mchId + ", subMchId=" + subMchId + ", deviceInfo="
-				+ deviceInfo + ", version=" + getVersion() + "]";
+		return "WeixinPayAccount [" + super.toString() + ", paySignKey="
+				+ paySignKey + ", partnerId=" + partnerId + ", partnerKey="
+				+ partnerKey + ", mchId=" + mchId + ", certificateKey="
+				+ getCertificateKey() + ", subMchId=" + subMchId
+				+ ", deviceInfo=" + deviceInfo + "]";
 	}
 }

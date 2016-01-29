@@ -25,13 +25,13 @@ weixin4j-qy
 
   * PartyApi `部门管理API`
 
-* ProviderApi `服务商API`
+  * ProviderApi `服务商API`
 
-* SuiteApi `第三方应用API`
+  * SuiteApi `第三方应用API`
 
-* TagApi `标签管理API`
+  * TagApi `标签管理API`
 	
-* UserApi `成员管理API`
+  * UserApi `成员管理API`
   
 
 如何使用
@@ -61,25 +61,32 @@ weixin4j.properties说明
 示例(properties中换行用右斜杆\\)
 
 	weixin4j.account={"id":"corpid","secret":"corpsecret",\
-		"suites":[{"id":"应用套件的id","secret":"应用套件的secret"}],\
-		"providerSecret:"第三方提供商secret(企业号登陆)",\
-		"chatSecret":"消息服务secret(企业号消息服务,暂时没用到)"}
+	"suites":[{"id":"应用套件的id","secret":"应用套件的secret"}],\
+	"providerSecret":"第三方提供商secret(企业号登陆)",\
+	"chatSecret":"消息服务secret(企业号消息服务,暂时没用到)",\
+	"mchId":"微信商户号 微信支付时需要填入",\
+	"certificateKey":"加载支付证书文件的密码 如果不填写则默认获取mchId作为密码",\
+	"paySignKey":"微信支付中调用API的密钥 微信支付时需要填入"}
 	
+	# 使用FileTokenStorager时token的存放路径(如果不填则默认为Weixin4jConst#DEFAULT_TOKEN_PATH)
 	weixin4j.token.path=/tmp/weixin4j/token
+	# 二维码保存路径(如果不填则默认为Weixin4jConst#DEFAULT_TOKEN_PATH)
+	weixin4j.qrcode.path=/tmp/weixin4j/qrcode
+	# 媒体文件保存路径(如果不填则默认为Weixin4jConst#DEFAULT_MEDIA_PATH)
 	weixin4j.media.path=/tmp/weixin4j/media
+	# 对账单保存路径(如果不填则默认为Weixin4jConst#DEFAULT_BILL_PATH)
 	weixin4j.bill.path=/tmp/weixin4j/bill
-	# ca证书存放的完整路径 (证书文件后缀为*.p12)
+	# ca证书存放的完整路径
 	weixin4j.certificate.file=/tmp/weixin4j/xxxxx.p12
-	#classpath路径下:weixin4j.certificate.file=classpath:xxxxx.p12
+	# classpath路径下可以这么写(如果不填则默认为Weixin4jConst#DEFAULT_CAFILE_PATH)
+	# weixin4j.certificate.file=classpath:xxxxx.pfx
 	
-	#企业号用户身份授权后重定向的url(使用OauthApi时需要填写)
-	weixin4j.user.oauth.redirect.uri=http://xxx
-	
-	#企业号第三方管理员授权后重定向的url(使用OauthApi时需要填写)
-	weixin4j.third.oauth.redirect.uri=http://xxx
-	
-	#企业号第三方应用套件授权后重定向的url(使用OauthApi时需要填写)
-	weixin4j.suite.oauth.redirect.uri=http://xxx
+	# 企业号用户身份授权后重定向的url(在使用OauthApi时填写)
+	weixin4j.user.oauth.redirect.uri=
+	# 企业号第三方提供商授权后重定向的url(在使用OauthApi时填写)
+	weixin4j.third.oauth.redirect.uri=
+	# 企业号第三方应用套件授权后重定向的url(在使用OauthApi时填写)
+	weixin4j.suite.oauth.redirect.uri=
 
 2.实例化微信企业号接口代理对象,调用具体的API方法
 

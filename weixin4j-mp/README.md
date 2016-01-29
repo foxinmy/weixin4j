@@ -58,21 +58,27 @@ weixin4j.properties说明
 
 完整填写示例(properties中换行用右斜杆\\)
 
-	weixin4j.account={"id":"appId","secret":"appSecret",\
-		"mchId":"V3.x版本下的微信商户号",\
-		"partnerId":"V2版本下的财付通的商户号",\
-		"partnerKey":"V2版本下的财付通商户权限密钥Key",\
-		"paySignKey":"微信支付中调用API的密钥"}
+	weixin4j.account={"id":"appid","secret":"appsecret",\
+	"mchId":"V3.x版本下的微信商户号 微信支付时需要填入",\
+	"certificateKey":"加载支付证书文件的密码 如果不填写则默认获取mchId作为密码",\
+	"partnerId":"V2版本下的财付通的商户号 微信支付时需要填入",\
+	"partnerKey":"V2版本下的财付通商户权限密钥Key 微信支付时需要填入",\
+	"paySignKey":"微信支付中调用API的密钥 微信支付时需要填入"}
 	
+	# 使用FileTokenStorager时token的存放路径(如果不填则默认为Weixin4jConst#DEFAULT_TOKEN_PATH)
 	weixin4j.token.path=/tmp/weixin4j/token
+	# 二维码保存路径(如果不填则默认为Weixin4jConst#DEFAULT_TOKEN_PATH)
 	weixin4j.qrcode.path=/tmp/weixin4j/qrcode
+	# 媒体文件保存路径(如果不填则默认为Weixin4jConst#DEFAULT_MEDIA_PATH)
 	weixin4j.media.path=/tmp/weixin4j/media
+	# 对账单保存路径(如果不填则默认为Weixin4jConst#DEFAULT_BILL_PATH)
 	weixin4j.bill.path=/tmp/weixin4j/bill
 	# ca证书存放的完整路径 (V2版本后缀为*.pfx,V3版本后缀为*.p12)
 	weixin4j.certificate.file=/tmp/weixin4j/xxxxx.p12
-	#classpath路径下:weixin4j.certificate.file=classpath:xxxxx.p12
+	# classpath路径下可以这么写(如果不填则默认为Weixin4jConst#DEFAULT_CAFILE_PATH)
+	# weixin4j.certificate.file=classpath:xxxxx.pfx
 	
-	#公众号登陆授权的重定向路径(使用OauthApi时需要填写)
+	# 用户oauth授权后重定向的url(在使用OauthApi时填写)
 	weixin4j.user.oauth.redirect.uri=http://xxx
 
 2.实例化微信公众号接口代理对象,调用具体的API方法

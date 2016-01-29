@@ -51,8 +51,6 @@ import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.RegexUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConst;
 import com.foxinmy.weixin4j.util.WeixinErrorUtil;
 
 /**
@@ -199,17 +197,17 @@ public class MediaApi extends QyApi {
 	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
 	 * @param mediaId
 	 *            存储在微信服务器上的媒体标识
-	 * @return 写入硬盘后的文件对象,存储路径见weixin4j.properties配置
+	 * @param mediaPath
+	 *            媒体素材保存路径
+	 * @return 写入硬盘后的文件对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see {@link #downloadMedia(int,String)}
 	 */
-	public File downloadMediaFile(int agentid, String mediaId)
+	public File downloadMediaFile(int agentid, String mediaId, String mediaPath)
 			throws WeixinException {
-		String media_path = Weixin4jConfigUtil.getValue("media.path",
-				Weixin4jConst.DEFAULT_MEDIA_PATH);
 		final String prefixName = String.format("%d_%s.", agentid, mediaId);
-		File[] files = new File(media_path).listFiles(new FilenameFilter() {
+		File[] files = new File(mediaPath).listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
 				return name.startsWith(prefixName);
@@ -219,7 +217,7 @@ public class MediaApi extends QyApi {
 			return files[0];
 		}
 		MediaDownloadResult result = downloadMedia(agentid, mediaId);
-		File file = new File(media_path + File.separator + result.getFileName());
+		File file = new File(mediaPath + File.separator + result.getFileName());
 		OutputStream os = null;
 		try {
 			if (file.createNewFile()) {

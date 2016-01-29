@@ -48,8 +48,6 @@ import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.RegexUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConst;
 import com.foxinmy.weixin4j.util.WeixinErrorUtil;
 
 /**
@@ -238,7 +236,11 @@ public class MediaApi extends MpApi {
 	 * 
 	 * @param mediaId
 	 *            存储在微信服务器上的媒体标识
-	 * @return 写入硬盘后的文件对象,存储路径见weixin4j.properties配置
+	 * @param isMaterial
+	 *            是否下载永久素材
+	 * @param mediaPath
+	 *            媒体素材保存路径
+	 * @return 写入硬盘后的文件对象
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/11/07b6b76a6b6e8848e855a435d5e34a5f.html">下载临时媒体文件</a>
@@ -246,12 +248,10 @@ public class MediaApi extends MpApi {
 	 *      href="http://mp.weixin.qq.com/wiki/4/b3546879f07623cb30df9ca0e420a5d0.html">下载永久媒体素材</a>
 	 * @see {@link #downloadMedia(String,boolean)}
 	 */
-	public File downloadMediaFile(String mediaId, boolean isMaterial)
-			throws WeixinException {
-		String media_path = Weixin4jConfigUtil.getValue("media.path",
-				Weixin4jConst.DEFAULT_MEDIA_PATH);
+	public File downloadMediaFile(String mediaId, boolean isMaterial,
+			String mediaPath) throws WeixinException {
 		final String prefixName = String.format("%s.", mediaId);
-		File[] files = new File(media_path).listFiles(new FilenameFilter() {
+		File[] files = new File(mediaPath).listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
 				return name.startsWith(prefixName);
@@ -261,7 +261,7 @@ public class MediaApi extends MpApi {
 			return files[0];
 		}
 		MediaDownloadResult result = downloadMedia(mediaId, isMaterial);
-		File file = new File(media_path + File.separator + result.getFileName());
+		File file = new File(mediaPath + File.separator + result.getFileName());
 		OutputStream os = null;
 		try {
 			if (file.createNewFile()) {

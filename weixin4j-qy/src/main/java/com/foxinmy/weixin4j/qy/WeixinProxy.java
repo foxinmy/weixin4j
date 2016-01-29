@@ -14,6 +14,7 @@ import com.foxinmy.weixin4j.model.MediaItem;
 import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.model.Pageable;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.BatchApi;
 import com.foxinmy.weixin4j.qy.api.ChatApi;
@@ -22,7 +23,6 @@ import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.qy.api.MenuApi;
 import com.foxinmy.weixin4j.qy.api.NotifyApi;
 import com.foxinmy.weixin4j.qy.api.PartyApi;
-import com.foxinmy.weixin4j.qy.api.QyApi;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
 import com.foxinmy.weixin4j.qy.message.ChatMessage;
@@ -47,6 +47,7 @@ import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.KfType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
+import com.foxinmy.weixin4j.settings.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
@@ -76,50 +77,27 @@ public class WeixinProxy {
 	private final ChatApi chatApi;
 
 	private final TokenHolder tokenHolder;
-	private String corpId;
+
+	private Weixin4jSettings settings;
 
 	/**
 	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinProxy() {
-		this(QyApi.DEFAULT_TOKEN_STORAGER);
-	}
-
-	/**
-	 * 默认使用weixin4j.properties配置的账号信息
-	 * 
-	 * @param tokenStorager
-	 *            token存储策略
-	 */
-	public WeixinProxy(TokenStorager tokenStorager) {
-		this(QyApi.DEFAULT_WEIXIN_ACCOUNT.getId(), QyApi.DEFAULT_WEIXIN_ACCOUNT
-				.getSecret(), tokenStorager);
-	}
-
-	/**
-	 * corpid,corpsecret
-	 * 
-	 * @param corpid
-	 * @param corpsecret
-	 */
-	public WeixinProxy(String corpid, String corpsecret) {
-		this(corpid, corpsecret, QyApi.DEFAULT_TOKEN_STORAGER);
+		this(new Weixin4jSettings());
 	}
 
 	/**
 	 * 
-	 * @param corpid
-	 *            企业号ID
-	 * @param corpsecret
-	 *            企业号secret
-	 * @param tokenStorager
-	 *            企业号token存储器
+	 * @param settings
+	 *            配置信息
+	 * @see com.foxinmy.weixin4j.settings.Weixin4jSettings
 	 */
-	public WeixinProxy(String corpid, String corpsecret,
-			TokenStorager tokenStorager) {
-		this(new TokenHolder(new WeixinTokenCreator(corpid, corpsecret),
-				tokenStorager));
-		this.corpId = corpid;
+	public WeixinProxy(Weixin4jSettings settings) {
+		this(new TokenHolder(new WeixinTokenCreator(settings.getAccount()
+				.getId(), settings.getAccount().getSecret()),
+				settings.getTokenStorager()));
+		this.settings = settings;
 	}
 
 	/**
@@ -133,7 +111,7 @@ public class WeixinProxy {
 	public WeixinProxy(WeixinTokenSuiteCreator tokenCreator,
 			TokenStorager tokenStorager) {
 		this(new TokenHolder(tokenCreator, tokenStorager));
-		this.corpId = tokenCreator.getAuthCorpId();
+		this.settings = new Weixin4jSettings(tokenCreator.getAuthCorpId(), null);
 	}
 
 	/**
@@ -167,12 +145,12 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 企业号ID
+	 * 获取微信账号信息
 	 * 
 	 * @return
 	 */
-	public String getCorpId() {
-		return this.corpId;
+	public WeixinAccount getWeixinAccount() {
+		return this.settings.getAccount();
 	}
 
 	/**
@@ -183,8 +161,9 @@ public class WeixinProxy {
 	 * @return
 	 */
 	public TokenHolder getTicketHolder(TicketType ticketType) {
-		return new TokenHolder(new WeixinTicketCreator(this.corpId, ticketType,
-				this.tokenHolder), this.tokenHolder.getTokenStorager());
+		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount()
+				.getId(), ticketType, this.tokenHolder),
+				this.tokenHolder.getTokenStorager());
 	}
 
 	/**
@@ -313,6 +292,25 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 上传图文消息内的图片:用于上传图片到企业号服务端，接口返回图片url，请注意，该url仅可用于图文消息的发送，
+	 * 且每个企业每天最多只能上传100张图片。
+	 * 
+	 * @param is
+	 *            图片数据
+	 * @param fileName
+	 *            文件名
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E5%9B%BE%E6%96%87%E6%B6%88%E6%81%AF%E5%86%85%E7%9A%84%E5%9B%BE%E7%89%87">上传图文消息内的图片</a>
+	 * @return 图片url
+	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
+	 * @throws WeixinException
+	 */
+	public String uploadImage(InputStream is, String fileName)
+			throws WeixinException {
+		return mediaApi.uploadImage(is, fileName);
+	}
+
+	/**
 	 * 上传媒体文件
 	 * <p>
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
@@ -348,7 +346,7 @@ public class WeixinProxy {
 	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
 	 * @param mediaId
 	 *            存储在微信服务器上的媒体标识
-	 * @return 写入硬盘后的文件对象,存储路径见weixin4j.properties配置
+	 * @return 写入硬盘后的文件对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see com.foxinmy.weixin4j.type.MediaType
@@ -356,7 +354,8 @@ public class WeixinProxy {
 	 */
 	public File downloadMediaFile(int agentid, String mediaId)
 			throws WeixinException {
-		return mediaApi.downloadMediaFile(agentid, mediaId);
+		return mediaApi.downloadMediaFile(agentid, mediaId,
+				settings.getMediaPath());
 	}
 
 	/**
@@ -1334,5 +1333,5 @@ public class WeixinProxy {
 		return chatApi.sendChatMessage(message);
 	}
 
-	public final static String VERSION = "1.6.6";
+	public final static String VERSION = "1.6.7";
 }

@@ -47,7 +47,8 @@ public class MediaTest extends TokenTest {
 		File file = mediaApi
 				.downloadMediaFile(
 						0,
-						"1y0NWE5ochkfOoiyJsPwQ3Wg7gsyRHNp8SveqhGXY_1rOH7OcOMwfHDg8KH6s88osq59AfS3BX-MBBKvERB7Bvw");
+						"1y0NWE5ochkfOoiyJsPwQ3Wg7gsyRHNp8SveqhGXY_1rOH7OcOMwfHDg8KH6s88osq59AfS3BX-MBBKvERB7Bvw",
+						"/tmp/weixin4j/media");
 		Assert.assertTrue(file.exists());
 	}
 

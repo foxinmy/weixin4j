@@ -47,9 +47,6 @@ public class SuiteApi extends QyApi {
 	 * 
 	 * @param suiteTicketHolder
 	 *            套件ticket存取
-	 * @param tokenStorager
-	 *            应用token存储器
-	 * @throws WeixinException
 	 */
 	public SuiteApi(SuiteTicketHolder suiteTicketHolder) {
 		this.suiteTicketHolder = suiteTicketHolder;

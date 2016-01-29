@@ -44,7 +44,7 @@ public interface CacheStorager<T> {
 	T evict(String cacheKey);
 
 	/**
-	 * 清除所有缓存对象(<font color="red">请慎重</a>)
+	 * 清除所有缓存对象(<font color="red">请慎重</font>)
 	 */
 	void clear();
 }
