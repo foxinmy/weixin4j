@@ -47,7 +47,7 @@ public class Weixin4jSettings {
 	 */
 	public Weixin4jSettings() {
 		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinPayAccount.class));
+				WeixinPayAccount.class), "classpath:ca.p12");
 	}
 
 	/**
