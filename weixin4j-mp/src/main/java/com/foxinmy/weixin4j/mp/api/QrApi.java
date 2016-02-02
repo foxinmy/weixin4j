@@ -1,9 +1,6 @@
 package com.foxinmy.weixin4j.mp.api;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -61,50 +58,5 @@ public class QrApi extends MpApi {
 			throw new WeixinException(e);
 		}
 		return result;
-	}
-
-	/**
-	 * 生成带参数的二维码
-	 * <p>
-	 * 二维码分为临时跟永久两种,扫描时触发推送带参数事件
-	 * </p>
-	 * 
-	 * @param parameter
-	 *            二维码参数
-	 * @param qrcodePath
-	 *            二维码保存路径
-	 * @return 硬盘存储的文件对象
-	 * @throws WeixinException
-	 * @see <a
-	 *      href="mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">二维码</a>
-	 * @see #createQR(QRParameter)
-	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
-	 */
-	public File createQRFile(QRParameter parameter, String qrcodePath)
-			throws WeixinException {
-		String filename = String.format("%s_%s_%d.jpg", parameter.getQrType()
-				.name(), parameter.getSceneValue(), parameter
-				.getExpireSeconds());
-		File file = new File(qrcodePath + File.separator + filename);
-		if (parameter.getQrType().ordinal() > 0 && file.exists()) {
-			return file;
-		}
-		QRResult qrResult = createQR(parameter);
-		OutputStream os = null;
-		try {
-			os = new FileOutputStream(file);
-			os.write(qrResult.getContent());
-		} catch (IOException e) {
-			throw new WeixinException(e);
-		} finally {
-			try {
-				if (os != null) {
-					os.close();
-				}
-			} catch (IOException e) {
-				;
-			}
-		}
-		return file;
 	}
 }

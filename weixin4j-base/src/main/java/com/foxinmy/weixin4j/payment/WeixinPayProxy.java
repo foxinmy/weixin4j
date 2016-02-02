@@ -30,11 +30,11 @@ import com.foxinmy.weixin4j.payment.mch.Redpacket;
 import com.foxinmy.weixin4j.payment.mch.RedpacketRecord;
 import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
-import com.foxinmy.weixin4j.settings.Weixin4jPaySettings;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.TradeType;
+import com.foxinmy.weixin4j.util.Weixin4jSettings;
 
 /**
  * 微信支付接口实现
@@ -52,26 +52,26 @@ public class WeixinPayProxy {
 	private final CouponApi couponApi;
 	private final CashApi cashApi;
 
-	private final Weixin4jPaySettings settings;
+	private final Weixin4jSettings settings;
 
 	/**
 	 * 使用weixin4j.properties配置的支付账号信息
 	 */
 	public WeixinPayProxy() {
-		this(new Weixin4jPaySettings());
+		this(new Weixin4jSettings());
 	}
 
 	/**
 	 *
 	 * @param settings
 	 *            支付相关配置信息
-	 * @see com.foxinmy.weixin4j.settings.Weixin4jPaySettings
+	 * @see com.foxinmy.weixin4j.util.Weixin4jSettings
 	 */
-	public WeixinPayProxy(Weixin4jPaySettings settings) {
+	public WeixinPayProxy(Weixin4jSettings settings) {
 		this.settings = settings;
-		this.pay3Api = new Pay3Api(settings.getPayAccount());
-		this.couponApi = new CouponApi(settings.getPayAccount());
-		this.cashApi = new CashApi(settings.getPayAccount());
+		this.pay3Api = new Pay3Api(settings.getWeixinPayAccount());
+		this.couponApi = new CouponApi(settings.getWeixinPayAccount());
+		this.cashApi = new CashApi(settings.getWeixinPayAccount());
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class WeixinPayProxy {
 	 * @return
 	 */
 	public WeixinPayAccount getPayAccount() {
-		return this.settings.getPayAccount();
+		return this.settings.getWeixinPayAccount();
 	}
 
 	/**
@@ -467,7 +467,7 @@ public class WeixinPayProxy {
 			IdQuery idQuery, String outRefundNo, double totalFee)
 			throws WeixinException, IOException {
 		return pay3Api.refundApply(
-				new FileInputStream(settings.getCertificatePath()), idQuery,
+				new FileInputStream(settings.getCertificateFile0()), idQuery,
 				outRefundNo, totalFee);
 	}
 
@@ -514,7 +514,7 @@ public class WeixinPayProxy {
 	 */
 	public File downloadBill(Date billDate, BillType billType)
 			throws WeixinException {
-		return pay3Api.downloadBill(billDate, billType, settings.getBillPath());
+		return pay3Api.downloadBill(billDate, billType, settings.getTmpdir0());
 	}
 
 	/**
@@ -551,7 +551,7 @@ public class WeixinPayProxy {
 	public ApiResult reverseOrder(IdQuery idQuery) throws WeixinException,
 			IOException {
 		return pay3Api.reverseOrder(
-				new FileInputStream(settings.getCertificatePath()), idQuery);
+				new FileInputStream(settings.getCertificateFile0()), idQuery);
 	}
 
 	/**
@@ -655,7 +655,7 @@ public class WeixinPayProxy {
 	public CouponResult sendCoupon(String couponStockId, String partnerTradeNo,
 			String openId) throws WeixinException, IOException {
 		return couponApi.sendCoupon(
-				new FileInputStream(settings.getCertificatePath()),
+				new FileInputStream(settings.getCertificateFile0()),
 				couponStockId, partnerTradeNo, openId, null);
 	}
 
@@ -721,7 +721,7 @@ public class WeixinPayProxy {
 	public RedpacketSendResult sendRedpack(Redpacket redpacket)
 			throws WeixinException, IOException {
 		return cashApi.sendRedpack(
-				new FileInputStream(settings.getCertificatePath()), redpacket);
+				new FileInputStream(settings.getCertificateFile0()), redpacket);
 	}
 
 	/**
@@ -750,8 +750,10 @@ public class WeixinPayProxy {
 	 */
 	public RedpacketRecord queryRedpack(String outTradeNo)
 			throws WeixinException, IOException {
-		return cashApi.queryRedpack(
-				new FileInputStream(settings.getCertificatePath()), outTradeNo);
+		return cashApi
+				.queryRedpack(
+						new FileInputStream(settings.getCertificateFile0()),
+						outTradeNo);
 	}
 
 	/**
@@ -782,7 +784,7 @@ public class WeixinPayProxy {
 	public MPPaymentResult mpPayment(MPPayment mpPayment)
 			throws WeixinException, IOException {
 		return cashApi.mchPayment(
-				new FileInputStream(settings.getCertificatePath()), mpPayment);
+				new FileInputStream(settings.getCertificateFile0()), mpPayment);
 	}
 
 	/**
@@ -811,8 +813,10 @@ public class WeixinPayProxy {
 	 */
 	public MPPaymentRecord mpPaymentQuery(String outTradeNo)
 			throws WeixinException, IOException {
-		return cashApi.mchPaymentQuery(
-				new FileInputStream(settings.getCertificatePath()), outTradeNo);
+		return cashApi
+				.mchPaymentQuery(
+						new FileInputStream(settings.getCertificateFile0()),
+						outTradeNo);
 	}
 
 	/**

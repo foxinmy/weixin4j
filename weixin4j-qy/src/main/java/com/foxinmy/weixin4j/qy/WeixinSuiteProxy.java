@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.qy;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.qy.api.ProviderApi;
@@ -11,14 +10,11 @@ import com.foxinmy.weixin4j.qy.api.SuiteApi;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
 import com.foxinmy.weixin4j.qy.model.WeixinQyAccount;
 import com.foxinmy.weixin4j.qy.suite.SuiteTicketHolder;
+import com.foxinmy.weixin4j.qy.suite.Weixin4jSuiteSettings;
 import com.foxinmy.weixin4j.qy.token.WeixinProviderTokenCreator;
 import com.foxinmy.weixin4j.qy.type.LoginTargetType;
-import com.foxinmy.weixin4j.settings.Weixin4jSettings;
-import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * 微信第三方应用接口实现
@@ -36,70 +32,50 @@ public class WeixinSuiteProxy {
 	private Map<String, SuiteApi> suiteMap;
 	private ProviderApi providerApi;
 
+	private final Weixin4jSuiteSettings suiteSettings;
+
 	public WeixinSuiteProxy() {
-		this(Weixin4jSettings.DEFAULT_TOKEN_PATH);
+		this(new Weixin4jSuiteSettings());
 	}
 
 	/**
 	 * 
-	 * @param tokenPath
-	 *            使用文件存储token的保存路径
+	 * @param suiteSettings
+	 *            套件信息配置
 	 */
-	public WeixinSuiteProxy(String tokenPath) {
-		this(new FileTokenStorager(tokenPath));
-	}
-
-	/**
-	 * 
-	 * @param tokenStorager
-	 *            token存储
-	 */
-	public WeixinSuiteProxy(TokenStorager tokenStorager) {
-		this(tokenStorager, JSON.parseObject(
-				Weixin4jConfigUtil.getValue("account"), WeixinQyAccount.class));
-	}
-
-	/**
-	 * 
-	 * @param tokenStorager
-	 *            token存储
-	 * @param suites
-	 *            套件信息 必填项
-	 */
-	public WeixinSuiteProxy(TokenStorager tokenStorager,
-			WeixinQyAccount weixinAccount) {
-		this(tokenStorager, weixinAccount.getId(), weixinAccount
-				.getProviderSecret(), weixinAccount.suitesToArray());
-	}
-
-	/**
-	 * 
-	 * @param tokenStorager
-	 *            token存储
-	 * @param providerCorpId
-	 *            服务商的企业号ID <font color="red">使用服务商API时必填项</font>
-	 * @param providerSecret
-	 *            服务商secret <font color="red">使用服务商API时必填项</font>
-	 * @param suites
-	 *            套件信息 <font color="red">使用套件API时必填项</font>
-	 */
-	public WeixinSuiteProxy(TokenStorager tokenStorager, String providerCorpId,
-			String providerSecret, WeixinAccount... suites) {
-		if (suites != null) {
+	public WeixinSuiteProxy(Weixin4jSuiteSettings suiteSettings) {
+		this.suiteSettings = suiteSettings;
+		if (suiteSettings.getWeixinAccount().getSuiteAccounts() != null) {
 			this.suiteMap = new HashMap<String, SuiteApi>();
-			for (WeixinAccount suite : suites) {
+			for (WeixinAccount suite : suiteSettings.getWeixinAccount()
+					.getSuiteAccounts()) {
 				this.suiteMap.put(suite.getId(), new SuiteApi(
 						new SuiteTicketHolder(suite.getId(), suite.getSecret(),
-								tokenStorager)));
-				this.suiteMap.put(null, suiteMap.get(suites[0].getId()));
+								suiteSettings.getTokenStorager0())));
+				this.suiteMap.put(
+						null,
+						suiteMap.get(suiteSettings.getWeixinAccount()
+								.getSuiteAccounts().get(0).getId()));
 			}
 		}
-		if (StringUtil.isNotBlank(providerCorpId)
-				&& StringUtil.isNotBlank(providerSecret)) {
+		if (StringUtil.isNotBlank(suiteSettings.getWeixinAccount().getId())
+				&& StringUtil.isNotBlank(suiteSettings.getWeixinAccount()
+						.getProviderSecret())) {
 			this.providerApi = new ProviderApi(new TokenHolder(
-					new WeixinProviderTokenCreator(providerCorpId,
-							providerSecret), tokenStorager));
+					new WeixinProviderTokenCreator(suiteSettings
+							.getWeixinAccount().getId(), suiteSettings
+							.getWeixinAccount().getProviderSecret()),
+					suiteSettings.getTokenStorager0()));
 		}
+	}
+
+	/**
+	 * 企业号信息
+	 * 
+	 * @return
+	 */
+	public WeixinQyAccount getWeixinAccount() {
+		return this.suiteSettings.getWeixinAccount();
 	}
 
 	/**

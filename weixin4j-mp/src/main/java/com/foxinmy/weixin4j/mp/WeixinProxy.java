@@ -47,7 +47,6 @@ import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.mp.type.Lang;
-import com.foxinmy.weixin4j.settings.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
@@ -55,6 +54,7 @@ import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.tuple.Tuple;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
+import com.foxinmy.weixin4j.util.Weixin4jSettings;
 
 /**
  * 微信公众平台接口实现
@@ -92,13 +92,13 @@ public class WeixinProxy {
 	/**
 	 * 
 	 * @param settings
-	 *            配置信息
-	 * @see com.foxinmy.weixin4j.settings.Weixin4jSettings
+	 *            微信配置信息
+	 * @see com.foxinmy.weixin4j.util.Weixin4jSettings
 	 */
 	public WeixinProxy(Weixin4jSettings settings) {
-		this(new TokenHolder(new WeixinTokenCreator(settings.getAccount()
-				.getId(), settings.getAccount().getSecret()),
-				settings.getTokenStorager()));
+		this(new TokenHolder(new WeixinTokenCreator(settings.getWeixinAccount()
+				.getId(), settings.getWeixinAccount().getSecret()),
+				settings.getTokenStorager0()));
 		this.settings = settings;
 	}
 
@@ -129,7 +129,7 @@ public class WeixinProxy {
 	 * @return
 	 */
 	public WeixinAccount getWeixinAccount() {
-		return this.settings.getAccount();
+		return this.settings.getWeixinAccount();
 	}
 
 	/**
@@ -220,29 +220,6 @@ public class WeixinProxy {
 	public MediaUploadResult uploadMedia(boolean isMaterial, InputStream is,
 			String fileName) throws WeixinException {
 		return mediaApi.uploadMedia(isMaterial, is, fileName);
-	}
-
-	/**
-	 * 下载媒体文件
-	 * <p>
-	 * 正常情况下返回表头如Content-Type: image/jpeg,否则抛出异常.
-	 * </p>
-	 * 
-	 * @param mediaId
-	 *            存储在微信服务器上的媒体标识
-	 * @param isMaterial
-	 *            是否下载永久素材
-	 * @return 写入硬盘后的文件对象
-	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/10/78b15308b053286e2a66b33f0f0f5fb6.html">上传下载说明</a>
-	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
-	 * @see {@link #downloadMedia(String)}
-	 */
-	public File downloadMediaFile(String mediaId, boolean isMaterial)
-			throws WeixinException {
-		return mediaApi.downloadMediaFile(mediaId, isMaterial,
-				settings.getMediaPath());
 	}
 
 	/**
@@ -1190,19 +1167,6 @@ public class WeixinProxy {
 	 */
 	public QRResult createQR(QRParameter parameter) throws WeixinException {
 		return qrApi.createQR(parameter);
-	}
-
-	/**
-	 * 生成带参数的二维码
-	 * 
-	 * @return 硬盘存储的文件对象
-	 * @param parameter
-	 *            二维码参数
-	 * @throws WeixinException
-	 * @see {@link #createQR(QRParameter)}
-	 */
-	public File createQRFile(QRParameter parameter) throws WeixinException {
-		return qrApi.createQRFile(parameter, settings.getQrcodePath());
 	}
 
 	/**

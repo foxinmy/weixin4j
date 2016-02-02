@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.qy;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -48,11 +47,11 @@ import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.KfType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
-import com.foxinmy.weixin4j.settings.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
+import com.foxinmy.weixin4j.util.Weixin4jSettings;
 
 /**
  * 微信企业号接口实现
@@ -90,13 +89,13 @@ public class WeixinProxy {
 	/**
 	 * 
 	 * @param settings
-	 *            配置信息
-	 * @see com.foxinmy.weixin4j.settings.Weixin4jSettings
+	 *            微信配置信息
+	 * @see com.foxinmy.weixin4j.util.Weixin4jSettings
 	 */
 	public WeixinProxy(Weixin4jSettings settings) {
-		this(new TokenHolder(new WeixinTokenCreator(settings.getAccount()
-				.getId(), settings.getAccount().getSecret()),
-				settings.getTokenStorager()));
+		this(new TokenHolder(new WeixinTokenCreator(settings.getWeixinAccount()
+				.getId(), settings.getWeixinAccount().getSecret()),
+				settings.getTokenStorager0()));
 		this.settings = settings;
 	}
 
@@ -116,8 +115,8 @@ public class WeixinProxy {
 			TokenHolder suiteTokenHolder) {
 		this(new TokenHolder(new WeixinTokenSuiteCreator(perCodeHolder,
 				suiteTokenHolder), suiteTokenHolder.getTokenStorager()));
-		this.settings = new Weixin4jSettings(perCodeHolder.getAuthCorpId(),
-				null);
+		this.settings = new Weixin4jSettings(new WeixinAccount(
+				perCodeHolder.getAuthCorpId(), null));
 	}
 
 	/**
@@ -156,7 +155,7 @@ public class WeixinProxy {
 	 * @return
 	 */
 	public WeixinAccount getWeixinAccount() {
-		return this.settings.getAccount();
+		return this.settings.getWeixinAccount();
 	}
 
 	/**
@@ -343,25 +342,6 @@ public class WeixinProxy {
 	public MediaUploadResult uploadMedia(int agentid, InputStream is,
 			String fileName) throws WeixinException {
 		return mediaApi.uploadMedia(agentid, is, fileName);
-	}
-
-	/**
-	 * 下载媒体文件
-	 * 
-	 * @param agentid
-	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
-	 * @param mediaId
-	 *            存储在微信服务器上的媒体标识
-	 * @return 写入硬盘后的文件对象
-	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see {@link #downloadMedia(int,String)}
-	 */
-	public File downloadMediaFile(int agentid, String mediaId)
-			throws WeixinException {
-		return mediaApi.downloadMediaFile(agentid, mediaId,
-				settings.getMediaPath());
 	}
 
 	/**

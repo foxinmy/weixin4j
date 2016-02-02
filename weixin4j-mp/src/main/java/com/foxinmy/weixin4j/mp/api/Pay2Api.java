@@ -40,11 +40,7 @@ import com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundResultV2;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.payment.PayRequest;
-import com.foxinmy.weixin4j.settings.Weixin4jSettings;
-import com.foxinmy.weixin4j.settings.Weixin4jPaySettings;
-import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.RefundType;
@@ -54,6 +50,7 @@ import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.Weixin4jSettings;
 import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 
 /**
@@ -67,27 +64,22 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
  */
 public class Pay2Api extends MpApi {
 
-	private final Weixin4jPaySettings settings;
+	private final Weixin4jSettings settings;
 	private final TokenHolder tokenHolder;
 
 	public Pay2Api() {
-		this(new Weixin4jPaySettings());
+		this(new Weixin4jSettings());
 	}
 
-	public Pay2Api(Weixin4jPaySettings settings) {
-		this(settings, new FileTokenStorager(
-				Weixin4jSettings.DEFAULT_TOKEN_PATH));
-	}
-
-	public Pay2Api(Weixin4jPaySettings settings, TokenStorager tokenStorager) {
+	public Pay2Api(Weixin4jSettings settings) {
+		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(settings
+				.getWeixinAccount().getId(), settings.getWeixinAccount()
+				.getSecret()), settings.getTokenStorager0());
 		this.settings = settings;
-		this.tokenHolder = new TokenHolder(
-				new WeixinTokenCreator(settings.getPayAccount().getId(),
-						settings.getPayAccount().getSecret()), tokenStorager);
 	}
 
 	public WeixinPayAccount getPayAccount() {
-		return this.settings.getPayAccount();
+		return this.settings.getWeixinPayAccount();
 	}
 
 	/**
@@ -142,7 +134,7 @@ public class Pay2Api extends MpApi {
 			double totalFee, String notifyUrl, String createIp, String attach,
 			Date timeStart, Date timeExpire, double transportFee,
 			double productFee, String goodsTag) {
-		PayPackageV2 payPackage = new PayPackageV2(settings.getPayAccount()
+		PayPackageV2 payPackage = new PayPackageV2(getPayAccount()
 				.getPartnerId(), body, outTradeNo, totalFee, notifyUrl,
 				createIp);
 		payPackage.setAttach(attach);
@@ -458,8 +450,8 @@ public class Pay2Api extends MpApi {
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
 		String fileName = String.format("%s_%s_%s.txt", formatBillDate,
 				billType.name().toLowerCase(), getPayAccount().getId());
-		File file = new File(String.format("%s/%s", settings.getBillPath(),
-				fileName));
+		File file = new File(String.format("%s/weixin4j_bill_%s",
+				settings.getTmpdir0(), fileName));
 		if (file.exists()) {
 			return file;
 		}

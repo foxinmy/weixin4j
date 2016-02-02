@@ -1,12 +1,8 @@
 package com.foxinmy.weixin4j.qy.api;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -188,57 +184,6 @@ public class MediaApi extends QyApi {
 				}
 			}
 		}
-	}
-
-	/**
-	 * 下载媒体文件
-	 * 
-	 * @param agentid
-	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
-	 * @param mediaId
-	 *            存储在微信服务器上的媒体标识
-	 * @param mediaPath
-	 *            媒体素材保存路径
-	 * @return 写入硬盘后的文件对象
-	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see {@link #downloadMedia(int,String)}
-	 */
-	public File downloadMediaFile(int agentid, String mediaId, String mediaPath)
-			throws WeixinException {
-		final String prefixName = String.format("%d_%s.", agentid, mediaId);
-		File[] files = new File(mediaPath).listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.startsWith(prefixName);
-			}
-		});
-		if (files.length > 0) {
-			return files[0];
-		}
-		MediaDownloadResult result = downloadMedia(agentid, mediaId);
-		File file = new File(mediaPath + File.separator + result.getFileName());
-		OutputStream os = null;
-		try {
-			if (file.createNewFile()) {
-				os = new FileOutputStream(file);
-				os.write(result.getContent());
-			} else {
-				throw new WeixinException(String.format("create file fail:%s",
-						file.getAbsolutePath()));
-			}
-		} catch (IOException e) {
-			throw new WeixinException(e);
-		} finally {
-			try {
-				if (os != null) {
-					os.close();
-				}
-			} catch (IOException e) {
-				;
-			}
-		}
-		return file;
 	}
 
 	/**

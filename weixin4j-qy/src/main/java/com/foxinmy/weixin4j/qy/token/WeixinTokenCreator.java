@@ -40,7 +40,7 @@ public class WeixinTokenCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("wx_qy_token_%s", corpid);
+		return String.format("weixin4j_qy_token_%s", corpid);
 	}
 
 	@Override

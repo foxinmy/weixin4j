@@ -49,9 +49,9 @@ public class WeixinPayAccount extends WeixinAccount {
 	 * 商户平台版本(V3)字段
 	 * 
 	 * @param appId
-	 *            公众号唯一的身份ID
+	 *            公众号唯一的身份ID(必填)
 	 * @param appSecret
-	 *            调用接口的凭证
+	 *            调用接口的凭证(最好填写)
 	 * @param paySignKey
 	 *            支付密钥字符串(必填)
 	 * @param mchId
@@ -68,7 +68,7 @@ public class WeixinPayAccount extends WeixinAccount {
 	 * @param appId
 	 *            公众号唯一的身份ID(必填)
 	 * @param appSecret
-	 *            调用接口的凭证(必填)
+	 *            调用接口的凭证(最好填写)
 	 * @param paySignKey
 	 *            支付密钥字符串(必填)
 	 * @param mchId
