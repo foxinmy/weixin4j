@@ -9,7 +9,7 @@ weixin4j
 -------
 * **weixin4j-base**
 
-  `Http Client实现&token实现&微信支付(刷卡/扫码/JS/APP/WAP/现金红包/企业付款)`
+  `Http Client实现&token实现&微信支付实现(刷卡/扫码/JS/APP/WAP/现金红包/企业付款)`
 
 * **weixin4j-mp**
 
@@ -26,26 +26,26 @@ weixin4j
 如何获取
 ----------
 ###1.maven依赖
-微信公众平台API(1.6.6,2015-12-31 released)
+微信公众平台API(1.6.7,2016-02-04 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.6.6</version>
+	    <version>1.6.7</version>
 	</dependency>
-微信企业号API(1.6.6,2015-12-31 released)
+微信企业号API(1.6.7,2016-02-04 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-qy</artifactId>
-	    <version>1.6.6</version>
+	    <version>1.6.7</version>
 	</dependency>
-微信回调消息服务器(1.1.5,2015-12-31 released)
+微信回调消息服务器(1.1.6,2016-02-04 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.1.5</version>
+	    <version>1.1.6</version>
 	</dependency>
 
 ###2.直接下载jar包
@@ -58,9 +58,10 @@ weixin4j
 
 ###3.从源码打包
 
-[如何使用](https://github.com/foxinmy/weixin4j/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8SDK)
-
 `git clone`&`mvn package`
+
+[如何使用](https://github.com/foxinmy/weixin4j/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8SDK)
+--------
 
 [更新LOG](./CHANGE.md)
 ----------------------

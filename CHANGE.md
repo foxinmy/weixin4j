@@ -634,3 +634,11 @@
 * 2016-01-29
 
   + 新增Weixin4jSettings配置类
+  
+* 2016-02-06
+
+  + weixin4j-[mp|qy]:version upgrade to 1.6.7
+  
+  + weixin4j-server:version upgrade to 1.1.6
+  
+  + happy new year(:
