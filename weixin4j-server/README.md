@@ -90,7 +90,7 @@ base on netty.
 				.addHandler(BlankMessageHandler.global).startup();
 	}
 
-更多内容将会写在wiki里
+更多内容将会写在[wiki](https://github.com/foxinmy/weixin4j/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Server)里
 
 assembly打包(辅助)
 -----------------

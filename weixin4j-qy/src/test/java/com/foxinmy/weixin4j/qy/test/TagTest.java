@@ -53,14 +53,14 @@ public class TagTest extends TokenTest {
 	public void addUsers() throws WeixinException {
 		IdParameter result = tagApi
 				.addTagUsers(1, Arrays.asList("jinyu"), null);
-		Assert.assertEquals("ok", result.getUserIds().isEmpty());
+		Assert.assertTrue(result.getUserIds().isEmpty());
 	}
 
 	@Test
 	public void deleteUsers() throws WeixinException {
 		IdParameter result = tagApi.deleteTagUsers(1, Arrays.asList("jinyu"),
 				null);
-		Assert.assertEquals("ok", result.getUserIds().isEmpty());
+		Assert.assertTrue(result.getUserIds().isEmpty());
 		System.out.println(result);
 	}
 

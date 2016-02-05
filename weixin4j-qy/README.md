@@ -34,8 +34,7 @@ weixin4j-qy
   * UserApi `成员管理API`
   
 
-如何使用
---------
+[如何使用](https://github.com/foxinmy/weixin4j/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8SDK)
 
 [更新LOG](./CHANGE.md)
 ----------------------

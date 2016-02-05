@@ -58,6 +58,8 @@ weixin4j
 
 ###3.从源码打包
 
+[如何使用](https://github.com/foxinmy/weixin4j/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8SDK)
+
 `git clone`&`mvn package`
 
 [更新LOG](./CHANGE.md)

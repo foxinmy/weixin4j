@@ -7,7 +7,6 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.QueryStringDecoder;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +22,8 @@ import com.foxinmy.weixin4j.util.AesToken;
  * @since JDK 1.6
  * @see
  */
-public class WeixinRequest implements Serializable, HttpMessage {
+public class WeixinRequest implements HttpMessage {
 
-	private static final long serialVersionUID = -9157395300510879866L;
 	/**
 	 * 请求的表头
 	 */
