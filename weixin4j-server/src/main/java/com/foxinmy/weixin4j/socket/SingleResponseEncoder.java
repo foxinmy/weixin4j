@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.socket;
 
-import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.util.internal.logging.InternalLogger;
@@ -32,7 +31,7 @@ public class SingleResponseEncoder extends
 	protected void encode(ChannelHandlerContext ctx, SingleResponse response,
 			List<Object> out) throws WeixinException {
 		String content = response.toContent();
-		ctx.writeAndFlush(HttpUtil.createHttpResponse(content, OK,
+		ctx.writeAndFlush(HttpUtil.createHttpResponse(content,
 				ServerToolkits.CONTENTTYPE$TEXT_PLAIN));
 		logger.info("encode single response:{}", content);
 	}

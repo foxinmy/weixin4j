@@ -1,5 +1,12 @@
 package com.foxinmy.weixin4j.request;
 
+import io.netty.handler.codec.DecoderResult;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpMessage;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.QueryStringDecoder;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -16,14 +23,21 @@ import com.foxinmy.weixin4j.util.AesToken;
  * @since JDK 1.6
  * @see
  */
-public class WeixinRequest implements Serializable {
+public class WeixinRequest implements Serializable, HttpMessage {
 
 	private static final long serialVersionUID = -9157395300510879866L;
-
+	/**
+	 * 请求的表头
+	 */
+	private HttpHeaders headers;
 	/**
 	 * 请求的方式
 	 */
-	private String method;
+	private HttpMethod method;
+	/**
+	 * 请求的URI
+	 */
+	private String uri;
 
 	// 以下字段每次被动消息时都会带上
 	/**
@@ -71,12 +85,16 @@ public class WeixinRequest implements Serializable {
 	 * url parameter
 	 */
 	private Map<String, List<String>> parameters;
+	private DecoderResult decoderResult;
+	private HttpVersion protocolVersion;
 
-	public WeixinRequest(String method, EncryptType encryptType,
-			String echoStr, String timeStamp, String nonce, String signature,
-			String msgSignature, String originalContent, String encryptContent,
-			AesToken aesToken, Map<String, List<String>> parameters) {
+	public WeixinRequest(HttpHeaders headers, HttpMethod method, String uri,
+			EncryptType encryptType, String echoStr, String timeStamp,
+			String nonce, String signature, String msgSignature,
+			String originalContent, String encryptContent, AesToken aesToken) {
+		this.headers = headers;
 		this.method = method;
+		this.uri = uri;
 		this.encryptType = encryptType;
 		this.echoStr = echoStr;
 		this.timeStamp = timeStamp;
@@ -86,11 +104,14 @@ public class WeixinRequest implements Serializable {
 		this.originalContent = originalContent;
 		this.encryptContent = encryptContent;
 		this.aesToken = aesToken;
-		this.parameters = parameters;
 	}
 
-	public String getMethod() {
+	public HttpMethod getMethod() {
 		return method;
+	}
+
+	public String getUri() {
+		return uri;
 	}
 
 	public String getEchoStr() {
@@ -130,16 +151,47 @@ public class WeixinRequest implements Serializable {
 	}
 
 	public Map<String, List<String>> getParameters() {
+		if (parameters == null) {
+			this.parameters = new QueryStringDecoder(uri, true).parameters();
+		}
 		return parameters;
 	}
 
 	@Override
+	public DecoderResult getDecoderResult() {
+		return decoderResult;
+	}
+
+	@Override
+	public void setDecoderResult(DecoderResult decoderResult) {
+		this.decoderResult = decoderResult;
+	}
+
+	@Override
+	public HttpVersion getProtocolVersion() {
+		return protocolVersion;
+	}
+
+	@Override
+	public HttpMessage setProtocolVersion(HttpVersion protocolVersion) {
+		this.protocolVersion = protocolVersion;
+		return this;
+	}
+
+	@Override
+	public HttpHeaders headers() {
+		return headers;
+	}
+
+	@Override
 	public String toString() {
-		return "WeixinRequest [encryptContent=" + encryptContent
-				+ ", encryptType=" + encryptType + ", echoStr=" + echoStr
-				+ ", timeStamp=" + timeStamp + ", nonce=" + nonce
-				+ ", signature=" + signature + ", originalContent="
-				+ originalContent + ", method=" + method + ", aesToken="
-				+ aesToken + ", parameters=" + parameters + "]";
+		return "WeixinRequest [headers=" + headers + ", method=" + method
+				+ ", uri=" + uri + ", echoStr=" + echoStr + ", timeStamp="
+				+ timeStamp + ", nonce=" + nonce + ", signature=" + signature
+				+ ", msgSignature=" + msgSignature + ", encryptType="
+				+ encryptType + ", originalContent=" + originalContent
+				+ ", encryptContent=" + encryptContent + ", aesToken="
+				+ aesToken + ", decoderResult=" + decoderResult
+				+ ", protocolVersion=" + protocolVersion + "]";
 	}
 }
