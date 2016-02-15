@@ -5,11 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
-import com.foxinmy.weixin4j.model.WeixinAccount;
-import com.foxinmy.weixin4j.token.FileTokenStorager;
-import com.foxinmy.weixin4j.token.TokenStorager;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConst;
 
 /**
  * API基础
@@ -44,22 +39,5 @@ public abstract class BaseApi {
 		}
 		m.appendTail(sb);
 		return sb.toString();
-	}
-
-	/**
-	 * 默认使用weixin4j.properties文件中的公众号信息
-	 */
-	public final static WeixinAccount DEFAULT_WEIXIN_ACCOUNT;
-
-	/**
-	 * 默认token使用File的方式存储
-	 */
-	public final static TokenStorager DEFAULT_TOKEN_STORAGER;
-
-	static {
-		DEFAULT_WEIXIN_ACCOUNT = Weixin4jConfigUtil.getWeixinAccount();
-		DEFAULT_TOKEN_STORAGER = new FileTokenStorager(
-				Weixin4jConfigUtil.getValue("token.path",
-						Weixin4jConst.DEFAULT_TOKEN_PATH));
 	}
 }

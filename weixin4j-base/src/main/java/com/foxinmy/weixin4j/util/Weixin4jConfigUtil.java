@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.util;
 
-import java.io.File;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -25,18 +24,6 @@ public class Weixin4jConfigUtil {
 				.getResource("").getPath();
 		try {
 			weixinBundle = ResourceBundle.getBundle("weixin4j");
-			File file = null;
-			for (String key : weixinBundle.keySet()) {
-				if (!key.endsWith(".path")) {
-					continue;
-				}
-				file = new File(getValue(key).replaceFirst(CLASSPATH_PREFIX,
-						CLASSPATH_VALUE));
-				if (!file.exists() && !file.mkdirs()) {
-					System.err.append(String.format("%s create fail.%n",
-							file.getAbsolutePath()));
-				}
-			}
 		} catch (MissingResourceException e) {
 			;
 		}
@@ -75,7 +62,7 @@ public class Weixin4jConfigUtil {
 			value = getValue(key);
 		} catch (MissingResourceException e) {
 			;
-		}catch (NullPointerException e){
+		} catch (NullPointerException e) {
 			;
 		}
 		return value;
@@ -88,8 +75,7 @@ public class Weixin4jConfigUtil {
 	 * @return
 	 */
 	public static String getClassPathValue(String key) {
-		return new File(getValue(key).replaceFirst(CLASSPATH_PREFIX,
-				CLASSPATH_VALUE)).getPath();
+		return getValue(key).replaceFirst(CLASSPATH_PREFIX, CLASSPATH_VALUE);
 	}
 
 	/**
@@ -99,18 +85,18 @@ public class Weixin4jConfigUtil {
 	 * @return
 	 */
 	public static String getClassPathValue(String key, String defaultValue) {
-		return new File(getValue(key, defaultValue).replaceFirst(
-				CLASSPATH_PREFIX, CLASSPATH_VALUE)).getPath();
+		return getValue(key, defaultValue).replaceFirst(CLASSPATH_PREFIX,
+				CLASSPATH_VALUE);
 	}
 
 	public static WeixinAccount getWeixinAccount() {
-		if (weixinBundle == null) {
-			return null;
-		}
 		WeixinAccount account = null;
 		try {
 			account = JSON
 					.parseObject(getValue("account"), WeixinAccount.class);
+		} catch (NullPointerException e) {
+			System.err
+					.println("'weixin4j.account' key not found in weixin4j.properties.");
 		} catch (MissingResourceException e) {
 			System.err
 					.println("'weixin4j.account' key not found in weixin4j.properties.");

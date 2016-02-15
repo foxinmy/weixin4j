@@ -110,3 +110,9 @@
 * 2015-12-26
   
   + MchPayRequest抽象化
+  
+* 2016-01-24
+
+  + 新增MemoryTokenStorager(内存保存token)类
+  
+  + TokenStorager类新增evict和clear接口

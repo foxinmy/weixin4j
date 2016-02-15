@@ -29,9 +29,9 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 	/**
 	 * 
 	 * @param perCodeHolder
-	 *            永久授权码
+	 *            第三方套件永久授权码
 	 * @param suiteTokenHolder
-	 *            套件token
+	 *            第三方套件凭证token
 	 */
 	public WeixinTokenSuiteCreator(SuitePerCodeHolder perCodeHolder,
 			TokenHolder suiteTokenHolder) {
@@ -42,7 +42,7 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("wx_qy_token_suite_%s:%s",
+		return String.format("weixin4j_qy_token_suite_%s:%s",
 				perCodeHolder.getSuiteId(), perCodeHolder.getAuthCorpId()
 
 		);
@@ -63,14 +63,5 @@ public class WeixinTokenSuiteCreator implements TokenCreator {
 		token.setCreateTime(System.currentTimeMillis());
 		token.setOriginalResult(response.getAsString());
 		return token;
-	}
-
-	/**
-	 * 获取授权放的corpid
-	 * 
-	 * @return
-	 */
-	public String getAuthCorpId() {
-		return this.perCodeHolder.getAuthCorpId();
 	}
 }

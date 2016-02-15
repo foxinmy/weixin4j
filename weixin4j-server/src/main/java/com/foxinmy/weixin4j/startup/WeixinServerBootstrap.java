@@ -315,5 +315,5 @@ public final class WeixinServerBootstrap {
 		return this;
 	}
 
-	public final static String VERSION = "1.1.5";
+	public final static String VERSION = "1.1.6";
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
@@ -22,15 +23,18 @@ public class IdParameter implements Serializable {
 
 	private static final long serialVersionUID = -2689758682205591133L;
 
-	private static final char SEPARATOR = '|';
+	public static final char SEPARATOR = '|';
 
+	@JSONField(name = "user")
 	private List<String> userIds;
-	private List<Integer> departmentIds;
+	@JSONField(name = "party")
+	private List<Integer> partyIds;
+	@JSONField(name = "tag")
 	private List<Integer> tagIds;
 
 	public IdParameter() {
 		this.userIds = new ArrayList<String>();
-		this.departmentIds = new ArrayList<Integer>();
+		this.partyIds = new ArrayList<Integer>();
 		this.tagIds = new ArrayList<Integer>();
 	}
 
@@ -46,35 +50,13 @@ public class IdParameter implements Serializable {
 	}
 
 	/**
-	 * 设置成员ID列表，最多支持1000个
-	 * 
-	 * @param userIds
-	 * @return
-	 */
-	public IdParameter setUserIds(List<String> userIds) {
-		this.userIds = userIds;
-		return this;
-	}
-
-	/**
 	 * 新增部门ID列表，最多支持100个
 	 * 
-	 * @param departmentIds
+	 * @param partyIds
 	 * @return
 	 */
-	public IdParameter putDepartmentIds(Integer... departmentIds) {
-		this.departmentIds.addAll(Arrays.asList(departmentIds));
-		return this;
-	}
-
-	/**
-	 * 设置部门ID列表，最多支持100个
-	 * 
-	 * @param departmentIds
-	 * @return
-	 */
-	public IdParameter setDepartmentIds(List<Integer> departmentIds) {
-		this.departmentIds = departmentIds;
+	public IdParameter putPartyIds(Integer... partyIds) {
+		this.partyIds.addAll(Arrays.asList(partyIds));
 		return this;
 	}
 
@@ -89,19 +71,32 @@ public class IdParameter implements Serializable {
 		return this;
 	}
 
-	/**
-	 * 设置标签ID列表
-	 * 
-	 * @param tagIds
-	 * @return
-	 */
-	public IdParameter setTagIds(List<Integer> tagIds) {
+	public List<String> getUserIds() {
+		return userIds;
+	}
+
+	public List<Integer> getPartyIds() {
+		return partyIds;
+	}
+
+	public List<Integer> getTagIds() {
+		return tagIds;
+	}
+
+	public void setUserIds(List<String> userIds) {
+		this.userIds = userIds;
+	}
+
+	public void setPartyIds(List<Integer> partyIds) {
+		this.partyIds = partyIds;
+	}
+
+	public void setTagIds(List<Integer> tagIds) {
 		this.tagIds = tagIds;
-		return this;
 	}
 
 	/**
-	 * 目标参数
+	 * 生成某些接口需要的目标参数 如发送客服消息接口
 	 * 
 	 * @return
 	 */
@@ -110,8 +105,8 @@ public class IdParameter implements Serializable {
 		if (userIds != null && !userIds.isEmpty()) {
 			parameterMap.put("touser", StringUtil.join(userIds, SEPARATOR));
 		}
-		if (departmentIds != null && !departmentIds.isEmpty()) {
-			parameterMap.put("toparty", StringUtil.join(departmentIds, SEPARATOR));
+		if (partyIds != null && !partyIds.isEmpty()) {
+			parameterMap.put("toparty", StringUtil.join(partyIds, SEPARATOR));
 		}
 		if (tagIds != null && !tagIds.isEmpty()) {
 			parameterMap.put("totag", StringUtil.join(tagIds, SEPARATOR));
@@ -121,7 +116,7 @@ public class IdParameter implements Serializable {
 
 	@Override
 	public String toString() {
-		return "IdParameter [userIds=" + userIds + ", departmentIds="
-				+ departmentIds + ", tagIds=" + tagIds + "]";
+		return "IdParameter [userIds=" + userIds + ", partyIds=" + partyIds
+				+ ", tagIds=" + tagIds + "]";
 	}
 }

@@ -6,7 +6,6 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.qy.WeixinProxy;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentSetter;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
@@ -47,9 +46,6 @@ public class SuiteApi extends QyApi {
 	 * 
 	 * @param suiteTicketHolder
 	 *            套件ticket存取
-	 * @param tokenStorager
-	 *            应用token存储器
-	 * @throws WeixinException
 	 */
 	public SuiteApi(SuiteTicketHolder suiteTicketHolder) {
 		this.suiteTicketHolder = suiteTicketHolder;
@@ -110,19 +106,6 @@ public class SuiteApi extends QyApi {
 	 */
 	public TokenHolder getTokenSuiteHolder(String authCorpId) {
 		return new TokenHolder(new WeixinTokenSuiteCreator(
-				getPerCodeHolder(authCorpId), suiteTokenHolder),
-				suiteTicketHolder.getTokenStorager());
-	}
-
-	/**
-	 * 创建WeixinProxy对象
-	 * 
-	 * @param authCorpId
-	 *            已授权的corpid
-	 * @return
-	 */
-	public WeixinProxy getWeixinProxy(String authCorpId) {
-		return new WeixinProxy(new WeixinTokenSuiteCreator(
 				getPerCodeHolder(authCorpId), suiteTokenHolder),
 				suiteTicketHolder.getTokenStorager());
 	}

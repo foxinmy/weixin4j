@@ -96,7 +96,7 @@ public class WeixinMessage implements Serializable {
 
 	@XmlTransient
 	public Date getFormatCreateTime() {
-		return createTime > 0l ? new Date(createTime * 1000l) : null;
+		return new Date(createTime * 1000l);
 	}
 
 	public String getMsgType() {

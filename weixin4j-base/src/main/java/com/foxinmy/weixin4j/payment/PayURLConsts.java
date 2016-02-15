@@ -1,14 +1,5 @@
 package com.foxinmy.weixin4j.payment;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSON;
-import com.foxinmy.weixin4j.type.SignType;
-import com.foxinmy.weixin4j.util.DateUtil;
-import com.foxinmy.weixin4j.util.DigestUtil;
-import com.foxinmy.weixin4j.util.MapUtil;
-import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
  * 支付URL常量类
@@ -69,10 +60,15 @@ public final class PayURLConsts {
 	public static final String MCH_PAYREPORT_URL = MCH_BASE_URL
 			+ "/payitil/report";
 	/**
-	 * 发送现金红包(商户平台)
+	 * 发送现金红包-普通红包(商户平台)
 	 */
 	public static final String MCH_REDPACKSEND_URL = MCH_BASE_URL
 			+ "/mmpaymkttransfers/sendredpack";
+	/**
+	 * 发送现金红包-裂变红包(商户平台)
+	 */
+	public static final String MCH_REDPACK_GROUPSEND_URL = MCH_BASE_URL
+			+ "/mmpaymkttransfers/sendgroupredpack";
 	/**
 	 * 查询现金红包(商户平台)
 	 */
@@ -125,42 +121,4 @@ public final class PayURLConsts {
 	 */
 	public static final String MCH_AUTHCODE_OPENID_URL = MCH_BASE_URL
 			+ "/tools/authcodetoopenid";
-
-	/**
-	 * <p>
-	 * 生成编辑地址请求
-	 * </p>
-	 * 
-	 * err_msg edit_address:ok获取编辑收货地址成功</br> edit_address:fail获取编辑收货地址失败</br>
-	 * userName 收货人姓名</br> telNumber 收货人电话</br> addressPostalCode 邮编</br>
-	 * proviceFirstStageName 国标收货地址第一级地址</br> addressCitySecondStageName
-	 * 国标收货地址第二级地址</br> addressCountiesThirdStageName 国标收货地址第三级地址</br>
-	 * addressDetailInfo 详细收货地址信息</br> nationalCode 收货地址国家码</br>
-	 * 
-	 * @param appId
-	 *            公众号的ID
-	 * @param url
-	 *            当前访问页的URL
-	 * @param accessToken
-	 *            snsapi_base授权时产生的token
-	 * @return
-	 */
-	public static String createAddressRequestJson(String appId, String url,
-			String accessToken) {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("appId", appId);
-		map.put("timeStamp", DateUtil.timestamp2string());
-		map.put("nonceStr", RandomUtil.generateString(16));
-		map.put("url", url);
-		map.put("accessToken", accessToken);
-		String sign = DigestUtil.SHA1(MapUtil.toJoinString(map, false, true,
-				null));
-		map.remove("url");
-		map.remove("accessToken");
-		map.put("scope", "jsapi_address");
-		map.put("signType", SignType.SHA1.name().toLowerCase());
-		map.put("addrSign", sign);
-
-		return JSON.toJSONString(map);
-	}
 }

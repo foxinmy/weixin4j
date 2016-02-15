@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.test;
+package com.foxinmy.weixin4j.base.test;
 
 import java.io.FileInputStream;
 import java.io.IOException;

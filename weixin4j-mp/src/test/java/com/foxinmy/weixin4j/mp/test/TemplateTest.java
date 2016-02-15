@@ -25,15 +25,20 @@ public class TemplateTest extends TokenTest {
 	}
 
 	@Test
-	public void getid() throws WeixinException {
+	public void getId() throws WeixinException {
 		System.out.println(tmplApi.getTemplateId("OPENTM201490080"));
+	}
+
+	@Test
+	public void getAll() throws WeixinException {
+		System.out.println(tmplApi.getAllTemplates());
 	}
 
 	@Test
 	public void test() throws WeixinException {
 		TemplateMessage tplMessage = new TemplateMessage("touser",
 				"template_id", "title", "url");
-		tplMessage.pushData("name", "val");
+		tplMessage.pushHead("head").pushTail("tail").pushItem("key1", "text1");
 		JsonResult result = tmplApi.sendTmplMessage(tplMessage);
 		Assert.assertEquals(0, result.getCode());
 	}

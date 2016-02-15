@@ -44,7 +44,7 @@ public class CouponApi {
 	 * 发放代金券(需要证书)
 	 * 
 	 * @param ca
-	 *            证书文件(后缀为*.p12)
+	 *           后缀为*.p12的证书文件
 	 * @param couponStockId
 	 *            代金券批次id
 	 * @param partnerTradeNo
@@ -81,7 +81,7 @@ public class CouponApi {
 		WeixinResponse response = null;
 		try {
 			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
-					weixinAccount.getMchId(), ca);
+					weixinAccount.getCertificateKey(), ca);
 			response = weixinExecutor.post(PayURLConsts.MCH_COUPONSEND_URL,
 					param);
 		} finally {

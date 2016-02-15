@@ -1,12 +1,8 @@
 package com.foxinmy.weixin4j.mp.api;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,8 +44,6 @@ import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.RegexUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
-import com.foxinmy.weixin4j.util.Weixin4jConst;
 import com.foxinmy.weixin4j.util.WeixinErrorUtil;
 
 /**
@@ -228,61 +222,6 @@ public class MediaApi extends MpApi {
 				;
 			}
 		}
-	}
-
-	/**
-	 * 下载媒体素材
-	 * <p>
-	 * 正常情况下返回表头如Content-Type: image/jpeg,否则抛出异常.
-	 * </p>
-	 * 
-	 * @param mediaId
-	 *            存储在微信服务器上的媒体标识
-	 * @return 写入硬盘后的文件对象,存储路径见weixin4j.properties配置
-	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/11/07b6b76a6b6e8848e855a435d5e34a5f.html">下载临时媒体文件</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/4/b3546879f07623cb30df9ca0e420a5d0.html">下载永久媒体素材</a>
-	 * @see {@link #downloadMedia(String,boolean)}
-	 */
-	public File downloadMediaFile(String mediaId, boolean isMaterial)
-			throws WeixinException {
-		String media_path = Weixin4jConfigUtil.getValue("media.path",
-				Weixin4jConst.DEFAULT_MEDIA_PATH);
-		final String prefixName = String.format("%s.", mediaId);
-		File[] files = new File(media_path).listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.startsWith(prefixName);
-			}
-		});
-		if (files.length > 0) {
-			return files[0];
-		}
-		MediaDownloadResult result = downloadMedia(mediaId, isMaterial);
-		File file = new File(media_path + File.separator + result.getFileName());
-		OutputStream os = null;
-		try {
-			if (file.createNewFile()) {
-				os = new FileOutputStream(file);
-				os.write(result.getContent());
-			} else {
-				throw new WeixinException(String.format("create file fail:%s",
-						file.getAbsolutePath()));
-			}
-		} catch (IOException e) {
-			throw new WeixinException(e);
-		} finally {
-			try {
-				if (os != null) {
-					os.close();
-				}
-			} catch (IOException e) {
-				;
-			}
-		}
-		return file;
 	}
 
 	/**

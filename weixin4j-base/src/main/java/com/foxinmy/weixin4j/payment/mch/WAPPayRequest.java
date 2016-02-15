@@ -4,6 +4,7 @@ import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.payment.PayURLConsts;
+import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.URLEncodingUtil;
@@ -26,12 +27,18 @@ public class WAPPayRequest extends AbstractPayRequest {
 		super(prePayId, payAccount);
 	}
 
+	@Override
+	public TradeType getTradeType() {
+		return TradeType.WAP;
+	}
+
 	/**
 	 * <font color="red">只做查看之用,请不要尝试作为支付请求</font>
 	 */
 	@Override
 	public PayRequest toRequestObject() {
-		PayRequest payRequest = new PayRequest(getPayAccount().getId(), "WAP");
+		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
+				getTradeType().name());
 		payRequest.setPrepayId(getPrePayId());
 		return payRequest;
 	}

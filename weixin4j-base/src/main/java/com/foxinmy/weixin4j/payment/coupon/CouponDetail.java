@@ -80,7 +80,6 @@ public class CouponDetail extends ApiResult {
 	@XmlElement(name = "coupon_type")
 	@JSONField(name = "coupon_type")
 	private int couponType;
-
 	/**
 	 * 代金券描述
 	 */

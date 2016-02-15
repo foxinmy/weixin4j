@@ -28,8 +28,8 @@ public class TokenTest {
 		WeixinAccount weixinAccount = Weixin4jConfigUtil.getWeixinAccount();
 		tokenHolder = new TokenHolder(new WeixinTokenCreator(
 				weixinAccount.getId(), weixinAccount.getSecret()),
-				new FileTokenStorager(Weixin4jConfigUtil.getValue(
-						"token.path", "/tmp/weixin4j/token")));
+				new FileTokenStorager(Weixin4jConfigUtil.getValue("token.path",
+						"/tmp/weixin4j/token")));
 	}
 
 	@Test

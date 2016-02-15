@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.qy.api;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
@@ -8,6 +9,8 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.qy.model.Contacts;
+import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.token.TokenHolder;
@@ -34,9 +37,8 @@ public class TagApi extends QyApi {
 	 * 创建标签(创建的标签属于管理组；默认为加锁状态。加锁状态下只有本管理组才可以增删成员，解锁状态下其它管理组也可以增删成员)
 	 * 
 	 * @param tag
-	 *            标签对象；</br>
-	 *            标签名称，长度为1~64个字节，标签名不可与其他标签重名；</br>
-	 *            标签id，整型， 指定此参数时新增的标签会生成对应的标签id，不指定时则以目前最大的id自增。
+	 *            标签对象；</br> 标签名称，长度为1~64个字节，标签名不可与其他标签重名；</br> 标签id，整型，
+	 *            指定此参数时新增的标签会生成对应的标签id，不指定时则以目前最大的id自增。
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.9B.E5.BB.BA.E6.A0.87.E7.AD.BE">
 	 *      创建标签说明</a>
@@ -50,7 +52,8 @@ public class TagApi extends QyApi {
 		if (obj.getIntValue("tagid") <= 0) {
 			obj.remove("tagid");
 		}
-		WeixinResponse response = weixinExecutor.post(String.format(tag_create_uri, token.getAccessToken()),
+		WeixinResponse response = weixinExecutor.post(
+				String.format(tag_create_uri, token.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJson().getIntValue("tagid");
 	}
@@ -70,7 +73,8 @@ public class TagApi extends QyApi {
 	public JsonResult updateTag(Tag tag) throws WeixinException {
 		String tag_update_uri = getRequestUri("tag_update_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.post(String.format(tag_update_uri, token.getAccessToken()),
+		WeixinResponse response = weixinExecutor.post(
+				String.format(tag_update_uri, token.getAccessToken()),
 				JSON.toJSONString(tag));
 		return response.getAsJsonResult();
 	}
@@ -89,7 +93,8 @@ public class TagApi extends QyApi {
 	public JsonResult deleteTag(int tagId) throws WeixinException {
 		String tag_delete_uri = getRequestUri("tag_delete_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.get(String.format(tag_delete_uri, token.getAccessToken(), tagId));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				tag_delete_uri, token.getAccessToken(), tagId));
 		return response.getAsJsonResult();
 	}
 
@@ -106,8 +111,10 @@ public class TagApi extends QyApi {
 	public List<Tag> listTag() throws WeixinException {
 		String tag_list_uri = getRequestUri("tag_list_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.get(String.format(tag_list_uri, token.getAccessToken()));
-		return JSON.parseArray(response.getAsJson().getString("taglist"), Tag.class);
+		WeixinResponse response = weixinExecutor.get(String.format(
+				tag_list_uri, token.getAccessToken()));
+		return JSON.parseArray(response.getAsJson().getString("taglist"),
+				Tag.class);
 	}
 
 	/**
@@ -115,18 +122,27 @@ public class TagApi extends QyApi {
 	 * 
 	 * @param tagId
 	 *            标签ID
+	 * @see com.foxinmy.weixin4j.qy.model.Contacts
 	 * @see com.foxinmy.weixin4j.qy.model.User
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E8.8E.B7.E5.8F.96.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
 	 *      获取标签成员说明</a>
-	 * @return 成员列表
+	 * @return 成员列表<font color="red">Contacts#getUsers</font>和部门列表<font
+	 *         color="red">Contacts#getPartyIds</font>
 	 * @throws WeixinException
 	 */
-	public List<User> getTagUsers(int tagId) throws WeixinException {
+	public Contacts getTagUsers(int tagId) throws WeixinException {
 		String tag_get_user_uri = getRequestUri("tag_get_user_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.get(String.format(tag_get_user_uri, token.getAccessToken(), tagId));
-		return JSON.parseArray(response.getAsJson().getString("userlist"), User.class);
+		WeixinResponse response = weixinExecutor.get(String.format(
+				tag_get_user_uri, token.getAccessToken(), tagId));
+		JSONObject obj = response.getAsJson();
+		Contacts contacts = new Contacts();
+		contacts.setUsers(JSON.parseArray(obj.getString("userlist"), User.class));
+		contacts.setPartyIds(JSON.parseArray(obj.getString("partylist"),
+				Integer.class));
+		contacts.putTagIds(tagId);
+		return contacts;
 	}
 
 	/**
@@ -142,10 +158,12 @@ public class TagApi extends QyApi {
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.A2.9E.E5.8A.A0.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
 	 *      新增标签成员说明</a>
+	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult addTagUsers(int tagId, List<String> userIds, List<Integer> partyIds) throws WeixinException {
+	public IdParameter addTagUsers(int tagId, List<String> userIds,
+			List<Integer> partyIds) throws WeixinException {
 		String tag_add_user_uri = getRequestUri("tag_add_user_uri");
 		return excuteUsers(tag_add_user_uri, tagId, userIds, partyIds);
 	}
@@ -163,25 +181,36 @@ public class TagApi extends QyApi {
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.A0.E9.99.A4.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
 	 *      删除标签成员说明</a>
+	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteTagUsers(int tagId, List<String> userIds, List<Integer> partyIds) throws WeixinException {
+	public IdParameter deleteTagUsers(int tagId, List<String> userIds,
+			List<Integer> partyIds) throws WeixinException {
 		String tag_delete_user_uri = getRequestUri("tag_delete_user_uri");
 		return excuteUsers(tag_delete_user_uri, tagId, userIds, partyIds);
 	}
 
-	private JsonResult excuteUsers(String uri, int tagId, List<String> userIds, List<Integer> partyIds)
+	private IdParameter excuteUsers(String uri, int tagId,
+			List<String> userIds, List<Integer> partyIds)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("tagid", tagId);
 		obj.put("userlist", userIds);
 		obj.put("partylist", partyIds);
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.post(String.format(uri, token.getAccessToken()), obj.toJSONString());
+		WeixinResponse response = weixinExecutor.post(
+				String.format(uri, token.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
-		int code = obj.getIntValue("errcode");
-		obj.remove("errcode");
-		return new JsonResult(code, obj.remove("errmsg").toString(), obj.toJSONString());
+		IdParameter idParameter = new IdParameter();
+		if (obj.containsKey("invalidlist")) {
+			idParameter.setUserIds(Arrays.asList(obj.getString("invalidlist")
+					.split(String.valueOf(IdParameter.SEPARATOR))));
+		}
+		if (obj.containsKey("partylist")) {
+			idParameter.setPartyIds(JSON.parseArray(obj.getString("partylist"),
+					Integer.class));
+		}
+		return idParameter;
 	}
 }

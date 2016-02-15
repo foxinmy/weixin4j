@@ -551,7 +551,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
 	 * response header.
 	 */
 	public boolean getAccessControlAllowCredentials() {
-		return new Boolean(getFirst(ACCESS_CONTROL_ALLOW_CREDENTIALS));
+		return Boolean.valueOf(getFirst(ACCESS_CONTROL_ALLOW_CREDENTIALS));
 	}
 
 	/**

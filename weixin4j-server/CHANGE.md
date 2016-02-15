@@ -131,3 +131,7 @@
 * 2015-12-31
   
   + version upgrade to 1.1.5
+  
+* 2015-02-04
+
+  + version upgrade to 1.1.6

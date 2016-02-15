@@ -610,3 +610,35 @@
   + weixin4j-[mp|qy]:version upgrade to 1.6.6
   
   + weixin4j-server:version upgrade to 1.1.5
+  
+* 2016-01-20
+
+  + weixin4j-mp:新增获取模板和删除模板接口
+  
+  + weixin4j-mp:新增自定义个性化菜单语言信息匹配项
+  
+* 2016-01-23
+
+  + weixin4j-qy:新增获取客服列表接口
+  
+* 2016-01-24
+
+  + weixin4j-base:新增MemoryTokenStorager(内存保存token)类
+  
+  + weixin4j-base:TokenStorager类新增evict和clear接口
+  
+* 2016-01-26
+
+  + weixin4j-qy:新增上传图文消息内的图片接口
+  
+* 2016-01-29
+
+  + 新增Weixin4jSettings配置类
+  
+* 2016-02-06
+
+  + weixin4j-[mp|qy]:version upgrade to 1.6.7
+  
+  + weixin4j-server:version upgrade to 1.1.6
+  
+  + happy new year(:

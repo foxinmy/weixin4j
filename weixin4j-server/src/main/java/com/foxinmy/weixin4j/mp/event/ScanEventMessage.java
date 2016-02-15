@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.mp.event;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.foxinmy.weixin4j.message.event.EventMessage;
 import com.foxinmy.weixin4j.type.EventType;
@@ -46,6 +47,7 @@ public class ScanEventMessage extends EventMessage {
 		return ticket;
 	}
 
+	@XmlTransient
 	public String getParameter() {
 		return eventKey.replaceFirst("qrscene_", "");
 	}

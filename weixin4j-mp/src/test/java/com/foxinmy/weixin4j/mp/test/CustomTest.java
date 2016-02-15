@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.mp.test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -74,7 +75,8 @@ public class CustomTest extends TokenTest {
 	@Test
 	public void uploadAccountHeadimg() throws WeixinException, IOException {
 		JsonResult result = customApi.uploadAccountHeadimg(
-				"temp1@canyidianzhang", new File("/Users/jy/Music/简谱/风动草.jpg"));
+				"temp1@canyidianzhang", new FileInputStream(new File(
+						"/Users/jy/Music/简谱/风动草.jpg")), "风动草.jpg");
 		Assert.assertEquals(0, result.getCode());
 	}
 

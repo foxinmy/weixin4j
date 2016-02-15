@@ -15,12 +15,12 @@ base on netty.
 
 如何使用
 -------
-###maven依赖(1.1.5,2015-12-31 released)
+###maven依赖(1.1.6,2016-02-04 released)
 
 	<dependency>
 	    <groupId>com.foxinmy</groupId>
 	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.1.5</version>
+	    <version>1.1.6</version>
 	</dependency>
 ###编写服务启动类
 明文模式并总是调试输出微信请求信息的服务启动类.
@@ -90,7 +90,7 @@ base on netty.
 				.addHandler(BlankMessageHandler.global).startup();
 	}
 
-更多内容将会写在wiki里
+更多内容将会写在[wiki](https://github.com/foxinmy/weixin4j/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Server)里
 
 assembly打包(辅助)
 -----------------

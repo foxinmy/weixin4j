@@ -48,7 +48,7 @@ public class CashApi {
 	 * 发放红包 企业向微信用户个人发现金红包
 	 * 
 	 * @param ca
-	 *            证书文件(V3版本后缀为*.p12)
+	 *            后缀为*.p12的证书文件
 	 * @param redpacket
 	 *            红包信息
 	 * @return 发放结果
@@ -71,9 +71,10 @@ public class CashApi {
 		WeixinResponse response = null;
 		try {
 			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
-					weixinAccount.getMchId(), ca);
-			response = weixinExecutor.post(PayURLConsts.MCH_REDPACKSEND_URL,
-					param);
+					weixinAccount.getCertificateKey(), ca);
+			response = weixinExecutor
+					.post(redpacket.getTotalNum() > 1 ? PayURLConsts.MCH_REDPACK_GROUPSEND_URL
+							: PayURLConsts.MCH_REDPACKSEND_URL, param);
 		} finally {
 			if (ca != null) {
 				try {
@@ -91,7 +92,7 @@ public class CashApi {
 	 * 查询红包记录
 	 * 
 	 * @param ca
-	 *            证书文件(V3版本后缀为*.p12)
+	 *            后缀为*.p12的证书文件
 	 * @param outTradeNo
 	 *            商户发放红包的商户订单号
 	 * @return 红包记录
@@ -108,13 +109,14 @@ public class CashApi {
 		para.put("bill_type", "MCHT");
 		para.put("appid", weixinAccount.getId());
 		para.put("mch_billno", outTradeNo);
-		String sign = DigestUtil.paysignMd5(para, weixinAccount.getPaySignKey());
+		String sign = DigestUtil
+				.paysignMd5(para, weixinAccount.getPaySignKey());
 		para.put("sign", sign);
 		String param = XmlStream.map2xml(para);
 		WeixinResponse response = null;
 		try {
 			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
-					weixinAccount.getMchId(), ca);
+					weixinAccount.getCertificateKey(), ca);
 			response = weixinExecutor.post(PayURLConsts.MCH_REDPACKQUERY_URL,
 					param);
 		} finally {
@@ -134,7 +136,7 @@ public class CashApi {
 	 * 企业付款 实现企业向个人付款，针对部分有开发能力的商户， 提供通过API完成企业付款的功能。 比如目前的保险行业向客户退保、给付、理赔。
 	 * 
 	 * @param ca
-	 *            证书文件(V3版本后缀为*.p12)
+	 *            后缀为*.p12的证书文件
 	 * @param mpPayment
 	 *            付款信息
 	 * @return 付款结果
@@ -158,7 +160,7 @@ public class CashApi {
 		WeixinResponse response = null;
 		try {
 			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
-					weixinAccount.getMchId(), ca);
+					weixinAccount.getCertificateKey(), ca);
 			response = weixinExecutor.post(PayURLConsts.MCH_ENPAYMENT_URL,
 					param);
 		} finally {
@@ -182,7 +184,7 @@ public class CashApi {
 	 * 企业付款查询 用于商户的企业付款操作进行结果查询，返回付款操作详细结果
 	 * 
 	 * @param ca
-	 *            证书文件(V3版本后缀为*.p12)
+	 *           后缀为*.p12的证书文件
 	 * @param outTradeNo
 	 *            商户调用企业付款API时使用的商户订单号
 	 * @return 付款记录
@@ -204,7 +206,7 @@ public class CashApi {
 		WeixinResponse response = null;
 		try {
 			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
-					weixinAccount.getMchId(), ca);
+					weixinAccount.getCertificateKey(), ca);
 			response = weixinExecutor.post(PayURLConsts.MCH_ENPAYQUERY_URL,
 					param);
 		} finally {

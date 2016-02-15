@@ -1,8 +1,6 @@
 package com.foxinmy.weixin4j.mp.api;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,8 +9,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
+import com.foxinmy.weixin4j.http.ContentType;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
+import com.foxinmy.weixin4j.http.apache.InputStreamBody;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Pageable;
@@ -22,7 +21,8 @@ import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.DigestUtil;
-import com.foxinmy.weixin4j.util.IOUtil;
+import com.foxinmy.weixin4j.util.FileUtil;
+import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
@@ -186,28 +186,33 @@ public class CustomApi extends MpApi {
 	/**
 	 * 上传客服头像
 	 * 
-	 * @param id
+	 * @param accountId
 	 *            完整客服账号，格式为：账号前缀@公众号微信号
-	 * @param headimg
+	 * @param is
 	 *            头像图片文件必须是jpg格式，推荐使用640*640大小的图片以达到最佳效果
+	 * @param fileName
+	 *            文件名 为空时将自动生成
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @throws IOException
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.AE.A2.E6.9C.8D.E7.AE.A1.E7.90.86.E6.8E.A5.E5.8F.A3.E8.BF.94.E5.9B.9E.E7.A0.81.E8.AF.B4.E6.98.8E">客服管理接口返回码</a>
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E4.B8.8A.E4.BC.A0.E5.AE.A2.E6.9C.8D.E5.A4.B4.E5.83.8F">上传客服头像</a>
 	 */
-	public JsonResult uploadAccountHeadimg(String id, File headimg)
-			throws WeixinException, IOException {
+	public JsonResult uploadAccountHeadimg(String accountId, InputStream is,
+			String fileName) throws WeixinException {
+		if (StringUtil.isBlank(fileName)) {
+			fileName = ObjectId.get().toHexString();
+		}
+		if (StringUtil.isBlank(FileUtil.getFileExtension(fileName))) {
+			fileName = String.format("%s.jpg", fileName);
+		}
 		Token token = tokenHolder.getToken();
 		String custom_uploadheadimg_uri = getRequestUri("custom_uploadheadimg_uri");
-		byte[] bytes = IOUtil.toByteArray(new FileInputStream(headimg));
-		WeixinResponse response = weixinExecutor.post(
-				String.format(custom_uploadheadimg_uri, token.getAccessToken(),
-						id),
-				new FormBodyPart("media", new ByteArrayBody(bytes, headimg
-						.getName())));
+		WeixinResponse response = weixinExecutor.post(String.format(
+				custom_uploadheadimg_uri, token.getAccessToken(), accountId),
+				new FormBodyPart("media", new InputStreamBody(is,
+						ContentType.IMAGE_JPG.getMimeType(), fileName)));
 
 		return response.getAsJsonResult();
 	}

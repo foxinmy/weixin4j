@@ -3,6 +3,8 @@ package com.foxinmy.weixin4j.dispatcher;
 import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
@@ -180,8 +182,11 @@ public class WeixinMessageDispatcher {
 		if (alwaysResponse) {
 			context.write(BlankResponse.global);
 		} else {
-			context.writeAndFlush(HttpUtil.createHttpResponse(NOT_FOUND))
-					.addListener(ChannelFutureListener.CLOSE);
+			FullHttpResponse response = new DefaultFullHttpResponse(
+					request.getProtocolVersion(), NOT_FOUND);
+			HttpUtil.resolveHeaders(response);
+			context.writeAndFlush(response).addListener(
+					ChannelFutureListener.CLOSE);
 		}
 	}
 
