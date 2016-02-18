@@ -69,6 +69,18 @@ public class WeixinSuiteProxy {
 		}
 	}
 
+	public ProviderApi getProviderApi() {
+		return providerApi;
+	}
+
+	public void setProviderApi(ProviderApi providerApi) {
+		this.providerApi = providerApi;
+	}
+
+	public Weixin4jSuiteSettings getSuiteSettings() {
+		return suiteSettings;
+	}
+
 	/**
 	 * 企业号信息
 	 * 

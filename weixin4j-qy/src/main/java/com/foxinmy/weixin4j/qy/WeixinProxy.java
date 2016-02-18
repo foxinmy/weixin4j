@@ -140,6 +140,50 @@ public class WeixinProxy {
 		this.chatApi = new ChatApi(tokenHolder);
 	}
 
+	public Weixin4jSettings getSettings() {
+		return settings;
+	}
+
+	public MediaApi getMediaApi() {
+		return mediaApi;
+	}
+
+	public MenuApi getMenuApi() {
+		return menuApi;
+	}
+
+	public NotifyApi getNotifyApi() {
+		return notifyApi;
+	}
+
+	public PartyApi getPartyApi() {
+		return partyApi;
+	}
+
+	public UserApi getUserApi() {
+		return userApi;
+	}
+
+	public TagApi getTagApi() {
+		return tagApi;
+	}
+
+	public HelperApi getHelperApi() {
+		return helperApi;
+	}
+
+	public AgentApi getAgentApi() {
+		return agentApi;
+	}
+
+	public BatchApi getBatchApi() {
+		return batchApi;
+	}
+
+	public ChatApi getChatApi() {
+		return chatApi;
+	}
+
 	/**
 	 * token获取
 	 * 

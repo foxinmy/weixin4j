@@ -119,7 +119,7 @@ public class JSSDKConfigurator {
 			config.put("debug", false);
 		}
 		if (apis.isEmpty()) {
-			throw new WeixinException("jsapilist not be empty");
+			apis(JSSDKAPI.ALL_APIS);
 		}
 		config.put("timestamp", timestamp);
 		config.put("nonceStr", noncestr);

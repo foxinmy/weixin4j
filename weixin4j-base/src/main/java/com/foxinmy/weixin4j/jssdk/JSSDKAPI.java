@@ -254,6 +254,16 @@ public enum JSSDKAPI {
 	 * 企业号-选取联系人(内测)
 	 */
 	openEnterpriseContact;
+	
+	/**
+	 * 全部接口集合
+	 */
+	public final static JSSDKAPI[] ALL_APIS = { onMenuShareTimeline, onMenuShareAppMessage, onMenuShareQQ, onMenuShareWeibo, onMenuShareQZone,
+			chooseImage, previewImage, uploadImage, downloadImage, startRecord, stopRecord, onVoiceRecordEnd, playVoice, pauseVoice, stopVoice,
+			onVoicePlayEnd, uploadVoice, downloadVoice, translateVoice, getNetworkType, openLocation, getLocation, startSearchBeacons,
+			stopSearchBeacons, onSearchBeacons, hideOptionMenu, showOptionMenu, closeWindow, hideMenuItems, showMenuItems, hideAllNonBaseMenuItem,
+			showAllNonBaseMenuItem, scanQRCode, openProductSpecificView, chooseCard, addCard, openCard, consumeAndShareCard, chooseWXPay,
+			openEnterpriseChat, openEnterpriseContact };
 
 	/**
 	 * 分享接口集合

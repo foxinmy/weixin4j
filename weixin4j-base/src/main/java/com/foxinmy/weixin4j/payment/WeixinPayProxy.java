@@ -74,6 +74,22 @@ public class WeixinPayProxy {
 		this.cashApi = new CashApi(settings.getWeixinPayAccount());
 	}
 
+	public Pay3Api getPay3Api() {
+		return pay3Api;
+	}
+
+	public CouponApi getCouponApi() {
+		return couponApi;
+	}
+
+	public CashApi getCashApi() {
+		return cashApi;
+	}
+
+	public Weixin4jSettings getSettings() {
+		return settings;
+	}
+
 	/**
 	 * 获取微信商户支付信息
 	 * 

@@ -58,6 +58,17 @@ public class TemplateMessage implements Serializable {
 	@JSONCreator
 	public TemplateMessage(@JSONField(name = "toUser") String toUser,
 			@JSONField(name = "templateId") String templateId,
+//			@JSONField(name = "title") String title,
+			@JSONField(name = "url") String url) {
+		this.toUser = toUser;
+		this.templateId = templateId;
+		this.url = url;
+		this.content = new HashMap<String, NameValue>();
+	}
+	
+	@JSONCreator
+	public TemplateMessage(@JSONField(name = "toUser") String toUser,
+			@JSONField(name = "templateId") String templateId,
 			@JSONField(name = "title") String title,
 			@JSONField(name = "url") String url) {
 		this.toUser = toUser;
