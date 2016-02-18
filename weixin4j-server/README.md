@@ -1,7 +1,7 @@
 weixin4j-server
 ===============
 
-微信回调消息服务器
+[微信回调消息](http://mp.weixin.qq.com/wiki/1/6239b44c206cab9145b1d52c67e6c551.html)服务器
 ----------------
 base on netty.
 
@@ -15,13 +15,6 @@ base on netty.
 
 如何使用
 -------
-###maven依赖(1.1.6,2016-02-04 released)
-
-	<dependency>
-	    <groupId>com.foxinmy</groupId>
-	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.1.6</version>
-	</dependency>
 ###编写服务启动类
 明文模式并总是调试输出微信请求信息的服务启动类.
 
