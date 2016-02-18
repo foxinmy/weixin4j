@@ -671,7 +671,7 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 获取成员
+	 * 获取成员信息
 	 * 
 	 * @param userid
 	 *            成员唯一ID
