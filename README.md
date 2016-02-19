@@ -23,43 +23,6 @@ weixin4j
   
   `netty服务器&消息分发`
 
-如何获取
-----------
-###1.maven依赖
-微信公众平台API(1.6.7,2016-02-04 released)
-
-	<dependency>
-	    <groupId>com.foxinmy</groupId>
-	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.6.7</version>
-	</dependency>
-微信企业号API(1.6.7,2016-02-04 released)
-
-	<dependency>
-	    <groupId>com.foxinmy</groupId>
-	    <artifactId>weixin4j-qy</artifactId>
-	    <version>1.6.7</version>
-	</dependency>
-微信回调消息服务器(1.1.6,2016-02-04 released)
-
-	<dependency>
-	    <groupId>com.foxinmy</groupId>
-	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.1.6</version>
-	</dependency>
-
-###2.直接下载jar包
-
-  * [weixin4j-mp-xx-full.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-mp%22)&nbsp;[weixin4j-qy-xx-full.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-qy%22)&nbsp;[weixin4j-server-xx.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-server%22)
-
-  * weixin4j-mp & weixin4j-qy 所需的依赖包: [fastjson1.2+](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.alibaba%22%20AND%20a%3A%22fastjson%22)&nbsp;[jedis2.6+(可选)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22redis.clients%22%20AND%20a%3A%22jedis%22)
-  
-  * weixin4j-server 所需的依赖包: [netty4.x](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.netty%22%20AND%20a%3A%22netty-all%22)
-
-###3.从源码打包
-
-`git clone`&`mvn package`
-
 [如何使用](https://github.com/foxinmy/weixin4j/wiki)
 --------
 
