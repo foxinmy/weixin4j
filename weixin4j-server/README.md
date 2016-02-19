@@ -13,7 +13,7 @@ base on netty.
 
 * `消息拦截`(还需更多测试
 
-如何使用(https://github.com/foxinmy/weixin4j/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Server)
+[如何使用](https://github.com/foxinmy/weixin4j/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Server)
 -------------
 
 [更新LOG](./CHANGE.md)
