@@ -400,17 +400,25 @@ public class MediaApi extends MpApi {
 	 * 
 	 * @param is
 	 *            大小不超过1M且格式为MP4的视频文件
+	 * @param fileName
+	 *            文件名 为空时将自动生成
 	 * @param title
 	 *            视频标题
 	 * @param introduction
-	 *            视频描述
+	 *            视频描述 可以为空
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
 	 * @throws WeixinException
 	 */
-	public String uploadMaterialVideo(InputStream is, String title,
-			String introduction) throws WeixinException {
+	public String uploadMaterialVideo(InputStream is, String fileName,
+			String title, String introduction) throws WeixinException {
+		if (StringUtil.isBlank(fileName)) {
+			fileName = ObjectId.get().toHexString();
+		}
+		if (StringUtil.isBlank(FileUtil.getFileExtension(fileName))) {
+			fileName = String.format("%s.mp4", fileName);
+		}
 		String material_media_upload_uri = getRequestUri("material_media_upload_uri");
 		Token token = tokenHolder.getToken();
 		try {
@@ -421,10 +429,7 @@ public class MediaApi extends MpApi {
 					String.format(material_media_upload_uri,
 							token.getAccessToken()),
 					new FormBodyPart("media", new InputStreamBody(is,
-							MediaType.video.getContentType().getMimeType(),
-							ObjectId.get().toHexString())),
-					new FormBodyPart("type", new StringBody(MediaType.video
-							.name(), Consts.UTF_8)),
+							ContentType.VIDEO_MPEG4.getMimeType(), fileName)),
 					new FormBodyPart("description", new StringBody(description
 							.toJSONString(), Consts.UTF_8)));
 			return response.getAsJson().getString("media_id");

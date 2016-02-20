@@ -74,9 +74,9 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void uploadMaterialVideo() throws IOException, WeixinException {
-		File file = new File("/Users/jy/Downloads/test.jpg");
+		File file = new File("/Users/jy/Downloads/test.mp4");
 		String mediaId = mediaApi.uploadMaterialVideo(
-				new FileInputStream(file), "title", "introduction");
+				new FileInputStream(file), "filename", "title", "introduction");
 		// Sy1KOLsi4ri3kB3TYUuculVelcW2I7W6BrfGwkGvSW8beTCAarxuGQLjuNJChJr8
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);

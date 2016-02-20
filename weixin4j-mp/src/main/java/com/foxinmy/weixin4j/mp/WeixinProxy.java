@@ -320,6 +320,8 @@ public class WeixinProxy {
 	 * 
 	 * @param is
 	 *            大小不超过1M且格式为MP4的视频文件
+	 * @param fileName
+	 *            文件名 为空时将自动生成
 	 * @param title
 	 *            视频标题
 	 * @param introduction
@@ -330,9 +332,9 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 */
-	public String uploadMaterialVideo(InputStream is, String title,
-			String introduction) throws WeixinException {
-		return mediaApi.uploadMaterialVideo(is, title, introduction);
+	public String uploadMaterialVideo(InputStream is, String fileName,
+			String title, String introduction) throws WeixinException {
+		return mediaApi.uploadMaterialVideo(is, fileName, title, introduction);
 	}
 
 	/**
