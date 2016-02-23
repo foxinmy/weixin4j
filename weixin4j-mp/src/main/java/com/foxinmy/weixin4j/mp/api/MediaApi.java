@@ -405,7 +405,7 @@ public class MediaApi extends MpApi {
 	 * @param title
 	 *            视频标题
 	 * @param introduction
-	 *            视频描述 可以为空
+	 *            视频描述
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
