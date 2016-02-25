@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
@@ -25,6 +26,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @see
  */
 public class JSSDKConfigurator {
+	private final WeixinAccount weixinAccount;
 	private final TokenHolder ticketTokenHolder;
 	private JSONObject config;
 	private Set<JSSDKAPI> apis;
@@ -35,6 +37,16 @@ public class JSSDKConfigurator {
 	 * @param ticketTokenHolder
 	 */
 	public JSSDKConfigurator(TokenHolder ticketTokenHolder) {
+		this(Weixin4jConfigUtil.getWeixinAccount(), ticketTokenHolder);
+	}
+	
+	/**
+	 * ticket保存类 可调用WeixinProxy#getTicketHolder获取
+	 * 
+	 * @param ticketTokenHolder
+	 */
+	public JSSDKConfigurator(WeixinAccount weixinAccount, TokenHolder ticketTokenHolder) {
+		this.weixinAccount = weixinAccount;
 		this.ticketTokenHolder = ticketTokenHolder;
 		this.config = new JSONObject();
 		this.apis = new HashSet<JSSDKAPI>();
@@ -113,13 +125,13 @@ public class JSSDKConfigurator {
 		String sign = DigestUtil.SHA1(MapUtil.toJoinString(signMap, false,
 				false));
 		if (StringUtil.isBlank(config.getString("appId"))) {
-			config.put("appId", Weixin4jConfigUtil.getWeixinAccount().getId());
+			config.put("appId", weixinAccount.getId());
 		}
 		if (StringUtil.isBlank(config.getString("debug"))) {
 			config.put("debug", false);
 		}
 		if (apis.isEmpty()) {
-			throw new WeixinException("jsapilist not be empty");
+			apis(JSSDKAPI.ALL_APIS);
 		}
 		config.put("timestamp", timestamp);
 		config.put("nonceStr", noncestr);

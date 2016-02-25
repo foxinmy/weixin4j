@@ -60,6 +60,9 @@ public class Weixin4jConfigUtil {
 		String value = defaultValue;
 		try {
 			value = getValue(key);
+			if (value == null || "".equals(value)){
+				value = defaultValue;
+			}
 		} catch (MissingResourceException e) {
 			;
 		} catch (NullPointerException e) {

@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.foxinmy</groupId>
 	<artifactId>weixin4j</artifactId>
-	<version>1.6.7</version>
+	<version>1.6.7-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>weixin4j</name>
 	<url>https://github.com/foxinmy/weixin4j</url>
-	<description>微信开发工具包</description>
+	<description>微信开发工具包 </description>
 	<inceptionYear>2014</inceptionYear>
 	<licenses>
 		<license>
@@ -43,7 +43,7 @@
 		<module>weixin4j-base</module>
 		<module>weixin4j-mp</module>
 		<module>weixin4j-qy</module>
-		<module>weixin4j-server</module>
+		<!--<module>weixin4j-server</module>-->
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -235,6 +235,7 @@
 				</plugins>
 			</build>
 		</profile>
+		
 	</profiles>
 	<dependencyManagement>
 		<dependencies>
@@ -255,5 +256,5 @@
 			<id>oss-release</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-	</distributionManagement>
+	</distributionManagement>	
 </project>

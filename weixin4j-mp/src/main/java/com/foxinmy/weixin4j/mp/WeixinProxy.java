@@ -23,6 +23,7 @@ import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.MenuApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
+import com.foxinmy.weixin4j.mp.api.OauthApi;
 import com.foxinmy.weixin4j.mp.api.QrApi;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
 import com.foxinmy.weixin4j.mp.api.UserApi;
@@ -78,6 +79,7 @@ public class WeixinProxy {
 	private final TmplApi tmplApi;
 	private final HelperApi helperApi;
 	private final DataApi dataApi;
+	private final OauthApi oauthApi;
 
 	private final TokenHolder tokenHolder;
 	private Weixin4jSettings settings;
@@ -96,19 +98,10 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.util.Weixin4jSettings
 	 */
 	public WeixinProxy(Weixin4jSettings settings) {
-		this(new TokenHolder(new WeixinTokenCreator(settings.getWeixinAccount()
-				.getId(), settings.getWeixinAccount().getSecret()),
-				settings.getTokenStorager0()));
-		this.settings = settings;
-	}
-
-	/**
-	 * 注意：TokenCreator 需为 <font color="red">WeixinTokenCreator</font>
-	 * 
-	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator
-	 * @param tokenHolder
-	 */
-	private WeixinProxy(TokenHolder tokenHolder) {
+		TokenHolder tokenHolder = new TokenHolder(new WeixinTokenCreator(
+				settings.getWeixinAccount().getId(),
+				settings.getWeixinAccount().getSecret()),
+				settings.getTokenStorager0());
 		this.tokenHolder = tokenHolder;
 		this.mediaApi = new MediaApi(tokenHolder);
 		this.notifyApi = new NotifyApi(tokenHolder);
@@ -121,6 +114,81 @@ public class WeixinProxy {
 		this.tmplApi = new TmplApi(tokenHolder);
 		this.helperApi = new HelperApi(tokenHolder);
 		this.dataApi = new DataApi(tokenHolder);
+		this.oauthApi = new OauthApi(settings.getWeixinAccount());
+		this.settings = settings;
+	}
+
+//	/**
+//	 * 注意：TokenCreator 需为 <font color="red">WeixinTokenCreator</font>
+//	 * 
+//	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator
+//	 * @param tokenHolder
+//	 */
+//	private WeixinProxy(TokenHolder tokenHolder) {
+//		this.tokenHolder = tokenHolder;
+//		this.mediaApi = new MediaApi(tokenHolder);
+//		this.notifyApi = new NotifyApi(tokenHolder);
+//		this.customApi = new CustomApi(tokenHolder);
+//		this.massApi = new MassApi(tokenHolder);
+//		this.userApi = new UserApi(tokenHolder);
+//		this.groupApi = new GroupApi(tokenHolder);
+//		this.menuApi = new MenuApi(tokenHolder);
+//		this.qrApi = new QrApi(tokenHolder);
+//		this.tmplApi = new TmplApi(tokenHolder);
+//		this.helperApi = new HelperApi(tokenHolder);
+//		this.dataApi = new DataApi(tokenHolder);
+//	}
+
+	public Weixin4jSettings getSettings() {
+		return settings;
+	}
+
+	public MediaApi getMediaApi() {
+		return mediaApi;
+	}
+
+	public NotifyApi getNotifyApi() {
+		return notifyApi;
+	}
+
+	public CustomApi getCustomApi() {
+		return customApi;
+	}
+
+	public MassApi getMassApi() {
+		return massApi;
+	}
+
+	public UserApi getUserApi() {
+		return userApi;
+	}
+
+	public GroupApi getGroupApi() {
+		return groupApi;
+	}
+
+	public MenuApi getMenuApi() {
+		return menuApi;
+	}
+
+	public QrApi getQrApi() {
+		return qrApi;
+	}
+
+	public TmplApi getTmplApi() {
+		return tmplApi;
+	}
+
+	public HelperApi getHelperApi() {
+		return helperApi;
+	}
+
+	public DataApi getDataApi() {
+		return dataApi;
+	}
+
+	public OauthApi getOauthApi() {
+		return oauthApi;
 	}
 
 	/**
