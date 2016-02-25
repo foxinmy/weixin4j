@@ -33,6 +33,10 @@ public class TemplateMessage implements Serializable {
 	@JSONField(name = "template_id")
 	private String templateId;
 	/**
+	 * 消息标题
+	 */
+	private String title;
+	/**
 	 * 点击消息跳转的url
 	 */
 	private String url;
@@ -55,50 +59,81 @@ public class TemplateMessage implements Serializable {
 	private final String HEAD_KEY = "first";
 	private final String TAIL_KEY = "remark";
 
-	@JSONCreator
-	public TemplateMessage(@JSONField(name = "toUser") String toUser,
-			@JSONField(name = "templateId") String templateId,
-//			@JSONField(name = "title") String title,
-			@JSONField(name = "url") String url) {
-		this.toUser = toUser;
-		this.templateId = templateId;
-		this.url = url;
-		this.content = new HashMap<String, NameValue>();
+	public TemplateMessage(){
+		this(null, null, null);
+	}
+	
+	public TemplateMessage(String templateId, String url) {
+		this(null, templateId, null, url);
+	}
+	
+	public TemplateMessage(String toUser, String templateId, String url) {
+		this(toUser, templateId, null, url);
+	}
+	
+	public TemplateMessage(String toUser, String templateId, String title, String url) {
+		this(toUser, templateId, title, url, new HashMap<String, NameValue>());
 	}
 	
 	@JSONCreator
 	public TemplateMessage(@JSONField(name = "toUser") String toUser,
 			@JSONField(name = "templateId") String templateId,
 			@JSONField(name = "title") String title,
-			@JSONField(name = "url") String url) {
+			@JSONField(name = "url") String url,
+			@JSONField(name = "content") Map<String, NameValue> content) {
 		this.toUser = toUser;
 		this.templateId = templateId;
+		this.title = title;
 		this.url = url;
-		this.content = new HashMap<String, NameValue>();
+		this.content = content;
 	}
 
 	public String getToUser() {
 		return toUser;
 	}
 
+	public void setToUser(String toUser) {
+		this.toUser = toUser;
+	}
+
 	public String getTemplateId() {
 		return templateId;
 	}
 
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 	public String getUrl() {
 		return url;
 	}
 
-	public NameValue getHead() {
-		return head == null ? content.get(HEAD_KEY) : head;
-	}
-
-	public NameValue getTail() {
-		return tail == null ? content.get(TAIL_KEY) : tail;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public Map<String, NameValue> getContent() {
 		return content;
+	}
+
+	public void setContent(Map<String, NameValue> content) {
+		this.content = content;
+	}
+
+	public NameValue getHead() {
+		return head == null && content != null ? content.get(HEAD_KEY) : head;
+	}
+
+	public NameValue getTail() {
+		return tail == null && content != null ? content.get(TAIL_KEY) : tail;
 	}
 
 	/**
@@ -188,4 +223,5 @@ public class TemplateMessage implements Serializable {
 				+ templateId + ", url=" + url + ", head=" + getHead()
 				+ ", tail=" + getTail() + ", content=" + content + "]";
 	}
+	
 }
