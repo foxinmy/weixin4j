@@ -205,7 +205,7 @@ public class TagApi extends QyApi {
 		IdParameter idParameter = new IdParameter();
 		if (obj.containsKey("invalidlist")) {
 			idParameter.setUserIds(Arrays.asList(obj.getString("invalidlist")
-					.split(String.valueOf(IdParameter.SEPARATOR))));
+					.split(IdParameter.SEPARATORS)));
 		}
 		if (obj.containsKey("partylist")) {
 			idParameter.setPartyIds(JSON.parseArray(obj.getString("partylist"),

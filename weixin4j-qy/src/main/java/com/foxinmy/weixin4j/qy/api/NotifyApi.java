@@ -1,5 +1,8 @@
 package com.foxinmy.weixin4j.qy.api;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
@@ -68,8 +71,9 @@ public class NotifyApi extends QyApi {
 	 * @see com.foxinmy.weixin4j.tuple.News
 	 * @see com.foxinmy.weixin4j.tuple.MpNews
 	 * @see com.foxinmy.weixin4j.qy.message.NotifyMessage
+	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 */
-	public JSONObject sendNotifyMessage(NotifyMessage message)
+	public IdParameter sendNotifyMessage(NotifyMessage message)
 			throws WeixinException {
 		NotifyTuple tuple = message.getTuple();
 		Map<String, String> target = message.getTarget().getParameter();
@@ -87,8 +91,29 @@ public class NotifyApi extends QyApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(message_send_uri, token.getAccessToken()),
 				obj.toJSONString());
-
-		return response.getAsJson();
+		obj = response.getAsJson();
+		IdParameter idParameter = new IdParameter();
+		if (obj.containsKey("invaliduser")) {
+			idParameter.setUserIds(Arrays.asList(obj.getString("invalidlist")
+					.split(IdParameter.SEPARATORS)));
+		}
+		if (obj.containsKey("invalidparty")) {
+			List<Integer> partyIds = new ArrayList<Integer>();
+			for (String id : obj.getString("invalidlist").split(
+					IdParameter.SEPARATORS)) {
+				partyIds.add(Integer.parseInt(id));
+			}
+			idParameter.setPartyIds(partyIds);
+		}
+		if (obj.containsKey("invalidtag")) {
+			List<Integer> tagIds = new ArrayList<Integer>();
+			for (String id : obj.getString("invalidtag").split(
+					IdParameter.SEPARATORS)) {
+				tagIds.add(Integer.parseInt(id));
+			}
+			idParameter.setPartyIds(tagIds);
+		}
+		return idParameter;
 	}
 
 	/**

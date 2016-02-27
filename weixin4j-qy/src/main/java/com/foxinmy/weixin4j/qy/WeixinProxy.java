@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.qy;
 import java.io.InputStream;
 import java.util.List;
 
-import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.model.Button;
@@ -199,9 +198,9 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.tuple.File
 	 * @see com.foxinmy.weixin4j.tuple.News
 	 * @see com.foxinmy.weixin4j.tuple.MpNews
-	 * @see com.foxinmy.weixin4j.qy.message.NotifyMessage
+	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 */
-	public JSONObject sendNotifyMessage(NotifyMessage message)
+	public IdParameter sendNotifyMessage(NotifyMessage message)
 			throws WeixinException {
 		return notifyApi.sendNotifyMessage(message);
 	}
@@ -710,22 +709,19 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 根据code获取成员信息
+	 * 根据code获取成员ID信息
 	 * 
 	 * @param code
 	 *            通过员工授权获取到的code，每次员工授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期
-	 * @return { "UserId":"USERID", "DeviceId":"DEVICEID" } or
-	 *         {"OpenId":"OPENID","DeviceId":"DEVICEID"}
+	 * @return 两个元素的数组 <font color="red">第一个元素为userId或者openId
+	 *         第二个元素为deviceId</font>
 	 * @see com.foxinmy.weixin4j.qy.api.UserApi
 	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E8%8E%B7%E5%8F%96code">
-	 *      企业获取code</a>
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E6%A0%B9%E6%8D%AEcode%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E4%BF%A1%E6%81%AF">
-	 *      根据code获取成员信息</a>
+	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=OAuth%E9%AA%8C%E8%AF%81%E6%8E%A5%E5%8F%A3">
+	 *      oauth授权获取用户信息</a>
 	 * @throws WeixinException
 	 */
-	public JSONObject getUserIdByCode(String code) throws WeixinException {
+	public String[] getUserIdByCode(String code) throws WeixinException {
 		return userApi.getUserIdByCode(code);
 	}
 

@@ -17,6 +17,7 @@ import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.NameValue;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 成员API
@@ -165,7 +166,7 @@ public class UserApi extends QyApi {
 	}
 
 	/**
-	 * code获取userid(管理员须拥有agent的使用权限；agentid必须和跳转链接时所在的企业应用ID相同。)
+	 * 根据code获取用户信息
 	 * 
 	 * @param code
 	 *            通过员工授权获取到的code，每次员工授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期
@@ -174,15 +175,45 @@ public class UserApi extends QyApi {
 	 * @see {@link #getUser(String)}
 	 * @see {@link #getUserIdByCode(String,int)}
 	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E8%8E%B7%E5%8F%96code">
-	 *      企业获取code</a>
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E6%A0%B9%E6%8D%AEcode%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E4%BF%A1%E6%81%AF">
-	 *      根据code获取成员信息</a>
+	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=OAuth%E9%AA%8C%E8%AF%81%E6%8E%A5%E5%8F%A3">
+	 *      oauth授权获取用户信息</a>
 	 * @throws WeixinException
 	 */
 	public User getUserByCode(String code) throws WeixinException {
-		return getUser(getUserIdByCode(code).getString("UserId"));
+		String[] userIds = getUserIdByCode(code);
+		if (Boolean.parseBoolean(userIds[2])) {
+			return getUser(openid2userid(userIds[0]));
+		} else {
+			return getUser(userIds[0]);
+		}
+	}
+
+	/**
+	 * 根据code获取成员ID信息
+	 * 
+	 * @param code
+	 *            通过员工授权获取到的code，每次员工授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期
+	 * @return 两个元素的数组 <font color="red">第一个元素为userId或者openId
+	 *         第二个元素为deviceId</font>
+	 * @see <a href=
+	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=OAuth%E9%AA%8C%E8%AF%81%E6%8E%A5%E5%8F%A3">
+	 *      oauth授权获取用户信息</a>
+	 * @throws WeixinException
+	 */
+	public String[] getUserIdByCode(String code) throws WeixinException {
+		String user_getid_uri = getRequestUri("user_getid_uri");
+		Token token = tokenHolder.getToken();
+		WeixinResponse response = weixinExecutor.get(String.format(
+				user_getid_uri, token.getAccessToken(), code));
+		JSONObject result = response.getAsJson();
+		String userId = result.getString("UserId");
+		boolean need2 = false;
+		if (StringUtil.isBlank(userId)) {
+			userId = result.getString("OpenId");
+			need2 = true;
+		}
+		return new String[] { userId, result.getString("DeviceId"),
+				Boolean.toString(need2) };
 	}
 
 	/**
@@ -206,28 +237,6 @@ public class UserApi extends QyApi {
 				String.format(oauth_logininfo_uri, providerToken),
 				String.format("{\"auth_code\":\"%s\"}", authCode));
 		return JSON.parseObject(response.getAsString(), OUserInfo.class);
-	}
-
-	/**
-	 * 根据code获取成员信息
-	 * 
-	 * @param code
-	 *            通过员工授权获取到的code，每次员工授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期
-	 * @return { "UserId":"USERID", "DeviceId":"DEVICEID" }
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/indexo.php?title=%E4%BC%81%E4%B8%9A%E8%8E%B7%E5%8F%96code">
-	 *      企业获取code</a>
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E6%A0%B9%E6%8D%AEcode%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E4%BF%A1%E6%81%AF">
-	 *      根据code获取成员信息</a>
-	 * @throws WeixinException
-	 */
-	public JSONObject getUserIdByCode(String code) throws WeixinException {
-		String user_getid_uri = getRequestUri("user_getid_uri");
-		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.get(String.format(
-				user_getid_uri, token.getAccessToken(), code));
-		return response.getAsJson();
 	}
 
 	/**

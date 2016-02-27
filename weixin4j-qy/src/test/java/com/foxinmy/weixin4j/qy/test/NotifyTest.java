@@ -1,14 +1,12 @@
 package com.foxinmy.weixin4j.qy.test;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.qy.api.NotifyApi;
 import com.foxinmy.weixin4j.qy.message.NotifyMessage;
+import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.tuple.File;
 import com.foxinmy.weixin4j.tuple.Image;
 import com.foxinmy.weixin4j.tuple.MpNews;
@@ -88,8 +86,8 @@ public class NotifyTest extends TokenTest {
 	@Test
 	public void send1() throws WeixinException {
 		Text text = new Text("this is a text");
-		JSONObject result = notifyApi.sendNotifyMessage(new NotifyMessage(1,
+		IdParameter result = notifyApi.sendNotifyMessage(new NotifyMessage(1,
 				text));
-		Assert.assertEquals(0, result.getIntValue("errcode"));
+		System.err.println(result);
 	}
 }

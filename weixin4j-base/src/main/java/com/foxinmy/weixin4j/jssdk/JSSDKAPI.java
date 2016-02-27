@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.jssdk;
  * @className JSSDKAPI
  * @author jy
  * @date 2015年12月23日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum JSSDKAPI {

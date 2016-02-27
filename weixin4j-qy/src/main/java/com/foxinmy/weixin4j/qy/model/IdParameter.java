@@ -25,6 +25,8 @@ public class IdParameter implements Serializable {
 
 	public static final char SEPARATOR = '|';
 
+	public static final String SEPARATORS = String.valueOf(SEPARATOR);
+
 	@JSONField(name = "user")
 	private List<String> userIds;
 	@JSONField(name = "party")
