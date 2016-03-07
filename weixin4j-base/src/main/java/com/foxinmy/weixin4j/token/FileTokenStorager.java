@@ -62,7 +62,7 @@ public class FileTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public Token evict(String cacheKey) {
+	public Token evict(String cacheKey) throws WeixinException {
 		Token token = null;
 		File token_file = new File(String.format("%s/%s.xml", cachePath,
 				cacheKey));
@@ -79,7 +79,7 @@ public class FileTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public void clear() {
+	public void clear() throws WeixinException {
 		File[] files = new File(cachePath).listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File file) {

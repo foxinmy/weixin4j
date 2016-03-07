@@ -41,10 +41,10 @@ public interface CacheStorager<T> {
 	 *            缓存key
 	 * @return 移除的对象
 	 */
-	T evict(String cacheKey);
+	T evict(String cacheKey) throws WeixinException;
 
 	/**
 	 * 清除所有缓存对象(<font color="red">请慎重</font>)
 	 */
-	void clear();
+	void clear() throws WeixinException;
 }

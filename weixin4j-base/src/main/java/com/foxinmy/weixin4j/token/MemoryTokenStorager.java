@@ -41,12 +41,12 @@ public class MemoryTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public Token evict(String cacheKey) {
+	public Token evict(String cacheKey) throws WeixinException {
 		return this.CONMAP.remove(cacheKey);
 	}
 
 	@Override
-	public void clear() {
+	public void clear() throws WeixinException {
 		this.CONMAP.clear();
 	}
 }

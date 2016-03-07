@@ -103,7 +103,7 @@ public class RedisTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public Token evict(String cacheKey) {
+	public Token evict(String cacheKey) throws WeixinException {
 		Token token = null;
 		try {
 			token = lookup(cacheKey);
@@ -123,7 +123,7 @@ public class RedisTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public void clear() {
+	public void clear() throws WeixinException {
 		// en....
 	}
 }
