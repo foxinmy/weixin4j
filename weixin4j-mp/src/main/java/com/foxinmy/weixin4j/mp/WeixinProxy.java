@@ -151,7 +151,7 @@ public class WeixinProxy {
 	public TokenHolder getTicketHolder(TicketType ticketType) {
 		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount()
 				.getId(), ticketType, this.tokenHolder),
-				this.tokenHolder.getTokenStorager());
+				this.settings.getTokenStorager0());
 	}
 
 	/**

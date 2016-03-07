@@ -113,7 +113,7 @@ public class WeixinProxy {
 	public WeixinProxy(SuitePerCodeHolder perCodeHolder,
 			TokenHolder suiteTokenHolder) {
 		this(new TokenHolder(new WeixinTokenSuiteCreator(perCodeHolder,
-				suiteTokenHolder), suiteTokenHolder.getTokenStorager()));
+				suiteTokenHolder), perCodeHolder.getTokenStorager()));
 		this.settings = new Weixin4jSettings(new WeixinAccount(
 				perCodeHolder.getAuthCorpId(), null));
 	}
@@ -167,7 +167,7 @@ public class WeixinProxy {
 	public TokenHolder getTicketHolder(TicketType ticketType) {
 		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount()
 				.getId(), ticketType, this.tokenHolder),
-				this.tokenHolder.getTokenStorager());
+				this.settings.getTokenStorager0());
 	}
 
 	/**

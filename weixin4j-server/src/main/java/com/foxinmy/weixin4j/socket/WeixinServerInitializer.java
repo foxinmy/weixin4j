@@ -9,7 +9,6 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import java.util.Map;
 
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
-import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.util.AesToken;
 
 /**
@@ -27,7 +26,7 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 	private final WeixinMessageDispatcher messageDispatcher;
 
 	public WeixinServerInitializer(Map<String, AesToken> aesTokenMap,
-			WeixinMessageDispatcher messageDispatcher) throws WeixinException {
+			WeixinMessageDispatcher messageDispatcher) {
 		this.aesTokenMap = aesTokenMap;
 		this.messageDispatcher = messageDispatcher;
 	}

@@ -154,7 +154,7 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest JS支付
 	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest 扫码支付
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
-	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付t
+	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
 	 * @throws WeixinPayException
 	 */
 	public MchPayRequest createPayRequest(TradeType tradeType, String openId,

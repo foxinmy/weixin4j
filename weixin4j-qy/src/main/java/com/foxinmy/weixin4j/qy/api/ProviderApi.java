@@ -8,6 +8,7 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
 import com.foxinmy.weixin4j.qy.type.LoginTargetType;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
@@ -22,9 +23,12 @@ import com.foxinmy.weixin4j.util.StringUtil;
  */
 public class ProviderApi extends QyApi {
 	private final TokenHolder providerTokenHolder;
+	private final TokenStorager tokenStorager;
 
-	public ProviderApi(TokenHolder providerTokenHolder) {
+	public ProviderApi(TokenHolder providerTokenHolder,
+			TokenStorager tokenStorager) {
 		this.providerTokenHolder = providerTokenHolder;
+		this.tokenStorager = tokenStorager;
 	}
 
 	/**
@@ -49,14 +53,13 @@ public class ProviderApi extends QyApi {
 		oUser.getRedirectLoginInfo().setAccessToken(
 				obj.getJSONObject("redirect_login_info").getString(
 						"login_ticket"));
-		providerTokenHolder.getTokenStorager().caching(
-				getLoginTicketCacheKey(oUser.getCorpInfo().getCorpId()),
-				oUser.getRedirectLoginInfo());
+		tokenStorager.caching(getLoginTicketCacheKey(oUser.getCorpInfo()
+				.getCorpId()), oUser.getRedirectLoginInfo());
 		return oUser;
 	}
 
 	private String getLoginTicketCacheKey(String coprId) {
-		return String.format("wx_qy_provider_login_ticket_%s", coprId);
+		return String.format("weixin4j_qy_provider_ticket_%s", coprId);
 	}
 
 	/**
@@ -75,8 +78,7 @@ public class ProviderApi extends QyApi {
 	 */
 	public String getLoginUrl(String corpId, LoginTargetType targetType,
 			int agentId) throws WeixinException {
-		Token token = providerTokenHolder.getTokenStorager().lookup(
-				getLoginTicketCacheKey(corpId));
+		Token token = tokenStorager.lookup(getLoginTicketCacheKey(corpId));
 		if (token == null || StringUtil.isBlank(token.getAccessToken())) {
 			throw new WeixinException("maybe oauth first?");
 		}

@@ -65,7 +65,8 @@ public class WeixinSuiteProxy {
 					new WeixinProviderTokenCreator(suiteSettings
 							.getWeixinAccount().getId(), suiteSettings
 							.getWeixinAccount().getProviderSecret()),
-					suiteSettings.getTokenStorager0()));
+					suiteSettings.getTokenStorager0()),
+					suiteSettings.getTokenStorager0());
 		}
 	}
 

@@ -216,8 +216,6 @@ public final class WeixinServerBootstrap {
 						}
 					}).sync().channel();
 			ch.closeFuture().sync();
-		} catch (WeixinException e) {
-			throw e;
 		} catch (InterruptedException e) {
 			throw new WeixinException(e);
 		} finally {

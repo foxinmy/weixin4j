@@ -663,6 +663,10 @@
 		<text>应用名字长度不合法，合法长度为2-16个字</text>
 	</error>
 	<error>
+		<code>45047</code>
+		<text>客服接口下行条数超过上限</text>
+	</error>
+	<error>
 		<code>45024</code>
 		<text>账号数量超过上限</text>
 	</error>
