@@ -2,10 +2,12 @@ package com.foxinmy.weixin4j.token;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Pipeline;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
@@ -104,12 +106,7 @@ public class RedisTokenStorager implements TokenStorager {
 
 	@Override
 	public Token evict(String cacheKey) throws WeixinException {
-		Token token = null;
-		try {
-			token = lookup(cacheKey);
-		} catch (WeixinException e) {
-			; // never
-		}
+		Token token = lookup(cacheKey);
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
@@ -124,6 +121,21 @@ public class RedisTokenStorager implements TokenStorager {
 
 	@Override
 	public void clear() throws WeixinException {
-		// en....
+		Jedis jedis = null;
+		try {
+			jedis = jedisPool.getResource();
+			Set<String> cacheKeys = jedis.keys("weixin4j_*");
+			if (!cacheKeys.isEmpty()) {
+				Pipeline pipeline = jedis.pipelined();
+				for (String cacheKey : cacheKeys) {
+					pipeline.del(cacheKey);
+				}
+				pipeline.sync();
+			}
+		} finally {
+			if (jedis != null) {
+				jedis.close();
+			}
+		}
 	}
 }

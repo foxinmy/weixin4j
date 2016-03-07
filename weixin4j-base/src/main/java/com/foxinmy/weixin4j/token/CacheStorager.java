@@ -17,7 +17,7 @@ public interface CacheStorager<T> {
 	 * 
 	 * @param cacheKey
 	 *            缓存key
-	 * @return
+	 * @return 缓存对象
 	 * @throws WeixinException
 	 */
 	T lookup(String cacheKey) throws WeixinException;
