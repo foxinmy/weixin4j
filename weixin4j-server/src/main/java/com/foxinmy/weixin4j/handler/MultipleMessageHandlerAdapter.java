@@ -1,0 +1,62 @@
+package com.foxinmy.weixin4j.handler;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.request.WeixinMessage;
+import com.foxinmy.weixin4j.request.WeixinRequest;
+
+/**
+ * 多个消息类型适配
+ * 
+ * @className MultipleMessageHandlerAdapter
+ * @author jy
+ * @date 2016年3月12日
+ * @since JDK 1.6
+ * @see
+ */
+public abstract class MultipleMessageHandlerAdapter implements
+		WeixinMessageHandler {
+
+	private final Set<Class<? extends WeixinMessage>> messageClasses;
+
+	public MultipleMessageHandlerAdapter(
+			Class<? extends WeixinMessage>... messageClasses) {
+		if (messageClasses == null) {
+			throw new IllegalArgumentException("messageClasses not be empty");
+		}
+		this.messageClasses = new HashSet<Class<? extends WeixinMessage>>(
+				(int) Math.ceil(messageClasses.length * 0.75));
+		for (Class<? extends WeixinMessage> clazz : messageClasses) {
+			this.messageClasses.add(clazz);
+		}
+	}
+
+	@Override
+	public boolean canHandle(WeixinRequest request, WeixinMessage message,
+			Set<String> nodeNames) throws WeixinException {
+		return message != null && messageClasses.contains(message.getClass())
+				&& canHandle0(request, message);
+	}
+
+	/**
+	 * 能否处理请求
+	 * 
+	 * @param request
+	 *            微信请求
+	 * @param message
+	 *            微信消息
+	 * @return true则执行doHandler
+	 * @throws WeixinException
+	 */
+	public boolean canHandle0(WeixinRequest request, WeixinMessage message)
+			throws WeixinException {
+		return true;
+	}
+
+	@Override
+	public int weight() {
+		return 1;
+	}
+}
