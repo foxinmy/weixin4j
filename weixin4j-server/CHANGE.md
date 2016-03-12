@@ -135,3 +135,10 @@
 * 2015-02-04
 
   + version upgrade to 1.1.6
+  
+  
+* 2015-03-12
+
+  + 修改ClassUtil获取class不到的bug
+  
+  + 新增MultipleMessageHandlerAdapter多个消息适配类

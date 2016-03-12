@@ -12,8 +12,8 @@ import java.lang.reflect.Type;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -75,7 +75,7 @@ public final class ClassUtil {
 	 * @return
 	 */
 	private static List<Class<?>> findClassesByFile(File dir, String packageName) {
-		List<Class<?>> classes = new LinkedList<Class<?>>();
+		List<Class<?>> classes = new ArrayList<Class<?>>();
 		File[] files = dir.listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File file, String name) {
@@ -111,23 +111,21 @@ public final class ClassUtil {
 	 */
 	private static List<Class<?>> findClassesByJar(JarFile jar,
 			String packageName) {
-		List<Class<?>> classes = new LinkedList<Class<?>>();
+		List<Class<?>> classes = new ArrayList<Class<?>>();
 		Enumeration<JarEntry> jarEntries = jar.entries();
 		while (jarEntries.hasMoreElements()) {
 			JarEntry jarEntry = jarEntries.nextElement();
 			if (jarEntry.isDirectory()) {
 				continue;
 			}
-			String entryName = jarEntry.getName();
-			if (!entryName.startsWith(packageName)) {
-				continue;
-			}
-			if (!entryName.endsWith(CLASS)) {
+			String className = jarEntry.getName()
+					.replace(File.separator, POINT);
+			if (!className.startsWith(packageName)
+					|| !className.endsWith(CLASS)) {
 				continue;
 			}
 			try {
-				classes.add(Class.forName(entryName.replace(File.separator,
-						POINT).replace(CLASS, "")));
+				classes.add(Class.forName(className.replace(CLASS, "")));
 			} catch (ClassNotFoundException e) {
 				;
 			}
@@ -177,15 +175,17 @@ public final class ClassUtil {
 	 * @param object
 	 * @return
 	 */
-	public static Class<?> getGenericType(Object object) {
-		Class<?> clazz = null;
-		Type type = object.getClass().getGenericSuperclass();
+	public static Class<?> getGenericType(Class<?> clazz) {
+		if(clazz == Object.class){
+			return null;
+		}
+		Type type = clazz.getGenericSuperclass();
 		if (type instanceof ParameterizedType) {
 			ParameterizedType ptype = ((ParameterizedType) type);
 			Type[] args = ptype.getActualTypeArguments();
-			clazz = (Class<?>) args[0];
+			return (Class<?>) args[0];
 		}
-		return clazz;
+		return getGenericType(clazz.getSuperclass());
 	}
 
 	public static ClassLoader getDefaultClassLoader() {
