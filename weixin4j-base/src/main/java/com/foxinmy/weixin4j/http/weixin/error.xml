@@ -859,15 +859,15 @@
 	</error>
 	<error>
 		<code>60027</code>
-		<text>主页型应用不支持调用该接口</text>
+		<text>不支持第三方修改主页型应用字段</text>
 	</error>
 	<error>
 		<code>60028</code>
-		<text>应用已授权予第三方，不允许通过分级管理员主页url</text>
+		<text>应用已授权予第三方，不允许通过接口修改主页url</text>
 	</error>
 	<error>
 		<code>60029</code>
-		<text>应用已授权予第三方，不允许通过分级管理员修改可信域名</text>
+		<text>应用已授权予第三方，不允许通过接口修改可信域名</text>
 	</error>
 	<error>
 		<code>60102</code>

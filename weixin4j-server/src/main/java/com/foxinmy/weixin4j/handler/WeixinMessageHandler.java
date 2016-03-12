@@ -15,6 +15,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * @date 2015年5月7日
  * @since JDK 1.6
  * @see MessageHandlerAdapter
+ * @see MultipleMessageHandlerAdapter
  */
 public interface WeixinMessageHandler {
 
