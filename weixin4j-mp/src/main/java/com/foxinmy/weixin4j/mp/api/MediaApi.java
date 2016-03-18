@@ -194,8 +194,9 @@ public class MediaApi extends MpApi {
 										.getContentType().getMimeType(),
 										fileName)), new FormBodyPart("type",
 								new StringBody(mediaType.name(), Consts.UTF_8)));
-				return new MediaUploadResult(response.getAsJson().getString(
-						"media_id"), mediaType, new Date());
+				JSONObject obj = response.getAsJson();
+				return new MediaUploadResult(obj.getString("media_id"),
+						mediaType, new Date(), obj.getString("url"));
 			} else {
 				String media_upload_uri = getRequestUri("media_upload_uri");
 				response = weixinExecutor.post(String.format(media_upload_uri,
@@ -207,11 +208,8 @@ public class MediaApi extends MpApi {
 				JSONObject obj = response.getAsJson();
 				return new MediaUploadResult(obj.getString("media_id"),
 						obj.getObject("type", MediaType.class), new Date(
-								obj.getLong("created_at") * 1000l));
-				/*
-				 * return response.getAsObject(new
-				 * TypeReference<MediaUploadResult>() { });
-				 */
+								obj.getLong("created_at") * 1000l),
+						obj.getString("url"));
 			}
 		} catch (UnsupportedEncodingException e) {
 			throw new WeixinException(e);

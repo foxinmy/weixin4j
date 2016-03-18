@@ -60,8 +60,18 @@ public class Weixin4jSettings {
 	 */
 	public Weixin4jSettings(WeixinPayAccount weixinPayAccount,
 			String certificateFile) {
-		this.weixinPayAccount = weixinPayAccount;
+		this(weixinPayAccount);
 		this.certificateFile = certificateFile;
+	}
+
+	/**
+	 * 支付代理接口
+	 * 
+	 * @param weixinPayAccount
+	 *            商户信息
+	 */
+	public Weixin4jSettings(WeixinPayAccount weixinPayAccount) {
+		this.weixinPayAccount = weixinPayAccount;
 		this.weixinAccount = new WeixinAccount(weixinPayAccount.getId(),
 				weixinPayAccount.getSecret());
 	}

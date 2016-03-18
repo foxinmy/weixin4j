@@ -47,7 +47,7 @@ public class AgentSetter implements Serializable {
 	@JSONField(name = "redirect_domain")
 	private String redirectDomain;
 	/**
-	 * 是否接收用户变更通知。0：不接收；1：接收
+	 * 是否接收用户变更通知。0：不接收；1：接收。主页型应用无需该参数
 	 */
 	@JSONField(name = "isreportuser")
 	private boolean isReportUser;
