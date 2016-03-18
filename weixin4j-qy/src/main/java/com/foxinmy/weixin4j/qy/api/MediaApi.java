@@ -132,8 +132,9 @@ public class MediaApi extends QyApi {
 						mediaType.name(), agentid), new FormBodyPart("media",
 						new ByteArrayBody(content, mediaType.getContentType()
 								.getMimeType(), fileName)));
-				return new MediaUploadResult(response.getAsJson().getString(
-						"media_id"), mediaType, new Date());
+				JSONObject obj = response.getAsJson();
+				return new MediaUploadResult(
+						obj.getString("media_id"), mediaType, new Date(),obj.getString("url"));
 			} else {
 				String media_upload_uri = getRequestUri("media_upload_uri");
 				response = weixinExecutor.post(String.format(media_upload_uri,
@@ -144,7 +145,7 @@ public class MediaApi extends QyApi {
 				JSONObject obj = response.getAsJson();
 				return new MediaUploadResult(obj.getString("media_id"),
 						obj.getObject("type", MediaType.class), new Date(
-								obj.getLong("created_at") * 1000l));
+								obj.getLong("created_at") * 1000l),obj.getString("url"));
 				/*
 				 * return response.getAsObject(new
 				 * TypeReference<MediaUploadResult>() { });
