@@ -29,6 +29,7 @@ public class MediaItem implements Serializable {
 	/**
 	 * 媒体素材名称
 	 */
+	@JSONField(name = "filename")
 	private String name;
 	/**
 	 * 媒体素材最后更新时间

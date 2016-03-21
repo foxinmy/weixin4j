@@ -47,8 +47,17 @@ import com.foxinmy.weixin4j.util.Weixin4jSettings;
  */
 public class WeixinPayProxy {
 
+	/**
+	 * 微信支付API:js支付、扫码支付等接口
+	 */
 	private final Pay3Api pay3Api;
+	/**
+	 * 代金券API
+	 */
 	private final CouponApi couponApi;
+	/**
+	 * 现金API
+	 */
 	private final CashApi cashApi;
 
 	private final Weixin4jSettings settings;

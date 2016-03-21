@@ -63,15 +63,45 @@ import com.foxinmy.weixin4j.util.Weixin4jSettings;
  */
 public class WeixinProxy {
 
+	/**
+	 * 媒体素材API
+	 */
 	private final MediaApi mediaApi;
+	/**
+	 * 底部菜单API
+	 */
 	private final MenuApi menuApi;
+	/**
+	 * 消息服务API
+	 */
 	private final NotifyApi notifyApi;
+	/**
+	 * 部门API
+	 */
 	private final PartyApi partyApi;
+	/**
+	 * 成员API
+	 */
 	private final UserApi userApi;
+	/**
+	 * 标签API
+	 */
 	private final TagApi tagApi;
+	/**
+	 * 辅助API
+	 */
 	private final HelperApi helperApi;
+	/**
+	 * 应用API
+	 */
 	private final AgentApi agentApi;
+	/**
+	 * 批量操作API
+	 */
 	private final BatchApi batchApi;
+	/**
+	 * 聊天服务API
+	 */
 	private final ChatApi chatApi;
 
 	private final TokenHolder tokenHolder;

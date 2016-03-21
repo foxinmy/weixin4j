@@ -67,16 +67,49 @@ import com.foxinmy.weixin4j.util.Weixin4jSettings;
  */
 public class WeixinProxy {
 
+	/**
+	 * 媒体素材API
+	 */
 	private final MediaApi mediaApi;
+	/**
+	 * 客服消息API
+	 */
 	private final NotifyApi notifyApi;
+	/**
+	 * 多客服API
+	 */
 	private final CustomApi customApi;
+	/**
+	 * 群发消息API
+	 */
 	private final MassApi massApi;
+	/**
+	 * 用户API
+	 */
 	private final UserApi userApi;
+	/**
+	 * 分组API
+	 */
 	private final GroupApi groupApi;
+	/**
+	 * 底部菜单API
+	 */
 	private final MenuApi menuApi;
+	/**
+	 * 二维码API
+	 */
 	private final QrApi qrApi;
+	/**
+	 * 模板消息API
+	 */
 	private final TmplApi tmplApi;
+	/**
+	 * 辅助API
+	 */
 	private final HelperApi helperApi;
+	/**
+	 * 数据统计API
+	 */
 	private final DataApi dataApi;
 
 	private final TokenHolder tokenHolder;
