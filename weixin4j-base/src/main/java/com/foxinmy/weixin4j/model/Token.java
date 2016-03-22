@@ -41,7 +41,7 @@ public class Token implements Serializable {
 	private String originalResult;
 
 	public Token() {
-
+		this.createTime = System.currentTimeMillis() / 1000l;
 	}
 
 	public Token(String accessToken) {

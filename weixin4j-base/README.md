@@ -15,5 +15,8 @@ weixin4j-base
 
 `微信支付的实现`
 
+[如何使用](https://github.com/foxinmy/weixin4j/wiki)
+---------
+
 [更新LOG](./CHANGE.md)
 ---------------------

@@ -10,8 +10,9 @@ import com.foxinmy.weixin4j.model.Token;
  * @date 2014年9月27日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.model.Token
- * @see com.foxinmy.weixin4j.token.FileTokenStorager
- * @see com.foxinmy.weixin4j.token.RedisTokenStorager
+ * @see MemoryTokenStorager
+ * @see FileTokenStorager
+ * @see RedisTokenStorager
  */
 public interface TokenStorager extends CacheStorager<Token> {
 }

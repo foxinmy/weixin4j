@@ -71,6 +71,10 @@ public class HttpComponent4_1 extends HttpComponent4 {
 				uriRequest.getParams().setParameter(
 						CoreProtocolPNames.HTTP_CONTENT_CHARSET, Consts.UTF_8);
 				uriRequest.getParams().setParameter(
+						CoreProtocolPNames.HTTP_ELEMENT_CHARSET, Consts.UTF_8.name());
+				uriRequest.getParams().setParameter(
+						CoreProtocolPNames.STRICT_TRANSFER_ENCODING, Consts.UTF_8);
+				uriRequest.getParams().setParameter(
 						HttpHeaders.CONTENT_ENCODING, Consts.UTF_8);
 				uriRequest.getParams().setParameter(HttpHeaders.ACCEPT_CHARSET,
 						Consts.UTF_8);

@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.Gender;
 import com.foxinmy.weixin4j.mp.type.ClientPlatformType;
+import com.foxinmy.weixin4j.mp.type.Lang;
 
 /**
  * 个性化菜单匹配规则
@@ -62,6 +63,10 @@ public class MenuMatchRule implements Serializable {
 	 */
 	private ClientPlatformType platformType;
 
+	/**
+	 * 请使用 {@link #platform(ClientPlatformType platformType)}}
+	 * @param platform
+	 */
 	@JSONField(name = "client_platform_type")
 	public void platform0(int platform) {
 		this.platformType = ClientPlatformType.values().length >= platform ? ClientPlatformType
@@ -133,6 +138,29 @@ public class MenuMatchRule implements Serializable {
 		return this;
 	}
 
+	/**
+	 * 语言信息，是用户在微信中设置的语言
+	 */
+	private Lang language;
+
+	/**
+	 * 请使用 {@link #language(Lang language)}
+	 * @param language
+	 */
+	@JSONField(name = "language")
+	public void language0(int language) {
+		this.language = Lang.values().length >= language ? Lang.values()[language - 1]
+				: null;
+	}
+
+	public MenuMatchRule language(Lang language) {
+		if (language != null) {
+			matchRule.put("language", language.ordinal() + 1);
+		}
+		this.language = language;
+		return this;
+	}
+
 	public ClientPlatformType getPlatformType() {
 		return platformType;
 	}
@@ -157,6 +185,10 @@ public class MenuMatchRule implements Serializable {
 		return city;
 	}
 
+	public Lang getLanguage() {
+		return language;
+	}
+
 	public boolean hasRule() {
 		return !matchRule.isEmpty();
 	}
@@ -169,6 +201,7 @@ public class MenuMatchRule implements Serializable {
 	public String toString() {
 		return "MenuMatchRule [groupId=" + groupId + ", gender=" + gender
 				+ ", platformType=" + platformType + ", country=" + country
-				+ ", province=" + province + ", city=" + city + "]";
+				+ ", province=" + province + ", city=" + city + ", language="
+				+ language + "]";
 	}
 }

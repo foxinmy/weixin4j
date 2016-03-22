@@ -54,8 +54,10 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void download1() throws WeixinException, IOException {
-		MediaDownloadResult content = mediaApi.downloadMedia(
-				"BmzcrM2jaJXZCjBqxLwyC03kh5pge3CbrBqXP4XbYBCeKr7xz-rHuwPf4vYLVdL1", false);
+		MediaDownloadResult content = mediaApi
+				.downloadMedia(
+						"BmzcrM2jaJXZCjBqxLwyC03kh5pge3CbrBqXP4XbYBCeKr7xz-rHuwPf4vYLVdL1",
+						false);
 		Assert.assertTrue(content != null);
 		System.err.println(content);
 	}
@@ -72,9 +74,9 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void uploadMaterialVideo() throws IOException, WeixinException {
-		File file = new File("/Users/jy/Downloads/test.jpg");
+		File file = new File("/Users/jy/Downloads/test.mp4");
 		String mediaId = mediaApi.uploadMaterialVideo(
-				new FileInputStream(file), "title", "introduction");
+				new FileInputStream(file), "filename", "title", "introduction");
 		// Sy1KOLsi4ri3kB3TYUuculVelcW2I7W6BrfGwkGvSW8beTCAarxuGQLjuNJChJr8
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);
@@ -88,12 +90,6 @@ public class MediaTest extends TokenTest {
 		// 17385064953
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);
-	}
-
-	@Test
-	public void download2() throws WeixinException, IOException {
-		File file = mediaApi.downloadMediaFile("8790403529", true);
-		Assert.assertTrue(file.exists());
 	}
 
 	@Test

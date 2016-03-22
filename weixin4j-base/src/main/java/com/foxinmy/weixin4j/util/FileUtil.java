@@ -1,7 +1,10 @@
 package com.foxinmy.weixin4j.util;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,6 +30,21 @@ public class FileUtil {
 		FILE_TYPE_MAP.put("424d228c010000000000", "bmp"); // 16色位图(bmp)
 		FILE_TYPE_MAP.put("424d8240090000000000", "bmp"); // 24位位图(bmp)
 		FILE_TYPE_MAP.put("424d8e1b030000000000", "bmp"); // 256色位图(bmp)
+
+		FILE_TYPE_MAP.put("49443303000000002176", "mp3");
+		FILE_TYPE_MAP.put("52494646", "wav");
+		FILE_TYPE_MAP.put("00005741", "wav");
+		FILE_TYPE_MAP.put("2321414d", "amr");
+		FILE_TYPE_MAP.put("520a3c91", "amr");
+		
+		FILE_TYPE_MAP.put("2e524d46000000120001", "rmvb"); // rmvb、rm
+		FILE_TYPE_MAP.put("464c5601050000000900", "flv"); // flv、f4v
+		FILE_TYPE_MAP.put("667479706d70", "mp4");
+		FILE_TYPE_MAP.put("667479706973", "mp4");
+		FILE_TYPE_MAP.put("000001ba210001000180", "mpg");
+		FILE_TYPE_MAP.put("3026b2758e66cf11a6d9", "wmv"); // wmv、asf
+		FILE_TYPE_MAP.put("52494646d07d60074156", "avi");
+
 		FILE_TYPE_MAP.put("41433130313500000000", "dwg");
 		FILE_TYPE_MAP.put("3c21444f435459504520", "html");
 		FILE_TYPE_MAP.put("3c21646f637479706520", "htm");
@@ -39,14 +57,6 @@ public class FileUtil {
 		FILE_TYPE_MAP.put("d0cf11e0a1b11ae10000", "vsd");
 		FILE_TYPE_MAP.put("5374616E64617264204A", "mdb");
 		FILE_TYPE_MAP.put("255044462d312e350d0a", "pdf");
-		FILE_TYPE_MAP.put("2e524d46000000120001", "rmvb"); // rmvb、rm
-		FILE_TYPE_MAP.put("464c5601050000000900", "flv"); // flv、f4v
-		FILE_TYPE_MAP.put("00000020667479706d70", "mp4");
-		FILE_TYPE_MAP.put("49443303000000002176", "mp3");
-		FILE_TYPE_MAP.put("000001ba210001000180", "mpg");
-		FILE_TYPE_MAP.put("3026b2758e66cf11a6d9", "wmv"); // wmv、asf
-		FILE_TYPE_MAP.put("52494646e27807005741", "wav");
-		FILE_TYPE_MAP.put("52494646d07d60074156", "avi");
 		FILE_TYPE_MAP.put("4d546864000000060001", "mid");
 		FILE_TYPE_MAP.put("504b0304140000000800", "zip");
 		FILE_TYPE_MAP.put("526172211a0700cf9073", "rar");
@@ -105,7 +115,8 @@ public class FileUtil {
 				Iterator<String> keyIter = FILE_TYPE_MAP.keySet().iterator();
 				while (keyIter.hasNext()) {
 					String key = keyIter.next().toLowerCase();
-					if (key.startsWith(fileCode) || fileCode.startsWith(key)) {
+					if (key.startsWith(fileCode) || fileCode.startsWith(key)
+							|| key.endsWith(fileCode) || fileCode.endsWith(key)) {
 						fileType = FILE_TYPE_MAP.get(key);
 						break;
 					}
@@ -141,5 +152,12 @@ public class FileUtil {
 		int lastSeparator = Math.max(lastUnixPos, lastWindowsPos);
 		return lastSeparator > extensionPos ? "" : fileName
 				.substring(extensionPos + 1);
+	}
+
+	public static void main(String[] args) throws IOException {
+		InputStream is = new FileInputStream(new File(
+				"/Users/jy/Downloads/test.mp4"));
+		System.err.println(getFileType(is));
+		System.err.println(URLConnection.guessContentTypeFromStream(is));
 	}
 }

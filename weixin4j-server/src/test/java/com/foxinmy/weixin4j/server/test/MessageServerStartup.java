@@ -1,13 +1,18 @@
 package com.foxinmy.weixin4j.server.test;
 
+import java.util.Set;
+
 import io.netty.channel.ChannelHandlerContext;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.DebugMessageHandler;
 import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
+import com.foxinmy.weixin4j.handler.MultipleMessageHandlerAdapter;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.message.TextMessage;
+import com.foxinmy.weixin4j.mp.event.ScanEventMessage;
+import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.TextResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
@@ -84,7 +89,7 @@ public class MessageServerStartup {
 		WeixinMessageInterceptor interceptor = new WeixinMessageInterceptor() {
 			@Override
 			public boolean preHandle(ChannelHandlerContext context,
-					WeixinRequest request, Object message,
+					WeixinRequest request, WeixinMessage message,
 					WeixinMessageHandler handler) throws WeixinException {
 				context.writeAndFlush(new TextResponse("所有消息被拦截了！"));
 				return false;
@@ -93,7 +98,7 @@ public class MessageServerStartup {
 			@Override
 			public void postHandle(ChannelHandlerContext context,
 					WeixinRequest request, WeixinResponse response,
-					Object message, WeixinMessageHandler handler)
+					WeixinMessage message, WeixinMessageHandler handler)
 					throws WeixinException {
 				System.err.println("preHandle返回为true,执行handler后");
 			}
@@ -101,7 +106,7 @@ public class MessageServerStartup {
 			@Override
 			public void afterCompletion(ChannelHandlerContext context,
 					WeixinRequest request, WeixinResponse response,
-					Object message, WeixinMessageHandler handler,
+					WeixinMessage message, WeixinMessageHandler handler,
 					Exception exception) throws WeixinException {
 				System.err.println("请求处理完毕");
 			}
@@ -115,7 +120,22 @@ public class MessageServerStartup {
 				.openAlwaysResponse().startup();
 	}
 
+	@SuppressWarnings("unchecked")
+	public void test6() throws WeixinException {
+		MultipleMessageHandlerAdapter messageHandler = new MultipleMessageHandlerAdapter(
+				ScanEventMessage.class, TextMessage.class) {
+			@Override
+			public WeixinResponse doHandle(WeixinRequest request,
+					WeixinMessage message, Set<String> nodeNames)
+					throws WeixinException {
+				return new TextResponse("处理了扫描和文字消息");
+			}
+		};
+		new WeixinServerBootstrap(token).addHandler(messageHandler,
+				DebugMessageHandler.global).startup();
+	}
+
 	public static void main(String[] args) throws Exception {
-		new MessageServerStartup().test1();
+		new MessageServerStartup().test6();
 	}
 }

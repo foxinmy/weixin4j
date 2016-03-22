@@ -3,11 +3,8 @@ package com.foxinmy.weixin4j.qy.api;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import com.alibaba.fastjson.JSON;
-import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.qy.model.OUserInfo;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
@@ -25,17 +22,27 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%88%E6%9D%83">企业号第三方套件应用授权说明</a>
  */
 public class OauthApi extends QyApi {
+	private final WeixinAccount account;
+
+	public OauthApi() {
+		this(Weixin4jConfigUtil.getWeixinAccount());
+	}
+
+	public OauthApi(WeixinAccount account) {
+		this.account = account;
+	}
 
 	/**
 	 * 企业号用户身份授权
 	 * 
-	 * @see {@link OauthApi#getUserAuthorizeURL(String, String,String)}
+	 * @see {@link #getUserAuthorizeURL(String, String,String)}
 	 * 
 	 * @return 请求授权的URL
 	 */
 	public String getUserAuthorizeURL() {
-		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("user.oauth.redirect.uri");
+		String corpId = account.getId();
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("user.oauth.redirect.uri");
 		return getUserAuthorizeURL(corpId, redirectUri, "state");
 	}
 
@@ -72,8 +79,9 @@ public class OauthApi extends QyApi {
 	 * @return 请求授权的URL
 	 */
 	public String getThirdAuthorizeURL() {
-		String corpId = DEFAULT_WEIXIN_ACCOUNT.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("third.oauth.redirect.uri");
+		String corpId = account.getId();
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("third.oauth.redirect.uri");
 		return getThirdAuthorizeURL(corpId, redirectUri, "state");
 	}
 
@@ -87,6 +95,8 @@ public class OauthApi extends QyApi {
 	 * @param state
 	 *            用于保持请求和回调的状态，授权请求后原样带回给第三方
 	 * @return 请求授权的URL
+	 * @see ProviderApi
+	 * @see {@link com.foxinmy.weixin4j.qy.WeixinSuiteProxy#getOUserInfoByCode(String)}
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83">企业号第三方提供商授权</a>
 	 */
@@ -103,28 +113,6 @@ public class OauthApi extends QyApi {
 	}
 
 	/**
-	 * 第三方套件获取企业号管理员登录信息
-	 * 
-	 * @param providerToken
-	 *            提供商的token
-	 * @param authCode
-	 *            oauth2.0授权企业号管理员登录产生的code
-	 * @return 登陆信息
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E5%91%98%E7%99%BB%E5%BD%95%E4%BF%A1%E6%81%AF">授权获取企业号管理员登录信息</a>
-	 * @see com.foxinmy.weixin4j.qy.model.OUserInfo
-	 * @throws WeixinException
-	 */
-	public OUserInfo getOUserInfoByCode(String providerToken, String authCode)
-			throws WeixinException {
-		String oauth_logininfo_uri = getRequestUri("oauth_logininfo_uri");
-		WeixinResponse response = weixinExecutor.post(
-				String.format(oauth_logininfo_uri, providerToken),
-				String.format("{\"auth_code\":\"%s\"}", authCode));
-		return JSON.parseObject(response.getAsString(), OUserInfo.class);
-	}
-
-	/**
 	 * 应用套件授权
 	 * 
 	 * @see {@link #getSuiteAuthorizeURL(String,String, String,String)}
@@ -135,7 +123,8 @@ public class OauthApi extends QyApi {
 	 * @return
 	 */
 	public String getSuiteAuthorizeURL(String suiteId, String preAuthCode) {
-		String redirectUri = Weixin4jConfigUtil.getValue("suite.oauth.redirect.uri");
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("suite.oauth.redirect.uri");
 		return getSuiteAuthorizeURL(suiteId, preAuthCode, redirectUri, "state");
 	}
 

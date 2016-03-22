@@ -513,7 +513,6 @@
   
   + weixin4j-base:调整PayUtil#createNativePayRequestURL参数位置：从主到次
   
-  
 * 2015-12-04
 
   + weixin4j-base:【重要】修改PayUtil中的createPayJsRequest方法的返回值为MchPayRequest，便于二次发起支付。
@@ -534,7 +533,6 @@
   
   + weixin4j-base:调整Pay3Api#refundApply参数个数
   
-  
 * 2015-12-10
 
   + 添加可选[RedisTokenStorager](weixin4j-base/src/main/java/com/foxinmy/weixin4j/token/RedisTokenStorager.java)
@@ -543,7 +541,6 @@
   
   + 【特大注意】weixin4j.properties全部的属性名添加`weixin4j`前缀，并用`.`代替原来的`_`
   
-
 * 2015-12-15
   
   + weixin4j-[mp|qy]:version upgrade to 1.6.5
@@ -554,16 +551,13 @@
   
   + weixin4j-mp:WeixinProxy.getCustomRecord 参数变更为 Date startTime, Date endTime, Pageable pageable
   
-  
 * 2015-12-19
 
   + weixin4j-base:删除PayUtil类,接口转移到PayApi类
   
-  
 * 2015-12-21
   
   + weixin4j-server:WeixinMessageHanlder中新增weight接口
-  
   
 * 2015-12-25
   
@@ -597,7 +591,6 @@
   
   + weixin4j-server:DigestUtil 重命名为 DigestUtils
   
-  
 * 2015-12-26
   
   + weixin4j-base:MchPayRequest抽象化
@@ -608,3 +601,44 @@
   
   + weixin4j-server:删除无用的工具类并重新整理
   
+* 2015-12-30
+
+  + weixin4j-qy:新增服务商接口(ProviderApi)
+  
+* 2015-12-31
+
+  + weixin4j-[mp|qy]:version upgrade to 1.6.6
+  
+  + weixin4j-server:version upgrade to 1.1.5
+  
+* 2016-01-20
+
+  + weixin4j-mp:新增获取模板和删除模板接口
+  
+  + weixin4j-mp:新增自定义个性化菜单语言信息匹配项
+  
+* 2016-01-23
+
+  + weixin4j-qy:新增获取客服列表接口
+  
+* 2016-01-24
+
+  + weixin4j-base:新增MemoryTokenStorager(内存保存token)类
+  
+  + weixin4j-base:TokenStorager类新增evict和clear接口
+  
+* 2016-01-26
+
+  + weixin4j-qy:新增上传图文消息内的图片接口
+  
+* 2016-01-29
+
+  + 新增Weixin4jSettings配置类
+  
+* 2016-02-06
+
+  + weixin4j-[mp|qy]:version upgrade to 1.6.7
+  
+  + weixin4j-server:version upgrade to 1.1.6
+  
+  + happy new year(:

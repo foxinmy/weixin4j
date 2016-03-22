@@ -134,24 +134,21 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 			HttpEntity httpEntity = request.getEntity();
 			if (httpEntity != null) {
 				connection.setUseCaches(false);
-				if (httpEntity != null) {
-					// Read Out Exception when connection.disconnect();
-					/*
-					 * if (httpEntity.getContentLength() > 0l) {
-					 * connection.setFixedLengthStreamingMode(httpEntity
-					 * .getContentLength()); } else { connection
-					 * .setChunkedStreamingMode(params != null ? params
-					 * .getChunkSize() : 4096); }
-					 */
-					if (httpEntity.getContentLength() > 0l) {
-						connection.setRequestProperty(
-								HttpHeaders.CONTENT_LENGTH,
-								Long.toString(httpEntity.getContentLength()));
-					}
-					if (httpEntity.getContentType() != null) {
-						connection.setRequestProperty(HttpHeaders.CONTENT_TYPE,
-								httpEntity.getContentType().getMimeType());
-					}
+				// Read Out Exception when connection.disconnect();
+				/*
+				 * if (httpEntity.getContentLength() > 0l) {
+				 * connection.setFixedLengthStreamingMode(httpEntity
+				 * .getContentLength()); } else { connection
+				 * .setChunkedStreamingMode(params != null ? params
+				 * .getChunkSize() : 4096); }
+				 */
+				if (httpEntity.getContentLength() > 0l) {
+					connection.setRequestProperty(HttpHeaders.CONTENT_LENGTH,
+							Long.toString(httpEntity.getContentLength()));
+				}
+				if (httpEntity.getContentType() != null) {
+					connection.setRequestProperty(HttpHeaders.CONTENT_TYPE,
+							httpEntity.getContentType().getMimeType());
 				}
 			}
 			// connect

@@ -7,11 +7,12 @@ import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.type.Lang;
-import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * oauth授权
@@ -25,13 +26,23 @@ import com.foxinmy.weixin4j.util.StringUtil;
  */
 public class OauthApi extends MpApi {
 
+	private final WeixinAccount account;
+
+	public OauthApi() {
+		this(Weixin4jConfigUtil.getWeixinAccount());
+	}
+
+	public OauthApi(WeixinAccount account) {
+		this.account = account;
+	}
+
 	/**
 	 * @see {@link #getAuthorizeURL(String, String,String)}
 	 * 
 	 * @return 请求授权的URL
 	 */
 	public String getAuthorizeURL() {
-		String appId = DEFAULT_WEIXIN_ACCOUNT.getId();
+		String appId = account.getId();
 		String redirectUri = Weixin4jConfigUtil
 				.getValue("user.oauth.redirect.uri");
 		return getAuthorizeURL(appId, redirectUri, "state", "snsapi_base");
@@ -67,8 +78,7 @@ public class OauthApi extends MpApi {
 	 * @return
 	 */
 	public OauthToken getOauthToken(String code) throws WeixinException {
-		return getOauthToken(code, DEFAULT_WEIXIN_ACCOUNT.getId(),
-				DEFAULT_WEIXIN_ACCOUNT.getSecret());
+		return getOauthToken(code, account.getId(), account.getSecret());
 	}
 
 	/**
@@ -100,7 +110,7 @@ public class OauthApi extends MpApi {
 	 * @return
 	 */
 	public OauthToken refreshToken(String refreshToken) throws WeixinException {
-		return refreshToken(DEFAULT_WEIXIN_ACCOUNT.getId(), refreshToken);
+		return refreshToken(account.getId(), refreshToken);
 	}
 
 	/**
@@ -126,16 +136,16 @@ public class OauthApi extends MpApi {
 	/**
 	 * 验证access_token是否正确
 	 * 
-	 * @param accessToken
+	 * @param oauthToken
 	 *            接口调用凭证
 	 * @param openId
 	 *            用户标识
 	 * @return 验证结果
 	 */
-	public boolean authAccessToken(String accessToken, String openId) {
+	public boolean authAccessToken(String oauthToken, String openId) {
 		String sns_auth_token_uri = getRequestUri("sns_auth_token_uri");
 		try {
-			weixinExecutor.get(String.format(sns_auth_token_uri, accessToken,
+			weixinExecutor.get(String.format(sns_auth_token_uri, oauthToken,
 					openId));
 			return true;
 		} catch (WeixinException e) {

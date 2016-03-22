@@ -22,14 +22,15 @@ public class MediaUploadResult implements Serializable {
 	private String mediaId;
 	private MediaType mediaType;
 	private Date createdAt;
-	//仅在永久素材的图片和视频下该url 才不为空
+	/**
+	 * 新增的图片素材的图片URL
+	 */
 	private String url;
-
 	@JSONCreator
 	public MediaUploadResult(@JSONField(name = "media_id") String mediaId,
 			@JSONField(name = "type") MediaType mediaType,
-			@JSONField(name = "created_at") Date createdAt,@JSONField(name = "url")String url) {
-		this.mediaId = mediaId;
+			@JSONField(name = "created_at") Date createdAt,
+			@JSONField(name = "url") String url) {		this.mediaId = mediaId;
 		this.mediaType = mediaType;
 		this.createdAt = createdAt;
 		this.url = url;
@@ -47,14 +48,12 @@ public class MediaUploadResult implements Serializable {
 		return createdAt;
 	}
 
-
 	public String getUrl() {
 		return url;
 	}
-
 	@Override
 	public String toString() {
-		return "MediaUploadResult [mediaId=" + mediaId + ", mediaType=" + mediaType
-				+ ", createdAt=" + createdAt + "]";
+		return "MediaUploadResult [mediaId=" + mediaId + ", mediaType="
+				+ mediaType + ", createdAt=" + createdAt + ", url=" + url + "]";
 	}
 }

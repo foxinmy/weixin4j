@@ -43,15 +43,13 @@ public class MenuTest extends TokenTest {
 		buttons.add(new Button("个人中心", domain + "/user", ButtonType.view));
 
 		Button button = new Button("小哥介绍", domain, ButtonType.view);
-		button.pushSub(new Button(
-				"小哥介绍",
-				"http://x.eqxiu.com/s/89oy462U",
+		button.pushSub(new Button("小哥介绍", "http://x.eqxiu.com/s/89oy462U",
 				ButtonType.view));
-		button.pushSub(new Button(
-				"小哥官网",
-				"http://www.jdxiaoge.com",
+		button.pushSub(new Button("小哥官网", "http://www.jdxiaoge.com",
 				ButtonType.view));
-		button.pushSub(new Button("兴趣部落", "http://buluo.qq.com/p/barindex.html?from=share&bid=282651", ButtonType.view));
+		button.pushSub(new Button("兴趣部落",
+				"http://buluo.qq.com/p/barindex.html?from=share&bid=282651",
+				ButtonType.view));
 		button.pushSub(new Button("服务流程", "FLOW", ButtonType.click));
 		button.pushSub(new Button("在线客服", "KF", ButtonType.click));
 		buttons.add(button);
@@ -107,15 +105,15 @@ public class MenuTest extends TokenTest {
 		JsonResult result = menuApi.createCustomMenu(buttons, matchRule);
 		Assert.assertEquals(0, result.getCode());
 	}
-	
+
 	@Test
 	public void testGetAllMenus() throws WeixinException {
 		List<Menu> menus = menuApi.getAllMenu();
 		System.err.println(menus);
 	}
-	
+
 	@Test
-	public void testMatchMenu()throws WeixinException{
+	public void testMatchMenu() throws WeixinException {
 		List<Button> buttons = menuApi.matchCustomMenu("paihuaing");
 		System.err.println(buttons);
 	}

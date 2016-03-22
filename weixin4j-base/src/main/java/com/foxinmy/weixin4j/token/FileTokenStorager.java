@@ -1,12 +1,14 @@
 package com.foxinmy.weixin4j.token;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
@@ -56,6 +58,38 @@ public class FileTokenStorager implements TokenStorager {
 							cachePath, cacheKey))));
 		} catch (IOException e) {
 			throw new WeixinException(e);
+		}
+	}
+
+	@Override
+	public Token evict(String cacheKey) throws WeixinException {
+		Token token = null;
+		File token_file = new File(String.format("%s/%s.xml", cachePath,
+				cacheKey));
+		try {
+			if (token_file.exists()) {
+				token = XmlStream.fromXML(new FileInputStream(token_file),
+						Token.class);
+				token_file.delete();
+			}
+		} catch (IOException e) {
+			; // ingore
+		}
+		return token;
+	}
+
+	@Override
+	public void clear() throws WeixinException {
+		File[] files = new File(cachePath).listFiles(new FileFilter() {
+			@Override
+			public boolean accept(File file) {
+				return file.isFile()
+						&& "xml".equals(FileUtil.getFileExtension(file
+								.getName()));
+			}
+		});
+		for (File token : files) {
+			token.delete();
 		}
 	}
 }

@@ -6,7 +6,7 @@ package com.foxinmy.weixin4j.jssdk;
  * @className JSSDKAPI
  * @author jy
  * @date 2015年12月23日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public enum JSSDKAPI {
@@ -316,4 +316,33 @@ public enum JSSDKAPI {
 	 * 企业号会话接口集合
 	 */
 	public final static JSSDKAPI[] CHAT_APIS = { openEnterpriseChat };
+
+	/**
+	 * 公众平台全部接口集合
+	 */
+	public final static JSSDKAPI[] MP_ALL_APIS = { onMenuShareTimeline,
+			onMenuShareAppMessage, onMenuShareQQ, onMenuShareWeibo,
+			onMenuShareQZone, chooseImage, previewImage, uploadImage,
+			downloadImage, startRecord, stopRecord, onVoiceRecordEnd,
+			playVoice, pauseVoice, stopVoice, onVoicePlayEnd, uploadVoice,
+			downloadVoice, translateVoice, getNetworkType, openLocation,
+			getLocation, startSearchBeacons, stopSearchBeacons,
+			onSearchBeacons, hideOptionMenu, showOptionMenu, closeWindow,
+			hideMenuItems, showMenuItems, hideAllNonBaseMenuItem,
+			showAllNonBaseMenuItem, scanQRCode, openProductSpecificView,
+			chooseCard, addCard, openCard, consumeAndShareCard, chooseWXPay };
+	/**
+	 * 企业号全部接口集合
+	 */
+	public final static JSSDKAPI[] QY_ALL_APIS = { onMenuShareTimeline,
+			onMenuShareAppMessage, onMenuShareQQ, onMenuShareWeibo,
+			onMenuShareQZone, chooseImage, previewImage, uploadImage,
+			downloadImage, startRecord, stopRecord, onVoiceRecordEnd,
+			playVoice, pauseVoice, stopVoice, onVoicePlayEnd, uploadVoice,
+			downloadVoice, translateVoice, getNetworkType, openLocation,
+			getLocation, startSearchBeacons, stopSearchBeacons,
+			onSearchBeacons, hideOptionMenu, showOptionMenu, closeWindow,
+			hideMenuItems, showMenuItems, hideAllNonBaseMenuItem,
+			showAllNonBaseMenuItem, scanQRCode, openEnterpriseChat,
+			openEnterpriseContact };
 }

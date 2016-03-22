@@ -110,8 +110,8 @@ public class JSSDKConfigurator {
 		signMap.put("noncestr", noncestr);
 		signMap.put("jsapi_ticket", this.ticketTokenHolder.getAccessToken());
 		signMap.put("url", url);
-		String sign = DigestUtil.SHA1(MapUtil
-				.toJoinString(signMap, false, false));
+		String sign = DigestUtil.SHA1(MapUtil.toJoinString(signMap, false,
+				false));
 		if (StringUtil.isBlank(config.getString("appId"))) {
 			config.put("appId", Weixin4jConfigUtil.getWeixinAccount().getId());
 		}
@@ -126,16 +126,5 @@ public class JSSDKConfigurator {
 		config.put("signature", sign);
 		config.put("jsApiList", apis.toArray());
 		return config.toJSONString();
-	}
-	
-	public static void main(String[] args){
-		Map<String, String> signMap = new HashMap<String, String>();
-		signMap.put("timestamp", "1451291129");
-		signMap.put("noncestr", "FXlt1mmwNrU30AIGGNrdLcdO");
-		signMap.put("jsapi_ticket", "kgt8ON7yVITDhtdwci0qeQdDHdx7JYipird9HNRuaHAIXFpvYh0mz9vuWOjdZb8a3ftvHZKfqcLzrx_pTFOZ3Q");
-		signMap.put("url", "http://wx.jdxg.doubimeizhi.com/apprise/share");
-		String sign = DigestUtil.SHA1(MapUtil
-				.toJoinString(signMap, false, false));
-		System.err.println(sign);
 	}
 }

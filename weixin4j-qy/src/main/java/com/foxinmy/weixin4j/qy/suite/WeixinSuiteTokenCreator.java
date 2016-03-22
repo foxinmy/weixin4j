@@ -36,7 +36,7 @@ public class WeixinSuiteTokenCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("wx_qy_suite_token_%s", ticketHolder.getSuiteId());
+		return String.format("weixin4j_qy_suite_token_%s", ticketHolder.getSuiteId());
 	}
 
 	@Override

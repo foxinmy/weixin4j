@@ -74,18 +74,15 @@ public class TokenHolder {
 		tokenStorager.caching(cacheKey, token);
 		return token;
 	}
-	
+
 	/**
 	 * 手动移除token
+	 * 
 	 * @return 被移除的token
 	 * @throws WeixinException
 	 */
 	public Token evictToken() throws WeixinException {
 		String cacheKey = tokenCreator.getCacheKey();
 		return tokenStorager.evict(cacheKey);
-	}
-
-	public TokenStorager getTokenStorager() {
-		return tokenStorager;
 	}
 }

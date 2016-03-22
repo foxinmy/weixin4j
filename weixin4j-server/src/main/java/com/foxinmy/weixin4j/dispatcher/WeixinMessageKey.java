@@ -48,10 +48,10 @@ public class WeixinMessageKey implements Serializable {
 		result = prime * result
 				+ ((accountType == null) ? 0 : accountType.hashCode());
 		result = prime * result
-				+ ((ServerToolkits.hasText(eventType)) ? 0 : eventType.hashCode());
+				+ ((ServerToolkits.isBlank(eventType)) ? 0 : eventType.hashCode());
 		result = prime
 				* result
-				+ ((ServerToolkits.hasText(messageType)) ? 0 : messageType
+				+ ((ServerToolkits.isBlank(messageType)) ? 0 : messageType
 						.hashCode());
 		return result;
 	}

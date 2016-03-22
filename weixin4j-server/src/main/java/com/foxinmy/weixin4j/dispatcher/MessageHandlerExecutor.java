@@ -7,6 +7,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
+import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 
@@ -62,7 +63,7 @@ public class MessageHandlerExecutor {
 	 * @return true则继续执行往下执行
 	 * @throws WeixinException
 	 */
-	public boolean applyPreHandle(WeixinRequest request, Object message)
+	public boolean applyPreHandle(WeixinRequest request, WeixinMessage message)
 			throws WeixinException {
 		if (messageInterceptors != null) {
 			for (int i = 0; i < messageInterceptors.length; i++) {
@@ -90,7 +91,7 @@ public class MessageHandlerExecutor {
 	 * @throws WeixinException
 	 */
 	public void applyPostHandle(WeixinRequest request, WeixinResponse response,
-			Object message) throws WeixinException {
+			WeixinMessage message) throws WeixinException {
 		if (messageInterceptors == null) {
 			return;
 		}
@@ -115,7 +116,7 @@ public class MessageHandlerExecutor {
 	 * @throws WeixinException
 	 */
 	public void triggerAfterCompletion(WeixinRequest request,
-			WeixinResponse response, Object message, Exception exception)
+			WeixinResponse response, WeixinMessage message, Exception exception)
 			throws WeixinException {
 		if (messageInterceptors == null) {
 			return;

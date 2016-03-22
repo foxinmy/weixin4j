@@ -37,9 +37,8 @@ public class MediaRecord implements Serializable {
 	/**
 	 * 媒体信息
 	 */
-	@JSONField(name = "item")
+	@JSONField(name = "itemlist")
 	private List<MediaItem> items;
-
 	/**
 	 * 分页信息
 	 */

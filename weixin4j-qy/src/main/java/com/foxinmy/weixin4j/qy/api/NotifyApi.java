@@ -1,5 +1,8 @@
 package com.foxinmy.weixin4j.qy.api;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
@@ -10,6 +13,8 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.message.CustomeMessage;
 import com.foxinmy.weixin4j.qy.message.NotifyMessage;
+import com.foxinmy.weixin4j.qy.model.IdParameter;
+import com.foxinmy.weixin4j.qy.type.KfType;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.NotifyTuple;
 
@@ -66,8 +71,9 @@ public class NotifyApi extends QyApi {
 	 * @see com.foxinmy.weixin4j.tuple.News
 	 * @see com.foxinmy.weixin4j.tuple.MpNews
 	 * @see com.foxinmy.weixin4j.qy.message.NotifyMessage
+	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 */
-	public JSONObject sendNotifyMessage(NotifyMessage message)
+	public IdParameter sendNotifyMessage(NotifyMessage message)
 			throws WeixinException {
 		NotifyTuple tuple = message.getTuple();
 		Map<String, String> target = message.getTarget().getParameter();
@@ -85,8 +91,29 @@ public class NotifyApi extends QyApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(message_send_uri, token.getAccessToken()),
 				obj.toJSONString());
-
-		return response.getAsJson();
+		obj = response.getAsJson();
+		IdParameter idParameter = new IdParameter();
+		if (obj.containsKey("invaliduser")) {
+			idParameter.setUserIds(Arrays.asList(obj.getString("invalidlist")
+					.split(IdParameter.SEPARATORS)));
+		}
+		if (obj.containsKey("invalidparty")) {
+			List<Integer> partyIds = new ArrayList<Integer>();
+			for (String id : obj.getString("invalidlist").split(
+					IdParameter.SEPARATORS)) {
+				partyIds.add(Integer.parseInt(id));
+			}
+			idParameter.setPartyIds(partyIds);
+		}
+		if (obj.containsKey("invalidtag")) {
+			List<Integer> tagIds = new ArrayList<Integer>();
+			for (String id : obj.getString("invalidtag").split(
+					IdParameter.SEPARATORS)) {
+				tagIds.add(Integer.parseInt(id));
+			}
+			idParameter.setPartyIds(tagIds);
+		}
+		return idParameter;
 	}
 
 	/**
@@ -118,5 +145,32 @@ public class NotifyApi extends QyApi {
 				String.format(message_kf_send_uri, token.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJsonResult();
+	}
+
+	/**
+	 * 获取客服列表
+	 * 
+	 * @param kfType
+	 *            客服类型 为空时返回全部类型的客服
+	 * @return 第一个元素为内部客服(internal),第二个参数为外部客服(external)
+	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%AE%A2%E6%9C%8D%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E">客服列表</a>
+	 * @throws WeixinException
+	 */
+	public IdParameter[] getKfList(KfType kfType) throws WeixinException {
+		String message_kf_list_uri = getRequestUri("message_kf_list_uri");
+		if (kfType != null) {
+			message_kf_list_uri += "&type=" + kfType.name();
+		}
+		Token token = tokenHolder.getToken();
+		WeixinResponse response = weixinExecutor.get(String.format(
+				message_kf_list_uri, token.getAccessToken()));
+		JSONObject obj = response.getAsJson();
+		return new IdParameter[] {
+				obj.containsKey("internal") ? obj.getObject("internal",
+						IdParameter.class) : null,
+				obj.containsKey("external") ? obj.getObject("external",
+						IdParameter.class) : null };
 	}
 }

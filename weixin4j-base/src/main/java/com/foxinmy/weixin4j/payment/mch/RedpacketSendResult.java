@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.payment.mch;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -7,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
+import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
  * 发送红包结果
@@ -52,6 +55,18 @@ public class RedpacketSendResult extends XmlResult {
 	@XmlElement(name = "total_amount")
 	@JSONField(name = "total_amount")
 	private int totalAmount;
+	/**
+	 * 发放成功时间
+	 */
+	@XmlElement(name = "send_time")
+	@JSONField(name = "send_time")
+	private String sendTime;
+	/**
+	 * 微信单号
+	 */
+	@XmlElement(name = "send_listid")
+	@JSONField(name = "send_listid")
+	private String sendListid;
 
 	protected RedpacketSendResult() {
 		// jaxb required
@@ -85,6 +100,19 @@ public class RedpacketSendResult extends XmlResult {
 	@JSONField(serialize = false)
 	public double getFormatTotalAmount() {
 		return totalAmount / 100d;
+	}
+
+	public String getSendTime() {
+		return sendTime;
+	}
+
+	@JSONField(serialize = false)
+	public Date getFormatSendTime() {
+		return DateUtil.parse2yyyyMMddHHmmss(sendTime);
+	}
+
+	public String getSendListid() {
+		return sendListid;
 	}
 
 	@Override

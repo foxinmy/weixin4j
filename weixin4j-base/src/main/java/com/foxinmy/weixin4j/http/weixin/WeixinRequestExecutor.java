@@ -80,8 +80,8 @@ public class WeixinRequestExecutor {
 
 	public WeixinResponse post(String url, FormBodyPart... bodyParts)
 			throws WeixinException {
-		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.STRICT,
-				null, Consts.UTF_8);
+		MultipartEntity entity = new MultipartEntity(
+				HttpMultipartMode.BROWSER_COMPATIBLE, null, Consts.UTF_8);
 		for (FormBodyPart bodyPart : bodyParts) {
 			entity.addPart(bodyPart);
 		}

@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.payment.mch;
 
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
+import com.foxinmy.weixin4j.type.TradeType;
 
 /**
  * NATIVE扫码支付(模式二)
@@ -23,6 +24,11 @@ public class NATIVEPayRequest extends AbstractPayRequest {
 			WeixinPayAccount payAccount) {
 		super(prePayId, payAccount);
 		this.codeUrl = codeUrl;
+	}
+
+	@Override
+	public TradeType getTradeType() {
+		return TradeType.NATIVE;
 	}
 
 	/**

@@ -10,7 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * authcode2openid
  * 
- * @className AuthCodeOpenIdResult
+ * @className OpenIdResult
  * @author jy
  * @date 2015年7月23日
  * @since JDK 1.6
@@ -18,7 +18,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AuthCodeOpenIdResult extends ApiResult {
+public class OpenIdResult extends ApiResult {
 
 	private static final long serialVersionUID = 902743989722741814L;
 
@@ -35,7 +35,7 @@ public class AuthCodeOpenIdResult extends ApiResult {
 
 	@Override
 	public String toString() {
-		return "AuthCodeOpenIdResult [openId=" + openId + ", "
+		return "OpenIdResult [openId=" + openId + ", "
 				+ super.toString() + "]";
 	}
 }

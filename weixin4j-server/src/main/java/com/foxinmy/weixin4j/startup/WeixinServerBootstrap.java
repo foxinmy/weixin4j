@@ -7,12 +7,14 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.FutureListener;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -150,8 +152,8 @@ public final class WeixinServerBootstrap {
 			this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
 		}
 		this.aesTokenMap.put(null, aesTokens[0]);
-		this.messageHandlerList = new LinkedList<WeixinMessageHandler>();
-		this.messageInterceptorList = new LinkedList<WeixinMessageInterceptor>();
+		this.messageHandlerList = new ArrayList<WeixinMessageHandler>();
+		this.messageInterceptorList = new ArrayList<WeixinMessageInterceptor>();
 		this.messageDispatcher = new WeixinMessageDispatcher(messageMatcher);
 	}
 
@@ -183,7 +185,7 @@ public final class WeixinServerBootstrap {
 	 * @return
 	 * @throws WeixinException
 	 */
-	public void startup(int bossThreads, int workerThreads, int serverPort)
+	public void startup(int bossThreads, int workerThreads, final int serverPort)
 			throws WeixinException {
 		messageDispatcher.setMessageHandlerList(messageHandlerList);
 		messageDispatcher.setMessageInterceptorList(messageInterceptorList);
@@ -199,11 +201,21 @@ public final class WeixinServerBootstrap {
 					.childHandler(
 							new WeixinServerInitializer(aesTokenMap,
 									messageDispatcher));
-			Channel ch = b.bind(serverPort).sync().channel();
-			logger.info("weixin4j server startup OK:{}", serverPort);
+			Channel ch = b.bind(serverPort)
+					.addListener(new FutureListener<Void>() {
+						@Override
+						public void operationComplete(Future<Void> future)
+								throws Exception {
+							if (future.isSuccess()) {
+								logger.info("weixin4j server startup OK:{}",
+										serverPort);
+							} else {
+								logger.info("weixin4j server startup FAIL:{}",
+										serverPort);
+							}
+						}
+					}).sync().channel();
 			ch.closeFuture().sync();
-		} catch (WeixinException e) {
-			throw e;
 		} catch (InterruptedException e) {
 			throw new WeixinException(e);
 		} finally {
@@ -301,5 +313,5 @@ public final class WeixinServerBootstrap {
 		return this;
 	}
 
-	public final static String VERSION = "1.1.4";
+	public final static String VERSION = "1.1.6";
 }

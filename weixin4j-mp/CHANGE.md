@@ -183,3 +183,29 @@
 * 2015-12-18
 
   + 新增个性化菜单接口
+  
+  + WeixinProxy.getCustomRecord 参数变更为 Date startTime, Date endTime, Pageable pageable
+  
+* 2015-12-25
+  
+  + WeixinProxy新增获取appid(getAppId)方法
+  
+  + WeixinProxy新增获取jsticket(getJSTicketHolder)方法
+  
+  + 私有化WeixinProxy(TokenHolder)构造器
+  
+  + 调整WeixinTicketCreator类
+  
+* 2015-12-31
+
+  + version upgrade to 1.6.6
+  
+* 2016-01-20
+
+  + 新增获取模板和删除模板接口
+  
+  + 新增自定义个性化菜单语言信息匹配项
+  
+* 2015-02-04
+
+  + version upgrade to 1.6.7

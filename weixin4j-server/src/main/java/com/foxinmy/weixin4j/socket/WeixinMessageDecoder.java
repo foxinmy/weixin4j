@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.socket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -46,9 +47,9 @@ public class WeixinMessageDecoder extends
 		String messageContent = req.content().toString(ServerToolkits.UTF_8);
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
 				true);
-		String methodName = req.getMethod().name();
+		HttpMethod method = req.getMethod();
 		logger.info("decode request:{} use {} method invoking", req.getUri(),
-				methodName);
+				method);
 		Map<String, List<String>> parameters = queryDecoder.parameters();
 		EncryptType encryptType = parameters.containsKey("encrypt_type") ? EncryptType
 				.valueOf(parameters.get("encrypt_type").get(0).toUpperCase())
@@ -67,9 +68,9 @@ public class WeixinMessageDecoder extends
 				"weixin_id").get(0) : null;
 		AesToken aesToken = aesTokenMap.get(weixinId);
 		String encryptContent = null;
-		if (!ServerToolkits.hasText(messageContent)
+		if (!ServerToolkits.isBlank(messageContent)
 				&& encryptType == EncryptType.AES) {
-			if (ServerToolkits.hasText(aesToken.getAesKey())) {
+			if (ServerToolkits.isBlank(aesToken.getAesKey())) {
 				throw new WeixinException(
 						"AESEncodingKey not be null in AES mode");
 			}
@@ -86,8 +87,12 @@ public class WeixinMessageDecoder extends
 			messageContent = MessageUtil.aesDecrypt(aesToken.getWeixinId(),
 					aesToken.getAesKey(), encryptContent);
 		}
-		out.add(new WeixinRequest(methodName, encryptType, echoStr, timeStamp,
-				nonce, signature, msgSignature, messageContent, encryptContent,
-				aesToken, parameters));
+		WeixinRequest request = new WeixinRequest(req.headers(), method,
+				req.getUri(), encryptType, echoStr, timeStamp, nonce,
+				signature, msgSignature, messageContent, encryptContent,
+				aesToken);
+		request.setDecoderResult(req.getDecoderResult());
+		request.setProtocolVersion(req.getProtocolVersion());
+		out.add(request);
 	}
 }

@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.payment.mch;
 
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
+import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 
@@ -21,6 +22,11 @@ public class APPPayRequest extends AbstractPayRequest {
 
 	public APPPayRequest(String prePayId, WeixinPayAccount payAccount) {
 		super(prePayId, payAccount);
+	}
+
+	@Override
+	public TradeType getTradeType() {
+		return TradeType.APP;
 	}
 
 	/**

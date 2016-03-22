@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.response;
 
+
 /**
  * 微信被动消息回复
  * 

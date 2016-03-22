@@ -20,10 +20,6 @@ public class NameValue implements Serializable {
 	private String name;
 	private String value;
 
-	public NameValue() {
-
-	}
-
 	@JSONCreator
 	public NameValue(@JSONField(name = "name") String name,
 			@JSONField(name = "value") String value) {

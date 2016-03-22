@@ -22,6 +22,11 @@ public class MpArticle implements Serializable {
 	@JSONField(name = "thumb_media_id")
 	private String thumbMediaId;
 	/**
+	 * 图文消息的封面图片的地址，第三方开发者也可以使用这个URL下载图片到自己服务器中，然后显示在自己网站上
+	 */
+	@JSONField(name = "thumb_url")
+	private String thumbUrl;
+	/**
 	 * 图文消息的作者 可为空
 	 */
 	private String author;
@@ -66,6 +71,7 @@ public class MpArticle implements Serializable {
 
 	@JSONCreator
 	public MpArticle(@JSONField(name = "thumbMediaId") String thumbMediaId,
+			@JSONField(name = "thumbUrl") String thumbUrl,
 			@JSONField(name = "author") String author,
 			@JSONField(name = "title") String title,
 			@JSONField(name = "sourceUrl") String sourceUrl,
@@ -75,6 +81,7 @@ public class MpArticle implements Serializable {
 			@JSONField(name = "contentUrl") String contentUrl,
 			@JSONField(name = "coverUrl") String coverUrl) {
 		this.thumbMediaId = thumbMediaId;
+		this.thumbUrl = thumbUrl;
 		this.author = author;
 		this.title = title;
 		this.sourceUrl = sourceUrl;
@@ -145,12 +152,16 @@ public class MpArticle implements Serializable {
 		this.coverUrl = coverUrl;
 	}
 
+	public String getThumbUrl() {
+		return thumbUrl;
+	}
+
 	@Override
 	public String toString() {
-		return "MpArticle [thumbMediaId=" + thumbMediaId + ", author=" + author
-				+ ", title=" + title + ", sourceUrl=" + sourceUrl
-				+ ", content=" + content + ", digest=" + digest
-				+ ", showCoverPic=" + showCoverPic + ", contentUrl="
-				+ contentUrl + ", coverUrl=" + coverUrl + "]";
+		return "MpArticle [thumbMediaId=" + thumbMediaId + ",thumbUrl="
+				+ thumbUrl + ", author=" + author + ", title=" + title
+				+ ", sourceUrl=" + sourceUrl + ", content=" + content
+				+ ", digest=" + digest + ", showCoverPic=" + showCoverPic
+				+ ", contentUrl=" + contentUrl + ", coverUrl=" + coverUrl + "]";
 	}
 }

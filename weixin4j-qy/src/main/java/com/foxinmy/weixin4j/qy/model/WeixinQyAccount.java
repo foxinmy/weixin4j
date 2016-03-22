@@ -23,7 +23,7 @@ public class WeixinQyAccount extends WeixinAccount {
 	/**
 	 * 多个应用套件信息
 	 */
-	private List<WeixinAccount> suites;
+	private List<WeixinAccount> suiteAccounts;
 	/**
 	 * 第三方提供商secret(企业号登陆)
 	 */
@@ -36,32 +36,30 @@ public class WeixinQyAccount extends WeixinAccount {
 	/**
 	 * 
 	 * @param corpid
-	 *            企业ID
+	 *            企业ID 必填
 	 * @param corpsecret
-	 *            管理组的凭证密钥
-	 * @param suiteId
-	 *            应用套件的id
-	 * @param suiteSecret
-	 *            应用套件的secret
+	 *            管理组的凭证密钥 使用普通接口(WeixinProxy对象)必须填写
+	 * @param suites
+	 *            应用套件集合 使用套件接口(WeixinSuiteProxy#SuiteApi)必须填写
 	 * @param providerSecret
-	 *            第三方提供商secret(企业号登陆)
+	 *            第三方提供商secret(企业号登陆) 使用服务商接口(WeixinSuiteProxy#ProviderApi)必填项
 	 * @param chatSecret
-	 *            消息服务secret(企业号聊天)
+	 *            消息服务secret(企业号聊天) 暂无用途
 	 */
 	@JSONCreator
 	public WeixinQyAccount(@JSONField(name = "id") String corpid,
 			@JSONField(name = "secret") String corpsecret,
-			@JSONField(name = "suites") List<WeixinAccount> suites,
+			@JSONField(name = "suites") List<WeixinAccount> suiteAccounts,
 			@JSONField(name = "providerSecret") String providerSecret,
 			@JSONField(name = "chatSecret") String chatSecret) {
 		super(corpid, corpsecret);
-		this.suites = suites;
+		this.suiteAccounts = suiteAccounts;
 		this.providerSecret = providerSecret;
 		this.chatSecret = chatSecret;
 	}
 
-	public List<WeixinAccount> getSuites() {
-		return suites;
+	public List<WeixinAccount> getSuiteAccounts() {
+		return suiteAccounts;
 	}
 
 	public String getProviderSecret() {
@@ -72,15 +70,15 @@ public class WeixinQyAccount extends WeixinAccount {
 		return chatSecret;
 	}
 
-	public WeixinAccount[] suitesToArray() {
-		return suites != null ? suites
-				.toArray(new WeixinAccount[suites.size()]) : null;
+	public WeixinAccount[] suiteAccountsToArray() {
+		return suiteAccounts != null ? suiteAccounts
+				.toArray(new WeixinAccount[suiteAccounts.size()]) : null;
 	}
 
 	@Override
 	public String toString() {
-		return "WeixinQyAccount [" + super.toString() + ", suites=" + suites
-				+ ", providerSecret=" + providerSecret + ",  chatSecret="
-				+ chatSecret + "]";
+		return "WeixinQyAccount [" + super.toString() + ", suiteAccounts="
+				+ suiteAccounts + ", providerSecret=" + providerSecret
+				+ ",  chatSecret=" + chatSecret + "]";
 	}
 }

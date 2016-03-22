@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.socket;
 
-import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.util.internal.logging.InternalLogger;
@@ -74,7 +73,7 @@ public class WeixinResponseEncoder extends
 					encrtypt));
 			content.append("</xml>");
 		}
-		ctx.writeAndFlush(HttpUtil.createHttpResponse(content.toString(), OK,
+		ctx.writeAndFlush(HttpUtil.createHttpResponse(content.toString(),
 				ServerToolkits.CONTENTTYPE$APPLICATION_XML));
 		logger.info("{} encode weixin response:{}", encryptType, content);
 	}

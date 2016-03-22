@@ -22,10 +22,10 @@ public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements
 		WeixinMessageHandler {
 
 	@Override
-	public boolean canHandle(WeixinRequest request, Object message,
+	public boolean canHandle(WeixinRequest request, WeixinMessage message,
 			Set<String> nodeNames) throws WeixinException {
 		return message != null
-				&& message.getClass() == ClassUtil.getGenericType(this)
+				&& message.getClass() == ClassUtil.getGenericType(getClass())
 				&& canHandle0(request, (M) message);
 	}
 
@@ -36,7 +36,7 @@ public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements
 	 *            微信请求
 	 * @param message
 	 *            微信消息
-	 * @return true则执行doHandler
+	 * @return true则执行doHandler0
 	 * @throws WeixinException
 	 */
 	public boolean canHandle0(WeixinRequest request, M message)
@@ -45,8 +45,9 @@ public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements
 	}
 
 	@Override
-	public WeixinResponse doHandle(WeixinRequest request, Object message,
-			Set<String> nodeNames) throws WeixinException {
+	public WeixinResponse doHandle(WeixinRequest request,
+			WeixinMessage message, Set<String> nodeNames)
+			throws WeixinException {
 		return doHandle0(request, (M) message);
 	}
 

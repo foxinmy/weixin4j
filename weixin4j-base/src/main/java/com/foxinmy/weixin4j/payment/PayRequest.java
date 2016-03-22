@@ -36,8 +36,8 @@ public class PayRequest extends PayBaseInfo {
 	@JSONField(serialize = false)
 	private String partnerId;
 
-	public PayRequest() {
-		super(null, DateUtil.timestamp2string(), RandomUtil.generateString(16));
+	protected PayRequest() {
+		// jaxb required
 	}
 
 	public PayRequest(String appId, String packageInfo) {

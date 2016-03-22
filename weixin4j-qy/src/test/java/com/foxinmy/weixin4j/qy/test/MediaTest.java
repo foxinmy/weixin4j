@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.MediaDownloadResult;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.type.MediaType;
@@ -34,8 +35,8 @@ public class MediaTest extends TokenTest {
 	@Test
 	public void upload() throws IOException, WeixinException {
 		File file = new File("/Users/jy/Downloads/weixin4j.png");
-		MediaUploadResult mediaResult = mediaApi.uploadMedia(0, new FileInputStream(
-				file), file.getName());
+		MediaUploadResult mediaResult = mediaApi.uploadMedia(0,
+				new FileInputStream(file), file.getName());
 		// 1gJ0vRLQp_o7L9hsVm6sviuGWc0qaPOd-KjkUZ6KQ7IrFVui8b2ZZd9F5szLCUkkD8gxk65lwW2SV72XO1RGZTQ
 		Assert.assertNotNull(mediaResult.getMediaId());
 		System.out.println(mediaResult);
@@ -43,15 +44,33 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void download() throws WeixinException, IOException {
-		File file = mediaApi
-				.downloadMediaFile(
+		MediaDownloadResult result = mediaApi
+				.downloadMedia(
 						0,
 						"1y0NWE5ochkfOoiyJsPwQ3Wg7gsyRHNp8SveqhGXY_1rOH7OcOMwfHDg8KH6s88osq59AfS3BX-MBBKvERB7Bvw");
-		Assert.assertTrue(file.exists());
+		Assert.assertTrue(result.getContent().length > 0);
 	}
 
 	@Test
 	public void listAll() throws WeixinException {
 		mediaApi.listAllMaterialMedia(1, MediaType.image);
+	}
+
+	@Test
+	public void uploadFile() throws IOException, WeixinException {
+		File file = new File("/Users/jy/Downloads/弹性运动1.html");
+		MediaUploadResult mediaResult = mediaApi.uploadMedia(0,
+				new FileInputStream(file), "弹性运动1.html");
+		Assert.assertNotNull(mediaResult.getMediaId());
+		System.out.println(mediaResult);
+	}
+
+	@Test
+	public void downloadFile() throws WeixinException {
+		MediaDownloadResult result = mediaApi
+				.downloadMedia(
+						0,
+						"19pXNIq8cd69QLwfsLaoZFfS2K82WCHNGPREO--o1rEMlNIOf0N9IDDQdler08S7fNAFsG-5XYwxf1gzORxDnlQ");
+		System.err.println(result);
 	}
 }

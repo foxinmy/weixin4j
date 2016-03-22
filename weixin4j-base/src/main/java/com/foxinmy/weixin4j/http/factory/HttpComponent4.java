@@ -82,11 +82,11 @@ public abstract class HttpComponent4 extends AbstractHttpClient {
 				.entrySet().iterator(); headerIterator.hasNext();) {
 			Entry<String, List<String>> header = headerIterator.next();
 			if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
-				uriRequest.addHeader(header.getKey(),
+				uriRequest.setHeader(header.getKey(),
 						StringUtil.join(header.getValue(), ';'));
 			} else {
 				for (String headerValue : header.getValue()) {
-					uriRequest.addHeader(header.getKey(),
+					uriRequest.setHeader(header.getKey(),
 							headerValue != null ? headerValue : "");
 				}
 			}

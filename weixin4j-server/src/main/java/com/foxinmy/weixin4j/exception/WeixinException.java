@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.exception;
 
 /**
- * 调用微信接口抛出的异常
+ * 微信异常
  * 
  * @className WeixinException
  * @author jy.hu

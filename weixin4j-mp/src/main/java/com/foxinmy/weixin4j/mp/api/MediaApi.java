@@ -201,25 +201,39 @@ public class MediaApi extends MpApi {
 												.getMimeType(), fileName)),
 								new FormBodyPart("type", new StringBody(
 										mediaType.name(), Consts.UTF_8)));
+				return new MediaUploadResult(response.getAsJson().getString(
+						"media_id"), mediaType, new Date());
+								"media", new ByteArrayBody(content, mediaType
+										.getContentType().getMimeType(),
+										fileName)), new FormBodyPart("type",
+								new StringBody(mediaType.name(), Consts.UTF_8)));
 				JSONObject obj = response.getAsJson();
-				return new MediaUploadResult(
-						obj.getString("media_id"), mediaType, new Date(),obj.getString("url"));
+				return new MediaUploadResult(obj.getString("media_id"),
+						mediaType, new Date(), obj.getString("url"));
+
 			} else {
 				String media_upload_uri = getRequestUri("media_upload_uri");
 				response = weixinExecutor.post(String.format(media_upload_uri,
 						token.getAccessToken(), mediaType.name()),
+						new FormBodyPart("media", new InputStreamBody(new ByteArrayInputStream(content), mediaType
 						new FormBodyPart("media", new InputStreamBody(
 								new ByteArrayInputStream(content), mediaType
 										.getContentType().getMimeType(),
 								fileName)));
 				JSONObject obj = response.getAsJson();
 				return new MediaUploadResult(obj.getString("media_id"),
-											 obj.getObject("type", MediaType.class), new Date(
-						obj.getLong("created_at") * 1000l),obj.getString("url"));
+						obj.getObject("type", MediaType.class), new Date(
+								obj.getLong("created_at") * 1000l));
 				/*
 				 * return response.getAsObject(new
 				 * TypeReference<MediaUploadResult>() { });
 				 */
+						obj.getObject("type", MediaType.class), new Date(
+								obj.getLong("created_at") * 1000l),
+						obj.getString("url"));
+
+
+
 			}
 		} catch (UnsupportedEncodingException e) {
 			throw new WeixinException(e);
@@ -463,6 +477,8 @@ public class MediaApi extends MpApi {
 	 * 
 	 * @param is
 	 *            大小不超过1M且格式为MP4的视频文件
+	 * @param fileName
+	 *            文件名 为空时将自动生成
 	 * @param title
 	 *            视频标题
 	 * @param introduction
@@ -474,6 +490,14 @@ public class MediaApi extends MpApi {
 	 */
 	public String uploadMaterialVideo(InputStream is, String title,
 			String introduction) throws WeixinException {
+	public String uploadMaterialVideo(InputStream is, String fileName,
+			String title, String introduction) throws WeixinException {
+		if (StringUtil.isBlank(fileName)) {
+			fileName = ObjectId.get().toHexString();
+		}
+		if (StringUtil.isBlank(FileUtil.getFileExtension(fileName))) {
+			fileName = String.format("%s.mp4", fileName);
+		}
 		String material_media_upload_uri = getRequestUri("material_media_upload_uri");
 		Token token = tokenHolder.getToken();
 		try {
@@ -488,6 +512,7 @@ public class MediaApi extends MpApi {
 							ObjectId.get().toHexString())),
 					new FormBodyPart("type", new StringBody(MediaType.video
 							.name(), Consts.UTF_8)),
+							ContentType.VIDEO_MPEG4.getMimeType(), fileName)),
 					new FormBodyPart("description", new StringBody(description
 							.toJSONString(), Consts.UTF_8)));
 			return response.getAsJson().getString("media_id");
@@ -594,6 +619,7 @@ public class MediaApi extends MpApi {
 			mediaRecord = listMaterialMedia(mediaType, pageable);
 			if (mediaRecord.getItems() == null
 					|| !mediaRecord.getItems().isEmpty()) {
+					|| mediaRecord.getItems().isEmpty()) {
 				break;
 			}
 			mediaList.addAll(mediaRecord.getItems());
