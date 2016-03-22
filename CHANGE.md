@@ -642,3 +642,7 @@
   + weixin4j-server:version upgrade to 1.1.6
   
   + happy new year(:
+  
+* 2016-03-22
+
+  + weixin4j-base:企业付款相关类更名

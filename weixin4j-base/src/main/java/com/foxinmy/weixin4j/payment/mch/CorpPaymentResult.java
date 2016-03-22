@@ -10,7 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 企业付款结果
  * 
- * @className MPPaymentResult
+ * @className CorpPaymentResult
  * @author jy
  * @date 2015年4月1日
  * @since JDK 1.6
@@ -18,7 +18,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MPPaymentResult extends ApiResult {
+public class CorpPaymentResult extends ApiResult {
 
 	private static final long serialVersionUID = 1110472826089211646L;
 
@@ -41,7 +41,7 @@ public class MPPaymentResult extends ApiResult {
 	@XmlElement(name = "payment_time")
 	private String paymentTime;
 
-	protected MPPaymentResult() {
+	protected CorpPaymentResult() {
 		// jaxb required
 	}
 	
@@ -59,7 +59,7 @@ public class MPPaymentResult extends ApiResult {
 
 	@Override
 	public String toString() {
-		return "MPPaymentResult [transactionId=" + transactionId
+		return "CorpPaymentResult [transactionId=" + transactionId
 				+ ", outTradeNo=" + outTradeNo + ", paymentTime=" + paymentTime
 				+ "]";
 	}

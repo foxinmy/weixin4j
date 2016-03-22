@@ -14,9 +14,9 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayURLConsts;
-import com.foxinmy.weixin4j.payment.mch.MPPayment;
-import com.foxinmy.weixin4j.payment.mch.MPPaymentRecord;
-import com.foxinmy.weixin4j.payment.mch.MPPaymentResult;
+import com.foxinmy.weixin4j.payment.mch.CorpPayment;
+import com.foxinmy.weixin4j.payment.mch.CorpPaymentRecord;
+import com.foxinmy.weixin4j.payment.mch.CorpPaymentResult;
 import com.foxinmy.weixin4j.payment.mch.Redpacket;
 import com.foxinmy.weixin4j.payment.mch.RedpacketRecord;
 import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
@@ -140,15 +140,15 @@ public class CashApi {
 	 * @param mpPayment
 	 *            付款信息
 	 * @return 付款结果
-	 * @see com.foxinmy.weixin4j.payment.mch.MPPayment
-	 * @see com.foxinmy.weixin4j.payment.mch.MPPaymentResult
+	 * @see com.foxinmy.weixin4j.payment.mch.CorpPayment
+	 * @see com.foxinmy.weixin4j.payment.mch.CorpPaymentResult
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/mch_pay.php?chapter=14_1">企业付款</a>
 	 * @throws WeixinException
 	 */
-	public MPPaymentResult mchPayment(InputStream ca, MPPayment mpPayment)
+	public CorpPaymentResult corpPayment(InputStream ca, CorpPayment payment)
 			throws WeixinException {
-		JSONObject obj = (JSONObject) JSON.toJSON(mpPayment);
+		JSONObject obj = (JSONObject) JSON.toJSON(payment);
 		obj.put("nonce_str", RandomUtil.generateString(16));
 		obj.put("mchid", weixinAccount.getMchId());
 		obj.put("sub_mch_id", weixinAccount.getSubMchId());
@@ -177,7 +177,7 @@ public class CashApi {
 				.replaceFirst("</mch_appid>", "</appid>")
 				.replaceFirst("<mchid>", "<mch_id>")
 				.replaceFirst("</mchid>", "</mch_id>");
-		return XmlStream.fromXML(text, MPPaymentResult.class);
+		return XmlStream.fromXML(text, CorpPaymentResult.class);
 	}
 
 	/**
@@ -188,12 +188,12 @@ public class CashApi {
 	 * @param outTradeNo
 	 *            商户调用企业付款API时使用的商户订单号
 	 * @return 付款记录
-	 * @see com.foxinmy.weixin4j.payment.mch.MPPaymentRecord
+	 * @see com.foxinmy.weixin4j.payment.mch.CorpPaymentRecord
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/mch_pay.php?chapter=14_3">企业付款查询</a>
 	 * @throws WeixinException
 	 */
-	public MPPaymentRecord mchPaymentQuery(InputStream ca, String outTradeNo)
+	public CorpPaymentRecord queryCorpPayment(InputStream ca, String outTradeNo)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("nonce_str", RandomUtil.generateString(16));
@@ -218,7 +218,7 @@ public class CashApi {
 				}
 			}
 		}
-		return response.getAsObject(new TypeReference<MPPaymentRecord>() {
+		return response.getAsObject(new TypeReference<CorpPaymentRecord>() {
 		});
 	}
 }

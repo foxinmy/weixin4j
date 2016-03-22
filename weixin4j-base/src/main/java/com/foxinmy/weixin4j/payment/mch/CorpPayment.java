@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
 /**
  * 企业付款
  * 
- * @className MPPayment
+ * @className CorpPayment
  * @author jy
  * @date 2015年4月1日
  * @since JDK 1.6
@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MPPayment implements Serializable {
+public class CorpPayment implements Serializable {
 	
 	private static final long serialVersionUID = 3734639674346425312L;
 	/**
@@ -66,7 +66,7 @@ public class MPPayment implements Serializable {
 	@JSONField(name = "spbill_create_ip")
 	private String clientIp;
 	
-	protected MPPayment() {
+	protected CorpPayment() {
 		// jaxb required
 	}
 	
@@ -79,7 +79,7 @@ public class MPPayment implements Serializable {
 	 * @param amount 金额
 	 * @param clientIp 调用接口IP
 	 */
-	public MPPayment(String outTradeNo, String openId,
+	public CorpPayment(String outTradeNo, String openId,
 			MPPaymentCheckNameType checkNameType, String desc, double amount,
 			String clientIp) {
 		this.outTradeNo = outTradeNo;
@@ -124,7 +124,7 @@ public class MPPayment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MPPayment [outTradeNo=" + outTradeNo + ", openId=" + openId
+		return "CorpPayment [outTradeNo=" + outTradeNo + ", openId=" + openId
 				+ ", checkNameType=" + checkNameType + ", userName=" + userName
 				+ ", desc=" + desc + ", amount=" + amount + ", clientIp="
 				+ clientIp + "]";

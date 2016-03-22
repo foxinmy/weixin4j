@@ -54,11 +54,11 @@ public class TemplateMessage implements Serializable {
 
 	private final String HEAD_KEY = "first";
 	private final String TAIL_KEY = "remark";
+	private final String DEFAULT_COLOR = "#173177";
 
 	@JSONCreator
 	public TemplateMessage(@JSONField(name = "toUser") String toUser,
 			@JSONField(name = "templateId") String templateId,
-			@JSONField(name = "title") String title,
 			@JSONField(name = "url") String url) {
 		this.toUser = toUser;
 		this.templateId = templateId;
@@ -124,7 +124,7 @@ public class TemplateMessage implements Serializable {
 	 * @return
 	 */
 	public TemplateMessage pushTail(String text) {
-		return pushTail("#173177", text);
+		return pushTail(DEFAULT_COLOR, text);
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class TemplateMessage implements Serializable {
 	 * @return
 	 */
 	public TemplateMessage pushItem(String key, String text) {
-		return pushItem(key, "#173177", text);
+		return pushItem(key, DEFAULT_COLOR, text);
 	}
 
 	/**
@@ -169,6 +169,15 @@ public class TemplateMessage implements Serializable {
 	public TemplateMessage pushItem(String key, String color, String text) {
 		content.put(key, new NameValue(color, text));
 		return this;
+	}
+
+	/**
+	 * 设置所有字段项
+	 * 
+	 * @param items
+	 */
+	public void pushItems(Map<String, NameValue> items) {
+		this.content = items;
 	}
 
 	@Override

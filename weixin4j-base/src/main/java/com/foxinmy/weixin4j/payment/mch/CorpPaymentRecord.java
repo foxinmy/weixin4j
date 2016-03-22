@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
 /**
  * 企业付款记录
  * 
- * @className MPPaymentRecord
+ * @className CorpPaymentRecord
  * @author jy
  * @date 2015年6月23日
  * @since JDK 1.6
@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MPPaymentRecord extends ApiResult {
+public class CorpPaymentRecord extends ApiResult {
 
 	private static final long serialVersionUID = -1926873539419750498L;
 
@@ -94,7 +94,7 @@ public class MPPaymentRecord extends ApiResult {
 	@XmlElement(name = "check_name_result")
 	private String checkNameResult;
 
-	protected MPPaymentRecord() {
+	protected CorpPaymentRecord() {
 		// jaxb required
 	}
 
@@ -191,7 +191,7 @@ public class MPPaymentRecord extends ApiResult {
 
 	@Override
 	public String toString() {
-		return "MPPaymentRecord [transactionId=" + transactionId
+		return "CorpPaymentRecord [transactionId=" + transactionId
 				+ ", outTradeNo=" + outTradeNo + ", transactionStatus="
 				+ getFormatTransactionStatus() + ", failureReason="
 				+ failureReason + ", openId=" + openId + ", transferName="

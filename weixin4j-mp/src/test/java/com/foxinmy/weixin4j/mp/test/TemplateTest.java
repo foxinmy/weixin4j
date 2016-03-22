@@ -37,7 +37,7 @@ public class TemplateTest extends TokenTest {
 	@Test
 	public void test() throws WeixinException {
 		TemplateMessage tplMessage = new TemplateMessage("touser",
-				"template_id", "title", "url");
+				"template_id", "url");
 		tplMessage.pushHead("head").pushTail("tail").pushItem("key1", "text1");
 		JsonResult result = tmplApi.sendTmplMessage(tplMessage);
 		Assert.assertEquals(0, result.getCode());

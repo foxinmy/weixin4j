@@ -6,8 +6,8 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.payment.mch.MPPayment;
-import com.foxinmy.weixin4j.payment.mch.MPPaymentResult;
+import com.foxinmy.weixin4j.payment.mch.CorpPayment;
+import com.foxinmy.weixin4j.payment.mch.CorpPaymentResult;
 import com.foxinmy.weixin4j.payment.mch.Redpacket;
 import com.foxinmy.weixin4j.payment.mch.RedpacketRecord;
 import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
@@ -47,11 +47,17 @@ public class CashTest extends PayTest {
 
 	@Test
 	public void mpPayment() throws WeixinException, IOException {
-		MPPayment payment = new MPPayment("MP001",
-				"oyFLst1bqtuTcxK-ojF8hOGtLQao",
-				MPPaymentCheckNameType.NO_CHECK, "企业付款测试", 0.01d, "127.0.0.1");
-		MPPaymentResult result = PAY3.mpPayment(new FileInputStream(caFile),
-				payment);
+		CorpPayment payment = new CorpPayment("MP001",
+				"ofW1gwok9vZIyle0YbA-eQe83Uk8",
+				MPPaymentCheckNameType.NO_CHECK, "企业付款测试", 1d, "127.0.0.1");
+		CorpPaymentResult result = PAY3.corpPayment(
+				new FileInputStream(caFile), payment);
 		System.err.println(result);
+	}
+
+	@Test
+	public void mchPaymentQuery() throws WeixinException, IOException {
+		System.err.println(PAY3.queryCorpPayment(new FileInputStream(caFile),
+				"MP001"));
 	}
 }

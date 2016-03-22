@@ -17,9 +17,9 @@ import com.foxinmy.weixin4j.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.payment.coupon.CouponStock;
 import com.foxinmy.weixin4j.payment.mch.ApiResult;
-import com.foxinmy.weixin4j.payment.mch.MPPayment;
-import com.foxinmy.weixin4j.payment.mch.MPPaymentRecord;
-import com.foxinmy.weixin4j.payment.mch.MPPaymentResult;
+import com.foxinmy.weixin4j.payment.mch.CorpPayment;
+import com.foxinmy.weixin4j.payment.mch.CorpPaymentRecord;
+import com.foxinmy.weixin4j.payment.mch.CorpPaymentResult;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
 import com.foxinmy.weixin4j.payment.mch.MchPayRequest;
 import com.foxinmy.weixin4j.payment.mch.NativePayResponse;
@@ -773,26 +773,26 @@ public class WeixinPayProxy {
 	 *            付款信息
 	 * @return 付款结果
 	 * @see com.foxinmy.weixin4j.api.CashApi
-	 * @see com.foxinmy.weixin4j.payment.mch.MPPayment
-	 * @see com.foxinmy.weixin4j.payment.mch.MPPaymentResult
+	 * @see com.foxinmy.weixin4j.payment.mch.CorpPayment
+	 * @see com.foxinmy.weixin4j.payment.mch.CorpPaymentResult
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/mch_pay.php?chapter=14_1">企业付款</a>
 	 * @throws WeixinException
 	 */
-	public MPPaymentResult mpPayment(InputStream ca, MPPayment mpPayment)
+	public CorpPaymentResult corpPayment(InputStream ca, CorpPayment payment)
 			throws WeixinException {
-		return cashApi.mchPayment(ca, mpPayment);
+		return cashApi.corpPayment(ca, payment);
 	}
 
 	/**
 	 * 企业付款
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.payment.WeixinPayProxy#mpPayment(InputStream, MPPayment)}
+	 * @see {@link com.foxinmy.weixin4j.payment.WeixinPayProxy#corpPayment(InputStream, CorpPayment)}
 	 */
-	public MPPaymentResult mpPayment(MPPayment mpPayment)
+	public CorpPaymentResult corpPayment(CorpPayment payment)
 			throws WeixinException, IOException {
-		return cashApi.mchPayment(
-				new FileInputStream(settings.getCertificateFile0()), mpPayment);
+		return cashApi.corpPayment(
+				new FileInputStream(settings.getCertificateFile0()), payment);
 	}
 
 	/**
@@ -804,25 +804,25 @@ public class WeixinPayProxy {
 	 *            商户调用企业付款API时使用的商户订单号
 	 * @return 付款记录
 	 * @see com.foxinmy.weixin4j.api.CashApi
-	 * @see com.foxinmy.weixin4j.payment.mch.MPPaymentRecord
+	 * @see com.foxinmy.weixin4j.payment.mch.CorpPaymentRecord
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/mch_pay.php?chapter=14_3">企业付款查询</a>
 	 * @throws WeixinException
 	 */
-	public MPPaymentRecord mpPaymentQuery(InputStream ca, String outTradeNo)
+	public CorpPaymentRecord queryCorpPayment(InputStream ca, String outTradeNo)
 			throws WeixinException {
-		return cashApi.mchPaymentQuery(ca, outTradeNo);
+		return cashApi.queryCorpPayment(ca, outTradeNo);
 	}
 
 	/**
 	 * 企业付款查询
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.payment.WeixinPayProxy#mpPaymentQuery(InputStream, String)}
+	 * @see {@link com.foxinmy.weixin4j.payment.WeixinPayProxy#CorpPaymentRecord(InputStream, String)}
 	 */
-	public MPPaymentRecord mpPaymentQuery(String outTradeNo)
+	public CorpPaymentRecord queryCorpPayment(String outTradeNo)
 			throws WeixinException, IOException {
 		return cashApi
-				.mchPaymentQuery(
+				.queryCorpPayment(
 						new FileInputStream(settings.getCertificateFile0()),
 						outTradeNo);
 	}

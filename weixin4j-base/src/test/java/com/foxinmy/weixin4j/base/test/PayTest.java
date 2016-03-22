@@ -37,15 +37,14 @@ public class PayTest {
 	protected final static WeixinPayProxy PAY3;
 	protected final static WeixinPayAccount ACCOUNT3;
 	static {
-		ACCOUNT3 = new WeixinPayAccount("wx5518c745065b1f95",
-				"请填入v3版本的appSecret", "DTYUNJKL1234fghjkRTGHJNM345678fc",
-				"1298173301", null, null, null, null, null);
+		ACCOUNT3 = new WeixinPayAccount("appid", "appsecret", "paySignKey",
+				"mchid");
 		PAY3 = new WeixinPayProxy(new Weixin4jSettings(ACCOUNT3));
 	}
 	/**
 	 * 商户证书文件
 	 */
-	protected File caFile = new File("证书文件，如12333.p12");
+	protected File caFile = new File("证书文件:*.p12");
 
 	@Test
 	public void orderQueryV3() throws WeixinException {
