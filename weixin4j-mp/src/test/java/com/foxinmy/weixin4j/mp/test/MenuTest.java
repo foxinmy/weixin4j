@@ -102,8 +102,7 @@ public class MenuTest extends TokenTest {
 		buttons.add(new Button("only for iphone", "iphone", ButtonType.click));
 		MenuMatchRule matchRule = new MenuMatchRule();
 		matchRule.platform(ClientPlatformType.IOS);
-		JsonResult result = menuApi.createCustomMenu(buttons, matchRule);
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertNotNull(menuApi.createCustomMenu(buttons, matchRule));
 	}
 
 	@Test
