@@ -58,16 +58,17 @@ public class UserApi extends MpApi {
 	 *            国家地区语言版本
 	 * @return 用户对象
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户信息</a>
+	 * @see <a href=
+	 *      "http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">
+	 *      获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.type.Lang
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 */
 	public User getUser(String openId, Lang lang) throws WeixinException {
 		String user_info_uri = getRequestUri("api_user_info_uri");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.get(String.format(
-				user_info_uri, token.getAccessToken(), openId, lang.name()));
+		WeixinResponse response = weixinExecutor
+				.get(String.format(user_info_uri, token.getAccessToken(), openId, lang.name()));
 
 		return response.getAsObject(new TypeReference<User>() {
 		});
@@ -79,8 +80,9 @@ public class UserApi extends MpApi {
 	 * @param openIds
 	 *            用户ID
 	 * @return 用户列表
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户信息</a>
+	 * @see <a href=
+	 *      "http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">
+	 *      获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @throws WeixinException
 	 * @see {@link #getUsers(Lang,String[])}
@@ -95,71 +97,89 @@ public class UserApi extends MpApi {
 	 * @param lang
 	 *            国家地区语言版本
 	 * @param openIds
-	 *            用户ID
+	 *            用户ID 最多100个
 	 * @return 用户列表
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户信息</a>
+	 * @see <a href=
+	 *      "http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">
+	 *      获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.type.Lang
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @throws WeixinException
 	 */
-	public List<User> getUsers(Lang lang, String... openIds)
-			throws WeixinException {
+	public List<User> getUsers(Lang lang, String... openIds) throws WeixinException {
 		String api_users_info_uri = getRequestUri("api_users_info_uri");
 		StringBuilder parameter = new StringBuilder();
 		parameter.append("{\"user_list\": [");
 		for (String openId : openIds) {
 			parameter.append("{\"openid\": \"").append(openId).append("\"");
-			parameter.append(",\"lang\": \"").append(lang.name()).append("\"")
-					.append("},");
+			parameter.append(",\"lang\": \"").append(lang.name()).append("\"").append("},");
 		}
 		parameter.delete(parameter.length() - 1, parameter.length());
 		parameter.append("]}");
 		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.post(
-				String.format(api_users_info_uri, token.getAccessToken()),
+		WeixinResponse response = weixinExecutor.post(String.format(api_users_info_uri, token.getAccessToken()),
 				parameter.toString());
 
-		return JSON.parseArray(
-				response.getAsJson().getString("user_info_list"), User.class);
+		return JSON.parseArray(response.getAsJson().getString("user_info_list"), User.class);
 	}
 
 	/**
-	 * 获取用户一定数量(10000)的关注者列表
+	 * 获取公众号一定数量(10000)的关注者列表 <font corlor="red">请慎重使用</font>
 	 * 
 	 * @param nextOpenId
-	 *            下一次拉取数据的openid
-	 * @return 关注信息
+	 *            下一次拉取数据的openid 不填写则默认从头开始拉取
+	 * @return 关注者信息 <font color="red">包含用户的详细信息</font>
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/3/17e6919a39c1c53555185907acf70093.html">获取关注者列表</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
+	 *      获取关注者列表</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
+	 *      批量获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Following
+	 * @see com.foxinmy.weixin4j.mp.model.User
 	 */
 	public Following getFollowing(String nextOpenId) throws WeixinException {
-		String following_uri = getRequestUri("following_uri");
-		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.get(String.format(
-				following_uri, token.getAccessToken(), nextOpenId == null ? ""
-						: nextOpenId));
-
-		Following following = response
-				.getAsObject(new TypeReference<Following>() {
-				});
-
+		Following following = getFollowingOpenIds(nextOpenId);
 		if (following.getCount() > 0) {
-			List<String> openIds = JSON.parseArray(following.getDataJson()
-					.getString("openid"), String.class);
-			List<User> userList = new ArrayList<User>();
-			for (String openId : openIds) {
-				userList.add(getUser(openId));
+			List<User> users = new ArrayList<User>(following.getCount());
+			for (int i = 1; i <= (int) Math.ceil(following.getCount() / 100d); i++) {
+				users.addAll(getUsers(following.getOpenIds().subList((i - 1) * 100, i * 100).toArray(new String[] {})));
 			}
-			following.setUserList(userList);
+			following.setUserList(users);
 		}
 		return following;
 	}
 
 	/**
-	 * 获取用户全部的关注者列表
+	 * 获取公众号一定数量(10000)的关注者列表
+	 * 
+	 * @param nextOpenId
+	 *            下一次拉取数据的openid 不填写则默认从头开始拉取
+	 * @return 关注者信息 <font color="red">不包含用户的详细信息</font>
+	 * @throws WeixinException
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
+	 *      获取关注者列表</a>
+	 * @see com.foxinmy.weixin4j.mp.model.Following
+	 */
+	public Following getFollowingOpenIds(String nextOpenId) throws WeixinException {
+		String following_uri = getRequestUri("following_uri");
+		Token token = tokenHolder.getToken();
+		WeixinResponse response = weixinExecutor
+				.get(String.format(following_uri, token.getAccessToken(), nextOpenId == null ? "" : nextOpenId));
+
+		JSONObject result = response.getAsJson();
+		Following following = JSON.toJavaObject(result, Following.class);
+
+		if (following.getCount() > 0) {
+			following.setOpenIds(JSON.parseArray(result.getJSONObject("data").getString("openid"), String.class));
+		}
+		return following;
+	}
+
+	/**
+	 * 获取公众号全部的关注者列表 <font corlor="red">请慎重使用</font>
 	 * <p>
 	 * 当公众号关注者数量超过10000时,可通过填写next_openid的值,从而多次拉取列表的方式来满足需求,
 	 * 将上一次调用得到的返回中的next_openid值,作为下一次调用中的next_openid值
@@ -167,9 +187,13 @@ public class UserApi extends MpApi {
 	 * 
 	 * @return 用户对象集合
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/3/17e6919a39c1c53555185907acf70093.html">获取关注者列表</a>
-	 * @see com.foxinmy.weixin4j.mp.model.Following
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
+	 *      获取关注者列表</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
+	 *      批量获取用户信息</a>
+	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi#getFollowing(String)
 	 */
 	public List<User> getAllFollowing() throws WeixinException {
@@ -188,6 +212,35 @@ public class UserApi extends MpApi {
 	}
 
 	/**
+	 * 获取公众号全部的关注者列表 <font corlor="red">请慎重使用</font>
+	 * <p>
+	 * 当公众号关注者数量超过10000时,可通过填写next_openid的值,从而多次拉取列表的方式来满足需求,
+	 * 将上一次调用得到的返回中的next_openid值,作为下一次调用中的next_openid值
+	 * </p>
+	 * 
+	 * @return 用户openid集合
+	 * @throws WeixinException
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
+	 *      获取关注者列表</a>
+	 * @see com.foxinmy.weixin4j.mp.api.UserApi#getFollowingOpenIds(String)
+	 */
+	public List<String> getAllFollowingOpenIds() throws WeixinException {
+		List<String> openIds = new ArrayList<String>();
+		String nextOpenId = null;
+		Following f = null;
+		for (;;) {
+			f = getFollowingOpenIds(nextOpenId);
+			if (f.getCount() == 0) {
+				break;
+			}
+			openIds.addAll(f.getOpenIds());
+			nextOpenId = f.getNextOpenId();
+		}
+		return openIds;
+	}
+
+	/**
 	 * 设置用户备注名
 	 * 
 	 * @param openId
@@ -195,18 +248,17 @@ public class UserApi extends MpApi {
 	 * @param remark
 	 *            备注名
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/10/bf8f4e3074e1cf91eb6518b6d08d223e.html">设置用户备注名</a>
+	 * @see <a href=
+	 *      "http://mp.weixin.qq.com/wiki/10/bf8f4e3074e1cf91eb6518b6d08d223e.html">
+	 *      设置用户备注名</a>
 	 */
-	public JsonResult remarkUserName(String openId, String remark)
-			throws WeixinException {
+	public JsonResult remarkUserName(String openId, String remark) throws WeixinException {
 		String updateremark_uri = getRequestUri("updateremark_uri");
 		Token token = tokenHolder.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("openid", openId);
 		obj.put("remark", remark);
-		WeixinResponse response = weixinExecutor.post(
-				String.format(updateremark_uri, token.getAccessToken()),
+		WeixinResponse response = weixinExecutor.post(String.format(updateremark_uri, token.getAccessToken()),
 				obj.toJSONString());
 
 		return response.getAsJsonResult();

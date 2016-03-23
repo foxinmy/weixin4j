@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.mp.model;
 import java.io.Serializable;
 import java.util.List;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -28,8 +27,8 @@ public class Following implements Serializable {
 	/**
 	 * 列表数据，OPENID的列表
 	 */
-	@JSONField(name = "data")
-	private JSONObject dataJson;
+	@JSONField(deserialize = false)
+	private List<String> openIds;
 	/**
 	 * 拉取列表的后一个用户的OPENID
 	 */
@@ -40,6 +39,7 @@ public class Following implements Serializable {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 */
+	@JSONField(deserialize = false)
 	private List<User> userList;
 
 	public int getTotal() {
@@ -66,12 +66,12 @@ public class Following implements Serializable {
 		this.userList = userList;
 	}
 
-	public JSONObject getDataJson() {
-		return dataJson;
+	public List<String> getOpenIds() {
+		return openIds;
 	}
 
-	public void setDataJson(JSONObject dataJson) {
-		this.dataJson = dataJson;
+	public void setOpenIds(List<String> openIds) {
+		this.openIds = openIds;
 	}
 
 	public String getNextOpenId() {
@@ -84,17 +84,7 @@ public class Following implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[Following total=").append(total);
-		sb.append(", count=").append(count);
-		if (userList != null && !userList.isEmpty()) {
-			sb.append(", users={");
-			for (User u : userList) {
-				sb.append(u.toString());
-			}
-			sb.append("}");
-		}
-		sb.append(", nextOpenId=").append(nextOpenId).append("]");
-		return sb.toString();
+		return "Following [total=" + total + ", count=" + count + ", openIds=" + openIds + ", nextOpenId=" + nextOpenId
+				+ ", userList=" + userList + "]";
 	}
 }
