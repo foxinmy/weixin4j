@@ -46,8 +46,7 @@ public class Weixin4jSettings {
 	 * 默认使用weixin4j.properties配置的信息
 	 */
 	public Weixin4jSettings() {
-		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinPayAccount.class), "classpath:ca.p12");
+		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"), WeixinPayAccount.class), null);
 	}
 
 	/**
@@ -58,8 +57,7 @@ public class Weixin4jSettings {
 	 * @param certificateFile
 	 *            支付接口需要的证书文件(*.p12),比如退款接口
 	 */
-	public Weixin4jSettings(WeixinPayAccount weixinPayAccount,
-			String certificateFile) {
+	public Weixin4jSettings(WeixinPayAccount weixinPayAccount, String certificateFile) {
 		this(weixinPayAccount);
 		this.certificateFile = certificateFile;
 	}
@@ -72,8 +70,7 @@ public class Weixin4jSettings {
 	 */
 	public Weixin4jSettings(WeixinPayAccount weixinPayAccount) {
 		this.weixinPayAccount = weixinPayAccount;
-		this.weixinAccount = new WeixinAccount(weixinPayAccount.getId(),
-				weixinPayAccount.getSecret());
+		this.weixinAccount = new WeixinAccount(weixinPayAccount.getId(), weixinPayAccount.getSecret());
 	}
 
 	/**
@@ -110,8 +107,7 @@ public class Weixin4jSettings {
 
 	public String getTmpdir0() {
 		if (StringUtil.isBlank(tmpdir)) {
-			return Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
-					System.getProperty("java.io.tmpdir"));
+			return Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir", System.getProperty("java.io.tmpdir"));
 		}
 		return tmpdir;
 	}
@@ -133,8 +129,7 @@ public class Weixin4jSettings {
 
 	public String getCertificateFile0() {
 		if (StringUtil.isBlank(certificateFile)) {
-			return Weixin4jConfigUtil.getClassPathValue(
-					"weixin4j.certificate.file", "classpath:ca.p12");
+			return Weixin4jConfigUtil.getClassPathValue("weixin4j.certificate.file", "classpath:ca.p12");
 		}
 		return certificateFile;
 	}
@@ -157,9 +152,7 @@ public class Weixin4jSettings {
 
 	@Override
 	public String toString() {
-		return "Weixin4jSettings [weixinAccount=" + weixinAccount
-				+ ", httpParams=" + httpParams + ",tokenStorager="
-				+ tokenStorager + ", tmpdir=" + tmpdir + ", certificateFile= "
-				+ certificateFile + "]";
+		return "Weixin4jSettings [weixinAccount=" + weixinAccount + ", httpParams=" + httpParams + ",tokenStorager="
+				+ tokenStorager + ", tmpdir=" + tmpdir + ", certificateFile= " + certificateFile + "]";
 	}
 }
