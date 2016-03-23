@@ -24,7 +24,7 @@ public class QRParameter implements Serializable {
 	/**
 	 * 临时二维码的有效时间, 最大不超过2592000（即30天），此字段如果不填，则默认有效期为30秒
 	 */
-	private int expireSeconds;
+	private int  expireSeconds;
 	/**
 	 * 二维码类型
 	 * 
@@ -63,14 +63,14 @@ public class QRParameter implements Serializable {
 	 * @param expireSeconds
 	 *            有效时间
 	 * @param sceneValue
-	 *            二维码的场景值
+	 *            二维码的场景值 <font color="red">临时二维码最大值为无符号非0整型</font>
 	 * @return 二维码参数
 	 */
-	public static QRParameter createTemporary(int expireSeconds, int sceneValue) {
+	public static QRParameter createTemporary(int expireSeconds, long sceneValue) {
 		QRParameter qr = new QRParameter();
 		qr.qrType = QRType.QR_SCENE;
 		qr.expireSeconds = expireSeconds;
-		qr.sceneValue = Integer.toString(sceneValue);
+		qr.sceneValue = Long.toString(sceneValue);
 		qr.content = String
 				.format("{\"expire_seconds\": %s, \"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_id\": %s}}}",
 						expireSeconds, QRType.QR_SCENE.name(), sceneValue);
