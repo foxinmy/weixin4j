@@ -144,7 +144,8 @@ public class UserApi extends MpApi {
 		if (following.getCount() > 0) {
 			List<User> users = new ArrayList<User>(following.getCount());
 			for (int i = 1; i <= (int) Math.ceil(following.getCount() / 100d); i++) {
-				users.addAll(getUsers(following.getOpenIds().subList((i - 1) * 100, i * 100).toArray(new String[] {})));
+				users.addAll(getUsers(following.getOpenIds()
+						.subList((i - 1) * 100, Math.min(i * 100, following.getCount())).toArray(new String[] {})));
 			}
 			following.setUserList(users);
 		}
