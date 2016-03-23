@@ -1,8 +1,12 @@
 package com.foxinmy.weixin4j.qy.api;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,6 +51,8 @@ import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.RegexUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
+import com.foxinmy.weixin4j.util.Weixin4jConst;
 import com.foxinmy.weixin4j.util.WeixinErrorUtil;
 
 /**
@@ -157,6 +163,8 @@ public class MediaApi extends QyApi {
 						mediaType.name(), agentid), new FormBodyPart("media",
 						new ByteArrayBody(content, mediaType.getContentType()
 								.getMimeType(), fileName)));
+				return new MediaUploadResult(response.getAsJson().getString(
+						"media_id"), mediaType, new Date());
 				JSONObject obj = response.getAsJson();
 				return new MediaUploadResult(obj.getString("media_id"),
 						mediaType, new Date(), obj.getString("url"));
@@ -170,8 +178,16 @@ public class MediaApi extends QyApi {
 				JSONObject obj = response.getAsJson();
 				return new MediaUploadResult(obj.getString("media_id"),
 						obj.getObject("type", MediaType.class), new Date(
+								obj.getLong("created_at") * 1000l));
+				/*
+				 * return response.getAsObject(new
+				 * TypeReference<MediaUploadResult>() { });
+				 */
 								obj.getLong("created_at") * 1000l),
 						obj.getString("url"));
+
+
+
 			}
 		} finally {
 			if (is != null) {
@@ -182,6 +198,57 @@ public class MediaApi extends QyApi {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 下载媒体文件
+	 * 
+	 * @param agentid
+	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
+	 * @param mediaId
+	 *            存储在微信服务器上的媒体标识
+	 * @return 写入硬盘后的文件对象,存储路径见weixin4j.properties配置
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.type.MediaType
+	 * @see {@link #downloadMedia(int,String)}
+	 */
+	public File downloadMediaFile(int agentid, String mediaId)
+			throws WeixinException {
+		String media_path = Weixin4jConfigUtil.getValue("media.path",
+				Weixin4jConst.DEFAULT_MEDIA_PATH);
+		final String prefixName = String.format("%d_%s.", agentid, mediaId);
+		File[] files = new File(media_path).listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.startsWith(prefixName);
+			}
+		});
+		if (files.length > 0) {
+			return files[0];
+		}
+		MediaDownloadResult result = downloadMedia(agentid, mediaId);
+		File file = new File(media_path + File.separator + result.getFileName());
+		OutputStream os = null;
+		try {
+			if (file.createNewFile()) {
+				os = new FileOutputStream(file);
+				os.write(result.getContent());
+			} else {
+				throw new WeixinException(String.format("create file fail:%s",
+						file.getAbsolutePath()));
+			}
+		} catch (IOException e) {
+			throw new WeixinException(e);
+		} finally {
+			try {
+				if (os != null) {
+					os.close();
+				}
+			} catch (IOException e) {
+				;
+			}
+		}
+		return file;
 	}
 
 	/**
@@ -419,6 +486,10 @@ public class MediaApi extends QyApi {
 		obj = response.getAsJson();
 
 		MediaRecord mediaRecord = JSON.toJavaObject(obj, MediaRecord.class);
+		if (mediaType == MediaType.news) {
+			mediaRecord.setItems(JSON.parseArray(obj.getString("itemlist"),
+					MediaItem.class));
+		}
 		mediaRecord.setMediaType(mediaType);
 		mediaRecord.setPageable(pageable);
 		return mediaRecord;
@@ -443,6 +514,7 @@ public class MediaApi extends QyApi {
 		for (;;) {
 			mediaRecord = listMaterialMedia(agentid, mediaType, pageable);
 			if (mediaRecord.getItems() == null
+					|| !mediaRecord.getItems().isEmpty()) {
 					|| mediaRecord.getItems().isEmpty()) {
 				break;
 			}
@@ -460,6 +532,8 @@ public class MediaApi extends QyApi {
 	 * 
 	 * @param users
 	 *            成员列表
+	 * @see {@link BatchApi#syncuser(String,Callback)}
+	 * @see {@link BatchApi#replaceuser(String,Callback)}
 	 * @see {@link BatchApi#syncUser(String,Callback)}
 	 * @see {@link BatchApi#replaceUser(String,Callback)}
 	 * @see <a
@@ -476,6 +550,7 @@ public class MediaApi extends QyApi {
 	 * 
 	 * @param parties
 	 *            部门列表
+	 * @see {@link BatchApi#replaceparty(String,Callback)}
 	 * @see {@link BatchApi#replaceParty(String,Callback)}
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
