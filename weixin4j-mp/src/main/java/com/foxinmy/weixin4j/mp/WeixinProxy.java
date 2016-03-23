@@ -112,8 +112,13 @@ public class WeixinProxy {
 	 * 数据统计API
 	 */
 	private final DataApi dataApi;
-
+	/**
+	 * token实现
+	 */
 	private final TokenHolder tokenHolder;
+	/**
+	 * 配置相关
+	 */
 	private Weixin4jSettings settings;
 
 	/**

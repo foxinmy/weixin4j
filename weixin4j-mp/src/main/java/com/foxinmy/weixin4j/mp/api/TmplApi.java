@@ -155,7 +155,7 @@ public class TmplApi extends MpApi {
 	 *      "http://mp.weixin.qq.com/wiki/2/def71e3ecb5706c132229ae505815966.html"
 	 *      >运营规范</a>
 	 * @see com.foxinmy.weixin4j.mp.message.TemplateMessage
-	 * @seee com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
+	 * @see com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 */
 	public JsonResult sendTmplMessage(TemplateMessage tplMessage)
 			throws WeixinException {

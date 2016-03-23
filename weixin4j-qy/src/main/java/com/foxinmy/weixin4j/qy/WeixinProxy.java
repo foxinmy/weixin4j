@@ -103,9 +103,13 @@ public class WeixinProxy {
 	 * 聊天服务API
 	 */
 	private final ChatApi chatApi;
-
+	/**
+	 * token实现
+	 */
 	private final TokenHolder tokenHolder;
-
+	/**
+	 * 配置相关
+	 */
 	private Weixin4jSettings settings;
 
 	/**

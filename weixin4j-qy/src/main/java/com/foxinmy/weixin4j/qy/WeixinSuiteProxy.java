@@ -37,7 +37,9 @@ public class WeixinSuiteProxy {
 	 * 供应商API:如登陆URL
 	 */
 	private ProviderApi providerApi;
-
+	/**
+	 * 配置相关
+	 */
 	private final Weixin4jSuiteSettings suiteSettings;
 
 	public WeixinSuiteProxy() {

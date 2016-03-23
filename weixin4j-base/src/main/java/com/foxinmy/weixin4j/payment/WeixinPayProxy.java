@@ -59,9 +59,11 @@ public class WeixinPayProxy {
 	 * 现金API
 	 */
 	private final CashApi cashApi;
-
+	/**
+	 * 配置相关
+	 */
 	private final Weixin4jSettings settings;
-
+	
 	/**
 	 * 使用weixin4j.properties配置的支付账号信息
 	 */
