@@ -20,11 +20,12 @@ import com.foxinmy.weixin4j.type.QRType;
 public class QRParameter implements Serializable {
 
 	private static final long serialVersionUID = 6611187606558274253L;
+	private static final int DEFAULT_TEMPORARY_EXPIRE_SECONDS = 30;
 
 	/**
 	 * 临时二维码的有效时间, 最大不超过2592000（即30天），此字段如果不填，则默认有效期为30秒
 	 */
-	private int  expireSeconds;
+	private int expireSeconds;
 	/**
 	 * 二维码类型
 	 * 
@@ -63,7 +64,7 @@ public class QRParameter implements Serializable {
 	 * @param expireSeconds
 	 *            有效时间
 	 * @param sceneValue
-	 *            二维码的场景值 <font color="red">临时二维码最大值为无符号非0整型</font>
+	 *            二维码的场景值 <font color="red">临时二维码最大值为无符号32位非0整型</font>
 	 * @return 二维码参数
 	 */
 	public static QRParameter createTemporary(int expireSeconds, long sceneValue) {
@@ -71,9 +72,27 @@ public class QRParameter implements Serializable {
 		qr.qrType = QRType.QR_SCENE;
 		qr.expireSeconds = expireSeconds;
 		qr.sceneValue = Long.toString(sceneValue);
-		qr.content = String
-				.format("{\"expire_seconds\": %s, \"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_id\": %s}}}",
-						expireSeconds, QRType.QR_SCENE.name(), sceneValue);
+		qr.content = String.format(
+				"{\"expire_seconds\": %s, \"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_id\": %s}}}",
+				expireSeconds, QRType.QR_SCENE.name(), sceneValue);
+		return qr;
+	}
+
+	/**
+	 * 创建临时二维码(默认有效期为30秒)
+	 * 
+	 * @param sceneValue
+	 *            二维码的场景值 <font color="red">临时二维码最大值为无符号32位非0整型</font>
+	 * @return 二维码参数
+	 */
+	public static QRParameter createTemporary(long sceneValue) {
+		QRParameter qr = new QRParameter();
+		qr.qrType = QRType.QR_SCENE;
+		qr.expireSeconds = DEFAULT_TEMPORARY_EXPIRE_SECONDS;
+		qr.sceneValue = Long.toString(sceneValue);
+		qr.content = String.format(
+				"{\"expire_seconds\": %s, \"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_id\": %s}}}",
+				DEFAULT_TEMPORARY_EXPIRE_SECONDS, QRType.QR_SCENE.name(), sceneValue);
 		return qr;
 	}
 
@@ -81,16 +100,15 @@ public class QRParameter implements Serializable {
 	 * 创建永久二维码(场景值为int)
 	 * 
 	 * @param sceneValue
-	 *            场景值
+	 *            场景值 最大值为100000
 	 * @return 二维码参数
 	 */
 	public static QRParameter createPermanenceInt(int sceneValue) {
 		QRParameter qr = new QRParameter();
 		qr.qrType = QRType.QR_LIMIT_SCENE;
 		qr.sceneValue = Integer.toString(sceneValue);
-		qr.content = String
-				.format("{\"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_id\": %s}}}",
-						QRType.QR_LIMIT_SCENE.name(), sceneValue);
+		qr.content = String.format("{\"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_id\": %s}}}",
+				QRType.QR_LIMIT_SCENE.name(), sceneValue);
 		return qr;
 	}
 
@@ -105,15 +123,14 @@ public class QRParameter implements Serializable {
 		QRParameter qr = new QRParameter();
 		qr.qrType = QRType.QR_LIMIT_STR_SCENE;
 		qr.sceneValue = sceneValue;
-		qr.content = String
-				.format("{\"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_str\": \"%s\"}}}",
-						QRType.QR_LIMIT_STR_SCENE, sceneValue);
+		qr.content = String.format("{\"action_name\": \"%s\", \"action_info\": {\"scene\": {\"scene_str\": \"%s\"}}}",
+				QRType.QR_LIMIT_STR_SCENE, sceneValue);
 		return qr;
 	}
 
 	@Override
 	public String toString() {
-		return "QRParameter [expireSeconds=" + expireSeconds + ", qrType="
-				+ qrType + ", sceneValue=" + sceneValue + "]";
+		return "QRParameter [expireSeconds=" + expireSeconds + ", qrType=" + qrType + ", sceneValue=" + sceneValue
+				+ "]";
 	}
 }
