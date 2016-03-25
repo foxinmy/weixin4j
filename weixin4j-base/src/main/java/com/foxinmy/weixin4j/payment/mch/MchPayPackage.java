@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
- * JS支付订单详情
+ * 支付订单详情
  * 
  * @className MchPayPackage
  * @author jy
@@ -46,6 +46,24 @@ public class MchPayPackage extends PayPackage {
 	@XmlElement(name = "device_info")
 	@JSONField(name = "device_info")
 	private String deviceInfo;
+	/**
+	 * 微信分配的子商户公众账号ID 非必须
+	 */
+	@XmlElement(name = "sub_id")
+	@JSONField(name = "sub_id")
+	private String subId;
+	/**
+	 * 微信支付分配的子商户号 非必须
+	 */
+	@XmlElement(name = "sub_mch_id")
+	@JSONField(name = "sub_mch_id")
+	private String subMchId;
+	/**
+	 * 用户子标识 非必须
+	 */
+	@XmlElement(name = "sub_openid")
+	@JSONField(name = "sub_openid")
+	private String subOpenId;
 	/**
 	 * 随机字符串,不长于 32 位 必须
 	 */
@@ -85,6 +103,25 @@ public class MchPayPackage extends PayPackage {
 		// jaxb required
 	}
 
+	/**
+	 * 
+	 * @param weixinAccount
+	 *            商户信息 必填
+	 * @param openId
+	 *            用户唯一标识 JSAPI支付必填
+	 * @param body
+	 *            支付详情 必填
+	 * @param outTradeNo
+	 *            商户侧订单号 必填
+	 * @param totalFee
+	 *            支付金额(单位元) 必填
+	 * @param notifyUrl
+	 *            支付回调URL
+	 * @param createIp
+	 *            发起支付的IP地址
+	 * @param tradeType
+	 *            支付类型
+	 */
 	public MchPayPackage(WeixinPayAccount weixinAccount, String openId,
 			String body, String outTradeNo, double totalFee, String notifyUrl,
 			String createIp, TradeType tradeType) {
@@ -92,17 +129,83 @@ public class MchPayPackage extends PayPackage {
 				createIp, tradeType, null);
 	}
 
+	/**
+	 * 
+	 * @param weixinAccount
+	 *            商户信息 必填
+	 * @param openId
+	 *            用户唯一标识 JSAPI支付必填
+	 * @param body
+	 *            支付详情 必填
+	 * @param outTradeNo
+	 *            商户侧订单号 必填
+	 * @param totalFee
+	 *            支付金额(单位元) 必填
+	 * @param notifyUrl
+	 *            支付回调URL
+	 * @param createIp
+	 *            发起支付的IP地址
+	 * @param tradeType
+	 *            支付类型
+	 * @param attach
+	 *            支付时附加信息
+	 */
 	public MchPayPackage(WeixinPayAccount weixinAccount, String openId,
 			String body, String outTradeNo, double totalFee, String notifyUrl,
 			String createIp, TradeType tradeType, String attach) {
 		this(weixinAccount.getId(), weixinAccount.getMchId(), weixinAccount
-				.getDeviceInfo(), body, outTradeNo, totalFee, notifyUrl,
+				.getDeviceInfo(), weixinAccount.getSubId(), weixinAccount
+				.getSubMchId(), null, body, outTradeNo, totalFee, notifyUrl,
 				createIp, tradeType, openId, attach, null, null, null, null,
 				null);
 	}
 
+	/**
+	 * 完整参数
+	 * 
+	 * @param appId
+	 *            公众号唯一标识 必填
+	 * @param mchId
+	 *            微信支付商户号 必填
+	 * @param deviceInfo
+	 *            微信支付设备号 非必填
+	 * @param subId
+	 *            子商户唯一标识 非必填
+	 * @param subMchId
+	 *            子商户商户号 非必填
+	 * @param subOpenId
+	 *            用户在子商户appid下的唯一标识 非必填
+	 *            openid和sub_openid可以选传其中之一，如果选择传sub_openid ,则必须传sub_appid
+	 * @param body
+	 *            支付详情 必填
+	 * @param outTradeNo
+	 *            商户侧订单号 必填
+	 * @param totalFee
+	 *            支付金额(单位元) 必填
+	 * @param notifyUrl
+	 *            支付回调URL 必填
+	 * @param createIp
+	 *            发起支付的IP地址 必填
+	 * @param tradeType
+	 *            支付类型 必填
+	 * @param openId
+	 *            用户唯一标识 JSAPI支付必填
+	 * @param attach
+	 *            支付时附加信息 非必填
+	 * @param timeStart
+	 *            订单生成时间 非必填
+	 * @param timeExpire
+	 *            订单失效时间 非必填
+	 * @param goodsTag
+	 *            商品标记 非必填
+	 * @param productId
+	 *            商品ID native支付必填
+	 * @param limitPay
+	 *            指定支付方式 非必填
+	 */
 	public MchPayPackage(String appId, String mchId, String deviceInfo,
-			String body, String outTradeNo, double totalFee, String notifyUrl,
+			String subId, String subMchId, String subOpenId, String body,
+			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp, TradeType tradeType, String openId, String attach,
 			Date timeStart, Date timeExpire, String goodsTag, String productId,
 			String limitPay) {
@@ -111,6 +214,9 @@ public class MchPayPackage extends PayPackage {
 		this.appId = appId;
 		this.mchId = mchId;
 		this.deviceInfo = deviceInfo;
+		this.subId = subId;
+		this.subMchId = subMchId;
+		this.subOpenId = subOpenId;
 		this.nonceStr = RandomUtil.generateString(16);
 		this.tradeType = tradeType.name();
 		this.openId = openId;
@@ -169,9 +275,10 @@ public class MchPayPackage extends PayPackage {
 	@Override
 	public String toString() {
 		return "MchPayPackage [appId=" + appId + ", mchId=" + mchId
-				+ ", deviceInfo=" + deviceInfo + ", nonceStr=" + nonceStr
-				+ ", sign=" + sign + ", tradeType=" + tradeType + ", openId="
-				+ openId + ", productId=" + productId + ", " + super.toString()
-				+ "]";
+				+ ", deviceInfo=" + deviceInfo + ", subId=" + subId
+				+ ", subMchId=" + subMchId + ", subOpenId=" + subOpenId
+				+ ", nonceStr=" + nonceStr + ", sign=" + sign + ", tradeType="
+				+ tradeType + ", openId=" + openId + ", productId=" + productId
+				+ ", limitPay=" + limitPay + ", " + super.toString() + "]";
 	}
 }

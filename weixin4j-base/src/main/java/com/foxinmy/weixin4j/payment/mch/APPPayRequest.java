@@ -19,7 +19,6 @@ import com.foxinmy.weixin4j.util.MapUtil;
  *      href="https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=8_1">APP支付</a>
  */
 public class APPPayRequest extends AbstractPayRequest {
-
 	public APPPayRequest(String prePayId, WeixinPayAccount payAccount) {
 		super(prePayId, payAccount);
 	}
@@ -37,7 +36,6 @@ public class APPPayRequest extends AbstractPayRequest {
 		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
 				"Sign=WXPay");
 		payRequest.setPrepayId(getPrePayId());
-		payRequest.setPartnerId(getPayAccount().getPartnerId());
 		return payRequest;
 	}
 
@@ -53,7 +51,7 @@ public class APPPayRequest extends AbstractPayRequest {
 		content.append(String.format("<appid><![CDATA[%s]]></appid>",
 				payRequest.getAppId()));
 		content.append(String.format("<partnerid><![CDATA[%s]]></partnerid>",
-				payRequest.getPartnerId()));
+				getPayAccount().getPartnerId()));
 		content.append(String.format("<prepayid><![CDATA[%s]]></prepayid>",
 				payRequest.getPrepayId()));
 		content.append(String.format("<package><![CDATA[%s]]></package>",

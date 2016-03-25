@@ -8,7 +8,7 @@ import java.util.Date;
 
 import com.foxinmy.weixin4j.api.CashApi;
 import com.foxinmy.weixin4j.api.CouponApi;
-import com.foxinmy.weixin4j.api.Pay3Api;
+import com.foxinmy.weixin4j.api.PayApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
@@ -50,7 +50,7 @@ public class WeixinPayProxy {
 	/**
 	 * 微信支付API:js支付、扫码支付等接口
 	 */
-	private final Pay3Api pay3Api;
+	private final PayApi pay3Api;
 	/**
 	 * 代金券API
 	 */
@@ -79,7 +79,7 @@ public class WeixinPayProxy {
 	 */
 	public WeixinPayProxy(Weixin4jSettings settings) {
 		this.settings = settings;
-		this.pay3Api = new Pay3Api(settings.getWeixinPayAccount());
+		this.pay3Api = new PayApi(settings.getWeixinPayAccount());
 		this.couponApi = new CouponApi(settings.getWeixinPayAccount());
 		this.cashApi = new CashApi(settings.getWeixinPayAccount());
 	}
@@ -100,7 +100,7 @@ public class WeixinPayProxy {
 	 * 
 	 * @param payPackage
 	 *            包含订单信息的对象
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.MchPayPackage
 	 * @see com.foxinmy.weixin4j.payment.mch.PrePay
 	 * @see <a
@@ -118,7 +118,7 @@ public class WeixinPayProxy {
 	 * @param payPackage
 	 *            支付详情
 	 * @return 支付请求对象
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest JS支付
 	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest 扫码支付
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
@@ -161,7 +161,7 @@ public class WeixinPayProxy {
 	 *            商品标记，代金券或立减优惠功能的参数 非必填项
 	 * @param limitPay
 	 *            指定支付方式:no_credit--指定不能使用信用卡支付 非必填项
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest JS支付
 	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest 扫码支付
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
@@ -193,7 +193,7 @@ public class WeixinPayProxy {
 	 *            支付通知地址
 	 * @param createIp
 	 *            ip地址
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest
 	 * @return JSAPI支付对象
 	 * @throws WeixinPayException
@@ -220,7 +220,7 @@ public class WeixinPayProxy {
 	 *            当前访问页的URL
 	 * @param oauthToken
 	 *            oauth授权时产生的token
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_8&index=7">收货地址共享</a>
 	 * @return 编辑地址请求JSON串
@@ -235,7 +235,7 @@ public class WeixinPayProxy {
 	 * @param productId
 	 *            与订单ID等价
 	 * @return 支付链接
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一</a>
@@ -260,7 +260,7 @@ public class WeixinPayProxy {
 	 * @param createIp
 	 *            订单生成的机器 IP
 	 * @return Native回调对象
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.NativePayResponse
 	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
 	 * @see <a
@@ -290,7 +290,7 @@ public class WeixinPayProxy {
 	 * @param createIp
 	 *            订单生成的机器 IP
 	 * @return Native支付对象
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest
 	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
 	 * @see <a
@@ -318,7 +318,7 @@ public class WeixinPayProxy {
 	 * @param createIp
 	 *            订单生成的机器 IP
 	 * @return APP支付对象
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=8_1">APP支付</a>
@@ -345,7 +345,7 @@ public class WeixinPayProxy {
 	 * @param createIp
 	 *            订单生成的机器 IP
 	 * @return WAP支付对象
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付</a>
@@ -372,7 +372,7 @@ public class WeixinPayProxy {
 	 * @param createIp
 	 *            订单生成的机器 IP
 	 * @return 支付的订单信息
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see {@link #createMicroPay(MicroPayPackage)}
 	 * @throws WeixinException
 	 */
@@ -389,7 +389,7 @@ public class WeixinPayProxy {
 	 *            订单信息
 	 * @return 支付的订单信息
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.MicroPayPackage
 	 * @see com.foxinmy.weixin4j.payment.mch.Order
 	 * @see <a
@@ -412,7 +412,7 @@ public class WeixinPayProxy {
 	 *            transaction_id> out_trade_no
 	 * @since V3
 	 * @see com.foxinmy.weixin4j.payment.mch.Order
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_2">订单查询API</a>
 	 * @return 订单详情
@@ -452,7 +452,7 @@ public class WeixinPayProxy {
 	 * 
 	 * @return 退款申请结果
 	 * @see com.foxinmy.weixin4j.payment.mch.RefundResult
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4">申请退款API</a>
 	 * @since V3
@@ -492,7 +492,7 @@ public class WeixinPayProxy {
 	 *            四个参数必填一个,优先级为:
 	 *            refund_id>out_refund_no>transaction_id>out_trade_no
 	 * @return 退款记录
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.RefundRecord
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_5">退款查询API</a>
@@ -517,7 +517,7 @@ public class WeixinPayProxy {
 	 *            REFUND,返回当日退款订单
 	 * @return excel表格
 	 * @since V2 & V3
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6">下载对账单API</a>
 	 * @throws WeixinException
@@ -539,7 +539,7 @@ public class WeixinPayProxy {
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
 	 * @return 撤销结果
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @since V3
 	 * @throws WeixinException
 	 */
@@ -574,7 +574,7 @@ public class WeixinPayProxy {
 	 * @param outTradeNo
 	 *            商户系统内部的订单号
 	 * @return 执行结果
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @since V3
 	 * @throws WeixinException
 	 * @see <a
@@ -591,7 +591,7 @@ public class WeixinPayProxy {
 	 * @param url
 	 *            具有native标识的支付URL
 	 * @return 转换后的短链接
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_9">转换短链接API</a>
 	 * @since V3
@@ -618,7 +618,7 @@ public class WeixinPayProxy {
 	 * @param returnXml
 	 *            调用接口返回的基本数据
 	 * @return 处理结果
-	 * @see com.foxinmy.weixin4j.api.Pay3Api
+	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see <a
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_8">接口测试上报API</a>
 	 * @throws WeixinException

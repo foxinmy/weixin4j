@@ -646,3 +646,9 @@
 * 2016-03-22
 
   + weixin4j-base:企业付款相关类更名
+  
+* 2016-03-25
+
+  + weixin4j-base:v2和v3支付改名
+  
+  + weixin4j-base:支持服务商版支付

@@ -34,12 +34,11 @@ import com.foxinmy.weixin4j.util.Weixin4jSettings;
  * @see
  */
 public class PayTest {
-	protected final static WeixinPayProxy PAY3;
-	protected final static WeixinPayAccount ACCOUNT3;
+	protected final static WeixinPayProxy PAY;
+	protected final static WeixinPayAccount ACCOUNT;
 	static {
-		ACCOUNT3 = new WeixinPayAccount("appid", "appsecret", "paySignKey",
-				"mchid");
-		PAY3 = new WeixinPayProxy(new Weixin4jSettings(ACCOUNT3));
+		ACCOUNT = new WeixinPayAccount("appid", "paySignKey", "mchid");
+		PAY = new WeixinPayProxy(new Weixin4jSettings(ACCOUNT));
 	}
 	/**
 	 * 商户证书文件
@@ -48,13 +47,12 @@ public class PayTest {
 
 	@Test
 	public void orderQueryV3() throws WeixinException {
-		Order order = PAY3.orderQuery(new IdQuery("BY2016010800025",
+		Order order = PAY.orderQuery(new IdQuery("BY2016010800025",
 				IdType.TRADENO));
 		System.err.println(order);
 		String sign = order.getSign();
 		order.setSign(null);
-		String valiSign = DigestUtil
-				.paysignMd5(order, ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil.paysignMd5(order, ACCOUNT.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
@@ -62,14 +60,14 @@ public class PayTest {
 
 	@Test
 	public void refundQueryV3() throws WeixinException {
-		com.foxinmy.weixin4j.payment.mch.RefundRecord record = PAY3
+		com.foxinmy.weixin4j.payment.mch.RefundRecord record = PAY
 				.refundQuery(new IdQuery("TT_1427183696238", IdType.TRADENO));
 		System.err.println(record);
 		// 这里的验证签名需要把details循环拼接
 		String sign = record.getSign();
 		record.setSign(null);
-		String valiSign = DigestUtil.paysignMd5(record,
-				ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil
+				.paysignMd5(record, ACCOUNT.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
@@ -83,22 +81,22 @@ public class PayTest {
 		c.set(Calendar.MONTH, 2);
 		c.set(Calendar.DAY_OF_MONTH, 24);
 		System.err.println(c.getTime());
-		File file = PAY3.downloadBill(c.getTime(), null);
+		File file = PAY.downloadBill(c.getTime(), null);
 		System.err.println(file);
 	}
 
 	@Test
 	public void refundV3() throws WeixinException, IOException {
 		IdQuery idQuery = new IdQuery("TT_1427183696238", IdType.TRADENO);
-		com.foxinmy.weixin4j.payment.mch.RefundResult result = PAY3
-				.refundApply(new FileInputStream(caFile), idQuery, "TT_R"
-						+ System.currentTimeMillis(), 0.01d, 0.01d, null,
-						"10020674");
+		com.foxinmy.weixin4j.payment.mch.RefundResult result = PAY.refundApply(
+				new FileInputStream(caFile), idQuery,
+				"TT_R" + System.currentTimeMillis(), 0.01d, 0.01d, null,
+				"10020674");
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
-		String valiSign = DigestUtil.paysignMd5(result,
-				ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil
+				.paysignMd5(result, ACCOUNT.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
@@ -106,13 +104,13 @@ public class PayTest {
 
 	@Test
 	public void nativeV3() throws WeixinException {
-		MchPayPackage payPackageV3 = new MchPayPackage(ACCOUNT3,
+		MchPayPackage payPackageV3 = new MchPayPackage(ACCOUNT,
 				"oyFLst1bqtuTcxK-ojF8hOGtLQao", "native测试", "T0001", 0.1d,
 				"notify_url", "127.0.0.1", TradeType.NATIVE);
 		payPackageV3.setProductId("0001");
 		PrePay prePay = null;
 		try {
-			prePay = PAY3.createPrePay(payPackageV3);
+			prePay = PAY.createPrePay(payPackageV3);
 		} catch (WeixinPayException e) {
 			e.printStackTrace();
 		}
@@ -121,12 +119,12 @@ public class PayTest {
 
 	@Test
 	public void closeOrder() throws WeixinException {
-		ApiResult result = PAY3.closeOrder("D111");
+		ApiResult result = PAY.closeOrder("D111");
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
-		String valiSign = DigestUtil.paysignMd5(result,
-				ACCOUNT3.getPaySignKey());
+		String valiSign = DigestUtil
+				.paysignMd5(result, ACCOUNT.getPaySignKey());
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
@@ -135,7 +133,7 @@ public class PayTest {
 	@Test
 	public void shortUrl() throws WeixinException {
 		String url = "weixin://wxpay/bizpayurl?xxxxxx";
-		String shortUrl = PAY3.getPayShorturl(url);
+		String shortUrl = PAY.getPayShorturl(url);
 		System.err.println(shortUrl);
 	}
 
@@ -148,7 +146,7 @@ public class PayTest {
 		Date time = new Date();
 		XmlResult returnXml = new XmlResult("SUCCESS", "");
 		returnXml.setResultCode("SUCCESS");
-		returnXml = PAY3.interfaceReport(interfaceUrl, executeTime, outTradeNo,
+		returnXml = PAY.interfaceReport(interfaceUrl, executeTime, outTradeNo,
 				ip, time, returnXml);
 		System.err.println(returnXml);
 	}

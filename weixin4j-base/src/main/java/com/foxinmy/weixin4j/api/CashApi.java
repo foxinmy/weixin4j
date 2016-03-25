@@ -60,14 +60,9 @@ public class CashApi {
 	 */
 	public RedpacketSendResult sendRedpack(InputStream ca, Redpacket redpacket)
 			throws WeixinException {
-		JSONObject obj = (JSONObject) JSON.toJSON(redpacket);
-		obj.put("nonce_str", RandomUtil.generateString(16));
-		obj.put("mch_id", weixinAccount.getMchId());
-		obj.put("sub_mch_id", weixinAccount.getSubMchId());
-		obj.put("wxappid", weixinAccount.getId());
-		String sign = DigestUtil.paysignMd5(obj, weixinAccount.getPaySignKey());
-		obj.put("sign", sign);
-		String param = XmlStream.map2xml(obj);
+		redpacket.setSign(DigestUtil.paysignMd5(redpacket,
+				weixinAccount.getPaySignKey()));
+		String param = XmlStream.map2xml((JSONObject) JSON.toJSON(redpacket));
 		WeixinResponse response = null;
 		try {
 			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
@@ -184,7 +179,7 @@ public class CashApi {
 	 * 企业付款查询 用于商户的企业付款操作进行结果查询，返回付款操作详细结果
 	 * 
 	 * @param ca
-	 *           后缀为*.p12的证书文件
+	 *            后缀为*.p12的证书文件
 	 * @param outTradeNo
 	 *            商户调用企业付款API时使用的商户订单号
 	 * @return 付款记录

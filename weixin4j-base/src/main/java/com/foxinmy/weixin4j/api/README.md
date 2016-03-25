@@ -2,4 +2,4 @@
 
 * CouponApi `优惠券API`
 
-* Pay3Api `微信支付API`
+* PayApi `微信支付API`

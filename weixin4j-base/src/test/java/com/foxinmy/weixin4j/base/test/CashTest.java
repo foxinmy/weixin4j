@@ -26,21 +26,18 @@ public class CashTest extends PayTest {
 
 	@Test
 	public void sendRedpacket() throws WeixinException, IOException {
-		Redpacket redpacket = new Redpacket("HB001", "无忧钱庄",
-				"oyFLst1bqtuTcxK-ojF8hOGtLQao", 1d, 1);
-		redpacket.setActName("红包测试");
-		redpacket.setClientIp("127.0.0.1");
-		redpacket.setRemark("快来领取红包吧！");
-		redpacket.setWishing("来就送钱");
-		RedpacketSendResult result = PAY3.sendRedpack(new FileInputStream(
-				caFile), redpacket);
+		Redpacket redpacket = new Redpacket(ACCOUNT, "HB001", "无忧钱庄",
+				"oyFLst1bqtuTcxK-ojF8hOGtLQao", 1d, 1, "红包测试", "127.0.0.1",
+				"快来领取红包吧！", "来就送钱");
+		RedpacketSendResult result = PAY.sendRedpack(
+				new FileInputStream(caFile), redpacket);
 		System.err.println(result);
 	}
 
 	@Test
 	public void queryRedpacket() throws WeixinException, IOException {
 		String outTradeNo = "HB001";
-		RedpacketRecord record = PAY3.queryRedpack(new FileInputStream(caFile),
+		RedpacketRecord record = PAY.queryRedpack(new FileInputStream(caFile),
 				outTradeNo);
 		System.err.println(record);
 	}
@@ -50,14 +47,14 @@ public class CashTest extends PayTest {
 		CorpPayment payment = new CorpPayment("MP001",
 				"ofW1gwok9vZIyle0YbA-eQe83Uk8",
 				MPPaymentCheckNameType.NO_CHECK, "企业付款测试", 1d, "127.0.0.1");
-		CorpPaymentResult result = PAY3.corpPayment(
-				new FileInputStream(caFile), payment);
+		CorpPaymentResult result = PAY.corpPayment(new FileInputStream(caFile),
+				payment);
 		System.err.println(result);
 	}
 
 	@Test
 	public void mchPaymentQuery() throws WeixinException, IOException {
-		System.err.println(PAY3.queryCorpPayment(new FileInputStream(caFile),
+		System.err.println(PAY.queryCorpPayment(new FileInputStream(caFile),
 				"MP001"));
 	}
 }

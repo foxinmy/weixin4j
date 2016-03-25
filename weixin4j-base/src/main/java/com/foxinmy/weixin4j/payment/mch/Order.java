@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
 /**
- * V3订单信息
+ * 订单信息
  * 
  * @className Order
  * @author jy
@@ -130,6 +130,19 @@ public class Order extends ApiResult {
 	@XmlElement(name = "trade_state_desc")
 	@JSONField(name = "trade_state_desc")
 	private String tradeStateDesc;
+
+	/**
+	 * 用户在子商户下的openid
+	 */
+	@XmlElement(name = "sub_openid")
+	@JSONField(name = "sub_openid")
+	private String subOpenId;
+	/**
+	 * 是否关注子公众账号,Y- 关注,N-未关注,仅在公众 账号类型支付有效
+	 */
+	@XmlElement(name = "sub_is_subscribe")
+	@JSONField(name = "sub_is_subscribe")
+	private String subIsSubscribe;
 
 	protected Order() {
 		// jaxb required
@@ -267,6 +280,19 @@ public class Order extends ApiResult {
 		this.couponList = couponList;
 	}
 
+	public String getSubOpenId() {
+		return subOpenId;
+	}
+
+	public String getSubIsSubscribe() {
+		return subIsSubscribe;
+	}
+
+	@JSONField(serialize = false)
+	public boolean getFormatSubIsSubscribe() {
+		return subIsSubscribe != null && subIsSubscribe.equalsIgnoreCase("y");
+	}
+
 	@Override
 	public String toString() {
 		return "Order [tradeState=" + tradeState + ", openId=" + openId
@@ -278,7 +304,8 @@ public class Order extends ApiResult {
 				+ getFormatCouponFee() + ", couponCount=" + couponCount
 				+ ", couponList=" + couponList + ", cashFee="
 				+ getFormatCashFee() + ", timeEnd=" + getFormatTimeEnd()
-				+ ", tradeStateDesc=" + tradeStateDesc + ", "
+				+ ", tradeStateDesc=" + tradeStateDesc + ", subOpenId="
+				+ subOpenId + ", subIsSubscribe=" + subIsSubscribe
 				+ super.toString() + "]";
 	}
 }

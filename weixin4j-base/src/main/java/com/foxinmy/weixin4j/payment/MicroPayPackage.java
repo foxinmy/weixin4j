@@ -44,6 +44,18 @@ public class MicroPayPackage extends PayPackage {
 	@JSONField(name = "device_info")
 	private String deviceInfo;
 	/**
+	 * 微信分配的子商户公众账号ID 非必须
+	 */
+	@XmlElement(name = "sub_id")
+	@JSONField(name = "sub_id")
+	private String subId;
+	/**
+	 * 微信支付分配的子商户号 非必须
+	 */
+	@XmlElement(name = "sub_mch_id")
+	@JSONField(name = "sub_mch_id")
+	private String subMchId;
+	/**
 	 * 随机字符串,不长于 32 位 必须
 	 */
 	@XmlElement(name = "nonce_str")
@@ -70,22 +82,72 @@ public class MicroPayPackage extends PayPackage {
 		// jaxb required
 	}
 
+	/**
+	 * 
+	 * @param weixinAccount
+	 *            商户信息
+	 * @param authCode
+	 *            授权码
+	 * @param body
+	 *            支付详情
+	 * @param totalFee
+	 *            支付金额(单位元) 必填
+	 * @param createIp
+	 *            发起支付的IP地址
+	 */
 	public MicroPayPackage(WeixinPayAccount weixinAccount, String authCode,
 			String body, String outTradeNo, double totalFee, String createIp) {
 		this(weixinAccount.getId(), weixinAccount.getMchId(), weixinAccount
-				.getDeviceInfo(), authCode, body, outTradeNo, totalFee,
-				createIp, null, null, null, null, null);
+				.getDeviceInfo(), weixinAccount.getSubId(), weixinAccount
+				.getSubMchId(), authCode, body, outTradeNo, totalFee, createIp,
+				null, null, null, null, null);
 	}
 
+	/**
+	 * 完整参数
+	 * 
+	 * @param appId
+	 *            公众号唯一标识 必填
+	 * @param mchId
+	 *            微信支付商户号 必填
+	 * @param deviceInfo
+	 *            微信支付设备号 非必填
+	 * @param subId
+	 *            子商户唯一标识 非必填
+	 * @param subMchId
+	 *            子商户商户号 非必填
+	 * @param authCode
+	 *            授权码 必填
+	 * @param body
+	 *            支付详情 必填
+	 * @param outTradeNo
+	 *            商户侧订单号 必填
+	 * @param totalFee
+	 *            支付金额(单位元) 必填
+	 * @param createIp
+	 *            发起支付的IP地址 必填
+	 * @param attach
+	 *            支付时附加信息 非必填
+	 * @param timeStart
+	 *            订单生成时间 非必填
+	 * @param timeExpire
+	 *            订单失效时间 非必填
+	 * @param goodsTag
+	 *            商品标记 非必填
+	 * @param limitPay
+	 *            指定支付方式 非必填
+	 */
 	public MicroPayPackage(String appId, String mchId, String deviceInfo,
-			String authCode, String body, String outTradeNo, double totalFee,
-			String createIp, String attach, Date timeStart, Date timeExpire,
-			String goodsTag, String limitPay) {
+			String subId, String subMchId, String authCode, String body,
+			String outTradeNo, double totalFee, String createIp, String attach,
+			Date timeStart, Date timeExpire, String goodsTag, String limitPay) {
 		super(body, outTradeNo, totalFee, null, createIp, null, timeStart,
 				timeExpire, goodsTag);
 		this.appId = appId;
 		this.mchId = mchId;
 		this.deviceInfo = deviceInfo;
+		this.subId = subId;
+		this.subMchId = subMchId;
 		this.nonceStr = RandomUtil.generateString(16);
 		this.authCode = authCode;
 		this.limitPay = limitPay;
@@ -134,8 +196,9 @@ public class MicroPayPackage extends PayPackage {
 	@Override
 	public String toString() {
 		return "MicroPayPackage [appId=" + appId + ", mchId=" + mchId
-				+ ", deviceInfo=" + deviceInfo + ", nonceStr=" + nonceStr
-				+ ", sign=" + sign + ", authCode=" + authCode + ", "
-				+ super.toString() + "]";
+				+ ", deviceInfo=" + deviceInfo + ", subId=" + subId
+				+ ", subMchId=" + subMchId + ", nonceStr=" + nonceStr
+				+ ", sign=" + sign + ", authCode=" + authCode + ", limitPay="
+				+ limitPay + ", " + super.toString() + "]";
 	}
 }

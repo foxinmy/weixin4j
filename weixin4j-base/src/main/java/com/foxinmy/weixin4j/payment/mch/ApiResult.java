@@ -36,7 +36,13 @@ public class ApiResult extends XmlResult {
 	@JSONField(name = "mch_id")
 	private String mchId;
 	/**
-	 * 代理模式下分配的商户号 可能为空
+	 * 微信分配的子商户公众账号ID 非必须
+	 */
+	@XmlElement(name = "sub_id")
+	@JSONField(name = "sub_id")
+	private String subId;
+	/**
+	 * 微信支付分配的子商户号 非必须
 	 */
 	@XmlElement(name = "sub_mch_id")
 	@JSONField(name = "sub_mch_id")
@@ -86,6 +92,14 @@ public class ApiResult extends XmlResult {
 		this.mchId = mchId;
 	}
 
+	public String getSubId() {
+		return subId;
+	}
+
+	public void setSubId(String subId) {
+		this.subId = subId;
+	}
+
 	public String getSubMchId() {
 		return subMchId;
 	}
@@ -133,9 +147,9 @@ public class ApiResult extends XmlResult {
 
 	@Override
 	public String toString() {
-		return "appId=" + appId + ", mchId=" + mchId + ", subMchId=" + subMchId
-				+ ", nonceStr=" + nonceStr + ", sign=" + sign + ", deviceInfo="
-				+ deviceInfo + ", recall=" + getFormatRecall() + ", "
-				+ super.toString();
+		return "appId=" + appId + ", mchId=" + mchId + ", subId=" + subId
+				+ ", subMchId=" + subMchId + ", nonceStr=" + nonceStr
+				+ ", sign=" + sign + ", deviceInfo=" + deviceInfo + ", recall="
+				+ getFormatRecall() + ", " + super.toString();
 	}
 }

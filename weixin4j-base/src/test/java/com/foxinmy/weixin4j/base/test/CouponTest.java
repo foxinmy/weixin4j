@@ -27,22 +27,22 @@ public class CouponTest extends PayTest {
 
 	@Test
 	public void sendCoupon() throws WeixinException, IOException {
-		String partnerTradeNo = String.format("%s%s%s", ACCOUNT3.getMchId(),
+		String partnerTradeNo = String.format("%s%s%s", ACCOUNT.getMchId(),
 				DateUtil.fortmat2yyyyMMdd(new Date()), "1");
-		CouponResult result = PAY3.sendCoupon(new FileInputStream(caFile),
+		CouponResult result = PAY.sendCoupon(new FileInputStream(caFile),
 				"123", partnerTradeNo, "oyFLst1bqtuTcxK-ojF8hOGtLQao", null);
 		Assert.assertTrue(result.getRetCode().equalsIgnoreCase(Consts.SUCCESS));
 	}
 
 	@Test
 	public void queryCouponStock() throws WeixinException {
-		CouponStock couponStock = PAY3.queryCouponStock("couponStockId");
+		CouponStock couponStock = PAY.queryCouponStock("couponStockId");
 		System.err.println(couponStock);
 	}
 
 	@Test
 	public void queryCouponDetail() throws WeixinException {
-		CouponDetail couponDetail = PAY3.queryCouponDetail("couponId");
+		CouponDetail couponDetail = PAY.queryCouponDetail("couponId");
 		System.err.println(couponDetail);
 	}
 }

@@ -33,14 +33,16 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.model.WeixinPayOldAccount;
 import com.foxinmy.weixin4j.mp.payment.v2.OrderV2;
 import com.foxinmy.weixin4j.mp.payment.v2.PayPackageV2;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2;
 import com.foxinmy.weixin4j.mp.payment.v2.RefundResultV2;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.payment.PayRequest;
+import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenStorager;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.RefundType;
@@ -50,11 +52,11 @@ import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.util.Weixin4jSettings;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 
 /**
- * V2支付API
+ * V2老支付API
  * 
  * @className Pay2Api
  * @author jy
@@ -62,24 +64,40 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
  * @since JDK 1.6
  * @see
  */
-public class Pay2Api extends MpApi {
+public class PayOldApi extends MpApi {
 
-	private final Weixin4jSettings settings;
+	private final WeixinPayOldAccount payAccount;
 	private final TokenHolder tokenHolder;
 
-	public Pay2Api() {
-		this(new Weixin4jSettings());
+	/**
+	 * 默认使用weixin4j.properties配置信息
+	 */
+	public PayOldApi() {
+		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
+				WeixinPayOldAccount.class), new FileTokenStorager(
+				Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
+						System.getProperty("java.io.tmpdir"))));
 	}
 
-	public Pay2Api(Weixin4jSettings settings) {
-		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(settings
-				.getWeixinAccount().getId(), settings.getWeixinAccount()
-				.getSecret()), settings.getTokenStorager0());
-		this.settings = settings;
+	public PayOldApi(WeixinPayOldAccount payAccount) {
+		this(payAccount, new FileTokenStorager(
+				Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
+						System.getProperty("java.io.tmpdir"))));
 	}
 
-	public WeixinPayAccount getPayAccount() {
-		return this.settings.getWeixinPayAccount();
+	public PayOldApi(TokenStorager tokenStorager) {
+		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
+				WeixinPayOldAccount.class), tokenStorager);
+	}
+
+	public PayOldApi(WeixinPayOldAccount payAccount, TokenStorager tokenStorager) {
+		this.payAccount = payAccount;
+		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(
+				payAccount.getId(), payAccount.getSecret()), tokenStorager);
+	}
+
+	public WeixinPayOldAccount getPayAccount() {
+		return this.payAccount;
 	}
 
 	/**
@@ -294,7 +312,7 @@ public class Pay2Api extends MpApi {
 				CertificateFactory cf = CertificateFactory
 						.getInstance(com.foxinmy.weixin4j.model.Consts.X509);
 				java.security.cert.Certificate cert = cf
-						.generateCertificate(Pay2Api.class
+						.generateCertificate(PayOldApi.class
 								.getResourceAsStream("cacert.pem"));
 				ks = KeyStore
 						.getInstance(com.foxinmy.weixin4j.model.Consts.JKS);
@@ -433,11 +451,13 @@ public class Pay2Api extends MpApi {
 	 * @param billType
 	 *            下载对账单的类型 ALL,返回当日所有订单信息, 默认值 SUCCESS,返回当日成功支付的订单
 	 *            REFUND,返回当日退款订单
+	 * @param billPath
+	 *            对账单保存路径
 	 * @return excel表格
 	 * @since V2
 	 * @throws WeixinException
 	 */
-	public File downloadBill(Date billDate, BillType billType)
+	public File downloadBill(Date billDate, BillType billType, String billPath)
 			throws WeixinException {
 		if (billDate == null) {
 			Calendar now = Calendar.getInstance();
@@ -450,8 +470,7 @@ public class Pay2Api extends MpApi {
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
 		String fileName = String.format("%s_%s_%s.txt", formatBillDate,
 				billType.name().toLowerCase(), getPayAccount().getId());
-		File file = new File(String.format("%s/weixin4j_bill_%s",
-				settings.getTmpdir0(), fileName));
+		File file = new File(String.format("%s/%s", billPath, fileName));
 		if (file.exists()) {
 			return file;
 		}

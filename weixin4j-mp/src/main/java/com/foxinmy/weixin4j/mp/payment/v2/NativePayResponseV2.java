@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.model.WeixinPayOldAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.util.DigestUtil;
 
@@ -62,7 +62,7 @@ public class NativePayResponseV2 extends PayRequest {
 	 * @param payPackage
 	 *            订单信息
 	 */
-	public NativePayResponseV2(WeixinPayAccount weixinAccount,
+	public NativePayResponseV2(WeixinPayOldAccount weixinAccount,
 			PayPackageV2 payPackage) {
 		super(weixinAccount.getId(), DigestUtil.packageSign(payPackage,
 				weixinAccount.getPartnerKey()));

@@ -63,12 +63,12 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @since JDK 1.6
  * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台API</a>
  */
-public class Pay3Api {
+public class PayApi {
 
 	private final WeixinRequestExecutor weixinExecutor;
 	private final WeixinPayAccount weixinAccount;
 
-	public Pay3Api(WeixinPayAccount weixinAccount) {
+	public PayApi(WeixinPayAccount weixinAccount) {
 		this.weixinAccount = weixinAccount;
 		this.weixinExecutor = new WeixinRequestExecutor();
 	}
@@ -88,10 +88,8 @@ public class Pay3Api {
 	 */
 	public PrePay createPrePay(MchPayPackage payPackage)
 			throws WeixinPayException {
-		if (StringUtil.isBlank(payPackage.getSign())) {
-			payPackage.setSign(DigestUtil.paysignMd5(payPackage,
-					weixinAccount.getPaySignKey()));
-		}
+		payPackage.setSign(DigestUtil.paysignMd5(payPackage,
+				weixinAccount.getPaySignKey()));
 		String payJsRequestXml = XmlStream.toXML(payPackage);
 		try {
 			WeixinResponse response = weixinExecutor.post(
@@ -126,8 +124,6 @@ public class Pay3Api {
 	 */
 	public MchPayRequest createPayRequest(MchPayPackage payPackage)
 			throws WeixinPayException {
-		payPackage.setSign(DigestUtil.paysignMd5(payPackage,
-				weixinAccount.getPaySignKey()));
 		PrePay prePay = createPrePay(payPackage);
 		String tradeType = payPackage.getTradeType();
 		if (TradeType.APP.name().equalsIgnoreCase(tradeType)) {
@@ -140,7 +136,7 @@ public class Pay3Api {
 		} else if (TradeType.WAP.name().equalsIgnoreCase(tradeType)) {
 			return new WAPPayRequest(prePay.getPrepayId(), weixinAccount);
 		} else if (TradeType.MICROPAY.name().equalsIgnoreCase(tradeType)) {
-			throw new WeixinPayException("maybe use createMicroPay method?");
+			throw new WeixinPayException("maybe invoke createMicroPay method?");
 		} else {
 			throw new WeixinPayException("unknown tradeType:" + tradeType);
 		}
@@ -180,7 +176,7 @@ public class Pay3Api {
 	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest JS支付
 	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest 扫码支付
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
-	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付t
+	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
 	 * @throws WeixinPayException
 	 */
 	public MchPayRequest createPayRequest(TradeType tradeType, String openId,
@@ -836,7 +832,7 @@ public class Pay3Api {
 	}
 
 	/**
-	 * V3接口请求基本数据
+	 * 支付接口请求基本数据
 	 * 
 	 * @return
 	 */
@@ -847,6 +843,12 @@ public class Pay3Api {
 		map.put("nonce_str", RandomUtil.generateString(16));
 		if (StringUtil.isNotBlank(weixinAccount.getDeviceInfo())) {
 			map.put("device_info", weixinAccount.getDeviceInfo());
+		}
+		if (StringUtil.isNotBlank(weixinAccount.getSubId())) {
+			map.put("sub_appid", weixinAccount.getSubId());
+		}
+		if (StringUtil.isNotBlank(weixinAccount.getSubMchId())) {
+			map.put("sub_mch_id", weixinAccount.getSubMchId());
 		}
 		if (idQuery != null) {
 			map.put(idQuery.getType().getName(), idQuery.getId());

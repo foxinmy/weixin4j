@@ -17,127 +17,142 @@ public class WeixinPayAccount extends WeixinAccount {
 
 	private static final long serialVersionUID = -2791256176906048632L;
 	/**
-	 * 公众号支付请求中用于加密的密钥 Key,可验证商户唯一身份,PaySignKey 对应于支付场景中的 appKey 值
+	 * 公众号支付请求中用于加密的密钥
 	 */
 	private String paySignKey;
 	/**
-	 * 财付通商户身份的标识
-	 */
-	private String partnerId;
-	/**
-	 * 财付通商户权限密钥Key
-	 */
-	private String partnerKey;
-	/**
-	 * 微信支付分配的商户号(商户平台版)
+	 * 微信支付分配的商户号
 	 */
 	private String mchId;
 	/**
-	 * 加载支付证书文件的密码(商户平台版)
+	 * 加载支付证书文件的密码(默认为商户号)
 	 */
 	private String certificateKey;
 	/**
-	 * 微信支付分配的子商户号，受理模式下必填(商户平台版)
-	 */
-	private String subMchId;
-	/**
-	 * 微信支付分配的设备号(商户平台版)
+	 * 微信支付分配的设备号
 	 */
 	private String deviceInfo;
 
 	/**
-	 * 商户平台版本(V3)字段
+	 * 财付通商户身份的标识
+	 */
+	private String partnerId;
+
+	/**
+	 * 微信分配的子商户公众账号ID
+	 */
+	private String subId;
+	/**
+	 * 微信支付分配的子商户号
+	 */
+	private String subMchId;
+
+	/**
+	 * 支付商户信息
 	 * 
-	 * @param appId
+	 * @param id
 	 *            公众号唯一的身份ID(必填)
-	 * @param appSecret
-	 *            调用接口的凭证(最好填写)
 	 * @param paySignKey
 	 *            支付密钥字符串(必填)
 	 * @param mchId
 	 *            微信支付分配的商户号(必填)
 	 */
-	public WeixinPayAccount(String appId, String appSecret, String paySignKey,
-			String mchId) {
-		this(appId, appSecret, paySignKey, mchId, null, null, null, null, null);
+	public WeixinPayAccount(String id, String paySignKey, String mchId) {
+		this(id, null, paySignKey, mchId, null, null, null, null, null);
 	}
 
 	/**
 	 * 支付商户信息
 	 * 
-	 * @param appId
+	 * @param id
 	 *            公众号唯一的身份ID(必填)
-	 * @param appSecret
-	 *            调用接口的凭证(最好填写)
+	 * @param secret
+	 *            公众号调用接口的凭证(最好填写)
 	 * @param paySignKey
 	 *            支付密钥字符串(必填)
 	 * @param mchId
-	 *            微信支付分配的商户号(V3商户平台版必填)
+	 *            微信支付分配的商户号(必填)
 	 * @param certificateKey
-	 *            加载支付证书文件的密码(商户平台版)
-	 * @param subMchId
-	 *            微信支付分配的子商户号，受理模式下必填(V3商户平台版 非必须)
+	 *            加载支付证书文件的密码(默认为商户号)
 	 * @param deviceInfo
-	 *            微信支付分配的设备号(V3商户平台版 非必须)
+	 *            微信支付分配的设备号(非必填)
 	 * @param partnerId
-	 *            财付通的商户号(V2版本必填)
-	 * @param partnerKey
-	 *            财付通商户权限密钥Key(V2版本必填)
+	 *            财付通的商户号(非必填)
+	 * @param subId
+	 *            微信分配的子商户公众账号ID(非必填)
+	 * @param subMchId
+	 *            微信支付分配的子商户号(非必填)
 	 */
 	@JSONCreator
-	public WeixinPayAccount(@JSONField(name = "id") String appId,
-			@JSONField(name = "secret") String appSecret,
+	public WeixinPayAccount(@JSONField(name = "id") String id,
+			@JSONField(name = "secret") String secret,
 			@JSONField(name = "paySignKey") String paySignKey,
 			@JSONField(name = "mchId") String mchId,
 			@JSONField(name = "certificateKey") String certificateKey,
-			@JSONField(name = "subMchId") String subMchId,
 			@JSONField(name = "deviceInfo") String deviceInfo,
 			@JSONField(name = "partnerId") String partnerId,
-			@JSONField(name = "partnerKey") String partnerKey) {
-		super(appId, appSecret);
+			@JSONField(name = "subId") String subId,
+			@JSONField(name = "subMchId") String subMchId) {
+		super(id, secret);
 		this.paySignKey = paySignKey;
 		this.mchId = mchId;
 		this.certificateKey = certificateKey;
-		this.subMchId = subMchId;
 		this.deviceInfo = deviceInfo;
 		this.partnerId = partnerId;
-		this.partnerKey = partnerKey;
+		this.subId = subId;
+		this.subMchId = subMchId;
 	}
 
 	public String getPaySignKey() {
 		return paySignKey;
 	}
 
-	public String getPartnerId() {
-		return partnerId;
-	}
-
-	public String getPartnerKey() {
-		return partnerKey;
-	}
-
 	public String getMchId() {
 		return mchId;
-	}
-
-	public String getSubMchId() {
-		return subMchId;
 	}
 
 	public String getDeviceInfo() {
 		return deviceInfo;
 	}
 
+	public void setDeviceInfo(String deviceInfo) {
+		this.deviceInfo = deviceInfo;
+	}
+
 	public String getCertificateKey() {
 		return StringUtil.isBlank(certificateKey) ? mchId : certificateKey;
+	}
+
+	public String getPartnerId() {
+		return partnerId;
+	}
+
+	public void setPartnerId(String partnerId) {
+		this.partnerId = partnerId;
+	}
+
+	public String getSubId() {
+		return subId;
+	}
+
+	public void setSubId(String subId) {
+		this.subId = subId;
+	}
+
+	public String getSubMchId() {
+		return subMchId;
+	}
+
+	public void setSubMchId(String subMchId) {
+		this.subMchId = subMchId;
 	}
 
 	@Override
 	public String toString() {
 		return "WeixinPayAccount [" + super.toString() + ", paySignKey="
-				+ paySignKey + ", partnerId=" + partnerId + ", partnerKey="
-				+ partnerKey + ", mchId=" + mchId + ", certificateKey="
-				+ getCertificateKey() + ", subMchId=" + subMchId
-				+ ", deviceInfo=" + deviceInfo + "]";
+				+ paySignKey + ", mchId=" + mchId + ", certificateKey="
+				+ certificateKey + ", deviceInfo=" + deviceInfo
+				+ ", partnerId=" + partnerId + ", subId=" + subId
+				+ ", subMchId=" + subMchId + "]";
 	}
 }
