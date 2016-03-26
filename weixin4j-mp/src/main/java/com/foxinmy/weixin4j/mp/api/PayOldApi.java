@@ -34,12 +34,15 @@ import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinPayOldAccount;
-import com.foxinmy.weixin4j.mp.payment.v2.OrderV2;
-import com.foxinmy.weixin4j.mp.payment.v2.PayPackageV2;
-import com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2;
-import com.foxinmy.weixin4j.mp.payment.v2.RefundResultV2;
+import com.foxinmy.weixin4j.mp.oldpayment.OrderV2;
+import com.foxinmy.weixin4j.mp.oldpayment.PayPackageV2;
+import com.foxinmy.weixin4j.mp.oldpayment.RefundRecordV2;
+import com.foxinmy.weixin4j.mp.oldpayment.RefundResultV2;
+import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPaymentSignature;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.payment.PayRequest;
+import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
+import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.token.FileTokenStorager;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.token.TokenStorager;
@@ -58,7 +61,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 /**
  * V2老支付API
  * 
- * @className Pay2Api
+ * @className PayOldApi
  * @author jy
  * @date 2014年10月28日
  * @since JDK 1.6
@@ -66,8 +69,10 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
  */
 public class PayOldApi extends MpApi {
 
-	private final WeixinPayOldAccount payAccount;
+	private final WeixinPayOldAccount weixinAccount;
 	private final TokenHolder tokenHolder;
+	private final WeixinSignature weixinMD5Signature;
+	private final WeixinOldPaymentSignature weixinOldSignature;
 
 	/**
 	 * 默认使用weixin4j.properties配置信息
@@ -90,14 +95,19 @@ public class PayOldApi extends MpApi {
 				WeixinPayOldAccount.class), tokenStorager);
 	}
 
-	public PayOldApi(WeixinPayOldAccount payAccount, TokenStorager tokenStorager) {
-		this.payAccount = payAccount;
+	public PayOldApi(WeixinPayOldAccount weixinAccount,
+			TokenStorager tokenStorager) {
+		this.weixinAccount = weixinAccount;
 		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(
-				payAccount.getId(), payAccount.getSecret()), tokenStorager);
+				weixinAccount.getId(), weixinAccount.getSecret()),
+				tokenStorager);
+		this.weixinMD5Signature = new WeixinPaymentSignature(
+				weixinAccount.getPartnerKey());
+		this.weixinOldSignature = new WeixinOldPaymentSignature();
 	}
 
 	public WeixinPayOldAccount getPayAccount() {
-		return this.payAccount;
+		return this.weixinAccount;
 	}
 
 	/**
@@ -162,10 +172,10 @@ public class PayOldApi extends MpApi {
 		payPackage.setProductFee(productFee);
 		payPackage.setGoodsTag(goodsTag);
 		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
-				DigestUtil.packageSign(payPackage, getPayAccount()
+				weixinOldSignature.sign(payPackage, getPayAccount()
 						.getPartnerKey()));
-		payRequest.setPaySign(DigestUtil.paysignSha(payRequest, getPayAccount()
-				.getPaySignKey()));
+		payRequest.setPaySign(weixinOldSignature.sign(payRequest,
+				getPayAccount().getPaySignKey()));
 		payRequest.setSignType(SignType.SHA1);
 		return JSON.toJSONString(payRequest);
 	}
@@ -186,9 +196,9 @@ public class PayOldApi extends MpApi {
 		map.put("noncestr", noncestr);
 		map.put("productid", productId);
 		map.put("appkey", getPayAccount().getPaySignKey());
-		String sign = DigestUtil.paysignSha(map, null);
-		String ordernative_v2_uri = getRequestUri("ordernative_v2_uri");
-		return String.format(ordernative_v2_uri, sign, getPayAccount().getId(),
+		String sign = weixinOldSignature.sign(map);
+		String nativepay_uri = getRequestUri("nativepay_old_uri");
+		return String.format(nativepay_uri, sign, getPayAccount().getId(),
 				productId, timestamp, noncestr);
 	}
 
@@ -198,12 +208,12 @@ public class PayOldApi extends MpApi {
 	 * @param idQuery
 	 *            订单号
 	 * @return 订单信息
-	 * @see com.foxinmy.weixin4j.mp.payment.v2.OrderV2
+	 * @see com.foxinmy.weixin4j.mp.oldpayment.OrderV2
 	 * @since V2
 	 * @throws WeixinException
 	 */
-	public OrderV2 orderQuery(IdQuery idQuery) throws WeixinException {
-		String orderquery_uri = getRequestUri("orderquery_v2_uri");
+	public OrderV2 queryOrder(IdQuery idQuery) throws WeixinException {
+		String orderquery_uri = getRequestUri("orderquery_old_uri");
 		Token token = tokenHolder.getToken();
 		StringBuilder sb = new StringBuilder();
 		sb.append(idQuery.getType().getName()).append("=")
@@ -221,7 +231,7 @@ public class PayOldApi extends MpApi {
 		obj.put("appkey", getPayAccount().getPaySignKey());
 		obj.put("package", sb.toString());
 		obj.put("timestamp", timestamp);
-		String signature = DigestUtil.paysignSha(obj, null);
+		String signature = weixinOldSignature.sign(obj);
 
 		obj.clear();
 		obj.put("appid", getPayAccount().getId());
@@ -251,7 +261,7 @@ public class PayOldApi extends MpApi {
 	 * 败后重新提交,要采用原来的 out_refund_no。总退款金额不能超过用户实际支付金额。</br>
 	 * </p>
 	 * 
-	 * @param caFile
+	 * @param certificate
 	 *            证书文件(V2版本后缀为*.pfx)
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -268,18 +278,17 @@ public class PayOldApi extends MpApi {
 	 *            如 opUserPasswd
 	 * 
 	 * @return 退款申请结果
-	 * @see com.foxinmy.weixin4j.mp.payment.v2.RefundResultV2
+	 * @see com.foxinmy.weixin4j.mp.oldpayment.RefundResultV2
 	 * @since V2
 	 * @throws WeixinException
 	 */
-	protected RefundResultV2 refundApply(File caFile, IdQuery idQuery,
-			String outRefundNo, double totalFee, double refundFee,
-			String opUserId, Map<String, String> mopara) throws WeixinException {
-		String refund_uri = getRequestUri("refundapply_v2_uri");
+	protected RefundResultV2 applyRefund(InputStream certificate,
+			IdQuery idQuery, String outRefundNo, double totalFee,
+			double refundFee, String opUserId, Map<String, String> mopara)
+			throws WeixinException {
+		String refund_uri = getRequestUri("refundapply_old_uri");
 		WeixinResponse response = null;
-		InputStream ca = null;
 		try {
-			ca = new FileInputStream(caFile);
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("input_charset", Consts.UTF_8.name());
 			// 版本号
@@ -298,24 +307,23 @@ public class PayOldApi extends MpApi {
 			if (mopara != null && !mopara.isEmpty()) {
 				map.putAll(mopara);
 			}
-			String sign = DigestUtil.paysignMd5(map, getPayAccount()
-					.getPartnerKey());
+			String sign = weixinMD5Signature.sign(map);
 			map.put("sign", sign.toUpperCase());
 
 			SSLContext ctx = null;
 			KeyStore ks = null;
 			String jksPwd = "";
 			File jksFile = new File(String.format("%s/tenpay_cacert.jks",
-					caFile.getParent()));
+					Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
+							System.getProperty("java.io.tmpdir"))));
 			// create jks ca
 			if (!jksFile.exists()) {
 				CertificateFactory cf = CertificateFactory
-						.getInstance(com.foxinmy.weixin4j.model.Consts.X509);
+						.getInstance(Consts.X509);
 				java.security.cert.Certificate cert = cf
 						.generateCertificate(PayOldApi.class
 								.getResourceAsStream("cacert.pem"));
-				ks = KeyStore
-						.getInstance(com.foxinmy.weixin4j.model.Consts.JKS);
+				ks = KeyStore.getInstance(Consts.JKS);
 				ks.load(null, null);
 				ks.setCertificateEntry("tenpay", cert);
 				FileOutputStream os = new FileOutputStream(jksFile);
@@ -324,20 +332,20 @@ public class PayOldApi extends MpApi {
 			}
 			// load jks ca
 			TrustManagerFactory tmf = TrustManagerFactory
-					.getInstance(com.foxinmy.weixin4j.model.Consts.SunX509);
-			ks = KeyStore.getInstance(com.foxinmy.weixin4j.model.Consts.JKS);
+					.getInstance(Consts.SunX509);
+			ks = KeyStore.getInstance(Consts.JKS);
 			FileInputStream is = new FileInputStream(jksFile);
 			ks.load(is, jksPwd.toCharArray());
 			tmf.init(ks);
 			is.close();
 			// load pfx ca
 			KeyManagerFactory kmf = KeyManagerFactory
-					.getInstance(com.foxinmy.weixin4j.model.Consts.SunX509);
-			ks = KeyStore.getInstance(com.foxinmy.weixin4j.model.Consts.PKCS12);
-			ks.load(ca, getPayAccount().getPartnerId().toCharArray());
+					.getInstance(Consts.SunX509);
+			ks = KeyStore.getInstance(Consts.PKCS12);
+			ks.load(certificate, getPayAccount().getPartnerId().toCharArray());
 			kmf.init(ks, getPayAccount().getPartnerId().toCharArray());
 
-			ctx = SSLContext.getInstance(com.foxinmy.weixin4j.model.Consts.TLS);
+			ctx = SSLContext.getInstance(Consts.TLS);
 			ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(),
 					new SecureRandom());
 
@@ -349,9 +357,9 @@ public class PayOldApi extends MpApi {
 		} catch (Exception e) {
 			throw new WeixinException(e);
 		} finally {
-			if (ca != null) {
+			if (certificate != null) {
 				try {
-					ca.close();
+					certificate.close();
 				} catch (IOException e) {
 					;
 				}
@@ -364,7 +372,7 @@ public class PayOldApi extends MpApi {
 	/**
 	 * 退款申请
 	 * 
-	 * @param caFile
+	 * @param certificate
 	 *            证书文件(V2版本后缀为*.pfx)
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -379,21 +387,21 @@ public class PayOldApi extends MpApi {
 	 *            操作员帐号, 默认为商户号
 	 * @param opUserPasswd
 	 *            操作员密码,默认为商户后台登录密码
-	 * @see {@link #refundApply(File, IdQuery, String, double, double, String, Map)}
+	 * @see {@link #applyRefund(InputStream, IdQuery, String, double, double, String, Map)}
 	 */
-	public RefundResultV2 refundApply(File caFile, IdQuery idQuery,
+	public RefundResultV2 applyRefund(InputStream certificate, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
 			String opUserId, String opUserPasswd) throws WeixinException {
 		Map<String, String> mopara = new HashMap<String, String>();
 		mopara.put("op_user_passwd", DigestUtil.MD5(opUserPasswd));
-		return refundApply(caFile, idQuery, outRefundNo, totalFee, refundFee,
-				opUserId, mopara);
+		return applyRefund(certificate, idQuery, outRefundNo, totalFee,
+				refundFee, opUserId, mopara);
 	}
 
 	/**
 	 * 退款申请
 	 * 
-	 * @param caFile
+	 * @param certificate
 	 *            证书文件(V2版本后缀为*.pfx)
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -417,10 +425,10 @@ public class PayOldApi extends MpApi {
 	 * @param refundType
 	 *            为空或者填 1:商户号余额退款;2:现金帐号 退款;3:优先商户号退款,若商户号余额不足, 再做现金帐号退款。使用 2 或
 	 *            3 时,需联系财 付通开通此功能
-	 * @see {@link #refundApply(File, IdQuery, String, double, double, String, Map)}
+	 * @see {@link #applyRefund(InputStream, IdQuery, String, double, double, String, Map)}
 	 * @return 退款结果
 	 */
-	public RefundResultV2 refundApply(File caFile, IdQuery idQuery,
+	public RefundResultV2 applyRefund(InputStream certificate, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
 			String opUserId, String opUserPasswd, String recvUserId,
 			String reccvUserName, RefundType refundType) throws WeixinException {
@@ -435,8 +443,8 @@ public class PayOldApi extends MpApi {
 		if (refundType != null) {
 			mopara.put("refund_type", Integer.toString(refundType.getVal()));
 		}
-		return refundApply(caFile, idQuery, outRefundNo, totalFee, refundFee,
-				opUserId, mopara);
+		return applyRefund(certificate, idQuery, outRefundNo, totalFee,
+				refundFee, opUserId, mopara);
 	}
 
 	/**
@@ -474,7 +482,7 @@ public class PayOldApi extends MpApi {
 		if (file.exists()) {
 			return file;
 		}
-		String downloadbill_uri = getRequestUri("downloadbill_v2_uri");
+		String downloadbill_uri = getRequestUri("downloadbill_old_uri");
 
 		Map<String, String> map = new LinkedHashMap<String, String>();
 		map.put("spid", getPayAccount().getPartnerId());
@@ -523,19 +531,18 @@ public class PayOldApi extends MpApi {
 	 *            四个参数必填一个,优先级为:
 	 *            refund_id>out_refund_no>transaction_id>out_trade_no
 	 * @return 退款记录
-	 * @see com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2
-	 * @see com.foxinmy.weixin4j.mp.payment.v2.RefundDetailV2
+	 * @see com.foxinmy.weixin4j.mp.oldpayment.RefundRecordV2
+	 * @see com.foxinmy.weixin4j.mp.oldpayment.RefundDetailV2
 	 * @since V2
 	 * @throws WeixinException
 	 */
-	public RefundRecordV2 refundQuery(IdQuery idQuery) throws WeixinException {
-		String refundquery_uri = getRequestUri("refundquery_v2_uri");
+	public RefundRecordV2 queryRefund(IdQuery idQuery) throws WeixinException {
+		String refundquery_uri = getRequestUri("refundquery_old_uri");
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("input_charset", Consts.UTF_8.name());
 		map.put("partner", getPayAccount().getPartnerId());
 		map.put(idQuery.getType().getName(), idQuery.getId());
-		String sign = DigestUtil.paysignMd5(map, getPayAccount()
-				.getPartnerKey());
+		String sign = weixinMD5Signature.sign(map);
 		map.put("sign", sign.toLowerCase());
 		WeixinResponse response = weixinExecutor.get(refundquery_uri, map);
 		return ListsuffixResultDeserializer.deserialize(response.getAsString(),
@@ -561,7 +568,7 @@ public class PayOldApi extends MpApi {
 	public JsonResult deliverNotify(String openId, String transid,
 			String outTradeNo, boolean status, String statusMsg)
 			throws WeixinException {
-		String delivernotify_uri = getRequestUri("delivernotify_uri");
+		String delivernotify_uri = getRequestUri("delivernotify_old_uri");
 		Token token = tokenHolder.getToken();
 
 		Map<String, String> map = new HashMap<String, String>();
@@ -573,7 +580,7 @@ public class PayOldApi extends MpApi {
 		map.put("deliver_timestamp", DateUtil.timestamp2string());
 		map.put("deliver_status", status ? "1" : "0");
 		map.put("deliver_msg", statusMsg);
-		map.put("app_signature", DigestUtil.paysignSha(map, null));
+		map.put("app_signature", weixinOldSignature.sign(map));
 		map.put("sign_method", SignType.SHA1.name().toLowerCase());
 
 		WeixinResponse response = weixinExecutor.post(
@@ -594,11 +601,10 @@ public class PayOldApi extends MpApi {
 	 */
 	public JsonResult updateFeedback(String openId, String feedbackId)
 			throws WeixinException {
-		String payfeedback_update_uri = getRequestUri("payfeedback_update_uri");
+		String payfeedback_uri = getRequestUri("payfeedback_old_uri");
 		Token token = tokenHolder.getToken();
 		WeixinResponse response = weixinExecutor.get(String.format(
-				payfeedback_update_uri, token.getAccessToken(), openId,
-				feedbackId));
+				payfeedback_uri, token.getAccessToken(), openId, feedbackId));
 		return response.getAsJsonResult();
 	}
 }

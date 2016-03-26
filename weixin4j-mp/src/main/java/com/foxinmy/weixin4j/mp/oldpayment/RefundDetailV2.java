@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment.v2;
+package com.foxinmy.weixin4j.mp.oldpayment;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

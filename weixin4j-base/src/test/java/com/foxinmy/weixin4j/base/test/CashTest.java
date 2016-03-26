@@ -43,17 +43,17 @@ public class CashTest extends PayTest {
 	}
 
 	@Test
-	public void mpPayment() throws WeixinException, IOException {
+	public void sendCorpPayment() throws WeixinException, IOException {
 		CorpPayment payment = new CorpPayment("MP001",
 				"ofW1gwok9vZIyle0YbA-eQe83Uk8",
 				MPPaymentCheckNameType.NO_CHECK, "企业付款测试", 1d, "127.0.0.1");
-		CorpPaymentResult result = PAY.corpPayment(new FileInputStream(caFile),
+		CorpPaymentResult result = PAY.sendCorpPayment(new FileInputStream(caFile),
 				payment);
 		System.err.println(result);
 	}
 
 	@Test
-	public void mchPaymentQuery() throws WeixinException, IOException {
+	public void queryCorpPayment() throws WeixinException, IOException {
 		System.err.println(PAY.queryCorpPayment(new FileInputStream(caFile),
 				"MP001"));
 	}

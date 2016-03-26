@@ -18,10 +18,13 @@ import com.foxinmy.weixin4j.payment.mch.ApiResult;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
 import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.payment.mch.PrePay;
+import com.foxinmy.weixin4j.payment.mch.RefundRecord;
+import com.foxinmy.weixin4j.payment.mch.RefundResult;
+import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
+import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.TradeType;
-import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.Weixin4jSettings;
 
 /**
@@ -34,10 +37,13 @@ import com.foxinmy.weixin4j.util.Weixin4jSettings;
  * @see
  */
 public class PayTest {
-	protected final static WeixinPayProxy PAY;
 	protected final static WeixinPayAccount ACCOUNT;
+	protected final static WeixinSignature SIGNATURE;
+	protected final static WeixinPayProxy PAY;
+
 	static {
 		ACCOUNT = new WeixinPayAccount("appid", "paySignKey", "mchid");
+		SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
 		PAY = new WeixinPayProxy(new Weixin4jSettings(ACCOUNT));
 	}
 	/**
@@ -46,35 +52,34 @@ public class PayTest {
 	protected File caFile = new File("证书文件:*.p12");
 
 	@Test
-	public void orderQueryV3() throws WeixinException {
-		Order order = PAY.orderQuery(new IdQuery("BY2016010800025",
+	public void queryOrder() throws WeixinException {
+		Order order = PAY.queryOrder(new IdQuery("BY2016010800025",
 				IdType.TRADENO));
 		System.err.println(order);
 		String sign = order.getSign();
 		order.setSign(null);
-		String valiSign = DigestUtil.paysignMd5(order, ACCOUNT.getPaySignKey());
+		String valiSign = SIGNATURE.sign(order);
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
 	}
 
 	@Test
-	public void refundQueryV3() throws WeixinException {
-		com.foxinmy.weixin4j.payment.mch.RefundRecord record = PAY
-				.refundQuery(new IdQuery("TT_1427183696238", IdType.TRADENO));
+	public void queryRefund() throws WeixinException {
+		RefundRecord record = PAY.queryRefund(new IdQuery("TT_1427183696238",
+				IdType.TRADENO));
 		System.err.println(record);
 		// 这里的验证签名需要把details循环拼接
 		String sign = record.getSign();
 		record.setSign(null);
-		String valiSign = DigestUtil
-				.paysignMd5(record, ACCOUNT.getPaySignKey());
+		String valiSign = SIGNATURE.sign(record);
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
 	}
 
 	@Test
-	public void downbillV3() throws WeixinException {
+	public void downbill() throws WeixinException {
 		Calendar c = Calendar.getInstance();
 		System.err.println(c.getTime());
 		c.set(Calendar.YEAR, 2015);
@@ -86,24 +91,22 @@ public class PayTest {
 	}
 
 	@Test
-	public void refundV3() throws WeixinException, IOException {
+	public void refund() throws WeixinException, IOException {
 		IdQuery idQuery = new IdQuery("TT_1427183696238", IdType.TRADENO);
-		com.foxinmy.weixin4j.payment.mch.RefundResult result = PAY.refundApply(
-				new FileInputStream(caFile), idQuery,
-				"TT_R" + System.currentTimeMillis(), 0.01d, 0.01d, null,
-				"10020674");
+		RefundResult result = PAY.applyRefund(new FileInputStream(caFile),
+				idQuery, "TT_R" + System.currentTimeMillis(), 0.01d, 0.01d,
+				null, "10020674");
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
-		String valiSign = DigestUtil
-				.paysignMd5(result, ACCOUNT.getPaySignKey());
+		String valiSign = SIGNATURE.sign(result);
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);
 	}
 
 	@Test
-	public void nativeV3() throws WeixinException {
+	public void nativePay() throws WeixinException {
 		MchPayPackage payPackageV3 = new MchPayPackage(ACCOUNT,
 				"oyFLst1bqtuTcxK-ojF8hOGtLQao", "native测试", "T0001", 0.1d,
 				"notify_url", "127.0.0.1", TradeType.NATIVE);
@@ -123,8 +126,7 @@ public class PayTest {
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
-		String valiSign = DigestUtil
-				.paysignMd5(result, ACCOUNT.getPaySignKey());
+		String valiSign = SIGNATURE.sign(result);
 		System.err
 				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
 		Assert.assertEquals(valiSign, sign);

@@ -44,7 +44,7 @@ public class APPPayRequest extends AbstractPayRequest {
 		PayRequest payRequest = toRequestObject();
 		String sign = DigestUtil.MD5(
 				String.format("%s&key=%s",
-						MapUtil.toJoinString(payRequest, false, true, null),
+						MapUtil.toJoinString(payRequest, false, true),
 						getPayAccount().getPaySignKey())).toUpperCase();
 		StringBuilder content = new StringBuilder();
 		content.append("<xml>");

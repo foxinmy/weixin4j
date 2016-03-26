@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment.v2;
+package com.foxinmy.weixin4j.mp.oldpayment;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  * @author jy
  * @date 2014年11月1日
  * @since JDK 1.6
- * @see com.foxinmy.weixin4j.mp.payment.v2.RefundDetailV2
+ * @see com.foxinmy.weixin4j.mp.oldpayment.RefundDetailV2
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

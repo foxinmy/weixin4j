@@ -35,7 +35,7 @@ public class MapUtil {
 	 * @return
 	 */
 	public static String toJoinString(Object object, boolean encoder,
-			boolean lowerCase, Map<String, String> extra) {
+			boolean lowerCase) {
 		Map<String, String> map = new HashMap<String, String>();
 		JSONObject obj = null;
 		if (object instanceof String) {
@@ -46,14 +46,11 @@ public class MapUtil {
 		for (String key : obj.keySet()) {
 			map.put(key, obj.getString(key));
 		}
-		if (extra != null && !extra.isEmpty()) {
-			map.putAll(extra);
-		}
 		return toJoinString(map, encoder, lowerCase);
 	}
 
 	/**
-	 * 连接字符串
+	 * 拼接字符串
 	 * 
 	 * @param map
 	 *            对象

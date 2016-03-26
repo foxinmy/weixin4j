@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.payment.mch;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
-import com.foxinmy.weixin4j.payment.PayURLConsts;
 import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
@@ -46,12 +45,13 @@ public class WAPPayRequest extends AbstractPayRequest {
 	@Override
 	public String toRequestString() {
 		PayRequest payRequest = toRequestObject();
-		String original = MapUtil.toJoinString(payRequest, true, true, null);
+		String original = MapUtil.toJoinString(payRequest, true, true);
 		String sign = DigestUtil.MD5(
 				String.format("%s&key=%s", original, getPayAccount()
 						.getPaySignKey())).toUpperCase();
-		return String.format(PayURLConsts.MCH_WAP_URL, URLEncodingUtil
-				.encoding(String.format("%s&sign=%s", original, sign),
+		return String.format("weixin://wap/pay?%s",
+				URLEncodingUtil.encoding(
+						String.format("%s&sign=%s", original, sign),
 						Consts.UTF_8, true));
 	}
 }

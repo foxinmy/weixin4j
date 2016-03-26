@@ -652,3 +652,5 @@
   + weixin4j-base:v2和v3支付改名
   
   + weixin4j-base:支持服务商版支付
+  
+  + weixin4j-base:签名类接口化

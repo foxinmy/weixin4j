@@ -233,6 +233,9 @@ public final class WeixinServerBootstrap {
 	 */
 	public WeixinServerBootstrap addHandler(
 			WeixinMessageHandler... messageHandler) {
+		if (messageHandler == null) {
+			throw new IllegalArgumentException("messageHandler not be null");
+		}
 		messageHandlerList.addAll(Arrays.asList(messageHandler));
 		return this;
 	}
@@ -246,6 +249,9 @@ public final class WeixinServerBootstrap {
 	 */
 	public WeixinServerBootstrap addInterceptor(
 			WeixinMessageInterceptor... messageInterceptor) {
+		if (messageInterceptor == null) {
+			throw new IllegalArgumentException("messageInterceptor not be null");
+		}
 		messageInterceptorList.addAll(Arrays.asList(messageInterceptor));
 		return this;
 	}
@@ -259,6 +265,10 @@ public final class WeixinServerBootstrap {
 	 */
 	public WeixinServerBootstrap handlerPackagesToScan(
 			String... messageHandlerPackages) {
+		if (messageHandlerPackages == null) {
+			throw new IllegalArgumentException(
+					"messageHandlerPackages not be null");
+		}
 		messageDispatcher.setMessageHandlerPackages(messageHandlerPackages);
 		return this;
 	}
@@ -272,6 +282,10 @@ public final class WeixinServerBootstrap {
 	 */
 	public WeixinServerBootstrap interceptorPackagesToScan(
 			String... messageInterceptorPackages) {
+		if (messageInterceptorPackages == null) {
+			throw new IllegalArgumentException(
+					"messageInterceptorPackages not be null");
+		}
 		messageDispatcher
 				.setMessageInterceptorPackages(messageInterceptorPackages);
 		return this;

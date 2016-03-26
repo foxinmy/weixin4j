@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2;
+import com.foxinmy.weixin4j.mp.oldpayment.RefundRecordV2;
 import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.xml.XmlStream;

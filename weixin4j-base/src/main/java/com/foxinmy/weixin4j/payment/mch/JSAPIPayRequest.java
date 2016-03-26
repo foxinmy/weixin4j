@@ -5,7 +5,6 @@ import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.type.SignType;
 import com.foxinmy.weixin4j.type.TradeType;
-import com.foxinmy.weixin4j.util.DigestUtil;
 
 /**
  * 公众号JS支付:get_brand_wcpay_request</br>
@@ -29,7 +28,7 @@ public class JSAPIPayRequest extends AbstractPayRequest {
 	public JSAPIPayRequest(String prePayId, WeixinPayAccount payAccount) {
 		super(prePayId, payAccount);
 	}
-	
+
 	@Override
 	public TradeType getTradeType() {
 		return TradeType.JSAPI;
@@ -40,8 +39,7 @@ public class JSAPIPayRequest extends AbstractPayRequest {
 		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
 				"prepay_id=" + getPrePayId());
 		payRequest.setSignType(SignType.MD5);
-		payRequest.setPaySign(DigestUtil.paysignMd5(payRequest, getPayAccount()
-				.getPaySignKey()));
+		payRequest.setPaySign(weixinSignature.sign(payRequest));
 		return payRequest;
 	}
 

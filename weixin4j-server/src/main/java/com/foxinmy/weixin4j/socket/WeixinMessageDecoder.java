@@ -87,6 +87,7 @@ public class WeixinMessageDecoder extends
 			messageContent = MessageUtil.aesDecrypt(aesToken.getWeixinId(),
 					aesToken.getAesKey(), encryptContent);
 		}
+		logger.info("read original message {}", messageContent);
 		WeixinRequest request = new WeixinRequest(req.headers(), method,
 				req.getUri(), encryptType, echoStr, timeStamp, nonce,
 				signature, msgSignature, messageContent, encryptContent,
