@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment.v2;
+package com.foxinmy.weixin4j.mp.oldpayment;
 
 import java.util.Date;
 

@@ -19,14 +19,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.exception.WeixinPayException;
-import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
-import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.MicroPayPackage;
-import com.foxinmy.weixin4j.payment.PayURLConsts;
 import com.foxinmy.weixin4j.payment.mch.APPPayRequest;
 import com.foxinmy.weixin4j.payment.mch.ApiResult;
 import com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest;
@@ -63,14 +60,10 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @since JDK 1.6
  * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台API</a>
  */
-public class PayApi {
-
-	private final WeixinRequestExecutor weixinExecutor;
-	private final WeixinPayAccount weixinAccount;
+public class PayApi extends MchApi {
 
 	public PayApi(WeixinPayAccount weixinAccount) {
-		this.weixinAccount = weixinAccount;
-		this.weixinExecutor = new WeixinRequestExecutor();
+		super(weixinAccount);
 	}
 
 	/**
@@ -88,12 +81,11 @@ public class PayApi {
 	 */
 	public PrePay createPrePay(MchPayPackage payPackage)
 			throws WeixinPayException {
-		payPackage.setSign(DigestUtil.paysignMd5(payPackage,
-				weixinAccount.getPaySignKey()));
+		payPackage.setSign(weixinSignature.sign(payPackage));
 		String payJsRequestXml = XmlStream.toXML(payPackage);
 		try {
 			WeixinResponse response = weixinExecutor.post(
-					PayURLConsts.MCH_UNIFIEDORDER_URL, payJsRequestXml);
+					getRequestUri("order_create_uri"), payJsRequestXml);
 			PrePay prePay = response.getAsObject(new TypeReference<PrePay>() {
 			});
 			if (!prePay.getReturnCode().equalsIgnoreCase(Consts.SUCCESS)) {
@@ -250,8 +242,7 @@ public class PayApi {
 		map.put("nonceStr", RandomUtil.generateString(16));
 		map.put("url", url);
 		map.put("accessToken", oauthToken);
-		String sign = DigestUtil.SHA1(MapUtil.toJoinString(map, false, true,
-				null));
+		String sign = DigestUtil.SHA1(MapUtil.toJoinString(map, false, true));
 		map.remove("url");
 		map.remove("accessToken");
 		map.put("scope", "jsapi_address");
@@ -279,8 +270,8 @@ public class PayApi {
 		map.put("time_stamp", timestamp);
 		map.put("nonce_str", noncestr);
 		map.put("product_id", productId);
-		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
-		return String.format(PayURLConsts.MCH_NATIVE_URL, sign,
+		String sign = weixinSignature.sign(map);
+		return String.format(getRequestUri("native_pay_uri"), sign,
 				weixinAccount.getId(), weixinAccount.getMchId(), productId,
 				timestamp, noncestr);
 	}
@@ -438,15 +429,12 @@ public class PayApi {
 	 */
 	public Order createMicroPay(MicroPayPackage payPackage)
 			throws WeixinException {
-		String sign = DigestUtil.paysignMd5(payPackage,
-				weixinAccount.getPaySignKey());
-		payPackage.setSign(sign);
+		payPackage.setSign(weixinSignature.sign(payPackage));
 		String para = XmlStream.toXML(payPackage);
 		WeixinResponse response = weixinExecutor.post(
-				PayURLConsts.MCH_MICROPAY_URL, para);
-		return response
-				.getAsObject(new TypeReference<com.foxinmy.weixin4j.payment.mch.Order>() {
-				});
+				getRequestUri("micropay_uri"), para);
+		return response.getAsObject(new TypeReference<Order>() {
+		});
 	}
 
 	/**
@@ -466,13 +454,12 @@ public class PayApi {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public Order orderQuery(IdQuery idQuery) throws WeixinException {
-		Map<String, String> map = baseMap(idQuery);
-		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
-		map.put("sign", sign);
+	public Order queryOrder(IdQuery idQuery) throws WeixinException {
+		Map<String, String> map = createBaseRequestMap(idQuery);
+		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
-				PayURLConsts.MCH_ORDERQUERY_URL, param);
+				getRequestUri("order_query_uri"), param);
 		return ListsuffixResultDeserializer.deserialize(response.getAsString(),
 				Order.class);
 	}
@@ -489,7 +476,7 @@ public class PayApi {
 	 * ，要采用原来的退款单号。总退款金额不能超过用户实际支付金额。
 	 * </p>
 	 * 
-	 * @param ca
+	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -511,12 +498,12 @@ public class PayApi {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public RefundResult refundApply(InputStream ca, IdQuery idQuery,
+	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery,
 			String outRefundNo, double totalFee, double refundFee,
 			CurrencyType refundFeeType, String opUserId) throws WeixinException {
 		WeixinResponse response = null;
 		try {
-			Map<String, String> map = baseMap(idQuery);
+			Map<String, String> map = createBaseRequestMap(idQuery);
 			map.put("out_refund_no", outRefundNo);
 			map.put("total_fee", DateUtil.formaFee2Fen(totalFee));
 			map.put("refund_fee", DateUtil.formaFee2Fen(refundFee));
@@ -528,18 +515,14 @@ public class PayApi {
 				refundFeeType = CurrencyType.CNY;
 			}
 			map.put("refund_fee_type", refundFeeType.name());
-			String sign = DigestUtil.paysignMd5(map,
-					weixinAccount.getPaySignKey());
-			map.put("sign", sign);
+			map.put("sign", weixinSignature.sign(map));
 			String param = XmlStream.map2xml(map);
-			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
-					weixinAccount.getCertificateKey(), ca);
-			response = weixinExecutor.post(PayURLConsts.MCH_REFUNDAPPLY_URL,
-					param);
+			response = createSSLRequestExecutor(certificate).post(
+					getRequestUri("refund_apply_uri"), param);
 		} finally {
-			if (ca != null) {
+			if (certificate != null) {
 				try {
-					ca.close();
+					certificate.close();
 				} catch (IOException e) {
 					;
 				}
@@ -552,7 +535,7 @@ public class PayApi {
 	/**
 	 * 退款申请(全额退款)
 	 * 
-	 * @param ca
+	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -561,12 +544,12 @@ public class PayApi {
 	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
 	 * @param totalFee
 	 *            订单总金额,单位为元
-	 * @see {@link #refundApply(InputStream, IdQuery, String, double, double,CurrencyType, String)}
+	 * @see {@link #applyRefund(InputStream, IdQuery, String, double, double,CurrencyType, String)}
 	 */
-	public RefundResult refundApply(InputStream ca, IdQuery idQuery,
+	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery,
 			String outRefundNo, double totalFee) throws WeixinException {
-		return refundApply(ca, idQuery, outRefundNo, totalFee, totalFee, null,
-				null);
+		return applyRefund(certificate, idQuery, outRefundNo, totalFee,
+				totalFee, null, null);
 	}
 
 	/**
@@ -575,7 +558,7 @@ public class PayApi {
 	 * 如需实现相同功能请调用退款接口</font></br> <font
 	 * color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font></br>
 	 * 
-	 * @param ca
+	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -584,24 +567,20 @@ public class PayApi {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public ApiResult reverseOrder(InputStream ca, IdQuery idQuery)
+	public ApiResult reverseOrder(InputStream certificate, IdQuery idQuery)
 			throws WeixinException {
 		try {
-			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
-					weixinAccount.getCertificateKey(), ca);
-			Map<String, String> map = baseMap(idQuery);
-			String sign = DigestUtil.paysignMd5(map,
-					weixinAccount.getPaySignKey());
-			map.put("sign", sign);
+			Map<String, String> map = createBaseRequestMap(idQuery);
+			map.put("sign", weixinSignature.sign(map));
 			String param = XmlStream.map2xml(map);
-			WeixinResponse response = weixinExecutor.post(
-					PayURLConsts.MCH_ORDERREVERSE_URL, param);
+			WeixinResponse response = createSSLRequestExecutor(certificate)
+					.post(getRequestUri("order_reverse_uri"), param);
 			return response.getAsObject(new TypeReference<ApiResult>() {
 			});
 		} finally {
-			if (ca != null) {
+			if (certificate != null) {
 				try {
-					ca.close();
+					certificate.close();
 				} catch (IOException e) {
 					;
 				}
@@ -621,17 +600,16 @@ public class PayApi {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_9">转换短链接API</a>
 	 */
 	public String getShorturl(String url) throws WeixinException {
-		Map<String, String> map = baseMap(null);
+		Map<String, String> map = createBaseRequestMap(null);
 		try {
 			map.put("long_url", URLEncoder.encode(url, Consts.UTF_8.name()));
-		} catch (UnsupportedEncodingException ignore) {
+		} catch (UnsupportedEncodingException e) {
 			;
 		}
-		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
-		map.put("sign", sign);
+		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
-				PayURLConsts.MCH_SHORTURL_URL, param);
+				getRequestUri("longurl_convert_uri"), param);
 		map = XmlStream.xml2map(response.getAsString());
 		return map.get("short_url");
 	}
@@ -652,13 +630,12 @@ public class PayApi {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_3">关闭订单API</a>
 	 */
 	public ApiResult closeOrder(String outTradeNo) throws WeixinException {
-		Map<String, String> map = baseMap(new IdQuery(outTradeNo,
+		Map<String, String> map = createBaseRequestMap(new IdQuery(outTradeNo,
 				IdType.TRADENO));
-		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
-		map.put("sign", sign);
+		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
-				PayURLConsts.MCH_CLOSEORDER_URL, param);
+				getRequestUri("order_close_uri"), param);
 		return response.getAsObject(new TypeReference<ApiResult>() {
 		});
 	}
@@ -700,14 +677,13 @@ public class PayApi {
 		if (file.exists()) {
 			return file;
 		}
-		Map<String, String> map = baseMap(null);
+		Map<String, String> map = createBaseRequestMap(null);
 		map.put("bill_date", formatBillDate);
 		map.put("bill_type", billType.name());
-		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
-		map.put("sign", sign);
+		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
-				PayURLConsts.MCH_DOWNLOADBILL_URL, param);
+				getRequestUri("downloadbill_uri"), param);
 
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
@@ -757,13 +733,12 @@ public class PayApi {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public RefundRecord refundQuery(IdQuery idQuery) throws WeixinException {
-		Map<String, String> map = baseMap(idQuery);
-		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
-		map.put("sign", sign);
+	public RefundRecord queryRefund(IdQuery idQuery) throws WeixinException {
+		Map<String, String> map = createBaseRequestMap(idQuery);
+		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
-				PayURLConsts.MCH_REFUNDQUERY_URL, param);
+				getRequestUri("refund_query_uri"), param);
 		return ListsuffixResultDeserializer.deserialize(response.getAsString(),
 				RefundRecord.class);
 	}
@@ -793,18 +768,17 @@ public class PayApi {
 	public XmlResult interfaceReport(String interfaceUrl, int executeTime,
 			String outTradeNo, String ip, Date time, XmlResult returnXml)
 			throws WeixinException {
-		Map<String, String> map = baseMap(null);
+		Map<String, String> map = createBaseRequestMap(null);
 		map.put("interface_url", interfaceUrl);
 		map.put("execute_time_", Integer.toString(executeTime));
 		map.put("out_trade_no", outTradeNo);
 		map.put("user_ip", ip);
 		map.put("time", DateUtil.fortmat2yyyyMMddHHmmss(time));
 		map.putAll((Map<String, String>) JSON.toJSON(returnXml));
-		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
-		map.put("sign", sign);
+		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
-				PayURLConsts.MCH_PAYREPORT_URL, param);
+				getRequestUri("interface_report_uri"), param);
 		return response.getAsXmlResult();
 	}
 
@@ -820,39 +794,13 @@ public class PayApi {
 	 * @throws WeixinException
 	 */
 	public OpenIdResult authCode2openId(String authCode) throws WeixinException {
-		Map<String, String> map = baseMap(null);
+		Map<String, String> map = createBaseRequestMap(null);
 		map.put("auth_code", authCode);
-		String sign = DigestUtil.paysignMd5(map, weixinAccount.getPaySignKey());
-		map.put("sign", sign);
+		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
-				PayURLConsts.MCH_AUTHCODE_OPENID_URL, param);
+				getRequestUri("authcode_openid_uri"), param);
 		return response.getAsObject(new TypeReference<OpenIdResult>() {
 		});
-	}
-
-	/**
-	 * 支付接口请求基本数据
-	 * 
-	 * @return
-	 */
-	private Map<String, String> baseMap(IdQuery idQuery) {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("appid", weixinAccount.getId());
-		map.put("mch_id", weixinAccount.getMchId());
-		map.put("nonce_str", RandomUtil.generateString(16));
-		if (StringUtil.isNotBlank(weixinAccount.getDeviceInfo())) {
-			map.put("device_info", weixinAccount.getDeviceInfo());
-		}
-		if (StringUtil.isNotBlank(weixinAccount.getSubId())) {
-			map.put("sub_appid", weixinAccount.getSubId());
-		}
-		if (StringUtil.isNotBlank(weixinAccount.getSubMchId())) {
-			map.put("sub_mch_id", weixinAccount.getSubMchId());
-		}
-		if (idQuery != null) {
-			map.put(idQuery.getType().getName(), idQuery.getId());
-		}
-		return map;
 	}
 }

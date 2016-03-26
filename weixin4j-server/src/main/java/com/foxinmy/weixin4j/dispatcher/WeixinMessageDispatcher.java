@@ -14,10 +14,10 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -88,7 +88,7 @@ public class WeixinMessageDispatcher {
 	/**
 	 * 消息转换
 	 */
-	private ThreadLocal<Map<Class<? extends WeixinMessage>, Unmarshaller>> messageUnmarshaller;
+	private Map<Class<? extends WeixinMessage>, Unmarshaller> messageUnmarshaller;
 	/**
 	 * 是否总是响应请求,如未匹配到MessageHandler时回复空白消息
 	 */
@@ -100,12 +100,7 @@ public class WeixinMessageDispatcher {
 
 	public WeixinMessageDispatcher(WeixinMessageMatcher messageMatcher) {
 		this.messageMatcher = messageMatcher;
-		this.messageUnmarshaller = new ThreadLocal<Map<Class<? extends WeixinMessage>, Unmarshaller>>() {
-			@Override
-			protected Map<Class<? extends WeixinMessage>, Unmarshaller> initialValue() {
-				return new HashMap<Class<? extends WeixinMessage>, Unmarshaller>();
-			}
-		};
+		this.messageUnmarshaller = new ConcurrentHashMap<Class<? extends WeixinMessage>, Unmarshaller>();
 	}
 
 	/**
@@ -125,7 +120,8 @@ public class WeixinMessageDispatcher {
 		WeixinMessageKey messageKey = defineMessageKey(messageTransfer, request);
 		Class<? extends WeixinMessage> targetClass = messageMatcher
 				.match(messageKey);
-		WeixinMessage message = messageRead(request.getOriginalContent(), targetClass);
+		WeixinMessage message = messageRead(request.getOriginalContent(),
+				targetClass);
 		logger.info("define '{}' matched '{}'", messageKey, targetClass);
 		MessageHandlerExecutor handlerExecutor = getHandlerExecutor(context,
 				request, messageKey, message, messageTransfer.getNodeNames());
@@ -179,6 +175,7 @@ public class WeixinMessageDispatcher {
 	 */
 	protected void noHandlerFound(ChannelHandlerContext context,
 			WeixinRequest request, Object message) {
+		logger.warn("no handler found {}", request);
 		if (alwaysResponse) {
 			context.write(BlankResponse.global);
 		} else {
@@ -209,13 +206,13 @@ public class WeixinMessageDispatcher {
 	 */
 	protected MessageHandlerExecutor getHandlerExecutor(
 			ChannelHandlerContext context, WeixinRequest request,
-			WeixinMessageKey messageKey, WeixinMessage message, Set<String> nodeNames)
-			throws WeixinException {
+			WeixinMessageKey messageKey, WeixinMessage message,
+			Set<String> nodeNames) throws WeixinException {
 		WeixinMessageHandler[] messageHandlers = getMessageHandlers();
 		if (messageHandlers == null) {
 			return null;
 		}
-		logger.info("resolve handlers '{}'", this.messageHandlerList);
+		logger.info("resolve message handlers '{}'", this.messageHandlerList);
 		List<WeixinMessageHandler> matchedMessageHandlers = new ArrayList<WeixinMessageHandler>();
 		for (WeixinMessageHandler handler : messageHandlers) {
 			if (handler.canHandle(request, message, nodeNames)) {
@@ -233,7 +230,7 @@ public class WeixinMessageDispatcher {
 						return m2.weight() - m1.weight();
 					}
 				});
-		logger.info("matched message handlers '{}'", matchedMessageHandlers);
+		logger.info("matched message handler '{}'", matchedMessageHandlers);
 		return new MessageHandlerExecutor(context,
 				matchedMessageHandlers.get(0), getMessageInterceptors());
 	}
@@ -367,6 +364,8 @@ public class WeixinMessageDispatcher {
 								.size()]);
 			}
 		}
+		logger.info("resolve message interceptors '{}'",
+				this.messageInterceptorList);
 		return this.messageInterceptors;
 	}
 
@@ -406,12 +405,12 @@ public class WeixinMessageDispatcher {
 	 */
 	protected Unmarshaller getUnmarshaller(Class<? extends WeixinMessage> clazz)
 			throws WeixinException {
-		Unmarshaller unmarshaller = messageUnmarshaller.get().get(clazz);
+		Unmarshaller unmarshaller = messageUnmarshaller.get(clazz);
 		if (unmarshaller == null) {
 			try {
 				JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 				unmarshaller = jaxbContext.createUnmarshaller();
-				messageUnmarshaller.get().put(clazz, unmarshaller);
+				messageUnmarshaller.put(clazz, unmarshaller);
 			} catch (JAXBException e) {
 				throw new WeixinException(e);
 			}

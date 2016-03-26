@@ -1,6 +1,8 @@
 package com.foxinmy.weixin4j.mp.test;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Calendar;
 
 import org.junit.Test;
@@ -36,20 +38,21 @@ public class PayTest {
 
 	@Test
 	public void orderQueryV2() throws WeixinException {
-		System.err.println(PAY2.orderQuery(new IdQuery("D14110500021",
+		System.err.println(PAY2.queryOrder(new IdQuery("D14110500021",
 				IdType.REFUNDNO)));
 	}
 
 	@Test
-	public void refundV2() throws WeixinException {
+	public void refundV2() throws WeixinException, IOException {
 		IdQuery idQuery = new IdQuery("D15020300005", IdType.TRADENO);
-		System.err.println(PAY2.refundApply(caFile, idQuery, "1422925555037",
-				16d, 16d, "1221928801", "111111", null, null, null));
+		System.err.println(PAY2.applyRefund(new FileInputStream(caFile),
+				idQuery, "1422925555037", 16d, 16d, "1221928801", "111111",
+				null, null, null));
 	}
 
 	@Test
 	public void refundQueryV2() throws WeixinException {
-		System.err.println(PAY2.refundQuery(new IdQuery("D14123000004",
+		System.err.println(PAY2.queryRefund(new IdQuery("D14123000004",
 				IdType.TRADENO)));
 	}
 

@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.payment.v2;
+package com.foxinmy.weixin4j.mp.oldpayment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.WeixinPayOldAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
-import com.foxinmy.weixin4j.util.DigestUtil;
 
 /**
  * V2 Native支付时的回调响应
@@ -64,10 +63,12 @@ public class NativePayResponseV2 extends PayRequest {
 	 */
 	public NativePayResponseV2(WeixinPayOldAccount weixinAccount,
 			PayPackageV2 payPackage) {
-		super(weixinAccount.getId(), DigestUtil.packageSign(payPackage,
-				weixinAccount.getPartnerKey()));
+		super(weixinAccount.getId(), null);
 		this.retCode = "0";
 		this.retMsg = "OK";
+		WeixinOldPaymentSignature weixinSignature = new WeixinOldPaymentSignature();
+		setPackageInfo(weixinSignature.sign(payPackage,
+				weixinAccount.getPartnerKey()));
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("appid", weixinAccount.getId());
 		map.put("appkey", weixinAccount.getPaySignKey());
@@ -76,7 +77,7 @@ public class NativePayResponseV2 extends PayRequest {
 		map.put("package", getPackageInfo());
 		map.put("retcode", getRetCode());
 		map.put("reterrmsg", getRetMsg());
-		this.setPaySign(DigestUtil.paysignSha(map, null));
+		this.setPaySign(weixinSignature.sign(map));
 	}
 
 	public String getRetCode() {

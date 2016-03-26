@@ -9,7 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
-import com.foxinmy.weixin4j.util.DigestUtil;
+import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
@@ -67,7 +67,8 @@ public class NativePayResponse extends ApiResult {
 		this.setAppId(weixinAccount.getId());
 		this.setNonceStr(RandomUtil.generateString(16));
 		this.prepayId = prepayId;
-		this.setSign(DigestUtil.paysignMd5(this, weixinAccount.getPaySignKey()));
+		this.setSign(new WeixinPaymentSignature(weixinAccount.getPaySignKey())
+				.sign(this));
 	}
 
 	public String getPrepayId() {
