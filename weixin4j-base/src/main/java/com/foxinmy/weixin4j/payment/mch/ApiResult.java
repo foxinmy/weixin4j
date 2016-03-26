@@ -9,7 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 
 /**
- * 调用V3.x接口返回的公用字段
+ * 调用商户平台接口返回的公用字段
  * 
  * @className ApiResult
  * @author jy

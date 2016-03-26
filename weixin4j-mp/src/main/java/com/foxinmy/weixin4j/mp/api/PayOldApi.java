@@ -33,12 +33,12 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.WeixinPayOldAccount;
 import com.foxinmy.weixin4j.mp.oldpayment.OrderV2;
 import com.foxinmy.weixin4j.mp.oldpayment.PayPackageV2;
 import com.foxinmy.weixin4j.mp.oldpayment.RefundRecordV2;
 import com.foxinmy.weixin4j.mp.oldpayment.RefundResultV2;
 import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPaymentSignature;
+import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPayAccount;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
@@ -69,7 +69,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
  */
 public class PayOldApi extends MpApi {
 
-	private final WeixinPayOldAccount weixinAccount;
+	private final WeixinOldPayAccount weixinAccount;
 	private final TokenHolder tokenHolder;
 	private final WeixinSignature weixinMD5Signature;
 	private final WeixinOldPaymentSignature weixinOldSignature;
@@ -79,12 +79,12 @@ public class PayOldApi extends MpApi {
 	 */
 	public PayOldApi() {
 		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinPayOldAccount.class), new FileTokenStorager(
+				WeixinOldPayAccount.class), new FileTokenStorager(
 				Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
 						System.getProperty("java.io.tmpdir"))));
 	}
 
-	public PayOldApi(WeixinPayOldAccount payAccount) {
+	public PayOldApi(WeixinOldPayAccount payAccount) {
 		this(payAccount, new FileTokenStorager(
 				Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
 						System.getProperty("java.io.tmpdir"))));
@@ -92,10 +92,10 @@ public class PayOldApi extends MpApi {
 
 	public PayOldApi(TokenStorager tokenStorager) {
 		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinPayOldAccount.class), tokenStorager);
+				WeixinOldPayAccount.class), tokenStorager);
 	}
 
-	public PayOldApi(WeixinPayOldAccount weixinAccount,
+	public PayOldApi(WeixinOldPayAccount weixinAccount,
 			TokenStorager tokenStorager) {
 		this.weixinAccount = weixinAccount;
 		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(
@@ -106,7 +106,7 @@ public class PayOldApi extends MpApi {
 		this.weixinOldSignature = new WeixinOldPaymentSignature();
 	}
 
-	public WeixinPayOldAccount getPayAccount() {
+	public WeixinOldPayAccount getPayAccount() {
 		return this.weixinAccount;
 	}
 

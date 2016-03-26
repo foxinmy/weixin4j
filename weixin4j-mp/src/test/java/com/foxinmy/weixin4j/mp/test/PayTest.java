@@ -8,8 +8,8 @@ import java.util.Calendar;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.model.WeixinPayOldAccount;
 import com.foxinmy.weixin4j.mp.api.PayOldApi;
+import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPayAccount;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 
@@ -24,9 +24,9 @@ import com.foxinmy.weixin4j.type.IdType;
  */
 public class PayTest {
 	protected final static PayOldApi PAY2;
-	protected final static WeixinPayOldAccount ACCOUNT2;
+	protected final static WeixinOldPayAccount ACCOUNT2;
 	static {
-		ACCOUNT2 = new WeixinPayOldAccount("请填入v2版本的appid",
+		ACCOUNT2 = new WeixinOldPayAccount("请填入v2版本的appid",
 				"请填入v2版本的appSecret", "请填入v2版本的paysignkey", "请填入v2版本的partnerId",
 				"请填入v2版本的partnerKey");
 		PAY2 = new PayOldApi(ACCOUNT2);

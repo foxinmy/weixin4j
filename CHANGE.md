@@ -654,3 +654,7 @@
   + weixin4j-base:支持服务商版支付
   
   + weixin4j-base:签名类接口化
+  
+  + weixin4j-base:新增查询结算金额接口
+  
+  + weixin4j-base:新增查询汇率接口

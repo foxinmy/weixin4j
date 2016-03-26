@@ -12,6 +12,7 @@ import com.foxinmy.weixin4j.api.PayApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
+import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.payment.coupon.CouponResult;
@@ -31,6 +32,7 @@ import com.foxinmy.weixin4j.payment.mch.RedpacketRecord;
 import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
 import com.foxinmy.weixin4j.payment.mch.RefundResult;
+import com.foxinmy.weixin4j.payment.mch.SettlementRecord;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.IdQuery;
@@ -459,10 +461,9 @@ public class WeixinPayProxy {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public RefundResult applyRefund(
-			InputStream certificate, IdQuery idQuery, String outRefundNo,
-			double totalFee, double refundFee, CurrencyType refundFeeType,
-			String opUserId) throws WeixinException {
+	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery,
+			String outRefundNo, double totalFee, double refundFee,
+			CurrencyType refundFeeType, String opUserId) throws WeixinException {
 		return payApi.applyRefund(certificate, idQuery, outRefundNo, totalFee,
 				refundFee, refundFeeType, opUserId);
 	}
@@ -474,9 +475,8 @@ public class WeixinPayProxy {
 	 * 
 	 * @see {@link #applyRefund(InputStream, IdQuery, String, double, double, String,CurrencyType)}
 	 */
-	public RefundResult applyRefund(
-			IdQuery idQuery, String outRefundNo, double totalFee)
-			throws WeixinException, IOException {
+	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
+			double totalFee) throws WeixinException, IOException {
 		return payApi.applyRefund(
 				new FileInputStream(settings.getCertificateFile0()), idQuery,
 				outRefundNo, totalFee);
@@ -844,6 +844,47 @@ public class WeixinPayProxy {
 	 */
 	public OpenIdResult authCode2openId(String authCode) throws WeixinException {
 		return payApi.authCode2openId(authCode);
+	}
+
+	/**
+	 * 查询结算资金
+	 * 
+	 * @param status
+	 *            是否结算
+	 * @param pageable
+	 *            分页数据
+	 * @param start
+	 *            开始日期 查询未结算记录时，该字段可不传
+	 * @param end
+	 *            结束日期 查询未结算记录时，该字段可不传
+	 * @return 结算金额记录
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.api.CashApi
+	 * @see com.foxinmy.weixin4j.payment.mch.SettlementRecord
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/external/micropay.php?chapter=9_14&index=7">查询结算资金</a>
+	 */
+	public SettlementRecord querySettlement(boolean status, Pageable pageable,
+			Date start, Date end) throws WeixinException {
+		return cashApi.querySettlement(status, pageable, start, end);
+	}
+
+	/**
+	 * 查询汇率
+	 * 
+	 * @param currencyType
+	 *            外币币种
+	 * @param date
+	 *            日期 不填则默认当天
+	 * @return 汇率对象
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.api.CashApi
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/external/micropay.php?chapter=9_15&index=8">查询汇率</a>
+	 */
+	public double queryExchageRate(CurrencyType currencyType, Date date)
+			throws WeixinException {
+		return cashApi.queryExchageRate(currencyType, date);
 	}
 
 	public final static String VERSION = "1.6.7";

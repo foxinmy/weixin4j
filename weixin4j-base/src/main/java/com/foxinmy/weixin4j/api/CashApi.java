@@ -2,6 +2,8 @@ package com.foxinmy.weixin4j.api;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
@@ -9,6 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
+import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.mch.CorpPayment;
 import com.foxinmy.weixin4j.payment.mch.CorpPaymentRecord;
@@ -16,6 +19,9 @@ import com.foxinmy.weixin4j.payment.mch.CorpPaymentResult;
 import com.foxinmy.weixin4j.payment.mch.Redpacket;
 import com.foxinmy.weixin4j.payment.mch.RedpacketRecord;
 import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
+import com.foxinmy.weixin4j.payment.mch.SettlementRecord;
+import com.foxinmy.weixin4j.type.CurrencyType;
+import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
@@ -192,5 +198,77 @@ public class CashApi extends MchApi {
 		}
 		return response.getAsObject(new TypeReference<CorpPaymentRecord>() {
 		});
+	}
+
+	/**
+	 * 查询结算资金
+	 * 
+	 * @param status
+	 *            是否结算
+	 * @param pageable
+	 *            分页数据
+	 * @param start
+	 *            开始日期 查询未结算记录时，该字段可不传
+	 * @param end
+	 *            结束日期 查询未结算记录时，该字段可不传
+	 * @return 结算金额记录
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.payment.mch.SettlementRecord
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/external/micropay.php?chapter=9_14&index=7">查询结算资金</a>
+	 */
+	public SettlementRecord querySettlement(boolean status, Pageable pageable,
+			Date start, Date end) throws WeixinException {
+		JSONObject obj = new JSONObject();
+		obj.put("nonce_str", RandomUtil.generateString(16));
+		obj.put("mch_id", weixinAccount.getMchId());
+		obj.put("appid", weixinAccount.getId());
+		obj.put("usetag", status ? 1 : 2);
+		obj.put("offset", pageable.getOffset());
+		obj.put("limit", pageable.getPageSize());
+		if (start != null) {
+			obj.put("date_start", DateUtil.fortmat2yyyyMMdd(start));
+		}
+		if (end != null) {
+			obj.put("date_end", DateUtil.fortmat2yyyyMMdd(end));
+		}
+		obj.put("sign", weixinSignature.sign(obj));
+		String param = XmlStream.map2xml(obj);
+		WeixinResponse response = weixinExecutor.post(
+				getRequestUri("settlement_query_uri"), param);
+		return response.getAsObject(new TypeReference<SettlementRecord>() {
+		});
+	}
+
+	/**
+	 * 查询汇率
+	 * 
+	 * @param currencyType
+	 *            外币币种
+	 * @param date
+	 *            日期 不填则默认当天
+	 * @return 汇率 例如美元兑换人民币的比例为6.5
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/external/micropay.php?chapter=9_15&index=8">查询汇率</a>
+	 */
+	public double queryExchageRate(CurrencyType currencyType, Date date)
+			throws WeixinException {
+		if (date == null) {
+			date = new Date();
+		}
+		JSONObject obj = new JSONObject();
+		obj.put("mch_id", weixinAccount.getMchId());
+		obj.put("appid", weixinAccount.getId());
+		obj.put("sub_mch_id", weixinAccount.getSubMchId());
+		obj.put("fee_type", currencyType.name());
+		obj.put("date", DateUtil.fortmat2yyyyMMdd(date));
+		obj.put("sign", weixinSignature.sign(obj));
+		String param = XmlStream.map2xml(obj);
+		WeixinResponse response = weixinExecutor.post(
+				getRequestUri("exchagerate_query_uri"), param);
+		BigDecimal rate = new BigDecimal(XmlStream.xml2map(
+				response.getAsString()).get("rate"));
+		return rate.divide(new BigDecimal(100000000d)).doubleValue();
 	}
 }

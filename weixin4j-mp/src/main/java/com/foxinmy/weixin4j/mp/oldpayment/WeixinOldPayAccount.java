@@ -1,18 +1,19 @@
-package com.foxinmy.weixin4j.model;
+package com.foxinmy.weixin4j.mp.oldpayment;
 
 import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.model.WeixinAccount;
 
 /**
  * 微信支付账户(2014年10月申请支付的老版本)
  * 
- * @className WeixinPayOldAccount
+ * @className WeixinOldPayAccount
  * @author jy
  * @date 2015年6月26日
  * @since JDK 1.6
  * @see
  */
-public class WeixinPayOldAccount extends WeixinAccount {
+public class WeixinOldPayAccount extends WeixinAccount {
 
 	private static final long serialVersionUID = -2791256176906048632L;
 	/**
@@ -43,7 +44,7 @@ public class WeixinPayOldAccount extends WeixinAccount {
 	 *            财付通商户权限密钥Key(必填)
 	 */
 	@JSONCreator
-	public WeixinPayOldAccount(@JSONField(name = "id") String appId,
+	public WeixinOldPayAccount(@JSONField(name = "id") String appId,
 			@JSONField(name = "secret") String appSecret,
 			@JSONField(name = "paySignKey") String paySignKey,
 			@JSONField(name = "partnerId") String partnerId,
@@ -68,7 +69,7 @@ public class WeixinPayOldAccount extends WeixinAccount {
 
 	@Override
 	public String toString() {
-		return "WeixinPayOldAccount [" + super.toString() + ", paySignKey="
+		return "WeixinOldPayAccount [" + super.toString() + ", paySignKey="
 				+ paySignKey + ", partnerId=" + partnerId + ", partnerKey="
 				+ partnerKey + "]";
 	}
