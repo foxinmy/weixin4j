@@ -59,8 +59,10 @@ public class CashApi extends MchApi {
 	 */
 	public RedpacketSendResult sendRedpack(InputStream certificate,
 			Redpacket redpacket) throws WeixinException {
-		redpacket.setSign(weixinSignature.sign(redpacket));
-		String param = XmlStream.map2xml((JSONObject) JSON.toJSON(redpacket));
+		JSONObject obj = (JSONObject) JSON.toJSON(redpacket);
+		obj.put("wxappid", obj.remove("appid"));
+		obj.put("sign", weixinSignature.sign(obj));
+		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;
 		try {
 			response = createSSLRequestExecutor(certificate)
@@ -75,8 +77,10 @@ public class CashApi extends MchApi {
 				}
 			}
 		}
-		return response.getAsObject(new TypeReference<RedpacketSendResult>() {
-		});
+		String text = response.getAsString()
+				.replaceFirst("<wxappid>", "<appid>")
+				.replaceFirst("</wxappid>", "</appid>");
+		return XmlStream.fromXML(text, RedpacketSendResult.class);
 	}
 
 	/**
@@ -133,11 +137,8 @@ public class CashApi extends MchApi {
 	public CorpPaymentResult sendCorpPayment(InputStream certificate,
 			CorpPayment payment) throws WeixinException {
 		JSONObject obj = (JSONObject) JSON.toJSON(payment);
-		obj.put("nonce_str", RandomUtil.generateString(16));
-		obj.put("mchid", weixinAccount.getMchId());
-		obj.put("sub_mch_id", weixinAccount.getSubMchId());
-		obj.put("mch_appid", weixinAccount.getId());
-		obj.put("device_info", weixinAccount.getDeviceInfo());
+		obj.put("mchid", obj.remove("mch_id"));
+		obj.put("mch_appid", obj.remove("appid"));
 		obj.put("sign", weixinSignature.sign(obj));
 		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;

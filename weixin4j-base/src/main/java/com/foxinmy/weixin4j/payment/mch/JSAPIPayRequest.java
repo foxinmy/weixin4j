@@ -30,13 +30,13 @@ public class JSAPIPayRequest extends AbstractPayRequest {
 	}
 
 	@Override
-	public TradeType getTradeType() {
+	public TradeType getPaymentType() {
 		return TradeType.JSAPI;
 	}
 
 	@Override
 	public PayRequest toRequestObject() {
-		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
+		PayRequest payRequest = new PayRequest(getPaymentAccount().getId(),
 				"prepay_id=" + getPrePayId());
 		payRequest.setSignType(SignType.MD5);
 		payRequest.setPaySign(weixinSignature.sign(payRequest));

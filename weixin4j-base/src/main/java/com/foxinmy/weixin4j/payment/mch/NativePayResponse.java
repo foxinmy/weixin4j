@@ -23,7 +23,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NativePayResponse extends ApiResult {
+public class NativePayResponse extends MerchantResult {
 
 	private static final long serialVersionUID = 6119895998783333012L;
 

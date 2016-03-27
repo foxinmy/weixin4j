@@ -27,7 +27,7 @@ public class WAPPayRequest extends AbstractPayRequest {
 	}
 
 	@Override
-	public TradeType getTradeType() {
+	public TradeType getPaymentType() {
 		return TradeType.WAP;
 	}
 
@@ -36,8 +36,8 @@ public class WAPPayRequest extends AbstractPayRequest {
 	 */
 	@Override
 	public PayRequest toRequestObject() {
-		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
-				getTradeType().name());
+		PayRequest payRequest = new PayRequest(getPaymentAccount().getId(),
+				getPaymentType().name());
 		payRequest.setPrepayId(getPrePayId());
 		return payRequest;
 	}
@@ -47,7 +47,7 @@ public class WAPPayRequest extends AbstractPayRequest {
 		PayRequest payRequest = toRequestObject();
 		String original = MapUtil.toJoinString(payRequest, true, true);
 		String sign = DigestUtil.MD5(
-				String.format("%s&key=%s", original, getPayAccount()
+				String.format("%s&key=%s", original, getPaymentAccount()
 						.getPaySignKey())).toUpperCase();
 		return String.format("weixin://wap/pay?%s",
 				URLEncodingUtil.encoding(

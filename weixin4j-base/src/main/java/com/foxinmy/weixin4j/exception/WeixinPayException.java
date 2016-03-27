@@ -19,4 +19,8 @@ public class WeixinPayException extends WeixinException {
 	public WeixinPayException(String errorCode, String errorMsg) {
 		super(errorCode, errorMsg);
 	}
+	
+	public WeixinPayException(Throwable e) {
+		super(e);
+	}
 }

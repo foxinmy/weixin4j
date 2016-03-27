@@ -27,7 +27,7 @@ public class NATIVEPayRequest extends AbstractPayRequest {
 	}
 
 	@Override
-	public TradeType getTradeType() {
+	public TradeType getPaymentType() {
 		return TradeType.NATIVE;
 	}
 
@@ -36,7 +36,7 @@ public class NATIVEPayRequest extends AbstractPayRequest {
 	 */
 	@Override
 	public PayRequest toRequestObject() {
-		return new PayRequest(getPayAccount().getId(), "code_url=" + codeUrl);
+		return new PayRequest(getPaymentAccount().getId(), "code_url=" + codeUrl);
 	}
 
 	@Override

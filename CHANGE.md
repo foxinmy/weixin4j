@@ -658,3 +658,9 @@
   + weixin4j-base:新增查询结算金额接口
   
   + weixin4j-base:新增查询汇率接口
+  
+* 2016-03-27
+
+  + weixin4j-base:删除Mciro支付接口,新增MCIROPayRequest对象
+  
+  + weixin4j-base:支付对象优化

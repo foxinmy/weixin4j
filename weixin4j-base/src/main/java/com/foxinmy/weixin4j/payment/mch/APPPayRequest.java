@@ -24,7 +24,7 @@ public class APPPayRequest extends AbstractPayRequest {
 	}
 
 	@Override
-	public TradeType getTradeType() {
+	public TradeType getPaymentType() {
 		return TradeType.APP;
 	}
 
@@ -33,7 +33,7 @@ public class APPPayRequest extends AbstractPayRequest {
 	 */
 	@Override
 	public PayRequest toRequestObject() {
-		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
+		PayRequest payRequest = new PayRequest(getPaymentAccount().getId(),
 				"Sign=WXPay");
 		payRequest.setPrepayId(getPrePayId());
 		return payRequest;
@@ -45,13 +45,13 @@ public class APPPayRequest extends AbstractPayRequest {
 		String sign = DigestUtil.MD5(
 				String.format("%s&key=%s",
 						MapUtil.toJoinString(payRequest, false, true),
-						getPayAccount().getPaySignKey())).toUpperCase();
+						getPaymentAccount().getPaySignKey())).toUpperCase();
 		StringBuilder content = new StringBuilder();
 		content.append("<xml>");
 		content.append(String.format("<appid><![CDATA[%s]]></appid>",
 				payRequest.getAppId()));
 		content.append(String.format("<partnerid><![CDATA[%s]]></partnerid>",
-				getPayAccount().getPartnerId()));
+				getPaymentAccount().getPartnerId()));
 		content.append(String.format("<prepayid><![CDATA[%s]]></prepayid>",
 				payRequest.getPrepayId()));
 		content.append(String.format("<package><![CDATA[%s]]></package>",

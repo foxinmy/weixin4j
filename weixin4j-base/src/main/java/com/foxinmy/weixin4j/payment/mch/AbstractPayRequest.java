@@ -7,13 +7,13 @@ import com.foxinmy.weixin4j.sign.WeixinSignature;
 public abstract class AbstractPayRequest implements MchPayRequest {
 
 	private final String prePayId;
-	private final WeixinPayAccount payAccount;
+	private final WeixinPayAccount paymentAccount;
 	protected final WeixinSignature weixinSignature;
 
-	public AbstractPayRequest(String prePayId, WeixinPayAccount payAccount) {
+	public AbstractPayRequest(String prePayId, WeixinPayAccount paymentAccount) {
 		this.prePayId = prePayId;
-		this.payAccount = payAccount;
-		this.weixinSignature = new WeixinPaymentSignature(payAccount.getPaySignKey());
+		this.paymentAccount = paymentAccount;
+		this.weixinSignature = new WeixinPaymentSignature(paymentAccount.getPaySignKey());
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public abstract class AbstractPayRequest implements MchPayRequest {
 	}
 
 	@Override
-	public WeixinPayAccount getPayAccount() {
-		return this.payAccount;
+	public WeixinPayAccount getPaymentAccount() {
+		return this.paymentAccount;
 	}
 }

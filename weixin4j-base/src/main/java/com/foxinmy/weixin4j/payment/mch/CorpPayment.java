@@ -1,13 +1,12 @@
 package com.foxinmy.weixin4j.payment.mch;
 
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.type.MPPaymentCheckNameType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
@@ -22,8 +21,8 @@ import com.foxinmy.weixin4j.util.DateUtil;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CorpPayment implements Serializable {
-	
+public class CorpPayment extends MerchantResult {
+
 	private static final long serialVersionUID = 3734639674346425312L;
 	/**
 	 * 商户订单号
@@ -65,23 +64,33 @@ public class CorpPayment implements Serializable {
 	@XmlElement(name = "spbill_create_ip")
 	@JSONField(name = "spbill_create_ip")
 	private String clientIp;
-	
+
 	protected CorpPayment() {
 		// jaxb required
 	}
-	
+
 	/**
 	 * 企业付款
-	 * @param outTradeNo 商户的订单号
-	 * @param openId 用户的openid
-	 * @param checkNameType 校验用户姓名选项
-	 * @param desc 描述
-	 * @param amount 金额
-	 * @param clientIp 调用接口IP
+	 * 
+	 * @param weixinPayAccount
+	 *            商户信息
+	 * @param outTradeNo
+	 *            商户的订单号
+	 * @param openId
+	 *            用户的openid
+	 * @param checkNameType
+	 *            校验用户姓名选项
+	 * @param desc
+	 *            描述
+	 * @param amount
+	 *            金额
+	 * @param clientIp
+	 *            调用接口IP
 	 */
-	public CorpPayment(String outTradeNo, String openId,
-			MPPaymentCheckNameType checkNameType, String desc, double amount,
-			String clientIp) {
+	public CorpPayment(WeixinPayAccount weixinPayAccount, String outTradeNo,
+			String openId, MPPaymentCheckNameType checkNameType, String desc,
+			double amount, String clientIp) {
+		super(weixinPayAccount);
 		this.outTradeNo = outTradeNo;
 		this.openId = openId;
 		this.checkNameType = checkNameType;
@@ -127,6 +136,6 @@ public class CorpPayment implements Serializable {
 		return "CorpPayment [outTradeNo=" + outTradeNo + ", openId=" + openId
 				+ ", checkNameType=" + checkNameType + ", userName=" + userName
 				+ ", desc=" + desc + ", amount=" + amount + ", clientIp="
-				+ clientIp + "]";
+				+ clientIp + ", " + super.toString() + "]";
 	}
 }

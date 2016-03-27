@@ -28,7 +28,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Order extends ApiResult {
+public class Order extends MerchantResult {
 
 	private static final long serialVersionUID = 5636828325595317079L;
 	/**

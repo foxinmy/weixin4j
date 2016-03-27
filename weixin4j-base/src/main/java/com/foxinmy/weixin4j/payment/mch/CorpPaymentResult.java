@@ -18,7 +18,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CorpPaymentResult extends ApiResult {
+public class CorpPaymentResult extends MerchantResult {
 
 	private static final long serialVersionUID = 1110472826089211646L;
 

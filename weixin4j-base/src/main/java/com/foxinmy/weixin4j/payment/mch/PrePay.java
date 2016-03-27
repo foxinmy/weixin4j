@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.type.TradeType;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PrePay extends ApiResult {
+public class PrePay extends MerchantResult {
 
 	private static final long serialVersionUID = -8430005768959715444L;
 

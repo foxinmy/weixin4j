@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @since JDK 1.6
  * @see
  */
-public class SettlementRecord extends ApiResult {
+public class SettlementRecord extends MerchantResult {
 
 	private static final long serialVersionUID = 7952659545609519979L;
 
@@ -268,6 +268,6 @@ public class SettlementRecord extends ApiResult {
 				+ unSettleFee + ", settleFeeType=" + settleFeeType
 				+ ", payFee=" + payFee + ", refundFee=" + refundFee
 				+ ", payNetFee=" + payNetFee + ", poundageFee=" + poundageFee
-				+ "]";
+				+ ", " + super.toString() + "]";
 	}
 }

@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RefundRecord extends ApiResult {
+public class RefundRecord extends MerchantResult {
 
 	private static final long serialVersionUID = -2971132874939642721L;
 

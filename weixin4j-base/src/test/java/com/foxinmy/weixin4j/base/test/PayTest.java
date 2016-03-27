@@ -14,8 +14,8 @@ import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.WeixinPayProxy;
-import com.foxinmy.weixin4j.payment.mch.ApiResult;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
+import com.foxinmy.weixin4j.payment.mch.MerchantResult;
 import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.payment.mch.PrePay;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
@@ -49,7 +49,7 @@ public class PayTest {
 	/**
 	 * 商户证书文件
 	 */
-	protected File caFile = new File("证书文件:*.p12");
+	protected File caFile = new File("/Users/jy/Downloads/test.sql");
 
 	@Test
 	public void queryOrder() throws WeixinException {
@@ -107,10 +107,9 @@ public class PayTest {
 
 	@Test
 	public void nativePay() throws WeixinException {
-		MchPayPackage payPackageV3 = new MchPayPackage(ACCOUNT,
-				"oyFLst1bqtuTcxK-ojF8hOGtLQao", "native测试", "T0001", 0.1d,
-				"notify_url", "127.0.0.1", TradeType.NATIVE);
-		payPackageV3.setProductId("0001");
+		MchPayPackage payPackageV3 = new MchPayPackage(ACCOUNT, "native测试",
+				"T0001", 0.1d, "notify_url", "127.0.0.1", TradeType.NATIVE,
+				null, null, "productId", null);
 		PrePay prePay = null;
 		try {
 			prePay = PAY.createPrePay(payPackageV3);
@@ -122,7 +121,7 @@ public class PayTest {
 
 	@Test
 	public void closeOrder() throws WeixinException {
-		ApiResult result = PAY.closeOrder("D111");
+		MerchantResult result = PAY.closeOrder("D111");
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);

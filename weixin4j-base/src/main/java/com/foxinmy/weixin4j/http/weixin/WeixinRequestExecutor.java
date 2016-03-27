@@ -161,12 +161,12 @@ public class WeixinRequestExecutor {
 		if ("0".equals(xmlResult.getReturnCode())) {
 			return;
 		}
-		if (!com.foxinmy.weixin4j.model.Consts.SUCCESS
+		if (!Consts.SUCCESS
 				.equalsIgnoreCase(xmlResult.getReturnCode())) {
 			throw new WeixinException(xmlResult.getReturnCode(),
 					xmlResult.getReturnMsg());
 		}
-		if (!com.foxinmy.weixin4j.model.Consts.SUCCESS
+		if (!Consts.SUCCESS
 				.equalsIgnoreCase(xmlResult.getResultCode())) {
 			throw new WeixinException(xmlResult.getErrCode(),
 					xmlResult.getErrCodeDes());

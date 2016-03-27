@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.payment.mch;
 
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.util.DateUtil;
-import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
  * 红包
@@ -26,27 +23,9 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Redpacket implements Serializable {
+public class Redpacket extends MerchantResult {
 
 	private static final long serialVersionUID = -7021352305575714281L;
-	/**
-	 * 微信分配的公众账号 ID商户号 非空
-	 */
-	@XmlElement(name = "wxappid")
-	@JSONField(name = "wxappid")
-	private String appId;
-	/**
-	 * 微信支付分配的商户号 非空
-	 */
-	@XmlElement(name = "mch_id")
-	@JSONField(name = "mch_id")
-	private String mchId;
-	/**
-	 * 微信支付分配的子商户号 非必须
-	 */
-	@XmlElement(name = "sub_mch_id")
-	@JSONField(name = "sub_mch_id")
-	private String subMchId;
 	/**
 	 * 服务商模式下触达用户时的appid(可填服务商自己的appid或子商户的appid)，服务商模式下必填，
 	 * 服务商模式下填入的子商户appid必须在微信支付商户平台中先录入，否则会校验不过。 非必须
@@ -66,16 +45,6 @@ public class Redpacket implements Serializable {
 	@XmlElement(name = "mch_billno")
 	@JSONField(name = "mch_billno")
 	private String outTradeNo;
-	/**
-	 * 随机字符串,不长于 32 位 必须
-	 */
-	@XmlElement(name = "nonce_str")
-	@JSONField(name = "nonce_str")
-	private String nonceStr;
-	/**
-	 * 签名 <font color="red">调用者无需关心</font>
-	 */
-	private String sign;
 	/**
 	 * 红包发送者名称 必填
 	 */
@@ -134,6 +103,8 @@ public class Redpacket implements Serializable {
 	/**
 	 * 红包
 	 * 
+	 * @param weixinPayAccount
+	 *            商户信息
 	 * @param outTradeNo
 	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
 	 * @param sendName
@@ -153,11 +124,10 @@ public class Redpacket implements Serializable {
 	 * @param remark
 	 *            备注 必填
 	 */
-	public Redpacket(WeixinPayAccount payAccount, String outTradeNo,
+	public Redpacket(WeixinPayAccount weixinPayAccount, String outTradeNo,
 			String sendName, String openid, double totalAmount, int totalNum,
 			String wishing, String clientIp, String actName, String remark) {
-		this(payAccount.getId(), payAccount.getMchId(), payAccount
-				.getSubMchId(), null, null, outTradeNo, sendName, openid,
+		this(weixinPayAccount, null, null, outTradeNo, sendName, openid,
 				totalAmount, totalNum, wishing, clientIp, actName, remark);
 	}
 
@@ -193,13 +163,11 @@ public class Redpacket implements Serializable {
 	 * @param remark
 	 *            备注 必填
 	 */
-	public Redpacket(String appId, String mchId, String subMchId,
-			String subMsgId, String consumeMchId, String outTradeNo,
-			String sendName, String openid, double totalAmount, int totalNum,
-			String wishing, String clientIp, String actName, String remark) {
-		this.appId = appId;
-		this.mchId = mchId;
-		this.subMchId = subMchId;
+	public Redpacket(WeixinPayAccount weixinPayAccount, String subMsgId,
+			String consumeMchId, String outTradeNo, String sendName,
+			String openid, double totalAmount, int totalNum, String wishing,
+			String clientIp, String actName, String remark) {
+		super(weixinPayAccount);
 		this.subMsgId = subMsgId;
 		this.consumeMchId = consumeMchId;
 		this.outTradeNo = outTradeNo;
@@ -210,7 +178,6 @@ public class Redpacket implements Serializable {
 		this.clientIp = clientIp;
 		this.actName = actName;
 		this.remark = remark;
-		this.nonceStr = RandomUtil.generateString(16);
 		this.totalAmount = DateUtil.formaFee2Fen(totalAmount);
 		this.amtType = totalNum > 1 ? "ALL_RAND" : null;
 	}
@@ -255,23 +222,14 @@ public class Redpacket implements Serializable {
 		return remark;
 	}
 
-	public String getSign() {
-		return sign;
-	}
-
-	public void setSign(String sign) {
-		this.sign = sign;
-	}
-
 	@Override
 	public String toString() {
-		return "Redpacket [appId=" + appId + ", mchId=" + mchId + ", subMchId="
-				+ subMchId + ", subMsgId=" + subMsgId + ", consumeMchId="
-				+ consumeMchId + ", outTradeNo=" + outTradeNo + ", nonceStr="
-				+ nonceStr + ", sendName=" + sendName + ", openid=" + openid
-				+ ", totalAmount=" + totalAmount + ", totalNum=" + totalNum
-				+ ", amtType=" + amtType + ", wishing=" + wishing
-				+ ", clientIp=" + clientIp + ", actName=" + actName
-				+ ", remark=" + remark + ", sign=" + sign + "]";
+		return "Redpacket [subMsgId=" + subMsgId + ", consumeMchId="
+				+ consumeMchId + ", outTradeNo=" + outTradeNo + ", sendName="
+				+ sendName + ", openid=" + openid + ", totalAmount="
+				+ totalAmount + ", totalNum=" + totalNum + ", amtType="
+				+ amtType + ", wishing=" + wishing + ", clientIp=" + clientIp
+				+ ", actName=" + actName + ", remark=" + remark + ", "
+				+ super.toString() + "]";
 	}
 }

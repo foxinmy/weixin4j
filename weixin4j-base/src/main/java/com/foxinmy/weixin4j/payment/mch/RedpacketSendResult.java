@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -22,21 +21,9 @@ import com.foxinmy.weixin4j.util.DateUtil;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RedpacketSendResult extends XmlResult {
+public class RedpacketSendResult extends MerchantResult {
 
 	private static final long serialVersionUID = 5611847899634131711L;
-	/**
-	 * 微信分配的公众账号
-	 */
-	@XmlElement(name = "wxappid")
-	@JSONField(name = "wxappid")
-	private String appId;
-	/**
-	 * 微信支付分配的商户号
-	 */
-	@XmlElement(name = "mch_id")
-	@JSONField(name = "mch_id")
-	private String mchId;
 	/**
 	 * 商户订单号（每个订单号必须唯一） 组成： mch_id+yyyymmdd+10位一天内不能重复的数字。
 	 */
@@ -70,14 +57,6 @@ public class RedpacketSendResult extends XmlResult {
 
 	protected RedpacketSendResult() {
 		// jaxb required
-	}
-
-	public String getAppId() {
-		return appId;
-	}
-
-	public String getMchId() {
-		return mchId;
 	}
 
 	public String getOutTradeNo() {
@@ -117,9 +96,8 @@ public class RedpacketSendResult extends XmlResult {
 
 	@Override
 	public String toString() {
-		return "RedpacketSendResult [appId=" + appId + ", mchId=" + mchId
-				+ ", outTradeNo=" + outTradeNo + ", openId=" + openId
-				+ ", totalAmount=" + totalAmount + ", " + super.toString()
-				+ "]";
+		return "RedpacketSendResult [outTradeNo=" + outTradeNo + ", openId="
+				+ openId + ", totalAmount=" + totalAmount + ", "
+				+ super.toString() + "]";
 	}
 }

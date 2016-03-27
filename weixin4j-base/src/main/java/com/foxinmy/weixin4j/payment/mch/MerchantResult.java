@@ -7,11 +7,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
+import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.type.SignType;
+import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
  * 调用商户平台接口返回的公用字段
  * 
- * @className ApiResult
+ * @className MerchantResult
  * @author jy
  * @date 2014年10月21日
  * @since JDK 1.6
@@ -19,7 +22,7 @@ import com.foxinmy.weixin4j.http.weixin.XmlResult;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ApiResult extends XmlResult {
+public class MerchantResult extends XmlResult {
 
 	private static final long serialVersionUID = -8430005768959715444L;
 
@@ -58,6 +61,12 @@ public class ApiResult extends XmlResult {
 	 */
 	private String sign;
 	/**
+	 * 签名类型 默认MD5
+	 */
+	@XmlElement(name = "sign_type")
+	@JSONField(name = "sign_type")
+	private String signType;
+	/**
 	 * 微信支付分配的终端设备号 可能为空
 	 */
 	@XmlElement(name = "device_info")
@@ -68,12 +77,21 @@ public class ApiResult extends XmlResult {
 	 */
 	private String recall;
 
-	protected ApiResult() {
-
+	protected MerchantResult() {
+		// jaxb required
 	}
 
-	public ApiResult(String returnCode, String returnMsg) {
+	public MerchantResult(String returnCode, String returnMsg) {
 		super(returnCode, returnMsg);
+	}
+
+	public MerchantResult(WeixinPayAccount weixinPayAccount) {
+		this.appId = weixinPayAccount.getId();
+		this.mchId = weixinPayAccount.getMchId();
+		this.deviceInfo = weixinPayAccount.getDeviceInfo();
+		this.subId = weixinPayAccount.getSubId();
+		this.subMchId = weixinPayAccount.getSubMchId();
+		this.nonceStr = RandomUtil.generateString(16);
 	}
 
 	public String getAppId() {
@@ -122,6 +140,20 @@ public class ApiResult extends XmlResult {
 
 	public void setSign(String sign) {
 		this.sign = sign;
+	}
+
+	public String getSignType() {
+		return signType;
+	}
+
+	@JSONField(serialize = false)
+	public SignType getFormatSignType() {
+		return signType != null ? SignType.valueOf(signType.toUpperCase())
+				: null;
+	}
+
+	public void setSignType(String signType) {
+		this.signType = signType;
 	}
 
 	public String getDeviceInfo() {

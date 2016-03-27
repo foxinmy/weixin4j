@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CorpPaymentRecord extends ApiResult {
+public class CorpPaymentRecord extends MerchantResult {
 
 	private static final long serialVersionUID = -1926873539419750498L;
 

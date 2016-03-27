@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.payment.mch.ApiResult;
+import com.foxinmy.weixin4j.payment.mch.MerchantResult;
 
 /**
  * 代金券发放结果
@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.payment.mch.ApiResult;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CouponResult extends ApiResult {
+public class CouponResult extends MerchantResult {
 
 	private static final long serialVersionUID = -1996967923720149124L;
 
