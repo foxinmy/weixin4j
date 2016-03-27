@@ -205,4 +205,33 @@ public final class StringUtil {
 		}
 		return buf.toString();
 	}
+
+	/**
+	 * The shortcut to {@link #simpleClassName(Class)
+	 * simpleClassName(o.getClass())}.
+	 */
+	public static String simpleClassName(Object o) {
+		if (o == null) {
+			return "null_object";
+		} else {
+			return simpleClassName(o.getClass());
+		}
+	}
+
+	/**
+	 * Generates a simplified name from a {@link Class}. Similar to
+	 * {@link Class#getSimpleName()}, but it works fine with anonymous classes.
+	 */
+	public static String simpleClassName(Class<?> clazz) {
+		if (clazz == null) {
+			return "null_class";
+		}
+
+		Package pkg = clazz.getPackage();
+		if (pkg != null) {
+			return clazz.getName().substring(pkg.getName().length() + 1);
+		} else {
+			return clazz.getName();
+		}
+	}
 }

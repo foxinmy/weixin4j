@@ -666,3 +666,5 @@
   + weixin4j-base:支付对象优化
   
   + weixin4j-base:新增海关接口
+  
+  + weixin4j-base:添加日志支持

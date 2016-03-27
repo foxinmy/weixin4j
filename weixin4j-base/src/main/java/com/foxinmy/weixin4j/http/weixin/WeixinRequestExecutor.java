@@ -19,6 +19,8 @@ import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.http.entity.StringEntity;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
+import com.foxinmy.weixin4j.logging.InternalLogger;
+import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.WeixinErrorUtil;
@@ -34,6 +36,9 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @see
  */
 public class WeixinRequestExecutor {
+
+	protected final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 
 	protected final HttpClient httpClient;
 	protected final HttpParams params;
@@ -93,9 +98,14 @@ public class WeixinRequestExecutor {
 	public WeixinResponse doRequest(HttpRequest request) throws WeixinException {
 		request.setParams(params);
 		try {
+			logger.info("weixin request >> " + request.getMethod() + " "
+					+ request.getURI().toString());
 			HttpResponse httpResponse = httpClient.execute(request);
 			HttpHeaders headers = httpResponse.getHeaders();
 			WeixinResponse response = new WeixinResponse(httpResponse);
+			logger.info("weixin response << " + httpResponse.getProtocol()
+					+ httpResponse.getStatus().toString() + " "
+					+ response.getAsString());
 			String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
 			String disposition = headers
 					.getFirst(HttpHeaders.CONTENT_DISPOSITION);
@@ -161,13 +171,11 @@ public class WeixinRequestExecutor {
 		if ("0".equals(xmlResult.getReturnCode())) {
 			return;
 		}
-		if (!Consts.SUCCESS
-				.equalsIgnoreCase(xmlResult.getReturnCode())) {
+		if (!Consts.SUCCESS.equalsIgnoreCase(xmlResult.getReturnCode())) {
 			throw new WeixinException(xmlResult.getReturnCode(),
 					xmlResult.getReturnMsg());
 		}
-		if (!Consts.SUCCESS
-				.equalsIgnoreCase(xmlResult.getResultCode())) {
+		if (!Consts.SUCCESS.equalsIgnoreCase(xmlResult.getResultCode())) {
 			throw new WeixinException(xmlResult.getErrCode(),
 					xmlResult.getErrCodeDes());
 		}

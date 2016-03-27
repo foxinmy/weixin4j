@@ -5,9 +5,14 @@ import java.util.Set;
 
 import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
+import com.foxinmy.weixin4j.logging.InternalLogger;
+import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 
 public abstract class AbstractHttpClient implements HttpClient {
 
+	protected final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
+	
 	@Override
 	public HttpResponse get(String url) throws HttpClientException {
 		return execute(HttpMethod.GET, url);
