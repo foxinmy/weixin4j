@@ -103,8 +103,6 @@ public class Redpacket extends MerchantResult {
 	/**
 	 * 红包
 	 * 
-	 * @param weixinPayAccount
-	 *            商户信息
 	 * @param outTradeNo
 	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
 	 * @param sendName
@@ -127,17 +125,13 @@ public class Redpacket extends MerchantResult {
 	public Redpacket(WeixinPayAccount weixinPayAccount, String outTradeNo,
 			String sendName, String openid, double totalAmount, int totalNum,
 			String wishing, String clientIp, String actName, String remark) {
-		this(weixinPayAccount, null, null, outTradeNo, sendName, openid,
-				totalAmount, totalNum, wishing, clientIp, actName, remark);
+		this(null, null, outTradeNo, sendName, openid, totalAmount, totalNum,
+				wishing, clientIp, actName, remark);
 	}
 
 	/**
 	 * 红包 完整参数
 	 * 
-	 * @param appId
-	 *            公众号唯一标识 必填
-	 * @param mchId
-	 *            微信支付商户号 必填
 	 * @param subMchId
 	 *            子商户商户号 非必填
 	 * @param subMsgId
@@ -163,11 +157,9 @@ public class Redpacket extends MerchantResult {
 	 * @param remark
 	 *            备注 必填
 	 */
-	public Redpacket(WeixinPayAccount weixinPayAccount, String subMsgId,
-			String consumeMchId, String outTradeNo, String sendName,
-			String openid, double totalAmount, int totalNum, String wishing,
-			String clientIp, String actName, String remark) {
-		super(weixinPayAccount);
+	public Redpacket(String subMsgId, String consumeMchId, String outTradeNo,
+			String sendName, String openid, double totalAmount, int totalNum,
+			String wishing, String clientIp, String actName, String remark) {
 		this.subMsgId = subMsgId;
 		this.consumeMchId = consumeMchId;
 		this.outTradeNo = outTradeNo;

@@ -107,9 +107,9 @@ public class PayTest {
 
 	@Test
 	public void nativePay() throws WeixinException {
-		MchPayPackage payPackageV3 = new MchPayPackage(ACCOUNT, "native测试",
-				"T0001", 0.1d, "notify_url", "127.0.0.1", TradeType.NATIVE,
-				null, null, "productId", null);
+		MchPayPackage payPackageV3 = new MchPayPackage("native测试", "T0001",
+				0.1d, "notify_url", "127.0.0.1", TradeType.NATIVE, null, null,
+				"productId", null);
 		PrePay prePay = null;
 		try {
 			prePay = PAY.createPrePay(payPackageV3);

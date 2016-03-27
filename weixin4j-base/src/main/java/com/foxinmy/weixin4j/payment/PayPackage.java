@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.mch.MerchantResult;
 import com.foxinmy.weixin4j.util.DateUtil;
 
@@ -91,8 +90,6 @@ public class PayPackage extends MerchantResult {
 	/**
 	 * 订单对象
 	 * 
-	 * @param weixinPayAccount
-	 *            商户信息 必填
 	 * @param body
 	 *            订单描述 必填
 	 * @param detail
@@ -114,11 +111,9 @@ public class PayPackage extends MerchantResult {
 	 * @param goodsTag
 	 *            订单标记 非必填
 	 */
-	public PayPackage(WeixinPayAccount weixinPayAccount, String body,
-			String detail, String outTradeNo, double totalFee,
-			String notifyUrl, String createIp, String attach, Date timeStart,
-			Date timeExpire, String goodsTag) {
-		super(weixinPayAccount);
+	public PayPackage(String body, String detail, String outTradeNo,
+			double totalFee, String notifyUrl, String createIp, String attach,
+			Date timeStart, Date timeExpire, String goodsTag) {
 		this.body = body;
 		this.detail = detail;
 		this.outTradeNo = outTradeNo;

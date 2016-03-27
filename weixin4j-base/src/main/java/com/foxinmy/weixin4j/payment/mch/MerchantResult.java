@@ -85,15 +85,6 @@ public class MerchantResult extends XmlResult {
 		super(returnCode, returnMsg);
 	}
 
-	public MerchantResult(WeixinPayAccount weixinPayAccount) {
-		this.appId = weixinPayAccount.getId();
-		this.mchId = weixinPayAccount.getMchId();
-		this.deviceInfo = weixinPayAccount.getDeviceInfo();
-		this.subId = weixinPayAccount.getSubId();
-		this.subMchId = weixinPayAccount.getSubMchId();
-		this.nonceStr = RandomUtil.generateString(16);
-	}
-
 	public String getAppId() {
 		return appId;
 	}
@@ -175,6 +166,22 @@ public class MerchantResult extends XmlResult {
 	@JSONField(serialize = false)
 	public boolean getFormatRecall() {
 		return recall != null && recall.equalsIgnoreCase("y");
+	}
+
+	/**
+	 * 赋值给对应字段
+	 * 
+	 * @param weixinPayAccount
+	 *            商户信息
+	 */
+	@JSONField(deserialize = false)
+	public void declareWeixinPayAccount(WeixinPayAccount weixinPayAccount) {
+		this.appId = weixinPayAccount.getId();
+		this.mchId = weixinPayAccount.getMchId();
+		this.deviceInfo = weixinPayAccount.getDeviceInfo();
+		this.subId = weixinPayAccount.getSubId();
+		this.subMchId = weixinPayAccount.getSubMchId();
+		this.nonceStr = RandomUtil.generateString(16);
 	}
 
 	@Override

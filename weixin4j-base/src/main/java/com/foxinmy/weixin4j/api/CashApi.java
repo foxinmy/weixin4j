@@ -54,11 +54,12 @@ public class CashApi extends MchApi {
 	 * @see com.foxinmy.weixin4j.payment.mch.Redpacket
 	 * @see com.foxinmy.weixin4j.payment.mch.RedpacketSendResult
 	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_5">发放红包接口说明</a>
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_5">发放红包接口说明</a>
 	 * @throws WeixinException
 	 */
 	public RedpacketSendResult sendRedpack(InputStream certificate,
 			Redpacket redpacket) throws WeixinException {
+		redpacket.declareWeixinPayAccount(weixinAccount);
 		JSONObject obj = (JSONObject) JSON.toJSON(redpacket);
 		obj.put("wxappid", obj.remove("appid"));
 		obj.put("sign", weixinSignature.sign(obj));
@@ -136,6 +137,7 @@ public class CashApi extends MchApi {
 	 */
 	public CorpPaymentResult sendCorpPayment(InputStream certificate,
 			CorpPayment payment) throws WeixinException {
+		payment.declareWeixinPayAccount(weixinAccount);
 		JSONObject obj = (JSONObject) JSON.toJSON(payment);
 		obj.put("mchid", obj.remove("mch_id"));
 		obj.put("mch_appid", obj.remove("appid"));

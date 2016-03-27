@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayPackage;
 import com.foxinmy.weixin4j.type.TradeType;
 
@@ -73,8 +72,6 @@ public class MchPayPackage extends PayPackage {
 	/**
 	 * 微信支付
 	 * 
-	 * @param weixinAccount
-	 *            商户信息 必填
 	 * @param body
 	 *            支付详情 必填
 	 * @param outTradeNo
@@ -96,20 +93,17 @@ public class MchPayPackage extends PayPackage {
 	 * @param attach
 	 *            支付时附加信息 非必填
 	 */
-	public MchPayPackage(WeixinPayAccount weixinAccount, String body,
-			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, TradeType tradeType, String openId,
-			String authCode, String productId, String attach) {
-		this(weixinAccount, body, null, outTradeNo, totalFee, notifyUrl,
-				createIp, tradeType, openId, authCode, productId, attach, null,
-				null, null, null, null);
+	public MchPayPackage(String body, String outTradeNo, double totalFee,
+			String notifyUrl, String createIp, TradeType tradeType,
+			String openId, String authCode, String productId, String attach) {
+		this(body, null, outTradeNo, totalFee, notifyUrl, createIp, tradeType,
+				openId, authCode, productId, attach, null, null, null, null,
+				null);
 	}
 
 	/**
 	 * 完整参数
 	 * 
-	 * @param weixinAccount
-	 *            商户信息 必填
 	 * @param body
 	 *            支付详情 必填
 	 * @param detail
@@ -146,14 +140,13 @@ public class MchPayPackage extends PayPackage {
 	 *            用户在子商户appid下的唯一标识 非必填
 	 *            openid和sub_openid可以选传其中之一，如果选择传sub_openid ,则必须传sub_appid
 	 */
-	public MchPayPackage(WeixinPayAccount weixinPayAccount, String body,
-			String detial, String outTradeNo, double totalFee,
-			String notifyUrl, String createIp, TradeType tradeType,
-			String openId, String authCode, String productId, String attach,
-			Date timeStart, Date timeExpire, String goodsTag, String limitPay,
-			String subOpenId) {
-		super(weixinPayAccount, body, detial, outTradeNo, totalFee, notifyUrl,
-				createIp, attach, timeStart, timeExpire, goodsTag);
+	public MchPayPackage(String body, String detial, String outTradeNo,
+			double totalFee, String notifyUrl, String createIp,
+			TradeType tradeType, String openId, String authCode,
+			String productId, String attach, Date timeStart, Date timeExpire,
+			String goodsTag, String limitPay, String subOpenId) {
+		super(body, detial, outTradeNo, totalFee, notifyUrl, createIp, attach,
+				timeStart, timeExpire, goodsTag);
 		this.tradeType = tradeType.name();
 		this.openId = openId;
 		this.authCode = authCode;

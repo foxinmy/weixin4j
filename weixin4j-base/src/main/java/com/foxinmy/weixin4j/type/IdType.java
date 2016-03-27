@@ -25,7 +25,15 @@ public enum IdType {
 	/**
 	 * 商户退款号
 	 */
-	REFUNDNO("out_refund_no");
+	REFUNDNO("out_refund_no"),
+	/**
+	 * 商户子订单号
+	 */
+	SUBORDERNO("sub_order_no"),
+	/**
+	 * 微信子订单号
+	 */
+	SUBORDERID("sub_order_id");
 	private String name;
 
 	IdType(String name) {

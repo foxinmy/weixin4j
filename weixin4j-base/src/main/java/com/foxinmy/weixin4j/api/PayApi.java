@@ -18,7 +18,6 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.Consts;
@@ -79,27 +78,14 @@ public class PayApi extends MchApi {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1">统一下单接口</a>
 	 * @return 预支付对象
 	 */
-	public PrePay createPrePay(MchPayPackage payPackage)
-			throws WeixinPayException {
+	public PrePay createPrePay(MchPayPackage payPackage) throws WeixinException {
+		payPackage.declareWeixinPayAccount(weixinAccount);
 		payPackage.setSign(weixinSignature.sign(payPackage));
 		String payJsRequestXml = XmlStream.toXML(payPackage);
-		try {
-			WeixinResponse response = weixinExecutor.post(
-					getRequestUri("order_create_uri"), payJsRequestXml);
-			PrePay prePay = response.getAsObject(new TypeReference<PrePay>() {
-			});
-			if (!prePay.getReturnCode().equalsIgnoreCase(Consts.SUCCESS)) {
-				throw new WeixinPayException(prePay.getReturnMsg(),
-						prePay.getReturnCode());
-			}
-			if (!prePay.getResultCode().equalsIgnoreCase(Consts.SUCCESS)) {
-				throw new WeixinPayException(prePay.getResultCode(),
-						prePay.getErrCodeDes());
-			}
-			return prePay;
-		} catch (WeixinException e) {
-			throw new WeixinPayException(e.getErrorCode(), e.getErrorMsg());
-		}
+		WeixinResponse response = weixinExecutor.post(
+				getRequestUri("order_create_uri"), payJsRequestXml);
+		return response.getAsObject(new TypeReference<PrePay>() {
+		});
 	}
 
 	/**
@@ -113,10 +99,10 @@ public class PayApi extends MchApi {
 	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest 刷卡支付
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createPayRequest(MchPayPackage payPackage)
-			throws WeixinPayException {
+			throws WeixinException {
 		PrePay prePay = createPrePay(payPackage);
 		String tradeType = payPackage.getTradeType();
 		if (TradeType.APP.name().equalsIgnoreCase(tradeType)) {
@@ -130,19 +116,15 @@ public class PayApi extends MchApi {
 			return new WAPPayRequest(prePay.getPrepayId(), weixinAccount);
 		} else if (TradeType.MICROPAY.name().equalsIgnoreCase(tradeType)) {
 			String para = XmlStream.toXML(payPackage);
-			try {
-				WeixinResponse response = weixinExecutor.post(
-						getRequestUri("micropay_uri"), para);
-				MICROPayRequest microPayRequest = response
-						.getAsObject(new TypeReference<MICROPayRequest>() {
-						});
-				microPayRequest.setPaymentAccount(weixinAccount);
-				return microPayRequest;
-			} catch (WeixinException e) {
-				throw new WeixinPayException(e);
-			}
+			WeixinResponse response = weixinExecutor.post(
+					getRequestUri("micropay_uri"), para);
+			MICROPayRequest microPayRequest = response
+					.getAsObject(new TypeReference<MICROPayRequest>() {
+					});
+			microPayRequest.setPaymentAccount(weixinAccount);
+			return microPayRequest;
 		} else {
-			throw new WeixinPayException("unknown tradeType:" + tradeType);
+			throw new WeixinException("unknown tradeType:" + tradeType);
 		}
 	}
 
@@ -185,17 +167,17 @@ public class PayApi extends MchApi {
 	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest 刷卡支付
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createPayRequest(String body, String detail,
 			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp, TradeType tradeType, String openId,
 			String productId, String attach, Date timeStart, Date timeExpire,
 			String goodsTag, String limitPay, String subOpenId)
-			throws WeixinPayException {
-		MchPayPackage payPackage = new MchPayPackage(weixinAccount, body,
-				outTradeNo, totalFee, notifyUrl, createIp, tradeType, openId,
-				null, productId, attach);
+			throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+				totalFee, notifyUrl, createIp, tradeType, openId, null,
+				productId, attach);
 		payPackage.setTimeStart(timeStart);
 		payPackage.setTimeExpire(timeExpire);
 		payPackage.setGoodsTag(goodsTag);
@@ -224,14 +206,14 @@ public class PayApi extends MchApi {
 	 *            附加数据 非必填
 	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest
 	 * @return JSAPI支付对象
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createJSPayRequest(String openId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinPayException {
-		MchPayPackage payPackage = new MchPayPackage(weixinAccount, body,
-				outTradeNo, totalFee, notifyUrl, createIp, TradeType.JSAPI,
-				openId, null, null, attach);
+			String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+				totalFee, notifyUrl, createIp, TradeType.JSAPI, openId, null,
+				null, attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -317,14 +299,14 @@ public class PayApi extends MchApi {
 	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一</a>
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public NativePayResponse createNativePayResponse(String productId,
 			String body, String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinPayException {
-		MchPayPackage payPackage = new MchPayPackage(weixinAccount, body,
-				outTradeNo, totalFee, notifyUrl, createIp, TradeType.NATIVE,
-				null, null, productId, attach);
+			String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+				totalFee, notifyUrl, createIp, TradeType.NATIVE, null, null,
+				productId, attach);
 		PrePay prePay = createPrePay(payPackage);
 		return new NativePayResponse(weixinAccount, prePay.getPrepayId());
 	}
@@ -351,14 +333,14 @@ public class PayApi extends MchApi {
 	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5">模式二</a>
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createNativePayRequest(String productId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinPayException {
-		MchPayPackage payPackage = new MchPayPackage(weixinAccount, body,
-				outTradeNo, totalFee, notifyUrl, createIp, TradeType.NATIVE,
-				null, null, productId, attach);
+			String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+				totalFee, notifyUrl, createIp, TradeType.NATIVE, null, null,
+				productId, attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -381,14 +363,14 @@ public class PayApi extends MchApi {
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=8_1">APP支付</a>
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createAppPayRequest(String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp, String attach)
-			throws WeixinPayException {
-		MchPayPackage payPackage = new MchPayPackage(weixinAccount, body,
-				outTradeNo, totalFee, notifyUrl, createIp, TradeType.APP, null,
-				null, null, attach);
+			throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+				totalFee, notifyUrl, createIp, TradeType.APP, null, null, null,
+				attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -411,14 +393,14 @@ public class PayApi extends MchApi {
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付</a>
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createWAPPayRequest(String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp, String attach)
-			throws WeixinPayException {
-		MchPayPackage payPackage = new MchPayPackage(weixinAccount, body,
-				outTradeNo, totalFee, notifyUrl, createIp, TradeType.WAP, null,
-				null, null, attach);
+			throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+				totalFee, notifyUrl, createIp, TradeType.WAP, null, null, null,
+				attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -447,9 +429,9 @@ public class PayApi extends MchApi {
 	public MchPayRequest createMICROPayRequest(String authCode, String body,
 			String outTradeNo, double totalFee, String createIp, String attach)
 			throws WeixinException {
-		MchPayPackage payPackage = new MchPayPackage(weixinAccount, body,
-				outTradeNo, totalFee, null, createIp, TradeType.MICROPAY, null,
-				null, null, attach);
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+				totalFee, null, createIp, TradeType.MICROPAY, null, null, null,
+				attach);
 		return createPayRequest(payPackage);
 	}
 

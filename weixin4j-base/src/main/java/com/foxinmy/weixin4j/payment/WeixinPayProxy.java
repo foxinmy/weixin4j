@@ -8,9 +8,9 @@ import java.util.Date;
 
 import com.foxinmy.weixin4j.api.CashApi;
 import com.foxinmy.weixin4j.api.CouponApi;
+import com.foxinmy.weixin4j.api.CustomsApi;
 import com.foxinmy.weixin4j.api.PayApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
@@ -20,6 +20,9 @@ import com.foxinmy.weixin4j.payment.coupon.CouponStock;
 import com.foxinmy.weixin4j.payment.mch.CorpPayment;
 import com.foxinmy.weixin4j.payment.mch.CorpPaymentRecord;
 import com.foxinmy.weixin4j.payment.mch.CorpPaymentResult;
+import com.foxinmy.weixin4j.payment.mch.CustomsOrder;
+import com.foxinmy.weixin4j.payment.mch.CustomsOrderRecord;
+import com.foxinmy.weixin4j.payment.mch.CustomsOrderResult;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
 import com.foxinmy.weixin4j.payment.mch.MchPayRequest;
 import com.foxinmy.weixin4j.payment.mch.MerchantResult;
@@ -35,6 +38,7 @@ import com.foxinmy.weixin4j.payment.mch.RefundResult;
 import com.foxinmy.weixin4j.payment.mch.SettlementRecord;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
+import com.foxinmy.weixin4j.type.CustomsCity;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.Weixin4jSettings;
@@ -63,6 +67,10 @@ public class WeixinPayProxy {
 	 */
 	private final CashApi cashApi;
 	/**
+	 * 海关API
+	 */
+	private final CustomsApi customsApi;
+	/**
 	 * 配置相关
 	 */
 	private final Weixin4jSettings settings;
@@ -85,6 +93,7 @@ public class WeixinPayProxy {
 		this.payApi = new PayApi(settings.getWeixinPayAccount());
 		this.couponApi = new CouponApi(settings.getWeixinPayAccount());
 		this.cashApi = new CashApi(settings.getWeixinPayAccount());
+		this.customsApi = new CustomsApi(settings.getWeixinPayAccount());
 	}
 
 	/**
@@ -110,8 +119,7 @@ public class WeixinPayProxy {
 	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1">统一下单接口</a>
 	 * @return 预支付对象
 	 */
-	public PrePay createPrePay(MchPayPackage payPackage)
-			throws WeixinPayException {
+	public PrePay createPrePay(MchPayPackage payPackage) throws WeixinException {
 		return payApi.createPrePay(payPackage);
 	}
 
@@ -127,10 +135,10 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest 刷卡支付
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createPayRequest(MchPayPackage payPackage)
-			throws WeixinPayException {
+			throws WeixinException {
 		return payApi.createPayRequest(payPackage);
 	}
 
@@ -174,14 +182,14 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest 刷卡支付
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createPayRequest(String body, String detail,
 			String outTradeNo, double totalFee, String notifyUrl,
 			String createIp, TradeType tradeType, String openId,
 			String productId, String attach, Date timeStart, Date timeExpire,
 			String goodsTag, String limitPay, String subOpenId)
-			throws WeixinPayException {
+			throws WeixinException {
 		return payApi.createPayRequest(body, detail, outTradeNo, totalFee,
 				notifyUrl, createIp, tradeType, openId, productId, attach,
 				timeStart, timeExpire, goodsTag, limitPay, subOpenId);
@@ -207,11 +215,11 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest
 	 * @return JSAPI支付对象
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createJSPayRequest(String openId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinPayException {
+			String createIp, String attach) throws WeixinException {
 		return payApi.createJSPayRequest(openId, body, outTradeNo, totalFee,
 				notifyUrl, createIp, attach);
 	}
@@ -278,11 +286,11 @@ public class WeixinPayProxy {
 	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一</a>
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public NativePayResponse createNativePayResponse(String productId,
 			String body, String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinPayException {
+			String createIp, String attach) throws WeixinException {
 		return payApi.createNativePayResponse(productId, body, outTradeNo,
 				totalFee, notifyUrl, createIp, attach);
 	}
@@ -310,11 +318,11 @@ public class WeixinPayProxy {
 	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5">模式二</a>
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createNativePayRequest(String productId, String body,
 			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinPayException {
+			String createIp, String attach) throws WeixinException {
 		return payApi.createNativePayRequest(productId, body, outTradeNo,
 				totalFee, notifyUrl, createIp, attach);
 	}
@@ -339,11 +347,11 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=8_1">APP支付</a>
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createAppPayRequest(String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp, String attach)
-			throws WeixinPayException {
+			throws WeixinException {
 		return payApi.createAppPayRequest(body, outTradeNo, totalFee,
 				notifyUrl, createIp, attach);
 	}
@@ -368,11 +376,11 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest
 	 * @see <a
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付</a>
-	 * @throws WeixinPayException
+	 * @throws WeixinException
 	 */
 	public MchPayRequest createWAPPayRequest(String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp, String attach)
-			throws WeixinPayException {
+			throws WeixinException {
 		return payApi.createWAPPayRequest(body, outTradeNo, totalFee,
 				notifyUrl, createIp, attach);
 	}
@@ -889,6 +897,43 @@ public class WeixinPayProxy {
 	public double queryExchageRate(CurrencyType currencyType, Date date)
 			throws WeixinException {
 		return cashApi.queryExchageRate(currencyType, date);
+	}
+
+	/**
+	 * 订单附加信息提交
+	 * 
+	 * @param customsOrder
+	 *            附加订单信息
+	 * @return 报关结果
+	 * @see com.foxinmy.weixin4j.api.CustomsApi
+	 * @see com.foxinmy.weixin4j.payment.mch.CustomsOrder
+	 * @see com.foxinmy.weixin4j.payment.mch.CustomsOrderResult
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/external/declarecustom.php?chapter=18_1">附加订单信息</a>
+	 * @throws WeixinException
+	 */
+	public CustomsOrderResult declareCustomsOrder(CustomsOrder customsOrder)
+			throws WeixinException {
+		return customsApi.declareCustomsOrder(customsOrder);
+	}
+
+	/**
+	 * 订单附加信息查询
+	 * 
+	 * @param idQuery
+	 *            out_trade_no,transaction_id,sub_order_no,sub_order_id四选一
+	 * @param customsCity
+	 *            海关
+	 * @return 报关记录
+	 * @see com.foxinmy.weixin4j.payment.mch.CustomsOrderRecord
+	 * @see com.foxinmy.weixin4j.api.CustomsApi
+	 * @see <a
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/external/declarecustom.php?chapter=18_1">附加订单信息</a>
+	 * @throws WeixinException
+	 */
+	public CustomsOrderRecord queryCustomsOrder(IdQuery idQuery,
+			CustomsCity customsCity) throws WeixinException {
+		return customsApi.queryCustomsOrder(idQuery, customsCity);
 	}
 
 	public final static String VERSION = "1.6.7";

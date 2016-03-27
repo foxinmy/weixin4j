@@ -44,7 +44,7 @@ public class CashTest extends PayTest {
 
 	@Test
 	public void sendCorpPayment() throws WeixinException, IOException {
-		CorpPayment payment = new CorpPayment(ACCOUNT, "MP001",
+		CorpPayment payment = new CorpPayment("MP001",
 				"ofW1gwok9vZIyle0YbA-eQe83Uk8",
 				MPPaymentCheckNameType.NO_CHECK, "企业付款测试", 1d, "127.0.0.1");
 		CorpPaymentResult result = PAY.sendCorpPayment(new FileInputStream(

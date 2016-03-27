@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.type.MPPaymentCheckNameType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
@@ -72,8 +71,6 @@ public class CorpPayment extends MerchantResult {
 	/**
 	 * 企业付款
 	 * 
-	 * @param weixinPayAccount
-	 *            商户信息
 	 * @param outTradeNo
 	 *            商户的订单号
 	 * @param openId
@@ -87,10 +84,9 @@ public class CorpPayment extends MerchantResult {
 	 * @param clientIp
 	 *            调用接口IP
 	 */
-	public CorpPayment(WeixinPayAccount weixinPayAccount, String outTradeNo,
-			String openId, MPPaymentCheckNameType checkNameType, String desc,
-			double amount, String clientIp) {
-		super(weixinPayAccount);
+	public CorpPayment(String outTradeNo, String openId,
+			MPPaymentCheckNameType checkNameType, String desc, double amount,
+			String clientIp) {
 		this.outTradeNo = outTradeNo;
 		this.openId = openId;
 		this.checkNameType = checkNameType;

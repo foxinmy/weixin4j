@@ -664,3 +664,5 @@
   + weixin4j-base:删除Mciro支付接口,新增MCIROPayRequest对象
   
   + weixin4j-base:支付对象优化
+  
+  + weixin4j-base:新增海关接口
