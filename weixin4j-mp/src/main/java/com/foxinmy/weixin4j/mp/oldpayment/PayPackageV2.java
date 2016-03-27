@@ -75,8 +75,15 @@ public class PayPackageV2 extends PayPackage {
 			double totalFee, String notifyUrl, String createIp, String attach,
 			Date timeStart, Date timeExpire, double transportFee,
 			double productFee, String goodsTag) {
-		super(body, outTradeNo, totalFee, notifyUrl, createIp, attach,
-				timeStart, timeExpire, goodsTag);
+		setBody(body);
+		setOutTradeNo(outTradeNo);
+		setTotalFee(totalFee);
+		setNotifyUrl(notifyUrl);
+		setCreateIp(createIp);
+		setAttach(attach);;
+		setTimeStart(timeStart); 
+		setTimeExpire(timeExpire);
+		setGoodsTag(goodsTag);
 		this.bankType = "WX";
 		this.feeType = "1";
 		this.inputCharset = "UTF-8";
