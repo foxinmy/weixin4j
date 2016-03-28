@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  * @date 2015年1月10日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/11/0e4b294685f817b95cbed85ba5e82b8f.html">微信公众平台获取token说明</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140183&token=&lang=zh_CN">微信公众平台获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
 public class WeixinTokenCreator implements TokenCreator {

@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.util.NameValue;
  * @date 2014年9月29日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html">模板消息</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">模板消息</a>
  */
 public class TemplateMessage implements Serializable {
 

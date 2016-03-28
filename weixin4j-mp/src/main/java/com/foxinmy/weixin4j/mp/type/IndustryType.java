@@ -10,9 +10,6 @@ import java.util.Map;
  * @author jy
  * @date 2014年12月12日
  * @since JDK 1.6
- * @see<a href=
- *        "http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1.9E.E8.A1.8C.E4.B8.9A"
- *        >所处行业</a>
  */
 public enum IndustryType {
 	ITKEJI_HULIANWANG$DIANZISHANGWU("IT科技", "互联网/电子商务", 1), ITKEJI_ITRUANJIANYUFUWU(
@@ -73,6 +70,7 @@ public enum IndustryType {
 							type.getSecondary()), type);
 		}
 	}
+
 	public static IndustryType getIndustry(String primary, String secondary) {
 		return INDUSTRYTYPEMAP.get(String.format("%s%s%s", primary, SEPARATOR,
 				secondary));

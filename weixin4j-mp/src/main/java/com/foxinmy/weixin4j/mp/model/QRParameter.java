@@ -15,7 +15,10 @@ import com.foxinmy.weixin4j.type.QRType;
  * @author jy.hu
  * @date 2014年4月8日
  * @since JDK 1.6
- * 
+ * @see #createPermanenceInt(int) 创建整型永久二维码
+ * @see #createPermanenceStr(String) 创建字符串型永久二维码
+ * @see #createTemporary(long) 创建整型默认30秒有效期临时二维码
+ * @see #createTemporary(int, long) 创建整型有效期临时二维码
  */
 public class QRParameter implements Serializable {
 

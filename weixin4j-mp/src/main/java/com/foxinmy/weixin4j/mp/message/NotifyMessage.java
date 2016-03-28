@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
  * @see com.foxinmy.weixin4j.tuple.Music
  * @see com.foxinmy.weixin4j.tuple.News
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/1/70a29afed17f56d537c833f89be979c9.html#.E5.AE.A2.E6.9C.8D.E6.8E.A5.E5.8F.A3-.E5.8F.91.E6.B6.88.E6.81.AF">发送客服消息</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140547&token=&lang=zh_CN">发送客服消息</a>
  */
 public class NotifyMessage implements Serializable {
 
