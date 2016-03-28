@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * @date 2014年4月6日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/2/5baf56ce4947d35003b86a9805634b1e.html#.E5.85.B3.E6.B3.A8.2F.E5.8F.96.E6.B6.88.E5.85.B3.E6.B3.A8.E4.BA.8B.E4.BB.B6">订阅号、服务号的关注/取消关注事件</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140454&token=&lang=zh_CN">订阅号、服务号的关注/取消关注事件</a>
  */
 public class ScribeEventMessage extends ScanEventMessage {
 

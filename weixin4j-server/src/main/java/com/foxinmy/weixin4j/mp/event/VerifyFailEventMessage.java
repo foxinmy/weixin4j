@@ -12,7 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jy
  * @date 2015年10月25日
  * @since JDK 1.6
- * @see
+ * @see <a href=
+ *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455785130&token=&lang=zh_CN">
+ *      认证事件</a>
  */
 public class VerifyFailEventMessage extends VerifyExpireEventMessage {
 
@@ -35,7 +37,7 @@ public class VerifyFailEventMessage extends VerifyExpireEventMessage {
 	public long getFailTime() {
 		return failTime;
 	}
-	
+
 	@XmlTransient
 	public Date getFormatFailTime() {
 		return new Date(failTime * 1000l);
@@ -47,7 +49,7 @@ public class VerifyFailEventMessage extends VerifyExpireEventMessage {
 
 	@Override
 	public String toString() {
-		return "VerifyFailEventMessage [failTime=" + failTime + ", failReason="
-				+ failReason + ", " + super.toString() + "]";
+		return "VerifyFailEventMessage [failTime=" + failTime + ", failReason=" + failReason + ", " + super.toString()
+				+ "]";
 	}
 }

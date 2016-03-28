@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * @date 2015年10月25日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/1/7f81dec16b801b34629091094c099439.html">认证事件</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455785130&token=&lang=zh_CN">认证事件</a>
  */
 public class VerifyExpireEventMessage extends EventMessage {
 

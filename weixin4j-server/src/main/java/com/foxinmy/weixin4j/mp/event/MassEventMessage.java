@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * @date 2014年4月27日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81.E7.BE.A4.E5.8F.91.E7.BB.93.E6.9E.9C">群发回调</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">群发回调</a>
  */
 public class MassEventMessage extends EventMessage {
 

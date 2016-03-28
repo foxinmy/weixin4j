@@ -26,7 +26,7 @@ public final class MessageUtil {
 	 * @return 开发者通过检验signature对请求进行相关校验。若确认此次GET请求来自微信服务器
 	 *         请原样返回echostr参数内容，则接入生效 成为开发者成功，否则接入失败
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/0/61c3a8b9d50ac74f18bdf2e54ddfc4e0.html">接入指南</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421135319&token=&lang=zh_CN">接入指南</a>
 	 */
 	public static String signature(String... para) {
 		Arrays.sort(para);

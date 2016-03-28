@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * @date 2014年9月19日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81">模板消息事件推送</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">模板消息事件推送</a>
  */
 public class TemplatesendjobfinishMessage extends EventMessage {
 

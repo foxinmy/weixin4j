@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * @date 2014年4月6日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/2/5baf56ce4947d35003b86a9805634b1e.html#.E6.89.AB.E6.8F.8F.E5.B8.A6.E5.8F.82.E6.95.B0.E4.BA.8C.E7.BB.B4.E7.A0.81.E4.BA.8B.E4.BB.B6">扫描二维码事件</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140454&token=&lang=zh_CN">扫描二维码事件</a>
  */
 public class ScanEventMessage extends EventMessage {
 
