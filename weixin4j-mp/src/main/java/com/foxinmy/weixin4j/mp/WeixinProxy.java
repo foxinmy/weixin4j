@@ -29,10 +29,10 @@ import com.foxinmy.weixin4j.mp.api.UserApi;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;
 import com.foxinmy.weixin4j.mp.message.TemplateMessage;
 import com.foxinmy.weixin4j.mp.model.AutoReplySetting;
-import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
+import com.foxinmy.weixin4j.mp.model.KfChatRecord;
 import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.mp.model.Menu;
 import com.foxinmy.weixin4j.mp.model.MenuMatchRule;
@@ -485,8 +485,8 @@ public class WeixinProxy {
 	 *      查询客服聊天记录</a>
 	 * @throws WeixinException
 	 */
-	public List<CustomRecord> getCustomRecord(Date startTime, Date endTime, Pageable pageable) throws WeixinException {
-		return customApi.getCustomRecord(startTime, endTime, pageable);
+	public List<KfChatRecord> getCustomRecord(Date startTime, Date endTime, Pageable pageable) throws WeixinException {
+		return customApi.getKfChatRecord(startTime, endTime, pageable);
 	}
 
 	/**
@@ -532,8 +532,8 @@ public class WeixinProxy {
 	 *      "http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E6.B7.BB.E5.8A.A0.E5.AE.A2.E6.9C.8D.E8.B4.A6.E5.8F.B7">
 	 *      新增客服账号</a>
 	 */
-	public JsonResult createAccount(String id, String name, String pwd) throws WeixinException {
-		return customApi.createAccount(id, name, pwd);
+	public JsonResult createKfAccount(String id, String name, String pwd) throws WeixinException {
+		return customApi.createKfAccount(id, name, pwd);
 	}
 
 	/**
@@ -556,8 +556,29 @@ public class WeixinProxy {
 	 *      "http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E8.AE.BE.E7.BD.AE.E5.AE.A2.E6.9C.8D.E4.BF.A1.E6.81.AF">
 	 *      新增客服账号</a>
 	 */
-	public JsonResult updateAccount(String id, String name, String pwd) throws WeixinException {
-		return customApi.updateAccount(id, name, pwd);
+	public JsonResult updateKfAccount(String id, String name, String pwd) throws WeixinException {
+		return customApi.updateKfAccount(id, name, pwd);
+	}
+	
+	/**
+	 * 邀请绑定客服帐号
+	 * 新添加的客服帐号是不能直接使用的，只有客服人员用微信号绑定了客服账号后，方可登录Web客服进行操作。此接口发起一个绑定邀请到客服人员微信号
+	 * ，客服人员需要在微信客户端上用该微信号确认后帐号才可用。尚未绑定微信号的帐号可以进行绑定邀请操作，邀请未失效时不能对该帐号进行再次绑定微信号邀请。
+	 * 
+	 * @param kfAccount
+	 *            完整客服帐号，格式为：帐号前缀@公众号微信号
+	 * @param inviteAccount
+	 *            接收绑定邀请的客服微信号
+	 * @return 处理结果
+	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN"
+	 *      >邀请绑定客服帐号<a/>
+	 * @throws WeixinException
+	 */
+	public JsonResult inviteKfAccount(String kfAccount, String inviteAccount)
+			throws WeixinException {
+		return customApi.inviteKfAccount(kfAccount, inviteAccount);
 	}
 
 	/**
@@ -579,8 +600,8 @@ public class WeixinProxy {
 	 *      "http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E4.B8.8A.E4.BC.A0.E5.AE.A2.E6.9C.8D.E5.A4.B4.E5.83.8F">
 	 *      上传客服头像</a>
 	 */
-	public JsonResult uploadAccountHeadimg(String accountId, InputStream is, String fileName) throws WeixinException {
-		return customApi.uploadAccountHeadimg(accountId, is, fileName);
+	public JsonResult uploadKfAvatar(String accountId, InputStream is, String fileName) throws WeixinException {
+		return customApi.uploadKfAvatar(accountId, is, fileName);
 	}
 
 	/**
@@ -598,8 +619,8 @@ public class WeixinProxy {
 	 *      "http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.88.A0.E9.99.A4.E5.AE.A2.E6.9C.8D.E8.B4.A6.E5.8F.B7">
 	 *      删除客服账号</a>
 	 */
-	public JsonResult deleteAccount(String id) throws WeixinException {
-		return customApi.deleteAccount(id);
+	public JsonResult deleteKfAccount(String id) throws WeixinException {
+		return customApi.deleteKfAccount(id);
 	}
 
 	/**

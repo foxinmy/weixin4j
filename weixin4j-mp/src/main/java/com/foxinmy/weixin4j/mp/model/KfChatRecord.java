@@ -9,12 +9,12 @@ import com.foxinmy.weixin4j.mp.type.CustomRecordOperCode;
 /**
  * 客服聊天记录
  * 
- * @className CustomRecord
+ * @className KfChatRecord
  * @author jy
  * @date 2014年6月28日
  * @since JDK 1.6
  */
-public class CustomRecord implements Serializable {
+public class KfChatRecord implements Serializable {
 
 	private static final long serialVersionUID = -4024147769411601325L;
 
@@ -94,7 +94,7 @@ public class CustomRecord implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("[CustomRecord worker=").append(worker);
+		sb.append("[KfChatRecord worker=").append(worker);
 		sb.append(" ,openId=").append(openId);
 		sb.append(" ,operCode=").append(operCode);
 		sb.append(" ,time=").append(time);
