@@ -115,10 +115,9 @@ public class OUserInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		return "OUserInfo [isSysAdmin=" + isSysAdmin + ", isInnerAdmin="
-				+ isInnerAdmin + ", adminInfo=" + adminInfo + ", corpInfo="
-				+ corpInfo + ", agentInfo=" + agentInfo + ", authInfo="
-				+ authInfo + ", redirectLoginInfo=" + redirectLoginInfo + "]";
+		return "OUserInfo [isSysAdmin=" + isSysAdmin + ", isInnerAdmin=" + isInnerAdmin + ", adminInfo=" + adminInfo
+				+ ", corpInfo=" + corpInfo + ", agentInfo=" + agentInfo + ", authInfo=" + authInfo
+				+ ", redirectLoginInfo=" + redirectLoginInfo + "]";
 	}
 
 	/**
@@ -134,12 +133,17 @@ public class OUserInfo implements Serializable {
 
 		private static final long serialVersionUID = -4290240764958942370L;
 		/**
-		 * 授权的应用信息
+		 * 是否采用了新的授权，没有该字段或者该字段为false表示是旧授权，true表示是新授权
+		 */
+		@JSONField(name = "is_new_auth")
+		private boolean isNewAuth;
+		/**
+		 * 授权的应用信息,新的权限体系其中通讯录权限以应用为节点
 		 */
 		@JSONField(name = "agent")
 		private List<AgentItem> agentItems;
 		/**
-		 * 授权的通讯录部门
+		 * 授权的通讯录部门,<font color="red">新的权限体系将废弃</font>
 		 */
 		@JSONField(name = "department")
 		private List<DepartItem> departItems;
@@ -154,6 +158,14 @@ public class OUserInfo implements Serializable {
 
 		// ---------- setter 应该全部去掉
 
+		public boolean isNewAuth() {
+			return isNewAuth;
+		}
+
+		public void setNewAuth(boolean isNewAuth) {
+			this.isNewAuth = isNewAuth;
+		}
+
 		public void setAgentItems(List<AgentItem> agentItems) {
 			this.agentItems = agentItems;
 		}
@@ -164,8 +176,8 @@ public class OUserInfo implements Serializable {
 
 		@Override
 		public String toString() {
-			return "AuthInfo [agentItems=" + agentItems + ", departItems="
-					+ departItems + "]";
+			return "AuthInfo [isNewAuth=" + isNewAuth + ", agentItems=" + agentItems + ", departItems=" + departItems
+					+ "]";
 		}
 	}
 
@@ -192,10 +204,16 @@ public class OUserInfo implements Serializable {
 		@JSONField(name = "appid")
 		private int appId;
 		/**
-		 * 授权方应用敏感权限组，目前仅有get_location，表示是否有权限设置应用获取地理位置的开关
+		 * 授权方应用敏感权限组，目前仅有get_location，表示是否有权限设置应用获取地理位置的开关,
+		 * <font color="red">新的权限体系将废弃</font>
 		 */
 		@JSONField(name = "api_group")
 		private List<String> apiGroup;
+		/**
+		 * 应用对应的权限,<font color="red">新的权限体系</font>
+		 */
+		@JSONField(name = "privilege")
+		private PrivilegeInfo privilege;
 
 		public int getAuthType() {
 			return authType;
@@ -221,6 +239,14 @@ public class OUserInfo implements Serializable {
 
 		// ---------- setter 应该全部去掉
 
+		public PrivilegeInfo getPrivilege() {
+			return privilege;
+		}
+
+		public void setPrivilege(PrivilegeInfo privilege) {
+			this.privilege = privilege;
+		}
+
 		public void setAuthType(int authType) {
 			this.authType = authType;
 		}
@@ -235,8 +261,8 @@ public class OUserInfo implements Serializable {
 
 		@Override
 		public String toString() {
-			return "AgentItem [authType=" + authType + ", appId=" + appId
-					+ ", apiGroup=" + apiGroup + ", " + super.toString() + "]";
+			return "AgentItem [authType=" + authType + ", appId=" + appId + ", apiGroup=" + apiGroup + ", privilege="
+					+ privilege + ", " + super.toString() + "]";
 		}
 	}
 
@@ -269,8 +295,7 @@ public class OUserInfo implements Serializable {
 
 		@Override
 		public String toString() {
-			return "DepartItem [writable=" + writable + ", " + super.toString()
-					+ "]";
+			return "DepartItem [writable=" + writable + ", " + super.toString() + "]";
 		}
 	}
 }
