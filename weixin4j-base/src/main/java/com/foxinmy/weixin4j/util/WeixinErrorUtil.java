@@ -2,8 +2,8 @@ package com.foxinmy.weixin4j.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -27,7 +27,7 @@ public final class WeixinErrorUtil {
 	private static byte[] errorXmlByteArray;
 	private final static Map<String, String> errorCacheMap;
 	static {
-		errorCacheMap = new HashMap<String, String>();
+		errorCacheMap = new ConcurrentHashMap<String, String>();
 		try {
 			errorXmlByteArray = IOUtil.toByteArray(WeixinResponse.class
 					.getResourceAsStream("error.xml"));

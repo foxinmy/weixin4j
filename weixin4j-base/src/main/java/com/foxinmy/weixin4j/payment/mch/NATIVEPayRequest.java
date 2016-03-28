@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.type.TradeType;
  * @see com.foxinmy.weixin4j.payment.mch.PrePay
  * @see com.foxinmy.weixin4j.payment.PayRequest
  * @see <a
- *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5">NATIVE扫码支付(模式二)</a>
+ *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1">NATIVE扫码支付(模式二)</a>
  */
 public class NATIVEPayRequest extends AbstractPayRequest {
 

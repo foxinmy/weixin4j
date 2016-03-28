@@ -17,9 +17,9 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @date 2015年3月28日
  * @since JDK 1.6
  * @see <a
- *      href="http://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=13_1">普通红包</a>
+ *      href="https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_1">普通红包</a>
  * @see <a
- *      href="https://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=16_1">裂变红包</a>
+ *      href="https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=16_1">裂变红包</a>
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

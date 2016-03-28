@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.type.TradeType;
  * @see com.foxinmy.weixin4j.payment.mch.PrePay
  * @see com.foxinmy.weixin4j.payment.PayRequest
  * @see <a
- *      href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10&index=1">刷卡支付</a>
+ *      href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=5_1">刷卡支付</a>
  */
 public class MICROPayRequest extends Order implements MchPayRequest {
 

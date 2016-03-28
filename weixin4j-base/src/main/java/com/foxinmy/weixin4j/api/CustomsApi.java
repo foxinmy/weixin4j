@@ -38,7 +38,7 @@ public class CustomsApi extends MchApi {
 	 * @see com.foxinmy.weixin4j.payment.mch.CustomsOrder
 	 * @see com.foxinmy.weixin4j.payment.mch.CustomsOrderResult
 	 * @see <a
-	 *      href="https://pay.weixin.qq.com/wiki/doc/api/external/declarecustom.php?chapter=18_1">附加订单信息</a>
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/external/declarecustom.php?chapter=18_1">附加订单信息提交接口</a>
 	 * @throws WeixinException
 	 */
 	public CustomsOrderResult declareCustomsOrder(CustomsOrder customsOrder)
@@ -64,7 +64,7 @@ public class CustomsApi extends MchApi {
 	 * @return 报关记录
 	 * @see com.foxinmy.weixin4j.payment.mch.CustomsOrderRecord
 	 * @see <a
-	 *      href="https://pay.weixin.qq.com/wiki/doc/api/external/declarecustom.php?chapter=18_1">附加订单信息</a>
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/external/declarecustom.php?chapter=18_1">附加订单信息查询接口</a>
 	 * @throws WeixinException
 	 */
 	public CustomsOrderRecord queryCustomsOrder(IdQuery idQuery,

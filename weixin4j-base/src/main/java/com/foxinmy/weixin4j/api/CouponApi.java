@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @author jy
  * @date 2015年3月25日
  * @since JDK 1.6
- * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/sp_coupon.php">代金券文档</a>
+ * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/tools/sp_coupon.php?chapter=12_1">代金券</a>
  */
 public class CouponApi extends MchApi {
 
@@ -45,7 +45,7 @@ public class CouponApi extends MchApi {
 	 * @return 发放结果
 	 * @see com.foxinmy.weixin4j.payment.coupon.CouponResult
 	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/sp_coupon.php?chapter=12_3">发放代金券接口</a>
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/tools/sp_coupon.php?chapter=12_3">发放代金券接口</a>
 	 * @throws WeixinException
 	 */
 	public CouponResult sendCoupon(InputStream certificate,
@@ -91,7 +91,7 @@ public class CouponApi extends MchApi {
 	 * @return 代金券批次信息
 	 * @see com.foxinmy.weixin4j.payment.coupon.CouponStock
 	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/sp_coupon.php?chapter=12_4">查询代金券批次信息</a>
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/tools/sp_coupon.php?chapter=12_4">查询代金券批次信息接口</a>
 	 * @throws WeixinException
 	 */
 	public CouponStock queryCouponStock(String couponStockId)
@@ -114,7 +114,7 @@ public class CouponApi extends MchApi {
 	 * @return 代金券详细信息
 	 * @see com.foxinmy.weixin4j.payment.coupon.CouponDetail
 	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/sp_coupon.php?chapter=12_5">查询代金券详细信息</a>
+	 *      href="https://pay.weixin.qq.com/wiki/doc/api/tools/sp_coupon.php?chapter=12_5">查询代金券详细信息接口</a>
 	 * @throws WeixinException
 	 */
 	public CouponDetail queryCouponDetail(String couponId)

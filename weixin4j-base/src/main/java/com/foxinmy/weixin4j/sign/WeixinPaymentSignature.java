@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.util.DigestUtil;
  * @author jy
  * @date 2016年3月26日
  * @since JDK 1.6
- * @see
+ * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/external/jsapi.php?chapter=4_3">支付签名说明</a>
  */
 public class WeixinPaymentSignature extends AbstractWeixinSignature {
 	/**

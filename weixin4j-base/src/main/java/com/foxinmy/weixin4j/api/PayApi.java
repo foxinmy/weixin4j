@@ -51,13 +51,12 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
- * (商户平台版)支付API
+ * 支付API
  * 
- * @className Pay3Api
+ * @className PayApi
  * @author jy
  * @date 2014年10月28日
  * @since JDK 1.6
- * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台API</a>
  */
 public class PayApi extends MchApi {
 
@@ -74,16 +73,16 @@ public class PayApi extends MchApi {
 	 *            包含订单信息的对象
 	 * @see com.foxinmy.weixin4j.payment.mch.MchPayPackage
 	 * @see com.foxinmy.weixin4j.payment.mch.PrePay
-	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1">统一下单接口</a>
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1">统一下单接口
+	 *      </a>
 	 * @return 预支付对象
 	 */
 	public PrePay createPrePay(MchPayPackage payPackage) throws WeixinException {
 		payPackage.declareWeixinPayAccount(weixinAccount);
 		payPackage.setSign(weixinSignature.sign(payPackage));
 		String payJsRequestXml = XmlStream.toXML(payPackage);
-		WeixinResponse response = weixinExecutor.post(
-				getRequestUri("order_create_uri"), payJsRequestXml);
+		WeixinResponse response = weixinExecutor.post(getRequestUri("order_create_uri"), payJsRequestXml);
 		return response.getAsObject(new TypeReference<PrePay>() {
 		});
 	}
@@ -101,8 +100,7 @@ public class PayApi extends MchApi {
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createPayRequest(MchPayPackage payPackage)
-			throws WeixinException {
+	public MchPayRequest createPayRequest(MchPayPackage payPackage) throws WeixinException {
 		PrePay prePay = createPrePay(payPackage);
 		String tradeType = payPackage.getTradeType();
 		if (TradeType.APP.name().equalsIgnoreCase(tradeType)) {
@@ -110,17 +108,14 @@ public class PayApi extends MchApi {
 		} else if (TradeType.JSAPI.name().equalsIgnoreCase(tradeType)) {
 			return new JSAPIPayRequest(prePay.getPrepayId(), weixinAccount);
 		} else if (TradeType.NATIVE.name().equalsIgnoreCase(tradeType)) {
-			return new NATIVEPayRequest(prePay.getPrepayId(),
-					prePay.getCodeUrl(), weixinAccount);
+			return new NATIVEPayRequest(prePay.getPrepayId(), prePay.getCodeUrl(), weixinAccount);
 		} else if (TradeType.WAP.name().equalsIgnoreCase(tradeType)) {
 			return new WAPPayRequest(prePay.getPrepayId(), weixinAccount);
 		} else if (TradeType.MICROPAY.name().equalsIgnoreCase(tradeType)) {
 			String para = XmlStream.toXML(payPackage);
-			WeixinResponse response = weixinExecutor.post(
-					getRequestUri("micropay_uri"), para);
-			MICROPayRequest microPayRequest = response
-					.getAsObject(new TypeReference<MICROPayRequest>() {
-					});
+			WeixinResponse response = weixinExecutor.post(getRequestUri("micropay_uri"), para);
+			MICROPayRequest microPayRequest = response.getAsObject(new TypeReference<MICROPayRequest>() {
+			});
 			microPayRequest.setPaymentAccount(weixinAccount);
 			return microPayRequest;
 		} else {
@@ -169,15 +164,12 @@ public class PayApi extends MchApi {
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createPayRequest(String body, String detail,
-			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, TradeType tradeType, String openId,
-			String productId, String attach, Date timeStart, Date timeExpire,
-			String goodsTag, String limitPay, String subOpenId)
+	public MchPayRequest createPayRequest(String body, String detail, String outTradeNo, double totalFee,
+			String notifyUrl, String createIp, TradeType tradeType, String openId, String productId, String attach,
+			Date timeStart, Date timeExpire, String goodsTag, String limitPay, String subOpenId)
 			throws WeixinException {
-		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, notifyUrl, createIp, tradeType, openId, null,
-				productId, attach);
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo, totalFee, notifyUrl, createIp, tradeType, openId,
+				null, productId, attach);
 		payPackage.setTimeStart(timeStart);
 		payPackage.setTimeExpire(timeExpire);
 		payPackage.setGoodsTag(goodsTag);
@@ -208,12 +200,10 @@ public class PayApi extends MchApi {
 	 * @return JSAPI支付对象
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createJSPayRequest(String openId, String body,
-			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinException {
-		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, notifyUrl, createIp, TradeType.JSAPI, openId, null,
-				null, attach);
+	public MchPayRequest createJSPayRequest(String openId, String body, String outTradeNo, double totalFee,
+			String notifyUrl, String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo, totalFee, notifyUrl, createIp, TradeType.JSAPI,
+				openId, null, null, attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -222,18 +212,24 @@ public class PayApi extends MchApi {
 	 * 生成编辑地址请求
 	 * </p>
 	 * 
-	 * err_msg edit_address:ok获取编辑收货地址成功</br> edit_address:fail获取编辑收货地址失败</br>
-	 * userName 收货人姓名</br> telNumber 收货人电话</br> addressPostalCode 邮编</br>
-	 * proviceFirstStageName 国标收货地址第一级地址</br> addressCitySecondStageName
-	 * 国标收货地址第二级地址</br> addressCountiesThirdStageName 国标收货地址第三级地址</br>
-	 * addressDetailInfo 详细收货地址信息</br> nationalCode 收货地址国家码</br>
+	 * err_msg edit_address:ok获取编辑收货地址成功</br>
+	 * edit_address:fail获取编辑收货地址失败</br>
+	 * userName 收货人姓名</br>
+	 * telNumber 收货人电话</br>
+	 * addressPostalCode 邮编</br>
+	 * proviceFirstStageName 国标收货地址第一级地址</br>
+	 * addressCitySecondStageName 国标收货地址第二级地址</br>
+	 * addressCountiesThirdStageName 国标收货地址第三级地址</br>
+	 * addressDetailInfo 详细收货地址信息</br>
+	 * nationalCode 收货地址国家码</br>
 	 * 
 	 * @param url
 	 *            当前访问页的URL
 	 * @param oauthToken
 	 *            oauth授权时产生的token
-	 * @see <a
-	 *      href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_8&index=7">收货地址共享</a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_8&index=7">
+	 *      收货地址共享</a>
 	 * @return 编辑地址请求JSON串
 	 */
 	public String createAddressRequestJSON(String url, String oauthToken) {
@@ -258,9 +254,12 @@ public class PayApi extends MchApi {
 	 * @param productId
 	 *            与订单ID等价
 	 * @return 支付链接
-	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
-	 * @see <a
-	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一</a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1">扫码支付
+	 *      </a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一
+	 *      </a>
 	 */
 	public String createNativePayRequestURL(String productId) {
 		Map<String, String> map = new HashMap<String, String>();
@@ -272,9 +271,8 @@ public class PayApi extends MchApi {
 		map.put("nonce_str", noncestr);
 		map.put("product_id", productId);
 		String sign = weixinSignature.sign(map);
-		return String.format(getRequestUri("native_pay_uri"), sign,
-				weixinAccount.getId(), weixinAccount.getMchId(), productId,
-				timestamp, noncestr);
+		return String.format(getRequestUri("native_pay_uri"), sign, weixinAccount.getId(), weixinAccount.getMchId(),
+				productId, timestamp, noncestr);
 	}
 
 	/**
@@ -296,17 +294,18 @@ public class PayApi extends MchApi {
 	 *            附加数据 非必填
 	 * @return Native回调对象
 	 * @see com.foxinmy.weixin4j.payment.mch.NativePayResponse
-	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
-	 * @see <a
-	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一</a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1">扫码支付
+	 *      </a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一
+	 *      </a>
 	 * @throws WeixinException
 	 */
-	public NativePayResponse createNativePayResponse(String productId,
-			String body, String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinException {
-		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, notifyUrl, createIp, TradeType.NATIVE, null, null,
-				productId, attach);
+	public NativePayResponse createNativePayResponse(String productId, String body, String outTradeNo, double totalFee,
+			String notifyUrl, String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo, totalFee, notifyUrl, createIp, TradeType.NATIVE,
+				null, null, productId, attach);
 		PrePay prePay = createPrePay(payPackage);
 		return new NativePayResponse(weixinAccount, prePay.getPrepayId());
 	}
@@ -330,17 +329,18 @@ public class PayApi extends MchApi {
 	 *            附加数据 非必填
 	 * @return Native支付对象
 	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest
-	 * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/native.php">扫码支付</a>
-	 * @see <a
-	 *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5">模式二</a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1">扫码支付
+	 *      </a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5">模式二
+	 *      </a>
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createNativePayRequest(String productId, String body,
-			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinException {
-		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, notifyUrl, createIp, TradeType.NATIVE, null, null,
-				productId, attach);
+	public MchPayRequest createNativePayRequest(String productId, String body, String outTradeNo, double totalFee,
+			String notifyUrl, String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo, totalFee, notifyUrl, createIp, TradeType.NATIVE,
+				null, null, productId, attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -361,16 +361,15 @@ public class PayApi extends MchApi {
 	 *            附加数据 非必填
 	 * @return APP支付对象
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest
-	 * @see <a
-	 *      href="https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=8_1">APP支付</a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1">
+	 *      APP支付</a>
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createAppPayRequest(String body, String outTradeNo,
-			double totalFee, String notifyUrl, String createIp, String attach)
-			throws WeixinException {
-		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, notifyUrl, createIp, TradeType.APP, null, null, null,
-				attach);
+	public MchPayRequest createAppPayRequest(String body, String outTradeNo, double totalFee, String notifyUrl,
+			String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo, totalFee, notifyUrl, createIp, TradeType.APP,
+				null, null, null, attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -391,16 +390,15 @@ public class PayApi extends MchApi {
 	 *            附加数据 非必填
 	 * @return WAP支付对象
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest
-	 * @see <a
-	 *      href="https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付</a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付
+	 *      </a>
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createWAPPayRequest(String body, String outTradeNo,
-			double totalFee, String notifyUrl, String createIp, String attach)
-			throws WeixinException {
-		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, notifyUrl, createIp, TradeType.WAP, null, null, null,
-				attach);
+	public MchPayRequest createWAPPayRequest(String body, String outTradeNo, double totalFee, String notifyUrl,
+			String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo, totalFee, notifyUrl, createIp, TradeType.WAP,
+				null, null, null, attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -422,24 +420,25 @@ public class PayApi extends MchApi {
 	 * @return 支付的订单信息
 	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest
 	 * @see com.foxinmy.weixin4j.payment.mch.Order
-	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10">提交被扫支付API</a>
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10">
+	 *      提交被扫支付API</a>
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createMICROPayRequest(String authCode, String body,
-			String outTradeNo, double totalFee, String createIp, String attach)
-			throws WeixinException {
-		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, null, createIp, TradeType.MICROPAY, null, null, null,
-				attach);
+	public MchPayRequest createMICROPayRequest(String authCode, String body, String outTradeNo, double totalFee,
+			String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo, totalFee, null, createIp, TradeType.MICROPAY,
+				null, null, null, attach);
 		return createPayRequest(payPackage);
 	}
 
 	/**
 	 * 订单查询
 	 * <p>
-	 * 当商户后台、网络、服务器等出现异常，商户系统最终未接收到支付通知；</br> 调用支付接口后，返回系统错误或未知交易状态情况；</br>
-	 * 调用被扫支付API，返回USERPAYING的状态；</br> 调用关单或撤销接口API之前，需确认支付状态；
+	 * 当商户后台、网络、服务器等出现异常，商户系统最终未接收到支付通知；</br>
+	 * 调用支付接口后，返回系统错误或未知交易状态情况；</br>
+	 * 调用被扫支付API，返回USERPAYING的状态；</br>
+	 * 调用关单或撤销接口API之前，需确认支付状态；
 	 * </P>
 	 * 
 	 * @param idQuery
@@ -447,8 +446,9 @@ public class PayApi extends MchApi {
 	 *            transaction_id> out_trade_no
 	 * @return 订单信息
 	 * @see com.foxinmy.weixin4j.payment.mch.Order
-	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_2">订单查询API</a>
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_2">
+	 *      订单查询API</a>
 	 * @since V3
 	 * @throws WeixinException
 	 */
@@ -456,10 +456,8 @@ public class PayApi extends MchApi {
 		Map<String, String> map = createBaseRequestMap(idQuery);
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinExecutor.post(
-				getRequestUri("order_query_uri"), param);
-		return ListsuffixResultDeserializer.deserialize(response.getAsString(),
-				Order.class);
+		WeixinResponse response = weixinExecutor.post(getRequestUri("order_query_uri"), param);
+		return ListsuffixResultDeserializer.deserialize(response.getAsString(), Order.class);
 	}
 
 	/**
@@ -491,14 +489,14 @@ public class PayApi extends MchApi {
 	 *            操作员帐号, 默认为商户号
 	 * @return 退款申请结果
 	 * @see com.foxinmy.weixin4j.payment.mch.RefundResult
-	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4">申请退款API</a>
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4">
+	 *      申请退款API</a>
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery,
-			String outRefundNo, double totalFee, double refundFee,
-			CurrencyType refundFeeType, String opUserId) throws WeixinException {
+	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery, String outRefundNo, double totalFee,
+			double refundFee, CurrencyType refundFeeType, String opUserId) throws WeixinException {
 		WeixinResponse response = null;
 		try {
 			Map<String, String> map = createBaseRequestMap(idQuery);
@@ -515,8 +513,7 @@ public class PayApi extends MchApi {
 			map.put("refund_fee_type", refundFeeType.name());
 			map.put("sign", weixinSignature.sign(map));
 			String param = XmlStream.map2xml(map);
-			response = createSSLRequestExecutor(certificate).post(
-					getRequestUri("refund_apply_uri"), param);
+			response = createSSLRequestExecutor(certificate).post(getRequestUri("refund_apply_uri"), param);
 		} finally {
 			if (certificate != null) {
 				try {
@@ -544,17 +541,18 @@ public class PayApi extends MchApi {
 	 *            订单总金额,单位为元
 	 * @see {@link #applyRefund(InputStream, IdQuery, String, double, double,CurrencyType, String)}
 	 */
-	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery,
-			String outRefundNo, double totalFee) throws WeixinException {
-		return applyRefund(certificate, idQuery, outRefundNo, totalFee,
-				totalFee, null, null);
+	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery, String outRefundNo, double totalFee)
+			throws WeixinException {
+		return applyRefund(certificate, idQuery, outRefundNo, totalFee, totalFee, null, null);
 	}
 
 	/**
-	 * 冲正订单(需要证书)</br> 当支付返回失败,或收银系统超时需要取消交易,可以调用该接口</br> 接口逻辑:支
-	 * 付失败的关单,支付成功的撤销支付</br> <font color="red">7天以内的单可撤销,其他正常支付的单
-	 * 如需实现相同功能请调用退款接口</font></br> <font
-	 * color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font></br>
+	 * 冲正订单(需要证书)</br>
+	 * 当支付返回失败,或收银系统超时需要取消交易,可以调用该接口</br>
+	 * 接口逻辑:支 付失败的关单,支付成功的撤销支付</br>
+	 * <font color="red">7天以内的单可撤销,其他正常支付的单 如需实现相同功能请调用退款接口</font></br>
+	 * <font color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font>
+	 * </br>
 	 * 
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
@@ -565,14 +563,13 @@ public class PayApi extends MchApi {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public MerchantResult reverseOrder(InputStream certificate, IdQuery idQuery)
-			throws WeixinException {
+	public MerchantResult reverseOrder(InputStream certificate, IdQuery idQuery) throws WeixinException {
 		try {
 			Map<String, String> map = createBaseRequestMap(idQuery);
 			map.put("sign", weixinSignature.sign(map));
 			String param = XmlStream.map2xml(map);
-			WeixinResponse response = createSSLRequestExecutor(certificate)
-					.post(getRequestUri("order_reverse_uri"), param);
+			WeixinResponse response = createSSLRequestExecutor(certificate).post(getRequestUri("order_reverse_uri"),
+					param);
 			return response.getAsObject(new TypeReference<MerchantResult>() {
 			});
 		} finally {
@@ -594,8 +591,9 @@ public class PayApi extends MchApi {
 	 *            具有native标识的支付URL
 	 * @return 转换后的短链接
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_9">转换短链接API</a>
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_9">
+	 *      转换短链接API</a>
 	 */
 	public String getShorturl(String url) throws WeixinException {
 		Map<String, String> map = createBaseRequestMap(null);
@@ -606,8 +604,7 @@ public class PayApi extends MchApi {
 		}
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinExecutor.post(
-				getRequestUri("longurl_convert_uri"), param);
+		WeixinResponse response = weixinExecutor.post(getRequestUri("longurl_convert_uri"), param);
 		map = XmlStream.xml2map(response.getAsString());
 		return map.get("short_url");
 	}
@@ -624,16 +621,15 @@ public class PayApi extends MchApi {
 	 * @return 处理结果
 	 * @since V3
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_3">关闭订单API</a>
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_3">
+	 *      关闭订单API</a>
 	 */
 	public MerchantResult closeOrder(String outTradeNo) throws WeixinException {
-		Map<String, String> map = createBaseRequestMap(new IdQuery(outTradeNo,
-				IdType.TRADENO));
+		Map<String, String> map = createBaseRequestMap(new IdQuery(outTradeNo, IdType.TRADENO));
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinExecutor.post(
-				getRequestUri("order_close_uri"), param);
+		WeixinResponse response = weixinExecutor.post(getRequestUri("order_close_uri"), param);
 		return response.getAsObject(new TypeReference<MerchantResult>() {
 		});
 	}
@@ -654,12 +650,12 @@ public class PayApi extends MchApi {
 	 *            对账单保存路径
 	 * @return excel表格
 	 * @since V3
-	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6">下载对账单API</a>
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6">
+	 *      下载对账单API</a>
 	 * @throws WeixinException
 	 */
-	public File downloadBill(Date billDate, BillType billType, String billPath)
-			throws WeixinException {
+	public File downloadBill(Date billDate, BillType billType, String billPath) throws WeixinException {
 		if (billDate == null) {
 			Calendar now = Calendar.getInstance();
 			now.add(Calendar.DAY_OF_MONTH, -1);
@@ -669,8 +665,8 @@ public class PayApi extends MchApi {
 			billType = BillType.ALL;
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
-		String fileName = String.format("%s_%s_%s.txt", formatBillDate,
-				billType.name().toLowerCase(), weixinAccount.getId());
+		String fileName = String.format("%s_%s_%s.txt", formatBillDate, billType.name().toLowerCase(),
+				weixinAccount.getId());
 		File file = new File(String.format("%s/%s", billPath, fileName));
 		if (file.exists()) {
 			return file;
@@ -680,16 +676,14 @@ public class PayApi extends MchApi {
 		map.put("bill_type", billType.name());
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinExecutor.post(
-				getRequestUri("downloadbill_uri"), param);
+		WeixinResponse response = weixinExecutor.post(getRequestUri("downloadbill_uri"), param);
 
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 		try {
-			writer = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(file), Consts.GBK));
-			reader = new BufferedReader(new InputStreamReader(
-					response.getBody(), com.foxinmy.weixin4j.model.Consts.GBK));
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), Consts.GBK));
+			reader = new BufferedReader(
+					new InputStreamReader(response.getBody(), com.foxinmy.weixin4j.model.Consts.GBK));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				writer.write(line);
@@ -726,8 +720,9 @@ public class PayApi extends MchApi {
 	 * @return 退款记录
 	 * @see com.foxinmy.weixin4j.payment.mch.RefundRecord
 	 * @see com.foxinmy.weixin4j.payment.mch.RefundDetail
-	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_5">退款查询API</a>
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_5">
+	 *      退款查询API</a>
 	 * @since V3
 	 * @throws WeixinException
 	 */
@@ -735,10 +730,8 @@ public class PayApi extends MchApi {
 		Map<String, String> map = createBaseRequestMap(idQuery);
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinExecutor.post(
-				getRequestUri("refund_query_uri"), param);
-		return ListsuffixResultDeserializer.deserialize(response.getAsString(),
-				RefundRecord.class);
+		WeixinResponse response = weixinExecutor.post(getRequestUri("refund_query_uri"), param);
+		return ListsuffixResultDeserializer.deserialize(response.getAsString(), RefundRecord.class);
 	}
 
 	/**
@@ -759,13 +752,13 @@ public class PayApi extends MchApi {
 	 *            调用接口返回的基本数据
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_8">接口测试上报API</a>
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_8">
+	 *      接口测试上报API</a>
 	 */
 	@SuppressWarnings("unchecked")
-	public XmlResult interfaceReport(String interfaceUrl, int executeTime,
-			String outTradeNo, String ip, Date time, XmlResult returnXml)
-			throws WeixinException {
+	public XmlResult interfaceReport(String interfaceUrl, int executeTime, String outTradeNo, String ip, Date time,
+			XmlResult returnXml) throws WeixinException {
 		Map<String, String> map = createBaseRequestMap(null);
 		map.put("interface_url", interfaceUrl);
 		map.put("execute_time_", Integer.toString(executeTime));
@@ -775,8 +768,7 @@ public class PayApi extends MchApi {
 		map.putAll((Map<String, String>) JSON.toJSON(returnXml));
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinExecutor.post(
-				getRequestUri("interface_report_uri"), param);
+		WeixinResponse response = weixinExecutor.post(getRequestUri("interface_report_uri"), param);
 		return response.getAsXmlResult();
 	}
 
@@ -787,8 +779,9 @@ public class PayApi extends MchApi {
 	 *            扫码支付授权码，设备读取用户微信中的条码或者二维码信息
 	 * @return 查询结果
 	 * @see com.foxinmy.weixin4j.payment.mch.OpenIdResult
-	 * @see <a
-	 *      href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_13&index=9">授权码查询OPENID</a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_13&index=9">
+	 *      授权码查询OPENID</a>
 	 * @throws WeixinException
 	 */
 	public OpenIdResult authCode2openId(String authCode) throws WeixinException {
@@ -796,8 +789,7 @@ public class PayApi extends MchApi {
 		map.put("auth_code", authCode);
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = weixinExecutor.post(
-				getRequestUri("authcode_openid_uri"), param);
+		WeixinResponse response = weixinExecutor.post(getRequestUri("authcode_openid_uri"), param);
 		return response.getAsObject(new TypeReference<OpenIdResult>() {
 		});
 	}

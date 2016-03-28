@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.payment.mch.CorpPaymentResult;
 import com.foxinmy.weixin4j.payment.mch.Redpacket;
 import com.foxinmy.weixin4j.payment.mch.RedpacketRecord;
 import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
-import com.foxinmy.weixin4j.type.MPPaymentCheckNameType;
+import com.foxinmy.weixin4j.type.CorpPaymentCheckNameType;
 
 /**
  * 现金发放测试
@@ -46,7 +46,7 @@ public class CashTest extends PayTest {
 	public void sendCorpPayment() throws WeixinException, IOException {
 		CorpPayment payment = new CorpPayment("MP001",
 				"ofW1gwok9vZIyle0YbA-eQe83Uk8",
-				MPPaymentCheckNameType.NO_CHECK, "企业付款测试", 1d, "127.0.0.1");
+				CorpPaymentCheckNameType.NO_CHECK, "企业付款测试", 1d, "127.0.0.1");
 		CorpPaymentResult result = PAY.sendCorpPayment(new FileInputStream(
 				caFile), payment);
 		System.err.println(result);

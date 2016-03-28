@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.MPPaymentCheckNameType;
+import com.foxinmy.weixin4j.type.CorpPaymentCheckNameType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -38,11 +38,11 @@ public class CorpPayment extends MerchantResult {
 	/**
 	 * 校验用户姓名选项
 	 * 
-	 * @see com.foxinmy.weixin4j.mp.type.MPPaymentCheckNameType
+	 * @see com.foxinmy.weixin4j.CorpPaymentCheckNameType.type.MPPaymentCheckNameType
 	 */
 	@XmlElement(name = "check_name")
 	@JSONField(name = "check_name")
-	private MPPaymentCheckNameType checkNameType;
+	private CorpPaymentCheckNameType checkNameType;
 	/**
 	 * 收款用户真实姓名。 如果check_name设置为FORCE_CHECK或OPTION_CHECK，则必填用户真实姓名 可选
 	 */
@@ -85,7 +85,7 @@ public class CorpPayment extends MerchantResult {
 	 *            调用接口IP
 	 */
 	public CorpPayment(String outTradeNo, String openId,
-			MPPaymentCheckNameType checkNameType, String desc, double amount,
+			CorpPaymentCheckNameType checkNameType, String desc, double amount,
 			String clientIp) {
 		this.outTradeNo = outTradeNo;
 		this.openId = openId;
@@ -103,7 +103,7 @@ public class CorpPayment extends MerchantResult {
 		return openId;
 	}
 
-	public MPPaymentCheckNameType getCheckNameType() {
+	public CorpPaymentCheckNameType getCheckNameType() {
 		return checkNameType;
 	}
 

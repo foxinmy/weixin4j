@@ -7,7 +7,12 @@ package com.foxinmy.weixin4j.jssdk;
  * @author jy
  * @date 2015年12月23日
  * @since JDK 1.6
- * @see
+ * @see <a href=
+ *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115&token=&lang=zh_CN">
+ *      公众平台JSSDK</a>
+ * @see <a href=
+ *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3">
+ *      企业号JSSDK</a>
  */
 public enum JSSDKAPI {
 	/***
@@ -258,20 +263,17 @@ public enum JSSDKAPI {
 	/**
 	 * 分享接口集合
 	 */
-	public final static JSSDKAPI[] SHARE_APIS = { onMenuShareTimeline,
-			onMenuShareAppMessage, onMenuShareQQ, onMenuShareWeibo,
-			onMenuShareQZone };
+	public final static JSSDKAPI[] SHARE_APIS = { onMenuShareTimeline, onMenuShareAppMessage, onMenuShareQQ,
+			onMenuShareWeibo, onMenuShareQZone };
 	/**
 	 * 图像接口集合
 	 */
-	public final static JSSDKAPI[] IMAGE_APIS = { chooseImage, previewImage,
-			uploadImage, downloadImage };
+	public final static JSSDKAPI[] IMAGE_APIS = { chooseImage, previewImage, uploadImage, downloadImage };
 	/**
 	 * 音频接口集合
 	 */
-	public final static JSSDKAPI[] RECORD_APIS = { startRecord, stopRecord,
-			onVoiceRecordEnd, playVoice, pauseVoice, stopVoice, onVoicePlayEnd,
-			uploadVoice, downloadVoice };
+	public final static JSSDKAPI[] RECORD_APIS = { startRecord, stopRecord, onVoiceRecordEnd, playVoice, pauseVoice,
+			stopVoice, onVoicePlayEnd, uploadVoice, downloadVoice };
 	/**
 	 * 智能接口集合
 	 */
@@ -287,14 +289,12 @@ public enum JSSDKAPI {
 	/**
 	 * 摇一摇周边接口集合
 	 */
-	public final static JSSDKAPI[] BEACON_APIS = { startSearchBeacons,
-			stopSearchBeacons, onSearchBeacons };
+	public final static JSSDKAPI[] BEACON_APIS = { startSearchBeacons, stopSearchBeacons, onSearchBeacons };
 	/**
 	 * 界面操作接口集合
 	 */
-	public final static JSSDKAPI[] UI_APIS = { hideOptionMenu, showOptionMenu,
-			closeWindow, hideMenuItems, showMenuItems, hideAllNonBaseMenuItem,
-			showAllNonBaseMenuItem };
+	public final static JSSDKAPI[] UI_APIS = { hideOptionMenu, showOptionMenu, closeWindow, hideMenuItems,
+			showMenuItems, hideAllNonBaseMenuItem, showAllNonBaseMenuItem };
 	/**
 	 * 微信扫一扫接口集合
 	 */
@@ -306,8 +306,7 @@ public enum JSSDKAPI {
 	/**
 	 * 微信卡券接口集合
 	 */
-	public final static JSSDKAPI[] CARD_APIS = { chooseCard, addCard, openCard,
-			consumeAndShareCard };
+	public final static JSSDKAPI[] CARD_APIS = { chooseCard, addCard, openCard, consumeAndShareCard };
 	/**
 	 * 微信支付接口集合
 	 */
@@ -320,29 +319,20 @@ public enum JSSDKAPI {
 	/**
 	 * 公众平台全部接口集合
 	 */
-	public final static JSSDKAPI[] MP_ALL_APIS = { onMenuShareTimeline,
-			onMenuShareAppMessage, onMenuShareQQ, onMenuShareWeibo,
-			onMenuShareQZone, chooseImage, previewImage, uploadImage,
-			downloadImage, startRecord, stopRecord, onVoiceRecordEnd,
-			playVoice, pauseVoice, stopVoice, onVoicePlayEnd, uploadVoice,
-			downloadVoice, translateVoice, getNetworkType, openLocation,
-			getLocation, startSearchBeacons, stopSearchBeacons,
-			onSearchBeacons, hideOptionMenu, showOptionMenu, closeWindow,
-			hideMenuItems, showMenuItems, hideAllNonBaseMenuItem,
-			showAllNonBaseMenuItem, scanQRCode, openProductSpecificView,
-			chooseCard, addCard, openCard, consumeAndShareCard, chooseWXPay };
+	public final static JSSDKAPI[] MP_ALL_APIS = { onMenuShareTimeline, onMenuShareAppMessage, onMenuShareQQ,
+			onMenuShareWeibo, onMenuShareQZone, chooseImage, previewImage, uploadImage, downloadImage, startRecord,
+			stopRecord, onVoiceRecordEnd, playVoice, pauseVoice, stopVoice, onVoicePlayEnd, uploadVoice, downloadVoice,
+			translateVoice, getNetworkType, openLocation, getLocation, startSearchBeacons, stopSearchBeacons,
+			onSearchBeacons, hideOptionMenu, showOptionMenu, closeWindow, hideMenuItems, showMenuItems,
+			hideAllNonBaseMenuItem, showAllNonBaseMenuItem, scanQRCode, openProductSpecificView, chooseCard, addCard,
+			openCard, consumeAndShareCard, chooseWXPay };
 	/**
 	 * 企业号全部接口集合
 	 */
-	public final static JSSDKAPI[] QY_ALL_APIS = { onMenuShareTimeline,
-			onMenuShareAppMessage, onMenuShareQQ, onMenuShareWeibo,
-			onMenuShareQZone, chooseImage, previewImage, uploadImage,
-			downloadImage, startRecord, stopRecord, onVoiceRecordEnd,
-			playVoice, pauseVoice, stopVoice, onVoicePlayEnd, uploadVoice,
-			downloadVoice, translateVoice, getNetworkType, openLocation,
-			getLocation, startSearchBeacons, stopSearchBeacons,
-			onSearchBeacons, hideOptionMenu, showOptionMenu, closeWindow,
-			hideMenuItems, showMenuItems, hideAllNonBaseMenuItem,
-			showAllNonBaseMenuItem, scanQRCode, openEnterpriseChat,
-			openEnterpriseContact };
+	public final static JSSDKAPI[] QY_ALL_APIS = { onMenuShareTimeline, onMenuShareAppMessage, onMenuShareQQ,
+			onMenuShareWeibo, onMenuShareQZone, chooseImage, previewImage, uploadImage, downloadImage, startRecord,
+			stopRecord, onVoiceRecordEnd, playVoice, pauseVoice, stopVoice, onVoicePlayEnd, uploadVoice, downloadVoice,
+			translateVoice, getNetworkType, openLocation, getLocation, startSearchBeacons, stopSearchBeacons,
+			onSearchBeacons, hideOptionMenu, showOptionMenu, closeWindow, hideMenuItems, showMenuItems,
+			hideAllNonBaseMenuItem, showAllNonBaseMenuItem, scanQRCode, openEnterpriseChat, openEnterpriseContact };
 }

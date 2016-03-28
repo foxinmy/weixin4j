@@ -12,7 +12,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @date 2014年9月24日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/17/fa4e1434e57290788bde25603fa2fcbd.html">公众平台全局返回码说明</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433747234&token=&lang=zh_CN">公众平台全局返回码说明</a>
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%85%A8%E5%B1%80%E8%BF%94%E5%9B%9E%E7%A0%81%E8%AF%B4%E6%98%8E">企业号全局返回码说明</a>
  */
