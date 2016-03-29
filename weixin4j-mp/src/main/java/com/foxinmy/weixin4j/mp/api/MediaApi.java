@@ -53,7 +53,6 @@ import com.foxinmy.weixin4j.util.WeixinErrorUtil;
  * @author jy.hu
  * @date 2014年9月25日
  * @since JDK 1.6
- * @see com.foxinmy.weixin4j.type.MediaType
  */
 public class MediaApi extends MpApi {
 
@@ -105,7 +104,7 @@ public class MediaApi extends MpApi {
 	 * @return 群发视频消息对象
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html">高级群发</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">高级群发</a>
 	 * @see com.foxinmy.weixin4j.tuple.MpVideo
 	 */
 	public MpVideo uploadVideo(InputStream is, String fileName, String title,
@@ -141,9 +140,9 @@ public class MediaApi extends MpApi {
 	 *            文件名
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/5/963fc70b80dc75483a271298a76a8d59.html">上传临时素材</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738726&token=&lang=zh_CN">上传临时素材</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久素材</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729&token=&lang=zh_CN">上传永久素材</a>
 	 * @see com.foxinmy.weixin4j.model.MediaUploadResult
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @throws WeixinException
@@ -234,9 +233,9 @@ public class MediaApi extends MpApi {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.model.MediaDownloadResult
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/11/07b6b76a6b6e8848e855a435d5e34a5f.html">下载临时媒体素材</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738727&token=&lang=zh_CN">下载临时媒体素材</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/4/b3546879f07623cb30df9ca0e420a5d0.html">下载永久媒体素材</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738730&token=&lang=zh_CN">下载永久媒体素材</a>
 	 */
 	public MediaDownloadResult downloadMedia(String mediaId, boolean isMaterial)
 			throws WeixinException {
@@ -305,7 +304,7 @@ public class MediaApi extends MpApi {
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729&token=&lang=zh_CN">上传永久媒体素材</a>
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 */
 	public String uploadMaterialArticle(List<MpArticle> articles)
@@ -353,7 +352,7 @@ public class MediaApi extends MpApi {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/4/19a59cba020d506e767360ca1be29450.html">更新永久图文素材</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738732&token=&lang=zh_CN">更新永久图文素材</a>
 	 */
 	public JsonResult updateMaterialArticle(String mediaId, int index,
 			List<MpArticle> articles) throws WeixinException {
@@ -378,7 +377,7 @@ public class MediaApi extends MpApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/5/e66f61c303db51a6c0f90f46b15af5f5.html">删除永久媒体素材</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738731&token=&lang=zh_CN">删除永久媒体素材</a>
 	 */
 	public JsonResult deleteMaterialMedia(String mediaId)
 			throws WeixinException {
@@ -406,7 +405,7 @@ public class MediaApi extends MpApi {
 	 *            视频描述
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/14/7e6c03263063f4813141c3e17dd4350a.html">上传永久媒体素材</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729&token=&lang=zh_CN">上传永久媒体素材</a>
 	 * @throws WeixinException
 	 */
 	public String uploadMaterialVideo(InputStream is, String fileName,
@@ -451,7 +450,7 @@ public class MediaApi extends MpApi {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.model.MediaCounter
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/16/8cc64f8c189674b421bee3ed403993b8.html">获取素材总数</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738733&token=&lang=zh_CN">获取素材总数</a>
 	 */
 	public MediaCounter countMaterialMedia() throws WeixinException {
 		Token token = tokenHolder.getToken();
@@ -478,7 +477,7 @@ public class MediaApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.model.Pageable
 	 * @see com.foxinmy.weixin4j.model.Pagedata
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/12/2108cd7aafff7f388f41f37efa710204.html">获取素材列表</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738734&token=&lang=zh_CN">获取素材列表</a>
 	 */
 	public MediaRecord listMaterialMedia(MediaType mediaType, Pageable pageable)
 			throws WeixinException {

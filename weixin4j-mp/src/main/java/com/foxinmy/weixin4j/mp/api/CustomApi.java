@@ -33,9 +33,6 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @date 2014年11月16日
  * @since JDK 1.6
  * @see <a href="http://dkf.qq.com">多客服说明</a>
- * @see<a 
- *        href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html"
- *        >多客服说明</a>
  */
 public class CustomApi extends MpApi {
 
@@ -237,10 +234,11 @@ public class CustomApi extends MpApi {
 		}
 		Token token = tokenHolder.getToken();
 		String kf_avatar_uri = getRequestUri("kf_avatar_uri");
-		WeixinResponse response = weixinExecutor.post(String.format(
-				kf_avatar_uri, token.getAccessToken(), accountId),
-				new FormBodyPart("media", new InputStreamBody(is,
-						ContentType.IMAGE_JPG.getMimeType(), fileName)));
+		WeixinResponse response = weixinExecutor
+				.post(String.format(kf_avatar_uri, token.getAccessToken(),
+						accountId),
+						new FormBodyPart("media", new InputStreamBody(is,
+								ContentType.IMAGE_JPG.getMimeType(), fileName)));
 
 		return response.getAsJsonResult();
 	}

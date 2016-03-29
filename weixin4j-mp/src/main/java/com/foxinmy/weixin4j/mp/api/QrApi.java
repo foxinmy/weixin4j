@@ -18,8 +18,6 @@ import com.foxinmy.weixin4j.util.IOUtil;
  * @author jy.hu
  * @date 2014年9月25日
  * @since JDK 1.6
- * @see <a
- *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">二维码支持</a>
  */
 public class QrApi extends MpApi {
 
@@ -39,7 +37,7 @@ public class QrApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.QRResult
 	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/18/28fc21e7ed87bec960651f0ce873ef8a.html">生成二维码</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1443433542&token=&lang=zh_CN">生成二维码</a>
 	 */
 	public QRResult createQR(QRParameter parameter) throws WeixinException {
 		Token token = tokenHolder.getToken();

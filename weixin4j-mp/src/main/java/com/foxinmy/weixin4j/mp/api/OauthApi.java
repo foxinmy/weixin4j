@@ -162,7 +162,7 @@ public class OauthApi extends MpApi {
 	 * @return 用户对象
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">授权获取用户信息</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842&token=&lang=zh_CN">授权获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
 	 * @see {@link #getOauthToken(String)}
@@ -184,7 +184,7 @@ public class OauthApi extends MpApi {
 	 * @return 用户对象
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html">授权获取用户信息</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842&token=&lang=zh_CN">授权获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 */
 	public User getUser(String oauthToken, String openid, Lang lang)

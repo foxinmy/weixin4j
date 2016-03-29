@@ -24,8 +24,6 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @author jy.hu
  * @date 2014年9月25日
  * @since JDK 1.6
- * @see <a
- *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html">群发接口</a>
  */
 public class MassApi extends MpApi {
 
