@@ -59,7 +59,7 @@ public class UserApi extends MpApi {
 	 * @return 用户对象
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
 	 *      获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.type.Lang
 	 * @see com.foxinmy.weixin4j.mp.model.User
@@ -81,7 +81,7 @@ public class UserApi extends MpApi {
 	 *            用户ID
 	 * @return 用户列表
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
 	 *      获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @throws WeixinException
@@ -100,7 +100,7 @@ public class UserApi extends MpApi {
 	 *            用户ID 最多100个
 	 * @return 用户列表
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
 	 *      获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.type.Lang
 	 * @see com.foxinmy.weixin4j.mp.model.User
@@ -195,7 +195,8 @@ public class UserApi extends MpApi {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
 	 *      批量获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see com.foxinmy.weixin4j.mp.api.UserApi#getFollowing(String)
+	 * @see com.foxinmy.weixin4j.mp.model.Following
+	 * @see #getFollowing(String)
 	 */
 	public List<User> getAllFollowing() throws WeixinException {
 		List<User> userList = new ArrayList<User>();
@@ -224,7 +225,7 @@ public class UserApi extends MpApi {
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
 	 *      获取关注者列表</a>
-	 * @see com.foxinmy.weixin4j.mp.api.UserApi#getFollowingOpenIds(String)
+	 * @see #getFollowingOpenIds(String)
 	 */
 	public List<String> getAllFollowingOpenIds() throws WeixinException {
 		List<String> openIds = new ArrayList<String>();
@@ -250,16 +251,16 @@ public class UserApi extends MpApi {
 	 *            备注名
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/10/bf8f4e3074e1cf91eb6518b6d08d223e.html">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140838&token=&lang=zh_CN">
 	 *      设置用户备注名</a>
 	 */
 	public JsonResult remarkUserName(String openId, String remark) throws WeixinException {
-		String updateremark_uri = getRequestUri("updateremark_uri");
+		String username_remark_uri = getRequestUri("username_remark_uri");
 		Token token = tokenHolder.getToken();
 		JSONObject obj = new JSONObject();
 		obj.put("openid", openId);
 		obj.put("remark", remark);
-		WeixinResponse response = weixinExecutor.post(String.format(updateremark_uri, token.getAccessToken()),
+		WeixinResponse response = weixinExecutor.post(String.format(username_remark_uri, token.getAccessToken()),
 				obj.toJSONString());
 
 		return response.getAsJsonResult();

@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.api;
+ package com.foxinmy.weixin4j.mp.api;
 
 import java.io.IOException;
 

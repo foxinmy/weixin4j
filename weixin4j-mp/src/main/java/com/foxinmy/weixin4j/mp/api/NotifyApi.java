@@ -65,9 +65,6 @@ public class NotifyApi extends MpApi {
 			throws WeixinException {
 		NotifyTuple tuple = notify.getTuple();
 		String msgtype = tuple.getMessageType();
-		if ("mpnews".equals(msgtype)) {
-			throw new WeixinException("only support news message");
-		}
 		JSONObject obj = new JSONObject();
 		obj.put("touser", notify.getTouser());
 		obj.put("msgtype", msgtype);

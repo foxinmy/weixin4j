@@ -904,7 +904,7 @@ public class WeixinProxy {
 	 * @return 用户对象
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
 	 *      获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
@@ -928,7 +928,7 @@ public class WeixinProxy {
 	 * @return 用户对象
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
 	 *      获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.type.Lang
 	 * @see com.foxinmy.weixin4j.mp.model.User
@@ -945,7 +945,7 @@ public class WeixinProxy {
 	 *            用户ID
 	 * @return 用户列表
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
 	 *      获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
@@ -965,7 +965,7 @@ public class WeixinProxy {
 	 *            用户ID
 	 * @return 用户列表
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
 	 *      获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.type.Lang
 	 * @see com.foxinmy.weixin4j.mp.model.User
@@ -1032,7 +1032,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
 	 * @see com.foxinmy.weixin4j.mp.model.Following
 	 * @see com.foxinmy.weixin4j.mp.model.User
-	 * @see com.foxinmy.weixin4j.mp.WeixinProxy#getFollowing(String)
+	 * @see #getFollowing(String)
 	 */
 	public List<User> getAllFollowing() throws WeixinException {
 		return userApi.getAllFollowing();
@@ -1051,7 +1051,7 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
 	 *      获取关注者列表</a>
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
-	 * @see com.foxinmy.weixin4j.mp.WeixinProxy#getFollowingOpenIds(String)
+	 * @see #getFollowingOpenIds(String)
 	 */
 	public List<String> getAllFollowingOpenIds() throws WeixinException {
 		return userApi.getAllFollowingOpenIds();
@@ -1066,7 +1066,7 @@ public class WeixinProxy {
 	 *            备注名
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/10/bf8f4e3074e1cf91eb6518b6d08d223e.html">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140838&token=&lang=zh_CN">
 	 *      设置用户备注名</a>
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
 	 */
@@ -1337,7 +1337,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.type.IndustryType
 	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1.9E.E8.A1.8C.E4.B8.9A">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">
 	 *      设置所处行业</a>
 	 */
 	public JsonResult setTmplIndustry(IndustryType... industryTypes) throws WeixinException {
@@ -1352,7 +1352,7 @@ public class WeixinProxy {
 	 * @return 模板ID
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E8.8E.B7.E5.BE.97.E6.A8.A1.E6.9D.BFID">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">
 	 *      获得模板ID</a>
 	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
 	 */
@@ -1366,7 +1366,7 @@ public class WeixinProxy {
 	 * @return 模板列表
 	 * @see com.foxinmy.weixin4j.mp.model.TemplateMessageInfo
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/5/6dde9eaa909f83354e0094dc3ad99e05.html#.E8.8E.B7.E5.8F.96.E6.A8.A1.E6.9D.BF.E5.88.97.E8.A1.A8">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">
 	 *      获取模板列表</a>
 	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
 	 * @throws WeixinException
@@ -1382,7 +1382,7 @@ public class WeixinProxy {
 	 *            公众帐号下模板消息ID
 	 * @return 处理结果
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/5/6dde9eaa909f83354e0094dc3ad99e05.html#.E5.88.A0.E9.99.A4.E6.A8.A1.E6.9D.BF">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">
 	 *      删除模板</a>
 	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
 	 * @throws WeixinException
@@ -1398,9 +1398,11 @@ public class WeixinProxy {
 	 *            模板消息主体
 	 * @return 发送结果
 	 * @throws WeixinException
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">模板消息</a>
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E5.8F.91.E9.80.81.E6.A8.A1.E6.9D.BF.E6.B6.88.E6.81.AF">
-	 *      模板消息</a>
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751288&token=&lang=zh_CN"
+	 *      >运营规范</a>
 	 * @see com.foxinmy.weixin4j.mp.message.TemplateMessage
 	 * @seee com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 * @see com.foxinmy.weixin4j.mp.api.TmplApi

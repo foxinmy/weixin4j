@@ -41,7 +41,7 @@ public class TmplApi extends MpApi {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.type.IndustryType
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/5/6dde9eaa909f83354e0094dc3ad99e05.html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1.9E.E8.A1.8C.E4.B8.9A">设置所处行业</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">设置所处行业</a>
 	 */
 	public JsonResult setTmplIndustry(IndustryType... industryTypes)
 			throws WeixinException {
@@ -66,7 +66,7 @@ public class TmplApi extends MpApi {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.type.IndustryType
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/5/6dde9eaa909f83354e0094dc3ad99e05.html#.E8.8E.B7.E5.8F.96.E8.AE.BE.E7.BD.AE.E7.9A.84.E8.A1.8C.E4.B8.9A.E4.BF.A1.E6.81.AF">获取设置的行业信息</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">获取设置的行业信息</a>
 	 */
 	public IndustryType[] getTmplIndustry() throws WeixinException {
 		String template_get_industry_uri = getRequestUri("template_get_industry_uri");
@@ -93,7 +93,7 @@ public class TmplApi extends MpApi {
 	 * @return 模板ID
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/5/6dde9eaa909f83354e0094dc3ad99e05.html#.E8.8E.B7.E5.BE.97.E6.A8.A1.E6.9D.BFID">获得模板ID</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">获得模板ID</a>
 	 */
 	public String getTemplateId(String shortId) throws WeixinException {
 		Token token = tokenHolder.getToken();
@@ -111,7 +111,7 @@ public class TmplApi extends MpApi {
 	 * @return 模板列表
 	 * @see com.foxinmy.weixin4j.mp.model.TemplateMessageInfo
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/5/6dde9eaa909f83354e0094dc3ad99e05.html#.E8.8E.B7.E5.8F.96.E6.A8.A1.E6.9D.BF.E5.88.97.E8.A1.A8">获取模板列表</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">获取模板列表</a>
 	 * @throws WeixinException
 	 */
 	public List<TemplateMessageInfo> getAllTemplates() throws WeixinException {
@@ -130,7 +130,7 @@ public class TmplApi extends MpApi {
 	 *            公众帐号下模板消息ID
 	 * @return 处理结果
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/5/6dde9eaa909f83354e0094dc3ad99e05.html#.E5.88.A0.E9.99.A4.E6.A8.A1.E6.9D.BF">删除模板</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">删除模板</a>
 	 * @throws WeixinException
 	 */
 	public JsonResult deleteTemplate(String templateId) throws WeixinException {
@@ -150,9 +150,9 @@ public class TmplApi extends MpApi {
 	 * @return 发送结果
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E5.8F.91.E9.80.81.E6.A8.A1.E6.9D.BF.E6.B6.88.E6.81.AF">模板消息</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">模板消息</a>
 	 * @see <a href=
-	 *      "http://mp.weixin.qq.com/wiki/2/def71e3ecb5706c132229ae505815966.html"
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751288&token=&lang=zh_CN"
 	 *      >运营规范</a>
 	 * @see com.foxinmy.weixin4j.mp.message.TemplateMessage
 	 * @see com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
