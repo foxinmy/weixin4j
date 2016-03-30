@@ -35,8 +35,7 @@ public class WeixinTicketCreator implements TokenCreator {
 	 * @param weixinTokenHolder
 	 *            <font color="red">企业号的的access_token</font>
 	 */
-	public WeixinTicketCreator(String corpid, TicketType ticketType,
-			TokenHolder weixinTokenHolder) {
+	public WeixinTicketCreator(String corpid, TicketType ticketType, TokenHolder weixinTokenHolder) {
 		this.corpid = corpid;
 		this.ticketType = ticketType;
 		this.weixinTokenHolder = weixinTokenHolder;
@@ -45,20 +44,18 @@ public class WeixinTicketCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("weixin4j_qy_ticket_%s_%s", corpid, ticketType.name());
+		return String.format("weixin4j_qy_ticket_%s_%s", ticketType.name(), corpid);
 	}
 
 	@Override
 	public Token createToken() throws WeixinException {
 		WeixinResponse response = null;
 		if (ticketType == TicketType.jsapi) {
-			response = weixinExecutor.get(String.format(
-					URLConsts.JS_TICKET_URL, weixinTokenHolder.getToken()
-							.getAccessToken()));
+			response = weixinExecutor
+					.get(String.format(URLConsts.JS_TICKET_URL, weixinTokenHolder.getToken().getAccessToken()));
 		} else {
 			response = weixinExecutor.get(String.format(URLConsts.TICKET_URL,
-					weixinTokenHolder.getToken().getAccessToken(),
-					ticketType.name()));
+					weixinTokenHolder.getToken().getAccessToken(), ticketType.name()));
 		}
 		JSONObject result = response.getAsJson();
 		Token token = new Token(result.getString("ticket"));

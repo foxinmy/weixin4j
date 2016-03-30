@@ -42,7 +42,7 @@ public class SuiteTicketHolder {
 	 * @return
 	 */
 	public String getCacheKey() {
-		return String.format("qy_suite_ticket_%s", suiteId);
+		return String.format("weixin4j_qy_suite_ticket_%s", suiteId);
 	}
 
 	/**

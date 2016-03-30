@@ -95,7 +95,7 @@ public class WeixinRequestExecutor {
 		return doRequest(request);
 	}
 
-	public WeixinResponse doRequest(HttpRequest request) throws WeixinException {
+	protected WeixinResponse doRequest(HttpRequest request) throws WeixinException {
 		request.setParams(params);
 		try {
 			logger.info("weixin request >> " + request.getMethod() + " "

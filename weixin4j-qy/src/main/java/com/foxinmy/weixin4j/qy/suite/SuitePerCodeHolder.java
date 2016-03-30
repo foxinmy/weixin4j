@@ -45,7 +45,7 @@ public class SuitePerCodeHolder {
 	 * @return
 	 */
 	public String getCacheKey() {
-		return String.format("weixin4j_qy_suite_percode_%s:%s", suiteId,
+		return String.format("weixin4j_qy_suite_percode_%s_%s", suiteId,
 				authCorpId);
 	}
 

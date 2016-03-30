@@ -17,9 +17,9 @@ import com.foxinmy.weixin4j.type.TicketType;
  * @author jy
  * @date 2015年1月10日
  * @since JDK 1.6
- * @see <a
- *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115&token=&lang=zh_CN">JS
- *      TICKET</a>
+ * @see <a href=
+ *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115&token=&lang=zh_CN">
+ *      JS TICKET</a>
  */
 public class WeixinTicketCreator implements TokenCreator {
 
@@ -38,8 +38,7 @@ public class WeixinTicketCreator implements TokenCreator {
 	 * @param weixinTokenHolder
 	 *            <font color="red">公众平台的access_token</font>
 	 */
-	public WeixinTicketCreator(String appid, TicketType ticketType,
-			TokenHolder weixinTokenHolder) {
+	public WeixinTicketCreator(String appid, TicketType ticketType, TokenHolder weixinTokenHolder) {
 		this.appid = appid;
 		this.ticketType = ticketType;
 		this.weixinTokenHolder = weixinTokenHolder;
@@ -48,14 +47,13 @@ public class WeixinTicketCreator implements TokenCreator {
 
 	@Override
 	public String getCacheKey() {
-		return String.format("weixin4j_mp_ticket_%s_%s", appid, ticketType.name());
+		return String.format("weixin4j_mp_ticket_%s_%s", ticketType.name(), appid);
 	}
 
 	@Override
 	public Token createToken() throws WeixinException {
-		WeixinResponse response = weixinExecutor.get(String.format(
-				URLConsts.TICKET_URL, weixinTokenHolder.getToken()
-						.getAccessToken(), ticketType.name()));
+		WeixinResponse response = weixinExecutor.get(
+				String.format(URLConsts.TICKET_URL, weixinTokenHolder.getToken().getAccessToken(), ticketType.name()));
 		JSONObject result = response.getAsJson();
 		Token token = new Token(result.getString("ticket"));
 		token.setExpiresIn(result.getIntValue("expires_in"));
