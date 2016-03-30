@@ -115,7 +115,7 @@ public class CustomTest extends TokenTest {
 
 	@Test
 	public void getSessionWaitList() throws WeixinException {
-		List<KfSession> sessionList = customApi.listKfSessionWait();
+		List<KfSession> sessionList = customApi.listKfWaitSession();
 		System.err.println(sessionList);
 	}
 }

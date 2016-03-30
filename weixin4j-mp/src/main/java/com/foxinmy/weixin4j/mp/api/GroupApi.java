@@ -18,8 +18,6 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @author jy.hu
  * @date 2014年9月25日
  * @since JDK 1.6
- * @see <a
- *      href="http://mp.weixin.qq.com/wiki/13/be5272dc4930300ba561d927aead2569.html">分组接口</a>
  * @see com.foxinmy.weixin4j.mp.model.Group
  */
 public class GroupApi extends MpApi {
@@ -38,7 +36,7 @@ public class GroupApi extends MpApi {
 	 * @return group对象
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/13/be5272dc4930300ba561d927aead2569.html#.E5.88.9B.E5.BB.BA.E5.88.86.E7.BB.84">创建分组</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">创建分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 * @see com.foxinmy.weixin4j.mp.model.Group#toCreateJson()
 	 */
@@ -59,7 +57,7 @@ public class GroupApi extends MpApi {
 	 * @return 组集合
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/13/be5272dc4930300ba561d927aead2569.html#.E6.9F.A5.E8.AF.A2.E6.89.80.E6.9C.89.E5.88.86.E7.BB.844">查询所有分组</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">查询所有分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
 	public List<Group> getGroups() throws WeixinException {
@@ -80,7 +78,7 @@ public class GroupApi extends MpApi {
 	 * @return 组ID
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/13/be5272dc4930300ba561d927aead2569.html#.E6.9F.A5.E8.AF.A2.E7.94.A8.E6.88.B7.E6.89.80.E5.9C.A8.E5.88.86.E7.BB.84">查询用户所在分组</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">查询用户所在分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
 	public int getGroupByOpenId(String openId) throws WeixinException {
@@ -102,7 +100,7 @@ public class GroupApi extends MpApi {
 	 *            组名称
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/13/be5272dc4930300ba561d927aead2569.html#.E4.BF.AE.E6.94.B9.E5.88.86.E7.BB.84.E5.90.8D">修改分组名</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">修改分组名</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 * @see com.foxinmy.weixin4j.mp.model.Group#toModifyJson()
 	 */
@@ -127,7 +125,7 @@ public class GroupApi extends MpApi {
 	 *            用户对应的ID
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/13/be5272dc4930300ba561d927aead2569.html#.E7.A7.BB.E5.8A.A8.E7.94.A8.E6.88.B7.E5.88.86.E7.BB.84">移动分组</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">移动分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
 	public JsonResult moveGroup(int groupId, String openId)
@@ -150,7 +148,7 @@ public class GroupApi extends MpApi {
 	 *            用户ID列表(不能超过50个)
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/0/56d992c605a97245eb7e617854b169fc.html#.E6.89.B9.E9.87.8F.E7.A7.BB.E5.8A.A8.E7.94.A8.E6.88.B7.E5.88.86.E7.BB.84">批量移动分组</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">批量移动分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
 	public JsonResult moveGroup(int groupId, String... openIds)
@@ -174,7 +172,7 @@ public class GroupApi extends MpApi {
 	 *            组ID
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/0/56d992c605a97245eb7e617854b169fc.html#.E5.88.A0.E9.99.A4.E5.88.86.E7.BB.84">删除用户分组</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">删除用户分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
 	public JsonResult deleteGroup(int groupId) throws WeixinException {

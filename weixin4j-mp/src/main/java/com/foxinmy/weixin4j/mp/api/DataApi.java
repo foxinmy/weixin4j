@@ -107,13 +107,13 @@ public class DataApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.datacube.InterfaceSummary
 	 * @return 统计结果
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/3/ecfed6e1a0a03b5f35e5efac98e864b7.html">用户分析</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141082&token=&lang=zh_CN">用户分析</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/8/c0453610fb5131d1fcb17b4e87c82050.html">图文分析</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141084&token=&lang=zh_CN">图文分析</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/12/32d42ad542f2e4fc8a8aa60e1bce9838.html">消息分析</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141085&token=&lang=zh_CN">消息分析</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/8/30ed81ae38cf4f977194bf1a5db73668.html">接口分析</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141086&token=&lang=zh_CN">接口分析</a>
 	 * @throws WeixinException
 	 */
 	public List<?> datacube(DatacubeType datacubeType, Date beginDate,

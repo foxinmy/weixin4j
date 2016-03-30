@@ -45,7 +45,7 @@ public class HelperApi extends MpApi {
 	 * @return 短链接
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/10/165c9b15eddcfbd8699ac12b0bd89ae6.html">长链接转短链接</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1443433600&token=&lang=zh_CN">长链接转短链接</a>
 	 */
 	public String getShorturl(String url) throws WeixinException {
 		String shorturl_uri = getRequestUri("shorturl_uri");
@@ -69,7 +69,7 @@ public class HelperApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.SemQuery
 	 * @see com.foxinmy.weixin4j.mp.model.SemResult
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/0/0ce78b3c9524811fee34aba3e33f3448.html">语义理解</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141241&token=&lang=zh_CN">语义理解</a>
 	 * @throws WeixinException
 	 */
 	public SemResult semantic(SemQuery semQuery) throws WeixinException {
@@ -87,7 +87,7 @@ public class HelperApi extends MpApi {
 	 * 
 	 * @return IP地址
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/0/2ad4b6bfd29f30f71d39616c2a0fcedc.html">获取IP地址</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140187&token=&lang=zh_CN">获取IP地址</a>
 	 * @throws WeixinException
 	 */
 	public List<String> getCallbackip() throws WeixinException {
@@ -106,7 +106,7 @@ public class HelperApi extends MpApi {
 	 * @return 菜单集合
 	 * @see {@link MenuApi#getMenu()}
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/17/4dc4b0514fdad7a5fbbd477aa9aab5ed.html">获取自定义菜单配置</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1434698695&token=&lang=zh_CN">获取自定义菜单配置</a>
 	 * @see com.foxinmy.weixin4j.model.Button
 	 * @see com.foxinmy.weixin4j.mp.model.MenuSetting
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
@@ -182,7 +182,7 @@ public class HelperApi extends MpApi {
 	 * 
 	 * @see com.foxinmy.weixin4j.mp.model.AutoReplySetting
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/7/7b5789bb1262fb866d01b4b40b0efecb.html">获取自动回复规则</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751299&token=&lang=zh_CN">获取自动回复规则</a>
 	 * @throws WeixinException
 	 */
 	public AutoReplySetting getAutoReplySetting() throws WeixinException {

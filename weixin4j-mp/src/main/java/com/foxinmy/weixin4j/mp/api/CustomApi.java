@@ -55,7 +55,7 @@ public class CustomApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.KfChatRecord
 	 * @see <a href="http://dkf.qq.com/document-1_1.html">查询客服聊天记录</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/19/7c129ec71ddfa60923ea9334557e8b23.html">查询客服聊天记录</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044854&token=&lang=zh_CN">查询客服聊天记录</a>
 	 */
 	public List<KfChatRecord> getKfChatRecord(Date startTime, Date endTime,
 			Pageable pageable) throws WeixinException {
@@ -94,10 +94,8 @@ public class CustomApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.KfAccount
 	 * @see <a href="http://dkf.qq.com/document-3_1.html">获取客服基本信息</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.9C.8D.E5.9F.BA.E6.9C.AC.E4.BF.A1.E6.81.AF">获取客服基本信息</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">获取客服基本信息</a>
 	 * @see <a href="http://dkf.qq.com/document-3_2.html">获取在线客服接待信息</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E8.8E.B7.E5.8F.96.E5.9C.A8.E7.BA.BF.E5.AE.A2.E6.9C.8D.E6.8E.A5.E5.BE.85.E4.BF.A1.E6.81.AF">获取在线客服接待信息</a>
 	 * @throws WeixinException
 	 */
 	public List<KfAccount> listKfAccount(boolean isOnline)
@@ -131,9 +129,7 @@ public class CustomApi extends MpApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.AE.A2.E6.9C.8D.E7.AE.A1.E7.90.86.E6.8E.A5.E5.8F.A3.E8.BF.94.E5.9B.9E.E7.A0.81.E8.AF.B4.E6.98.8E">客服管理接口返回码</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E6.B7.BB.E5.8A.A0.E5.AE.A2.E6.9C.8D.E8.B4.A6.E5.8F.B7">新增客服账号</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">新增客服账号</a>
 	 */
 	public JsonResult createKfAccount(String id, String name, String pwd)
 			throws WeixinException {
@@ -162,9 +158,7 @@ public class CustomApi extends MpApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.AE.A2.E6.9C.8D.E7.AE.A1.E7.90.86.E6.8E.A5.E5.8F.A3.E8.BF.94.E5.9B.9E.E7.A0.81.E8.AF.B4.E6.98.8E">客服管理接口返回码</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E8.AE.BE.E7.BD.AE.E5.AE.A2.E6.9C.8D.E4.BF.A1.E6.81.AF">新增客服账号</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">新增客服账号</a>
 	 */
 	public JsonResult updateKfAccount(String id, String name, String pwd)
 			throws WeixinException {
@@ -220,9 +214,7 @@ public class CustomApi extends MpApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.AE.A2.E6.9C.8D.E7.AE.A1.E7.90.86.E6.8E.A5.E5.8F.A3.E8.BF.94.E5.9B.9E.E7.A0.81.E8.AF.B4.E6.98.8E">客服管理接口返回码</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E4.B8.8A.E4.BC.A0.E5.AE.A2.E6.9C.8D.E5.A4.B4.E5.83.8F">上传客服头像</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">上传客服头像</a>
 	 */
 	public JsonResult uploadKfAvatar(String accountId, InputStream is,
 			String fileName) throws WeixinException {
@@ -251,9 +243,7 @@ public class CustomApi extends MpApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.AE.A2.E6.9C.8D.E7.AE.A1.E7.90.86.E6.8E.A5.E5.8F.A3.E8.BF.94.E5.9B.9E.E7.A0.81.E8.AF.B4.E6.98.8E">客服管理接口返回码</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.88.A0.E9.99.A4.E5.AE.A2.E6.9C.8D.E8.B4.A6.E5.8F.B7">删除客服账号</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">删除客服账号</a>
 	 */
 	public JsonResult deleteKfAccount(String id) throws WeixinException {
 		Token token = tokenHolder.getToken();
@@ -280,7 +270,7 @@ public class CustomApi extends MpApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.88.9B.E5.BB.BA.E4.BC.9A.E8.AF.9D">创建会话</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">创建会话</a>
 	 */
 	public JsonResult createKfSession(String userOpenId, String kfAccount,
 			String text) throws WeixinException {
@@ -309,7 +299,7 @@ public class CustomApi extends MpApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.85.B3.E9.97.AD.E4.BC.9A.E8.AF.9D">创建会话</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">关闭会话</a>
 	 */
 	public JsonResult closeKfSession(String userOpenId, String kfAccount,
 			String text) throws WeixinException {
@@ -335,7 +325,7 @@ public class CustomApi extends MpApi {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.KfSession
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.88.B7.E7.9A.84.E4.BC.9A.E8.AF.9D.E7.8A.B6.E6.80.81">获取会话状态</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">获取会话状态</a>
 	 */
 	public KfSession getKfSession(String userOpenId) throws WeixinException {
 		Token token = tokenHolder.getToken();
@@ -359,7 +349,7 @@ public class CustomApi extends MpApi {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.KfSession
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.9C.8D.E7.9A.84.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">获取客服的会话列表</a>
 	 */
 	public List<KfSession> listKfSession(String kfAccount)
 			throws WeixinException {
@@ -381,9 +371,9 @@ public class CustomApi extends MpApi {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.KfSession
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E6.9C.AA.E6.8E.A5.E5.85.A5.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">获取客服的会话列表</a>
 	 */
-	public List<KfSession> listKfSessionWait() throws WeixinException {
+	public List<KfSession> listKfWaitSession() throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_wait_uri = getRequestUri("kfsession_wait_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(
