@@ -336,9 +336,9 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738732&token=&lang=zh_CN">
 	 *      更新永久图文素材</a>
 	 */
-	public JsonResult updateMaterialArticle(String mediaId, int index, List<MpArticle> articles)
+	public JsonResult updateMaterialArticle(String mediaId, int index, MpArticle article)
 			throws WeixinException {
-		return mediaApi.updateMaterialArticle(mediaId, index, articles);
+		return mediaApi.updateMaterialArticle(mediaId, index, article);
 	}
 
 	/**

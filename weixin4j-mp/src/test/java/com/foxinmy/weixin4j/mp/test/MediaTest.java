@@ -107,15 +107,13 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void updateMaterialArticle() throws WeixinException {
-		MpArticle mpArticle = new MpArticle("8790403529", "title", "content");
-		mpArticle.setAuthor("author_update");
-		mpArticle.setDigest("digest_update");
-		mpArticle.setShowCoverPic(false);
-		mpArticle.setSourceUrl("http://www.baidu.com");
-		List<MpArticle> articles = new ArrayList<MpArticle>();
-		articles.add(mpArticle);
+		MpArticle article = new MpArticle("8790403529", "title", "content");
+		article.setAuthor("author_update");
+		article.setDigest("digest_update");
+		article.setShowCoverPic(false);
+		article.setSourceUrl("http://www.baidu.com");
 		JsonResult result = mediaApi.updateMaterialArticle("17385064953", 0,
-				articles);
+				article);
 		System.err.println(result);
 		// 17385065153
 	}

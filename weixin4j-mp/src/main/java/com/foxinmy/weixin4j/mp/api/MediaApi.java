@@ -355,11 +355,11 @@ public class MediaApi extends MpApi {
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738732&token=&lang=zh_CN">更新永久图文素材</a>
 	 */
 	public JsonResult updateMaterialArticle(String mediaId, int index,
-			List<MpArticle> articles) throws WeixinException {
+			MpArticle article) throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String material_article_update_uri = getRequestUri("material_article_update_uri");
 		JSONObject obj = new JSONObject();
-		obj.put("articles", articles);
+		obj.put("articles", article);
 		obj.put("media_id", mediaId);
 		obj.put("index", index);
 		WeixinResponse response = weixinExecutor.post(
