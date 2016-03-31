@@ -54,7 +54,7 @@ public class WeixinTicketCreator implements TokenCreator {
 			response = weixinExecutor
 					.get(String.format(URLConsts.JS_TICKET_URL, weixinTokenHolder.getToken().getAccessToken()));
 		} else {
-			response = weixinExecutor.get(String.format(URLConsts.TICKET_URL,
+			response = weixinExecutor.get(String.format(URLConsts.SUITE_TICKET_URL,
 					weixinTokenHolder.getToken().getAccessToken(), ticketType.name()));
 		}
 		JSONObject result = response.getAsJson();
