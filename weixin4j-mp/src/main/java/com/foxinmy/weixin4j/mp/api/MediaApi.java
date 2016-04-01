@@ -346,8 +346,8 @@ public class MediaApi extends MpApi {
 	 *            要修改的图文消息的id
 	 * @param index
 	 *            要更新的文章在图文消息中的位置（多图文消息时，此字段才有意义），第一篇为0
-	 * @param articles
-	 *            图文列表
+	 * @param article
+	 *            图文对象
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
