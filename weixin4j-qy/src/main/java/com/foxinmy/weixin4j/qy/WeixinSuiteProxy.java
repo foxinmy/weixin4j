@@ -218,5 +218,5 @@ public class WeixinSuiteProxy {
 		return new WeixinProxy(suite(suiteId).getPerCodeHolder(authCorpId), suite(suiteId).getSuiteTokenHolder());
 	}
 
-	public final static String VERSION = "1.6.7";
+	public final static String VERSION = "1.6.8";
 }

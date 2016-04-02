@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j</artifactId>
-		<version>1.6.7</version>
+		<version>1.6.8</version>
 	</parent>
 	<artifactId>weixin4j-qy</artifactId>
 	<name>weixin4j-qy</name>

@@ -49,7 +49,7 @@ public class PayTest {
 	/**
 	 * 商户证书文件
 	 */
-	protected File caFile = new File("/Users/jy/Downloads/test.sql");
+	protected File caFile = new File("商户证书:*.p12");
 
 	@Test
 	public void queryOrder() throws WeixinException {

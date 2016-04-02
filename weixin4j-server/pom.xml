@@ -5,10 +5,10 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j</artifactId>
-		<version>1.6.7</version>
+		<version>1.6.8</version>
 	</parent>
 	<artifactId>weixin4j-server</artifactId>
-	<version>1.1.6</version>
+	<version>1.1.7</version>
 	<name>weixin4j-server</name>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-server</url>
 	<description>微信消息netty服务器</description>
