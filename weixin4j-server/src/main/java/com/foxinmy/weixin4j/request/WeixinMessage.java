@@ -59,7 +59,6 @@ public class WeixinMessage implements Serializable {
 	private long createTime;
 	/**
 	 * 消息类型
-	 * 
 	 */
 	@XmlElement(name = "MsgType")
 	private String msgType;
@@ -75,7 +74,7 @@ public class WeixinMessage implements Serializable {
 	private String agentId;
 
 	public WeixinMessage() {
-
+		// jaxb required
 	}
 
 	public WeixinMessage(String msgType) {

@@ -31,7 +31,7 @@ public final class ServerToolkits {
 	public static final String CONTENTTYPE$TEXT_PLAIN = "text/plain";
 
 	public static final AttributeKey<WeixinMessageTransfer> MESSAGE_TRANSFER_KEY = AttributeKey
-			.valueOf("$_MESSAGETRANSFER");
+			.valueOf("attr:MESSAGETRANSFER");
 
 	/**
 	 * 返回一个定长的随机字符串(包含数字和大小写字母)

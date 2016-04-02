@@ -37,6 +37,7 @@ import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
 import com.foxinmy.weixin4j.util.ClassUtil;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.ServerToolkits;
+import com.foxinmy.weixin4j.xml.MessageTransferHandler;
 
 /**
  * 微信消息分发器
@@ -115,8 +116,11 @@ public class WeixinMessageDispatcher {
 	 * @throws WeixinException
 	 */
 	public void doDispatch(final ChannelHandlerContext context,
-			final WeixinRequest request,
-			final WeixinMessageTransfer messageTransfer) throws WeixinException {
+			final WeixinRequest request) throws WeixinException {
+		WeixinMessageTransfer messageTransfer = MessageTransferHandler
+				.parser(request);
+		context.channel().attr(ServerToolkits.MESSAGE_TRANSFER_KEY)
+				.set(messageTransfer);
 		WeixinMessageKey messageKey = defineMessageKey(messageTransfer, request);
 		Class<? extends WeixinMessage> targetClass = messageMatcher
 				.match(messageKey);

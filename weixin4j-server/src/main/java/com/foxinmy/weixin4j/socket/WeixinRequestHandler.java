@@ -22,7 +22,6 @@ import com.foxinmy.weixin4j.util.AesToken;
 import com.foxinmy.weixin4j.util.HttpUtil;
 import com.foxinmy.weixin4j.util.MessageUtil;
 import com.foxinmy.weixin4j.util.ServerToolkits;
-import com.foxinmy.weixin4j.xml.MessageTransferHandler;
 
 /**
  * 微信请求处理类
@@ -57,7 +56,7 @@ public class WeixinRequestHandler extends
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, WeixinRequest request)
 			throws WeixinException {
-		final AesToken aesToken = request.getAesToken();
+		AesToken aesToken = request.getAesToken();
 		if (aesToken == null
 				|| (ServerToolkits.isBlank(request.getSignature()) && ServerToolkits
 						.isBlank(request.getMsgSignature()))) {
@@ -112,11 +111,7 @@ public class WeixinRequestHandler extends
 					.addListener(ChannelFutureListener.CLOSE);
 			return;
 		}
-		WeixinMessageTransfer messageTransfer = MessageTransferHandler
-				.parser(request);
-		ctx.channel().attr(ServerToolkits.MESSAGE_TRANSFER_KEY)
-				.set(messageTransfer);
-		messageDispatcher.doDispatch(ctx, request, messageTransfer);
+		messageDispatcher.doDispatch(ctx, request);
 	}
 
 	private FullHttpResponse resolveResponse(HttpResponseStatus responseStatus,
