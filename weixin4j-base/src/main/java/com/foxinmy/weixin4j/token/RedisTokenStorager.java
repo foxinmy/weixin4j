@@ -78,7 +78,7 @@ public class RedisTokenStorager implements TokenStorager {
 			jedis = jedisPool.getResource();
 			jedis.hmset(cacheKey, token2map(token));
 			if (token.getExpiresIn() > 0) {
-				jedis.expire(cacheKey, token.getExpiresIn());
+				jedis.expire(cacheKey, token.getExpiresIn() - (int)(CUTMS / 1000l));
 			}
 		} finally {
 			if (jedis != null) {

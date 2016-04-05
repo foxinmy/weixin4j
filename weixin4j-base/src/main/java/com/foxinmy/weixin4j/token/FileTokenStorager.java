@@ -38,7 +38,7 @@ public class FileTokenStorager implements TokenStorager {
 				if (token.getCreateTime() < 0) {
 					return token;
 				}
-				if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - 2) > System
+				if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - CUTMS) > System
 						.currentTimeMillis()) {
 					return token;
 				}

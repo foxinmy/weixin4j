@@ -27,7 +27,7 @@ public class MemoryTokenStorager implements TokenStorager {
 	public Token lookup(String cacheKey) throws WeixinException {
 		Token token = this.CONMAP.get(cacheKey);
 		if (token != null) {
-			if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - 2) > System
+			if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - CUTMS) > System
 					.currentTimeMillis()) {
 				return token;
 			}
