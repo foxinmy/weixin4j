@@ -49,7 +49,7 @@ public class WeixinQyAccount extends WeixinAccount {
 	@JSONCreator
 	public WeixinQyAccount(@JSONField(name = "id") String corpid,
 			@JSONField(name = "secret") String corpsecret,
-			@JSONField(name = "suites") List<WeixinAccount> suiteAccounts,
+			@JSONField(name = "suiteAccounts") List<WeixinAccount> suiteAccounts,
 			@JSONField(name = "providerSecret") String providerSecret,
 			@JSONField(name = "chatSecret") String chatSecret) {
 		super(corpid, corpsecret);
