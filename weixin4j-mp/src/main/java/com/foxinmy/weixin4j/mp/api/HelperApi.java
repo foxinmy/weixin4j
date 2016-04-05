@@ -90,7 +90,7 @@ public class HelperApi extends MpApi {
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140187&token=&lang=zh_CN">获取IP地址</a>
 	 * @throws WeixinException
 	 */
-	public List<String> getCallbackip() throws WeixinException {
+	public List<String> getWechatServerIp() throws WeixinException {
 		String getcallbackip_uri = getRequestUri("getcallbackip_uri");
 		Token token = tokenHolder.getToken();
 		WeixinResponse response = weixinExecutor.post(String.format(getcallbackip_uri,

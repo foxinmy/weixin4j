@@ -42,7 +42,7 @@ public class MenuTest extends TokenTest {
 		btnList.add(b);
 		b = new Button("photo", "photo", ButtonType.pic_photo_or_album);
 		btnList.add(b);
-		JsonResult result = menuApi.createMenu(btnList, 1);
+		JsonResult result = menuApi.createMenu(1, btnList);
 		Assert.assertEquals(0, result.getCode());
 	}
 

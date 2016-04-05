@@ -111,7 +111,7 @@ public class NotifyApi extends QyApi {
 					IdParameter.SEPARATORS)) {
 				tagIds.add(Integer.parseInt(id));
 			}
-			idParameter.setPartyIds(tagIds);
+			idParameter.setTagIds(tagIds);
 		}
 		return idParameter;
 	}
@@ -152,7 +152,7 @@ public class NotifyApi extends QyApi {
 	 * 
 	 * @param kfType
 	 *            客服类型 为空时返回全部类型的客服
-	 * @return 第一个元素为内部客服(internal),第二个参数为外部客服(external)
+	 * @return 第一个元素为内部客服(internal),第二个元素为外部客服(external)
 	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 * @see <a
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%AE%A2%E6%9C%8D%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E">客服列表</a>

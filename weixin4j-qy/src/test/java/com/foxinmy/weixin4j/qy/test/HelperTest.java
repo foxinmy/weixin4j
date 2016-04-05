@@ -28,7 +28,7 @@ public class HelperTest extends TokenTest {
 
 	@Test
 	public void backip() throws WeixinException {
-		List<String> ips = helperApi.getCallbackip();
+		List<String> ips = helperApi.getWechatServerIp();
 		Assert.assertTrue(ips != null && !ips.isEmpty());
 		System.out.println(ips);
 	}

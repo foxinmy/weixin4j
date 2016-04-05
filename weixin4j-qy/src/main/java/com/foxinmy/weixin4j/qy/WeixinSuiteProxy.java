@@ -37,7 +37,7 @@ public class WeixinSuiteProxy {
 
 	/**
 	 * 每个套件授权不一样 suiteId - suiteApi
-	 */
+	 */  
 	private Map<String, SuiteApi> suiteMap;
 	/**
 	 * 供应商API:如登陆URL

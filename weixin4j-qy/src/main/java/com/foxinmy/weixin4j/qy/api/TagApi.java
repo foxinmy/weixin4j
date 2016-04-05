@@ -146,8 +146,7 @@ public class TagApi extends QyApi {
 	}
 
 	/**
-	 * 新增标签成员(标签对管理组可见且未加锁，成员属于管理组管辖范围。)<br>
-	 * <font color="red">若部分userid或partyid非法，则在text中体现</font>
+	 * 新增标签成员(标签对管理组可见且未加锁，成员属于管理组管辖范围。)
 	 * 
 	 * @param tagId
 	 *            标签ID
@@ -159,7 +158,7 @@ public class TagApi extends QyApi {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.A2.9E.E5.8A.A0.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
 	 *      新增标签成员说明</a>
 	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
-	 * @return 处理结果
+	 * @return 非法的userIds和partyIds
 	 * @throws WeixinException
 	 */
 	public IdParameter addTagUsers(int tagId, List<String> userIds,
@@ -170,7 +169,6 @@ public class TagApi extends QyApi {
 
 	/**
 	 * 删除标签成员(标签对管理组未加锁，成员属于管理组管辖范围)<br>
-	 * <font color="red">若部分userid或partyid非法，则在text中体现</font>
 	 * 
 	 * @param tagId
 	 *            标签ID
@@ -182,7 +180,7 @@ public class TagApi extends QyApi {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.A0.E9.99.A4.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
 	 *      删除标签成员说明</a>
 	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
-	 * @return 处理结果
+	 * @return 非法的userIds和partyIds
 	 * @throws WeixinException
 	 */
 	public IdParameter deleteTagUsers(int tagId, List<String> userIds,

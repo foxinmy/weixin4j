@@ -257,7 +257,7 @@ public class UserApi extends QyApi {
 	 * @return 成员列表
 	 * @throws WeixinException
 	 */
-	public List<User> listUser(int departId, boolean fetchChild,
+	public List<User> listUser(int partyId, boolean fetchChild,
 			UserStatus userStatus, boolean findDetail) throws WeixinException {
 		String user_list_uri = findDetail ? getRequestUri("user_list_uri")
 				: getRequestUri("user_slist_uri");
@@ -266,7 +266,7 @@ public class UserApi extends QyApi {
 			userStatus = UserStatus.UNFOLLOW;
 		}
 		WeixinResponse response = weixinExecutor.get(String.format(
-				user_list_uri, token.getAccessToken(), departId, fetchChild ? 1
+				user_list_uri, token.getAccessToken(), partyId, fetchChild ? 1
 						: 0, userStatus.getVal()));
 		List<User> list = null;
 		if (findDetail) {
@@ -293,14 +293,14 @@ public class UserApi extends QyApi {
 	/**
 	 * 获取部门下所有状态成员(不进行递归)
 	 * 
-	 * @param departId
+	 * @param partyId
 	 *            部门ID
 	 * @see {@link #listUser(int, boolean,UserStatus)}
 	 * @return 成员列表
 	 * @throws WeixinException
 	 */
-	public List<User> listUser(int departId) throws WeixinException {
-		return listUser(departId, false, UserStatus.BOTH, false);
+	public List<User> listUser(int partyId) throws WeixinException {
+		return listUser(partyId, false, UserStatus.BOTH, false);
 	}
 
 	/**

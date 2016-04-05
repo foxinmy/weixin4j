@@ -18,8 +18,8 @@ public class HelpTest extends TokenTest {
 	}
 
 	@Test
-	public void getcallbackip() throws WeixinException {
-		List<String> ipList = helperApi.getCallbackip();
+	public void getWechatServerIp() throws WeixinException {
+		List<String> ipList = helperApi.getWechatServerIp();
 		Assert.assertFalse(ipList.isEmpty());
 	}
 

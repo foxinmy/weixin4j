@@ -239,10 +239,10 @@ public class WeixinProxy {
 	 * 否则抛出异常.
 	 * </p>
 	 * 
+	 * @param isMaterial
+	 *            是否永久上传
 	 * @param is
 	 *            媒体数据流
-	 * @param mediaType
-	 *            媒体文件类型：分别有图片（image）、语音（voice）、视频(video)和缩略图（thumb）
 	 * @param fileName
 	 *            文件名
 	 * @return 上传到微信服务器返回的媒体标识
@@ -336,8 +336,7 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738732&token=&lang=zh_CN">
 	 *      更新永久图文素材</a>
 	 */
-	public JsonResult updateMaterialArticle(String mediaId, int index, MpArticle article)
-			throws WeixinException {
+	public JsonResult updateMaterialArticle(String mediaId, int index, MpArticle article) throws WeixinException {
 		return mediaApi.updateMaterialArticle(mediaId, index, article);
 	}
 
@@ -524,8 +523,7 @@ public class WeixinProxy {
 	 *            客服账号登录密码
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
-	 *      客服管理接口返回码</a>
+	 * @see com.foxinmy.weixin4j.mp.api.CustomApi 客服管理接口返回码</a>
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      新增客服账号</a>
@@ -1443,8 +1441,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.HelperApi
 	 * @throws WeixinException
 	 */
-	public List<String> getCallbackip() throws WeixinException {
-		return helperApi.getCallbackip();
+	public List<String> getWechatServerIp() throws WeixinException {
+		return helperApi.getWechatServerIp();
 	}
 
 	/**
