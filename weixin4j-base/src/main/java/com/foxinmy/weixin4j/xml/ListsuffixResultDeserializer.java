@@ -130,7 +130,7 @@ public class ListsuffixResultDeserializer {
 									name = xr.getLocalName();
 								} else if (event == XMLStreamConstants.END_ELEMENT) {
 									break;
-								} else if (event == XMLStreamConstants.CHARACTERS) {
+								} else if (event == XMLStreamConstants.CHARACTERS  || event == XMLStreamConstants.CDATA) {
 									String key = matcher.group();
 									if (!pattern.pattern().equals(
 											DEFAULT_PATTERN.pattern())) {
