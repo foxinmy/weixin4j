@@ -42,7 +42,7 @@ public class PayTest {
 	protected final static WeixinPayProxy PAY;
 
 	static {
-		ACCOUNT = new WeixinPayAccount("appid", "paySignKey", "mchid");
+		ACCOUNT = new WeixinPayAccount("wx4ab8f8de58159a57", "GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ", "1290664601");
 		SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
 		PAY = new WeixinPayProxy(new Weixin4jSettings(ACCOUNT));
 	}
@@ -81,10 +81,9 @@ public class PayTest {
 	@Test
 	public void downbill() throws WeixinException {
 		Calendar c = Calendar.getInstance();
-		System.err.println(c.getTime());
-		c.set(Calendar.YEAR, 2015);
-		c.set(Calendar.MONTH, 2);
-		c.set(Calendar.DAY_OF_MONTH, 24);
+		c.set(Calendar.YEAR, 2016);
+		c.set(Calendar.MONTH, 3);
+		c.set(Calendar.DAY_OF_MONTH, 4);
 		System.err.println(c.getTime());
 		File file = PAY.downloadBill(c.getTime(), null);
 		System.err.println(file);

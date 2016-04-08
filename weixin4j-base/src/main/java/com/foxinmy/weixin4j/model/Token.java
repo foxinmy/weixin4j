@@ -32,20 +32,23 @@ public class Token implements Serializable {
 	@JSONField(name = "expires_in")
 	private int expiresIn;
 	/**
-	 * token创建的时间
+	 * token创建的时间,单位：毫秒
 	 */
+	@JSONField(name = "create_time")
 	private long createTime;
 	/**
 	 * 请求返回的原始结果
 	 */
+	@JSONField(name = "original_result")
 	private String originalResult;
 
-	public Token() {
-		this.createTime = System.currentTimeMillis() / 1000l;
+	protected Token() {
+		// jaxb required
 	}
 
 	public Token(String accessToken) {
 		this.accessToken = accessToken;
+		this.createTime = System.currentTimeMillis();
 	}
 
 	public String getAccessToken() {

@@ -78,7 +78,8 @@ public class RedisTokenStorager implements TokenStorager {
 			jedis = jedisPool.getResource();
 			jedis.hmset(cacheKey, token2map(token));
 			if (token.getExpiresIn() > 0) {
-				jedis.expire(cacheKey, token.getExpiresIn() - (int)(CUTMS / 1000l));
+				jedis.expire(cacheKey, token.getExpiresIn()
+						- (int) (CUTMS / 1000l));
 			}
 		} finally {
 			if (jedis != null) {
@@ -87,20 +88,25 @@ public class RedisTokenStorager implements TokenStorager {
 		}
 	}
 
+	private final static String ACCESSTOKEN_KEY = "accessToken";
+	private final static String EXPIRESIN_KEY = "expiresIn";
+	private final static String CREATETIME_KEY = "createTime";
+	private final static String ORIGINAL_KEY = "originalResult";
+
 	protected Map<String, String> token2map(Token token) {
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("accessToken", token.getAccessToken());
-		map.put("originalResult", token.getOriginalResult());
-		map.put("createTime", Long.toString(token.getCreateTime()));
-		map.put("expiresIn", Integer.toString(token.getExpiresIn()));
+		map.put(ACCESSTOKEN_KEY, token.getAccessToken());
+		map.put(EXPIRESIN_KEY, Integer.toString(token.getExpiresIn()));
+		map.put(CREATETIME_KEY, Long.toString(token.getCreateTime()));
+		map.put(ORIGINAL_KEY, token.getOriginalResult());
 		return map;
 	}
 
 	protected Token map2token(Map<String, String> map) {
-		Token token = new Token(map.get("accessToken"));
-		token.setCreateTime(Long.parseLong(map.get("createTime")));
-		token.setExpiresIn(Integer.parseInt(map.get("expiresIn")));
-		token.setOriginalResult(map.get("originalResult"));
+		Token token = new Token(map.get(ACCESSTOKEN_KEY));
+		token.setExpiresIn(Integer.parseInt(map.get(EXPIRESIN_KEY)));
+		token.setCreateTime(Long.parseLong(map.get(CREATETIME_KEY)));
+		token.setOriginalResult(map.get(ORIGINAL_KEY));
 		return token;
 	}
 

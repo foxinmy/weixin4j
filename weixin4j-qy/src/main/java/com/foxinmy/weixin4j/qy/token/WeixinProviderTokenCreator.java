@@ -53,7 +53,6 @@ public class WeixinProviderTokenCreator implements TokenCreator {
 		obj = response.getAsJson();
 		Token token = new Token(obj.getString("provider_access_token"));
 		token.setExpiresIn(obj.getIntValue("expires_in"));
-		token.setCreateTime(System.currentTimeMillis());
 		token.setOriginalResult(response.getAsString());
 		return token;
 	}
