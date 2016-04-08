@@ -717,9 +717,9 @@ public class Pay3Api {
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(file), Consts.GBK));
+					new FileOutputStream(file), Consts.UTF_8));
 			reader = new BufferedReader(new InputStreamReader(
-					response.getBody(), com.foxinmy.weixin4j.model.Consts.GBK));
+					response.getBody(), com.foxinmy.weixin4j.model.Consts.UTF_8));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				writer.write(line);
