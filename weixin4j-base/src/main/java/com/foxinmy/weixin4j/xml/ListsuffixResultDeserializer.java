@@ -63,7 +63,7 @@ public class ListsuffixResultDeserializer {
 	}
 
 	/**
-	 * 对包含$n节点的xml序列化
+	 * 对包含$n节点的xml反序列化
 	 * 
 	 * @param content
 	 *            xml内容

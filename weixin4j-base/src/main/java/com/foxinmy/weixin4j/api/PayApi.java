@@ -665,7 +665,7 @@ public class PayApi extends MchApi {
 			billType = BillType.ALL;
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
-		String fileName = String.format("%s_%s_%s.txt", formatBillDate, billType.name().toLowerCase(),
+		String fileName = String.format("weixin4j_bill_%s_%s_%s.txt", formatBillDate, billType.name().toLowerCase(),
 				weixinAccount.getId());
 		File file = new File(String.format("%s/%s", billPath, fileName));
 		if (file.exists()) {
@@ -681,9 +681,9 @@ public class PayApi extends MchApi {
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 		try {
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), Consts.GBK));
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), Consts.UTF_8));
 			reader = new BufferedReader(
-					new InputStreamReader(response.getBody(), com.foxinmy.weixin4j.model.Consts.GBK));
+					new InputStreamReader(response.getBody(), Consts.UTF_8));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				writer.write(line);

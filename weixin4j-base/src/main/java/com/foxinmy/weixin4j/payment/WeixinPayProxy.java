@@ -744,7 +744,7 @@ public class WeixinPayProxy {
 	/**
 	 * 发放红包
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.payment.WeixinPayProxy#sendRedpack(InputStream, Redpacket)}
+	 * @see {@link #sendRedpack(InputStream, Redpacket)}
 	 */
 	public RedpacketSendResult sendRedpack(Redpacket redpacket) throws WeixinException, IOException {
 		return cashApi.sendRedpack(new FileInputStream(settings.getCertificateFile0()), redpacket);
@@ -775,7 +775,7 @@ public class WeixinPayProxy {
 	/**
 	 * 查询红包
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.payment.WeixinPayProxy#queryRedpack(InputStream,String)}
+	 * @see {@link #queryRedpack(InputStream,String)}
 	 */
 	public RedpacketRecord queryRedpack(String outTradeNo) throws WeixinException, IOException {
 		return cashApi.queryRedpack(new FileInputStream(settings.getCertificateFile0()), outTradeNo);
@@ -804,7 +804,7 @@ public class WeixinPayProxy {
 	/**
 	 * 企业付款
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.payment.WeixinPayProxy#senCorpPayment(InputStream, CorpPayment)}
+	 * @see {@link #senCorpPayment(InputStream, CorpPayment)}
 	 */
 	public CorpPaymentResult sendCorpPayment(CorpPayment payment) throws WeixinException, IOException {
 		return cashApi.sendCorpPayment(new FileInputStream(settings.getCertificateFile0()), payment);
@@ -832,7 +832,7 @@ public class WeixinPayProxy {
 	/**
 	 * 企业付款查询
 	 * 
-	 * @see {@link com.foxinmy.weixin4j.payment.WeixinPayProxy#CorpPaymentRecord(InputStream, String)}
+	 * @see {@link #CorpPaymentRecord(InputStream, String)}
 	 */
 	public CorpPaymentRecord queryCorpPayment(String outTradeNo) throws WeixinException, IOException {
 		return cashApi.queryCorpPayment(new FileInputStream(settings.getCertificateFile0()), outTradeNo);

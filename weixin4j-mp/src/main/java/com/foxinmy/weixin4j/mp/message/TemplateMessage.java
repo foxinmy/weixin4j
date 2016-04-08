@@ -52,9 +52,9 @@ public class TemplateMessage implements Serializable {
 	@JSONField(name = "data")
 	private Map<String, NameValue> content;
 
-	private final String HEAD_KEY = "first";
-	private final String TAIL_KEY = "remark";
-	private final String DEFAULT_COLOR = "#173177";
+	private final static String HEAD_KEY = "first";
+	private final static String TAIL_KEY = "remark";
+	private final static String DEFAULT_COLOR = "#173177";
 
 	@JSONCreator
 	public TemplateMessage(@JSONField(name = "toUser") String toUser,

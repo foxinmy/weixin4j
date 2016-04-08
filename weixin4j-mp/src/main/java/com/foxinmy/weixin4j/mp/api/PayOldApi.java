@@ -15,7 +15,6 @@ import java.security.cert.CertificateFactory;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -37,8 +36,8 @@ import com.foxinmy.weixin4j.mp.oldpayment.OrderV2;
 import com.foxinmy.weixin4j.mp.oldpayment.PayPackageV2;
 import com.foxinmy.weixin4j.mp.oldpayment.RefundRecordV2;
 import com.foxinmy.weixin4j.mp.oldpayment.RefundResultV2;
-import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPaymentSignature;
 import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPayAccount;
+import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPaymentSignature;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
@@ -476,7 +475,7 @@ public class PayOldApi extends MpApi {
 			billType = BillType.ALL;
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
-		String fileName = String.format("%s_%s_%s.txt", formatBillDate,
+		String fileName = String.format("weixin4j_bill_%s_%s_%s.txt", formatBillDate,
 				billType.name().toLowerCase(), getPayAccount().getId());
 		File file = new File(String.format("%s/%s", billPath, fileName));
 		if (file.exists()) {
@@ -484,7 +483,7 @@ public class PayOldApi extends MpApi {
 		}
 		String downloadbill_uri = getRequestUri("downloadbill_old_uri");
 
-		Map<String, String> map = new LinkedHashMap<String, String>();
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("spid", getPayAccount().getPartnerId());
 		map.put("trans_time", DateUtil.fortmat2yyyy_MM_dd(billDate));
 		map.put("stamp", DateUtil.timestamp2string());

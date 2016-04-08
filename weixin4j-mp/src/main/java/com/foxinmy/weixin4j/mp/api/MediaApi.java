@@ -63,14 +63,14 @@ public class MediaApi extends MpApi {
 	}
 
 	/**
-	 * 上传图文消息内的图片获取URL
+	 * 上传图片获取URL
 	 * 请注意，本接口所上传的图片不占用公众号的素材库中图片数量的5000个的限制。图片仅支持jpg/png格式，大小必须在1MB以下。
 	 * 
 	 * @param is
 	 *            图片数据流
 	 * @param fileName
 	 *            文件名 为空时将自动生成
-	 * @return 图片URL 可用于后续群发中，放置到图文消息中
+	 * @return 图片URL 可用于群发消息中的图片链接和创建卡券logo链接
 	 * @throws WeixinException
 	 */
 	public String uploadImage(InputStream is, String fileName)
