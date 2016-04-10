@@ -2,8 +2,11 @@ package com.foxinmy.weixin4j.server.test;
 
 import java.util.Set;
 
+import org.springframework.context.ApplicationContext;
+
 import io.netty.channel.ChannelHandlerContext;
 
+import com.foxinmy.weixin4j.dispatcher.BeanFactory;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.DebugMessageHandler;
 import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
@@ -11,11 +14,13 @@ import com.foxinmy.weixin4j.handler.MultipleMessageHandlerAdapter;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.message.TextMessage;
+import com.foxinmy.weixin4j.message.VoiceMessage;
 import com.foxinmy.weixin4j.mp.event.ScanEventMessage;
 import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.TextResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
+import com.foxinmy.weixin4j.spring.SpringBeanFactory;
 import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
@@ -37,53 +42,88 @@ public class MessageServerStartup {
 	final String aesKey = "";
 
 	/**
-	 * 明文模式
+	 * 调试输出用户发来的消息
 	 * 
 	 * @throws WeixinException
 	 */
 	public void test1() throws WeixinException {
-		// 所有请求都回复调试的文本消息
+		// 明文模式
 		new WeixinServerBootstrap(token).addHandler(DebugMessageHandler.global)
 				.startup();
-	}
-
-	/**
-	 * 密文模式
-	 * 
-	 * @throws WeixinException
-	 */
-	public void test2() throws WeixinException {
-		// 所有请求都回复调试的文本消息
+		// 密文模式
 		new WeixinServerBootstrap(weixinId, token, aesKey).addHandler(
 				DebugMessageHandler.global).startup();
 	}
 
 	/**
-	 * 针对特定消息回复
+	 * 针对特定消息类型
 	 * 
 	 * @throws WeixinException
 	 */
-	public void test3() throws WeixinException {
+	public void test2() throws WeixinException {
 		// 针对文本消息回复
-		WeixinMessageHandler messageHandler = new MessageHandlerAdapter<TextMessage>() {
+		WeixinMessageHandler textMessageHandler = new MessageHandlerAdapter<TextMessage>() {
 			@Override
 			public WeixinResponse doHandle0(WeixinRequest request,
 					TextMessage message) throws WeixinException {
 				return new TextResponse("HelloWorld!");
 			}
 		};
-		// 当消息类型为文本(text)时回复「HelloWorld」, 否则回复调试消息
+		// 针对语音消息回复
+		WeixinMessageHandler voiceMessageHandler = new MessageHandlerAdapter<VoiceMessage>() {
+			@Override
+			public WeixinResponse doHandle0(WeixinRequest request,
+					VoiceMessage message) throws WeixinException {
+				return new TextResponse("HelloWorld!");
+			}
+		};
+		// 当消息类型为文本(text)或者语音时回复「HelloWorld」, 否则回复调试消息
 		new WeixinServerBootstrap(weixinId, token, aesKey).addHandler(
-				messageHandler, DebugMessageHandler.global).startup();
+				textMessageHandler, voiceMessageHandler,
+				DebugMessageHandler.global).startup();
 	}
 
+	/**
+	 * 多种消息类型处理
+	 * 
+	 * @throws WeixinException
+	 */
+	public void test3() throws WeixinException {
+		@SuppressWarnings("unchecked")
+		MultipleMessageHandlerAdapter messageHandler = new MultipleMessageHandlerAdapter(
+				ScanEventMessage.class, TextMessage.class) {
+			@Override
+			public WeixinResponse doHandle(WeixinRequest request,
+					WeixinMessage message, Set<String> nodeNames)
+					throws WeixinException {
+				return new TextResponse("处理了扫描和文字消息");
+			}
+		};
+		new WeixinServerBootstrap(token).addHandler(messageHandler,
+				DebugMessageHandler.global).startup();
+	}
+
+	/**
+	 * 扫描包添加handler
+	 * 
+	 * @throws WeixinException
+	 */
 	public void test4() throws WeixinException {
-		// 扫描包加载消息处理器
+		// handler处理所在的包名(子包也会扫描)
 		String packageToScan = "com.foxinmy.weixin4j.handler";
+		// handler默认使用 Class.newInstance
+		// 方式实例化,如果handler中含有service等类需要注入,可以声明一个BeanFactory,如SpringBeanFactory
+		ApplicationContext applicationContext = null; // spring容器
+		BeanFactory beanFactory = new SpringBeanFactory(applicationContext);
 		new WeixinServerBootstrap(token).handlerPackagesToScan(packageToScan)
-				.startup();
+				.openAlwaysResponse().resolveBeanFactory(beanFactory).startup();
 	}
 
+	/**
+	 * 拦截器应用
+	 * 
+	 * @throws WeixinException
+	 */
 	public void test5() throws WeixinException {
 		// 拦截所有请求
 		WeixinMessageInterceptor interceptor = new WeixinMessageInterceptor() {
@@ -120,21 +160,12 @@ public class MessageServerStartup {
 				.openAlwaysResponse().startup();
 	}
 
-	@SuppressWarnings("unchecked")
-	public void test6() throws WeixinException {
-		MultipleMessageHandlerAdapter messageHandler = new MultipleMessageHandlerAdapter(
-				ScanEventMessage.class, TextMessage.class) {
-			@Override
-			public WeixinResponse doHandle(WeixinRequest request,
-					WeixinMessage message, Set<String> nodeNames)
-					throws WeixinException {
-				return new TextResponse("处理了扫描和文字消息");
-			}
-		};
-		new WeixinServerBootstrap(token).addHandler(messageHandler,
-				DebugMessageHandler.global).startup();
-	}
-
+	/**
+	 * main方法入口
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		new MessageServerStartup().test1();
 	}

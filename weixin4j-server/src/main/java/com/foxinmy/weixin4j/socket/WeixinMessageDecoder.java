@@ -72,7 +72,7 @@ public class WeixinMessageDecoder extends
 				&& encryptType == EncryptType.AES) {
 			if (ServerToolkits.isBlank(aesToken.getAesKey())) {
 				throw new WeixinException(
-						"AESEncodingKey not be null in AES mode");
+						"EncodingAESKey not be empty in safety(AES) mode");
 			}
 			EncryptMessageHandler encryptHandler = EncryptMessageHandler
 					.parser(messageContent);

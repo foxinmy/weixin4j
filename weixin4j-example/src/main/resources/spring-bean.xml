@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	<!-- 微信接口代理～start -->
+	<bean id="weixinProxy" class="com.foxinmy.weixin4j.mp.WeixinProxy">
+		<constructor-arg>
+			<bean class="com.foxinmy.weixin4j.util.Weixin4jSettings">
+				<!-- 公众号信息:不声明则默认使用weixin4j.properties配置的weixin4j.account字段 -->
+				<constructor-arg>
+					<bean class="com.foxinmy.weixin4j.model.WeixinAccount">
+						<constructor-arg index="0" value="公众账号的appid" />
+						<constructor-arg index="1" value="公众账号的appsecret" />
+					</bean>
+				</constructor-arg>
+				<!-- token存储:不声明则默认使用文件方式(FileTokenStorager)保存 -->
+				<property name="tokenStorager">
+					<!-- redis保存token -->
+					<bean class="com.foxinmy.weixin4j.token.RedisTokenStorager">
+						<constructor-arg type="redis.clients.jedis.JedisPool">
+							<bean class="redis.clients.jedis.JedisPool">
+								<constructor-arg index="0">
+									<bean class="redis.clients.jedis.JedisPoolConfig">
+										<property name="maxTotal" value="${redis.maxTotal}" />
+										<property name="maxIdle" value="${redis.maxIdle}" />
+										<property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+										<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+									</bean>
+								</constructor-arg>
+								<constructor-arg index="1" value="${redis.host}" />
+								<constructor-arg index="2" value="${redis.port}" />
+								<constructor-arg index="3" value="${redis.timeout}" />
+							</bean>
+						</constructor-arg>
+					</bean>
+				</property>
+				<!-- http参数:http请求时的参数,比如代理、超时等配置信息,暂时还未实现 -->
+				<property name="httpParams">
+					<bean class="com.foxinmy.weixin4j.http.HttpParams" />
+				</property>
+				<!-- 临时目录:weixin4j调用某些接口时需要用到的临时目录,不声明则获取顺序为:weixin4j.properties#weixin4j.tmpdir->`java.io.tmp` -->
+				<property name="tmpdir" value="/tmp/weixin4j" />
+			</bean>
+		</constructor-arg>
+	</bean>
+	<!-- 微信接口代理～end -->
+
+	<!-- 微信支付接口代理～start -->
+	<bean id="weixinPayProxy" class="com.foxinmy.weixin4j.payment.WeixinPayProxy">
+		<constructor-arg>
+			<bean class="com.foxinmy.weixin4j.util.Weixin4jSettings">
+				<!-- 商户信息:不声明则默认使用weixin4j.properties配置的weixin4j.account字段 -->
+				<constructor-arg>
+					<bean class="com.foxinmy.weixin4j.model.WeixinPayAccount">
+						<constructor-arg index="0" value="公众账号的appid" />
+						<constructor-arg index="1" value="商户平台的支付密钥:paySignkey" />
+						<constructor-arg index="2" value="商户平台的商户ID:mchId" />
+					</bean>
+				</constructor-arg>
+				<!-- ca证书:调用某些支付接口(如退款、红包)需要用到的证书文件,不声明则获取顺序为:weixin4j.properties#weixin4j.certificate.file->`classpath:ca.p12` -->
+				<property name="certificateFile" value="/path/to/certificate/file" />
+				<!-- http参数:http请求时的参数,比如代理、超时等配置信息,暂时还未实现 -->
+				<property name="httpParams">
+					<bean class="com.foxinmy.weixin4j.http.HttpParams" />
+				</property>
+				<!-- 临时目录:weixin4j调用某些接口时需要用到的临时目录,不声明则获取顺序为:weixin4j.properties#weixin4j.tmpdir->`java.io.tmp` -->
+				<property name="tmpdir" value="/tmp/weixin4j" />
+			</bean>
+		</constructor-arg>
+	</bean>
+	<!-- 微信支付接口代理～end -->
+
+	<!-- 微信消息服务～start -->
+	<bean
+		class="com.foximy.weixin4j.example.server.Weixin4jServerStartupWithThread"
+		init-method="start" destroy-method="stop">
+		<!-- 端口号 微信暂时只支持80端口 所以需要自己把微信被动消息请求转发(nginx等)到这个端口上来 -->
+		<constructor-arg index="0" value="10000" />
+		<!-- token信息 -->
+		<constructor-arg index="1">
+			<!-- 明文模式 -->
+			<bean class="com.foxinmy.weixin4j.util.AesToken">
+				<constructor-arg index="0" value="weixin4j" />
+			</bean>
+			<!-- 加密模式 -->
+			<!-- bean class="com.foxinmy.weixin4j.util.AesToken"> <constructor-arg 
+				index="0" value="公众号的应用ID(appid/corpid)" /> <constructor-arg index="1" value="开发者Token" 
+				/> <constructor-arg index="2" value="解密的EncodingAESKey" /> </bean -->
+		</constructor-arg>
+		<!-- 处理微信消息的全限包名 -->
+		<constructor-arg index="2"
+			value="com.foximy.weixin4j.example.server.handler" />
+	</bean>
+	<!-- 微信消息服务～end -->
+</beans>
