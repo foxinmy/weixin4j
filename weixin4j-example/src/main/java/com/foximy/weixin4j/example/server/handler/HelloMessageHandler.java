@@ -36,7 +36,8 @@ public class HelloMessageHandler extends MessageHandlerAdapter<TextMessage> {
 	}
 
 	/**
-	 * 提高权重 > TextMessageHandler
+	 * 因为HelloMessageHandler和TextMessageHandler都会匹配到文本消息
+	 * 所以这里需要提高下权重(大于TextMessageHandler就行了) > TextMessageHandler
 	 */
 	@Override
 	public int weight() {

@@ -9,13 +9,13 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.util.ClassUtil;
 
 /**
- * 消息适配器
+ * 消息适配器:对于特定的消息类型进行适配,如text文本、voice语音消息
  * 
  * @className MessageHandlerAdapter
  * @author jy
  * @date 2015年5月17日
  * @since JDK 1.6
- * @see
+ * @see com.foxinmy.weixin4j.request.WeixinMessage
  */
 @SuppressWarnings("unchecked")
 public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements
@@ -64,7 +64,7 @@ public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements
 			throws WeixinException;
 
 	/**
-	 * 存在多个匹配到的MessageHandler则比较
+	 * 缺省值为1,存在多个匹配到的MessageHandler则比较weight大小
 	 */
 	@Override
 	public int weight() {

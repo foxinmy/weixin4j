@@ -179,7 +179,7 @@ public class WeixinMessageDispatcher {
 	 */
 	protected void noHandlerFound(ChannelHandlerContext context,
 			WeixinRequest request, Object message) {
-		logger.warn("no handler found {}", request);
+		logger.warn("no handler found for {}", request);
 		if (alwaysResponse) {
 			context.write(BlankResponse.global);
 		} else {
