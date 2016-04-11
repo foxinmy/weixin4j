@@ -42,7 +42,7 @@ public class PayTest {
 	protected final static WeixinPayProxy PAY;
 
 	static {
-		ACCOUNT = new WeixinPayAccount("wx4ab8f8de58159a57", "GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ", "1290664601");
+		ACCOUNT = new WeixinPayAccount("appid", "paysignkey", "mchid");
 		SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
 		PAY = new WeixinPayProxy(new Weixin4jSettings(ACCOUNT));
 	}

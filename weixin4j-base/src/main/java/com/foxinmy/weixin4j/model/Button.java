@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -61,7 +62,20 @@ public class Button implements Serializable {
 	}
 
 	/**
-	 * 创建一个菜单
+	 * 创建一个菜单(一级菜单)
+	 * 
+	 * @param name
+	 *            菜单显示的名称
+	 * @param subButtons
+	 *            二级菜单
+	 */
+	public Button(String name, Button... subButtons) {
+		this.name = name;
+		this.subs = Arrays.asList(subButtons);
+	}
+
+	/**
+	 * 创建一个菜单(二级菜单)
 	 * 
 	 * @param name
 	 *            菜单显示的名称
