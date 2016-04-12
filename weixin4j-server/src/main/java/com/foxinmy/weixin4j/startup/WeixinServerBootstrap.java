@@ -115,7 +115,7 @@ public final class WeixinServerBootstrap {
 	 * 多个公众号的支持
 	 * <dt>值得注意的是：
 	 * <dl><font color="red">1).企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font></dl>
-	 * <dl><font color="red">2).非明文模式下需要在服务器URL后面加多一个`weixin_id={对应的appid/corpid}`的参数</font></dl>
+	 * <dl><font color="red">2).非明文模式下需要在服务器URL后面加多一个`weixin_id=对应的appid/corpid`的参数</font></dl>
 	 * 
 	 * @param aesTokens
 	 *            多个公众号
@@ -129,7 +129,7 @@ public final class WeixinServerBootstrap {
 	 * 多个公众号的支持
 	 * <dt>值得注意的是：
 	 * <dl><font color="red">1).企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font></dl>
-	 * <dl><font color="red">2).非明文模式下需要在服务器URL后面加多一个`weixin_id={对应的appid/corpid}`的参数</font></dl>
+	 * <dl><font color="red">2).非明文模式下需要在服务器URL后面加多一个`weixin_id=对应的appid/corpid`的参数</font></dl>
 	 * 
 	 * @param messageMatcher
 	 *            消息匹配器
