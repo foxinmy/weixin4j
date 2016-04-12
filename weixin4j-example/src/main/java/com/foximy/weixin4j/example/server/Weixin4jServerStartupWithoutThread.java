@@ -20,7 +20,7 @@ public class Weixin4jServerStartupWithoutThread {
 	/**
 	 * 服务监听的端口号,目前微信只支持80端口,可以考虑用nginx做转发到此端口
 	 */
-	private static int port = 10000;
+	private static int port = 30000;
 	/**
 	 * 服务器token信息
 	 */
