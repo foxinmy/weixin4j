@@ -12,6 +12,29 @@
 	<name>weixin4j-example</name>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-example</url>
 	<description>weixin4j示例</description>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/script/assembly.xml</descriptor>
+					</descriptors>
+					<finalName>weixin4j-server</finalName>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 	<dependencies>
 		<dependency>
 			<groupId>com.foxinmy</groupId>
@@ -28,11 +51,17 @@
 			<artifactId>weixin4j-server</artifactId>
 			<version>1.1.7</version>
 		</dependency>
+		<!-- 使用redis保存token时需要引用,针对weixin4j-mp|qy -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<!-- 使用spring容器管理Handler时需要引用,针对weixin4j-server -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>4.2.1.RELEASE</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

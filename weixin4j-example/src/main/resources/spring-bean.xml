@@ -18,8 +18,7 @@
 					</bean>
 				</constructor-arg>
 				<!-- token存储:不声明则默认使用文件方式(FileTokenStorager)保存 -->
-				<property name="tokenStorager">
-					<!-- redis保存token -->
+				<!-- property name="tokenStorager">
 					<bean class="com.foxinmy.weixin4j.token.RedisTokenStorager">
 						<constructor-arg type="redis.clients.jedis.JedisPool">
 							<bean class="redis.clients.jedis.JedisPool">
@@ -37,7 +36,7 @@
 							</bean>
 						</constructor-arg>
 					</bean>
-				</property>
+				</property -->
 				<!-- http参数:http请求时的参数,比如代理、超时等配置信息,暂时还未实现 -->
 				<property name="httpParams">
 					<bean class="com.foxinmy.weixin4j.http.HttpParams" />
@@ -79,7 +78,7 @@
 		class="com.foximy.weixin4j.example.server.Weixin4jServerStartupWithThread"
 		init-method="start" destroy-method="stop">
 		<!-- 端口号 微信暂时只支持80端口 所以需要自己把微信被动消息请求转发(nginx等)到这个端口上来 -->
-		<constructor-arg index="0" value="10000" />
+		<constructor-arg index="0" value="30000" />
 		<!-- token信息 -->
 		<constructor-arg index="1">
 			<!-- 明文模式 -->
