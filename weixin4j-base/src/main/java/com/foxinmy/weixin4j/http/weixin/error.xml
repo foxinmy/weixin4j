@@ -683,6 +683,10 @@
 		<text>mpnews每天只能发送100次</text>
 	</error>
 	<error>
+		<code>45032</code>
+		<text>作者名字长度超过限制</text>
+	</error>
+	<error>
 		<code>46001</code>
 		<text>不存在媒体数据</text>
 	</error>

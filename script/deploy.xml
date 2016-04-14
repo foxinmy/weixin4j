@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="weixin4j-server" default="deploy" basedir=".">
+	<property name="app.dir" value="./target" />
+	<property name="zip.name" value="zip包名称,如:weixin4j-server-bin.zip" />
+	<property name="host" value="主机地址,如:192.168.1.8" />
+	<property name="user.name" value="用户帐号,如:root" />
+	<property name="user.pwd" value="用户密码,如:123456" />
+	<property name="server.dir" value="部署服务的目录,如:/usr/local/weixin4j" />
+	<property name="server.name" value="部署服务的名字,如:weixin4j-server" />
+
+	<target name="cleanup">
+		<echo>
+					${host}：删除${server.dir}/${zip.name}...
+				</echo>
+		<sshexec host="${host}" username="${user.name}" password="${user.pwd}" trust="true" command="rm -rf ${server.dir}/${zip.name};" />
+	</target>
+
+	<target name="upload" depends="cleanup">
+		<echo>
+				${host}：上传${app.dir}/${zip.name}...
+			</echo>
+		<scp file="${app.dir}/${zip.name}" todir="${user.name}:${user.pwd}@${host}:${server.dir}" trust="true" />
+	</target>
+
+	<target name="shutdown" depends="upload">
+		<echo>
+			${host}：停止${server.name}服务，删除${server.dir}/${server.name}...
+		</echo>
+		<sshexec host="${host}" username="${user.name}" password="${user.pwd}" trust="true" command="cd ${server.dir};pwd;sh ${server.name}/startup.sh stop;rm -rf ${server.dir}/${server.name};" />
+	</target>
+
+	<target name="startup" depends="shutdown">
+		<echo>
+			${host}：启动${server.dir}/${server.name}...
+		</echo>
+		<sshexec host="${host}" username="${user.name}" password="${user.pwd}" trust="true" command="cd ${server.dir};pwd;unzip ${zip.name};sh ${server.name}/startup.sh start;" />
+	</target>
+
+	<target name="build" depends="startup">
+		<echo>
+			app.dir = ${app.dir}
+			file.zip = ${app.dir}/${zip.name}
+		</echo>
+	</target>
+	<target name="deploy" depends="build">
+	</target>
+</project>

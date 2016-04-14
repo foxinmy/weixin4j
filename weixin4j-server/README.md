@@ -3,7 +3,7 @@ weixin4j-server
 
 [微信回调消息](http://mp.weixin.qq.com/wiki/1/6239b44c206cab9145b1d52c67e6c551.html)服务器
 ----------------
-base on netty.
+based on netty.
 
 功能列表
 -------
