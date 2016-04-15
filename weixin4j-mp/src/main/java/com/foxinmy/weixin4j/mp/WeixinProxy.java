@@ -33,6 +33,7 @@ import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfChatRecord;
 import com.foxinmy.weixin4j.mp.model.KfSession;
+import com.foxinmy.weixin4j.mp.model.KfSession.kfSessionCounter;
 import com.foxinmy.weixin4j.mp.model.Menu;
 import com.foxinmy.weixin4j.mp.model.MenuMatchRule;
 import com.foxinmy.weixin4j.mp.model.MenuSetting;
@@ -234,9 +235,6 @@ public class WeixinProxy {
 	/**
 	 * 上传媒体文件 </br>
 	 * <font color="red">此接口只包含图片、语音、缩略图、视频(临时)四种媒体类型的上传</font>
-	 * <p>
-	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
-	 * 否则抛出异常.
 	 * </p>
 	 * 
 	 * @param isMaterial
@@ -244,7 +242,7 @@ public class WeixinProxy {
 	 * @param is
 	 *            媒体数据流
 	 * @param fileName
-	 *            文件名
+	 *            文件名 为空时将自动生成
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738726&token=&lang=zh_CN">
@@ -688,18 +686,18 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 获取未接入会话列表:获取当前正在等待队列中的会话列表，此接口最多返回最早进入队列的100个未接入会话。</br>
-	 * <font color="red">缺陷：没有count字段</font>
+	 * 获取未接入会话列表:获取当前正在等待队列中的会话列表，此接口最多返回最早进入队列的100个未接入会话
 	 * 
 	 * @return 会话列表
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
 	 * @see com.foxinmy.weixin4j.mp.model.KfSession
+	 * @see com.foxinmy.weixin4j.mp.model.KfSession.kfSessionCounter
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
 	 *      获取客服的会话列表</a>
 	 */
-	public List<KfSession> listKfWaitSession() throws WeixinException {
+	public kfSessionCounter listKfWaitSession() throws WeixinException {
 		return customApi.listKfWaitSession();
 	}
 

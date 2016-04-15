@@ -178,7 +178,7 @@ public class WeixinMessageDispatcher {
 	 *            微信消息
 	 */
 	protected void noHandlerFound(ChannelHandlerContext context,
-			WeixinRequest request, Object message) {
+			WeixinRequest request, WeixinMessage message) {
 		logger.warn("no handler found for {}", request);
 		if (alwaysResponse) {
 			context.write(BlankResponse.global);
@@ -234,7 +234,7 @@ public class WeixinMessageDispatcher {
 						return m2.weight() - m1.weight();
 					}
 				});
-		logger.info("matched message handler '{}'", matchedMessageHandlers);
+		logger.info("matched message handlers '{}'", matchedMessageHandlers);
 		return new MessageHandlerExecutor(context,
 				matchedMessageHandlers.get(0), getMessageInterceptors());
 	}
