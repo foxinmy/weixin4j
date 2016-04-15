@@ -18,6 +18,7 @@ import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfChatRecord;
 import com.foxinmy.weixin4j.mp.model.KfSession;
+import com.foxinmy.weixin4j.mp.model.KfSession.kfSessionCounter;
 
 /**
  * 客服消息测试
@@ -115,7 +116,7 @@ public class CustomTest extends TokenTest {
 
 	@Test
 	public void getSessionWaitList() throws WeixinException {
-		List<KfSession> sessionList = customApi.listKfWaitSession();
-		System.err.println(sessionList);
+		kfSessionCounter sessionCounter = customApi.listKfWaitSession();
+		System.err.println(sessionCounter);
 	}
 }
