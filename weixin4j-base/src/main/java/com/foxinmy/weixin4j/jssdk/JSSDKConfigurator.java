@@ -103,6 +103,9 @@ public class JSSDKConfigurator {
 	 * @throws WeixinException
 	 */
 	public String toJSONConfig(String url) throws WeixinException {
+		if (apis.isEmpty()) {
+			throw new WeixinException("jsapilist not be empty");
+		}
 		Map<String, String> signMap = new HashMap<String, String>();
 		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(24);
@@ -117,9 +120,6 @@ public class JSSDKConfigurator {
 		}
 		if (StringUtil.isBlank(config.getString("debug"))) {
 			config.put("debug", false);
-		}
-		if (apis.isEmpty()) {
-			throw new WeixinException("jsapilist not be empty");
 		}
 		config.put("timestamp", timestamp);
 		config.put("nonceStr", noncestr);
