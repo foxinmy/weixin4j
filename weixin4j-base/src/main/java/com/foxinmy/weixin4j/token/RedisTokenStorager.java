@@ -45,8 +45,7 @@ public class RedisTokenStorager implements TokenStorager {
 		this.jedisPool = new JedisPool(jedisPoolConfig, host, port);
 	}
 
-	public RedisTokenStorager(String host, int port,
-			JedisPoolConfig jedisPoolConfig) {
+	public RedisTokenStorager(String host, int port, JedisPoolConfig jedisPoolConfig) {
 		this(new JedisPool(jedisPoolConfig, host, port));
 	}
 
@@ -78,8 +77,7 @@ public class RedisTokenStorager implements TokenStorager {
 			jedis = jedisPool.getResource();
 			jedis.hmset(cacheKey, token2map(token));
 			if (token.getExpiresIn() > 0) {
-				jedis.expire(cacheKey, token.getExpiresIn()
-						- (int) (CUTMS / 1000l));
+				jedis.expire(cacheKey, token.getExpiresIn() - (int) (CUTMS / 1000l));
 			}
 		} finally {
 			if (jedis != null) {
@@ -130,7 +128,7 @@ public class RedisTokenStorager implements TokenStorager {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
-			Set<String> cacheKeys = jedis.keys("weixin4j_*");
+			Set<String> cacheKeys = jedis.keys(String.format("%s*", PREFIX));
 			if (!cacheKeys.isEmpty()) {
 				Pipeline pipeline = jedis.pipelined();
 				for (String cacheKey : cacheKeys) {

@@ -2,11 +2,10 @@ package com.foxinmy.weixin4j.qy.token;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
-import com.foxinmy.weixin4j.token.TokenCreator;
+import com.foxinmy.weixin4j.token.AbstractTokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.type.TicketType;
 
@@ -20,12 +19,11 @@ import com.foxinmy.weixin4j.type.TicketType;
  *        "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3#.E9.99.84.E5.BD.951-JS-SDK.E4.BD.BF.E7.94.A8.E6.9D.83.E9.99.90.E7.AD.BE.E5.90.8D.E7.AE.97.E6.B3.95"
  *        >JSTICKET</a>
  */
-public class WeixinTicketCreator implements TokenCreator {
+public class WeixinTicketCreator extends AbstractTokenCreator {
 
 	private final String corpid;
 	private final TicketType ticketType;
 	private final TokenHolder weixinTokenHolder;
-	private final WeixinRequestExecutor weixinExecutor;
 
 	/**
 	 * @param corpid
@@ -39,12 +37,11 @@ public class WeixinTicketCreator implements TokenCreator {
 		this.corpid = corpid;
 		this.ticketType = ticketType;
 		this.weixinTokenHolder = weixinTokenHolder;
-		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
-	public String getCacheKey() {
-		return String.format("weixin4j_qy_ticket_%s_%s", ticketType.name(), corpid);
+	public String getCacheKey0() {
+		return String.format("qy_ticket_%s_%s", ticketType.name(), corpid);
 	}
 
 	@Override

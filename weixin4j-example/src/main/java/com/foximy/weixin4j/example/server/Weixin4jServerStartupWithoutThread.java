@@ -1,10 +1,6 @@
 package com.foximy.weixin4j.example.server;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.spring.SpringBeanFactory;
 import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
