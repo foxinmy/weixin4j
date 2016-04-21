@@ -42,11 +42,11 @@ public class Weixin4jServerStartupWithoutThread {
 	 * @throws WeixinException
 	 */
 	public static void main(String[] args) throws WeixinException {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				new String[] { "classpath:/spring-bean.xml" });
+		//ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+		//		new String[] { "classpath:/spring-bean.xml" });
 		new WeixinServerBootstrap(aesToken)
 				.handlerPackagesToScan(handlerPackage).openAlwaysResponse()
-				.resolveBeanFactory(new SpringBeanFactory(applicationContext))
+				//.resolveBeanFactory(new SpringBeanFactory(applicationContext))
 				.startup(port);
 	}
 }
