@@ -6,7 +6,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.type.URLConsts;
-import com.foxinmy.weixin4j.token.TokenCreator;
+import com.foxinmy.weixin4j.token.AbstractTokenCreator;
 
 /**
  * 微信公众平台TOKEN创建者
@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140183&token=&lang=zh_CN">微信公众平台获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class WeixinTokenCreator implements TokenCreator {
+public class WeixinTokenCreator extends AbstractTokenCreator {
 
 	private final WeixinRequestExecutor weixinExecutor;
 	private final String appid;
@@ -39,8 +39,8 @@ public class WeixinTokenCreator implements TokenCreator {
 	}
 
 	@Override
-	public String getCacheKey() {
-		return String.format("weixin4j_mp_token_%s", appid);
+	public String getCacheKey0() {
+		return String.format("mp_token_%s", appid);
 	}
 
 	@Override

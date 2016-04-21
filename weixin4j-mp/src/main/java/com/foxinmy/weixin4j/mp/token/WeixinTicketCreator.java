@@ -2,11 +2,10 @@ package com.foxinmy.weixin4j.mp.token;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.type.URLConsts;
-import com.foxinmy.weixin4j.token.TokenCreator;
+import com.foxinmy.weixin4j.token.AbstractTokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.type.TicketType;
 
@@ -21,12 +20,11 @@ import com.foxinmy.weixin4j.type.TicketType;
  *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115&token=&lang=zh_CN">
  *      JS TICKET</a>
  */
-public class WeixinTicketCreator implements TokenCreator {
+public class WeixinTicketCreator extends AbstractTokenCreator {
 
 	private final String appid;
 	private final TicketType ticketType;
 	private final TokenHolder weixinTokenHolder;
-	private final WeixinRequestExecutor weixinExecutor;
 
 	/**
 	 * jssdk
@@ -42,12 +40,11 @@ public class WeixinTicketCreator implements TokenCreator {
 		this.appid = appid;
 		this.ticketType = ticketType;
 		this.weixinTokenHolder = weixinTokenHolder;
-		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
-	public String getCacheKey() {
-		return String.format("weixin4j_mp_ticket_%s_%s", ticketType.name(), appid);
+	public String getCacheKey0() {
+		return String.format("mp_ticket_%s_%s", ticketType.name(), appid);
 	}
 
 	@Override

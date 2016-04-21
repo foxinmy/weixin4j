@@ -1,10 +1,6 @@
 package com.foximy.weixin4j.example.server;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.spring.SpringBeanFactory;
 import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
@@ -42,11 +38,11 @@ public class Weixin4jServerStartupWithoutThread {
 	 * @throws WeixinException
 	 */
 	public static void main(String[] args) throws WeixinException {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				new String[] { "classpath:/spring-bean.xml" });
+		//ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+		//		new String[] { "classpath:/spring-bean.xml" });
 		new WeixinServerBootstrap(aesToken)
 				.handlerPackagesToScan(handlerPackage).openAlwaysResponse()
-				.resolveBeanFactory(new SpringBeanFactory(applicationContext))
+				//.resolveBeanFactory(new SpringBeanFactory(applicationContext))
 				.startup(port);
 	}
 }
