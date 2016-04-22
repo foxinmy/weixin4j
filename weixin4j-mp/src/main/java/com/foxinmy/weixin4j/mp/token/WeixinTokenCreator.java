@@ -50,6 +50,7 @@ public class WeixinTokenCreator extends AbstractTokenCreator {
 		WeixinResponse response = weixinExecutor.get(tokenUrl);
 		Token token = response.getAsObject(new TypeReference<Token>() {
 		});
+		token.setCreateTime(System.currentTimeMillis());
 		token.setOriginalResult(response.getAsString());
 		return token;
 	}
