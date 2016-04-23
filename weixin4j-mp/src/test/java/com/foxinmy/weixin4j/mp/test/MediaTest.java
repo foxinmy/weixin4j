@@ -47,7 +47,7 @@ public class MediaTest extends TokenTest {
 		File file = new File("/Users/jy/Downloads/weixin4j.png");
 		MediaUploadResult mediaId = mediaApi.uploadMedia(false,
 				new FileInputStream(file), file.getName());
-		// zloeIROuS3YJFZwugGNM5oGBolqJmU_8FKTUmJwTFbSjfky904S9OPly5Wq0BRn2
+		// fbyQZL96sK9evnTgDx21jPZgWAnw6YPgslNzcqLFp0lqPCD-XipoPfkwFU1OM9J_
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);
 	}
@@ -56,7 +56,7 @@ public class MediaTest extends TokenTest {
 	public void download1() throws WeixinException, IOException {
 		MediaDownloadResult content = mediaApi
 				.downloadMedia(
-						"BmzcrM2jaJXZCjBqxLwyC03kh5pge3CbrBqXP4XbYBCeKr7xz-rHuwPf4vYLVdL1",
+						"fbyQZL96sK9evnTgDx21jPZgWAnw6YPgslNzcqLFp0lqPCD-XipoPfkwFU1OM9J_",
 						false);
 		Assert.assertTrue(content != null);
 		System.err.println(content);

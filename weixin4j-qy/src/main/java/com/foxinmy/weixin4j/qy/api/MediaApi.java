@@ -216,6 +216,8 @@ public class MediaApi extends QyApi {
 			}
 			HttpParams params = weixinExecutor.getExecuteParams();
 			request.setParams(params);
+			logger.info("weixin request >> " + request.getMethod() + " "
+					+ request.getURI().toString());
 			HttpResponse response = weixinExecutor.getExecuteClient().execute(
 					request);
 			byte[] content = IOUtil.toByteArray(response.getBody());
@@ -223,8 +225,12 @@ public class MediaApi extends QyApi {
 			String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
 			String disposition = headers
 					.getFirst(HttpHeaders.CONTENT_DISPOSITION);
-			if (contentType
-					.contains(ContentType.APPLICATION_JSON.getMimeType())
+			logger.info("weixin response << " + response.getProtocol()
+					+ response.getStatus().toString() + "[" + contentType
+					+ "]->" + disposition);
+			if (contentType.contains(ContentType.TEXT_PLAIN.getMimeType())
+					|| contentType.contains(ContentType.APPLICATION_JSON
+							.getMimeType())
 					|| (disposition != null && disposition.indexOf(".json") > 0)) {
 				JsonResult jsonResult = JSON.parseObject(content, 0,
 						content.length, Consts.UTF_8.newDecoder(),

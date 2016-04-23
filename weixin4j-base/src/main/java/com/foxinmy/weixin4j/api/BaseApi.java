@@ -5,6 +5,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
+import com.foxinmy.weixin4j.logging.InternalLogger;
+import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 
 /**
  * API基础
@@ -18,6 +20,9 @@ import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
  */
 public abstract class BaseApi {
 
+	protected final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
+	
 	protected final WeixinRequestExecutor weixinExecutor;
 
 	protected abstract ResourceBundle weixinBundle();

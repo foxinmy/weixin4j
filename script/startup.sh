@@ -8,7 +8,7 @@ JAVA_HOME="/usr/local/java"
 RUNNING_USER=root
  
 #App home
-APP_HOME="/path/to/java/app"
+APP_HOME="/path/to/weixin4j/service"
  
 #Main class
 APP_MAINCLASS=xx.xxx.mainClass.fullName
