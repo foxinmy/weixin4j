@@ -7,7 +7,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -144,9 +143,8 @@ public class HttpComponent3 extends AbstractHttpClient {
 			if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
 				headers.set(HttpHeaders.USER_AGENT, "apache/httpclient3");
 			}
-			for (Iterator<Entry<String, List<String>>> headerIterator = headers
-					.entrySet().iterator(); headerIterator.hasNext();) {
-				Entry<String, List<String>> header = headerIterator.next();
+			for (Entry<String, List<String>> header : headers
+					.entrySet()) {
 				if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
 					httpMethod.setRequestHeader(header.getKey(),
 							StringUtil.join(header.getValue(), ';'));

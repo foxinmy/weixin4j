@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.http.factory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.cert.X509Certificate;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -78,9 +77,8 @@ public abstract class HttpComponent4 extends AbstractHttpClient {
 		if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
 			headers.set(HttpHeaders.USER_AGENT, "apache/httpclient4");
 		}
-		for (Iterator<Entry<String, List<String>>> headerIterator = headers
-				.entrySet().iterator(); headerIterator.hasNext();) {
-			Entry<String, List<String>> header = headerIterator.next();
+		for (Entry<String, List<String>> header : headers
+				.entrySet()) {
 			if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
 				uriRequest.setHeader(header.getKey(),
 						StringUtil.join(header.getValue(), ';'));

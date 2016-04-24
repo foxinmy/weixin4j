@@ -7,7 +7,6 @@ import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URLConnection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -119,9 +118,8 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 			}
 			logger.debug("request >> " + request.getMethod() + " "
 					+ request.getURI().toString());
-			for (Iterator<Entry<String, List<String>>> headerIterator = headers
-					.entrySet().iterator(); headerIterator.hasNext();) {
-				Entry<String, List<String>> header = headerIterator.next();
+			for (Entry<String, List<String>> header : headers
+					.entrySet()) {
 				if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
 					connection.setRequestProperty(header.getKey(),
 							StringUtil.join(header.getValue(), ';'));
@@ -173,10 +171,8 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 			response = new SimpleHttpResponse(connection, content);
 			logger.debug("response << " + response.getProtocol()
 					+ response.getStatus().toString());
-			for (Iterator<Entry<String, List<String>>> headerIterator = response
-					.getHeaders().entrySet().iterator(); headerIterator
-					.hasNext();) {
-				Entry<String, List<String>> header = headerIterator.next();
+			for (Entry<String, List<String>> header : response
+					.getHeaders().entrySet()) {
 				logger.debug("headers << " + header.getKey() + ":"
 						+ StringUtil.join(header.getValue(), ';'));
 			}

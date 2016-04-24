@@ -7,7 +7,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -74,10 +73,7 @@ public class ListsuffixResultDeserializer {
 		T t = XmlStream.fromXML(content, clazz);
 		Map<Field, String[]> listsuffixFields = getListsuffixFields(clazz);
 		if (!listsuffixFields.isEmpty()) {
-			Iterator<Entry<Field, String[]>> it = listsuffixFields.entrySet()
-					.iterator();
-			while (it.hasNext()) {
-				Entry<Field, String[]> entry = it.next();
+			for (Entry<Field, String[]> entry : listsuffixFields.entrySet()) {
 				Field field = entry.getKey();
 				Type type = field.getGenericType();
 				Class<?> wrapperClazz = null;
@@ -173,15 +169,13 @@ public class ListsuffixResultDeserializer {
 						;
 					}
 				}
-				for (Iterator<Entry<String, Map<String, String>>> outIt = outMap
-						.entrySet().iterator(); outIt.hasNext();) {
+				for (Entry<String, Map<String, String>> outE : outMap
+						.entrySet()) {
 					xw.writeStartElement(itemName);
-					for (Iterator<Entry<String, String>> innerIt = outIt.next()
-							.getValue().entrySet().iterator(); innerIt
-							.hasNext();) {
-						Entry<String, String> entry = innerIt.next();
-						xw.writeStartElement(entry.getKey());
-						xw.writeCharacters(entry.getValue());
+					for (Entry<String, String> innerE : outE
+							.getValue().entrySet()) {
+						xw.writeStartElement(innerE.getKey());
+						xw.writeCharacters(innerE.getValue());
 						xw.writeEndElement();
 					}
 					xw.writeEndElement();

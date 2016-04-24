@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
@@ -184,9 +183,8 @@ public class Netty4HttpClient extends AbstractHttpClient {
 		if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
 			headers.set(HttpHeaders.USER_AGENT, "netty/httpclient");
 		}
-		for (Iterator<Entry<String, List<String>>> headerIterator = headers
-				.entrySet().iterator(); headerIterator.hasNext();) {
-			Entry<String, List<String>> header = headerIterator.next();
+		for (Entry<String, List<String>> header : headers
+				.entrySet()) {
 			uriRequest.headers().set(header.getKey(), header.getValue());
 		}
 		uriRequest.headers().set(HttpHeaders.ACCEPT_CHARSET, "utf-8");

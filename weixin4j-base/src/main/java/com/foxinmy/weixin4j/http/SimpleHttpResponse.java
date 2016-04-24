@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.http;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -55,9 +54,8 @@ public class SimpleHttpResponse extends AbstractHttpResponse {
 			headers = new HttpHeaders();
 			Map<String, List<String>> headerFields = connection
 					.getHeaderFields();
-			for (Iterator<Entry<String, List<String>>> headerIterator = headerFields
-					.entrySet().iterator(); headerIterator.hasNext();) {
-				Entry<String, List<String>> headerEntry = headerIterator.next();
+			for (Entry<String, List<String>> headerEntry : headerFields
+					.entrySet()) {
 				headers.put(headerEntry.getKey(), headerEntry.getValue());
 			}
 		}

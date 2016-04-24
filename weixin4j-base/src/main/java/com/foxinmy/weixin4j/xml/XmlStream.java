@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -122,8 +121,7 @@ public final class XmlStream {
 			XMLStreamWriter xw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
 			xw.writeStartDocument(Consts.UTF_8.name(), XML_VERSION);
 			xw.writeStartElement(ROOT_ELEMENT_XML);
-			for (Iterator<Entry<String, String>> it = map.entrySet().iterator(); it.hasNext();) {
-				Entry<String, String> entry = it.next();
+			for (Entry<String, String> entry : map.entrySet()) {
 				if (StringUtil.isBlank(entry.getValue())) {
 					continue;
 				}
@@ -159,8 +157,7 @@ public final class XmlStream {
 			XMLStreamWriter xw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
 			xw.writeStartDocument(Consts.UTF_8.name(), XML_VERSION);
 			xw.writeStartElement(ROOT_ELEMENT_XML);
-			for (Iterator<Entry<String, Object>> it = json.entrySet().iterator(); it.hasNext();) {
-				Entry<String, Object> entry = it.next();
+			for (Entry<String, Object> entry : json.entrySet()) {
 				if (StringUtil.isBlank(json.getString(entry.getKey()))) {
 					continue;
 				}

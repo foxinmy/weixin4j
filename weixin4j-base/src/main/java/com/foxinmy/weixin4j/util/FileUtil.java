@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * 文件工具类
@@ -112,12 +112,11 @@ public class FileUtil {
 			int t = is.read(b, 0, b.length);
 			if (t > 0) {
 				String fileCode = bytesToHexString(b).toLowerCase();
-				Iterator<String> keyIter = FILE_TYPE_MAP.keySet().iterator();
-				while (keyIter.hasNext()) {
-					String key = keyIter.next().toLowerCase();
+				for (Entry<String, String> entry : FILE_TYPE_MAP.entrySet()) {
+					String key = entry.getKey().toLowerCase();
 					if (key.startsWith(fileCode) || fileCode.startsWith(key)
 							|| key.endsWith(fileCode) || fileCode.endsWith(key)) {
-						fileType = FILE_TYPE_MAP.get(key);
+						fileType = entry.getValue();
 						break;
 					}
 				}

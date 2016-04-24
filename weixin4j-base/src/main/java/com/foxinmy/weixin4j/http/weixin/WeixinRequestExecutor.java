@@ -104,7 +104,7 @@ public class WeixinRequestExecutor {
 			HttpHeaders headers = httpResponse.getHeaders();
 			WeixinResponse response = new WeixinResponse(httpResponse);
 			logger.info("weixin response << " + httpResponse.getProtocol()
-					+ httpResponse.getStatus().toString() + " "
+					+ httpResponse.getStatus().toString() + ":"
 					+ response.getAsString());
 			String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
 			String disposition = headers
