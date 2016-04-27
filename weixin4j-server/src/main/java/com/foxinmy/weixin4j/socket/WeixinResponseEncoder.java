@@ -29,8 +29,21 @@ import com.foxinmy.weixin4j.util.ServerToolkits;
 public class WeixinResponseEncoder extends
 		MessageToMessageEncoder<WeixinResponse> {
 
-	private final InternalLogger logger = InternalLoggerFactory
+	protected final InternalLogger logger = InternalLoggerFactory
 			.getInstance(getClass());
+
+	private final String XML_START = "<xml>";
+	// ---------------明文节点
+	private final String ELEMENT_TOUSERNAME = "<ToUserName><![CDATA[%s]]></ToUserName>";
+	private final String ELEMENT_FROMUSERNAME = "<FromUserName><![CDATA[%s]]></FromUserName>";
+	private final String ELEMENT_CREATETIME = "<CreateTime><![CDATA[%d]]></CreateTime>";
+	private final String ELEMENT_MSGTYPE = "<MsgType><![CDATA[%s]]></MsgType>";
+	// ---------------密文节点
+	private final String ELEMENT_MSGSIGNATURE = "<MsgSignature><![CDATA[%s]]></MsgSignature>";
+	private final String ELEMENT_ENCRYPT = "<Encrypt><![CDATA[%s]]></Encrypt>";
+	private final String ELEMENT_TIMESTAMP = "<TimeStamp><![CDATA[%s]]></TimeStamp>";
+	private final String ELEMENT_NONCE = "<Nonce><![CDATA[%s]]></Nonce>";
+	private final String XML_END = "</xml>";
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, WeixinResponse response,
@@ -39,18 +52,16 @@ public class WeixinResponseEncoder extends
 				.attr(ServerToolkits.MESSAGE_TRANSFER_KEY).get();
 		EncryptType encryptType = messageTransfer.getEncryptType();
 		StringBuilder content = new StringBuilder();
-		content.append("<xml>");
-		content.append(String.format("<ToUserName><![CDATA[%s]]></ToUserName>",
+		content.append(XML_START);
+		content.append(String.format(ELEMENT_TOUSERNAME,
 				messageTransfer.getFromUserName()));
-		content.append(String.format(
-				"<FromUserName><![CDATA[%s]]></FromUserName>",
+		content.append(String.format(ELEMENT_FROMUSERNAME,
 				messageTransfer.getToUserName()));
-		content.append(String.format("<CreateTime><![CDATA[%d]]></CreateTime>",
+		content.append(String.format(ELEMENT_CREATETIME,
 				System.currentTimeMillis() / 1000l));
-		content.append(String.format("<MsgType><![CDATA[%s]]></MsgType>",
-				response.getMsgType()));
+		content.append(String.format(ELEMENT_MSGTYPE, response.getMsgType()));
 		content.append(response.toContent());
-		content.append("</xml>");
+		content.append(XML_END);
 		if (encryptType == EncryptType.AES) {
 			AesToken aesToken = messageTransfer.getAesToken();
 			String nonce = ServerToolkits.generateRandomString(32);
@@ -61,17 +72,12 @@ public class WeixinResponseEncoder extends
 			String msgSignature = MessageUtil.signature(aesToken.getToken(),
 					nonce, timestamp, encrtypt);
 			content.delete(0, content.length());
-			content.append("<xml>");
-			content.append(String
-					.format("<Nonce><![CDATA[%s]]></Nonce>", nonce));
-			content.append(String.format(
-					"<TimeStamp><![CDATA[%s]]></TimeStamp>", timestamp));
-			content.append(String
-					.format("<MsgSignature><![CDATA[%s]]></MsgSignature>",
-							msgSignature));
-			content.append(String.format("<Encrypt><![CDATA[%s]]></Encrypt>",
-					encrtypt));
-			content.append("</xml>");
+			content.append(XML_START);
+			content.append(String.format(ELEMENT_NONCE, nonce));
+			content.append(String.format(ELEMENT_TIMESTAMP, timestamp));
+			content.append(String.format(ELEMENT_MSGSIGNATURE, msgSignature));
+			content.append(String.format(ELEMENT_ENCRYPT, encrtypt));
+			content.append(XML_END);
 		}
 		ctx.writeAndFlush(HttpUtil.createHttpResponse(content.toString(),
 				ServerToolkits.CONTENTTYPE$APPLICATION_XML));
