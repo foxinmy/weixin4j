@@ -23,7 +23,7 @@ public class ChatItem implements Serializable {
 
 	private static final long serialVersionUID = -5921235260175596270L;
 
-	public final String LIST_SEPARATOR = "\\|";
+	private final String LIST_SEPARATOR = "\\|";
 
 	/**
 	 * 操作成员UserID
@@ -92,12 +92,27 @@ public class ChatItem implements Serializable {
 	@XmlElement(name = "Content")
 	private String content;
 	/**
-	 * 图片链接
+	 * 图片消息链接
 	 */
 	@XmlElement(name = "PicUrl")
 	private String picUrl;
 	/**
-	 * 图片媒体文件id，可以调用获取媒体文件接口拉取数据
+	 * 链接消息标题
+	 */
+	@XmlElement(name = "Title")
+	private String title;
+	/**
+	 * 链接消息描述
+	 */
+	@XmlElement(name = "Description")
+	private String description;
+	/**
+	 * 链接消息链接
+	 */
+	@XmlElement(name = "Url")
+	private String url;
+	/**
+	 * 图片、语音、文件消息的媒体id，可以调用获取媒体文件接口拉取数据
 	 */
 	@XmlElement(name = "MediaId")
 	private String mediaId;
@@ -195,6 +210,22 @@ public class ChatItem implements Serializable {
 		return mediaId;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
 	@Override
 	public String toString() {
 		return "ChatItem [operatorId=" + operatorId + ", createTime="
@@ -203,7 +234,8 @@ public class ChatItem implements Serializable {
 				+ ", ownerId=" + ownerId + ", members=" + members
 				+ ", addMembers=" + addMembers + ", deleteMembers="
 				+ deleteMembers + ", msgId=" + msgId + ", receiver=" + receiver
-				+ ", content=" + content + ", picUrl=" + picUrl + ", mediaId="
-				+ mediaId + "]";
+				+ ", content=" + content + ", picUrl=" + picUrl + ", title="
+				+ title + ", description=" + description + ", url=" + url
+				+ ", mediaId=" + mediaId + "]";
 	}
 }
