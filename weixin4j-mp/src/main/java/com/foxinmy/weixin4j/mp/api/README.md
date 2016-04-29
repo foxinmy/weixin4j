@@ -23,3 +23,5 @@
 * TmplApi `模板消息API`
 
 * UserApi `用户管理API`
+
+* TagApi `用户标签管理API`

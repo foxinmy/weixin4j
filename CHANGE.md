@@ -676,3 +676,7 @@
 * 2016-04-02
 
   + version upgrade to 1.6.8 & 1.1.7
+  
+* 2016-04-29
+
+  + weixin4j-mp:新增标签管理API

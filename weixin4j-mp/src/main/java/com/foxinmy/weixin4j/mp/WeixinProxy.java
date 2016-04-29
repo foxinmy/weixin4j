@@ -23,6 +23,7 @@ import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.MenuApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
 import com.foxinmy.weixin4j.mp.api.QrApi;
+import com.foxinmy.weixin4j.mp.api.TagApi;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
 import com.foxinmy.weixin4j.mp.api.UserApi;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;
@@ -41,6 +42,7 @@ import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.QRResult;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
+import com.foxinmy.weixin4j.mp.model.Tag;
 import com.foxinmy.weixin4j.mp.model.TemplateMessageInfo;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.token.WeixinTicketCreator;
@@ -113,6 +115,10 @@ public class WeixinProxy {
 	 */
 	private final DataApi dataApi;
 	/**
+	 * 标签API
+	 */
+	private final TagApi tagApi;
+	/**
 	 * token实现
 	 */
 	private final TokenHolder tokenHolder;
@@ -135,8 +141,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.util.Weixin4jSettings
 	 */
 	public WeixinProxy(Weixin4jSettings settings) {
-		this(new TokenHolder(
-				new WeixinTokenCreator(settings.getWeixinAccount().getId(), settings.getWeixinAccount().getSecret()),
+		this(new TokenHolder(new WeixinTokenCreator(settings.getWeixinAccount()
+				.getId(), settings.getWeixinAccount().getSecret()),
 				settings.getTokenStorager0()));
 		this.settings = settings;
 	}
@@ -160,6 +166,7 @@ public class WeixinProxy {
 		this.tmplApi = new TmplApi(tokenHolder);
 		this.helperApi = new HelperApi(tokenHolder);
 		this.dataApi = new DataApi(tokenHolder);
+		this.tagApi = new TagApi(tokenHolder);
 	}
 
 	/**
@@ -188,7 +195,8 @@ public class WeixinProxy {
 	 * @return
 	 */
 	public TokenHolder getTicketHolder(TicketType ticketType) {
-		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount().getId(), ticketType, this.tokenHolder),
+		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount()
+				.getId(), ticketType, this.tokenHolder),
 				this.settings.getTokenStorager0());
 	}
 
@@ -204,7 +212,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 */
-	public String uploadImage(InputStream is, String fileName) throws WeixinException {
+	public String uploadImage(InputStream is, String fileName)
+			throws WeixinException {
 		return mediaApi.uploadImage(is, fileName);
 	}
 
@@ -227,14 +236,13 @@ public class WeixinProxy {
 	 *      高级群发</a>
 	 * @see com.foxinmy.weixin4j.tuple.MpVideo
 	 */
-	public MpVideo uploadVideo(InputStream is, String fileName, String title, String description)
-			throws WeixinException {
+	public MpVideo uploadVideo(InputStream is, String fileName, String title,
+			String description) throws WeixinException {
 		return mediaApi.uploadVideo(is, fileName, title, description);
 	}
 
 	/**
-	 * 上传媒体文件 </br>
-	 * <font color="red">此接口只包含图片、语音、缩略图、视频(临时)四种媒体类型的上传</font>
+	 * 上传媒体文件 </br> <font color="red">此接口只包含图片、语音、缩略图、视频(临时)四种媒体类型的上传</font>
 	 * </p>
 	 * 
 	 * @param isMaterial
@@ -255,7 +263,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 */
-	public MediaUploadResult uploadMedia(boolean isMaterial, InputStream is, String fileName) throws WeixinException {
+	public MediaUploadResult uploadMedia(boolean isMaterial, InputStream is,
+			String fileName) throws WeixinException {
 		return mediaApi.uploadMedia(isMaterial, is, fileName);
 	}
 
@@ -277,7 +286,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738730&token=&lang=zh_CN">
 	 *      下载永久媒体素材</a>
 	 */
-	public MediaDownloadResult downloadMedia(String mediaId, boolean isMaterial) throws WeixinException {
+	public MediaDownloadResult downloadMedia(String mediaId, boolean isMaterial)
+			throws WeixinException {
 		return mediaApi.downloadMedia(mediaId, isMaterial);
 	}
 
@@ -298,7 +308,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729&token=&lang=zh_CN">
 	 *      上传永久媒体素材</a>
 	 */
-	public String uploadMaterialArticle(List<MpArticle> articles) throws WeixinException {
+	public String uploadMaterialArticle(List<MpArticle> articles)
+			throws WeixinException {
 		return mediaApi.uploadMaterialArticle(articles);
 	}
 
@@ -313,7 +324,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 */
-	public List<MpArticle> downloadArticle(String mediaId) throws WeixinException {
+	public List<MpArticle> downloadArticle(String mediaId)
+			throws WeixinException {
 		return mediaApi.downloadArticle(mediaId);
 	}
 
@@ -334,7 +346,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738732&token=&lang=zh_CN">
 	 *      更新永久图文素材</a>
 	 */
-	public JsonResult updateMaterialArticle(String mediaId, int index, MpArticle article) throws WeixinException {
+	public JsonResult updateMaterialArticle(String mediaId, int index,
+			MpArticle article) throws WeixinException {
 		return mediaApi.updateMaterialArticle(mediaId, index, article);
 	}
 
@@ -350,7 +363,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738731&token=&lang=zh_CN">
 	 *      删除永久媒体素材</a>
 	 */
-	public JsonResult deleteMaterialMedia(String mediaId) throws WeixinException {
+	public JsonResult deleteMaterialMedia(String mediaId)
+			throws WeixinException {
 		return mediaApi.deleteMaterialMedia(mediaId);
 	}
 
@@ -372,14 +386,13 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
 	 */
-	public String uploadMaterialVideo(InputStream is, String fileName, String title, String introduction)
-			throws WeixinException {
+	public String uploadMaterialVideo(InputStream is, String fileName,
+			String title, String introduction) throws WeixinException {
 		return mediaApi.uploadMaterialVideo(is, fileName, title, introduction);
 	}
 
 	/**
-	 * 获取永久媒体素材的总数</br>
-	 * .图片和图文消息素材（包括单图文和多图文）的总数上限为5000，其他素材的总数上限为1000
+	 * 获取永久媒体素材的总数</br> .图片和图文消息素材（包括单图文和多图文）的总数上限为5000，其他素材的总数上限为1000
 	 * 
 	 * @return 总数对象
 	 * @throws WeixinException
@@ -412,7 +425,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738734&token=&lang=zh_CN">
 	 *      获取素材列表</a>
 	 */
-	public MediaRecord listMaterialMedia(MediaType mediaType, Pageable pageable) throws WeixinException {
+	public MediaRecord listMaterialMedia(MediaType mediaType, Pageable pageable)
+			throws WeixinException {
 		return mediaApi.listMaterialMedia(mediaType, pageable);
 	}
 
@@ -426,7 +440,8 @@ public class WeixinProxy {
 	 * @see {@link #listMaterialMedia(MediaType, Pageable)}
 	 * @throws WeixinException
 	 */
-	public List<MediaItem> listAllMaterialMedia(MediaType mediaType) throws WeixinException {
+	public List<MediaItem> listAllMaterialMedia(MediaType mediaType)
+			throws WeixinException {
 		return mediaApi.listAllMaterialMedia(mediaType);
 	}
 
@@ -463,7 +478,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.tuple.News
 	 * @see com.foxinmy.weixin4j.mp.api.NotifyApi
 	 */
-	public JsonResult sendNotify(NotifyMessage notify, String kfAccount) throws WeixinException {
+	public JsonResult sendNotify(NotifyMessage notify, String kfAccount)
+			throws WeixinException {
 		return notifyApi.sendNotify(notify, kfAccount);
 	}
 
@@ -484,7 +500,8 @@ public class WeixinProxy {
 	 *      查询客服聊天记录</a>
 	 * @throws WeixinException
 	 */
-	public List<KfChatRecord> getKfChatRecord(Date startTime, Date endTime, Pageable pageable) throws WeixinException {
+	public List<KfChatRecord> getKfChatRecord(Date startTime, Date endTime,
+			Pageable pageable) throws WeixinException {
 		return customApi.getKfChatRecord(startTime, endTime, pageable);
 	}
 
@@ -505,7 +522,8 @@ public class WeixinProxy {
 	 *      获取在线客服接待信息</a>
 	 * @throws WeixinException
 	 */
-	public List<KfAccount> listKfAccount(boolean isOnline) throws WeixinException {
+	public List<KfAccount> listKfAccount(boolean isOnline)
+			throws WeixinException {
 		return customApi.listKfAccount(isOnline);
 	}
 
@@ -526,7 +544,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      新增客服账号</a>
 	 */
-	public JsonResult createKfAccount(String id, String name, String pwd) throws WeixinException {
+	public JsonResult createKfAccount(String id, String name, String pwd)
+			throws WeixinException {
 		return customApi.createKfAccount(id, name, pwd);
 	}
 
@@ -547,7 +566,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      更新客服账号</a>
 	 */
-	public JsonResult updateKfAccount(String id, String name, String pwd) throws WeixinException {
+	public JsonResult updateKfAccount(String id, String name, String pwd)
+			throws WeixinException {
 		return customApi.updateKfAccount(id, name, pwd);
 	}
 
@@ -567,7 +587,8 @@ public class WeixinProxy {
 	 *      >邀请绑定客服帐号<a/>
 	 * @throws WeixinException
 	 */
-	public JsonResult inviteKfAccount(String kfAccount, String inviteAccount) throws WeixinException {
+	public JsonResult inviteKfAccount(String kfAccount, String inviteAccount)
+			throws WeixinException {
 		return customApi.inviteKfAccount(kfAccount, inviteAccount);
 	}
 
@@ -587,7 +608,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      上传客服头像</a>
 	 */
-	public JsonResult uploadKfAvatar(String accountId, InputStream is, String fileName) throws WeixinException {
+	public JsonResult uploadKfAvatar(String accountId, InputStream is,
+			String fileName) throws WeixinException {
 		return customApi.uploadKfAvatar(accountId, is, fileName);
 	}
 
@@ -627,7 +649,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      创建会话</a>
 	 */
-	public JsonResult createKfSession(String userOpenId, String kfAccount, String text) throws WeixinException {
+	public JsonResult createKfSession(String userOpenId, String kfAccount,
+			String text) throws WeixinException {
 		return customApi.createKfSession(userOpenId, kfAccount, text);
 	}
 
@@ -647,7 +670,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
 	 *      关闭会话</a>
 	 */
-	public JsonResult closeKfSession(String userOpenId, String kfAccount, String text) throws WeixinException {
+	public JsonResult closeKfSession(String userOpenId, String kfAccount,
+			String text) throws WeixinException {
 		return customApi.closeKfSession(userOpenId, kfAccount, text);
 	}
 
@@ -681,7 +705,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
 	 *      获取客服的会话列表</a>
 	 */
-	public List<KfSession> listKfSession(String kfAccount) throws WeixinException {
+	public List<KfSession> listKfSession(String kfAccount)
+			throws WeixinException {
 		return customApi.listKfSession(kfAccount);
 	}
 
@@ -714,7 +739,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 */
-	public String uploadMassArticle(List<MpArticle> articles) throws WeixinException {
+	public String uploadMassArticle(List<MpArticle> articles)
+			throws WeixinException {
 		return massApi.uploadArticle(articles);
 	}
 
@@ -747,7 +773,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">
 	 *      根据分组群发</a>
 	 */
-	public String[] massByGroupId(MassTuple tuple, boolean isToAll, int groupId) throws WeixinException {
+	public String[] massByGroupId(MassTuple tuple, boolean isToAll, int groupId)
+			throws WeixinException {
 		return massApi.massByGroupId(tuple, isToAll, groupId);
 	}
 
@@ -766,7 +793,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @throws WeixinException
 	 */
-	public String[] massArticleByGroupId(List<MpArticle> articles, int groupId) throws WeixinException {
+	public String[] massArticleByGroupId(List<MpArticle> articles, int groupId)
+			throws WeixinException {
 		return massApi.massArticleByGroupId(articles, groupId);
 	}
 
@@ -797,7 +825,8 @@ public class WeixinProxy {
 	 *      根据openid群发</a>
 	 * @see {@link #getUser(String)}
 	 */
-	public String[] massByOpenIds(MassTuple tuple, String... openIds) throws WeixinException {
+	public String[] massByOpenIds(MassTuple tuple, String... openIds)
+			throws WeixinException {
 		return massApi.massByOpenIds(tuple, openIds);
 	}
 
@@ -816,7 +845,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @throws WeixinException
 	 */
-	public String[] massArticleByOpenIds(List<MpArticle> articles, String... openIds) throws WeixinException {
+	public String[] massArticleByOpenIds(List<MpArticle> articles,
+			String... openIds) throws WeixinException {
 		return massApi.massArticleByOpenIds(articles, openIds);
 	}
 
@@ -842,8 +872,7 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 预览群发消息</br>
-	 * 开发者可通过该接口发送消息给指定用户，在手机端查看消息的样式和排版
+	 * 预览群发消息</br> 开发者可通过该接口发送消息给指定用户，在手机端查看消息的样式和排版
 	 * 
 	 * @param toUser
 	 *            接收用户的openID
@@ -859,7 +888,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">
 	 *      预览群发消息</a>
 	 */
-	public JsonResult previewMassNews(String toUser, String toWxName, MassTuple tuple) throws WeixinException {
+	public JsonResult previewMassNews(String toUser, String toWxName,
+			MassTuple tuple) throws WeixinException {
 		return massApi.previewMassNews(toUser, toWxName, tuple);
 	}
 
@@ -955,7 +985,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
 	 * @throws WeixinException
 	 */
-	public List<User> getUsers(Lang lang, String... openIds) throws WeixinException {
+	public List<User> getUsers(Lang lang, String... openIds)
+			throws WeixinException {
 		return userApi.getUsers(lang, openIds);
 	}
 
@@ -993,7 +1024,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
 	 * @see com.foxinmy.weixin4j.mp.model.Following
 	 */
-	public Following getFollowingOpenIds(String nextOpenId) throws WeixinException {
+	public Following getFollowingOpenIds(String nextOpenId)
+			throws WeixinException {
 		return userApi.getFollowingOpenIds(nextOpenId);
 	}
 
@@ -1053,7 +1085,8 @@ public class WeixinProxy {
 	 *      设置用户备注名</a>
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
 	 */
-	public JsonResult remarkUserName(String openId, String remark) throws WeixinException {
+	public JsonResult remarkUserName(String openId, String remark)
+			throws WeixinException {
 		return userApi.remarkUserName(openId, remark);
 	}
 
@@ -1121,7 +1154,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 * @see com.foxinmy.weixin4j.mp.api.GroupApi
 	 */
-	public JsonResult modifyGroup(int groupId, String name) throws WeixinException {
+	public JsonResult modifyGroup(int groupId, String name)
+			throws WeixinException {
 		return groupApi.modifyGroup(groupId, name);
 	}
 
@@ -1139,7 +1173,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 * @see com.foxinmy.weixin4j.mp.api.GroupApi
 	 */
-	public JsonResult moveGroup(int groupId, String openId) throws WeixinException {
+	public JsonResult moveGroup(int groupId, String openId)
+			throws WeixinException {
 		return groupApi.moveGroup(groupId, openId);
 	}
 
@@ -1157,7 +1192,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 * @see com.foxinmy.weixin4j.mp.api.GroupApi
 	 */
-	public JsonResult moveGroup(int groupId, String... openIds) throws WeixinException {
+	public JsonResult moveGroup(int groupId, String... openIds)
+			throws WeixinException {
 		return groupApi.moveGroup(groupId, openIds);
 	}
 
@@ -1257,7 +1293,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.MenuApi
 	 * @see com.foxinmy.weixin4j.model.Button
 	 */
-	public String createCustomMenu(List<Button> buttons, MenuMatchRule matchRule) throws WeixinException {
+	public String createCustomMenu(List<Button> buttons, MenuMatchRule matchRule)
+			throws WeixinException {
 		return menuApi.createCustomMenu(buttons, matchRule);
 	}
 
@@ -1323,7 +1360,8 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">
 	 *      设置所处行业</a>
 	 */
-	public JsonResult setTmplIndustry(IndustryType... industryTypes) throws WeixinException {
+	public JsonResult setTmplIndustry(IndustryType... industryTypes)
+			throws WeixinException {
 		return tmplApi.setTmplIndustry(industryTypes);
 	}
 
@@ -1391,7 +1429,8 @@ public class WeixinProxy {
 	 * @seee com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
 	 */
-	public JsonResult sendTmplMessage(TemplateMessage tplMessage) throws WeixinException {
+	public JsonResult sendTmplMessage(TemplateMessage tplMessage)
+			throws WeixinException {
 		return tmplApi.sendTmplMessage(tplMessage);
 	}
 
@@ -1509,7 +1548,8 @@ public class WeixinProxy {
 	 *      接口分析</a>
 	 * @throws WeixinException
 	 */
-	public List<?> datacube(DatacubeType datacubeType, Date beginDate, Date endDate) throws WeixinException {
+	public List<?> datacube(DatacubeType datacubeType, Date beginDate,
+			Date endDate) throws WeixinException {
 		return dataApi.datacube(datacubeType, beginDate, endDate);
 	}
 
@@ -1526,7 +1566,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.DataApi
 	 * @throws WeixinException
 	 */
-	public List<?> datacube(DatacubeType datacubeType, Date beginDate, int offset) throws WeixinException {
+	public List<?> datacube(DatacubeType datacubeType, Date beginDate,
+			int offset) throws WeixinException {
 		return dataApi.datacube(datacubeType, beginDate, offset);
 	}
 
@@ -1543,7 +1584,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.DataApi
 	 * @throws WeixinException
 	 */
-	public List<?> datacube(DatacubeType datacubeType, int offset, Date endDate) throws WeixinException {
+	public List<?> datacube(DatacubeType datacubeType, int offset, Date endDate)
+			throws WeixinException {
 		return dataApi.datacube(datacubeType, offset, endDate);
 	}
 
@@ -1558,8 +1600,157 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.mp.api.DataApi
 	 * @throws WeixinException
 	 */
-	public List<?> datacube(DatacubeType datacubeType, Date date) throws WeixinException {
+	public List<?> datacube(DatacubeType datacubeType, Date date)
+			throws WeixinException {
 		return dataApi.datacube(datacubeType, date);
+	}
+
+	/**
+	 * 创建标签
+	 * 
+	 * @param name
+	 *            标签名（30个字符以内）
+	 * @return 标签对象
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see com.foxinmy.weixin4j.mp.model.Tag
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">创建标签</a>
+	 */
+	public Tag createTag(String name) throws WeixinException {
+		return tagApi.createTag(name);
+	}
+
+	/**
+	 * 获取标签
+	 * 
+	 * @return 标签列表
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see com.foxinmy.weixin4j.mp.model.Tag
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">获取标签</a>
+	 */
+	public List<Tag> listTags() throws WeixinException {
+		return tagApi.listTags();
+	}
+
+	/**
+	 * 更新标签
+	 * 
+	 * @param tag
+	 *            标签对象
+	 * @return 操作结果
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see com.foxinmy.weixin4j.mp.model.Tag
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">更新标签</a>
+	 */
+	public JsonResult updateTag(Tag tag) throws WeixinException {
+		return tagApi.updateTag(tag);
+	}
+
+	/**
+	 * 删除标签
+	 * 
+	 * @param tagId
+	 *            标签id
+	 * @return 操作结果
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">删除标签</a>
+	 */
+	public JsonResult deleteTag(int tagId) throws WeixinException {
+		return tagApi.deleteTag(tagId);
+	}
+
+	/**
+	 * 批量为用户打标签:标签功能目前支持公众号为用户打上最多三个标签
+	 * 
+	 * @param tagId
+	 *            标签ID
+	 * @param openIds
+	 *            用户ID
+	 * @return 操作结果
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">批量为用户打标签</a>
+	 */
+	public JsonResult taggingUsers(int tagId, String... openIds)
+			throws WeixinException {
+		return tagApi.taggingUsers(tagId, openIds);
+	}
+
+	/**
+	 * 批量为用户取消标签
+	 * 
+	 * @param tagId
+	 *            标签ID
+	 * @param openIds
+	 *            用户ID
+	 * @return 操作结果
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">批量为用户取消标签</a>
+	 */
+	public JsonResult untaggingUsers(int tagId, String... openIds)
+			throws WeixinException {
+		return tagApi.untaggingUsers(tagId, openIds);
+	}
+
+	/**
+	 * 获取标签下粉丝列表
+	 * 
+	 * @param tagId
+	 *            标签ID
+	 * @param nextOpenId
+	 *            第一个拉取的OPENID，不填默认从头开始拉取
+	 * @return 用户openid列表
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">获取标签下粉丝列表</a>
+	 */
+	public Following getTagFollowingOpenIds(int tagId, String nextOpenId)
+			throws WeixinException {
+		return tagApi.getTagFollowingOpenIds(tagId, nextOpenId);
+	}
+
+	/**
+	 * 获取标签下全部的粉丝列表 <font corlor="red">请慎重使用</font>
+	 * 
+	 * @param tagId
+	 *            标签ID
+	 * @return 用户openid列表
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see #getTagFollowingOpenIds(int,String)
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">获取标签下粉丝列表</a>
+	 */
+	public List<String> getAllTagFollowingOpenIds(int tagId)
+			throws WeixinException {
+		return tagApi.getAllTagFollowingOpenIds(tagId);
+	}
+
+	/**
+	 * 获取用户身上的标签列表
+	 * 
+	 * @param openId
+	 *            用户ID
+	 * @return 标签ID集合
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">
+	 *      获取用户身上的标签列表</a>
+	 */
+	public Integer[] getUserTags(String openId) throws WeixinException {
+		return tagApi.getUserTags(openId);
 	}
 
 	public final static String VERSION = "1.6.8";

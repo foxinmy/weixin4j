@@ -40,6 +40,7 @@ public abstract class MessageInterceptorAdapter implements
 			throws WeixinException {
 	}
 
+	@Override
 	public int weight() {
 		return 0;
 	}
