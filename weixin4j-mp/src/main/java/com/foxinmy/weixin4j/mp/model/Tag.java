@@ -33,6 +33,12 @@ public class Tag implements Serializable {
 
 	@JSONCreator
 	public Tag(@JSONField(name = "id") int id,
+			@JSONField(name = "name") String name) {
+		this(id, name, 0);
+	}
+
+	@JSONCreator
+	public Tag(@JSONField(name = "id") int id,
 			@JSONField(name = "name") String name,
 			@JSONField(name = "count") int count) {
 		this.id = id;

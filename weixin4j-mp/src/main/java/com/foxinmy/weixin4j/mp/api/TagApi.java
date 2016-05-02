@@ -10,6 +10,7 @@ import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Tag;
+import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
@@ -23,9 +24,11 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  */
 public class TagApi extends MpApi {
 	private final TokenHolder tokenHolder;
+	private final UserApi userApi;
 
 	public TagApi(TokenHolder tokenHolder) {
 		this.tokenHolder = tokenHolder;
+		this.userApi = new UserApi(tokenHolder);
 	}
 
 	/**
@@ -45,7 +48,8 @@ public class TagApi extends MpApi {
 				String.format(tag_create_uri, tokenHolder.getAccessToken()),
 				String.format("{\"tag\":{\"name\":\"%s\"}}", name));
 
-		return response.getAsJson().getObject("tag", Tag.class);
+		return JSON.parseObject(response.getAsJson().getString("tag"),
+				Tag.class);
 	}
 
 	/**
@@ -79,9 +83,11 @@ public class TagApi extends MpApi {
 	 */
 	public JsonResult updateTag(Tag tag) throws WeixinException {
 		String tag_update_uri = getRequestUri("tag_update_uri");
+		JSONObject obj = new JSONObject();
+		obj.put("tag", tag);
 		WeixinResponse response = weixinExecutor.post(
 				String.format(tag_update_uri, tokenHolder.getAccessToken()),
-				JSON.toJSONString(tag));
+				obj.toJSONString());
 		return response.getAsJsonResult();
 	}
 
@@ -182,6 +188,35 @@ public class TagApi extends MpApi {
 	}
 
 	/**
+	 * 获取标签下粉丝列表 <font corlor="red">请慎重使用</font>
+	 * 
+	 * @param tagId
+	 *            标签ID
+	 * @param nextOpenId
+	 *            第一个拉取的OPENID，不填默认从头开始拉取
+	 * @return 被打标签者信息 <font color="red">包含用户的详细信息</font>
+	 * @throws WeixinException
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">获取标签下粉丝列表</a>
+	 */
+	public Following getTagFollowing(int tagId, String nextOpenId)
+			throws WeixinException {
+		Following following = getTagFollowingOpenIds(tagId, nextOpenId);
+		if (following.getCount() > 0) {
+			List<User> users = new ArrayList<User>(following.getCount());
+			for (int i = 1; i <= (int) Math.ceil(following.getCount() / 100d); i++) {
+				users.addAll(userApi.getUsers(following
+						.getOpenIds()
+						.subList((i - 1) * 100,
+								Math.min(i * 100, following.getCount()))
+						.toArray(new String[] {})));
+			}
+			following.setUserList(users);
+		}
+		return following;
+	}
+
+	/**
 	 * 获取标签下全部的粉丝列表 <font corlor="red">请慎重使用</font>
 	 * 
 	 * @param tagId
@@ -206,6 +241,32 @@ public class TagApi extends MpApi {
 			nextOpenId = f.getNextOpenId();
 		}
 		return openIds;
+	}
+
+	/**
+	 * 获取标签下全部的粉丝列表 <font corlor="red">请慎重使用</font>
+	 * 
+	 * @param tagId
+	 *            标签ID
+	 * @return 被打标签者信息 <font color="red">包含用户的详细信息</font>
+	 * @throws WeixinException
+	 * @see #getTagFollowing(int,String)
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">获取标签下粉丝列表</a>
+	 */
+	public List<User> getAllTagFollowing(int tagId) throws WeixinException {
+		List<User> userList = new ArrayList<User>();
+		String nextOpenId = null;
+		Following f = null;
+		for (;;) {
+			f = getTagFollowing(tagId, nextOpenId);
+			if (f.getCount() == 0) {
+				break;
+			}
+			userList.addAll(f.getUserList());
+			nextOpenId = f.getNextOpenId();
+		}
+		return userList;
 	}
 
 	/**

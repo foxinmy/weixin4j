@@ -1721,6 +1721,24 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 获取标签下粉丝列表 <font corlor="red">请慎重使用</font>
+	 * 
+	 * @param tagId
+	 *            标签ID
+	 * @param nextOpenId
+	 *            第一个拉取的OPENID，不填默认从头开始拉取
+	 * @return 被打标签者信息 <font color="red">包含用户的详细信息</font>
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">获取标签下粉丝列表</a>
+	 */
+	public Following getTagFollowing(int tagId, String nextOpenId)
+			throws WeixinException {
+		return tagApi.getTagFollowing(tagId, nextOpenId);
+	}
+
+	/**
 	 * 获取标签下全部的粉丝列表 <font corlor="red">请慎重使用</font>
 	 * 
 	 * @param tagId
@@ -1735,6 +1753,22 @@ public class WeixinProxy {
 	public List<String> getAllTagFollowingOpenIds(int tagId)
 			throws WeixinException {
 		return tagApi.getAllTagFollowingOpenIds(tagId);
+	}
+
+	/**
+	 * 获取标签下全部的粉丝列表 <font corlor="red">请慎重使用</font>
+	 * 
+	 * @param tagId
+	 *            标签ID
+	 * @return 被打标签者信息 <font color="red">包含用户的详细信息</font>
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see #getTagFollowing(int,String)
+	 * @see <a
+	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">获取标签下粉丝列表</a>
+	 */
+	public List<User> getAllTagFollowing(int tagId) throws WeixinException {
+		return tagApi.getAllTagFollowing(tagId);
 	}
 
 	/**
