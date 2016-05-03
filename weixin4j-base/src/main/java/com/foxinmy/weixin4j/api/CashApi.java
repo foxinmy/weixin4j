@@ -131,7 +131,7 @@ public class CashApi extends MchApi {
 	 * 
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
-	 * @param mpPayment
+	 * @param payment
 	 *            付款信息
 	 * @return 付款结果
 	 * @see com.foxinmy.weixin4j.payment.mch.CorpPayment

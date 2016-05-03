@@ -34,7 +34,7 @@ import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfChatRecord;
 import com.foxinmy.weixin4j.mp.model.KfSession;
-import com.foxinmy.weixin4j.mp.model.KfSession.kfSessionCounter;
+import com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter;
 import com.foxinmy.weixin4j.mp.model.Menu;
 import com.foxinmy.weixin4j.mp.model.MenuMatchRule;
 import com.foxinmy.weixin4j.mp.model.MenuSetting;
@@ -717,12 +717,12 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
 	 * @see com.foxinmy.weixin4j.mp.model.KfSession
-	 * @see com.foxinmy.weixin4j.mp.model.KfSession.kfSessionCounter
+	 * @see com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
 	 *      获取客服的会话列表</a>
 	 */
-	public kfSessionCounter listKfWaitSession() throws WeixinException {
+	public KfSessionCounter listKfWaitSession() throws WeixinException {
 		return customApi.listKfWaitSession();
 	}
 

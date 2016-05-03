@@ -83,7 +83,7 @@ public class KfSession implements Serializable {
 	 * @since JDK 1.6
 	 * @see
 	 */
-	public static class kfSessionCounter implements Iterable<KfSession>, Serializable {
+	public static class KfSessionCounter implements Iterable<KfSession>, Serializable {
 
 		private static final long serialVersionUID = -2200434961546270829L;
 

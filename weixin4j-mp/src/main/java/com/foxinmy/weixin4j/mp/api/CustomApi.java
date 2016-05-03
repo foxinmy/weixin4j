@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfChatRecord;
 import com.foxinmy.weixin4j.mp.model.KfSession;
-import com.foxinmy.weixin4j.mp.model.KfSession.kfSessionCounter;
+import com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.FileUtil;
@@ -358,17 +358,17 @@ public class CustomApi extends MpApi {
 	 * @return 会话列表
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.KfSession
-	 * @see com.foxinmy.weixin4j.mp.model.KfSession.kfSessionCounter
+	 * @see com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
 	 *      获取客服的会话列表</a>
 	 */
-	public kfSessionCounter listKfWaitSession() throws WeixinException {
+	public KfSessionCounter listKfWaitSession() throws WeixinException {
 		Token token = tokenHolder.getToken();
 		String kfsession_wait_uri = getRequestUri("kfsession_wait_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(kfsession_wait_uri, token.getAccessToken()));
 
-		return response.getAsObject(new TypeReference<kfSessionCounter>() {
+		return response.getAsObject(new TypeReference<KfSessionCounter>() {
 		});
 	}
 }

@@ -173,7 +173,7 @@ public class UserApi extends QyApi {
 	 * @see com.foxinmy.weixin4j.qy.model.User
 	 * @return 成员对象
 	 * @see {@link #getUser(String)}
-	 * @see {@link #getUserIdByCode(String,int)}
+	 * @see {@link #getUserIdByCode(String)}
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=OAuth%E9%AA%8C%E8%AF%81%E6%8E%A5%E5%8F%A3">
 	 *      oauth授权获取用户信息</a>
@@ -295,7 +295,7 @@ public class UserApi extends QyApi {
 	 * 
 	 * @param partyId
 	 *            部门ID
-	 * @see {@link #listUser(int, boolean,UserStatus)}
+	 * @see {@link #listUser(int, boolean, UserStatus,boolean)}
 	 * @return 成员列表
 	 * @throws WeixinException
 	 */

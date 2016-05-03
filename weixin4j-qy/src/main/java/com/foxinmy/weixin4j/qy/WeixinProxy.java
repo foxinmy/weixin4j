@@ -154,7 +154,7 @@ public class WeixinProxy {
 	 * 注意：TokenCreator 需为
 	 * <font color="red">WeixinTokenCreator或WeixinTokenSuiteCreator</font>
 	 * 
-	 * @see com.foxinmy.weixin4j.qy.token.WeixinTokenCreator.WeixinTokenCreator
+	 * @see com.foxinmy.weixin4j.qy.token.WeixinTokenCreator
 	 * @param tokenHolder
 	 */
 	private WeixinProxy(TokenHolder tokenHolder) {
@@ -716,7 +716,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.qy.api.UserApi
 	 * @return 成员对象
 	 * @see {@link #getUser(String)}
-	 * @see {@link #getUserIdByCode(String,int)}
+	 * @see {@link #getUserIdByCode(String)}
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E8%8E%B7%E5%8F%96code">
 	 *      企业获取code</a>
@@ -775,7 +775,7 @@ public class WeixinProxy {
 	 * 
 	 * @param partyId
 	 *            部门ID
-	 * @see {@link #listUser(int, boolean,UserStatus)}
+	 * @see {@link #listUser(int, boolean, UserStatus, boolean)}
 	 * @see com.foxinmy.weixin4j.qy.api.UserApi
 	 * @return 成员列表
 	 * @throws WeixinException

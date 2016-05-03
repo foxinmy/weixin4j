@@ -1,10 +1,10 @@
 package com.foxinmy.weixin4j.server.test;
 
+import io.netty.channel.ChannelHandlerContext;
+
 import java.util.Set;
 
 import org.springframework.context.ApplicationContext;
-
-import io.netty.channel.ChannelHandlerContext;
 
 import com.foxinmy.weixin4j.dispatcher.BeanFactory;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -167,6 +167,6 @@ public class MessageServerStartup {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		new MessageServerStartup().test1();
+		new MessageServerStartup().test2();
 	}
 }

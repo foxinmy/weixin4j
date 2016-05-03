@@ -804,7 +804,7 @@ public class WeixinPayProxy {
 	/**
 	 * 企业付款
 	 * 
-	 * @see {@link #senCorpPayment(InputStream, CorpPayment)}
+	 * @see {@link #sendCorpPayment(InputStream, CorpPayment)}
 	 */
 	public CorpPaymentResult sendCorpPayment(CorpPayment payment) throws WeixinException, IOException {
 		return cashApi.sendCorpPayment(new FileInputStream(settings.getCertificateFile0()), payment);
