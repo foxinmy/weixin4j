@@ -12,14 +12,14 @@ package com.foxinmy.weixin4j.exception;
 public class WeixinPayException extends WeixinException {
 	private static final long serialVersionUID = 7148145661883468514L;
 
-	public WeixinPayException(String errorMsg) {
-		super(errorMsg);
+	public WeixinPayException(String desc) {
+		super(desc);
 	}
 
-	public WeixinPayException(String errorCode, String errorMsg) {
-		super(errorCode, errorMsg);
+	public WeixinPayException(String code, String desc) {
+		super(code, desc);
 	}
-	
+
 	public WeixinPayException(Throwable e) {
 		super(e);
 	}

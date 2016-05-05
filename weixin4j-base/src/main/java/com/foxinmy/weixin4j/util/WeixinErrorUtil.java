@@ -74,11 +74,14 @@ public final class WeixinErrorUtil {
 		}
 
 		public String getText() {
-			return StringUtil.isBlank(text) ? "未知错误" : text;
+			return StringUtil.isBlank(text) ? "" : text;
 		}
 	}
 
 	public static String getText(String code) throws RuntimeException {
+		if (StringUtil.isBlank(code)) {
+			return "";
+		}
 		String text = errorCacheMap.get(code);
 		if (StringUtil.isBlank(text)) {
 			ErrorTextHandler textHandler = new ErrorTextHandler(code);

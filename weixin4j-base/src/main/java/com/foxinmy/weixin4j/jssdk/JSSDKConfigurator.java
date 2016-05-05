@@ -97,9 +97,11 @@ public class JSSDKConfigurator {
 	 * 
 	 * @param url
 	 *            当前网页的URL，不包含#及其后面部分
-	 * @return
+	 * @return jssdk配置JSON字符串
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/11/74ad127cc054f6b80759c40f77ec03db.html#.E6.AD.A5.E9.AA.A4.E4.B8.89.EF.BC.9A.E9.80.9A.E8.BF.87config.E6.8E.A5.E5.8F.A3.E6.B3.A8.E5.85.A5.E6.9D.83.E9.99.90.E9.AA.8C.E8.AF.81.E9.85.8D.E7.BD.AE">通过config接口注入权限验证配置</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115&token=&lang=zh_CN">公众号JSSDK</a>
+	 * @see <a
+	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3">企业号JSSDK</a>
 	 * @throws WeixinException
 	 */
 	public String toJSONConfig(String url) throws WeixinException {

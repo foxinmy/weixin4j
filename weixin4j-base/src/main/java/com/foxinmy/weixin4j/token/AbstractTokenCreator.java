@@ -19,7 +19,7 @@ public abstract class AbstractTokenCreator implements TokenCreator {
 	}
 
 	/**
-	 * 缓存key:附加weixin4j前缀
+	 * 缓存key:附加weixin4j_前缀
 	 * 
 	 * @return
 	 */

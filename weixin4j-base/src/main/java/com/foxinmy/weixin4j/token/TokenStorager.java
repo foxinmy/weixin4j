@@ -16,9 +16,9 @@ import com.foxinmy.weixin4j.model.Token;
  */
 public interface TokenStorager extends CacheStorager<Token> {
 	/**
-	 * 考虑到程序的临界值,实际有效时间应该减去下面这个数
+	 * 考虑到临界情况,在实际有效时间上减去60秒
 	 */
-	final long CUTMS = 1 * 60 * 1000l;
+	final long CUTMS = 60 * 1000l;
 	/**
 	 * 缓存key的前缀
 	 */

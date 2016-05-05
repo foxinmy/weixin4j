@@ -22,8 +22,6 @@ import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
 import com.foxinmy.weixin4j.logging.InternalLogger;
 import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.util.WeixinErrorUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
@@ -95,7 +93,8 @@ public class WeixinRequestExecutor {
 		return doRequest(request);
 	}
 
-	protected WeixinResponse doRequest(HttpRequest request) throws WeixinException {
+	protected WeixinResponse doRequest(HttpRequest request)
+			throws WeixinException {
 		request.setParams(params);
 		try {
 			logger.info("weixin request >> " + request.getMethod() + " "
@@ -144,10 +143,6 @@ public class WeixinRequestExecutor {
 		JsonResult jsonResult = response.getAsJsonResult();
 		response.setJsonResult(true);
 		if (jsonResult.getCode() != 0) {
-			if (StringUtil.isBlank(jsonResult.getDesc())) {
-				jsonResult.setDesc(WeixinErrorUtil.getText(Integer
-						.toString(jsonResult.getCode())));
-			}
 			throw new WeixinException(Integer.toString(jsonResult.getCode()),
 					jsonResult.getDesc());
 		}

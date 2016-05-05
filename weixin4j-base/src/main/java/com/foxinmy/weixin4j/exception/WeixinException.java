@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.exception;
 
 import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.WeixinErrorUtil;
 
 /**
  * 调用微信接口抛出的异常
@@ -15,17 +16,17 @@ public class WeixinException extends Exception {
 
 	private static final long serialVersionUID = 7148145661883468514L;
 
-	private String errorCode;
-	private String errorMsg;
+	private String code;
+	private String desc;
 
-	public WeixinException(String errorCode, String errorMsg) {
-		this.errorCode = errorCode;
-		this.errorMsg = errorMsg;
+	public WeixinException(String code, String desc) {
+		this.code = code;
+		this.desc = desc;
 	}
 
-	public WeixinException(String errorMsg) {
-		this.errorCode = "-1";
-		this.errorMsg = errorMsg;
+	public WeixinException(String desc) {
+		this.code = "-1";
+		this.desc = desc;
 	}
 
 	public WeixinException(Throwable e) {
@@ -37,25 +38,27 @@ public class WeixinException extends Exception {
 	}
 
 	public String getErrorCode() {
-		return errorCode;
+		return code;
 	}
 
 	public String getErrorMsg() {
-		return errorMsg;
+		return desc;
 	}
 
 	@Override
 	public String getMessage() {
 		StringBuilder buf = new StringBuilder();
-		if (StringUtil.isNotBlank(errorCode)) {
-			buf.append(errorCode);
+		if (StringUtil.isNotBlank(code)) {
+			buf.append(code);
 		}
-		if (StringUtil.isNotBlank(errorMsg)) {
-			buf.append(" ").append(errorMsg);
+		if (StringUtil.isNotBlank(desc)) {
+			buf.append(" >> ").append(desc);
 		}
-		if (buf.length() == 0) {
+		if (buf.length() > 0) {
+			buf.append(" >> ").append(WeixinErrorUtil.getText(code));
+			return buf.toString();
+		} else {
 			return super.getMessage();
 		}
-		return buf.toString();
 	}
 }

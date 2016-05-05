@@ -47,7 +47,6 @@ import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.RegexUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.util.WeixinErrorUtil;
 
 /**
  * 媒体相关API
@@ -236,10 +235,6 @@ public class MediaApi extends QyApi {
 						content.length, Consts.UTF_8.newDecoder(),
 						JsonResult.class);
 				if (jsonResult.getCode() != 0) {
-					if (StringUtil.isBlank(jsonResult.getDesc())) {
-						jsonResult.setDesc(WeixinErrorUtil.getText(Integer
-								.toString(jsonResult.getCode())));
-					}
 					throw new WeixinException(Integer.toString(jsonResult
 							.getCode()), jsonResult.getDesc());
 				}

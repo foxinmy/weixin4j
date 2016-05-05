@@ -44,7 +44,6 @@ import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.RegexUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
-import com.foxinmy.weixin4j.util.WeixinErrorUtil;
 
 /**
  * 素材相关API
@@ -265,8 +264,8 @@ public class MediaApi extends MpApi {
 			String disposition = headers
 					.getFirst(HttpHeaders.CONTENT_DISPOSITION);
 			logger.info("weixin response << " + response.getProtocol()
-					+ response.getStatus().toString() + "[" + contentType + "]->"
-					+ disposition);
+					+ response.getStatus().toString() + "[" + contentType
+					+ "]->" + disposition);
 			if (contentType.contains(ContentType.TEXT_PLAIN.getMimeType())
 					|| contentType.contains(ContentType.APPLICATION_JSON
 							.getMimeType())
@@ -275,10 +274,6 @@ public class MediaApi extends MpApi {
 						content.length, Consts.UTF_8.newDecoder(),
 						JsonResult.class);
 				if (jsonResult.getCode() != 0) {
-					if (StringUtil.isBlank(jsonResult.getDesc())) {
-						jsonResult.setDesc(WeixinErrorUtil.getText(Integer
-								.toString(jsonResult.getCode())));
-					}
 					throw new WeixinException(Integer.toString(jsonResult
 							.getCode()), jsonResult.getDesc());
 				}
