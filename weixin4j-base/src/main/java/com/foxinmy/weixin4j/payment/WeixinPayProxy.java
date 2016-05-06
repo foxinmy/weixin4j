@@ -71,7 +71,7 @@ public class WeixinPayProxy {
 	 */
 	private final CustomsApi customsApi;
 	/**
-	 * 配置相关
+	 * 配置信息
 	 */
 	private final Weixin4jSettings settings;
 

@@ -68,7 +68,7 @@ public class WeixinProxy {
 	 */
 	private final MediaApi mediaApi;
 	/**
-	 * 底部菜单API
+	 * 菜单API
 	 */
 	private final MenuApi menuApi;
 	/**
@@ -108,7 +108,7 @@ public class WeixinProxy {
 	 */
 	private final TokenHolder tokenHolder;
 	/**
-	 * 配置相关
+	 * 配置信息
 	 */
 	private Weixin4jSettings settings;
 
