@@ -176,3 +176,11 @@
 * 2015-02-04
 
   + version upgrade to 1.6.7
+  
+* 2016-04-02
+
+  + version upgrade to 1.6.8
+  
+* 2016-05-07
+
+  + version upgrade to 1.6.9
