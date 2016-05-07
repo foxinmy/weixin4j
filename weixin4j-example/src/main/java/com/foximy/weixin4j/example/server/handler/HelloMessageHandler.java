@@ -20,9 +20,13 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  */
 @Component
 public class HelloMessageHandler extends MessageHandlerAdapter<TextMessage> {
+	
 	@Override
 	public boolean canHandle0(WeixinRequest request, TextMessage message)
 			throws WeixinException {
+		/**
+		 * 用户输入hello时
+		 */
 		return message.getContent().equalsIgnoreCase("hello");
 	}
 

@@ -39,7 +39,6 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 		pipeline.addLast(new WeixinMessageDecoder(aesTokenMap));
 		pipeline.addLast(new WeixinResponseEncoder());
 		pipeline.addLast(new SingleResponseEncoder());
-		pipeline.addLast(new MultipleResponseEncoder());
 		pipeline.addLast(new WeixinRequestHandler(messageDispatcher));
 	}
 }

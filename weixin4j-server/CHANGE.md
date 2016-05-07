@@ -141,4 +141,4 @@
 
   + 修改ClassUtil获取class不到的bug
   
-  + 新增MultipleMessageHandlerAdapter多个消息适配类
+  + ~~新增MultipleMessageHandlerAdapter多个消息适配类~~
