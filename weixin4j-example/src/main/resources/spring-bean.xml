@@ -75,7 +75,7 @@
 
 	<!-- 微信消息服务～start -->
 	<bean
-		class="com.foximy.weixin4j.example.server.Weixin4jServerStartupWithThread">
+		class="com.foxinmy.weixin4j.example.server.Weixin4jServerStartupWithThread">
 		<!-- 端口号 微信暂时只支持80端口 所以需要自己把微信被动消息请求转发(nginx等)到这个端口上来 -->
 		<constructor-arg index="0" value="30000" />
 		<!-- token信息 -->
@@ -91,11 +91,11 @@
 		</constructor-arg>
 		<!-- 处理微信消息的全限包名 -->
 		<constructor-arg index="2"
-			value="com.foximy.weixin4j.example.server.handler" />
+			value="com.foxinmy.weixin4j.example.server.handler" />
 	</bean>
 	<!-- 微信消息服务～end -->
 
 	<!-- spring扫描策略~start -->
-	<context:component-scan base-package="com.foximy.weixin4j.example.server.handler" />
+	<context:component-scan base-package="com.foxinmy.weixin4j.example.server.handler" />
 	<!-- spring扫描策略~end -->
 </beans>

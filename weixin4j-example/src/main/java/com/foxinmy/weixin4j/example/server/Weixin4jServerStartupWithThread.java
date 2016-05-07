@@ -1,4 +1,4 @@
-package com.foximy.weixin4j.example.server;
+package com.foxinmy.weixin4j.example.server;
 
 import io.netty.util.internal.logging.InternalLoggerFactory;
 

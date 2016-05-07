@@ -1,4 +1,4 @@
-package com.foximy.weixin4j.example.server;
+package com.foxinmy.weixin4j.example.server;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
@@ -28,7 +28,7 @@ public class Weixin4jServerStartupWithoutThread {
 	/**
 	 * 处理微信消息的全限包名(也可通过addHandler方式一个一个添加)
 	 */
-	private static String handlerPackage = "com.foximy.weixin4j.example.server.handler";
+	private static String handlerPackage = "com.foxinmy.weixin4j.example.server.handler";
 
 	/**
 	 * 入口函数 可使用assembly插件打成可执行zip包:https://github.com/foxinmy/weixin4j/wiki/

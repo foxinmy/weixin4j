@@ -1,4 +1,4 @@
-package com.foximy.weixin4j.example.server.handler;
+package com.foxinmy.weixin4j.example.server.handler;
 
 import org.springframework.stereotype.Component;
 
