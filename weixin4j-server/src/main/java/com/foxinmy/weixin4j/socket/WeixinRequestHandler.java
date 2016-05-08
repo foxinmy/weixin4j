@@ -57,6 +57,7 @@ public class WeixinRequestHandler extends
 	protected void channelRead0(ChannelHandlerContext ctx, WeixinRequest request)
 			throws WeixinException {
 		AesToken aesToken = request.getAesToken();
+		// 消息字段不完整返回400
 		if (aesToken == null
 				|| (ServerToolkits.isBlank(request.getSignature()) && ServerToolkits
 						.isBlank(request.getMsgSignature()))) {
@@ -67,28 +68,32 @@ public class WeixinRequestHandler extends
 		/**
 		 * 公众平台:无论Get,Post都带signature参数,当开启aes模式时带msg_signature参数
 		 * 企业号:无论Get,Post都带msg_signature参数
+		 * 一般来说：signature验证url上的参数签名，msg_signature验证消息体签名
 		 **/
 		if (request.getMethod() == HttpMethod.GET) {
+			// 服务器URL验证
 			if (!ServerToolkits.isBlank(request.getSignature())
 					&& MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce()).equals(
 							request.getSignature())) {
-				ctx.write(new SingleResponse(request.getEchoStr()));
+				ctx.writeAndFlush(new SingleResponse(request.getEchoStr()));
 				return;
 			}
+			// 消息签名验证
 			if (!ServerToolkits.isBlank(request.getMsgSignature())
 					&& MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce(),
 							request.getEchoStr()).equals(
 							request.getMsgSignature())) {
-				ctx.write(new SingleResponse(MessageUtil.aesDecrypt(null,
-						aesToken.getAesKey(), request.getEchoStr())));
+				ctx.writeAndFlush(new SingleResponse(MessageUtil.aesDecrypt(
+						null, aesToken.getAesKey(), request.getEchoStr())));
 				return;
 			}
 			ctx.writeAndFlush(resolveResponse(FORBIDDEN, request)).addListener(
 					ChannelFutureListener.CLOSE);
 			return;
 		} else if (request.getMethod() == HttpMethod.POST) {
+			// 加密模式下消息签名验证
 			if (!ServerToolkits.isBlank(request.getSignature())
 					&& !MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce()).equals(
@@ -97,6 +102,7 @@ public class WeixinRequestHandler extends
 						.addListener(ChannelFutureListener.CLOSE);
 				return;
 			}
+			// 明文模式下消息签名验证
 			if (request.getEncryptType() == EncryptType.AES
 					&& !MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce(),
@@ -107,6 +113,7 @@ public class WeixinRequestHandler extends
 				return;
 			}
 		} else {
+			// 访问其它URL
 			ctx.writeAndFlush(resolveResponse(METHOD_NOT_ALLOWED, request))
 					.addListener(ChannelFutureListener.CLOSE);
 			return;

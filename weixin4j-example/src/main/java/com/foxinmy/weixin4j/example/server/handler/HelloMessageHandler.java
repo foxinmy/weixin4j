@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.example.server.handler;
 import org.springframework.stereotype.Component;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
 import com.foxinmy.weixin4j.message.TextMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.TextResponse;
@@ -19,8 +18,8 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * @see
  */
 @Component
-public class HelloMessageHandler extends MessageHandlerAdapter<TextMessage> {
-	
+public class HelloMessageHandler extends TextMessageHandler {
+
 	@Override
 	public boolean canHandle0(WeixinRequest request, TextMessage message)
 			throws WeixinException {
@@ -45,6 +44,6 @@ public class HelloMessageHandler extends MessageHandlerAdapter<TextMessage> {
 	 */
 	@Override
 	public int weight() {
-		return 2;
+		return super.weight() + 1;
 	}
 }
