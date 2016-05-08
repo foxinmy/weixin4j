@@ -183,7 +183,7 @@ public class WeixinRequest implements HttpMessage {
 
 	@Override
 	public String toString() {
-		return "WeixinRequest [headers=" + headers + ", method=" + method
+		return "WeixinRequest [headers=" + headers.entries() + ", method=" + method
 				+ ", uri=" + uri + ", echoStr=" + echoStr + ", timeStamp="
 				+ timeStamp + ", nonce=" + nonce + ", signature=" + signature
 				+ ", msgSignature=" + msgSignature + ", encryptType="

@@ -71,7 +71,7 @@ public class WeixinRequestHandler extends
 		 * 一般来说：signature验证url上的参数签名，msg_signature验证消息体签名
 		 **/
 		if (request.getMethod() == HttpMethod.GET) {
-			// 服务器URL验证
+			// URL参数签名验证
 			if (!ServerToolkits.isBlank(request.getSignature())
 					&& MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce()).equals(
@@ -79,7 +79,7 @@ public class WeixinRequestHandler extends
 				ctx.writeAndFlush(new SingleResponse(request.getEchoStr()));
 				return;
 			}
-			// 消息签名验证
+			// XML消息签名验证
 			if (!ServerToolkits.isBlank(request.getMsgSignature())
 					&& MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce(),
@@ -93,7 +93,7 @@ public class WeixinRequestHandler extends
 					ChannelFutureListener.CLOSE);
 			return;
 		} else if (request.getMethod() == HttpMethod.POST) {
-			// 加密模式下消息签名验证
+			// URL参数签名验证
 			if (!ServerToolkits.isBlank(request.getSignature())
 					&& !MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce()).equals(
@@ -102,7 +102,7 @@ public class WeixinRequestHandler extends
 						.addListener(ChannelFutureListener.CLOSE);
 				return;
 			}
-			// 明文模式下消息签名验证
+			// XML消息签名验证
 			if (request.getEncryptType() == EncryptType.AES
 					&& !MessageUtil.signature(aesToken.getToken(),
 							request.getTimeStamp(), request.getNonce(),
