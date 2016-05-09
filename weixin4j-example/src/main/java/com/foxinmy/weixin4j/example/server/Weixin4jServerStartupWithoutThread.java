@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.example.server;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.handler.DebugMessageHandler;
 import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
@@ -39,7 +40,8 @@ public class Weixin4jServerStartupWithoutThread {
 	 */
 	public static void main(String[] args) throws WeixinException {
 		new WeixinServerBootstrap(aesToken)
-				.handlerPackagesToScan(handlerPackage).openAlwaysResponse()
+				.handlerPackagesToScan(handlerPackage)
+				.addHandler(DebugMessageHandler.global).openAlwaysResponse()
 				.startup(port);
 	}
 }
