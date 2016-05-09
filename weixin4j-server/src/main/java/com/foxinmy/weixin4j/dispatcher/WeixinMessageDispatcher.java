@@ -318,6 +318,10 @@ public class WeixinMessageDispatcher {
 				}
 				if (beanFactory != null) {
 					for (Class<?> clazz : messageInterceptorClass) {
+						if (clazz.isInterface() || ! WeixinMessageHandler.class.isAssignableFrom(clazz)
+								) {
+							continue;
+						}
 						try {
 							messageInterceptorList
 									.add((WeixinMessageInterceptor) beanFactory
