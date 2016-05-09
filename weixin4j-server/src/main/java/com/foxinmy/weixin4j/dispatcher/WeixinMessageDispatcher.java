@@ -256,6 +256,12 @@ public class WeixinMessageDispatcher {
 				}
 				if (beanFactory != null) {
 					for (Class<?> clazz : messageHandlerClass) {
+						if (clazz.isInterface()
+								|| Modifier.isAbstract(clazz.getModifiers())
+								|| !WeixinMessageHandler.class
+										.isAssignableFrom(clazz)) {
+							continue;
+						}
 						try {
 							messageHandlerList
 									.add((WeixinMessageHandler) beanFactory
@@ -274,7 +280,9 @@ public class WeixinMessageDispatcher {
 				} else {
 					for (Class<?> clazz : messageHandlerClass) {
 						if (clazz.isInterface()
-								|| Modifier.isAbstract(clazz.getModifiers())) {
+								|| Modifier.isAbstract(clazz.getModifiers())
+								|| !WeixinMessageHandler.class
+										.isAssignableFrom(clazz)) {
 							continue;
 						}
 						try {
@@ -318,6 +326,12 @@ public class WeixinMessageDispatcher {
 				}
 				if (beanFactory != null) {
 					for (Class<?> clazz : messageInterceptorClass) {
+						if (clazz.isInterface()
+								|| Modifier.isAbstract(clazz.getModifiers())
+								|| !WeixinMessageInterceptor.class
+										.isAssignableFrom(clazz)) {
+							continue;
+						}
 						try {
 							messageInterceptorList
 									.add((WeixinMessageInterceptor) beanFactory
@@ -336,7 +350,9 @@ public class WeixinMessageDispatcher {
 				} else {
 					for (Class<?> clazz : messageInterceptorClass) {
 						if (clazz.isInterface()
-								|| Modifier.isAbstract(clazz.getModifiers())) {
+								|| Modifier.isAbstract(clazz.getModifiers())
+								|| !WeixinMessageInterceptor.class
+										.isAssignableFrom(clazz)) {
 							continue;
 						}
 						try {
