@@ -684,3 +684,7 @@
 * 2016-05-07
 
   + version upgrade to 1.6.9
+  
+* 2016-05-12
+
+  + 添加MemcacheTokenStorager支持

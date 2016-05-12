@@ -46,7 +46,8 @@ public class WeixinTokenCreator extends AbstractTokenCreator {
 
 	@Override
 	public Token createToken() throws WeixinException {
-		String tokenUrl = String.format(URLConsts.ASSESS_TOKEN_URL, corpid, corpsecret);
+		String tokenUrl = String.format(URLConsts.ASSESS_TOKEN_URL, corpid,
+				corpsecret);
 		WeixinResponse response = weixinExecutor.get(tokenUrl);
 		Token token = response.getAsObject(new TypeReference<Token>() {
 		});

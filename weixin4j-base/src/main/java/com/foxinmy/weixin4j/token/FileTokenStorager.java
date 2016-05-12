@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
- * 用FILE保存TOKEN
+ * 用File形式保存Token信息
  * 
  * @className FileTokenStorager
  * @author jy
@@ -29,14 +29,17 @@ public class FileTokenStorager implements TokenStorager {
 
 	@Override
 	public Token lookup(String cacheKey) throws WeixinException {
-		File token_file = new File(String.format("%s/%s.xml", cachePath, cacheKey));
+		File token_file = new File(String.format("%s/%s.xml", cachePath,
+				cacheKey));
 		try {
 			if (token_file.exists()) {
-				Token token = XmlStream.fromXML(new FileInputStream(token_file), Token.class);
+				Token token = XmlStream.fromXML(
+						new FileInputStream(token_file), Token.class);
 				if (token.getCreateTime() < 0) {
 					return token;
 				}
-				if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - CUTMS) > System.currentTimeMillis()) {
+				if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - CUTMS) > System
+						.currentTimeMillis()) {
 					return token;
 				}
 			}
@@ -49,7 +52,10 @@ public class FileTokenStorager implements TokenStorager {
 	@Override
 	public void caching(String cacheKey, Token token) throws WeixinException {
 		try {
-			XmlStream.toXML(token, new FileOutputStream(new File(String.format("%s/%s.xml", cachePath, cacheKey))));
+			XmlStream.toXML(
+					token,
+					new FileOutputStream(new File(String.format("%s/%s.xml",
+							cachePath, cacheKey))));
 		} catch (IOException e) {
 			throw new WeixinException(e);
 		}
@@ -58,10 +64,12 @@ public class FileTokenStorager implements TokenStorager {
 	@Override
 	public Token evict(String cacheKey) throws WeixinException {
 		Token token = null;
-		File token_file = new File(String.format("%s/%s.xml", cachePath, cacheKey));
+		File token_file = new File(String.format("%s/%s.xml", cachePath,
+				cacheKey));
 		try {
 			if (token_file.exists()) {
-				token = XmlStream.fromXML(new FileInputStream(token_file), Token.class);
+				token = XmlStream.fromXML(new FileInputStream(token_file),
+						Token.class);
 				token_file.delete();
 			}
 		} catch (IOException e) {
@@ -75,8 +83,10 @@ public class FileTokenStorager implements TokenStorager {
 		File[] files = new File(cachePath).listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File file) {
-				return file.isFile() && file.getName().startsWith(PREFIX)
-						&& "xml".equals(FileUtil.getFileExtension(file.getName()));
+				return file.isFile()
+						&& file.getName().startsWith(PREFIX)
+						&& "xml".equals(FileUtil.getFileExtension(file
+								.getName()));
 			}
 		});
 		for (File token : files) {

@@ -8,4 +8,6 @@
 
 * FileTokenStorager 是系统默认的token存储策略实现
 
-* RedisTokenStorager 如果服务器支持redis,推荐使用(需要自己添加jedis包)
+* RedisTokenStorager 使用redis保存token(需要自行添加客户端包,[jedis](https://github.com/xetorthio/jedis))
+
+* MemcacheTokenStorager 使用memcache保存token(需要自行添加客户端包,[Memcached-Java-Client](https://github.com/gwhalin/Memcached-Java-Client))

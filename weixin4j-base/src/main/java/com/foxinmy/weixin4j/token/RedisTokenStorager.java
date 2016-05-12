@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
 
 /**
- * 用REDIS保存TOKEN(推荐使用)
+ * 用Redis保存Token信息(推荐使用)
  * 
  * @className RedisTokenStorager
  * @author jy
@@ -24,15 +24,16 @@ public class RedisTokenStorager implements TokenStorager {
 
 	private JedisPool jedisPool;
 
+	public final static String HOST = "localhost";
 	public final static int PORT = 6379;
 	public final static int MAX_TOTAL = 50;
 	public final static int MAX_IDLE = 5;
-	public final static int MAX_WAIT_MILLIS = 2000;
+	public final static int MAX_WAIT_MILLIS = 3000;
 	public final static boolean TEST_ON_BORROW = false;
 	public final static boolean TEST_ON_RETURN = true;
 
 	public RedisTokenStorager() {
-		this("localhost", PORT);
+		this(HOST, PORT);
 	}
 
 	public RedisTokenStorager(String host, int port) {
@@ -45,7 +46,8 @@ public class RedisTokenStorager implements TokenStorager {
 		this.jedisPool = new JedisPool(jedisPoolConfig, host, port);
 	}
 
-	public RedisTokenStorager(String host, int port, JedisPoolConfig jedisPoolConfig) {
+	public RedisTokenStorager(String host, int port,
+			JedisPoolConfig jedisPoolConfig) {
 		this(new JedisPool(jedisPoolConfig, host, port));
 	}
 
@@ -77,7 +79,8 @@ public class RedisTokenStorager implements TokenStorager {
 			jedis = jedisPool.getResource();
 			jedis.hmset(cacheKey, token2map(token));
 			if (token.getExpiresIn() > 0) {
-				jedis.expire(cacheKey, token.getExpiresIn() - (int) (CUTMS / 1000l));
+				jedis.expire(cacheKey, token.getExpiresIn()
+						- (int) (CUTMS / 1000l));
 			}
 		} finally {
 			if (jedis != null) {

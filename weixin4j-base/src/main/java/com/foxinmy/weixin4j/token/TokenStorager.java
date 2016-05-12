@@ -13,6 +13,7 @@ import com.foxinmy.weixin4j.model.Token;
  * @see MemoryTokenStorager
  * @see FileTokenStorager
  * @see RedisTokenStorager
+ * @see MemcacheTokenStorager
  */
 public interface TokenStorager extends CacheStorager<Token> {
 	/**
