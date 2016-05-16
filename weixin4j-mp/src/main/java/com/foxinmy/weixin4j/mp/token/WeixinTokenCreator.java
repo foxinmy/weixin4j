@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.mp.token;
 
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.type.URLConsts;
@@ -21,7 +20,6 @@ import com.foxinmy.weixin4j.token.AbstractTokenCreator;
  */
 public class WeixinTokenCreator extends AbstractTokenCreator {
 
-	private final WeixinRequestExecutor weixinExecutor;
 	private final String appid;
 	private final String secret;
 
@@ -35,7 +33,6 @@ public class WeixinTokenCreator extends AbstractTokenCreator {
 	public WeixinTokenCreator(String appid, String secret) {
 		this.appid = appid;
 		this.secret = secret;
-		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
