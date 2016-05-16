@@ -9,7 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 成员新消息免打扰
  * 
  * @className ChatMute
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月1日
  * @since JDK 1.6
  * @see

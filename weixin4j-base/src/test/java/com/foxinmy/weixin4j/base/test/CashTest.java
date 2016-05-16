@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.type.CorpPaymentCheckNameType;
  * 现金发放测试
  * 
  * @className CashTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年4月1日
  * @since JDK 1.6
  * @see

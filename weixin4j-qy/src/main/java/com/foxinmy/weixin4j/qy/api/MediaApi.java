@@ -52,7 +52,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 媒体相关API
  * 
  * @className MediaApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
  * @see <a

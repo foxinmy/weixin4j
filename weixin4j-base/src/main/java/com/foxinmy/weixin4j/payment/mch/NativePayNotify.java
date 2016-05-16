@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * Native支付回调时POST的信息
  * 
  * @className PayNativeNotify
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月30日
  * @since JDK 1.6
  * @see

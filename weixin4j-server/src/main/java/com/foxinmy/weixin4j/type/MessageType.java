@@ -5,7 +5,7 @@ package com.foxinmy.weixin4j.type;
  * 
  * 消息类型
  * 
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * 
  */
 public enum MessageType {

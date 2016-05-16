@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.mp.type.IndustryType;
  * 模板消息的内容
  * 
  * @className TemplateMessageInfo
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月20日
  * @since JDK 1.6
  * @see

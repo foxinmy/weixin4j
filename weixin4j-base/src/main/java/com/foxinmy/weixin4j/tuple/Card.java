@@ -12,7 +12,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * </p>
  * 
  * @className Card
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月8日
  * @since JDK 1.6
  * @see

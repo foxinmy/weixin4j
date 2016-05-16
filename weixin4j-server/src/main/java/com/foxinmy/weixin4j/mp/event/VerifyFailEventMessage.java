@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * 认证失败事件(资质认证失败/名称认证失败)
  * 
  * @className VerifyFailEventMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年10月25日
  * @since JDK 1.6
  * @see <a href=

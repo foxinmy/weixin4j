@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 证件类型
  * 
  * @className CredentialType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月27日
  * @since JDK 1.6
  * @see

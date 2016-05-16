@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.qy.type;
  * URL常量类
  * 
  * @className URLConsts
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月3日
  * @since JDK 1.6
  * @see

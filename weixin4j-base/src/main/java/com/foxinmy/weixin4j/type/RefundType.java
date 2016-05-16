@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 退款类型
  * 
  * @className RefundType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月31日
  * @since JDK 1.6
  * @see

@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.util.Weixin4jSettings;
  * token测试
  * 
  * @className TokenTest
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  */

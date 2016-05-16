@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.model.Consts;
  * 微信ssl请求
  * 
  * @className WeixinSSLRequestExecutor
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月17日
  * @since JDK 1.6
  * @see

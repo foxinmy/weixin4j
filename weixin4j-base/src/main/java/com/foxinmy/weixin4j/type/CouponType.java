@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 代金券类型
  * 
  * @className CouponType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月27日
  * @since JDK 1.6
  * @see

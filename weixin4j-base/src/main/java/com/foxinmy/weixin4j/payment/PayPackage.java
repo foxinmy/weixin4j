@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * 订单信息
  * 
  * @className PayPackage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月18日
  * @since JDK 1.6
  * @see

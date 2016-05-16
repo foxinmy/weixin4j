@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.api.BaseApi;
  * 微信企业号API
  * 
  * @className QyApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.api.BaseApi

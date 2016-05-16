@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.type.TicketType;
  * 微信公众平台TICKET创建(包括jsticket、其它JSSDK所需的ticket的创建
  * 
  * @className WeixinJSTicketCreator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
  * @since JDK 1.6
  * @see <a href=

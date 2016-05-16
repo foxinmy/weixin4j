@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * 认证通知(资质认证成功/名称认证成功/年审通知/认证过期失效通知)
  * 
  * @className VerifyExpireEventMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年10月25日
  * @since JDK 1.6
  * @see <a

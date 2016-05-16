@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  * 报关记录
  * 
  * @className CustomsOrderRecord
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月27日
  * @since JDK 1.6
  * @see

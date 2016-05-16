@@ -23,7 +23,7 @@ import com.foxinmy.weixin4j.xml.EncryptMessageHandler;
  * 微信消息解码类
  * 
  * @className WeixinMessageDecoder
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月13日
  * @since JDK 1.6
  * @see <a

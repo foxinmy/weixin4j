@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 红包发放类型
  * 
  * @className RedpacketSendType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月4日
  * @since JDK 1.6
  * @see

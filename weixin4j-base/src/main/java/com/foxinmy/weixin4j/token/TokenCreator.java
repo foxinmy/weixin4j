@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.model.Token;
  * TOKEN创建者
  * 
  * @className TokenCreator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
  * @since JDK 1.6
  * @see

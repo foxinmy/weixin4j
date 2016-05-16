@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.exception;
  * 调用微信支付抛出的异常
  * 
  * @className WeixinPayException
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月28日
  * @since JDK 1.6
  * @see

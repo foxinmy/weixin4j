@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 企业付款检查收款人姓名的策略
  * 
  * @className CorpPaymentCheckNameType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年4月1日
  * @since JDK 1.6
  * @see

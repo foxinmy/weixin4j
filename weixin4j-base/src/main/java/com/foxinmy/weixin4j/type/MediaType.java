@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.http.ContentType;
  * <font color='red'>临时媒体文件在后台保存时间为3天,即3天后media_id失效</font>
  * </p>
  * 
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月2日
  * @since JDK 1.6
  */

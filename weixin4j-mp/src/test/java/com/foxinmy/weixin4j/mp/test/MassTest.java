@@ -23,7 +23,7 @@ import com.foxinmy.weixin4j.tuple.Text;
  * 群发消息
  * 
  * @className MpNewsTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月27日
  * @since JDK 1.6
  * @see

@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * JSSDK联系人筛选配置
  * 
  * @className JSSDKContactConfigurator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
  * @since JDK 1.7
  * @see

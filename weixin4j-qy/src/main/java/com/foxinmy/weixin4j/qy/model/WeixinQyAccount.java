@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  * 微信企业号信息
  * 
  * @className WeixinQyAccount
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see <a href=

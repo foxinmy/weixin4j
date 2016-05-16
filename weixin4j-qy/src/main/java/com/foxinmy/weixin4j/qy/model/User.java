@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.util.NameValue;
  * 部门成员对象
  * 
  * @className User
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月19日
  * @since JDK 1.6
  * @see <a

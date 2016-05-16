@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.qy.type.ReportLocationType;
  * 设置企业号应用
  * 
  * @className AgentSetter
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月16日
  * @since JDK 1.6
  * @see <a

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
  * 扫码推事件(scancode_push|scancode_waitmsg)
  * 
  * @className MenuScanEventMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月30日
  * @since JDK 1.6
  * @see <a
@@ -34,7 +34,7 @@ public class MenuScanEventMessage extends MenuEventMessage {
 	 * 扫描信息
 	 * 
 	 * @className ScanInfo
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年3月29日
 	 * @since JDK 1.6
 	 * @see

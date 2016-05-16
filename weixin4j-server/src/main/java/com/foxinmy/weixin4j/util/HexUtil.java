@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.util;
  * Hex工具类
  * 
  * @className HexUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月17日
  * @since JDK 1.6
  * @see

@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * 微信消息的处理执行
  * 
  * @className MessageHandlerExecutor
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler

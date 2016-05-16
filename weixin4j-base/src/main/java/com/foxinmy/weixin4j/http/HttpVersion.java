@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * reference of apache pivot
  * 
  * @className HttpVersion
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月29日
  * @since JDK 1.6
  * @see

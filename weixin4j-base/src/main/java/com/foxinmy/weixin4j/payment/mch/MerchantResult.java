@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * 调用商户平台接口返回的公用字段
  * 
  * @className MerchantResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月21日
  * @since JDK 1.6
  * @see

@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.util.ServerToolkits;
  * 获取加密的密文内容
  * 
  * @className EncryptMessageHandler
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月17日
  * @since JDK 1.6
  * @see

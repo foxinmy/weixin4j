@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.mp.type.CustomRecordOperCode;
  * 客服聊天记录
  * 
  * @className KfChatRecord
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年6月28日
  * @since JDK 1.6
  */

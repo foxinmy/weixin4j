@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.mp.model.User;
  * 用户相关测试
  * 
  * @className UserTest
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  */

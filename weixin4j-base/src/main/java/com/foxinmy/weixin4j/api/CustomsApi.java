@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * 报关接口
  * 
  * @className CustomsApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月67日
  * @since JDK 1.7
  * @see

@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
  * 客服消息对象
  * 
  * @className CustomeMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年11月20日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.tuple.Text
@@ -55,7 +55,7 @@ public class CustomeMessage implements Serializable {
 	 * 用户类型
 	 * 
 	 * @className CustomeIdType
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年11月20日
 	 * @since JDK 1.6
 	 * @see
@@ -79,7 +79,7 @@ public class CustomeMessage implements Serializable {
 	 * 消息对象
 	 * 
 	 * @className CustomeTarget
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年11月20日
 	 * @since JDK 1.6
 	 * @see

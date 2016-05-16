@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.token.TokenStorager;
  * 应用套件ticket的存取
  * 
  * @className SuiteTicketHolder
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月22日
  * @since JDK 1.6
  * @see

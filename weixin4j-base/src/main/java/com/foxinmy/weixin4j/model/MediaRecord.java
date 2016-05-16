@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * 媒体素材记录
  * 
  * @className MediaRecord
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月22日
  * @since JDK 1.6
  * @see

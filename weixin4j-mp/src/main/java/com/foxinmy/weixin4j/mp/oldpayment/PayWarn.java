@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.payment.PayBaseInfo;
  * V2告警通知
  * 
  * @className PayWarn
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月31日
  * @since JDK 1.6
  * @see

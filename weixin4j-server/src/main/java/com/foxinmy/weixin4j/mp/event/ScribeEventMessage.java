@@ -6,7 +6,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * 关注/取消关注事件</br> <font color="red">包括直接关注与扫描关注</font>
  * 
  * @className ScribeEventMessage
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月6日
  * @since JDK 1.6
  * @see <a

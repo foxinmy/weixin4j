@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  * 微信支付账户(2014年10月申请支付的老版本)
  * 
  * @className WeixinOldPayAccount
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月26日
  * @since JDK 1.6
  * @see

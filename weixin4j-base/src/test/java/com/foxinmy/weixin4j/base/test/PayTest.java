@@ -31,7 +31,7 @@ import com.foxinmy.weixin4j.util.Weixin4jSettings;
  * 支付测试（商户平台）
  * 
  * @className PayTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月30日
  * @since JDK 1.7
  * @see

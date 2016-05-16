@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * 红包
  * 
  * @className Redpacket
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月28日
  * @since JDK 1.6
  * @see <a

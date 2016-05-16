@@ -56,7 +56,7 @@ import com.foxinmy.weixin4j.util.Weixin4jSettings;
  * 微信企业号接口实现
  * 
  * @className WeixinProxy
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月19日
  * @since JDK 1.6
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">api文档</a>

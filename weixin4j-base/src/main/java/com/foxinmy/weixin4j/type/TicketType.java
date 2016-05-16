@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 票据类型(一般用于JSSDK
  * 
  * @className TicketType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
  * @since JDK 1.7
  * @see

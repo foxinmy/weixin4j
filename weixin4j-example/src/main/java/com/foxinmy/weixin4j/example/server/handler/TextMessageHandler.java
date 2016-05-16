@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * 文本消息处理
  * 
  * @className TextMessageHandler
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年11月18日
  * @since JDK 1.7
  * @see

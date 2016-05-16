@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * V2支付的订单详情
  * 
  * @className PayPackageV2
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年8月17日
  * @since JDK 1.6
  * @see

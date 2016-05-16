@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * </p>
  * 
  * @className DataApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月7日
  * @since JDK 1.6
  * @see

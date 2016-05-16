@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 二维码
  * 
  * @className QRResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年7月29日
  * @since JDK 1.6
  * @see

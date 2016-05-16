@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * 消息拦截适配
  * 
  * @className MessageInterceptorAdapter
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月14日
  * @since JDK 1.6
  * @see

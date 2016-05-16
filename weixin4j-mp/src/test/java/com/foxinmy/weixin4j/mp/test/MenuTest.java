@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.type.ButtonType;
  * 自定义菜单测试
  * 
  * @className MenuTest
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  */

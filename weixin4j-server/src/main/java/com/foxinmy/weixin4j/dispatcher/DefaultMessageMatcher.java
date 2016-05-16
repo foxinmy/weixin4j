@@ -32,7 +32,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * 默认MessageMatcher实现(可以改进)
  * 
  * @className DefaultMessageMatcher
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月10日
  * @since JDK 1.6
  * @see

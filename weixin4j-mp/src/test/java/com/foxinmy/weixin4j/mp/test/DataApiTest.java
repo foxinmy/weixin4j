@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.mp.type.DatacubeType;
  * 数据分析测试
  * 
  * @className DataApiTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月25日
  * @since JDK 1.6
  * @see

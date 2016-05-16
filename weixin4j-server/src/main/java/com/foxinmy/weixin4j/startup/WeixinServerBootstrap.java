@@ -34,7 +34,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  * 微信netty服务启动程序
  * 
  * @className WeixinServerBootstrap
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月12日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher

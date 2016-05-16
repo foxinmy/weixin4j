@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * 会话事件或消息
  * 
  * @className ChatItem
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月1日
  * @since JDK 1.6
  * @see

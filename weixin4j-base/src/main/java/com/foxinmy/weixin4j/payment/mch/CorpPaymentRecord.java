@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * 企业付款记录
  * 
  * @className CorpPaymentRecord
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月23日
  * @since JDK 1.6
  * @see

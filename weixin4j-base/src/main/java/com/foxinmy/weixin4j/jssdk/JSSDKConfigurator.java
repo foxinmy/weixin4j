@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * JSSDK配置类
  * 
  * @className JSSDKConfigurator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月23日
  * @since JDK 1.6
  * @see

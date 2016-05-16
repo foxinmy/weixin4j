@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.mp.datacube.UserSummary;
  * 数据统计类型
  * 
  * @className DatacubeType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月25日
  * @since JDK 1.6
  * @see

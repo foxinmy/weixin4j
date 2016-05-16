@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.type.ButtonType;
  * </p>
  * 
  * @className Button
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月5日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.type.ButtonType

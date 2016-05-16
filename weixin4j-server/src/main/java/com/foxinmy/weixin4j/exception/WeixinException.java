@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.exception;
  * 微信异常
  * 
  * @className WeixinException
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  * @see

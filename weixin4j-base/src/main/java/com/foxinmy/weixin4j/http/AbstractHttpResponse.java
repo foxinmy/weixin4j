@@ -6,7 +6,7 @@ import java.io.InputStream;
 /**
  * 
  * @className AbstractHttpResponse
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年9月7日
  * @since JDK 1.6
  * @see

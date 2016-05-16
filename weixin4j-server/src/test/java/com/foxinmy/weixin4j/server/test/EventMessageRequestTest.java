@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * 接收事件消息格式测试
  * 
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年3月24日
  * @since JDK 1.6
  */

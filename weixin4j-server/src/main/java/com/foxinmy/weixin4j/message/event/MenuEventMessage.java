@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * 自定义菜单事件(view|click)
  * 
  * @className MenuEventMessage
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月6日
  * @since JDK 1.6
  * @see <a

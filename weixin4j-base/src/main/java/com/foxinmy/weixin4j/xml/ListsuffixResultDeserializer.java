@@ -34,7 +34,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 对 后缀为_$n 的 xml节点反序列化
  * 
  * @className ListsuffixResultDeserializer
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月24日
  * @since JDK 1.6
  * @see

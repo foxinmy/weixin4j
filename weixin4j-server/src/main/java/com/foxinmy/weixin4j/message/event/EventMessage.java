@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * 事件消息基类
  * 
  * @className EventMessage
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月6日
  * @since JDK 1.6
  * @see <a

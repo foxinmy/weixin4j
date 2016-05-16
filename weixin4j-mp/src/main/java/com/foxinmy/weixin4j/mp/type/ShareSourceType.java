@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.mp.type;
  * 分享的场景
  * 
  * @className ShareSourceType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月30日
  * @since JDK 1.6
  * @see

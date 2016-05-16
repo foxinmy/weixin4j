@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * 用File形式保存Token信息
  * 
  * @className FileTokenStorager
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月9日
  * @since JDK 1.6
  */

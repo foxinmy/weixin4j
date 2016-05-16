@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.http.entity.HttpEntity;
  * HTTP 请求
  * 
  * @className HttpRequest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月29日
  * @since JDK 1.6
  * @see

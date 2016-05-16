@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.util.NameValue;
  * 模板消息相关API
  * 
  * @className TemplApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月30日
  * @since JDK 1.6
  * @see

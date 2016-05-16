@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * 部门API
  * 
  * @className PartyApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.qy.model.Party

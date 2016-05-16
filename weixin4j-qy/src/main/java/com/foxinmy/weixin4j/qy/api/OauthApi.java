@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * 企业号oauth授权
  * 
  * @className OauthApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月11日
  * @since JDK 1.6
  * @see <a href=

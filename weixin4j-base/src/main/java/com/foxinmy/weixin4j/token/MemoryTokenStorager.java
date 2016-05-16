@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.model.Token;
  * 用内存保存Token信息(不推荐使用)
  * 
  * @className MemoryTokenStorager
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月24日
  * @since JDK 1.6
  * @see

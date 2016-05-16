@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.http.ContentType;
  * 媒体文件下载结果
  * 
  * @className MediaDownloadResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年7月25日
  * @since JDK 1.6
  * @see

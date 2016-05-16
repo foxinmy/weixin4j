@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 客服消息API
  * 
  * @className NotifyApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月26日
  * @since JDK 1.6
  */

@@ -24,7 +24,7 @@ import com.foxinmy.weixin4j.type.ButtonType;
  * 菜单相关API
  * 
  * @className MenuApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
  */

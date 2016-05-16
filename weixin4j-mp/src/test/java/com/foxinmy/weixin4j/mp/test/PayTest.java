@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.type.IdType;
  * 支付测试（V2版本 2014年9月之前申请微信支付的公众号）
  * 
  * @className PayTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月30日
  * @since JDK 1.7
  * @see

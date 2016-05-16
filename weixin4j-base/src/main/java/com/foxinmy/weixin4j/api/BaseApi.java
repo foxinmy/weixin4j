@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
  * API基础
  * 
  * @className BaseApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月26日
  * @since JDK 1.6
  * @see <a href="http://mp.weixin.qq.com/wiki/index.php">微信公众平台API文档</a>

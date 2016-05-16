@@ -5,7 +5,7 @@ package com.foxinmy.weixin4j.sign;
  * 微信签名
  * 
  * @className WeixinSignature
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月26日
  * @since JDK 1.6
  * @see

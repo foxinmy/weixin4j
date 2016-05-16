@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.tuple.MpArticle;
  * 媒体素材信息
  * 
  * @className MediaItem
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月22日
  * @since JDK 1.6
  * @see

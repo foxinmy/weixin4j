@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.qy.type;
  * 会话类型
  * 
  * @className ChatType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年7月31日
  * @since JDK 1.6
  * @see

@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 微信支付账户
  * 
  * @className WeixinPayAccount
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月26日
  * @since JDK 1.6
  * @see

@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultSerializer;
  * 签名工具类
  * 
  * @className MapUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
  * @since JDK 1.6
  * @see

@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.util.ServerToolkits;
  * 微信消息key
  * 
  * @className WeixinMessageKey
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月9日
  * @since JDK 1.6
  * @see

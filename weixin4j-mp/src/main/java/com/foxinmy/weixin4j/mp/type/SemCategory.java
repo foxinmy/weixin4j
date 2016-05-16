@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.mp.type;
  * 垂直服务协议
  * 
  * @className SemCategory
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月7日
  * @since JDK 1.6
  * @see

@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.model.Sort.Direction;
  * 分页数据(页码从1开始
  * 
  * @className Pageable
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月27日
  * @since JDK 1.6
  */

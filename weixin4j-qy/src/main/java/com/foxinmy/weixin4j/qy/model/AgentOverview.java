@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 企业号应用的概况信息
  * 
  * @className AgentOverview
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年4月9日
  * @since JDK 1.6
  * @see

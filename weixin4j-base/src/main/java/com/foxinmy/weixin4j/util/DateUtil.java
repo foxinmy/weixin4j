@@ -9,7 +9,7 @@ import java.util.Date;
  * 日期工具类
  * 
  * @className DateUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
  * @since JDK 1.6
  * @see

@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.type.AgentType;
  * 企业号聊天服务回调消息
  * 
  * @className WeixinChatMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月1日
  * @since JDK 1.6
  * @see

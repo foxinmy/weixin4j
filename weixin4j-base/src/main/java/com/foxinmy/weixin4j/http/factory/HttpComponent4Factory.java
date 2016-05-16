@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.http.HttpClient;
  * 使用Apache的HttpClient4.x
  * 
  * @className HttpComponent4Factory
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月12日
  * @since JDK 1.6
  * @see

@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * 辅助API
  * 
  * @className HelperApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月28日
  * @since JDK 1.6
  * @see

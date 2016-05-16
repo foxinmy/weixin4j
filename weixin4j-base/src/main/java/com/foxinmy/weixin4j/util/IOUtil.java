@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
  * IOUtil
  * 
  * @className IOUtil
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月22日
  * @since JDK 1.6
  * @see org.apache.commons.io.IOUtils

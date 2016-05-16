@@ -36,7 +36,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * XML 处理
  * 
  * @className XmlStream
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月2日
  * @since JDK 1.6
  * @see

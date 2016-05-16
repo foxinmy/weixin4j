@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 部门对象
  * 
  * @className Party
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see <a

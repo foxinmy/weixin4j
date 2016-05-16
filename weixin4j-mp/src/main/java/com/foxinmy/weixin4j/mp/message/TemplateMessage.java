@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.util.NameValue;
  * 模板消息
  * 
  * @className TemplateMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月29日
  * @since JDK 1.6
  * @see <a

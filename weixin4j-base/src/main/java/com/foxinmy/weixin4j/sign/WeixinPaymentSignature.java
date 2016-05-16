@@ -6,7 +6,7 @@ import com.foxinmy.weixin4j.util.DigestUtil;
  * 微信支付签名实现
  * 
  * @className WeixinPaymentSignature
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月26日
  * @since JDK 1.6
  * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/external/jsapi.php?chapter=4_3">支付签名说明</a>

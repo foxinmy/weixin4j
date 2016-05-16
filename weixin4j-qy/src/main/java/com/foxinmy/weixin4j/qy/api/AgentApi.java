@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * 管理应用接口
  * 
  * @className AgentApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月16日
  * @since JDK 1.6
  * @see <a

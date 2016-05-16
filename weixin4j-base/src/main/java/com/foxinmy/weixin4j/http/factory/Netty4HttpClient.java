@@ -44,7 +44,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * Netty 4.x
  * 
  * @className Netty4HttpClient
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月30日
  * @since JDK 1.6
  * @see

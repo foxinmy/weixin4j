@@ -25,7 +25,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * 微信第三方应用接口实现
  * 
  * @className WeixinSuiteProxy
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月22日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.qy.api.SuiteApi

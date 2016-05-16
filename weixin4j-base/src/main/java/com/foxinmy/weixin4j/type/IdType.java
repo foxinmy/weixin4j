@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * ID类型
  * 
  * @className IdType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月1日
  * @since JDK 1.6
  * @see
