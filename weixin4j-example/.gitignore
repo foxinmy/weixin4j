@@ -30,3 +30,6 @@ target/*
 Thumbs.db
 /target/
 .DS_Store
+
+# js ignore
+src/test/java/com/foxinmy/weixin4j/test/js/*
