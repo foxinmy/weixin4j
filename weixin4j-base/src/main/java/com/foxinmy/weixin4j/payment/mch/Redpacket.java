@@ -6,12 +6,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
  * 红包
- * 
+ *
  * @className Redpacket
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月28日
@@ -26,19 +25,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
 public class Redpacket extends MerchantResult {
 
 	private static final long serialVersionUID = -7021352305575714281L;
-	/**
-	 * 服务商模式下触达用户时的appid(可填服务商自己的appid或子商户的appid)，服务商模式下必填，
-	 * 服务商模式下填入的子商户appid必须在微信支付商户平台中先录入，否则会校验不过。 非必须
-	 */
-	@XmlElement(name = "msgappid")
-	@JSONField(name = "msgappid")
-	private String subMsgId;
-	/**
-	 * 扣钱方mchid,常规模式下无效，服务商模式下选填，服务商模式下不填默认扣子商户的钱.非必须
-	 */
-	@XmlElement(name = "consume_mch_id")
-	@JSONField(name = "consume_mch_id")
-	private String consumeMchId;
+
 	/**
 	 * 商户订单号（每个订单号必须唯一） 组成： mch_id+yyyymmdd+10位一天内不能重复的数字。
 	 */
@@ -96,13 +83,27 @@ public class Redpacket extends MerchantResult {
 	 */
 	private String remark;
 
+	/**
+	 * 服务商模式下触达用户时的appid(可填服务商自己的appid或子商户的appid)，服务商模式下必填，
+	 * 服务商模式下填入的子商户appid必须在微信支付商户平台中先录入，否则会校验不过。 非必须
+	 */
+	@XmlElement(name = "msgappid")
+	@JSONField(name = "msgappid")
+	private String msgAppId;
+	/**
+	 * 扣钱方mchid,常规模式下无效，服务商模式下选填，服务商模式下不填默认扣子商户的钱.非必须
+	 */
+	@XmlElement(name = "consume_mch_id")
+	@JSONField(name = "consume_mch_id")
+	private String consumeMchId;
+
 	protected Redpacket() {
 		// jaxb required
 	}
 
 	/**
 	 * 红包
-	 * 
+	 *
 	 * @param outTradeNo
 	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
 	 * @param sendName
@@ -122,22 +123,21 @@ public class Redpacket extends MerchantResult {
 	 * @param remark
 	 *            备注 必填
 	 */
-	public Redpacket(WeixinPayAccount weixinPayAccount, String outTradeNo,
-			String sendName, String openid, double totalAmount, int totalNum,
-			String wishing, String clientIp, String actName, String remark) {
+	public Redpacket(String outTradeNo, String sendName, String openid,
+			double totalAmount, int totalNum, String wishing, String clientIp,
+			String actName, String remark) {
 		this(null, null, outTradeNo, sendName, openid, totalAmount, totalNum,
 				wishing, clientIp, actName, remark);
 	}
 
 	/**
 	 * 红包 完整参数
-	 * 
-	 * @param subMchId
-	 *            子商户商户号 非必填
-	 * @param subMsgId
-	 *            触达用户appid 非必填
+	 *
+	 * @param msgAppId
+	 *            触达用户appid 服务商模式下触达用户时的appid(可填服务商自己的appid或子商户的appid)，服务商模式下必填，
+	 *            服务商模式下填入的子商户appid必须在微信支付商户平台中先录入，否则会校验不过。
 	 * @param consumeMchId
-	 *            扣钱方mchid 非必填
+	 *            常规模式下无效，服务商模式下选填，服务商模式下不填默认扣子商户的钱
 	 * @param outTradeNo
 	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
 	 * @param sendName
@@ -157,10 +157,10 @@ public class Redpacket extends MerchantResult {
 	 * @param remark
 	 *            备注 必填
 	 */
-	public Redpacket(String subMsgId, String consumeMchId, String outTradeNo,
+	public Redpacket(String msgAppId, String consumeMchId, String outTradeNo,
 			String sendName, String openid, double totalAmount, int totalNum,
 			String wishing, String clientIp, String actName, String remark) {
-		this.subMsgId = subMsgId;
+		this.msgAppId = msgAppId;
 		this.consumeMchId = consumeMchId;
 		this.outTradeNo = outTradeNo;
 		this.sendName = sendName;
@@ -216,7 +216,7 @@ public class Redpacket extends MerchantResult {
 
 	@Override
 	public String toString() {
-		return "Redpacket [subMsgId=" + subMsgId + ", consumeMchId="
+		return "Redpacket [msgAppId=" + msgAppId + ", consumeMchId="
 				+ consumeMchId + ", outTradeNo=" + outTradeNo + ", sendName="
 				+ sendName + ", openid=" + openid + ", totalAmount="
 				+ totalAmount + ", totalNum=" + totalNum + ", amtType="

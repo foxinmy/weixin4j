@@ -50,7 +50,7 @@ public class WeixinTicketCreator extends AbstractTokenCreator {
 	@Override
 	public Token createToken() throws WeixinException {
 		WeixinResponse response = weixinExecutor.get(
-				String.format(URLConsts.TICKET_URL, weixinTokenHolder.getToken().getAccessToken(), ticketType.name()));
+				String.format(URLConsts.JS_TICKET_URL, weixinTokenHolder.getToken().getAccessToken(), ticketType.name()));
 		JSONObject result = response.getAsJson();
 		Token token = new Token(result.getString("ticket"));
 		token.setExpiresIn(result.getIntValue("expires_in"));

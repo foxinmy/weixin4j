@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.type.CorpPaymentCheckNameType;
 
 /**
  * 现金发放测试
- * 
+ *
  * @className CashTest
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年4月1日
@@ -26,7 +26,7 @@ public class CashTest extends PayTest {
 
 	@Test
 	public void sendRedpacket() throws WeixinException, IOException {
-		Redpacket redpacket = new Redpacket(ACCOUNT, "HB001", "无忧钱庄",
+		Redpacket redpacket = new Redpacket("HB001", "无忧钱庄",
 				"oyFLst1bqtuTcxK-ojF8hOGtLQao", 1d, 1, "红包测试", "127.0.0.1",
 				"快来领取红包吧！", "来就送钱");
 		RedpacketSendResult result = PAY.sendRedpack(

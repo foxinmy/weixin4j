@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 
 /**
  * API基础
- * 
+ *
  * @className BaseApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月26日
@@ -22,7 +22,7 @@ public abstract class BaseApi {
 
 	protected final InternalLogger logger = InternalLoggerFactory
 			.getInstance(getClass());
-	
+
 	protected final WeixinRequestExecutor weixinExecutor;
 
 	protected abstract ResourceBundle weixinBundle();
