@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * V3退款申请结果
  * 
  * @className RefundResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月6日
  * @since JDK 1.6
  * @see

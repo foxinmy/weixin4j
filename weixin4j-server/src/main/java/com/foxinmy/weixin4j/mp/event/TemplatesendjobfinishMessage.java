@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * 模板消息事件推送(公众平台)
  * 
  * @className TemplatesendjobfinishMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月19日
  * @since JDK 1.6
  * @see <a

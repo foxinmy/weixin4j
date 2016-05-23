@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * 微信第三方套件配置相关
  * 
  * @className Weixin4jSuiteSettings
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月28日
  * @since JDK 1.6
  * @see

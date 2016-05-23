@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * 报关结果
  * 
  * @className CustomsOrderResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月27日
  * @since JDK 1.6
  * @see

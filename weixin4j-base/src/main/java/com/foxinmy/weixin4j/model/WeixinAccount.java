@@ -9,7 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 微信账号信息
  * 
  * @className WeixinAccount
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see

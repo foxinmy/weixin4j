@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * 发送红包结果
  * 
  * @className RedpacketSendResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年4月1日
  * @since JDK 1.6
  * @see

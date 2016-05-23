@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.token.TokenStorager;
  * 微信配置相关
  * 
  * @className Weixin4jSettings
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月28日
  * @since JDK 1.6
  * @see

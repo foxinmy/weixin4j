@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * 标签相关API
  * 
  * @className TagApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年4月29日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.mp.model.Tag

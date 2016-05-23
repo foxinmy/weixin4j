@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.mp.type.AutoreplyMode;
  * 自动回复设置
  * 
  * @className AutoReplySetting
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年4月15日
  * @since JDK 1.6
  * @see
@@ -107,7 +107,7 @@ public class AutoReplySetting implements Serializable {
 	 * 关键字规则
 	 * 
 	 * @className Rule
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年4月15日
 	 * @since JDK 1.6
 	 * @see
@@ -200,7 +200,7 @@ public class AutoReplySetting implements Serializable {
 	 * 数据项
 	 * 
 	 * @className Entry
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年4月15日
 	 * @since JDK 1.6
 	 * @see

@@ -14,9 +14,9 @@ import com.foxinmy.weixin4j.model.Token;
 
 /**
  * 用Redis保存Token信息(推荐使用)
- * 
+ *
  * @className RedisTokenStorager
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月9日
  * @since JDK 1.6
  */

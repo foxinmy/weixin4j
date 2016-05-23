@@ -8,7 +8,7 @@ package com.foxinmy.weixin4j.type;
  * ，它们是没有事件推送的，能力相对受限，其他类型的公众号不必使用。</font>
  * 
  * @className ButtonType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月30日
  * @since JDK 1.6
  * @see <a

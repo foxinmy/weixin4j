@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.mp.type.KfOnlineStatus;
  * 多客服账号信息
  * 
  * @className KfAccount
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月16日
  * @since JDK 1.6
  * @see <a href="http://dkf.qq.com/document-3_1.html">多客服账号信息</a>

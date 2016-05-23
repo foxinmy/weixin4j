@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.qy.type;
  * 异步任务的状态
  * 
  * @className BatchStatus
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月31日
  * @since JDK 1.6
  * @see

@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * 套件消息
  * 
  * @className SuiteMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月23日
  * @since JDK 1.6
  * @see

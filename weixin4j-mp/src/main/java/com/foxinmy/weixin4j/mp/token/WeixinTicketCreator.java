@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.type.TicketType;
  * 微信公众平台TICKET创建(包括jsticket、其它JSSDK所需的ticket的创建
  * 
  * @className WeixinJSTicketCreator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
  * @since JDK 1.6
  * @see <a href=
@@ -50,7 +50,7 @@ public class WeixinTicketCreator extends AbstractTokenCreator {
 	@Override
 	public Token createToken() throws WeixinException {
 		WeixinResponse response = weixinExecutor.get(
-				String.format(URLConsts.TICKET_URL, weixinTokenHolder.getToken().getAccessToken(), ticketType.name()));
+				String.format(URLConsts.JS_TICKET_URL, weixinTokenHolder.getToken().getAccessToken(), ticketType.name()));
 		JSONObject result = response.getAsJson();
 		Token token = new Token(result.getString("ticket"));
 		token.setExpiresIn(result.getIntValue("expires_in"));

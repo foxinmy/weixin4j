@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
 /**
  * 客服消息(48小时内不限制发送次数)
  * 
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月4日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.tuple.Text

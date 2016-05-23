@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * 分组相关API
  * 
  * @className GroupApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.mp.model.Group

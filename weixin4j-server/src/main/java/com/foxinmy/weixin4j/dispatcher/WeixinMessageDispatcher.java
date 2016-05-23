@@ -43,7 +43,7 @@ import com.foxinmy.weixin4j.xml.MessageTransferHandler;
  * 微信消息分发器
  * 
  * @className WeixinMessageDispatcher
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.handler.WeixinMessageHandler

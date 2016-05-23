@@ -9,9 +9,9 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * 企业号oauth授权
- * 
+ *
  * @className OauthApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月11日
  * @since JDK 1.6
  * @see <a href=
@@ -27,45 +27,54 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 public class OauthApi extends QyApi {
 	private final WeixinAccount account;
 
+	/**
+	 * 默认使用weixin4j.properties里面的corpid、corpsecret信息
+	 */
 	public OauthApi() {
 		this(Weixin4jConfigUtil.getWeixinAccount());
 	}
 
+	/**
+	 * 传入corpid、appsecret信息
+	 *
+	 * @param account
+	 */
 	public OauthApi(WeixinAccount account) {
 		this.account = account;
 	}
 
 	/**
-	 * 企业号用户身份授权
-	 * 
-	 * @see {@link #getUserAuthorizeURL(String, String,String)}
-	 * 
+	 * 企业号用户身份授权:重定向URL使用weixin4j.properties#user.oauth.redirect.uri
+	 *
+	 * @see {@link #getUserAuthorizeURL(String,String)}
+	 *
 	 * @return 请求授权的URL
 	 */
 	public String getUserAuthorizeURL() {
-		String corpId = account.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("user.oauth.redirect.uri");
-		return getUserAuthorizeURL(corpId, redirectUri, "state");
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("user.oauth.redirect.uri");
+		return getUserAuthorizeURL(redirectUri, "state");
 	}
 
 	/**
 	 * 企业号用户身份授权
-	 * 
-	 * @param corpId
-	 *            企业号的corpid
+	 *
 	 * @param redirectUri
 	 *            重定向地址
 	 * @param state
 	 *            用于保持请求和回调的状态
 	 * @return 请求授权的URL
+	 * @see UserApi
+	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#getUserByCode(String)}
 	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83">
+	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81">
 	 *      企业号用户身份授权</a>
 	 */
-	public String getUserAuthorizeURL(String corpId, String redirectUri, String state) {
+	public String getUserAuthorizeURL(String redirectUri, String state) {
 		String oauth_uri = getRequestUri("user_oauth_uri");
 		try {
-			return String.format(oauth_uri, corpId, URLEncoder.encode(redirectUri, Consts.UTF_8.name()), state);
+			return String.format(oauth_uri, account.getId(),
+					URLEncoder.encode(redirectUri, Consts.UTF_8.name()), state);
 		} catch (UnsupportedEncodingException e) {
 			;
 		}
@@ -73,21 +82,21 @@ public class OauthApi extends QyApi {
 	}
 
 	/**
-	 * 企业号第三方提供商授权
-	 * 
-	 * @see {@link #getThirdAuthorizeURL(String, String,String)}
-	 * 
+	 * 企业号第三方提供商授权:重定向URL使用weixin4j.properties#third.oauth.redirect.uri
+	 *
+	 * @see {@link #getThirdAuthorizeURL(String,String)}
+	 *
 	 * @return 请求授权的URL
 	 */
 	public String getThirdAuthorizeURL() {
-		String corpId = account.getId();
-		String redirectUri = Weixin4jConfigUtil.getValue("third.oauth.redirect.uri");
-		return getThirdAuthorizeURL(corpId, redirectUri, "state");
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("third.oauth.redirect.uri");
+		return getThirdAuthorizeURL(redirectUri, "state");
 	}
 
 	/**
 	 * 企业号登陆授权
-	 * 
+	 *
 	 * @param corpId
 	 *            企业号（提供商）的corpid
 	 * @param redirectUri
@@ -98,13 +107,14 @@ public class OauthApi extends QyApi {
 	 * @see ProviderApi
 	 * @see {@link com.foxinmy.weixin4j.qy.WeixinSuiteProxy#getOUserInfoByCode(String)}
 	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83">
+	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E6%88%90%E5%91%98%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83">
 	 *      企业号第三方提供商授权</a>
 	 */
-	public String getThirdAuthorizeURL(String corpId, String redirectUri, String state) {
+	public String getThirdAuthorizeURL(String redirectUri, String state) {
 		String oauth_uri = getRequestUri("provider_oauth_uri");
 		try {
-			return String.format(oauth_uri, corpId, URLEncoder.encode(redirectUri, Consts.UTF_8.name()), state);
+			return String.format(oauth_uri, account.getId(),
+					URLEncoder.encode(redirectUri, Consts.UTF_8.name()), state);
 		} catch (UnsupportedEncodingException e) {
 			;
 		}

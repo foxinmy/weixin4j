@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * 用户进入应用的事件推送(企业号)本事件只有在应用的回调模式中打开上报开关时上报
  * 
  * @className EnterAgentEventMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月28日
  * @since JDK 1.6
  * @see <a href=

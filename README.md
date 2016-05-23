@@ -9,7 +9,7 @@ weixin4j
 -------
 * **weixin4j-base**
 
-  `Http Client实现&token实现&微信支付实现(刷卡/扫码/JS/APP/WAP/现金红包/企业付款)`
+  `Http Client实现&token实现&微信支付实现(刷卡/扫码/JS/APP/WAP/现金红包/企业付款)`,如果只使用`微信支付`功能可只引用此工程
 
 * **weixin4j-mp**
 
@@ -22,6 +22,10 @@ weixin4j
 * **weixin4j-server**
   
   `netty服务器&消息分发`
+  
+* **weixin4j-example**
+
+  示例工程,包含了如何构建weixin4j-server服务器和与spring集成,建议看看
 
 [如何使用](https://github.com/foxinmy/weixin4j/wiki)
 --------

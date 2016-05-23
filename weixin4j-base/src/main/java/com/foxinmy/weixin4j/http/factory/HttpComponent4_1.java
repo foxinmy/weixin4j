@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.model.Consts;
  * Requires Apache HttpComponents 4.2 or lower
  * 
  * @className HttpComponent4_1
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月18日
  * @since JDK 1.6
  * @see

@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 代金券批次状态
  * 
  * @className CouponStockStatus
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月27日
  * @since JDK 1.6
  * @see

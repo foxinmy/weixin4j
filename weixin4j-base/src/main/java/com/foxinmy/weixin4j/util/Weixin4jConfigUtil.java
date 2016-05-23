@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  * 公众号配置信息 class路径下weixin4j.properties文件
  * 
  * @className Weixin4jConfigUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
  * @since JDK 1.6
  * @see

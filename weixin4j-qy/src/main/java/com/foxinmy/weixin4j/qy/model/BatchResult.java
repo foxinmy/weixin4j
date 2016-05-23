@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.qy.type.BatchType;
  * 异步任务执行结果
  * 
  * @className BatchResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月31日
  * @since JDK 1.6
  * @see

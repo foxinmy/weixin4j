@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.model.Token;
  * 用户授权token 一般通过授权页面获得
  * 
  * @className OauthToken
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月6日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.mp.model.AuthResult

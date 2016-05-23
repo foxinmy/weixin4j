@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 二维码类型
  * 
  * @className QRType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月4日
  * @since JDK 1.6
  * @see

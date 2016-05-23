@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.model.Token;
  * 对token的缓存获取
  * 
  * @className TokenHolder
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月12日
  * @since JDK 1.6
  * @see TokenCreator

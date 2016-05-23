@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * 第三方应用套件
  * 
  * @className SuiteApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月17日
  * @since JDK 1.6
  * @see <a

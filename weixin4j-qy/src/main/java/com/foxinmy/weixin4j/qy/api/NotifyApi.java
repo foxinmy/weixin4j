@@ -22,7 +22,7 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
  * 客服消息API
  * 
  * @className NotifyApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月21日
  * @since JDK 1.6
  * @see <a

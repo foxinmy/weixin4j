@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * 异步任务事件完成通知
  * 
  * @className BatchjobresultMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月31日
  * @since JDK 1.6
  * @see <a
@@ -39,7 +39,7 @@ public class BatchjobresultMessage extends EventMessage {
 	 * 任务信息
 	 * 
 	 * @className BatchJob
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年4月1日
 	 * @since JDK 1.6
 	 * @see

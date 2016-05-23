@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.type.TradeType;
  * 支付订单详情
  * 
  * @className MchPayPackage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月21日
  * @since JDK 1.6
  * @see

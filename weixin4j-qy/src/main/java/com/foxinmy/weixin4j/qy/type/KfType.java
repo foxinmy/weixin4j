@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.qy.type;
  * 客服类型
  * 
  * @className KfType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月23日
  * @since JDK 1.7
  * @see

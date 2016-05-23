@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 服务商相关API
  * 
  * @className ProviderApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月30日
  * @since JDK 1.6
  * @see <a

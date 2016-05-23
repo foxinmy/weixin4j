@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.mp.type;
  * 卡券类型
  * 
  * @className CardType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年4月4日
  * @since JDK 1.6
  * @see

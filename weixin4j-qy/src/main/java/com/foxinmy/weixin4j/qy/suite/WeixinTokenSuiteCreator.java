@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * 微信企业号token创建(永久授权码)
  * 
  * @className WeixinTokenSuiteCreator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月17日
  * @since JDK 1.6
  * @see <a href=

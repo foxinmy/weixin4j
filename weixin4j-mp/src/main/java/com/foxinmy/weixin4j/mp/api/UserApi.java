@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * 用户相关API
  * 
  * @className UserApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.mp.model.User

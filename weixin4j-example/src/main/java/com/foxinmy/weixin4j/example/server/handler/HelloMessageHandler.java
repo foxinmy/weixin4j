@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * 输入 hello 回复 world
  * 
  * @className HelloMessageHandler
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月27日
  * @since JDK 1.7
  * @see

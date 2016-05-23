@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.mp.type;
  * 国家地区语言版本
  * 
  * @className Lang
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月5日
  * @since JDK 1.6
  * @see

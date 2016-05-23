@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.type.RefundStatus;
  * V2退款详细
  * 
  * @className RefundDetailV2
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月6日
  * @since JDK 1.6
  * @see

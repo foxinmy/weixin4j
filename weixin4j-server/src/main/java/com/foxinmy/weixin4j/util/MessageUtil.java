@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
  * 消息工具类
  * 
  * @className MessageUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
  * @since JDK 1.6
  * @see

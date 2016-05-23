@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  * 订单信息
  * 
  * @className Order
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月2日
  * @since JDK 1.6
  * @see

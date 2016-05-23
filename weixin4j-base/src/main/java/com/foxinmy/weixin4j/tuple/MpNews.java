@@ -16,7 +16,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * </p>
  * 
  * @className MpNews
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月29日
  * @since JDK 1.6
  * @see

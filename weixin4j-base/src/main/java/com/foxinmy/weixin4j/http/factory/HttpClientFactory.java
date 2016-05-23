@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.http.HttpClientException;
  * HttpClient工厂生产类:参考netty的InternalLoggerFactory
  * 
  * @className HttpClientFactory
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月12日
  * @since JDK 1.6
  * @see

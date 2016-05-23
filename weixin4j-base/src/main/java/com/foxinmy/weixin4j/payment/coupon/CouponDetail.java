@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * 代金券详细
  * 
  * @className CouponDetail
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月27日
  * @since JDK 1.6
  * @see

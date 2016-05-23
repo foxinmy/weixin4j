@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * Native支付时的回调响应
  * 
  * @className NativePayResponse
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月28日
  * @since JDK 1.6
  * @see

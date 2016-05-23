@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.util.ServerToolkits;
  * 单一回复编码类
  * 
  * @className SingleResponseEncoder
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年08月02日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.response.SingleResponse

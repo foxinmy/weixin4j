@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
  * HTTP工具类
  * 
  * @className HttpUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月15日
  * @since JDK 1.6
  * @see

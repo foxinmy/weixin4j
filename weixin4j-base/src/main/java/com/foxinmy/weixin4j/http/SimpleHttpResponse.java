@@ -10,7 +10,7 @@ import java.util.Map.Entry;
  * Simple Response
  * 
  * @className SimpleHttpResponse
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月14日
  * @since JDK 1.6
  * @see

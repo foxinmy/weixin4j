@@ -28,7 +28,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * 负责微信请求的执行
  * 
  * @className WeixinRequestExecutor
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月15日
  * @since JDK 1.6
  * @see

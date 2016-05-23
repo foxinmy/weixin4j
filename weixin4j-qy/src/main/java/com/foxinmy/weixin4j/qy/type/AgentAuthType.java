@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.qy.type;
  * 管理员对应用的权限
  * 
  * @className AgentAuthType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月12日
  * @since JDK 1.6
  * @see

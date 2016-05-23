@@ -13,7 +13,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 调用接口返回xml格式
  * 
  * @className XmlResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月1日
  * @since JDK 1.6
  * @see

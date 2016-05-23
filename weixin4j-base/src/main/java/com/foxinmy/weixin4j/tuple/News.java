@@ -15,7 +15,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * </p>
  * 
  * @className News
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月21日
  * @since JDK 1.6
  * @see

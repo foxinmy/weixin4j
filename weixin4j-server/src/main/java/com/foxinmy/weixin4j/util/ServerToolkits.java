@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.socket.WeixinMessageTransfer;
  * 工具包
  * 
  * @className ServerToolkits
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月26日
  * @since JDK 1.7
  * @see

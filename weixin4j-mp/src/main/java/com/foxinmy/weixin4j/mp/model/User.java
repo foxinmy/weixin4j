@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 当用户与公众号有交互时,可通过openid获取信息
  * </p>
  * 
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月8日
  * @since JDK 1.6
  */

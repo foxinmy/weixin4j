@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.qy.token;
 
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
@@ -12,7 +11,7 @@ import com.foxinmy.weixin4j.token.AbstractTokenCreator;
  * 微信企业号TOKEN创建
  * 
  * @className WeixinTokenCreator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
  * @since JDK 1.6
  * @see <a href=
@@ -22,7 +21,6 @@ import com.foxinmy.weixin4j.token.AbstractTokenCreator;
  */
 public class WeixinTokenCreator extends AbstractTokenCreator {
 
-	private final WeixinRequestExecutor weixinExecutor;
 	private final String corpid;
 	private final String corpsecret;
 
@@ -36,7 +34,6 @@ public class WeixinTokenCreator extends AbstractTokenCreator {
 	public WeixinTokenCreator(String corpid, String corpsecret) {
 		this.corpid = corpid;
 		this.corpsecret = corpsecret;
-		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override

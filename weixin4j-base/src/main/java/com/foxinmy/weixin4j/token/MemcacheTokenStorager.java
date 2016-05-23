@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.model.Token;
  * 用Memcache保存Token信息(推荐使用)
  * 
  * @className MemcacheTokenStorager
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年5月11日
  * @since JDK 1.6
  * @see

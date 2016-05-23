@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  * 微信消息服务:需要另外开启一个线程去启动服务,比如在spring mvc中
  * 
  * @className Weixin4jServerStartupWithThread
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
  * @since JDK 1.7
  * @see

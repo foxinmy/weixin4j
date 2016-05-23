@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.type.TradeType;
  * MICROPAY刷卡支付
  * 
  * @className MICROPayRequest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.payment.mch.PrePay

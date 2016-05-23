@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  * 微信消息服务器初始化
  * 
  * @className WeixinServerInitializer
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月17日
  * @since JDK 1.6
  * @see

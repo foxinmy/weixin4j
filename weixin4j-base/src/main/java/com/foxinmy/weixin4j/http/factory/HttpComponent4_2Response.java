@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.http.HttpVersion;
  * HttpComponent4 Response:Requires Apache HttpComponents 4.3 or higher
  * 
  * @className HttpComponent4_2Response
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月18日
  * @since JDK 1.6
  * @see

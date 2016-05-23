@@ -13,7 +13,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 代金券信息(订单,退款中体现)
  * 
  * @className CouponInfo
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月24日
  * @since JDK 1.6
  * @see

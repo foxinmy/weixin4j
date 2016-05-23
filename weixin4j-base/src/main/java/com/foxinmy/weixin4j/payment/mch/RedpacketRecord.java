@@ -19,9 +19,9 @@ import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
  * 红包记录
- * 
+ *
  * @className RedpacketRecord
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月4日
  * @since JDK 1.6
  * @see
@@ -176,7 +176,7 @@ public class RedpacketRecord extends XmlResult {
 
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
-	 * 
+	 *
 	 * @return 元单位
 	 */
 	@JSONField(serialize = false)
@@ -214,7 +214,7 @@ public class RedpacketRecord extends XmlResult {
 
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
-	 * 
+	 *
 	 * @return 元单位
 	 */
 	@JSONField(serialize = false)
@@ -248,7 +248,7 @@ public class RedpacketRecord extends XmlResult {
 		 * 领取红包的Openid
 		 */
 		@XmlElement(name = "openid")
-		private String openid;
+		private String openId;
 		/**
 		 * 领取状态
 		 */
@@ -265,8 +265,8 @@ public class RedpacketRecord extends XmlResult {
 		@JSONField(name = "rcv_time")
 		private String receiveTime;
 
-		public String getOpenid() {
-			return openid;
+		public String getOpenId() {
+			return openId;
 		}
 
 		public RedpacketStatus getStatus() {
@@ -283,7 +283,7 @@ public class RedpacketRecord extends XmlResult {
 
 		/**
 		 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
-		 * 
+		 *
 		 * @return 元单位
 		 */
 		@JSONField(serialize = false)
@@ -299,7 +299,7 @@ public class RedpacketRecord extends XmlResult {
 
 		@Override
 		public String toString() {
-			return "RedpacketReceiver [openid=" + openid + ", status=" + status
+			return "RedpacketReceiver [openId=" + openId + ", status=" + status
 					+ ", amount=" + getFormatAmount() + ", receiveTime="
 					+ receiveTime + "]";
 		}

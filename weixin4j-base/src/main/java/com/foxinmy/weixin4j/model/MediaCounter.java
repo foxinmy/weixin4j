@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 媒体素材总数
  * 
  * @className MediaCounter
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月22日
  * @since JDK 1.6
  * @see

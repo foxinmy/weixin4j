@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 商户支付
  * 
  * @className MchApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月26日
  * @since JDK 1.6
  * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/index.html">商户支付平台</a>

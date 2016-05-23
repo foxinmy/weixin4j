@@ -6,7 +6,7 @@ import java.io.Serializable;
  * aes & token
  * 
  * @className AesToken
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月6日
  * @since JDK 1.6
  * @see

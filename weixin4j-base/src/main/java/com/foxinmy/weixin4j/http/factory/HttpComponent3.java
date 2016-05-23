@@ -46,7 +46,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * Apache HttpComponent 3.x
  * 
  * @className HttpComponent3
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月18日
  * @since JDK 1.6
  * @see

@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.payment.mch.MerchantResult;
  * 代金券发放结果
  * 
  * @className CouponResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月25日
  * @since JDK 1.6
  * @see

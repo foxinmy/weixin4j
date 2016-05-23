@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.http.HttpVersion;
  * HttpComponent3 Response
  * 
  * @className HttpComponent3Response
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月17日
  * @since JDK 1.6
  * @see

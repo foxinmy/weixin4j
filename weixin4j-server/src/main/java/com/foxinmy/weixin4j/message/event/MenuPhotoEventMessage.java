@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
  * 弹出拍照或者相册发图的事件推送(pic_sysphoto|pic_photo_or_album|pic_weixin)
  * 
  * @className MenuPhotoEventMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月30日
  * @since JDK 1.6
  * @see <a
@@ -36,7 +36,7 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 	 * 图片信息
 	 * 
 	 * @className PictureInfo
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年3月29日
 	 * @since JDK 1.6
 	 * @see
@@ -75,7 +75,7 @@ public class MenuPhotoEventMessage extends MenuEventMessage {
 	 * 图片
 	 * 
 	 * @className PictureItem
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年3月29日
 	 * @since JDK 1.6
 	 * @see

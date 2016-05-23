@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.qy.model.IdParameter;
  * JSSDK联系人筛选参数
  * 
  * @className JSSDKContactParameter
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
  * @since JDK 1.6
  * @see

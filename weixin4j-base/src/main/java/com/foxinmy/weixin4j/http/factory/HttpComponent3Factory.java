@@ -6,7 +6,7 @@ import org.apache.commons.httpclient.HttpClient;
  * 使用Apache的HttpClient3.x
  * 
  * @className HttpComponent3Factory
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月12日
  * @since JDK 1.6
  * @see

@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.qy.type.AgentAuthType;
  * 企业号oauth授权登陆信息&第三方应用授权信息
  * 
  * @className OUserInfo
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月12日
  * @since JDK 1.6
  * @see
@@ -124,7 +124,7 @@ public class OUserInfo implements Serializable {
 	 * 授权信息
 	 * 
 	 * @className AuthInfo
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年6月22日
 	 * @since JDK 1.6
 	 * @see
@@ -185,7 +185,7 @@ public class OUserInfo implements Serializable {
 	 * 授权的应用信息
 	 * 
 	 * @className AgentItem
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年6月22日
 	 * @since JDK 1.6
 	 * @see
@@ -270,7 +270,7 @@ public class OUserInfo implements Serializable {
 	 * 授权的通讯录部门
 	 * 
 	 * @className DepartItem
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年6月22日
 	 * @since JDK 1.6
 	 * @see

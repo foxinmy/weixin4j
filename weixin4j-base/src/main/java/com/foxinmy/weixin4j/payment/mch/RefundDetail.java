@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  * V3退款详细
  * 
  * @className RefundDetail
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月6日
  * @since JDK 1.6
  * @see

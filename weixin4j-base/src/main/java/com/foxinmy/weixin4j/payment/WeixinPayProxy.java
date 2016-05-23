@@ -47,7 +47,7 @@ import com.foxinmy.weixin4j.util.Weixin4jSettings;
  * 微信支付接口实现
  * 
  * @className WeixinPayProxy
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月3日
  * @since JDK 1.6
  * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台支付API</a>

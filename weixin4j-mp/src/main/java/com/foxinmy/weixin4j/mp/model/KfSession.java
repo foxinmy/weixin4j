@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 客服会话信息
  * 
  * @className KfSession
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月22日
  * @since JDK 1.6
  * @see

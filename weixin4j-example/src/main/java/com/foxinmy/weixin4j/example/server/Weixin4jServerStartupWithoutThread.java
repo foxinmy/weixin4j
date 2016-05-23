@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
  * 微信消息服务:单独作为一个服务jar包启动
  * 
  * @className Weixin4jServerStartupWithoutThread
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
  * @since JDK 1.7
  * @see

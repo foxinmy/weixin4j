@@ -24,7 +24,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * HTTP 简单实现
  * 
  * @className SimpleHttpClient
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月29日
  * @since JDK 1.6
  * @see

@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.mp.type.Lang;
  * 个性化菜单匹配规则
  * 
  * @className MenuMatchRule
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月17日
  * @since JDK 1.6
  * @see

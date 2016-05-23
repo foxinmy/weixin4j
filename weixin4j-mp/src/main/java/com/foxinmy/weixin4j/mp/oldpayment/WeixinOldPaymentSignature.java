@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.util.MapUtil;
  * 老版本支付签名
  * 
  * @className WeixinOldPaymentSignature
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月26日
  * @since JDK 1.6
  * @see

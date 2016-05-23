@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.qy.model.Tag;
  * 标签API测试
  * 
  * @className TagTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see

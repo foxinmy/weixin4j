@@ -9,7 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 重复获取将导致上次获取的access_token失效
  * 
  * @className Token
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月5日
  * @since JDK 1.6
  * @see <a

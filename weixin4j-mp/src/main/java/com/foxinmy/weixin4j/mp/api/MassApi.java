@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 群发相关API
  * 
  * @className MassApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
  */

@@ -11,7 +11,7 @@ import java.util.Date;
  * 媒体文件上传结果
  * 
  * @className MediaUploadResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年7月25日
  * @since JDK 1.6
  * @see

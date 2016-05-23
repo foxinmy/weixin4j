@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.mp.type;
  * 头像大小
  * 
  * @className FaceSize
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月5日
  * @since JDK 1.6
  * @see

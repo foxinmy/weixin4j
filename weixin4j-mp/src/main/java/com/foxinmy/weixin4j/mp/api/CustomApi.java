@@ -30,7 +30,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 多客服API
  * 
  * @className CustomApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月16日
  * @since JDK 1.6
  * @see <a href="http://dkf.qq.com">多客服说明</a>

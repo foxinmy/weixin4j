@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.mp.type;
  * 用户渠道来源
  * 
  * @className UserSourceType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月25日
  * @since JDK 1.6
  * @see

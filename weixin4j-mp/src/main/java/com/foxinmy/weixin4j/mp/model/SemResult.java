@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.http.weixin.JsonResult;
  * 语义理解结果
  * 
  * @className SemResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月7日
  * @since JDK 1.6
  * @see <a

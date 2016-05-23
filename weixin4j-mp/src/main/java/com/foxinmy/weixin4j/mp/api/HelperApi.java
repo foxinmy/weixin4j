@@ -24,7 +24,7 @@ import com.foxinmy.weixin4j.tuple.MpArticle;
  * 辅助相关API
  * 
  * @className HelperApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月26日
  * @since JDK 1.6
  * @see

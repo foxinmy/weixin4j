@@ -9,7 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 通讯录
  * 
  * @className Contacts
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月25日
  * @since JDK 1.6
  * @see

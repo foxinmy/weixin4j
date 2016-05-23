@@ -27,7 +27,7 @@ import com.foxinmy.weixin4j.util.ServerToolkits;
  * 微信请求处理类
  * 
  * @className WeixinRequestHandler
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月16日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher

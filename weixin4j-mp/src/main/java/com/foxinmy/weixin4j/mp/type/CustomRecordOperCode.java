@@ -7,7 +7,7 @@ import java.util.Map;
  * 客服消息记录中的回话状态
  * 
  * @className CustomRecordOperCode
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月16日
  * @since JDK 1.6
  * @see

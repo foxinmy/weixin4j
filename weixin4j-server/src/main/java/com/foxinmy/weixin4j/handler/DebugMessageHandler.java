@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * 调试消息处理器
  * 
  * @className DebugMessageHandler
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月17日
  * @since JDK 1.6
  * @see

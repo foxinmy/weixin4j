@@ -8,7 +8,7 @@ import io.netty.handler.codec.base64.Base64Dialect;
  * NettyBase64
  * 
  * @className NettyBase64
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月17日
  * @since JDK 1.6
  * @see

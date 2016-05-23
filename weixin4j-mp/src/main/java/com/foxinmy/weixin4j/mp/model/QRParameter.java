@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.type.QRType;
  * </p>
  * 
  * @className QRParameter
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月8日
  * @since JDK 1.6
  * @see #createPermanenceInt(int) 创建整型永久二维码

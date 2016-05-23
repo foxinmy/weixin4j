@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.token.AbstractTokenCreator;
  * 微信企业号应用套件凭证创建
  * 
  * @className WeixinSuiteTokenCreator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月17日
  * @since JDK 1.6
  * @see <a

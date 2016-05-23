@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 调用接口返回JSON格式
  * 
  * @className JsonResult
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月24日
  * @since JDK 1.6
  * @see <a

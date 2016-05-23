@@ -29,7 +29,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * 现金API
  * 
  * @className CashApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月28日
  * @since JDK 1.6
  * @see <a href=

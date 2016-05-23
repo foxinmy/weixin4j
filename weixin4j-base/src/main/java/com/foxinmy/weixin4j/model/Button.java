@@ -14,9 +14,9 @@ import com.foxinmy.weixin4j.type.ButtonType;
  * 目前自定义菜单最多包括3个一级菜单,每个一级菜单最多包含5个二级菜单,一级菜单最多4个汉字,二级菜单最多7个汉字,多出来的部分将会以"..."代替
  * 请注意,创建自定义菜单后,由于微信客户端缓存,需要24小时微信客户端才会展现出来,建议测试时可以尝试取消关注公众账号后再次关注,则可以看到创建后的效果
  * </p>
- * 
+ *
  * @className Button
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月5日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.type.ButtonType
@@ -32,7 +32,7 @@ public class Button implements Serializable {
 	/**
 	 * 菜单类型 </br> <font color="red">
 	 * 公众平台官网上能够设置的菜单类型有view、text、img、photo、video、voice </font>
-	 * 
+	 *
 	 * @see com.foxinmy.weixin4j.type.ButtonType
 	 */
 	private ButtonType type;
@@ -62,12 +62,12 @@ public class Button implements Serializable {
 	}
 
 	/**
-	 * 创建一个菜单(一级菜单)
-	 * 
+	 * 创建一个菜单
+	 *
 	 * @param name
-	 *            菜单显示的名称
+	 *            菜单名
 	 * @param subButtons
-	 *            二级菜单
+	 *            二级菜单列表
 	 */
 	public Button(String name, Button... subButtons) {
 		this.name = name;
@@ -75,14 +75,14 @@ public class Button implements Serializable {
 	}
 
 	/**
-	 * 创建一个菜单(二级菜单)
-	 * 
+	 * 创建一个菜单
+	 *
 	 * @param name
-	 *            菜单显示的名称
+	 *            菜单名
 	 * @param content
-	 *            当buttonType为view时content设置为url,否则为key.
+	 *            菜单内容
 	 * @param type
-	 *            按钮类型
+	 *            菜单类型
 	 */
 	public Button(String name, String content, ButtonType type) {
 		this.name = name;

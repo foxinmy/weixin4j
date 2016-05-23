@@ -21,7 +21,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 会话服务接口
  * 
  * @className ChatApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年7月31日
  * @since JDK 1.6
  * @see <a

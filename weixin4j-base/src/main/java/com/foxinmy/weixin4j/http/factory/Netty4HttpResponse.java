@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.http.HttpVersion;
  * Netty Respone::Requires Netty 4.x or higher
  * 
  * @className Netty4HttpResponse
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月30日
  * @since JDK 1.6
  * @see

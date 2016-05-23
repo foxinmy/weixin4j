@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.qy.type.CorporateType;
  * 授权方企业号信息
  * 
  * @className CorpInfo
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月12日
  * @since JDK 1.6
  * @see

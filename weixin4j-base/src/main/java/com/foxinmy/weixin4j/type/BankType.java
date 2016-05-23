@@ -5,7 +5,7 @@ package com.foxinmy.weixin4j.type;
  * 银行类型
  * 
  * @className BankType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月19日
  * @since JDK 1.6
  * @see

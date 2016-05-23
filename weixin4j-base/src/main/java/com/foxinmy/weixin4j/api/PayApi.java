@@ -54,7 +54,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * 支付API
  * 
  * @className PayApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月28日
  * @since JDK 1.6
  */

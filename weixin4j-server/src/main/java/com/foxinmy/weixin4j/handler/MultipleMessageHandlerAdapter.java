@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.request.WeixinRequest;
  * 多个消息类型适配
  * 
  * @className MultipleMessageHandlerAdapter
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月12日
  * @since JDK 1.6
  * @see

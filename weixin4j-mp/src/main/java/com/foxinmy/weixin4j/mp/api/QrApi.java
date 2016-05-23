@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.util.IOUtil;
  * 二维码相关API
  * 
  * @className QrApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
  */
