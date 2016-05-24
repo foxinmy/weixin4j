@@ -59,7 +59,10 @@ public class WeixinException extends Exception {
 			buf.append(" >> ").append(desc);
 		}
 		if (buf.length() > 0) {
-			buf.append(" >> ").append(WeixinErrorUtil.getText(code));
+			String text = getErrorText();
+			if (StringUtil.isNotBlank(text)) {
+				buf.append(" >> ").append(text);
+			}
 			return buf.toString();
 		} else {
 			return super.getMessage();

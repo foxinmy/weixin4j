@@ -40,7 +40,6 @@ import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.CustomsCity;
 import com.foxinmy.weixin4j.type.IdQuery;
-import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.Weixin4jSettings;
 
 /**
@@ -144,59 +143,6 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * 创建支付请求对象【完整参数】
-	 *
-	 * @param body
-	 *            商品描述 <font color="red">必填项</font>
-	 * @param detail
-	 *            商品名称明细列表 非必填项
-	 * @param outTradeNo
-	 *            商户内部唯一订单号 <font color="red">必填项</font>
-	 * @param totalFee
-	 *            商品总额 单位元 <font color="red">必填项</font>
-	 * @param notifyUrl
-	 *            支付回调URL <font color="red">必填项</font>
-	 * @param createIp
-	 *            订单生成的机器IP <font color="red">必填项</font>
-	 * @param tradeType
-	 *            交易类型 <font color="red">必填项</font>
-	 * @param openId
-	 *            用户ID <font color="red">tradeType=JSAPI时必填</font>
-	 * @param productId
-	 *            产品ID <font color="red">tradeType=NATIVE时必填</font>
-	 * @param attach
-	 *            附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据 非必填项
-	 * @param timeStart
-	 *            订单生成时间，格式为yyyyMMddHHmmss 非必填项
-	 * @param timeExpire
-	 *            订单失效时间，格式为yyyyMMddHHmmss;注意：最短失效时间间隔必须大于5分钟 非必填项
-	 * @param goodsTag
-	 *            商品标记，代金券或立减优惠功能的参数 非必填项
-	 * @param limitPay
-	 *            指定支付方式:no_credit--指定不能使用信用卡支付 非必填项
-	 * @param subOpenId
-	 *            用户在子商户appid下的唯一标识 非必填
-	 *            openid和sub_openid可以选传其中之一，如果选择传sub_openid ,则必须传sub_appid
-	 * @see com.foxinmy.weixin4j.api.PayApi
-	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest JS支付
-	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest 扫码支付
-	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest 刷卡支付
-	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
-	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
-	 * @throws WeixinException
-	 */
-	public MchPayRequest createPayRequest(String body, String detail,
-			String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, TradeType tradeType, String openId,
-			String productId, String attach, Date timeStart, Date timeExpire,
-			String goodsTag, String limitPay, String subOpenId)
-			throws WeixinException {
-		return payApi.createPayRequest(body, detail, outTradeNo, totalFee,
-				notifyUrl, createIp, tradeType, openId, productId, attach,
-				timeStart, timeExpire, goodsTag, limitPay, subOpenId);
-	}
-
-	/**
 	 * 创建JSAPI支付请求对象
 	 *
 	 * @param openId
@@ -206,7 +152,7 @@ public class WeixinPayProxy {
 	 * @param outTradeNo
 	 *            订单号
 	 * @param totalFee
-	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
+	 *            订单总额(元)
 	 * @param notifyUrl
 	 *            支付通知地址
 	 * @param createIp
@@ -391,10 +337,10 @@ public class WeixinPayProxy {
 	 *      </a>
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createWAPPayRequest(String body, String outTradeNo,
+	public MchPayRequest createWapPayRequest(String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp, String attach)
 			throws WeixinException {
-		return payApi.createWAPPayRequest(body, outTradeNo, totalFee,
+		return payApi.createWapPayRequest(body, outTradeNo, totalFee,
 				notifyUrl, createIp, attach);
 	}
 
@@ -422,10 +368,10 @@ public class WeixinPayProxy {
 	 *      提交被扫支付API</a>
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createMICROPayRequest(String authCode, String body,
+	public MchPayRequest createMicroPayRequest(String authCode, String body,
 			String outTradeNo, double totalFee, String createIp, String attach)
 			throws WeixinException {
-		return payApi.createMICROPayRequest(authCode, body, outTradeNo,
+		return payApi.createMicroPayRequest(authCode, body, outTradeNo,
 				totalFee, createIp, attach);
 	}
 

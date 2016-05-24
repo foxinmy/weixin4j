@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 负责微信请求的执行
- * 
+ *
  * @className WeixinRequestExecutor
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月15日
@@ -103,8 +103,7 @@ public class WeixinRequestExecutor {
 			HttpHeaders headers = httpResponse.getHeaders();
 			WeixinResponse response = new WeixinResponse(httpResponse);
 			logger.info("weixin response << " + httpResponse.getProtocol()
-					+ httpResponse.getStatus().toString() + ":"
-					+ response.getAsString());
+					+ httpResponse.getStatus() + ":" + response.getAsString());
 			String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
 			String disposition = headers
 					.getFirst(HttpHeaders.CONTENT_DISPOSITION);

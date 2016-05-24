@@ -59,7 +59,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 
 /**
  * V2老支付API
- * 
+ *
  * @className PayOldApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月28日
@@ -111,13 +111,13 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 生成V2.x版本JSAPI支付字符串
-	 * 
+	 *
 	 * @param body
 	 *            支付详情
 	 * @param outTradeNo
 	 *            订单号
 	 * @param totalFee
-	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
+	 *            订单总额(元)
 	 * @param notifyUrl
 	 *            支付回调URL
 	 * @param createIp
@@ -126,50 +126,20 @@ public class PayOldApi extends MpApi {
 	 */
 	public String createPayJsRequestJson(String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp) {
-		return createPayJsRequestJson(body, outTradeNo, totalFee, notifyUrl,
-				createIp, null, null, null, 0d, 0d, null);
+		PayPackageV2 payPackage = new PayPackageV2(getPayAccount()
+				.getPartnerId(), body, outTradeNo, totalFee, notifyUrl,
+				createIp);
+		return createPayJsRequestJson(payPackage);
 	}
 
 	/**
 	 * 生成V2.x版本JSAPI支付字符串
-	 * 
-	 * @param body
-	 *            支付详情
-	 * @param outTradeNo
-	 *            订单号
-	 * @param totalFee
-	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
-	 * @param notifyUrl
-	 *            支付回调URL
-	 * @param createIp
-	 *            订单生成的机器 IP
-	 * @param attach
-	 *            附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
-	 * @param timeStart
-	 *            订单生成时间，格式为yyyyMMddHHmmss
-	 * @param timeExpire
-	 *            订单失效时间，格式为yyyyMMddHHmmss;注意：最短失效时间间隔必须大于5分钟
-	 * @param transportFee
-	 *            物流费用 如有值 必须保证 transportFee+productFee=totalFee
-	 * @param transportFee
-	 *            商品费用 如有值 必须保证 transportFee+productFee=totalFee
-	 * @param goodsTag
-	 *            商品标记，代金券或立减优惠功能的参数
+	 *
+	 * @param payPackage
+	 *            支付信息
 	 * @return 支付json串
 	 */
-	public String createPayJsRequestJson(String body, String outTradeNo,
-			double totalFee, String notifyUrl, String createIp, String attach,
-			Date timeStart, Date timeExpire, double transportFee,
-			double productFee, String goodsTag) {
-		PayPackageV2 payPackage = new PayPackageV2(getPayAccount()
-				.getPartnerId(), body, outTradeNo, totalFee, notifyUrl,
-				createIp);
-		payPackage.setAttach(attach);
-		payPackage.setTimeStart(timeStart);
-		payPackage.setTimeExpire(timeExpire);
-		payPackage.setTransportFee(transportFee);
-		payPackage.setProductFee(productFee);
-		payPackage.setGoodsTag(goodsTag);
+	public String createPayJsRequestJson(PayPackageV2 payPackage) {
 		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
 				weixinOldSignature.sign(payPackage, getPayAccount()
 						.getPartnerKey()));
@@ -181,7 +151,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 创建V2.x NativePay支付链接
-	 * 
+	 *
 	 * @param productId
 	 *            与订单ID等价
 	 * @return 支付链接
@@ -203,7 +173,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 订单查询
-	 * 
+	 *
 	 * @param idQuery
 	 *            订单号
 	 * @return 订单信息
@@ -259,7 +229,7 @@ public class PayOldApi extends MpApi {
 	 * 交易时间超过 1 年的订单无法提交退款; </br> 支持部分退款,部分退需要设置相同的订单号和不同的 out_refund_no。一笔退款失
 	 * 败后重新提交,要采用原来的 out_refund_no。总退款金额不能超过用户实际支付金额。</br>
 	 * </p>
-	 * 
+	 *
 	 * @param certificate
 	 *            证书文件(V2版本后缀为*.pfx)
 	 * @param idQuery
@@ -275,7 +245,7 @@ public class PayOldApi extends MpApi {
 	 *            操作员帐号, 默认为商户号
 	 * @param mopara
 	 *            如 opUserPasswd
-	 * 
+	 *
 	 * @return 退款申请结果
 	 * @see com.foxinmy.weixin4j.mp.oldpayment.RefundResultV2
 	 * @since V2
@@ -370,7 +340,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 退款申请
-	 * 
+	 *
 	 * @param certificate
 	 *            证书文件(V2版本后缀为*.pfx)
 	 * @param idQuery
@@ -399,7 +369,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 退款申请
-	 * 
+	 *
 	 * @param certificate
 	 *            证书文件(V2版本后缀为*.pfx)
 	 * @param idQuery
@@ -452,7 +422,7 @@ public class PayOldApi extends MpApi {
 	 * REVOKED;<br>
 	 * 2.微信在次日 9 点启动生成前一天的对账单,建议商户 9 点半后再获取;<br>
 	 * 3.对账单中涉及金额的字段单位为“元”。<br>
-	 * 
+	 *
 	 * @param billDate
 	 *            下载对账单的日期 为空则取前一天
 	 * @param billType
@@ -475,8 +445,9 @@ public class PayOldApi extends MpApi {
 			billType = BillType.ALL;
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
-		String fileName = String.format("weixin4j_bill_%s_%s_%s.txt", formatBillDate,
-				billType.name().toLowerCase(), getPayAccount().getId());
+		String fileName = String.format("weixin4j_bill_%s_%s_%s.txt",
+				formatBillDate, billType.name().toLowerCase(), getPayAccount()
+						.getId());
 		File file = new File(String.format("%s/%s", billPath, fileName));
 		if (file.exists()) {
 			return file;
@@ -524,7 +495,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 退款查询</br> 退款有一定延时,用零钱支付的退款20分钟内到账,银行卡支付的退款 3 个工作日后重新查询退款状态
-	 * 
+	 *
 	 * @param idQuery
 	 *            单号 refund_id、out_refund_no、 out_trade_no 、 transaction_id
 	 *            四个参数必填一个,优先级为:
@@ -550,7 +521,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 发货通知
-	 * 
+	 *
 	 * @param openId
 	 *            用户ID
 	 * @param transid
@@ -590,7 +561,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 维权处理
-	 * 
+	 *
 	 * @param openId
 	 *            用户ID
 	 * @param feedbackId
