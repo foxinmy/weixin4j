@@ -9,7 +9,16 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.mp.api.HelperApi;
 
-public class HelpTest extends TokenTest {
+/**
+ * 辅助API测试
+ *
+ * @className HelperTest
+ * @author jinyu(foxinmy@gmail.com)
+ * @date 2016年5月24日
+ * @since JDK 1.6
+ * @see
+ */
+public class HelperTest extends TokenTest {
 	private HelperApi helperApi;
 
 	@Before

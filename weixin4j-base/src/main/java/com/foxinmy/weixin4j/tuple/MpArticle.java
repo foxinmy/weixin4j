@@ -7,7 +7,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * 群发消息图文(消息内容存储在微信后台)
- * 
+ *
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月26日
  * @since JDK 1.6

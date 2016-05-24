@@ -37,12 +37,13 @@ import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.util.SettableFuture;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * Netty 4.x
- * 
+ *
  * @className Netty4HttpClient
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月30日
@@ -183,11 +184,11 @@ public class Netty4HttpClient extends AbstractHttpClient {
 		if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
 			headers.set(HttpHeaders.USER_AGENT, "netty/httpclient");
 		}
-		for (Entry<String, List<String>> header : headers
-				.entrySet()) {
+		for (Entry<String, List<String>> header : headers.entrySet()) {
 			uriRequest.headers().set(header.getKey(), header.getValue());
 		}
-		uriRequest.headers().set(HttpHeaders.ACCEPT_CHARSET, "utf-8");
+		uriRequest.headers().set(HttpHeaders.ACCEPT_CHARSET,
+				Consts.UTF_8.displayName());
 		uriRequest.headers().set(HttpHeaders.CONNECTION,
 				io.netty.handler.codec.http.HttpHeaders.Values.CLOSE);
 		return uriRequest;
