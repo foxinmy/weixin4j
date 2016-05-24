@@ -5,11 +5,11 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
-import com.foxinmy.weixin4j.token.AbstractTokenCreator;
+import com.foxinmy.weixin4j.token.TokenCreator;
 
 /**
  * 微信企业号TOKEN创建
- * 
+ *
  * @className WeixinTokenCreator
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
@@ -19,13 +19,13 @@ import com.foxinmy.weixin4j.token.AbstractTokenCreator;
  *      微信企业号获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class WeixinTokenCreator extends AbstractTokenCreator {
+public class WeixinTokenCreator extends TokenCreator {
 
 	private final String corpid;
 	private final String corpsecret;
 
 	/**
-	 * 
+	 *
 	 * @param corpid
 	 *            企业号ID
 	 * @param corpsecret
@@ -37,12 +37,12 @@ public class WeixinTokenCreator extends AbstractTokenCreator {
 	}
 
 	@Override
-	public String getCacheKey0() {
+	public String key0() {
 		return String.format("qy_token_%s", corpid);
 	}
 
 	@Override
-	public Token createToken() throws WeixinException {
+	public Token create() throws WeixinException {
 		String tokenUrl = String.format(URLConsts.ASSESS_TOKEN_URL, corpid,
 				corpsecret);
 		WeixinResponse response = weixinExecutor.get(tokenUrl);

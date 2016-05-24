@@ -168,7 +168,7 @@ public class SuiteApi extends QyApi {
 		Token token = new Token(obj.getString("access_token"));
 		token.setExpiresIn(obj.getIntValue("expires_in"));
 		suiteTicketHolder.getTokenStorager().caching(
-				tokenCreator.getCacheKey(), token);
+				tokenCreator.key(), token);
 		// 缓存微信企业号永久授权码
 		suitePerCodeHolder
 				.cachingPermanentCode(obj.getString("permanent_code"));

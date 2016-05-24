@@ -5,13 +5,13 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.type.URLConsts;
-import com.foxinmy.weixin4j.token.AbstractTokenCreator;
+import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.type.TicketType;
 
 /**
  * 微信公众平台TICKET创建(包括jsticket、其它JSSDK所需的ticket的创建
- * 
+ *
  * @className WeixinJSTicketCreator
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.type.TicketType;
  *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115&token=&lang=zh_CN">
  *      JS TICKET</a>
  */
-public class WeixinTicketCreator extends AbstractTokenCreator {
+public class WeixinTicketCreator extends TokenCreator {
 
 	private final String appid;
 	private final TicketType ticketType;
@@ -28,7 +28,7 @@ public class WeixinTicketCreator extends AbstractTokenCreator {
 
 	/**
 	 * jssdk
-	 * 
+	 *
 	 * @param appid
 	 *            公众号的appid
 	 * @param ticketType
@@ -43,12 +43,12 @@ public class WeixinTicketCreator extends AbstractTokenCreator {
 	}
 
 	@Override
-	public String getCacheKey0() {
+	public String key0() {
 		return String.format("mp_ticket_%s_%s", ticketType.name(), appid);
 	}
 
 	@Override
-	public Token createToken() throws WeixinException {
+	public Token create() throws WeixinException {
 		WeixinResponse response = weixinExecutor.get(
 				String.format(URLConsts.JS_TICKET_URL, weixinTokenHolder.getToken().getAccessToken(), ticketType.name()));
 		JSONObject result = response.getAsJson();

@@ -1,0 +1,28 @@
+package com.foxinmy.weixin4j.token;
+
+import com.foxinmy.weixin4j.exception.WeixinException;
+
+/**
+ * Cache的创建
+ *
+ * @className CacheCreator
+ * @author jinyu(foxinmy@gmail.com)
+ * @date 2016年5月24日
+ * @since JDK 1.6
+ * @see
+ */
+public interface CacheCreator<T> {
+	/**
+	 * CacheKey
+	 *
+	 * @return
+	 */
+	public String key();
+
+	/**
+	 * 创建Cache
+	 *
+	 * @return
+	 */
+	public T create() throws WeixinException;
+}

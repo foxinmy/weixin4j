@@ -5,13 +5,13 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
-import com.foxinmy.weixin4j.token.AbstractTokenCreator;
+import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.type.TicketType;
 
 /**
  * 微信企业号TICKET创建(包括jsticket、其它JSSDK所需的ticket的创建
- * 
+ *
  * @className WeixinTicketCreator
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.type.TicketType;
  *        "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3#.E9.99.84.E5.BD.951-JS-SDK.E4.BD.BF.E7.94.A8.E6.9D.83.E9.99.90.E7.AD.BE.E5.90.8D.E7.AE.97.E6.B3.95"
  *        >JSTICKET</a>
  */
-public class WeixinTicketCreator extends AbstractTokenCreator {
+public class WeixinTicketCreator extends TokenCreator {
 
 	private final String corpid;
 	private final TicketType ticketType;
@@ -40,12 +40,12 @@ public class WeixinTicketCreator extends AbstractTokenCreator {
 	}
 
 	@Override
-	public String getCacheKey0() {
+	public String key0() {
 		return String.format("qy_ticket_%s_%s", ticketType.name(), corpid);
 	}
 
 	@Override
-	public Token createToken() throws WeixinException {
+	public Token create() throws WeixinException {
 		WeixinResponse response = null;
 		if (ticketType == TicketType.jsapi) {
 			response = weixinExecutor

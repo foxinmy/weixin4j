@@ -5,12 +5,12 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
-import com.foxinmy.weixin4j.token.AbstractTokenCreator;
+import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
  * 微信企业号应用套件预授权码创建
- * 
+ *
  * @className WeixinSuitePreCodeCreator
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月17日
@@ -20,13 +20,13 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  *      获取应用套件预授权码</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class WeixinSuitePreCodeCreator extends AbstractTokenCreator {
+public class WeixinSuitePreCodeCreator extends TokenCreator {
 
 	private final TokenHolder suiteTokenHolder;
 	private final String suiteId;
 
 	/**
-	 * 
+	 *
 	 * @param suiteTokenHolder
 	 *            应用套件的token
 	 * @param suiteId
@@ -38,12 +38,12 @@ public class WeixinSuitePreCodeCreator extends AbstractTokenCreator {
 	}
 
 	@Override
-	public String getCacheKey0() {
+	public String key0() {
 		return String.format("qy_suite_precode_%s", suiteId);
 	}
 
 	@Override
-	public Token createToken() throws WeixinException {
+	public Token create() throws WeixinException {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(URLConsts.SUITE_PRE_CODE_URL, suiteTokenHolder.getAccessToken()),
 				String.format("{\"suite_id\":\"%s\"}", suiteId));

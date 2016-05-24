@@ -5,12 +5,12 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
-import com.foxinmy.weixin4j.token.AbstractTokenCreator;
+import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenHolder;
 
 /**
  * 微信企业号token创建(永久授权码)
- * 
+ *
  * @className WeixinTokenSuiteCreator
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月17日
@@ -20,13 +20,13 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  *      获取企业号access_token</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class WeixinTokenSuiteCreator extends AbstractTokenCreator {
+public class WeixinTokenSuiteCreator extends TokenCreator {
 
 	private final SuitePerCodeHolder perCodeHolder;
 	private final TokenHolder suiteTokenHolder;
 
 	/**
-	 * 
+	 *
 	 * @param perCodeHolder
 	 *            第三方套件永久授权码
 	 * @param suiteTokenHolder
@@ -38,12 +38,12 @@ public class WeixinTokenSuiteCreator extends AbstractTokenCreator {
 	}
 
 	@Override
-	public String getCacheKey0() {
+	public String key0() {
 		return String.format("qy_token_suite_%s_%s", perCodeHolder.getSuiteId(), perCodeHolder.getAuthCorpId());
 	}
 
 	@Override
-	public Token createToken() throws WeixinException {
+	public Token create() throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", perCodeHolder.getSuiteId());
 		obj.put("auth_corpid", perCodeHolder.getAuthCorpId());

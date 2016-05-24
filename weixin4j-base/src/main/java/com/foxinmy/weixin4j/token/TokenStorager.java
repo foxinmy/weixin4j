@@ -3,8 +3,8 @@ package com.foxinmy.weixin4j.token;
 import com.foxinmy.weixin4j.model.Token;
 
 /**
- * token的存储
- * 
+ * Token的存储
+ *
  * @className TokenStorager
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月27日
