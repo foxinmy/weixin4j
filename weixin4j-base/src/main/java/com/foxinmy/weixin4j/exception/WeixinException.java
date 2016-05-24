@@ -53,12 +53,7 @@ public class WeixinException extends Exception {
 	public String getMessage() {
 		StringBuilder buf = new StringBuilder();
 		if (StringUtil.isNotBlank(code)) {
-			buf.append(code);
-		}
-		if (StringUtil.isNotBlank(desc)) {
-			buf.append(" >> ").append(desc);
-		}
-		if (buf.length() > 0) {
+			buf.append(code).append(" >> ").append(desc);
 			String text = getErrorText();
 			if (StringUtil.isNotBlank(text)) {
 				buf.append(" >> ").append(text);

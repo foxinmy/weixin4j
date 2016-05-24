@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.danga.MemCached.MemCachedClient;
-import com.danga.MemCached.SockIOPool;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
+import com.whalin.MemCached.MemCachedClient;
+import com.whalin.MemCached.SockIOPool;
 
 /**
  * 用Memcache保存Token信息(推荐使用)
- * 
+ *
  * @className MemcacheTokenStorager
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年5月11日
@@ -63,7 +63,7 @@ public class MemcacheTokenStorager implements TokenStorager {
 		public static int minConn = 5;
 		public static int initConn = 5;
 		public static int maxConn = 100;
-		public static long maxIdle = 300000L;
+		public static int maxIdle = 300000;
 		public static long maxBusyTime = 30000L;
 		public static int socketTO = 3000;
 		public static int socketConnectTO = 3000;
@@ -105,7 +105,7 @@ public class MemcacheTokenStorager implements TokenStorager {
 
 		/**
 		 * {host:11211,1}
-		 * 
+		 *
 		 * @param host
 		 *            主机
 		 */
@@ -115,7 +115,7 @@ public class MemcacheTokenStorager implements TokenStorager {
 
 		/**
 		 * {host:port,1}
-		 * 
+		 *
 		 * @param host
 		 *            主机
 		 * @param port
@@ -127,7 +127,7 @@ public class MemcacheTokenStorager implements TokenStorager {
 
 		/**
 		 * {host:port,weight}
-		 * 
+		 *
 		 * @param host
 		 *            主机
 		 * @param port
