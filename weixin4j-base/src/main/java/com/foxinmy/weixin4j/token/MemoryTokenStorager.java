@@ -3,12 +3,11 @@ package com.foxinmy.weixin4j.token;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
 
 /**
  * 用内存保存Token信息(不推荐使用)
- * 
+ *
  * @className MemoryTokenStorager
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月24日
@@ -24,7 +23,7 @@ public class MemoryTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public Token lookup(String cacheKey) throws WeixinException {
+	public Token lookup(String cacheKey) {
 		Token token = this.CONMAP.get(cacheKey);
 		if (token != null) {
 			if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - CUTMS) > System
@@ -36,17 +35,17 @@ public class MemoryTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public void caching(String cacheKey, Token token) throws WeixinException {
+	public void caching(String cacheKey, Token token) {
 		this.CONMAP.put(cacheKey, token);
 	}
 
 	@Override
-	public Token evict(String cacheKey) throws WeixinException {
+	public Token evict(String cacheKey) {
 		return this.CONMAP.remove(cacheKey);
 	}
 
 	@Override
-	public void clear() throws WeixinException {
+	public void clear() {
 		this.CONMAP.clear();
 	}
 }

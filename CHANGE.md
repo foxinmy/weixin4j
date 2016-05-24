@@ -700,3 +700,5 @@
   + weixin4j-base:删除AbstractTokenCreator，引入CacheCreator<T>类
 
   + weixin4j-base:修改Memcached-Java-Client的依赖
+
+  + weixin4j-base:系统配置类抽象化

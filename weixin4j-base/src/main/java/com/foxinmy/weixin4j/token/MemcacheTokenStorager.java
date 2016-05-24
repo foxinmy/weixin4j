@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
 import com.whalin.MemCached.MemCachedClient;
 import com.whalin.MemCached.SockIOPool;
@@ -28,12 +27,12 @@ public class MemcacheTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public Token lookup(String cacheKey) throws WeixinException {
+	public Token lookup(String cacheKey) {
 		return (Token) mc.get(cacheKey);
 	}
 
 	@Override
-	public void caching(String cacheKey, Token token) throws WeixinException {
+	public void caching(String cacheKey, Token token) {
 		if (token.getExpiresIn() > 0) {
 			mc.set(cacheKey, token,
 					new Date(token.getCreateTime() + token.getExpiresIn()
@@ -44,14 +43,14 @@ public class MemcacheTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public Token evict(String cacheKey) throws WeixinException {
+	public Token evict(String cacheKey) {
 		Token token = lookup(cacheKey);
 		mc.delete(cacheKey);
 		return token;
 	}
 
 	@Override
-	public void clear() throws WeixinException {
+	public void clear() {
 		throw new UnsupportedOperationException();
 	}
 

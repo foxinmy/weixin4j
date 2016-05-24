@@ -46,15 +46,15 @@ import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.KfType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
+import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.TokenHolder;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
-import com.foxinmy.weixin4j.util.Weixin4jSettings;
 
 /**
  * 微信企业号接口实现
- * 
+ *
  * @className WeixinProxy
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月19日
@@ -120,21 +120,21 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param settings
 	 *            微信配置信息
-	 * @see com.foxinmy.weixin4j.util.Weixin4jSettings
+	 * @see com.foxinmy.weixin4j.setting.Weixin4jSettings
 	 */
 	public WeixinProxy(Weixin4jSettings settings) {
-		this(new TokenHolder(
-				new WeixinTokenCreator(settings.getWeixinAccount().getId(), settings.getWeixinAccount().getSecret()),
+		this(new TokenHolder(new WeixinTokenCreator(settings.getAccount()
+				.getId(), settings.getAccount().getSecret()),
 				settings.getTokenStorager0()));
 		this.settings = settings;
 	}
 
 	/**
 	 * 第三方套件(永久授权码机制)
-	 * 
+	 *
 	 * @param perCodeHolder
 	 *            第三方套件永久授权码
 	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getPerCodeHolder(String)}
@@ -144,16 +144,18 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi
 	 * @see WeixinSuiteProxy#getWeixinProxy(String, String)
 	 */
-	public WeixinProxy(SuitePerCodeHolder perCodeHolder, TokenHolder suiteTokenHolder) {
-		this(new TokenHolder(new WeixinTokenSuiteCreator(perCodeHolder, suiteTokenHolder),
-				perCodeHolder.getTokenStorager()));
-		this.settings = new Weixin4jSettings(new WeixinAccount(perCodeHolder.getAuthCorpId(), null));
+	public WeixinProxy(SuitePerCodeHolder perCodeHolder,
+			TokenHolder suiteTokenHolder) {
+		this(new TokenHolder(new WeixinTokenSuiteCreator(perCodeHolder,
+				suiteTokenHolder), perCodeHolder.getTokenStorager()));
+		this.settings = new Weixin4jSettings(new WeixinAccount(
+				perCodeHolder.getAuthCorpId(), null));
 	}
 
 	/**
-	 * 注意：TokenCreator 需为
-	 * <font color="red">WeixinTokenCreator或WeixinTokenSuiteCreator</font>
-	 * 
+	 * 注意：TokenCreator 需为 <font
+	 * color="red">WeixinTokenCreator或WeixinTokenSuiteCreator</font>
+	 *
 	 * @see com.foxinmy.weixin4j.qy.token.WeixinTokenCreator
 	 * @param tokenHolder
 	 */
@@ -173,7 +175,7 @@ public class WeixinProxy {
 
 	/**
 	 * token获取
-	 * 
+	 *
 	 * @return
 	 */
 	public TokenHolder getTokenHolder() {
@@ -182,22 +184,23 @@ public class WeixinProxy {
 
 	/**
 	 * 获取微信账号信息
-	 * 
+	 *
 	 * @return
 	 */
 	public WeixinAccount getWeixinAccount() {
-		return this.settings.getWeixinAccount();
+		return this.settings.getAccount();
 	}
 
 	/**
 	 * 获取JSSDK Ticket的tokenHolder
-	 * 
+	 *
 	 * @param ticketType
 	 *            票据类型
 	 * @return
 	 */
 	public TokenHolder getTicketHolder(TicketType ticketType) {
-		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount().getId(), ticketType, this.tokenHolder),
+		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount()
+				.getId(), ticketType, this.tokenHolder),
 				this.settings.getTokenStorager0());
 	}
 
@@ -208,12 +211,11 @@ public class WeixinProxy {
 	 * 2）发送人员不在通讯录权限范围内：不执行发送任务，返回首个出错的userid</br>
 	 * 3）发送人员不在应用可见范围内：不执行发送任务，返回首个出错的userid</br>
 	 * </p>
-	 * 
+	 *
 	 * @param message
 	 *            客服消息对象
 	 * @return 如果对应用或收件人、部门、标签任何一个无权限，则本次发送失败；如果收件人、部门或标签不存在，发送仍然执行，但返回无效的部分
-	 *         </br>
-	 *         { "errcode": 0, "errmsg": "ok", "invaliduser": "UserID1",
+	 *         </br> { "errcode": 0, "errmsg": "ok", "invaliduser": "UserID1",
 	 *         "invalidparty":"PartyID1", "invalidtag":"TagID1" }
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.qy.api.NotifyApi
@@ -232,13 +234,14 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.tuple.MpNews
 	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 */
-	public IdParameter sendNotifyMessage(NotifyMessage message) throws WeixinException {
+	public IdParameter sendNotifyMessage(NotifyMessage message)
+			throws WeixinException {
 		return notifyApi.sendNotifyMessage(message);
 	}
 
 	/**
 	 * 发送客服消息
-	 * 
+	 *
 	 * @param message
 	 *            客服消息对象
 	 * @return 发送结果
@@ -254,13 +257,14 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.qy.message.CustomeMessage
 	 * @throws WeixinException
 	 */
-	public JsonResult sendCustomeMessage(CustomeMessage message) throws WeixinException {
+	public JsonResult sendCustomeMessage(CustomeMessage message)
+			throws WeixinException {
 		return notifyApi.sendCustomeMessage(message);
 	}
 
 	/**
 	 * 获取客服列表
-	 * 
+	 *
 	 * @param kfType
 	 *            客服类型 为空时返回全部类型的客服
 	 * @return 第一个元素为内部客服(internal),第二个参数为外部客服(external)
@@ -277,10 +281,10 @@ public class WeixinProxy {
 
 	/**
 	 * 自定义菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
-	 * 
+	 *
 	 * @param agentid
 	 *            应用ID
-	 * 
+	 *
 	 * @param buttons
 	 *            菜单列表
 	 * @throws WeixinException
@@ -290,13 +294,14 @@ public class WeixinProxy {
 	 *      创建自定义菜单</a>
 	 * @see com.foxinmy.weixin4j.model.Button
 	 */
-	public JsonResult createMenu(int agentid, List<Button> buttons) throws WeixinException {
+	public JsonResult createMenu(int agentid, List<Button> buttons)
+			throws WeixinException {
 		return menuApi.createMenu(agentid, buttons);
 	}
 
 	/**
 	 * 查询菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式。)
-	 * 
+	 *
 	 * @param agentid
 	 *            应用ID
 	 * @return 菜单集合
@@ -313,7 +318,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
-	 * 
+	 *
 	 * @param agentid
 	 *            应用ID
 	 * @throws WeixinException
@@ -330,7 +335,7 @@ public class WeixinProxy {
 	/**
 	 * 上传图文消息内的图片:用于上传图片到企业号服务端，接口返回图片url，请注意，该url仅可用于图文消息的发送，
 	 * 且每个企业每天最多只能上传100张图片。
-	 * 
+	 *
 	 * @param is
 	 *            图片数据
 	 * @param fileName
@@ -342,7 +347,8 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @throws WeixinException
 	 */
-	public String uploadImage(InputStream is, String fileName) throws WeixinException {
+	public String uploadImage(InputStream is, String fileName)
+			throws WeixinException {
 		return mediaApi.uploadImage(is, fileName);
 	}
 
@@ -352,7 +358,7 @@ public class WeixinProxy {
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
 	 * 否则抛出异常.
 	 * </p>
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID(<font color="red">大于0时视为上传永久媒体文件</font>)
 	 * @param is
@@ -370,13 +376,14 @@ public class WeixinProxy {
 	 *      上传永久素材文件说明</a>
 	 * @throws WeixinException
 	 */
-	public MediaUploadResult uploadMedia(int agentid, InputStream is, String fileName) throws WeixinException {
+	public MediaUploadResult uploadMedia(int agentid, InputStream is,
+			String fileName) throws WeixinException {
 		return mediaApi.uploadMedia(agentid, is, fileName);
 	}
 
 	/**
 	 * 下载媒体文件
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
 	 * @param mediaId
@@ -392,7 +399,8 @@ public class WeixinProxy {
 	 *      获取永久媒体说明</a>
 	 * @throws WeixinException
 	 */
-	public MediaDownloadResult downloadMedia(int agentid, String mediaId) throws WeixinException {
+	public MediaDownloadResult downloadMedia(int agentid, String mediaId)
+			throws WeixinException {
 		return mediaApi.downloadMedia(agentid, mediaId);
 	}
 
@@ -402,7 +410,7 @@ public class WeixinProxy {
 	 * 、新增的永久素材也可以在公众平台官网素材管理模块中看到,永久素材的数量是有上限的，请谨慎新增。图文消息素材和图片素材的上限为5000，
 	 * 其他类型为1000
 	 * </P>
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用的id
 	 * @param articles
@@ -415,13 +423,14 @@ public class WeixinProxy {
 	 *      上传永久媒体素材</a>
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 */
-	public String uploadMaterialArticle(int agentid, List<MpArticle> articles) throws WeixinException {
+	public String uploadMaterialArticle(int agentid, List<MpArticle> articles)
+			throws WeixinException {
 		return mediaApi.uploadMaterialArticle(agentid, articles);
 	}
 
 	/**
 	 * 删除永久媒体素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID
 	 * @param mediaId
@@ -433,13 +442,14 @@ public class WeixinProxy {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%88%A0%E9%99%A4%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">
 	 *      删除永久媒体素材</a>
 	 */
-	public JsonResult deleteMaterialMedia(int agentid, String mediaId) throws WeixinException {
+	public JsonResult deleteMaterialMedia(int agentid, String mediaId)
+			throws WeixinException {
 		return mediaApi.deleteMaterialMedia(agentid, mediaId);
 	}
 
 	/**
 	 * 下载永久图文素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID
 	 * @param mediaId
@@ -450,13 +460,14 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 */
-	public List<MpArticle> downloadArticle(int agentid, String mediaId) throws WeixinException {
+	public List<MpArticle> downloadArticle(int agentid, String mediaId)
+			throws WeixinException {
 		return mediaApi.downloadArticle(agentid, mediaId);
 	}
 
 	/**
 	 * 修改永久图文素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用的id
 	 * @param mediaId
@@ -471,13 +482,14 @@ public class WeixinProxy {
 	 *      修改永久媒体素材</a>
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 */
-	public String updateMaterialArticle(int agentid, String mediaId, List<MpArticle> articles) throws WeixinException {
+	public String updateMaterialArticle(int agentid, String mediaId,
+			List<MpArticle> articles) throws WeixinException {
 		return mediaApi.updateMaterialArticle(agentid, mediaId, articles);
 	}
 
 	/**
 	 * 获取永久媒体素材的总数
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用id
 	 * @return 总数对象
@@ -494,7 +506,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取媒体素材记录列表
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID
 	 * @param mediaType
@@ -513,13 +525,14 @@ public class WeixinProxy {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%B4%A0%E6%9D%90%E5%88%97%E8%A1%A8">
 	 *      获取素材列表</a>
 	 */
-	public MediaRecord listMaterialMedia(int agentid, MediaType mediaType, Pageable pageable) throws WeixinException {
+	public MediaRecord listMaterialMedia(int agentid, MediaType mediaType,
+			Pageable pageable) throws WeixinException {
 		return mediaApi.listMaterialMedia(agentid, mediaType, pageable);
 	}
 
 	/**
 	 * 获取全部的媒体素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用id
 	 * @param mediaType
@@ -529,13 +542,14 @@ public class WeixinProxy {
 	 * @see {@link #listMaterialMedia(int,MediaType, Pageable)}
 	 * @throws WeixinException
 	 */
-	public List<MediaItem> listAllMaterialMedia(int agentid, MediaType mediaType) throws WeixinException {
+	public List<MediaItem> listAllMaterialMedia(int agentid, MediaType mediaType)
+			throws WeixinException {
 		return mediaApi.listAllMaterialMedia(agentid, mediaType);
 	}
 
 	/**
 	 * 创建部门(根部门的parentid为1)
-	 * 
+	 *
 	 * @param party
 	 *            部门对象
 	 * @see com.foxinmy.weixin4j.qy.model.Party
@@ -552,7 +566,7 @@ public class WeixinProxy {
 
 	/**
 	 * 更新部门(如果非必须的字段未指定 则不更新该字段之前的设置值)
-	 * 
+	 *
 	 * @param party
 	 *            部门对象
 	 * @see com.foxinmy.weixin4j.qy.model.Party
@@ -569,7 +583,7 @@ public class WeixinProxy {
 
 	/**
 	 * 查询部门列表(以部门的order字段从小到大排列)
-	 * 
+	 *
 	 * @param partyId
 	 *            部门ID。获取指定部门ID下的子部门 传入0表示获取全部子部门
 	 * @see com.foxinmy.weixin4j.qy.model.Party
@@ -586,7 +600,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除部门(不能删除根部门；不能删除含有子部门、成员的部门)
-	 * 
+	 *
 	 * @param partyId
 	 *            部门ID
 	 * @see <a href=
@@ -602,7 +616,7 @@ public class WeixinProxy {
 
 	/**
 	 * 批量上传部门
-	 * 
+	 *
 	 * @param parties
 	 *            部门列表
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
@@ -614,13 +628,14 @@ public class WeixinProxy {
 	 * @return 上传后的mediaId
 	 * @throws WeixinException
 	 */
-	public String batchUploadParties(List<Party> parties) throws WeixinException {
+	public String batchUploadParties(List<Party> parties)
+			throws WeixinException {
 		return mediaApi.batchUploadParties(parties);
 	}
 
 	/**
 	 * 创建成员
-	 * 
+	 *
 	 * @param user
 	 *            成员对象
 	 * @see com.foxinmy.weixin4j.qy.model.User
@@ -637,7 +652,7 @@ public class WeixinProxy {
 
 	/**
 	 * 创建成员
-	 * 
+	 *
 	 * @param user
 	 *            成员对象
 	 * @param avatar
@@ -650,13 +665,14 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult createUser(User user, InputStream avatar) throws WeixinException {
+	public JsonResult createUser(User user, InputStream avatar)
+			throws WeixinException {
 		return userApi.createUser(user, avatar);
 	}
 
 	/**
 	 * 更新用户(如果非必须的字段未指定 则不更新该字段之前的设置值)
-	 * 
+	 *
 	 * @param user
 	 *            成员对象
 	 * @see com.foxinmy.weixin4j.qy.model.User
@@ -673,7 +689,7 @@ public class WeixinProxy {
 
 	/**
 	 * 更新用户(如果非必须的字段未指定 则不更新该字段之前的设置值)
-	 * 
+	 *
 	 * @param user
 	 *            成员对象
 	 * @param avatar
@@ -686,13 +702,14 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateUser(User user, InputStream avatar) throws WeixinException {
+	public JsonResult updateUser(User user, InputStream avatar)
+			throws WeixinException {
 		return userApi.updateUser(user, avatar);
 	}
 
 	/**
 	 * 获取成员信息
-	 * 
+	 *
 	 * @param userid
 	 *            成员唯一ID
 	 * @see com.foxinmy.weixin4j.qy.model.User
@@ -709,7 +726,7 @@ public class WeixinProxy {
 
 	/**
 	 * code获取userid(管理员须拥有agent的使用权限；agentid必须和跳转链接时所在的企业应用ID相同。)
-	 * 
+	 *
 	 * @param code
 	 *            通过员工授权获取到的code，每次员工授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期
 	 * @see com.foxinmy.weixin4j.qy.model.User
@@ -731,7 +748,7 @@ public class WeixinProxy {
 
 	/**
 	 * 根据code获取成员ID信息
-	 * 
+	 *
 	 * @param code
 	 *            通过员工授权获取到的code，每次员工授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期
 	 * @return 两个元素的数组 <font color="red">第一个元素为userId或者openId
@@ -748,7 +765,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取部门成员
-	 * 
+	 *
 	 * @param partyId
 	 *            部门ID 必须
 	 * @param fetchChild
@@ -765,14 +782,14 @@ public class WeixinProxy {
 	 * @return 成员列表
 	 * @throws WeixinException
 	 */
-	public List<User> listUser(int partyId, boolean fetchChild, UserStatus userStatus, boolean findDetail)
-			throws WeixinException {
+	public List<User> listUser(int partyId, boolean fetchChild,
+			UserStatus userStatus, boolean findDetail) throws WeixinException {
 		return userApi.listUser(partyId, fetchChild, userStatus, findDetail);
 	}
 
 	/**
 	 * 获取部门下所有状态成员(不进行递归)
-	 * 
+	 *
 	 * @param partyId
 	 *            部门ID
 	 * @see {@link #listUser(int, boolean, UserStatus, boolean)}
@@ -786,7 +803,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除成员
-	 * 
+	 *
 	 * @param userid
 	 *            成员ID
 	 * @see <a href=
@@ -802,7 +819,7 @@ public class WeixinProxy {
 
 	/**
 	 * 批量删除成员
-	 * 
+	 *
 	 * @param userIds
 	 *            成员列表
 	 * @see <a href=
@@ -812,13 +829,14 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult batchDeleteUser(List<String> userIds) throws WeixinException {
+	public JsonResult batchDeleteUser(List<String> userIds)
+			throws WeixinException {
 		return userApi.batchDeleteUser(userIds);
 	}
 
 	/**
 	 * 邀请成员关注(管理员须拥有该成员的查看权限)
-	 * 
+	 *
 	 * @param userId
 	 *            成员ID
 	 * @param tips
@@ -830,17 +848,17 @@ public class WeixinProxy {
 	 *      邀请成员关注说明</a>
 	 * @throws WeixinException
 	 */
-	public InviteType inviteUser(String userId, String tips) throws WeixinException {
+	public InviteType inviteUser(String userId, String tips)
+			throws WeixinException {
 		return userApi.inviteUser(userId, tips);
 	}
 
 	/**
 	 * 创建标签(创建的标签属于管理组;默认为未加锁状态)
-	 * 
+	 *
 	 * @param tag
-	 *            标签对象；</br>
-	 *            标签名称，长度为1~64个字节，标签名不可与其他标签重名；</br>
-	 *            标签id，整型， 指定此参数时新增的标签会生成对应的标签id，不指定时则以目前最大的id自增。
+	 *            标签对象；</br> 标签名称，长度为1~64个字节，标签名不可与其他标签重名；</br> 标签id，整型，
+	 *            指定此参数时新增的标签会生成对应的标签id，不指定时则以目前最大的id自增。
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.9B.E5.BB.BA.E6.A0.87.E7.AD.BE">
 	 *      创建标签说明</a>
@@ -854,7 +872,7 @@ public class WeixinProxy {
 
 	/**
 	 * 更新标签(管理组必须是指定标签的创建者)
-	 * 
+	 *
 	 * @param tag
 	 *            标签信息
 	 * @see <a href=
@@ -871,7 +889,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除标签(管理组必须是指定标签的创建者 并且标签的成员列表为空)
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @return 处理结果
@@ -887,7 +905,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取标签列表
-	 * 
+	 *
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E8.8E.B7.E5.8F.96.E6.A0.87.E7.AD.BE.E5.88.97.E8.A1.A8">
 	 *      获取标签列表说明</a>
@@ -902,7 +920,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取标签成员(管理组须拥有“获取标签成员”的接口权限，标签须对管理组可见；返回列表仅包含管理组管辖范围的成员)
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @see com.foxinmy.weixin4j.qy.model.User
@@ -910,8 +928,8 @@ public class WeixinProxy {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E8.8E.B7.E5.8F.96.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
 	 *      获取标签成员说明</a>
 	 * @see com.foxinmy.weixin4j.qy.api.TagApi
-	 * @return 成员列表<font color="red">Contacts#getUsers</font>和部门列表
-	 *         <font color="red">Contacts#getPartyIds</font>
+	 * @return 成员列表<font color="red">Contacts#getUsers</font>和部门列表 <font
+	 *         color="red">Contacts#getPartyIds</font>
 	 * @throws WeixinException
 	 */
 	public Contacts getTagUsers(int tagId) throws WeixinException {
@@ -920,7 +938,7 @@ public class WeixinProxy {
 
 	/**
 	 * 新增标签成员(标签对管理组可见且未加锁，成员属于管理组管辖范围)
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @param userIds
@@ -935,13 +953,14 @@ public class WeixinProxy {
 	 * @return 非法的userIds和partyIds
 	 * @throws WeixinException
 	 */
-	public IdParameter addTagUsers(int tagId, List<String> userIds, List<Integer> partyIds) throws WeixinException {
+	public IdParameter addTagUsers(int tagId, List<String> userIds,
+			List<Integer> partyIds) throws WeixinException {
 		return tagApi.addTagUsers(tagId, userIds, partyIds);
 	}
 
 	/**
 	 * 删除标签成员(标签对管理组可见且未加锁，成员属于管理组管辖范围)
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @param userIds
@@ -956,13 +975,14 @@ public class WeixinProxy {
 	 * @return 非法的userIds和partyIds
 	 * @throws WeixinException
 	 */
-	public IdParameter deleteTagUsers(int tagId, List<String> userIds, List<Integer> partyIds) throws WeixinException {
+	public IdParameter deleteTagUsers(int tagId, List<String> userIds,
+			List<Integer> partyIds) throws WeixinException {
 		return tagApi.deleteTagUsers(tagId, userIds, partyIds);
 	}
 
 	/**
 	 * 获取微信服务器IP地址
-	 * 
+	 *
 	 * @return IP地址
 	 * @see com.foxinmy.weixin4j.qy.api.HelperApi
 	 * @see <a href=
@@ -976,7 +996,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取企业号某个应用的基本信息，包括头像、昵称、帐号类型、认证类型、可见范围等信息
-	 * 
+	 *
 	 * @param agentid
 	 *            授权方应用id
 	 * @return 应用信息
@@ -993,7 +1013,7 @@ public class WeixinProxy {
 
 	/**
 	 * 设置企业应用的选项设置信息，如：地理位置上报等
-	 * 
+	 *
 	 * @param agentSet
 	 *            设置参数
 	 * @see com.foxinmy.weixin4j.qy.model.AgentSetter
@@ -1010,7 +1030,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取应用概况列表
-	 * 
+	 *
 	 * @see com.foxinmy.weixin4j.qy.model.AgentOverview
 	 * @see com.foxinmy.weixin4j.qy.api.AgentApi
 	 * @see <a href=
@@ -1025,7 +1045,7 @@ public class WeixinProxy {
 
 	/**
 	 * 批量邀请成员关注
-	 * 
+	 *
 	 * @param parameter
 	 *            成员ID,标签ID,部门ID
 	 * @param callback
@@ -1041,7 +1061,8 @@ public class WeixinProxy {
 	 *      邀请成员关注</a>
 	 * @throws WeixinException
 	 */
-	public String batchInviteUser(IdParameter parameter, Callback callback, String tips) throws WeixinException {
+	public String batchInviteUser(IdParameter parameter, Callback callback,
+			String tips) throws WeixinException {
 		return batchApi.inviteUser(parameter, callback, tips);
 	}
 
@@ -1049,11 +1070,10 @@ public class WeixinProxy {
 	 * 批量更新成员,本接口以userid为主键，增量更新企业号通讯录成员。
 	 * <p>
 	 * 1.模板中的部门需填写部门ID，多个部门用分号分隔，部门ID必须为数字</br>
-	 * 2.文件中存在、通讯录中也存在的成员，更新成员在文件中指定的字段值 </br>
-	 * 3.文件中存在、通讯录中不存在的成员，执行添加操作</br>
+	 * 2.文件中存在、通讯录中也存在的成员，更新成员在文件中指定的字段值 </br> 3.文件中存在、通讯录中不存在的成员，执行添加操作</br>
 	 * 4.通讯录中存在、文件中不存在的成员，保持不变</br>
 	 * </p>
-	 * 
+	 *
 	 * @param mediaId
 	 *            带user信息的cvs文件上传后的media_id
 	 * @param callback
@@ -1066,20 +1086,20 @@ public class WeixinProxy {
 	 *      批量更新成员</a>
 	 * @throws WeixinException
 	 */
-	public String batchSyncUser(String mediaId, Callback callback) throws WeixinException {
+	public String batchSyncUser(String mediaId, Callback callback)
+			throws WeixinException {
 		return batchApi.syncUser(mediaId, callback);
 	}
 
 	/**
 	 * 批量覆盖成员,本接口以userid为主键，全量覆盖企业号通讯录成员，任务完成后企业号通讯录成员与提交的文件完全保持一致。
 	 * <p>
-	 * 1.模板中的部门需填写部门ID，多个部门用分号分隔，部门ID必须为数字</br>
-	 * 2.文件中存在、通讯录中也存在的成员，完全以文件为准</br>
+	 * 1.模板中的部门需填写部门ID，多个部门用分号分隔，部门ID必须为数字</br> 2.文件中存在、通讯录中也存在的成员，完全以文件为准</br>
 	 * 3.文件中存在、通讯录中不存在的成员，执行添加操作</br>
 	 * 4.通讯录中存在、文件中不存在的成员，执行删除操作。出于安全考虑，如果需要删除的成员多于50人，
 	 * 且多于现有人数的20%以上，系统将中止导入并返回相应的错误码
 	 * </p>
-	 * 
+	 *
 	 * @param mediaId
 	 *            带userid信息的cvs文件上传后的media_id
 	 * @param callback
@@ -1092,13 +1112,14 @@ public class WeixinProxy {
 	 *      批量覆盖成员</a>
 	 * @throws WeixinException
 	 */
-	public String batchReplaceUser(String mediaId, Callback callback) throws WeixinException {
+	public String batchReplaceUser(String mediaId, Callback callback)
+			throws WeixinException {
 		return batchApi.replaceUser(mediaId, callback);
 	}
 
 	/**
 	 * 批量上传成员
-	 * 
+	 *
 	 * @param users
 	 *            成员列表
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
@@ -1118,12 +1139,11 @@ public class WeixinProxy {
 	/**
 	 * 批量覆盖部门,本接口以partyid为键，全量覆盖企业号通讯录组织架构，任务完成后企业号通讯录组织架构与提交的文件完全保持一致。
 	 * <p>
-	 * 1.文件中存在、通讯录中也存在的部门，执行修改操作</br>
-	 * 2.文件中存在、通讯录中不存在的部门，执行添加操作</br>
+	 * 1.文件中存在、通讯录中也存在的部门，执行修改操作</br> 2.文件中存在、通讯录中不存在的部门，执行添加操作</br>
 	 * 3.文件中不存在、通讯录中存在的部门，当部门为空时，执行删除操作</br>
 	 * 4.CSV文件中，部门名称、部门ID、父部门ID为必填字段，部门ID必须为数字；排序为可选字段，置空或填0不修改排序
 	 * </p>
-	 * 
+	 *
 	 * @param mediaId
 	 *            带partyid信息的cvs文件上传后的media_id
 	 * @param callback
@@ -1136,13 +1156,14 @@ public class WeixinProxy {
 	 *      批量覆盖部门</a>
 	 * @throws WeixinException
 	 */
-	public String batchReplaceParty(String mediaId, Callback callback) throws WeixinException {
+	public String batchReplaceParty(String mediaId, Callback callback)
+			throws WeixinException {
 		return batchApi.replaceParty(mediaId, callback);
 	}
 
 	/**
 	 * 获取异步任务执行的结果
-	 * 
+	 *
 	 * @param jobId
 	 *            任务ID
 	 * @return 效果信息
@@ -1160,7 +1181,7 @@ public class WeixinProxy {
 	/**
 	 * userid转换成openid:该接口使用场景为微信支付、微信红包和企业转账，企业号用户在使用微信支付的功能时，
 	 * 需要自行将企业号的userid转成openid。 在使用微信红包功能时，需要将应用id和userid转成appid和openid才能使用。
-	 * 
+	 *
 	 * @param userid
 	 *            企业号内的成员id 必填
 	 * @param agentid
@@ -1172,14 +1193,15 @@ public class WeixinProxy {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=Userid%E4%B8%8Eopenid%E4%BA%92%E6%8D%A2%E6%8E%A5%E5%8F%A3">
 	 *      userid转换成openid</a>
 	 */
-	public String[] userid2openid(String userid, int agentid) throws WeixinException {
+	public String[] userid2openid(String userid, int agentid)
+			throws WeixinException {
 		return userApi.userid2openid(userid, agentid);
 	}
 
 	/**
 	 * openid转换成userid:该接口主要应用于使用微信支付、微信红包和企业转账之后的结果查询，
 	 * 开发者需要知道某个结果事件的openid对应企业号内成员的信息时，可以通过调用该接口进行转换查询。
-	 * 
+	 *
 	 * @param openid
 	 *            在使用微信支付、微信红包和企业转账之后，返回结果的openid
 	 * @return 该openid在企业号中对应的成员userid
@@ -1195,7 +1217,7 @@ public class WeixinProxy {
 
 	/**
 	 * 创建会话 <font color="red">如果会话id为空,程序会自动生成一个唯一ID</font>
-	 * 
+	 *
 	 * @param chatInfo
 	 *            会话信息
 	 * @return 会话ID
@@ -1212,7 +1234,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取会话
-	 * 
+	 *
 	 * @param chatId
 	 *            会话ID
 	 * @return 会话信息
@@ -1229,7 +1251,7 @@ public class WeixinProxy {
 
 	/**
 	 * 更新会话
-	 * 
+	 *
 	 * @param chatInfo
 	 *            会话信息 至少保持会话ID不能为空
 	 * @param operator
@@ -1246,14 +1268,15 @@ public class WeixinProxy {
 	 *      修改会话信息</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult updateChat(ChatInfo chatInfo, String operator, List<String> addUsers, List<String> deleteUsers)
+	public JsonResult updateChat(ChatInfo chatInfo, String operator,
+			List<String> addUsers, List<String> deleteUsers)
 			throws WeixinException {
 		return chatApi.updateChat(chatInfo, operator, addUsers, deleteUsers);
 	}
 
 	/**
 	 * 退出会话
-	 * 
+	 *
 	 * @param chatId
 	 *            会话ID
 	 * @param operator
@@ -1265,13 +1288,14 @@ public class WeixinProxy {
 	 *      退出会话</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult quitChat(String chatId, String operator) throws WeixinException {
+	public JsonResult quitChat(String chatId, String operator)
+			throws WeixinException {
 		return chatApi.quitChat(chatId, operator);
 	}
 
 	/**
 	 * 清除会话未读状态
-	 * 
+	 *
 	 * @param targetId
 	 *            会话值，为userid|chatid，分别表示：成员id|会话id
 	 * @param owner
@@ -1285,14 +1309,15 @@ public class WeixinProxy {
 	 *      清除会话未读状态</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult clearChatNotify(String targetId, String owner, ChatType chatType) throws WeixinException {
+	public JsonResult clearChatNotify(String targetId, String owner,
+			ChatType chatType) throws WeixinException {
 		return chatApi.clearChatNotify(targetId, owner, chatType);
 	}
 
 	/**
 	 * 设置成员接收到的消息是否提醒。主要场景是用于对接企业im的在线状态，如成员处于在线状态时，可以设置该成员的消息免打扰。当成员离线时，关闭免打扰状态
 	 * ，对微信端进行提醒。
-	 * 
+	 *
 	 * @param chatMutes
 	 *            提醒参数
 	 * @see com.foxinmy.weixin4j.qy.api.ChatApi
@@ -1303,13 +1328,14 @@ public class WeixinProxy {
 	 * @return 列表中不存在的成员，剩余合法成员会继续执行。
 	 * @throws WeixinException
 	 */
-	public List<String> setChatMute(List<ChatMute> chatMutes) throws WeixinException {
+	public List<String> setChatMute(List<ChatMute> chatMutes)
+			throws WeixinException {
 		return chatApi.setChatMute(chatMutes);
 	}
 
 	/**
 	 * 发送会话消息
-	 * 
+	 *
 	 * @param message
 	 *            消息对象
 	 * @return 处理结果
@@ -1320,7 +1346,8 @@ public class WeixinProxy {
 	 *      发送消息</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult sendChatMessage(ChatMessage message) throws WeixinException {
+	public JsonResult sendChatMessage(ChatMessage message)
+			throws WeixinException {
 		return chatApi.sendChatMessage(message);
 	}
 

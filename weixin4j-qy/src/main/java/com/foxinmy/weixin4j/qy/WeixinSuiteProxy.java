@@ -59,26 +59,26 @@ public class WeixinSuiteProxy {
 	 */
 	public WeixinSuiteProxy(Weixin4jSuiteSettings suiteSettings) {
 		this.suiteSettings = suiteSettings;
-		if (suiteSettings.getWeixinAccount().getSuiteAccounts() != null) {
+		if (suiteSettings.getAccount().getSuiteAccounts() != null) {
 			this.suiteMap = new HashMap<String, SuiteApi>();
-			for (WeixinAccount suite : suiteSettings.getWeixinAccount()
+			for (WeixinAccount suite : suiteSettings.getAccount()
 					.getSuiteAccounts()) {
 				this.suiteMap.put(suite.getId(), new SuiteApi(
 						new SuiteTicketHolder(suite.getId(), suite.getSecret(),
 								suiteSettings.getTokenStorager0())));
 				this.suiteMap.put(
 						null,
-						suiteMap.get(suiteSettings.getWeixinAccount()
+						suiteMap.get(suiteSettings.getAccount()
 								.getSuiteAccounts().get(0).getId()));
 			}
 		}
-		if (StringUtil.isNotBlank(suiteSettings.getWeixinAccount().getId())
-				&& StringUtil.isNotBlank(suiteSettings.getWeixinAccount()
+		if (StringUtil.isNotBlank(suiteSettings.getAccount().getId())
+				&& StringUtil.isNotBlank(suiteSettings.getAccount()
 						.getProviderSecret())) {
 			this.providerApi = new ProviderApi(new TokenHolder(
 					new WeixinProviderTokenCreator(suiteSettings
-							.getWeixinAccount().getId(), suiteSettings
-							.getWeixinAccount().getProviderSecret()),
+							.getAccount().getId(), suiteSettings
+							.getAccount().getProviderSecret()),
 					suiteSettings.getTokenStorager0()),
 					suiteSettings.getTokenStorager0());
 		}
@@ -90,7 +90,7 @@ public class WeixinSuiteProxy {
 	 * @return
 	 */
 	public WeixinQyAccount getWeixinAccount() {
-		return this.suiteSettings.getWeixinAccount();
+		return this.suiteSettings.getAccount();
 	}
 
 	/**

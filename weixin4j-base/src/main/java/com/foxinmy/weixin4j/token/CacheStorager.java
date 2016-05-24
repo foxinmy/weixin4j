@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.token;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
-
 /**
  * Cache的存储
  *
@@ -18,9 +16,8 @@ public interface CacheStorager<T> {
 	 * @param key
 	 *            缓存key
 	 * @return 缓存对象
-	 * @throws WeixinException
 	 */
-	T lookup(String key) throws WeixinException;
+	T lookup(String key);
 
 	/**
 	 * 缓存新的对象
@@ -30,9 +27,8 @@ public interface CacheStorager<T> {
 	 *
 	 * @param cache
 	 *            将要缓存的对象
-	 * @throws WeixinException
 	 */
-	void caching(String key, T cache) throws WeixinException;
+	void caching(String key, T cache);
 
 	/**
 	 * 移除缓存对象
@@ -41,10 +37,10 @@ public interface CacheStorager<T> {
 	 *            缓存key
 	 * @return 移除的对象
 	 */
-	T evict(String key) throws WeixinException;
+	T evict(String key);
 
 	/**
 	 * 清除所有缓存对象(<font color="red">请慎重</font>)
 	 */
-	void clear() throws WeixinException;
+	void clear();
 }

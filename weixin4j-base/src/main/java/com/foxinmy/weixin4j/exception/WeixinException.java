@@ -41,7 +41,7 @@ public class WeixinException extends Exception {
 		return code;
 	}
 
-	public String getErrorMsg() {
+	public String getErrorDesc() {
 		return desc;
 	}
 
@@ -51,8 +51,8 @@ public class WeixinException extends Exception {
 
 	@Override
 	public String getMessage() {
-		StringBuilder buf = new StringBuilder();
 		if (StringUtil.isNotBlank(code)) {
+			StringBuilder buf = new StringBuilder();
 			buf.append(code).append(" >> ").append(desc);
 			String text = getErrorText();
 			if (StringUtil.isNotBlank(text)) {

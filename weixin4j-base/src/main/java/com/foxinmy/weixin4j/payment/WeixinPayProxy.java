@@ -36,11 +36,11 @@ import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
 import com.foxinmy.weixin4j.payment.mch.RefundResult;
 import com.foxinmy.weixin4j.payment.mch.SettlementRecord;
+import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.CustomsCity;
 import com.foxinmy.weixin4j.type.IdQuery;
-import com.foxinmy.weixin4j.util.Weixin4jSettings;
 
 /**
  * 微信支付接口实现
@@ -85,14 +85,14 @@ public class WeixinPayProxy {
 	 *
 	 * @param settings
 	 *            支付相关配置信息
-	 * @see com.foxinmy.weixin4j.util.Weixin4jSettings
+	 * @see com.foxinmy.weixin4j.setting.Weixin4jSettings
 	 */
 	public WeixinPayProxy(Weixin4jSettings settings) {
 		this.settings = settings;
-		this.payApi = new PayApi(settings.getWeixinPayAccount());
-		this.couponApi = new CouponApi(settings.getWeixinPayAccount());
-		this.cashApi = new CashApi(settings.getWeixinPayAccount());
-		this.customsApi = new CustomsApi(settings.getWeixinPayAccount());
+		this.payApi = new PayApi(settings.getPayAccount());
+		this.couponApi = new CouponApi(settings.getPayAccount());
+		this.cashApi = new CashApi(settings.getPayAccount());
+		this.customsApi = new CustomsApi(settings.getPayAccount());
 	}
 
 	/**
@@ -100,8 +100,8 @@ public class WeixinPayProxy {
 	 *
 	 * @return
 	 */
-	public WeixinPayAccount getPayAccount() {
-		return this.settings.getWeixinPayAccount();
+	public WeixinPayAccount getWeixinPayAccount() {
+		return this.settings.getPayAccount();
 	}
 
 	/**

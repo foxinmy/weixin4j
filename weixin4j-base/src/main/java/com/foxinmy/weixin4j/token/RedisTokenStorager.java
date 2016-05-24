@@ -9,7 +9,6 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Pipeline;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
 
 /**
@@ -56,7 +55,7 @@ public class RedisTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public Token lookup(String cacheKey) throws WeixinException {
+	public Token lookup(String cacheKey) {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
@@ -73,7 +72,7 @@ public class RedisTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public void caching(String cacheKey, Token token) throws WeixinException {
+	public void caching(String cacheKey, Token token) {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
@@ -112,7 +111,7 @@ public class RedisTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public Token evict(String cacheKey) throws WeixinException {
+	public Token evict(String cacheKey) {
 		Token token = lookup(cacheKey);
 		Jedis jedis = null;
 		try {
@@ -127,7 +126,7 @@ public class RedisTokenStorager implements TokenStorager {
 	}
 
 	@Override
-	public void clear() throws WeixinException {
+	public void clear() {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();

@@ -47,7 +47,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 素材相关API
- * 
+ *
  * @className MediaApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
@@ -64,7 +64,7 @@ public class MediaApi extends MpApi {
 	/**
 	 * 上传图片获取URL
 	 * 请注意，本接口所上传的图片不占用公众号的素材库中图片数量的5000个的限制。图片仅支持jpg/png格式，大小必须在1MB以下。
-	 * 
+	 *
 	 * @param is
 	 *            图片数据流
 	 * @param fileName
@@ -91,7 +91,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 上传群发中的视频素材
-	 * 
+	 *
 	 * @param is
 	 *            图片数据流
 	 * @param fileName
@@ -130,7 +130,7 @@ public class MediaApi extends MpApi {
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
 	 * 否则抛出异常.
 	 * </p>
-	 * 
+	 *
 	 * @param isMaterial
 	 *            是否永久上传
 	 * @param is
@@ -222,13 +222,13 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 下载媒体素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            媒体ID
 	 * @param isMaterial
 	 *            是否下载永久素材
 	 * @return 媒体下载结果
-	 * 
+	 *
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.model.MediaDownloadResult
 	 * @see <a
@@ -299,7 +299,7 @@ public class MediaApi extends MpApi {
 	 * 、新增的永久素材也可以在公众平台官网素材管理模块中看到,永久素材的数量是有上限的，请谨慎新增。图文消息素材和图片素材的上限为5000，
 	 * 其他类型为1000
 	 * </P>
-	 * 
+	 *
 	 * @param articles
 	 *            图文列表
 	 * @return 上传到微信服务器返回的媒体标识
@@ -323,7 +323,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 下载永久图文素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            媒体ID
 	 * @return 图文列表
@@ -342,7 +342,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 更新永久图文素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            要修改的图文消息的id
 	 * @param index
@@ -372,7 +372,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 删除永久媒体素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            媒体素材的media_id
 	 * @return 处理结果
@@ -395,7 +395,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 上传永久视频素材
-	 * 
+	 *
 	 * @param is
 	 *            大小不超过1M且格式为MP4的视频文件
 	 * @param fileName
@@ -446,7 +446,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 获取永久媒体素材的总数</br> .图片和图文消息素材（包括单图文和多图文）的总数上限为5000，其他素材的总数上限为1000
-	 * 
+	 *
 	 * @return 总数对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.model.MediaCounter
@@ -465,7 +465,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 获取媒体素材记录列表
-	 * 
+	 *
 	 * @param mediaType
 	 *            素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
 	 * @param pageable
@@ -518,7 +518,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 获取全部的媒体素材
-	 * 
+	 *
 	 * @param mediaType
 	 *            媒体类型
 	 * @return 素材列表

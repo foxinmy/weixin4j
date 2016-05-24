@@ -22,7 +22,8 @@ public interface CacheCreator<T> {
 	/**
 	 * 创建Cache
 	 *
-	 * @return
+	 * @throws WeixinException
+	 * @return 缓存对象
 	 */
 	public T create() throws WeixinException;
 }

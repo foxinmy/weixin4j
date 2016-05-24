@@ -6,12 +6,12 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
+import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.util.Weixin4jSettings;
 
 /**
  * token测试
- * 
+ *
  * @className TokenTest
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
@@ -26,7 +26,7 @@ public class TokenTest {
 	public void setUp() {
 		this.settings = new Weixin4jSettings();
 		tokenHolder = new TokenHolder(new WeixinTokenCreator(settings
-				.getWeixinAccount().getId(), settings.getWeixinAccount()
+				.getAccount().getId(), settings.getAccount()
 				.getSecret()), settings.getTokenStorager0());
 	}
 
