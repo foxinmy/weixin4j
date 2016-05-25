@@ -50,7 +50,7 @@ public class MemcacheTokenStorager extends TokenStorager {
 	}
 
 	@Override
-	public void clear() {
+	public void clear(String prefix) {
 		throw new UnsupportedOperationException();
 	}
 

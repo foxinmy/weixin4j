@@ -24,13 +24,4 @@ public abstract class TokenStorager implements CacheStorager<Token> {
 	public long ms() {
 		return 60 * 1000l;
 	}
-
-	/**
-	 * 缓存key的前缀
-	 *
-	 * @return 默认为weixin4j_
-	 */
-	public String prefix() {
-		return "weixin4j_";
-	}
 }

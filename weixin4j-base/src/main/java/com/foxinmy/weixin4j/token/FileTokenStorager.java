@@ -78,12 +78,12 @@ public class FileTokenStorager extends TokenStorager {
 	}
 
 	@Override
-	public void clear() {
+	public void clear(final String prefix) {
 		File[] files = new File(cachePath).listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File file) {
 				return file.isFile()
-						&& file.getName().startsWith(prefix())
+						&& file.getName().startsWith(prefix)
 						&& "xml".equals(FileUtil.getFileExtension(file
 								.getName()));
 			}

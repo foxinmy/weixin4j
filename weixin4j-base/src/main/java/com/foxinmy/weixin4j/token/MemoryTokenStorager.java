@@ -45,7 +45,7 @@ public class MemoryTokenStorager extends TokenStorager {
 	}
 
 	@Override
-	public void clear() {
+	public void clear(String prefix) {
 		this.CONMAP.clear();
 	}
 }

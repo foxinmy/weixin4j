@@ -126,11 +126,11 @@ public class RedisTokenStorager extends TokenStorager {
 	}
 
 	@Override
-	public void clear() {
+	public void clear(String prefix) {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
-			Set<String> cacheKeys = jedis.keys(String.format("%s*", prefix()));
+			Set<String> cacheKeys = jedis.keys(String.format("%s*", prefix));
 			if (!cacheKeys.isEmpty()) {
 				Pipeline pipeline = jedis.pipelined();
 				for (String cacheKey : cacheKeys) {

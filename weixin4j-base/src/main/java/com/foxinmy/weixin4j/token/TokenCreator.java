@@ -13,6 +13,7 @@ import com.foxinmy.weixin4j.model.Token;
  * @see
  */
 public abstract class TokenCreator implements CacheCreator<Token> {
+
 	protected final WeixinRequestExecutor weixinExecutor;
 
 	public TokenCreator() {
@@ -20,13 +21,22 @@ public abstract class TokenCreator implements CacheCreator<Token> {
 	}
 
 	/**
-	 * 缓存key:附加weixin4j_前缀
+	 * 缓存key的前缀
+	 *
+	 * @return 默认为weixin4j_
+	 */
+	public String prefix() {
+		return "weixin4j_";
+	}
+
+	/**
+	 * 缓存key:附加key前缀
 	 *
 	 * @return
 	 */
 	@Override
 	public String key() {
-		return String.format("weixin4j_%s", key0());
+		return String.format("%s%s", prefix(), key0());
 	}
 
 	/**

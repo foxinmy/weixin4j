@@ -41,6 +41,9 @@ public interface CacheStorager<T> {
 
 	/**
 	 * 清除所有缓存对象(<font color="red">请慎重</font>)
+	 *
+	 * @param prefix
+	 *            缓存key的前缀
 	 */
-	void clear();
+	void clear(String prefix);
 }

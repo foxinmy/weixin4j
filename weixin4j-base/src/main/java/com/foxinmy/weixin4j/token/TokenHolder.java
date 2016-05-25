@@ -76,13 +76,20 @@ public class TokenHolder {
 	}
 
 	/**
-	 * 手动移除token
+	 * 移除token
 	 *
 	 * @return 被移除的token
-	 * @throws WeixinException
 	 */
-	public Token evictToken() throws WeixinException {
+	public Token evictToken() {
 		String cacheKey = tokenCreator.key();
 		return tokenStorager.evict(cacheKey);
+	}
+
+	/**
+	 * 清除所有的token(<font color="red">请慎重</font>)
+	 */
+	public void clearToken() {
+		String prefix = tokenCreator.prefix();
+		tokenStorager.clear(prefix);
 	}
 }
