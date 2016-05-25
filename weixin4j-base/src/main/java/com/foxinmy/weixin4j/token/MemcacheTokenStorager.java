@@ -17,7 +17,7 @@ import com.whalin.MemCached.SockIOPool;
  * @since JDK 1.6
  * @see
  */
-public class MemcacheTokenStorager implements TokenStorager {
+public class MemcacheTokenStorager extends TokenStorager {
 
 	private final MemCachedClient mc;
 
@@ -36,7 +36,7 @@ public class MemcacheTokenStorager implements TokenStorager {
 		if (token.getExpiresIn() > 0) {
 			mc.set(cacheKey, token,
 					new Date(token.getCreateTime() + token.getExpiresIn()
-							* 1000 - CUTMS));
+							* 1000 - ms()));
 		} else {
 			mc.set(cacheKey, token);
 		}

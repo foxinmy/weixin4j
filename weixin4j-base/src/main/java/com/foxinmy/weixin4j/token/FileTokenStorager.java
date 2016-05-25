@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @date 2015年1月9日
  * @since JDK 1.6
  */
-public class FileTokenStorager implements TokenStorager {
+public class FileTokenStorager extends TokenStorager {
 
 	private final String cachePath;
 
@@ -37,7 +37,7 @@ public class FileTokenStorager implements TokenStorager {
 				if (token.getCreateTime() < 0) {
 					return token;
 				}
-				if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - CUTMS) > System
+				if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - ms()) > System
 						.currentTimeMillis()) {
 					return token;
 				}
@@ -83,7 +83,7 @@ public class FileTokenStorager implements TokenStorager {
 			@Override
 			public boolean accept(File file) {
 				return file.isFile()
-						&& file.getName().startsWith(PREFIX)
+						&& file.getName().startsWith(prefix())
 						&& "xml".equals(FileUtil.getFileExtension(file
 								.getName()));
 			}

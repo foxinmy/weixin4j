@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.model.Token;
  * @date 2015年1月9日
  * @since JDK 1.6
  */
-public class RedisTokenStorager implements TokenStorager {
+public class RedisTokenStorager extends TokenStorager {
 
 	private JedisPool jedisPool;
 
@@ -79,7 +79,7 @@ public class RedisTokenStorager implements TokenStorager {
 			jedis.hmset(cacheKey, token2map(token));
 			if (token.getExpiresIn() > 0) {
 				jedis.expire(cacheKey, token.getExpiresIn()
-						- (int) (CUTMS / 1000l));
+						- (int) (ms() / 1000l));
 			}
 		} finally {
 			if (jedis != null) {
@@ -130,7 +130,7 @@ public class RedisTokenStorager implements TokenStorager {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
-			Set<String> cacheKeys = jedis.keys(String.format("%s*", PREFIX));
+			Set<String> cacheKeys = jedis.keys(String.format("%s*", prefix()));
 			if (!cacheKeys.isEmpty()) {
 				Pipeline pipeline = jedis.pipelined();
 				for (String cacheKey : cacheKeys) {

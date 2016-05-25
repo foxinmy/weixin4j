@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.model.Token;
  * @since JDK 1.6
  * @see
  */
-public class MemoryTokenStorager implements TokenStorager {
+public class MemoryTokenStorager extends TokenStorager {
 
 	private final Map<String, Token> CONMAP;
 
@@ -26,7 +26,7 @@ public class MemoryTokenStorager implements TokenStorager {
 	public Token lookup(String cacheKey) {
 		Token token = this.CONMAP.get(cacheKey);
 		if (token != null) {
-			if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - CUTMS) > System
+			if ((token.getCreateTime() + (token.getExpiresIn() * 1000l) - ms()) > System
 					.currentTimeMillis()) {
 				return token;
 			}

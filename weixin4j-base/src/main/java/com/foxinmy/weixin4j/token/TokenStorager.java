@@ -15,13 +15,22 @@ import com.foxinmy.weixin4j.model.Token;
  * @see RedisTokenStorager
  * @see MemcacheTokenStorager
  */
-public interface TokenStorager extends CacheStorager<Token> {
+public abstract class TokenStorager implements CacheStorager<Token> {
 	/**
-	 * 考虑到临界情况,在实际有效时间上减去60秒
+	 * 考虑到临界情况,实际token的有效时间减去该毫秒数
+	 *
+	 * @return 默认为60秒
 	 */
-	final long CUTMS = 60 * 1000l;
+	public long ms() {
+		return 60 * 1000l;
+	}
+
 	/**
 	 * 缓存key的前缀
+	 *
+	 * @return 默认为weixin4j_
 	 */
-	final String PREFIX = "weixin4j_";
+	public String prefix() {
+		return "weixin4j_";
+	}
 }
