@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 商户支付
- * 
+ *
  * @className MchApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月26日
@@ -49,7 +49,7 @@ public class MchApi extends BaseApi {
 
 	/**
 	 * 创建 SSL支付请求
-	 * 
+	 *
 	 * @param certificate
 	 *            *.p12证书文件
 	 * @return
@@ -63,7 +63,7 @@ public class MchApi extends BaseApi {
 
 	/**
 	 * 支付接口请求基本数据
-	 * 
+	 *
 	 * @param idQuery
 	 *            ID信息 可为空
 	 * @return 基础map
@@ -86,5 +86,14 @@ public class MchApi extends BaseApi {
 			map.put(idQuery.getType().getName(), idQuery.getId());
 		}
 		return map;
+	}
+
+	/**
+	 * 微信签名类
+	 *
+	 * @return
+	 */
+	public WeixinSignature getWeixinSignature() {
+		return this.weixinSignature;
 	}
 }

@@ -105,8 +105,12 @@ public class PayOldApi extends MpApi {
 		this.weixinOldSignature = new WeixinOldPaymentSignature();
 	}
 
-	public WeixinOldPayAccount getPayAccount() {
+	public WeixinOldPayAccount getWeixinPayAccount() {
 		return this.weixinAccount;
+	}
+
+	public WeixinOldPaymentSignature getWeixinPaymentSignature(){
+		return this.weixinOldSignature;
 	}
 
 	/**
@@ -126,7 +130,7 @@ public class PayOldApi extends MpApi {
 	 */
 	public String createPayJsRequestJson(String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp) {
-		PayPackageV2 payPackage = new PayPackageV2(getPayAccount()
+		PayPackageV2 payPackage = new PayPackageV2(weixinAccount
 				.getPartnerId(), body, outTradeNo, totalFee, notifyUrl,
 				createIp);
 		return createPayJsRequestJson(payPackage);
@@ -140,11 +144,11 @@ public class PayOldApi extends MpApi {
 	 * @return 支付json串
 	 */
 	public String createPayJsRequestJson(PayPackageV2 payPackage) {
-		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
-				weixinOldSignature.sign(payPackage, getPayAccount()
+		PayRequest payRequest = new PayRequest(weixinAccount.getId(),
+				weixinOldSignature.sign(payPackage, weixinAccount
 						.getPartnerKey()));
 		payRequest.setPaySign(weixinOldSignature.sign(payRequest,
-				getPayAccount().getPaySignKey()));
+				weixinAccount.getPaySignKey()));
 		payRequest.setSignType(SignType.SHA1);
 		return JSON.toJSONString(payRequest);
 	}
@@ -160,14 +164,14 @@ public class PayOldApi extends MpApi {
 		Map<String, String> map = new HashMap<String, String>();
 		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(16);
-		map.put("appid", getPayAccount().getId());
+		map.put("appid", weixinAccount.getId());
 		map.put("timestamp", timestamp);
 		map.put("noncestr", noncestr);
 		map.put("productid", productId);
-		map.put("appkey", getPayAccount().getPaySignKey());
+		map.put("appkey", weixinAccount.getPaySignKey());
 		String sign = weixinOldSignature.sign(map);
 		String nativepay_uri = getRequestUri("nativepay_old_uri");
-		return String.format(nativepay_uri, sign, getPayAccount().getId(),
+		return String.format(nativepay_uri, sign, weixinAccount.getId(),
 				productId, timestamp, noncestr);
 	}
 
@@ -187,23 +191,23 @@ public class PayOldApi extends MpApi {
 		StringBuilder sb = new StringBuilder();
 		sb.append(idQuery.getType().getName()).append("=")
 				.append(idQuery.getId());
-		sb.append("&partner=").append(getPayAccount().getPartnerId());
+		sb.append("&partner=").append(weixinAccount.getPartnerId());
 		String part = sb.toString();
-		sb.append("&key=").append(getPayAccount().getPartnerKey());
+		sb.append("&key=").append(weixinAccount.getPartnerKey());
 		String sign = DigestUtil.MD5(sb.toString()).toUpperCase();
 		sb.delete(0, sb.length());
 		sb.append(part).append("&sign=").append(sign);
 
 		String timestamp = DateUtil.timestamp2string();
 		JSONObject obj = new JSONObject();
-		obj.put("appid", getPayAccount().getId());
-		obj.put("appkey", getPayAccount().getPaySignKey());
+		obj.put("appid", weixinAccount.getId());
+		obj.put("appkey", weixinAccount.getPaySignKey());
 		obj.put("package", sb.toString());
 		obj.put("timestamp", timestamp);
 		String signature = weixinOldSignature.sign(obj);
 
 		obj.clear();
-		obj.put("appid", getPayAccount().getId());
+		obj.put("appid", weixinAccount.getId());
 		obj.put("package", sb.toString());
 		obj.put("timestamp", timestamp);
 		obj.put("app_signature", signature);
@@ -264,13 +268,13 @@ public class PayOldApi extends MpApi {
 			// 填写为 1.0 时,操作员密码为明文
 			// 填写为 1.1 时,操作员密码为 MD5(密码)值
 			map.put("service_version", "1.1");
-			map.put("partner", getPayAccount().getPartnerId());
+			map.put("partner", weixinAccount.getPartnerId());
 			map.put("out_refund_no", outRefundNo);
 			map.put("total_fee", DateUtil.formaFee2Fen(totalFee));
 			map.put("refund_fee", DateUtil.formaFee2Fen(refundFee));
 			map.put(idQuery.getType().getName(), idQuery.getId());
 			if (StringUtil.isBlank(opUserId)) {
-				opUserId = getPayAccount().getPartnerId();
+				opUserId = weixinAccount.getPartnerId();
 			}
 			map.put("op_user_id", opUserId);
 			if (mopara != null && !mopara.isEmpty()) {
@@ -311,8 +315,8 @@ public class PayOldApi extends MpApi {
 			KeyManagerFactory kmf = KeyManagerFactory
 					.getInstance(Consts.SunX509);
 			ks = KeyStore.getInstance(Consts.PKCS12);
-			ks.load(certificate, getPayAccount().getPartnerId().toCharArray());
-			kmf.init(ks, getPayAccount().getPartnerId().toCharArray());
+			ks.load(certificate, weixinAccount.getPartnerId().toCharArray());
+			kmf.init(ks, weixinAccount.getPartnerId().toCharArray());
 
 			ctx = SSLContext.getInstance(Consts.TLS);
 			ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(),
@@ -446,7 +450,7 @@ public class PayOldApi extends MpApi {
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
 		String fileName = String.format("weixin4j_bill_%s_%s_%s.txt",
-				formatBillDate, billType.name().toLowerCase(), getPayAccount()
+				formatBillDate, billType.name().toLowerCase(), weixinAccount
 						.getId());
 		File file = new File(String.format("%s/%s", billPath, fileName));
 		if (file.exists()) {
@@ -455,12 +459,12 @@ public class PayOldApi extends MpApi {
 		String downloadbill_uri = getRequestUri("downloadbill_old_uri");
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("spid", getPayAccount().getPartnerId());
+		map.put("spid", weixinAccount.getPartnerId());
 		map.put("trans_time", DateUtil.fortmat2yyyy_MM_dd(billDate));
 		map.put("stamp", DateUtil.timestamp2string());
 		map.put("cft_signtype", "0");
 		map.put("mchtype", Integer.toString(billType.getVal()));
-		map.put("key", getPayAccount().getPartnerKey());
+		map.put("key", weixinAccount.getPartnerKey());
 		String sign = DigestUtil.MD5(MapUtil.toJoinString(map, false, false));
 		map.put("sign", sign.toLowerCase());
 		WeixinResponse response = weixinExecutor.get(downloadbill_uri, map);
@@ -510,7 +514,7 @@ public class PayOldApi extends MpApi {
 		String refundquery_uri = getRequestUri("refundquery_old_uri");
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("input_charset", Consts.UTF_8.name());
-		map.put("partner", getPayAccount().getPartnerId());
+		map.put("partner", weixinAccount.getPartnerId());
 		map.put(idQuery.getType().getName(), idQuery.getId());
 		String sign = weixinMD5Signature.sign(map);
 		map.put("sign", sign.toLowerCase());
@@ -542,8 +546,8 @@ public class PayOldApi extends MpApi {
 		Token token = tokenHolder.getToken();
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("appid", getPayAccount().getId());
-		map.put("appkey", getPayAccount().getPaySignKey());
+		map.put("appid", weixinAccount.getId());
+		map.put("appkey", weixinAccount.getPaySignKey());
 		map.put("openid", openId);
 		map.put("transid", transid);
 		map.put("out_trade_no", outTradeNo);

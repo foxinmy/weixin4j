@@ -37,6 +37,7 @@ import com.foxinmy.weixin4j.payment.mch.RefundRecord;
 import com.foxinmy.weixin4j.payment.mch.RefundResult;
 import com.foxinmy.weixin4j.payment.mch.SettlementRecord;
 import com.foxinmy.weixin4j.setting.Weixin4jSettings;
+import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.CustomsCity;
@@ -102,6 +103,15 @@ public class WeixinPayProxy {
 	 */
 	public WeixinPayAccount getWeixinPayAccount() {
 		return this.settings.getPayAccount();
+	}
+
+	/**
+	 * 获取微信签名类
+	 *
+	 * @return
+	 */
+	public WeixinSignature getWeixinSignature() {
+		return this.payApi.getWeixinSignature();
 	}
 
 	/**
