@@ -12,9 +12,9 @@ import com.foxinmy.weixin4j.util.SerializationUtils;
 /**
  * 用Redis(集群)保存缓存对象(推荐使用)
  *
- * @className RedisCacheStorager
+ * @className RedisClusterCacheStorager
  * @author jinyu(foxinmy@gmail.com)
- * @date 2015年1月9日
+ * @date 2016年5月28日
  * @since JDK 1.6
  */
 public class RedisClusterCacheStorager<T extends Cacheable> implements
