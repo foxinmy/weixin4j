@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.QRParameter;
 import com.foxinmy.weixin4j.mp.model.QRResult;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.util.IOUtil;
 
 /**
@@ -21,10 +21,10 @@ import com.foxinmy.weixin4j.util.IOUtil;
  */
 public class QrApi extends MpApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public QrApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public QrApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class QrApi extends MpApi {
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1443433542&token=&lang=zh_CN">生成二维码</a>
 	 */
 	public QRResult createQR(QRParameter parameter) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String qr_uri = getRequestUri("qr_ticket_uri");
 		WeixinResponse response = weixinExecutor.post(
 				String.format(qr_uri, token.getAccessToken()),

@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.mp.api;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
@@ -110,9 +111,14 @@ public class OauthApi extends MpApi {
 		String user_token_uri = getRequestUri("sns_user_token_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(
 				user_token_uri, account.getId(), account.getSecret(), code));
-
-		return response.getAsObject(new TypeReference<OauthToken>() {
-		});
+		JSONObject result = response.getAsJson();
+		OauthToken token = new OauthToken(result.getString("access_token"),
+				result.getLongValue("expires_in") * 1000l);
+		token.setUnionId(result.getString("unionid"));
+		token.setOpenId(result.getString("openid"));
+		token.setScope(result.getString("scope"));
+		token.setRefreshToken(result.getString("refresh_token"));
+		return token;
 	}
 
 	/**

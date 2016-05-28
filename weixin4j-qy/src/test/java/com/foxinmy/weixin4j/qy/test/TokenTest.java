@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.setting.Weixin4jSettings;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * token测试
@@ -19,19 +19,19 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  */
 public class TokenTest {
 
-	protected TokenHolder tokenHolder;
+	protected TokenManager tokenManager;
 	protected Weixin4jSettings settings;
 
 	@Before
 	public void setUp() {
 		this.settings = new Weixin4jSettings();
-		tokenHolder = new TokenHolder(new WeixinTokenCreator(settings
+		tokenManager = new TokenManager(new WeixinTokenCreator(settings
 				.getAccount().getId(), settings.getAccount()
-				.getSecret()), settings.getTokenStorager0());
+				.getSecret()), settings.getCacheStorager0());
 	}
 
 	@Test
 	public void test() throws WeixinException {
-		Assert.assertNotNull(tokenHolder.getToken());
+		Assert.assertNotNull(tokenManager.getCache());
 	}
 }

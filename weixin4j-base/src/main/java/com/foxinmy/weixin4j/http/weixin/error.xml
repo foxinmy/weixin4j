@@ -1432,6 +1432,10 @@
 		<text>邀请额度已用完</text>
 	</error>
 	<error>
+		<code>81004</code>
+		<text>部门数量超过上限</text>
+	</error>
+	<error>
 		<code>82001</code>
 		<text>发送消息或者邀请的参数全部为空或者全部不合法</text>
 	</error>

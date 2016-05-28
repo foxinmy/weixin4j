@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.token;
+package com.foxinmy.weixin4j.cache;
 
 /**
  * Cache的存储
@@ -9,7 +9,17 @@ package com.foxinmy.weixin4j.token;
  * @since JDK 1.6
  * @see
  */
-public interface CacheStorager<T> {
+public interface CacheStorager<T extends Cacheable> {
+	/**
+	 * 考虑到临界情况,实际缓存的有效时间减去该毫秒数(60秒)
+	 */
+	long CUTMS = 60 * 1000l;
+
+	/**
+	 * 所有的缓存KEY
+	 */
+	String ALLKEY = "weixin4j_cache_keys";
+
 	/**
 	 * 查找缓存中的对象
 	 *
@@ -42,8 +52,6 @@ public interface CacheStorager<T> {
 	/**
 	 * 清除所有缓存对象(<font color="red">请慎重</font>)
 	 *
-	 * @param prefix
-	 *            缓存key的前缀
 	 */
-	void clear(String prefix);
+	void clear();
 }

@@ -6,7 +6,7 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
  * 微信消息服务:单独作为一个服务jar包启动
- * 
+ *
  * @className Weixin4jServerStartupWithoutThread
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
@@ -34,7 +34,7 @@ public class Weixin4jServerStartupWithoutThread {
 	/**
 	 * 入口函数 可使用assembly插件打成可执行zip包:https://github.com/foxinmy/weixin4j/wiki/
 	 * assembly%E6%89%93%E5%8C%85
-	 * 
+	 *
 	 * @param args
 	 * @throws WeixinException
 	 */

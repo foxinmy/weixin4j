@@ -702,3 +702,7 @@
   + weixin4j-base:修改Memcached-Java-Client的依赖
 
   + weixin4j-base:系统配置类抽象化
+
+* 2016-05-28
+
+  + 重构Cache实现

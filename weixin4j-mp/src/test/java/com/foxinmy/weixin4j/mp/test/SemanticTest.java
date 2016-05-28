@@ -13,7 +13,7 @@ public class SemanticTest extends TokenTest {
 
 	@Before
 	public void init() {
-		helperApi = new HelperApi(tokenHolder);
+		helperApi = new HelperApi(tokenManager);
 	}
 
 	@Test

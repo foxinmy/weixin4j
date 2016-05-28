@@ -14,9 +14,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
 public class XmlstreamTest {
 
 	public static void object2xmlWithRootElement() {
-		Token token = new Token("accessToken");
-		token.setExpiresIn(12);
-		token.setCreateTime(13l);
+		Token token = new Token("accessToken", 12l, 13l);
 		String content = XmlStream.toXML(token);
 		System.err.println(content);
 	}

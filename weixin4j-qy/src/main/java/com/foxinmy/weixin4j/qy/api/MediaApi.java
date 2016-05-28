@@ -39,7 +39,7 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.Callback;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.User;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.util.FileUtil;
@@ -61,10 +61,10 @@ import com.foxinmy.weixin4j.util.StringUtil;
  */
 public class MediaApi extends QyApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public MediaApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public MediaApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class MediaApi extends QyApi {
 			fileName = String.format("%s.jpg", fileName);
 		}
 		String media_uploadimg_uri = getRequestUri("media_uploadimg_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(String.format(
 				media_uploadimg_uri, token.getAccessToken()),
 				new FormBodyPart("media", new InputStreamBody(is,
@@ -146,7 +146,7 @@ public class MediaApi extends QyApi {
 				",%s,", suffixName))) {
 			mediaType = MediaType.video;
 		}
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		try {
 			WeixinResponse response = null;
 			if (agentid > 0) {
@@ -200,7 +200,7 @@ public class MediaApi extends QyApi {
 	 */
 	public MediaDownloadResult downloadMedia(int agentid, String mediaId)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		try {
 			HttpRequest request = null;
 			if (agentid > 0) {
@@ -273,7 +273,7 @@ public class MediaApi extends QyApi {
 	 */
 	public String uploadMaterialArticle(int agentid, List<MpArticle> articles)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_article_upload_uri = getRequestUri("material_article_upload_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("agentid", agentid);
@@ -301,7 +301,7 @@ public class MediaApi extends QyApi {
 	 */
 	public JsonResult deleteMaterialMedia(int agentid, String mediaId)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_media_del_uri = getRequestUri("material_media_del_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(
 				material_media_del_uri, token.getAccessToken(), mediaId,
@@ -348,7 +348,7 @@ public class MediaApi extends QyApi {
 	 */
 	public String updateMaterialArticle(int agentid, String mediaId,
 			List<MpArticle> articles) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_article_update_uri = getRequestUri("material_article_update_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("agentid", agentid);
@@ -375,7 +375,7 @@ public class MediaApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%B4%A0%E6%9D%90%E6%80%BB%E6%95%B0">获取素材总数</a>
 	 */
 	public MediaCounter countMaterialMedia(int agentid) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_media_count_uri = getRequestUri("material_media_count_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(
 				material_media_count_uri, token.getAccessToken(), agentid));
@@ -406,7 +406,7 @@ public class MediaApi extends QyApi {
 	 */
 	public MediaRecord listMaterialMedia(int agentid, MediaType mediaType,
 			Pageable pageable) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_media_list_uri = getRequestUri("material_media_list_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("agentid", agentid);

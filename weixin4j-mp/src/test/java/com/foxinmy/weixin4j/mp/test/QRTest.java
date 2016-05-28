@@ -24,7 +24,7 @@ public class QRTest extends TokenTest {
 
 	@Before
 	public void init() {
-		qrApi = new QrApi(tokenHolder);
+		qrApi = new QrApi(tokenManager);
 	}
 
 	@Test

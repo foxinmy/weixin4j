@@ -1,60 +1,61 @@
 package com.foxinmy.weixin4j.qy.suite;
 
+import com.foxinmy.weixin4j.cache.CacheStorager;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.token.TokenStorager;
+import com.foxinmy.weixin4j.token.TokenCreator;
 
 /**
  * 应用套件ticket的存取
- * 
- * @className SuiteTicketHolder
+ *
+ * @className SuiteTicketManager
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月22日
  * @since JDK 1.6
  * @see
  */
-public class SuiteTicketHolder {
+public class SuiteTicketManager {
 
 	private final String suiteId;
 	private final String suiteSecret;
-	private final TokenStorager tokenStorager;
+	private final CacheStorager<Token> cacheStorager;
 
-	public SuiteTicketHolder(String suiteId, String suiteSecret,
-			TokenStorager tokenStorager) {
+	public SuiteTicketManager(String suiteId, String suiteSecret,
+			CacheStorager<Token> cacheStorager) {
 		this.suiteId = suiteId;
 		this.suiteSecret = suiteSecret;
-		this.tokenStorager = tokenStorager;
+		this.cacheStorager = cacheStorager;
 	}
 
 	/**
 	 * 获取ticket
-	 * 
+	 *
 	 * @return
 	 * @throws WeixinException
 	 */
 	public String getTicket() throws WeixinException {
-		return tokenStorager.lookup(getCacheKey()).getAccessToken();
+		return cacheStorager.lookup(getCacheKey()).getAccessToken();
 	}
 
 	/**
 	 * 获取ticket的key
-	 * 
+	 *
 	 * @return
 	 */
 	public String getCacheKey() {
-		return String.format("weixin4j_qy_suite_ticket_%s", suiteId);
+		return String.format("%sqy_suite_ticket_%s",
+				TokenCreator.CACHEKEY_PREFIX, suiteId);
 	}
 
 	/**
 	 * 缓存ticket
-	 * 
+	 *
 	 * @param ticket
 	 * @throws WeixinException
 	 */
 	public void cachingTicket(String ticket) throws WeixinException {
 		Token token = new Token(ticket);
-		token.setExpiresIn(-1);
-		tokenStorager.caching(getCacheKey(), token);
+		cacheStorager.caching(getCacheKey(), token);
 	}
 
 	public String getSuiteId() {
@@ -65,7 +66,7 @@ public class SuiteTicketHolder {
 		return this.suiteSecret;
 	}
 
-	public TokenStorager getTokenStorager() {
-		return this.tokenStorager;
+	public CacheStorager<Token> getCacheStorager() {
+		return this.cacheStorager;
 	}
 }

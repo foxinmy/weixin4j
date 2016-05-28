@@ -51,7 +51,7 @@ import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.mp.type.Lang;
 import com.foxinmy.weixin4j.setting.Weixin4jSettings;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
@@ -121,7 +121,7 @@ public class WeixinProxy {
 	/**
 	 * token实现
 	 */
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 	/**
 	 * 配置信息
 	 */
@@ -141,9 +141,9 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.setting.Weixin4jSettings
 	 */
 	public WeixinProxy(Weixin4jSettings settings) {
-		this(new TokenHolder(new WeixinTokenCreator(settings.getAccount()
+		this(new TokenManager(new WeixinTokenCreator(settings.getAccount()
 				.getId(), settings.getAccount().getSecret()),
-				settings.getTokenStorager0()));
+				settings.getCacheStorager0()));
 		this.settings = settings;
 	}
 
@@ -151,22 +151,22 @@ public class WeixinProxy {
 	 * 注意：TokenCreator 需为 <font color="red">WeixinTokenCreator</font>
 	 *
 	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator
-	 * @param tokenHolder
+	 * @param tokenManager
 	 */
-	private WeixinProxy(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
-		this.mediaApi = new MediaApi(tokenHolder);
-		this.notifyApi = new NotifyApi(tokenHolder);
-		this.customApi = new CustomApi(tokenHolder);
-		this.massApi = new MassApi(tokenHolder);
-		this.userApi = new UserApi(tokenHolder);
-		this.groupApi = new GroupApi(tokenHolder);
-		this.menuApi = new MenuApi(tokenHolder);
-		this.qrApi = new QrApi(tokenHolder);
-		this.tmplApi = new TmplApi(tokenHolder);
-		this.helperApi = new HelperApi(tokenHolder);
-		this.dataApi = new DataApi(tokenHolder);
-		this.tagApi = new TagApi(tokenHolder);
+	private WeixinProxy(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
+		this.mediaApi = new MediaApi(tokenManager);
+		this.notifyApi = new NotifyApi(tokenManager);
+		this.customApi = new CustomApi(tokenManager);
+		this.massApi = new MassApi(tokenManager);
+		this.userApi = new UserApi(tokenManager);
+		this.groupApi = new GroupApi(tokenManager);
+		this.menuApi = new MenuApi(tokenManager);
+		this.qrApi = new QrApi(tokenManager);
+		this.tmplApi = new TmplApi(tokenManager);
+		this.helperApi = new HelperApi(tokenManager);
+		this.dataApi = new DataApi(tokenManager);
+		this.tagApi = new TagApi(tokenManager);
 	}
 
 	/**
@@ -179,25 +179,25 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * token获取
+	 * token管理
 	 *
 	 * @return
 	 */
-	public TokenHolder getTokenHolder() {
-		return this.tokenHolder;
+	public TokenManager getTokenManager() {
+		return this.tokenManager;
 	}
 
 	/**
-	 * 获取JSSDK Ticket的tokenHolder
+	 * 获取JSSDK Ticket的tokenManager
 	 *
 	 * @param ticketType
 	 *            票据类型
 	 * @return
 	 */
-	public TokenHolder getTicketHolder(TicketType ticketType) {
-		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount()
-				.getId(), ticketType, this.tokenHolder),
-				this.settings.getTokenStorager0());
+	public TokenManager getTicketManager(TicketType ticketType) {
+		return new TokenManager(new WeixinTicketCreator(getWeixinAccount()
+				.getId(), ticketType, this.tokenManager),
+				this.settings.getCacheStorager0());
 	}
 
 	/**
@@ -864,7 +864,7 @@ public class WeixinProxy {
 	 *      删除群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see {@link #massByGroupId(Tuple, int)}
-	 * @see {@link #massByOpenIds(Tuple, String...)
+	 * @see {@link #massByOpenIds(Tuple, String...)
 	 *
 	 */
 	public JsonResult deleteMassNews(String msgid) throws WeixinException {

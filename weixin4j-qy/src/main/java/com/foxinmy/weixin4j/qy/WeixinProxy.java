@@ -38,7 +38,7 @@ import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
-import com.foxinmy.weixin4j.qy.suite.SuitePerCodeHolder;
+import com.foxinmy.weixin4j.qy.suite.SuitePerCodeManager;
 import com.foxinmy.weixin4j.qy.suite.WeixinTokenSuiteCreator;
 import com.foxinmy.weixin4j.qy.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
@@ -47,7 +47,7 @@ import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.KfType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.setting.Weixin4jSettings;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
@@ -106,7 +106,7 @@ public class WeixinProxy {
 	/**
 	 * token实现
 	 */
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 	/**
 	 * 配置信息
 	 */
@@ -126,30 +126,30 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.setting.Weixin4jSettings
 	 */
 	public WeixinProxy(Weixin4jSettings settings) {
-		this(new TokenHolder(new WeixinTokenCreator(settings.getAccount()
+		this(new TokenManager(new WeixinTokenCreator(settings.getAccount()
 				.getId(), settings.getAccount().getSecret()),
-				settings.getTokenStorager0()));
+				settings.getCacheStorager0()));
 		this.settings = settings;
 	}
 
 	/**
 	 * 第三方套件(永久授权码机制)
 	 *
-	 * @param perCodeHolder
+	 * @param perCodeManager
 	 *            第三方套件永久授权码
-	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getPerCodeHolder(String)}
-	 * @param suiteTokenHolder
+	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getPerCodeManager(String)}
+	 * @param suitetokenManager
 	 *            第三方套件凭证token
-	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getTokenSuiteHolder(String)}
+	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getTokenSuiteManager(String)}
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi
 	 * @see WeixinSuiteProxy#getWeixinProxy(String, String)
 	 */
-	public WeixinProxy(SuitePerCodeHolder perCodeHolder,
-			TokenHolder suiteTokenHolder) {
-		this(new TokenHolder(new WeixinTokenSuiteCreator(perCodeHolder,
-				suiteTokenHolder), perCodeHolder.getTokenStorager()));
+	public WeixinProxy(SuitePerCodeManager perCodeManager,
+			TokenManager suiteTokenManager) {
+		this(new TokenManager(new WeixinTokenSuiteCreator(perCodeManager,
+				suiteTokenManager), perCodeManager.getCacheStorager()));
 		this.settings = new Weixin4jSettings(new WeixinAccount(
-				perCodeHolder.getAuthCorpId(), null));
+				perCodeManager.getAuthCorpId(), null));
 	}
 
 	/**
@@ -157,20 +157,20 @@ public class WeixinProxy {
 	 * color="red">WeixinTokenCreator或WeixinTokenSuiteCreator</font>
 	 *
 	 * @see com.foxinmy.weixin4j.qy.token.WeixinTokenCreator
-	 * @param tokenHolder
+	 * @param tokenManager
 	 */
-	private WeixinProxy(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
-		this.partyApi = new PartyApi(tokenHolder);
-		this.userApi = new UserApi(tokenHolder);
-		this.tagApi = new TagApi(tokenHolder);
-		this.helperApi = new HelperApi(tokenHolder);
-		this.agentApi = new AgentApi(tokenHolder);
-		this.batchApi = new BatchApi(tokenHolder);
-		this.notifyApi = new NotifyApi(tokenHolder);
-		this.menuApi = new MenuApi(tokenHolder);
-		this.mediaApi = new MediaApi(tokenHolder);
-		this.chatApi = new ChatApi(tokenHolder);
+	private WeixinProxy(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
+		this.partyApi = new PartyApi(tokenManager);
+		this.userApi = new UserApi(tokenManager);
+		this.tagApi = new TagApi(tokenManager);
+		this.helperApi = new HelperApi(tokenManager);
+		this.agentApi = new AgentApi(tokenManager);
+		this.batchApi = new BatchApi(tokenManager);
+		this.notifyApi = new NotifyApi(tokenManager);
+		this.menuApi = new MenuApi(tokenManager);
+		this.mediaApi = new MediaApi(tokenManager);
+		this.chatApi = new ChatApi(tokenManager);
 	}
 
 	/**
@@ -178,8 +178,8 @@ public class WeixinProxy {
 	 *
 	 * @return
 	 */
-	public TokenHolder getTokenHolder() {
-		return this.tokenHolder;
+	public TokenManager getTokenManager() {
+		return this.tokenManager;
 	}
 
 	/**
@@ -192,16 +192,16 @@ public class WeixinProxy {
 	}
 
 	/**
-	 * 获取JSSDK Ticket的tokenHolder
+	 * 获取JSSDK Ticket的tokenManager
 	 *
 	 * @param ticketType
 	 *            票据类型
 	 * @return
 	 */
-	public TokenHolder getTicketHolder(TicketType ticketType) {
-		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount()
-				.getId(), ticketType, this.tokenHolder),
-				this.settings.getTokenStorager0());
+	public TokenManager getTicketManager(TicketType ticketType) {
+		return new TokenManager(new WeixinTicketCreator(getWeixinAccount()
+				.getId(), ticketType, this.tokenManager),
+				this.settings.getCacheStorager0());
 	}
 
 	/**

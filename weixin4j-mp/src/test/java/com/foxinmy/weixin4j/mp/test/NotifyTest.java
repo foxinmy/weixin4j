@@ -37,8 +37,8 @@ public class NotifyTest extends TokenTest {
 
 	@Before
 	public void init() {
-		notifyApi = new NotifyApi(tokenHolder);
-		mediaApi = new MediaApi(tokenHolder);
+		notifyApi = new NotifyApi(tokenManager);
+		mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test

@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
 /**
  * 微信企业号应用提供商凭证创建
  *
- * @className WeixinTokenCreator
+ * @className WeixinProviderTokenCreator
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
  * @since JDK 1.6
@@ -46,11 +46,10 @@ public class WeixinProviderTokenCreator extends TokenCreator {
 		JSONObject obj = new JSONObject();
 		obj.put("corpid", corpid);
 		obj.put("provider_secret", providersecret);
-		WeixinResponse response = weixinExecutor.post(URLConsts.PROVIDER_TOKEN_URL, obj.toJSONString());
+		WeixinResponse response = weixinExecutor.post(
+				URLConsts.PROVIDER_TOKEN_URL, obj.toJSONString());
 		obj = response.getAsJson();
-		Token token = new Token(obj.getString("provider_access_token"));
-		token.setExpiresIn(obj.getIntValue("expires_in"));
-		token.setOriginalResult(response.getAsString());
-		return token;
+		return new Token(obj.getString("provider_access_token"),
+				obj.getLongValue("expires_in") * 1000l);
 	}
 }

@@ -25,6 +25,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.Feature;
+import com.foxinmy.weixin4j.cache.CacheStorager;
+import com.foxinmy.weixin4j.cache.FileCacheStorager;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
@@ -42,9 +44,7 @@ import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
-import com.foxinmy.weixin4j.token.FileTokenStorager;
-import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.token.TokenStorager;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.RefundType;
@@ -69,7 +69,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 public class PayOldApi extends MpApi {
 
 	private final WeixinOldPayAccount weixinAccount;
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 	private final WeixinSignature weixinMD5Signature;
 	private final WeixinOldPaymentSignature weixinOldSignature;
 
@@ -78,28 +78,28 @@ public class PayOldApi extends MpApi {
 	 */
 	public PayOldApi() {
 		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinOldPayAccount.class), new FileTokenStorager(
+				WeixinOldPayAccount.class), new FileCacheStorager<Token>(
 				Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
 						System.getProperty("java.io.tmpdir"))));
 	}
 
 	public PayOldApi(WeixinOldPayAccount payAccount) {
-		this(payAccount, new FileTokenStorager(
+		this(payAccount, new FileCacheStorager<Token>(
 				Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
 						System.getProperty("java.io.tmpdir"))));
 	}
 
-	public PayOldApi(TokenStorager tokenStorager) {
+	public PayOldApi(CacheStorager<Token> cacheStorager) {
 		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinOldPayAccount.class), tokenStorager);
+				WeixinOldPayAccount.class), cacheStorager);
 	}
 
 	public PayOldApi(WeixinOldPayAccount weixinAccount,
-			TokenStorager tokenStorager) {
+			CacheStorager<Token> cacheStorager) {
 		this.weixinAccount = weixinAccount;
-		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(
+		this.tokenManager = new TokenManager(new WeixinTokenCreator(
 				weixinAccount.getId(), weixinAccount.getSecret()),
-				tokenStorager);
+				cacheStorager);
 		this.weixinMD5Signature = new WeixinPaymentSignature(
 				weixinAccount.getPartnerKey());
 		this.weixinOldSignature = new WeixinOldPaymentSignature();
@@ -109,7 +109,7 @@ public class PayOldApi extends MpApi {
 		return this.weixinAccount;
 	}
 
-	public WeixinOldPaymentSignature getWeixinPaymentSignature(){
+	public WeixinOldPaymentSignature getWeixinPaymentSignature() {
 		return this.weixinOldSignature;
 	}
 
@@ -130,9 +130,9 @@ public class PayOldApi extends MpApi {
 	 */
 	public String createPayJsRequestJson(String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp) {
-		PayPackageV2 payPackage = new PayPackageV2(weixinAccount
-				.getPartnerId(), body, outTradeNo, totalFee, notifyUrl,
-				createIp);
+		PayPackageV2 payPackage = new PayPackageV2(
+				weixinAccount.getPartnerId(), body, outTradeNo, totalFee,
+				notifyUrl, createIp);
 		return createPayJsRequestJson(payPackage);
 	}
 
@@ -145,8 +145,8 @@ public class PayOldApi extends MpApi {
 	 */
 	public String createPayJsRequestJson(PayPackageV2 payPackage) {
 		PayRequest payRequest = new PayRequest(weixinAccount.getId(),
-				weixinOldSignature.sign(payPackage, weixinAccount
-						.getPartnerKey()));
+				weixinOldSignature.sign(payPackage,
+						weixinAccount.getPartnerKey()));
 		payRequest.setPaySign(weixinOldSignature.sign(payRequest,
 				weixinAccount.getPaySignKey()));
 		payRequest.setSignType(SignType.SHA1);
@@ -187,7 +187,7 @@ public class PayOldApi extends MpApi {
 	 */
 	public OrderV2 queryOrder(IdQuery idQuery) throws WeixinException {
 		String orderquery_uri = getRequestUri("orderquery_old_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		StringBuilder sb = new StringBuilder();
 		sb.append(idQuery.getType().getName()).append("=")
 				.append(idQuery.getId());
@@ -286,9 +286,10 @@ public class PayOldApi extends MpApi {
 			SSLContext ctx = null;
 			KeyStore ks = null;
 			String jksPwd = "";
-			File jksFile = new File(String.format("%s/tenpay_cacert.jks",
+			File jksFile = new File(String.format("%s%stenpay_cacert.jks",
 					Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
-							System.getProperty("java.io.tmpdir"))));
+							System.getProperty("java.io.tmpdir")),
+					File.separator));
 			// create jks ca
 			if (!jksFile.exists()) {
 				CertificateFactory cf = CertificateFactory
@@ -450,9 +451,10 @@ public class PayOldApi extends MpApi {
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
 		String fileName = String.format("weixin4j_bill_%s_%s_%s.txt",
-				formatBillDate, billType.name().toLowerCase(), weixinAccount
-						.getId());
-		File file = new File(String.format("%s/%s", billPath, fileName));
+				formatBillDate, billType.name().toLowerCase(),
+				weixinAccount.getId());
+		File file = new File(String.format("%s%s%s", billPath, File.separator,
+				fileName));
 		if (file.exists()) {
 			return file;
 		}
@@ -543,7 +545,7 @@ public class PayOldApi extends MpApi {
 			String outTradeNo, boolean status, String statusMsg)
 			throws WeixinException {
 		String delivernotify_uri = getRequestUri("delivernotify_old_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("appid", weixinAccount.getId());
@@ -576,7 +578,7 @@ public class PayOldApi extends MpApi {
 	public JsonResult updateFeedback(String openId, String feedbackId)
 			throws WeixinException {
 		String payfeedback_uri = getRequestUri("payfeedback_old_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				payfeedback_uri, token.getAccessToken(), openId, feedbackId));
 		return response.getAsJsonResult();

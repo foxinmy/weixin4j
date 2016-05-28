@@ -31,7 +31,7 @@ public class MenuTest extends TokenTest {
 
 	@Before
 	public void init() {
-		menuApi = new MenuApi(tokenHolder);
+		menuApi = new MenuApi(tokenManager);
 	}
 
 	@Test

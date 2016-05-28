@@ -35,7 +35,7 @@ public class CustomTest extends TokenTest {
 
 	@Before
 	public void init() {
-		customApi = new CustomApi(tokenHolder);
+		customApi = new CustomApi(tokenManager);
 	}
 
 	@Test

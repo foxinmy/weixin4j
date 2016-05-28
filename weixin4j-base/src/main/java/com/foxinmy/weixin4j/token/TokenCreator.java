@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.token;
 
+import com.foxinmy.weixin4j.cache.CacheCreator;
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.model.Token;
 
@@ -14,19 +15,15 @@ import com.foxinmy.weixin4j.model.Token;
  */
 public abstract class TokenCreator implements CacheCreator<Token> {
 
+	/**
+	 * 缓存KEY前缀
+	 */
+	public final static String CACHEKEY_PREFIX = "weixin4j_";
+
 	protected final WeixinRequestExecutor weixinExecutor;
 
 	public TokenCreator() {
 		this.weixinExecutor = new WeixinRequestExecutor();
-	}
-
-	/**
-	 * 缓存key的前缀
-	 *
-	 * @return 默认为weixin4j_
-	 */
-	public String prefix() {
-		return "weixin4j_";
 	}
 
 	/**
@@ -36,7 +33,7 @@ public abstract class TokenCreator implements CacheCreator<Token> {
 	 */
 	@Override
 	public String key() {
-		return String.format("%s%s", prefix(), key0());
+		return String.format("%s%s", CACHEKEY_PREFIX, key0());
 	}
 
 	/**

@@ -17,9 +17,10 @@ import com.foxinmy.weixin4j.mp.model.AutoReplySetting;
 import com.foxinmy.weixin4j.mp.model.MenuSetting;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.ButtonType;
+import com.foxinmy.weixin4j.util.ReflectionUtil;
 
 /**
  * 辅助相关API
@@ -32,10 +33,10 @@ import com.foxinmy.weixin4j.type.ButtonType;
  */
 public class HelperApi extends MpApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public HelperApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public HelperApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class HelperApi extends MpApi {
 	 */
 	public String getShorturl(String url) throws WeixinException {
 		String shorturl_uri = getRequestUri("shorturl_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("action", "long2short");
 		obj.put("long_url", url);
@@ -75,7 +76,7 @@ public class HelperApi extends MpApi {
 	 */
 	public SemResult semantic(SemQuery semQuery) throws WeixinException {
 		String semantic_uri = getRequestUri("semantic_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(semantic_uri, token.getAccessToken()),
 				semQuery.toJson());
@@ -93,7 +94,7 @@ public class HelperApi extends MpApi {
 	 */
 	public List<String> getWechatServerIp() throws WeixinException {
 		String getcallbackip_uri = getRequestUri("getcallbackip_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(String.format(
 				getcallbackip_uri, token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("ip_list"),
@@ -115,7 +116,7 @@ public class HelperApi extends MpApi {
 	 */
 	public MenuSetting getMenuSetting() throws WeixinException {
 		String menu_get_selfmenu_uri = getRequestUri("menu_get_selfmenu_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				menu_get_selfmenu_uri, token.getAccessToken()));
 		JSONObject result = response.getAsJson();
@@ -151,14 +152,18 @@ public class HelperApi extends MpApi {
 				JSONObject article = null;
 				for (int i = 0; i < news.size(); i++) {
 					article = news.getJSONObject(i);
-					article.put("showCoverPic", article.remove("show_cover"));
-					article.put("coverUrl", article.remove("cover_url"));
-					article.put("contentUrl", article.remove("content_url"));
-					article.put("sourceUrl", article.remove("source_url"));
-					newsList.add(JSON.parseObject(article.toJSONString(),
-							MpArticle.class));
+					article.put("show_cover_pic", article.remove("show_cover"));
+					article.put("thumb_url", article.remove("cover_url"));
+					article.put("url", article.remove("content_url"));
+					article.put("content_source_url",
+							article.remove("source_url"));
+					newsList.add(JSON.toJavaObject(article, MpArticle.class));
 				}
-				JSONPath.set(object, "$.content", newsList);
+				if (ReflectionUtil.getAccessibleField(object, "articles") != null) {
+					JSONPath.set(object, "$.articles", newsList);
+				} else {
+					JSONPath.set(object, "$.content", newsList);
+				}
 			} else {
 				JSONPath.set(object, "$.content", value);
 			}
@@ -175,11 +180,12 @@ public class HelperApi extends MpApi {
 	 */
 	public AutoReplySetting getAutoReplySetting() throws WeixinException {
 		String autoreply_setting_get_uri = getRequestUri("autoreply_setting_get_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				autoreply_setting_get_uri, token.getAccessToken()));
 
 		JSONObject result = response.getAsJson();
+
 		AutoReplySetting replySetting = JSON.toJavaObject(result,
 				AutoReplySetting.class);
 		List<AutoReplySetting.Rule> ruleList = null;

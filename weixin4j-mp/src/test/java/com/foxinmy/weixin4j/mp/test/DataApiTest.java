@@ -28,7 +28,7 @@ public class DataApiTest extends TokenTest {
 
 	@Before
 	public void init() {
-		dataApi = new DataApi(tokenHolder);
+		dataApi = new DataApi(tokenManager);
 	}
 
 	@Test

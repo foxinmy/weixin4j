@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.token;
+package com.foxinmy.weixin4j.cache;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 
@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
  * @since JDK 1.6
  * @see
  */
-public interface CacheCreator<T> {
+public interface CacheCreator<T extends Cacheable> {
 	/**
 	 * CacheKey
 	 *

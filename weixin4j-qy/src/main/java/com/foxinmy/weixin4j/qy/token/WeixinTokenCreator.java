@@ -1,6 +1,6 @@
 package com.foxinmy.weixin4j.qy.token;
 
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
@@ -46,10 +46,8 @@ public class WeixinTokenCreator extends TokenCreator {
 		String tokenUrl = String.format(URLConsts.ASSESS_TOKEN_URL, corpid,
 				corpsecret);
 		WeixinResponse response = weixinExecutor.get(tokenUrl);
-		Token token = response.getAsObject(new TypeReference<Token>() {
-		});
-		token.setCreateTime(System.currentTimeMillis());
-		token.setOriginalResult(response.getAsString());
-		return token;
+		JSONObject result = response.getAsJson();
+		return new Token(result.getString("access_token"),
+				result.getLongValue("expires_in") * 1000l);
 	}
 }

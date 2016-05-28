@@ -25,7 +25,7 @@ public class PartyTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.partyApi = new PartyApi(tokenHolder);
+		this.partyApi = new PartyApi(tokenManager);
 	}
 
 	@Test

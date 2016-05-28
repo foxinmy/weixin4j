@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.model.Button;
 
 /**
  * 自定义菜单配置
- * 
+ *
  * @className MenuSetting
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年4月14日

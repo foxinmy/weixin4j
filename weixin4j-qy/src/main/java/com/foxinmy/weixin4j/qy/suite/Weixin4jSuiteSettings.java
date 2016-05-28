@@ -3,6 +3,9 @@ package com.foxinmy.weixin4j.qy.suite;
 import java.util.Arrays;
 
 import com.alibaba.fastjson.JSON;
+import com.foxinmy.weixin4j.cache.CacheStorager;
+import com.foxinmy.weixin4j.cache.FileCacheStorager;
+import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.qy.model.WeixinQyAccount;
 import com.foxinmy.weixin4j.setting.SystemSettings;
@@ -19,6 +22,10 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @see
  */
 public class Weixin4jSuiteSettings extends SystemSettings<WeixinQyAccount> {
+	/**
+	 * Token的存储方式 默认为FileCacheStorager
+	 */
+	private CacheStorager<Token> cacheStorager;
 
 	/**
 	 * 默认使用weixin4j.properties配置的信息
@@ -59,6 +66,17 @@ public class Weixin4jSuiteSettings extends SystemSettings<WeixinQyAccount> {
 					System.getProperty("java.io.tmpdir"));
 		}
 		return getTmpdir();
+	}
+
+	public CacheStorager<Token> getCacheStorager() {
+		return cacheStorager;
+	}
+
+	public CacheStorager<Token> getCacheStorager0() {
+		if (cacheStorager == null) {
+			return new FileCacheStorager<Token>(getTmpdir0());
+		}
+		return cacheStorager;
 	}
 
 	@Override

@@ -29,8 +29,8 @@ public class UserTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.userApi = new UserApi(tokenHolder);
-		this.mediaApi = new MediaApi(tokenHolder);
+		this.userApi = new UserApi(tokenManager);
+		this.mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test

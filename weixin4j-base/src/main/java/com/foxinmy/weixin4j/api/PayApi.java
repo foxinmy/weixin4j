@@ -632,7 +632,8 @@ public class PayApi extends MchApi {
 		String fileName = String.format("weixin4j_bill_%s_%s_%s.txt",
 				formatBillDate, billType.name().toLowerCase(),
 				weixinAccount.getId());
-		File file = new File(String.format("%s/%s", billPath, fileName));
+		File file = new File(String.format("%s%s%s", billPath, File.separator,
+				fileName));
 		if (file.exists()) {
 			return file;
 		}

@@ -4,11 +4,12 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import com.alibaba.fastjson.JSON;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 
 /**
  * 公众号配置信息 class路径下weixin4j.properties文件
- * 
+ *
  * @className Weixin4jConfigUtil
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
@@ -23,7 +24,7 @@ public class Weixin4jConfigUtil {
 		CLASSPATH_VALUE = Thread.currentThread().getContextClassLoader()
 				.getResource("").getPath();
 		try {
-			weixinBundle = ResourceBundle.getBundle("weixin4j");
+			weixinBundle = ResourceBundle.getBundle(Consts.WEIXIN4J);
 		} catch (MissingResourceException e) {
 			;
 		}
@@ -40,7 +41,7 @@ public class Weixin4jConfigUtil {
 
 	/**
 	 * 获取weixin4j.properties文件中的key值
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
@@ -51,7 +52,7 @@ public class Weixin4jConfigUtil {
 
 	/**
 	 * key不存在时则返回传入的默认值
-	 * 
+	 *
 	 * @param key
 	 * @param defaultValue
 	 * @return
@@ -73,7 +74,7 @@ public class Weixin4jConfigUtil {
 
 	/**
 	 * 判断属性是否存在[classpath:]如果存在则拼接项目路径后返回 一般用于文件的绝对路径获取
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
@@ -82,7 +83,7 @@ public class Weixin4jConfigUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param key
 	 * @param defaultValue
 	 * @return

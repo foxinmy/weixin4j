@@ -6,7 +6,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
 import com.foxinmy.weixin4j.token.TokenCreator;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 微信企业号token创建(永久授权码)
@@ -22,38 +22,39 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  */
 public class WeixinTokenSuiteCreator extends TokenCreator {
 
-	private final SuitePerCodeHolder perCodeHolder;
-	private final TokenHolder suiteTokenHolder;
+	private final SuitePerCodeManager perCodeManager;
+	private final TokenManager suiteTokenManager;
 
 	/**
 	 *
-	 * @param perCodeHolder
+	 * @param perCodeManager
 	 *            第三方套件永久授权码
-	 * @param suiteTokenHolder
+	 * @param suitetokenManager
 	 *            第三方套件凭证token
 	 */
-	public WeixinTokenSuiteCreator(SuitePerCodeHolder perCodeHolder, TokenHolder suiteTokenHolder) {
-		this.perCodeHolder = perCodeHolder;
-		this.suiteTokenHolder = suiteTokenHolder;
+	public WeixinTokenSuiteCreator(SuitePerCodeManager perCodeManager,
+			TokenManager suiteTokenManager) {
+		this.perCodeManager = perCodeManager;
+		this.suiteTokenManager = suiteTokenManager;
 	}
 
 	@Override
 	public String key0() {
-		return String.format("qy_token_suite_%s_%s", perCodeHolder.getSuiteId(), perCodeHolder.getAuthCorpId());
+		return String.format("qy_token_suite_%s_%s",
+				perCodeManager.getSuiteId(), perCodeManager.getAuthCorpId());
 	}
 
 	@Override
 	public Token create() throws WeixinException {
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", perCodeHolder.getSuiteId());
-		obj.put("auth_corpid", perCodeHolder.getAuthCorpId());
-		obj.put("permanent_code", perCodeHolder.getPermanentCode());
+		obj.put("suite_id", perCodeManager.getSuiteId());
+		obj.put("auth_corpid", perCodeManager.getAuthCorpId());
+		obj.put("permanent_code", perCodeManager.getPermanentCode());
 		WeixinResponse response = weixinExecutor
-				.post(String.format(URLConsts.TOKEN_SUITE_URL, suiteTokenHolder.getAccessToken()), obj.toJSONString());
+				.post(String.format(URLConsts.TOKEN_SUITE_URL,
+						suiteTokenManager.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
-		Token token = new Token(obj.getString("access_token"));
-		token.setExpiresIn(obj.getIntValue("expires_in"));
-		token.setOriginalResult(response.getAsString());
-		return token;
+		return new Token(obj.getString("access_token"),
+				obj.getLongValue("expires_in") * 1000l);
 	}
 }

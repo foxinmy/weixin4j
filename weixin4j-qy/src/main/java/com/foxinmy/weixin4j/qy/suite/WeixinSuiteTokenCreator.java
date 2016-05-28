@@ -1,4 +1,4 @@
-    package com.foxinmy.weixin4j.qy.suite;
+package com.foxinmy.weixin4j.qy.suite;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -20,34 +20,32 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  */
 public class WeixinSuiteTokenCreator extends TokenCreator {
 
-	private final SuiteTicketHolder ticketHolder;
+	private final SuiteTicketManager ticketManager;
 
 	/**
 	 *
-	 * @param stringStorager
-	 *            套件ticket存取器
+	 * @param ticketManager
+	 *            套件ticket存取
 	 */
-	public WeixinSuiteTokenCreator(SuiteTicketHolder ticketHolder) {
-		this.ticketHolder = ticketHolder;
+	public WeixinSuiteTokenCreator(SuiteTicketManager ticketManager) {
+		this.ticketManager = ticketManager;
 	}
 
 	@Override
 	public String key0() {
-		return String.format("qy_suite_token_%s", ticketHolder.getSuiteId());
+		return String.format("qy_suite_token_%s", ticketManager.getSuiteId());
 	}
 
 	@Override
 	public Token create() throws WeixinException {
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", ticketHolder.getSuiteId());
-		obj.put("suite_secret", ticketHolder.getSuiteSecret());
-		obj.put("suite_ticket", ticketHolder.getTicket());
-		WeixinResponse response = weixinExecutor.post(URLConsts.SUITE_TOKEN_URL,
-				obj.toJSONString());
+		obj.put("suite_id", ticketManager.getSuiteId());
+		obj.put("suite_secret", ticketManager.getSuiteSecret());
+		obj.put("suite_ticket", ticketManager.getTicket());
+		WeixinResponse response = weixinExecutor.post(
+				URLConsts.SUITE_TOKEN_URL, obj.toJSONString());
 		obj = response.getAsJson();
-		Token token = new Token(obj.getString("suite_access_token"));
-		token.setExpiresIn(obj.getIntValue("expires_in"));
-		token.setOriginalResult(response.getAsString());
-		return token;
+		return new Token(obj.getString("suite_access_token"),
+				obj.getLongValue("expires_in") * 1000l);
 	}
 }

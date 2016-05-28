@@ -23,7 +23,7 @@ public class HelperTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.helperApi = new HelperApi(tokenHolder);
+		this.helperApi = new HelperApi(tokenManager);
 	}
 
 	@Test

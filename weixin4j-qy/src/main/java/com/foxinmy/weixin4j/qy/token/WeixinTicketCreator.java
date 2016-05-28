@@ -6,7 +6,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
 import com.foxinmy.weixin4j.token.TokenCreator;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.type.TicketType;
 
 /**
@@ -23,20 +23,21 @@ public class WeixinTicketCreator extends TokenCreator {
 
 	private final String corpid;
 	private final TicketType ticketType;
-	private final TokenHolder weixinTokenHolder;
+	private final TokenManager weixinTokenManager;
 
 	/**
 	 * @param corpid
 	 *            企业号ID
 	 * @param ticketType
 	 *            票据类型
-	 * @param weixinTokenHolder
-	 *            <font color="red">企业号的的access_token</font>
+	 * @param weixinTokenManager
+	 *            <font color="red">企业号的access_token</font>
 	 */
-	public WeixinTicketCreator(String corpid, TicketType ticketType, TokenHolder weixinTokenHolder) {
+	public WeixinTicketCreator(String corpid, TicketType ticketType,
+			TokenManager weixinTokenManager) {
 		this.corpid = corpid;
 		this.ticketType = ticketType;
-		this.weixinTokenHolder = weixinTokenHolder;
+		this.weixinTokenManager = weixinTokenManager;
 	}
 
 	@Override
@@ -48,16 +49,16 @@ public class WeixinTicketCreator extends TokenCreator {
 	public Token create() throws WeixinException {
 		WeixinResponse response = null;
 		if (ticketType == TicketType.jsapi) {
-			response = weixinExecutor
-					.get(String.format(URLConsts.JS_TICKET_URL, weixinTokenHolder.getToken().getAccessToken()));
+			response = weixinExecutor.get(String.format(
+					URLConsts.JS_TICKET_URL, weixinTokenManager.getCache()
+							.getAccessToken()));
 		} else {
-			response = weixinExecutor.get(String.format(URLConsts.SUITE_TICKET_URL,
-					weixinTokenHolder.getToken().getAccessToken(), ticketType.name()));
+			response = weixinExecutor.get(String.format(
+					URLConsts.SUITE_TICKET_URL, weixinTokenManager.getCache()
+							.getAccessToken(), ticketType.name()));
 		}
 		JSONObject result = response.getAsJson();
-		Token token = new Token(result.getString("ticket"));
-		token.setExpiresIn(result.getIntValue("expires_in"));
-		token.setOriginalResult(response.getAsString());
-		return token;
+		return new Token(result.getString("ticket"),
+				result.getLong("expires_in") * 1000l);
 	}
 }

@@ -27,8 +27,8 @@ public class BatchTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.batchApi = new BatchApi(tokenHolder);
-		this.mediaApi = new MediaApi(tokenHolder);
+		this.batchApi = new BatchApi(tokenManager);
+		this.mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test

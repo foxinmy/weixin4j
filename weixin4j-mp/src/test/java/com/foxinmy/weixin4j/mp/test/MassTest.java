@@ -34,8 +34,8 @@ public class MassTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.massApi = new MassApi(tokenHolder);
-		this.mediaApi = new MediaApi(tokenHolder);
+		this.massApi = new MassApi(tokenManager);
+		this.mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test

@@ -1,17 +1,16 @@
 package com.foxinmy.weixin4j.mp.model;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.Token;
 
 /**
  * 用户授权token 一般通过授权页面获得
- * 
+ *
  * @className OauthToken
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月6日
  * @since JDK 1.6
- * @see com.foxinmy.weixin4j.mp.model.AuthResult
- * @see com.foxinmy.weixin4j.mp.model.AuthResult.AuthScope
  */
 public class OauthToken extends Token {
 
@@ -35,6 +34,10 @@ public class OauthToken extends Token {
 	private String refreshToken;
 
 	private String scope;
+
+	public OauthToken(String accessToken, long expires) {
+		super(accessToken, expires);
+	}
 
 	public String getOpenId() {
 		return openId;
@@ -71,9 +74,7 @@ public class OauthToken extends Token {
 	@Override
 	public String toString() {
 		return "OauthToken [openId=" + openId + ", unionId=" + unionId
-				+ ", refreshToken=" + refreshToken + ", scope=" + scope
-				+ ", accessToken=" + getAccessToken()
-				+ ", expiresIn=" + getExpiresIn() + ", createTime="
-				+ getCreateTime() + "]";
+				+ ", refreshToken=" + refreshToken + ", scope=" + scope + ", "
+				+ super.toString() + "]";
 	}
 }

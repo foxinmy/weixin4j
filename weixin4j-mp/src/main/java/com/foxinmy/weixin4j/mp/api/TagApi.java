@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Tag;
 import com.foxinmy.weixin4j.mp.model.User;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 标签相关API
@@ -23,12 +23,12 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * @see com.foxinmy.weixin4j.mp.model.Tag
  */
 public class TagApi extends MpApi {
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 	private final UserApi userApi;
 
-	public TagApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
-		this.userApi = new UserApi(tokenHolder);
+	public TagApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
+		this.userApi = new UserApi(tokenManager);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class TagApi extends MpApi {
 	public Tag createTag(String name) throws WeixinException {
 		String tag_create_uri = getRequestUri("tag_create_uri");
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_create_uri, tokenHolder.getAccessToken()),
+				String.format(tag_create_uri, tokenManager.getAccessToken()),
 				String.format("{\"tag\":{\"name\":\"%s\"}}", name));
 
 		return JSON.parseObject(response.getAsJson().getString("tag"),
@@ -64,7 +64,7 @@ public class TagApi extends MpApi {
 	public List<Tag> listTags() throws WeixinException {
 		String tag_get_uri = getRequestUri("tag_get_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(tag_get_uri,
-				tokenHolder.getAccessToken()));
+				tokenManager.getAccessToken()));
 
 		return JSON.parseArray(response.getAsJson().getString("tags"),
 				Tag.class);
@@ -86,7 +86,7 @@ public class TagApi extends MpApi {
 		JSONObject obj = new JSONObject();
 		obj.put("tag", tag);
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_update_uri, tokenHolder.getAccessToken()),
+				String.format(tag_update_uri, tokenManager.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJsonResult();
 	}
@@ -104,7 +104,7 @@ public class TagApi extends MpApi {
 	public JsonResult deleteTag(int tagId) throws WeixinException {
 		String tag_delete_uri = getRequestUri("tag_delete_uri");
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_delete_uri, tokenHolder.getAccessToken()),
+				String.format(tag_delete_uri, tokenManager.getAccessToken()),
 				String.format("{\"tagid\":%d}", tagId));
 		return response.getAsJsonResult();
 	}
@@ -133,7 +133,7 @@ public class TagApi extends MpApi {
 		obj.put("openid_list", openIds);
 		obj.put("tagid", tagId);
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_batch_uri, tokenHolder.getAccessToken()),
+				String.format(tag_batch_uri, tokenManager.getAccessToken()),
 				obj.toJSONString());
 		return response.getAsJsonResult();
 	}
@@ -174,7 +174,7 @@ public class TagApi extends MpApi {
 		obj.put("tagid", tagId);
 		obj.put("next_openid", nextOpenId);
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_user_uri, tokenHolder.getAccessToken()),
+				String.format(tag_user_uri, tokenManager.getAccessToken()),
 				obj.toJSONString());
 
 		JSONObject result = response.getAsJson();
@@ -283,7 +283,7 @@ public class TagApi extends MpApi {
 	public Integer[] getUserTags(String openId) throws WeixinException {
 		String tag_userids_uri = getRequestUri("tag_userids_uri");
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_userids_uri, tokenHolder.getAccessToken()),
+				String.format(tag_userids_uri, tokenManager.getAccessToken()),
 				String.format("{\"openid\":\"%s\"}", openId));
 		return response.getAsJson().getJSONArray("tagid_list")
 				.toArray(new Integer[] {});

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
@@ -38,13 +39,20 @@ public class Button implements Serializable {
 	/**
 	 * 菜单KEY值,根据type的类型而定</p> 通过公众平台设置的自定义菜单：</br> <li>text:保存文字； <li>
 	 * img、voice：保存媒体ID； <li>video：保存视频URL； <li>
-	 * news：保存图文消息:List#com.foxinmy.weixin4j.tuple.MpArticle#； <li>view：保存链接URL；
-	 * <p>使用API设置的自定义菜单：</p> <li>
+	 * news：保存图文消息媒体ID <li>view：保存链接URL；
+	 * <p>
+	 * 使用API设置的自定义菜单：
+	 * </p> <li>
 	 * click、scancode_push、scancode_waitmsg、pic_sysphoto、pic_photo_or_album、
 	 * pic_weixin、location_select：保存key； <li>view：保存链接URL; <li>
 	 * media_id、view_limited：保存媒体ID
 	 */
-	private Serializable content;
+	private String content;
+	/**
+	 * 图文列表 只有在公众平台设置的菜单才有
+	 */
+	@JSONField(serialize = false, deserialize = false)
+	private List<MpArticle> articles;
 	/**
 	 * 二级菜单数组，个数应为1~5个
 	 */
@@ -101,12 +109,25 @@ public class Button implements Serializable {
 		this.type = type;
 	}
 
-	public Serializable getContent() {
+	public String getContent() {
 		return content;
 	}
 
-	public void setContent(Serializable content) {
+	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public List<MpArticle> getArticles() {
+		return articles;
+	}
+
+	/**
+	 * <font color="red">创建菜单设置无效</font>
+	 *
+	 * @param articles
+	 */
+	public void setArticles(List<MpArticle> articles) {
+		this.articles = articles;
 	}
 
 	public List<Button> getSubs() {
@@ -125,6 +146,6 @@ public class Button implements Serializable {
 	@Override
 	public String toString() {
 		return "Button [name=" + name + ", type=" + type + ", content="
-				+ content + ", subs=" + subs + "]";
+				+ content + ", articles=" + articles + ", subs=" + subs + "]";
 	}
 }

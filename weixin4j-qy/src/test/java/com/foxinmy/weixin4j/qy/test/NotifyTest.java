@@ -30,7 +30,7 @@ public class NotifyTest extends TokenTest {
 
 	@Before
 	public void init() {
-		notifyApi = new NotifyApi(tokenHolder);
+		notifyApi = new NotifyApi(tokenManager);
 	}
 
 	@Test

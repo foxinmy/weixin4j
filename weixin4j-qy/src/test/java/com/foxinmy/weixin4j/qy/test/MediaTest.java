@@ -29,7 +29,7 @@ public class MediaTest extends TokenTest {
 
 	@Before
 	public void init() {
-		mediaApi = new MediaApi(tokenHolder);
+		mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test

@@ -24,7 +24,7 @@ public class UserTest extends TokenTest {
 
 	@Before
 	public void init() {
-		userApi = new UserApi(tokenHolder);
+		userApi = new UserApi(tokenManager);
 	}
 
 	@Test

@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.type.Lang;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 用户相关API
@@ -26,10 +26,10 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  */
 public class UserApi extends MpApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public UserApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public UserApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class UserApi extends MpApi {
 	 */
 	public User getUser(String openId, Lang lang) throws WeixinException {
 		String user_info_uri = getRequestUri("api_user_info_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				user_info_uri, token.getAccessToken(), openId, lang.name()));
 
@@ -118,7 +118,7 @@ public class UserApi extends MpApi {
 		}
 		parameter.delete(parameter.length() - 1, parameter.length());
 		parameter.append("]}");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(api_users_info_uri, token.getAccessToken()),
 				parameter.toString());
@@ -174,7 +174,7 @@ public class UserApi extends MpApi {
 	public Following getFollowingOpenIds(String nextOpenId)
 			throws WeixinException {
 		String following_uri = getRequestUri("following_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				following_uri, token.getAccessToken(), nextOpenId == null ? ""
 						: nextOpenId));
@@ -267,7 +267,7 @@ public class UserApi extends MpApi {
 	public JsonResult remarkUserName(String openId, String remark)
 			throws WeixinException {
 		String username_remark_uri = getRequestUri("username_remark_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("openid", openId);
 		obj.put("remark", remark);
