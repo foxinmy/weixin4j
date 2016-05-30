@@ -7,11 +7,13 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.http.HttpParams;
+import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.model.Consts;
 
 /**
  * 微信ssl请求
- * 
+ *
  * @className WeixinSSLRequestExecutor
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月17日
@@ -36,15 +38,27 @@ public class WeixinSSLRequestExecutor extends WeixinRequestExecutor {
 		} catch (Exception e) {
 			throw new WeixinException("Key load error", e);
 		}
-		params.setSSLContext(sslContext);
 	}
 
 	public WeixinSSLRequestExecutor(SSLContext sslContext) {
 		this.sslContext = sslContext;
-		params.setSSLContext(sslContext);
 	}
 
 	public SSLContext getSSLContext() {
 		return sslContext;
+	}
+
+	@Override
+	protected WeixinResponse doRequest(HttpRequest request)
+			throws WeixinException {
+		HttpParams params = null;
+		if (request.getParams() != null) {
+			params = HttpParams.copy(request.getParams())
+					.setSslContext(sslContext).build();
+		} else {
+			params = HttpParams.custom().setSslContext(sslContext).build();
+		}
+		request.setParams(params);
+		return super.doRequest(request);
 	}
 }

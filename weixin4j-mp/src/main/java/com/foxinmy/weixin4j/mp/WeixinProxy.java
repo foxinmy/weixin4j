@@ -58,6 +58,7 @@ import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.tuple.Tuple;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * 微信公众平台接口实现
@@ -125,13 +126,14 @@ public class WeixinProxy {
 	/**
 	 * 配置信息
 	 */
-	private Weixin4jSettings settings;
+	private Weixin4jSettings<WeixinAccount> settings;
 
 	/**
 	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinProxy() {
-		this(new Weixin4jSettings());
+		this(new Weixin4jSettings<WeixinAccount>(
+				Weixin4jConfigUtil.getWeixinAccount()));
 	}
 
 	/**
@@ -140,7 +142,7 @@ public class WeixinProxy {
 	 *            微信配置信息
 	 * @see com.foxinmy.weixin4j.setting.Weixin4jSettings
 	 */
-	public WeixinProxy(Weixin4jSettings settings) {
+	public WeixinProxy(Weixin4jSettings<WeixinAccount> settings) {
 		this(new TokenManager(new WeixinTokenCreator(settings.getAccount()
 				.getId(), settings.getAccount().getSecret()),
 				settings.getCacheStorager0()));
@@ -152,6 +154,7 @@ public class WeixinProxy {
 	 *
 	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator
 	 * @param tokenManager
+	 *            token管理
 	 */
 	private WeixinProxy(TokenManager tokenManager) {
 		this.tokenManager = tokenManager;

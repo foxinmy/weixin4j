@@ -20,7 +20,6 @@ import com.foxinmy.weixin4j.http.ContentType;
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
-import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
@@ -50,7 +49,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 媒体相关API
- * 
+ *
  * @className MediaApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
@@ -70,7 +69,7 @@ public class MediaApi extends QyApi {
 	/**
 	 * 上传图文消息内的图片:用于上传图片到企业号服务端，接口返回图片url，请注意，该url仅可用于图文消息的发送，
 	 * 且每个企业每天最多只能上传100张图片。
-	 * 
+	 *
 	 * @param is
 	 *            图片数据
 	 * @param fileName
@@ -103,7 +102,7 @@ public class MediaApi extends QyApi {
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
 	 * 否则抛出异常.
 	 * </p>
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID(<font color="red">大于0时视为上传永久媒体文件</font>)
 	 * @param is
@@ -185,7 +184,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 下载媒体文件
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
 	 * @param mediaId
@@ -213,8 +212,7 @@ public class MediaApi extends QyApi {
 				request = new HttpRequest(HttpMethod.GET, String.format(
 						media_download_uri, token.getAccessToken(), mediaId));
 			}
-			HttpParams params = weixinExecutor.getExecuteParams();
-			request.setParams(params);
+			request.setParams(weixinExecutor.getExecuteParams());
 			logger.info("weixin request >> " + request.getMethod() + " "
 					+ request.getURI().toString());
 			HttpResponse response = weixinExecutor.getExecuteClient().execute(
@@ -260,7 +258,7 @@ public class MediaApi extends QyApi {
 	 * 、新增的永久素材也可以在公众平台官网素材管理模块中看到,永久素材的数量是有上限的，请谨慎新增。图文消息素材和图片素材的上限为5000，
 	 * 其他类型为1000
 	 * </P>
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用的id
 	 * @param articles
@@ -289,7 +287,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 删除永久媒体素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID
 	 * @param mediaId
@@ -311,7 +309,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 下载永久图文素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID
 	 * @param mediaId
@@ -333,7 +331,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 修改永久图文素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用的id
 	 * @param mediaId
@@ -365,7 +363,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 获取永久媒体素材的总数
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用id
 	 * @return 总数对象
@@ -387,7 +385,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 获取媒体素材记录列表
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID
 	 * @param mediaType
@@ -427,7 +425,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 获取全部的媒体素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用id
 	 * @param mediaType
@@ -458,7 +456,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 批量上传成员
-	 * 
+	 *
 	 * @param users
 	 *            成员列表
 	 * @see {@link BatchApi#syncUser(String,Callback)}
@@ -474,7 +472,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 批量上传部门
-	 * 
+	 *
 	 * @param parties
 	 *            部门列表
 	 * @see {@link BatchApi#replaceParty(String,Callback)}

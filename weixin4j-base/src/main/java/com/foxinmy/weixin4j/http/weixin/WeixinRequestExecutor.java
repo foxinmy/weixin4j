@@ -38,16 +38,16 @@ public class WeixinRequestExecutor {
 	protected final InternalLogger logger = InternalLoggerFactory
 			.getInstance(getClass());
 
-	protected final HttpClient httpClient;
-	protected final HttpParams params;
+	private final HttpClient httpClient;
+	private final HttpParams httpParams;
 
 	public WeixinRequestExecutor() {
-		this(new HttpParams());
+		this(HttpParams.custom().build());
 	}
 
-	public WeixinRequestExecutor(HttpParams params) {
+	public WeixinRequestExecutor(HttpParams httpParams) {
 		this.httpClient = HttpClientFactory.getInstance();
-		this.params = params;
+		this.httpParams = httpParams;
 	}
 
 	public WeixinResponse get(String url) throws WeixinException {
@@ -95,7 +95,7 @@ public class WeixinRequestExecutor {
 
 	protected WeixinResponse doRequest(HttpRequest request)
 			throws WeixinException {
-		request.setParams(params);
+		request.setParams(httpParams);
 		try {
 			logger.info("weixin request >> " + request.getMethod() + " "
 					+ request.getURI().toString());
@@ -180,6 +180,6 @@ public class WeixinRequestExecutor {
 	}
 
 	public HttpParams getExecuteParams() {
-		return params;
+		return httpParams;
 	}
 }

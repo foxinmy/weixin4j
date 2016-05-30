@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
+import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.api.CashApi;
 import com.foxinmy.weixin4j.api.CouponApi;
 import com.foxinmy.weixin4j.api.CustomsApi;
@@ -42,6 +43,7 @@ import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.CustomsCity;
 import com.foxinmy.weixin4j.type.IdQuery;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * 微信支付接口实现
@@ -73,13 +75,16 @@ public class WeixinPayProxy {
 	/**
 	 * 配置信息
 	 */
-	private final Weixin4jSettings settings;
+	private final Weixin4jSettings<WeixinPayAccount> settings;
 
 	/**
 	 * 使用weixin4j.properties配置的支付账号信息
 	 */
 	public WeixinPayProxy() {
-		this(new Weixin4jSettings());
+		this(
+				new Weixin4jSettings<WeixinPayAccount>(JSON.parseObject(
+						Weixin4jConfigUtil.getValue("account"),
+						WeixinPayAccount.class)));
 	}
 
 	/**
@@ -88,21 +93,21 @@ public class WeixinPayProxy {
 	 *            支付相关配置信息
 	 * @see com.foxinmy.weixin4j.setting.Weixin4jSettings
 	 */
-	public WeixinPayProxy(Weixin4jSettings settings) {
+	public WeixinPayProxy(Weixin4jSettings<WeixinPayAccount> settings) {
 		this.settings = settings;
-		this.payApi = new PayApi(settings.getPayAccount());
-		this.couponApi = new CouponApi(settings.getPayAccount());
-		this.cashApi = new CashApi(settings.getPayAccount());
-		this.customsApi = new CustomsApi(settings.getPayAccount());
+		this.payApi = new PayApi(settings.getAccount());
+		this.couponApi = new CouponApi(settings.getAccount());
+		this.cashApi = new CashApi(settings.getAccount());
+		this.customsApi = new CustomsApi(settings.getAccount());
 	}
 
 	/**
-	 * 获取微信商户支付信息
+	 * 获取微信商户账号信息
 	 *
 	 * @return
 	 */
 	public WeixinPayAccount getWeixinPayAccount() {
-		return this.settings.getPayAccount();
+		return settings.getAccount();
 	}
 
 	/**
@@ -111,7 +116,7 @@ public class WeixinPayProxy {
 	 * @return
 	 */
 	public WeixinSignature getWeixinSignature() {
-		return this.payApi.getWeixinSignature();
+		return payApi.getWeixinSignature();
 	}
 
 	/**

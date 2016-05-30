@@ -3,8 +3,10 @@ package com.foxinmy.weixin4j.qy;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinAccount;
@@ -13,10 +15,10 @@ import com.foxinmy.weixin4j.qy.api.SuiteApi;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
 import com.foxinmy.weixin4j.qy.model.WeixinQyAccount;
 import com.foxinmy.weixin4j.qy.suite.SuiteTicketManager;
-import com.foxinmy.weixin4j.qy.suite.Weixin4jSuiteSettings;
 import com.foxinmy.weixin4j.qy.token.WeixinProviderTokenCreator;
 import com.foxinmy.weixin4j.qy.type.LoginTargetType;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
+import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
@@ -46,41 +48,44 @@ public class WeixinSuiteProxy {
 	/**
 	 * 配置相关
 	 */
-	private final Weixin4jSuiteSettings suiteSettings;
+	private final Weixin4jSettings<WeixinQyAccount> settings;
 
+	/**
+	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
+	 */
 	public WeixinSuiteProxy() {
-		this(new Weixin4jSuiteSettings());
+		this(new Weixin4jSettings<WeixinQyAccount>(JSON.parseObject(
+				Weixin4jConfigUtil.getValue("account"), WeixinQyAccount.class)));
 	}
 
 	/**
 	 *
-	 * @param suiteSettings
-	 *            套件信息配置
+	 * @param settings
+	 *            配置信息
 	 */
-	public WeixinSuiteProxy(Weixin4jSuiteSettings suiteSettings) {
-		this.suiteSettings = suiteSettings;
-		if (suiteSettings.getAccount().getSuiteAccounts() != null) {
-			this.suiteMap = new HashMap<String, SuiteApi>();
-			for (WeixinAccount suite : suiteSettings.getAccount()
-					.getSuiteAccounts()) {
-				this.suiteMap.put(suite.getId(), new SuiteApi(
-						new SuiteTicketManager(suite.getId(), suite.getSecret(),
-								suiteSettings.getCacheStorager0())));
+	public WeixinSuiteProxy(Weixin4jSettings<WeixinQyAccount> settings) {
+		this.settings = settings;
+		List<WeixinAccount> suites = settings.getAccount().getSuites();
+		if (suites != null && !suites.isEmpty()) {
+			this.suiteMap = new HashMap<String, SuiteApi>(suites.size());
+			for (WeixinAccount suite : suites) {
 				this.suiteMap.put(
-						null,
-						suiteMap.get(suiteSettings.getAccount()
-								.getSuiteAccounts().get(0).getId()));
+						suite.getId(),
+						new SuiteApi(
+								new SuiteTicketManager(suite.getId(), suite
+										.getSecret(), settings
+										.getCacheStorager0())));
 			}
+			this.suiteMap.put(null, suiteMap.get(suites.get(0).getId()));
 		}
-		if (StringUtil.isNotBlank(suiteSettings.getAccount().getId())
-				&& StringUtil.isNotBlank(suiteSettings.getAccount()
+		if (StringUtil.isNotBlank(settings.getAccount().getId())
+				&& StringUtil.isNotBlank(settings.getAccount()
 						.getProviderSecret())) {
-			this.providerApi = new ProviderApi(new TokenManager(
-					new WeixinProviderTokenCreator(suiteSettings
-							.getAccount().getId(), suiteSettings
-							.getAccount().getProviderSecret()),
-					suiteSettings.getCacheStorager0()),
-					suiteSettings.getCacheStorager0());
+			this.providerApi = new ProviderApi(
+					new TokenManager(new WeixinProviderTokenCreator(settings
+							.getAccount().getId(), settings.getAccount()
+							.getProviderSecret()), settings.getCacheStorager0()),
+					settings.getCacheStorager0());
 		}
 	}
 
@@ -90,7 +95,7 @@ public class WeixinSuiteProxy {
 	 * @return
 	 */
 	public WeixinQyAccount getWeixinAccount() {
-		return this.suiteSettings.getAccount();
+		return this.settings.getAccount();
 	}
 
 	/**

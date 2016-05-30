@@ -1,11 +1,9 @@
 package com.foxinmy.weixin4j.setting;
 
-import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.cache.CacheStorager;
 import com.foxinmy.weixin4j.cache.FileCacheStorager;
+import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.WeixinAccount;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
@@ -18,11 +16,19 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @since JDK 1.6
  * @see
  */
-public class Weixin4jSettings extends SystemSettings<WeixinAccount> {
+public class Weixin4jSettings<T> {
 	/**
-	 * 微信支付账号信息
+	 * 账号信息
 	 */
-	private WeixinPayAccount weixinPayAccount;
+	private final T account;
+	/**
+	 * Http参数
+	 */
+	private HttpParams httpParams;
+	/**
+	 * 系统临时目录
+	 */
+	private String tmpdir;
 	/**
 	 * Token的存储方式 默认为FileCacheStorager
 	 */
@@ -32,60 +38,36 @@ public class Weixin4jSettings extends SystemSettings<WeixinAccount> {
 	 */
 	private String certificateFile;
 
-	/**
-	 * 默认使用weixin4j.properties配置的信息
-	 */
-	public Weixin4jSettings() {
-		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinPayAccount.class), null);
+	public Weixin4jSettings(T account) {
+		this.account = account;
 	}
 
-	/**
-	 * 支付代理接口
-	 *
-	 * @param weixinPayAccount
-	 *            商户信息
-	 * @param certificateFile
-	 *            支付接口需要的证书文件(*.p12),比如退款接口
-	 */
-	public Weixin4jSettings(WeixinPayAccount weixinPayAccount,
-			String certificateFile) {
-		this(weixinPayAccount);
-		this.certificateFile = certificateFile;
+	public T getAccount() {
+		return account;
 	}
 
-	/**
-	 * 支付代理接口
-	 *
-	 * @param weixinPayAccount
-	 *            商户信息
-	 */
-	public Weixin4jSettings(WeixinPayAccount weixinPayAccount) {
-		this(new WeixinAccount(weixinPayAccount.getId(),
-				weixinPayAccount.getSecret()));
-		this.weixinPayAccount = weixinPayAccount;
+	public HttpParams getHttpParams() {
+		return httpParams;
 	}
 
-	/**
-	 * 账号信息
-	 *
-	 * @param account
-	 */
-	public Weixin4jSettings(WeixinAccount account) {
-		super(account);
+	public String getTmpdir() {
+		return tmpdir;
 	}
 
-	public WeixinPayAccount getPayAccount() {
-		return weixinPayAccount;
+	public void setHttpParams(HttpParams httpParams) {
+		this.httpParams = httpParams;
 	}
 
-	@Override
+	public void setTmpdir(String tmpdir) {
+		this.tmpdir = tmpdir;
+	}
+
 	public String getTmpdir0() {
-		if (StringUtil.isBlank(getTmpdir())) {
-			return Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
+		if (StringUtil.isBlank(tmpdir)) {
+			return Weixin4jConfigUtil.getValue("weixin4j.tmpdir",
 					System.getProperty("java.io.tmpdir"));
 		}
-		return getTmpdir();
+		return tmpdir;
 	}
 
 	public CacheStorager<Token> getCacheStorager() {
@@ -121,8 +103,8 @@ public class Weixin4jSettings extends SystemSettings<WeixinAccount> {
 
 	@Override
 	public String toString() {
-		return "Weixin4jSettings [weixinPayAccount=" + weixinPayAccount
-				+ ", certificateFile=" + certificateFile + ", "
-				+ super.toString() + "]";
+		return "Weixin4jSettings [account=" + account + ", httpParams="
+				+ httpParams + ", tmpdir=" + tmpdir + ", cacheStorager="
+				+ cacheStorager + ", certificateFile=" + certificateFile + "]";
 	}
 }

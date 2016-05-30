@@ -17,7 +17,6 @@ import com.foxinmy.weixin4j.http.ContentType;
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
-import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
@@ -252,8 +251,7 @@ public class MediaApi extends MpApi {
 				request = new HttpRequest(HttpMethod.GET, String.format(
 						meida_download_uri, token.getAccessToken(), mediaId));
 			}
-			HttpParams params = weixinExecutor.getExecuteParams();
-			request.setParams(params);
+			request.setParams(weixinExecutor.getExecuteParams());
 			logger.info("weixin request >> " + request.getMethod() + " "
 					+ request.getURI().toString());
 			HttpResponse response = weixinExecutor.getExecuteClient().execute(
