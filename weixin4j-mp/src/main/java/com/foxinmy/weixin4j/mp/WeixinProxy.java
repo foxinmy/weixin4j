@@ -1486,6 +1486,22 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 接口调用次数调用清零：公众号调用接口并不是无限制的。为了防止公众号的程序错误而引发微信服务器负载异常，默认情况下，
+	 * 每个公众号调用接口都不能超过一定限制
+	 * ，当超过一定限制时，调用对应接口会收到{"errcode":45009,"errmsg":"api freq out of limit"
+	 * }错误返回码。
+	 *
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433744592&token=&lang=zh_CN">接口清零</a>
+	 * @see com.foxinmy.weixin4j.mp.api.HelperApi
+	 * @return 操作结果
+	 * @throws WeixinException
+	 */
+	public JsonResult clearQuota() throws WeixinException {
+		return helperApi.clearQuota(getWeixinAccount().getId());
+	}
+
+	/**
 	 * 获取公众号当前使用的自定义菜单的配置，如果公众号是通过API调用设置的菜单，则返回菜单的开发配置，
 	 * 而如果公众号是在公众平台官网通过网站功能发布菜单，则本接口返回运营者设置的菜单配置。
 	 *

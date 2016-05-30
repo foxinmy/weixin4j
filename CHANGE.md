@@ -706,3 +706,11 @@
 * 2016-05-28
 
   + 重构Cache实现
+
+* 2016-05-30
+
+  + 优化Weixin4jSettings
+
+  + 优化PayOldApi
+
+  + weixin4j-mp:新增接口调用次数清零接口

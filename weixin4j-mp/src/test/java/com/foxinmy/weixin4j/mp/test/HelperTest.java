@@ -41,4 +41,9 @@ public class HelperTest extends TokenTest {
 	public void getAutoReplySetting() throws WeixinException {
 		System.err.println(helperApi.getAutoReplySetting());
 	}
+
+	@Test
+	public void clearQuota() throws WeixinException {
+		System.err.println(helperApi.clearQuota(settings.getAccount().getId()));
+	}
 }
