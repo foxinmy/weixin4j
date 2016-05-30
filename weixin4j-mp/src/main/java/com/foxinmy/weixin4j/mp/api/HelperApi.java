@@ -141,13 +141,13 @@ public class HelperApi extends MpApi {
 
 	private static final class ButtonExtraProcessor implements ExtraProcessor {
 		private static ButtonExtraProcessor global = new ButtonExtraProcessor();
-
+		private static final String KEY = "news_info";
 		private ButtonExtraProcessor() {
 		}
 
 		@Override
 		public void processExtra(Object object, String key, Object value) {
-			if (key.equals("news_info")) {
+			if (KEY.equalsIgnoreCase(key)) {
 				JSONArray news = ((JSONObject) value).getJSONArray("list");
 				List<MpArticle> newsList = new ArrayList<MpArticle>(news.size());
 				JSONObject article = null;
