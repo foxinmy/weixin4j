@@ -25,8 +25,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.Feature;
-import com.foxinmy.weixin4j.cache.CacheStorager;
-import com.foxinmy.weixin4j.cache.FileCacheStorager;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
@@ -42,6 +40,7 @@ import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPayAccount;
 import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPaymentSignature;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.payment.PayRequest;
+import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.token.TokenManager;
@@ -68,6 +67,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
  */
 public class PayOldApi extends MpApi {
 
+	private final Weixin4jSettings<WeixinOldPayAccount> settings;
 	private final WeixinOldPayAccount weixinAccount;
 	private final TokenManager tokenManager;
 	private final WeixinSignature weixinMD5Signature;
@@ -77,32 +77,26 @@ public class PayOldApi extends MpApi {
 	 * 默认使用weixin4j.properties配置信息
 	 */
 	public PayOldApi() {
-		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinOldPayAccount.class), new FileCacheStorager<Token>(
-				Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
-						System.getProperty("java.io.tmpdir"))));
+		this(new Weixin4jSettings<WeixinOldPayAccount>(JSON.parseObject(
+				Weixin4jConfigUtil.getValue("account"),
+				WeixinOldPayAccount.class)));
 	}
 
-	public PayOldApi(WeixinOldPayAccount payAccount) {
-		this(payAccount, new FileCacheStorager<Token>(
-				Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
-						System.getProperty("java.io.tmpdir"))));
-	}
-
-	public PayOldApi(CacheStorager<Token> cacheStorager) {
-		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinOldPayAccount.class), cacheStorager);
-	}
-
-	public PayOldApi(WeixinOldPayAccount weixinAccount,
-			CacheStorager<Token> cacheStorager) {
-		this.weixinAccount = weixinAccount;
+	/**
+	 *
+	 * @param settings
+	 *            微信配置信息
+	 */
+	public PayOldApi(Weixin4jSettings<WeixinOldPayAccount> settings) {
+		this.settings = settings;
+		this.weixinAccount = settings.getAccount();
 		this.tokenManager = new TokenManager(new WeixinTokenCreator(
 				weixinAccount.getId(), weixinAccount.getSecret()),
-				cacheStorager);
+				settings.getCacheStorager0());
 		this.weixinMD5Signature = new WeixinPaymentSignature(
 				weixinAccount.getPartnerKey());
-		this.weixinOldSignature = new WeixinOldPaymentSignature();
+		this.weixinOldSignature = new WeixinOldPaymentSignature(
+				weixinAccount.getPaySignKey(), weixinAccount.getPartnerKey());
 	}
 
 	public WeixinOldPayAccount getWeixinPayAccount() {
@@ -145,10 +139,8 @@ public class PayOldApi extends MpApi {
 	 */
 	public String createPayJsRequestJson(PayPackageV2 payPackage) {
 		PayRequest payRequest = new PayRequest(weixinAccount.getId(),
-				weixinOldSignature.sign(payPackage,
-						weixinAccount.getPartnerKey()));
-		payRequest.setPaySign(weixinOldSignature.sign(payRequest,
-				weixinAccount.getPaySignKey()));
+				weixinOldSignature.sign(payPackage));
+		payRequest.setPaySign(weixinOldSignature.sign(payRequest));
 		payRequest.setSignType(SignType.SHA1);
 		return JSON.toJSONString(payRequest);
 	}
@@ -287,9 +279,7 @@ public class PayOldApi extends MpApi {
 			KeyStore ks = null;
 			String jksPwd = "";
 			File jksFile = new File(String.format("%s%stenpay_cacert.jks",
-					Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
-							System.getProperty("java.io.tmpdir")),
-					File.separator));
+					settings.getTmpdir0(), File.separator));
 			// create jks ca
 			if (!jksFile.exists()) {
 				CertificateFactory cf = CertificateFactory
