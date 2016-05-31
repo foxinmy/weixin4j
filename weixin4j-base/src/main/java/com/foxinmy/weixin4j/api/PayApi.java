@@ -105,6 +105,8 @@ public class PayApi extends MchApi {
 			throws WeixinException {
 		String tradeType = payPackage.getTradeType();
 		if (TradeType.MICROPAY.name().equalsIgnoreCase(tradeType)) {
+			payPackage.declareWeixinPayAccount(weixinAccount);
+			payPackage.setSign(weixinSignature.sign(payPackage));
 			String para = XmlStream.toXML(payPackage);
 			WeixinResponse response = weixinExecutor.post(
 					getRequestUri("micropay_uri"), para);
