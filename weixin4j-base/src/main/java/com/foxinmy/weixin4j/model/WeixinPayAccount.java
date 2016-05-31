@@ -6,7 +6,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 微信支付账户
- * 
+ *
  * @className WeixinPayAccount
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月26日
@@ -49,7 +49,7 @@ public class WeixinPayAccount extends WeixinAccount {
 
 	/**
 	 * 支付商户信息
-	 * 
+	 *
 	 * @param id
 	 *            公众号唯一的身份ID(必填)
 	 * @param paySignKey
@@ -63,7 +63,7 @@ public class WeixinPayAccount extends WeixinAccount {
 
 	/**
 	 * 支付商户信息
-	 * 
+	 *
 	 * @param id
 	 *            公众号唯一的身份ID(必填)
 	 * @param secret
@@ -115,10 +115,6 @@ public class WeixinPayAccount extends WeixinAccount {
 		return deviceInfo;
 	}
 
-	public void setDeviceInfo(String deviceInfo) {
-		this.deviceInfo = deviceInfo;
-	}
-
 	public String getCertificateKey() {
 		return StringUtil.isBlank(certificateKey) ? mchId : certificateKey;
 	}
@@ -127,24 +123,12 @@ public class WeixinPayAccount extends WeixinAccount {
 		return partnerId;
 	}
 
-	public void setPartnerId(String partnerId) {
-		this.partnerId = partnerId;
-	}
-
 	public String getSubId() {
 		return subId;
 	}
 
-	public void setSubId(String subId) {
-		this.subId = subId;
-	}
-
 	public String getSubMchId() {
 		return subMchId;
-	}
-
-	public void setSubMchId(String subMchId) {
-		this.subMchId = subMchId;
 	}
 
 	@Override
