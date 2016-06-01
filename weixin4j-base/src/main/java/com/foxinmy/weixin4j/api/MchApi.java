@@ -9,6 +9,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.payment.mch.MerchantResult;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.type.IdQuery;
@@ -95,5 +96,19 @@ public class MchApi extends BaseApi {
 	 */
 	public WeixinSignature getWeixinSignature() {
 		return this.weixinSignature;
+	}
+
+	/**
+	 * 设置商户信息
+	 *
+	 * @param merchant
+	 */
+	protected <T extends MerchantResult> void declareMerchant(T merchant) {
+		merchant.setAppId(weixinAccount.getId());
+		merchant.setMchId(weixinAccount.getMchId());
+		merchant.setDeviceInfo(weixinAccount.getDeviceInfo());
+		merchant.setSubId(weixinAccount.getSubId());
+		merchant.setSubMchId(weixinAccount.getSubMchId());
+		merchant.setNonceStr(RandomUtil.generateString(16));
 	}
 }

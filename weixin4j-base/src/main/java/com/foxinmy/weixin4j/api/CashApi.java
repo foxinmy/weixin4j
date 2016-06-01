@@ -65,7 +65,7 @@ public class CashApi extends MchApi {
 	 */
 	public RedpacketSendResult sendRedpack(InputStream certificate,
 			Redpacket redpacket) throws WeixinException {
-		redpacket.declareWeixinPayAccount(weixinAccount);
+		super.declareMerchant(redpacket);
 		JSONObject obj = (JSONObject) JSON.toJSON(redpacket);
 		obj.put("wxappid", obj.remove("appid"));
 		obj.put("sign", weixinSignature.sign(obj));
@@ -157,7 +157,7 @@ public class CashApi extends MchApi {
 	 */
 	public CorpPaymentResult sendCorpPayment(InputStream certificate,
 			CorpPayment payment) throws WeixinException {
-		payment.declareWeixinPayAccount(weixinAccount);
+		super.declareMerchant(payment);
 		JSONObject obj = (JSONObject) JSON.toJSON(payment);
 		obj.put("mchid", obj.remove("mch_id"));
 		obj.put("mch_appid", obj.remove("appid"));

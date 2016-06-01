@@ -150,6 +150,7 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest 刷卡支付
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @throws WeixinException
 	 */
 	public MchPayRequest createPayRequest(MchPayPackage payPackage)
@@ -176,6 +177,7 @@ public class WeixinPayProxy {
 	 *            附加数据 非必填
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @return JSAPI支付对象
 	 * @throws WeixinException
 	 */
@@ -284,6 +286,7 @@ public class WeixinPayProxy {
 	 * @return Native支付对象
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @see <a href=
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1">扫码支付
 	 *      </a>
@@ -317,6 +320,7 @@ public class WeixinPayProxy {
 	 * @return APP支付对象
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @see <a href=
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1">
 	 *      APP支付</a>
@@ -347,6 +351,7 @@ public class WeixinPayProxy {
 	 * @return WAP支付对象
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @see <a href=
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付
 	 *      </a>
@@ -376,8 +381,9 @@ public class WeixinPayProxy {
 	 *            附加数据 非必填
 	 * @return 支付的订单信息
 	 * @see com.foxinmy.weixin4j.api.PayApi
-	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest
 	 * @see com.foxinmy.weixin4j.payment.mch.Order
+	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @see <a href=
 	 *      "http://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10">
 	 *      提交被扫支付API</a>

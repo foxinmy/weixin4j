@@ -75,9 +75,9 @@ public class CustomTest extends TokenTest {
 
 	@Test
 	public void uploadKfAvatar() throws WeixinException, IOException {
-		JsonResult result = customApi.uploadKfAvatar(
-				"temp1@canyidianzhang", new FileInputStream(new File(
-						"/Users/jy/Music/简谱/风动草.jpg")), "风动草.jpg");
+		JsonResult result = customApi.uploadKfAvatar("temp1@canyidianzhang",
+				new FileInputStream(new File("/Users/jy/Music/简谱/风动草.jpg")),
+				"风动草.jpg");
 		Assert.assertEquals(0, result.getCode());
 	}
 

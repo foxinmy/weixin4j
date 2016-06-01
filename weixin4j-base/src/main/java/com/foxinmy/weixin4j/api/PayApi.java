@@ -79,7 +79,7 @@ public class PayApi extends MchApi {
 	 * @return 预支付对象
 	 */
 	public PrePay createPrePay(MchPayPackage payPackage) throws WeixinException {
-		payPackage.declareWeixinPayAccount(weixinAccount);
+		super.declareMerchant(payPackage);
 		payPackage.setSign(weixinSignature.sign(payPackage));
 		String payJsRequestXml = XmlStream.toXML(payPackage);
 		WeixinResponse response = weixinExecutor.post(
@@ -105,7 +105,7 @@ public class PayApi extends MchApi {
 			throws WeixinException {
 		String tradeType = payPackage.getTradeType();
 		if (TradeType.MICROPAY.name().equalsIgnoreCase(tradeType)) {
-			payPackage.declareWeixinPayAccount(weixinAccount);
+			super.declareMerchant(payPackage);
 			payPackage.setSign(weixinSignature.sign(payPackage));
 			String para = XmlStream.toXML(payPackage);
 			WeixinResponse response = weixinExecutor.post(

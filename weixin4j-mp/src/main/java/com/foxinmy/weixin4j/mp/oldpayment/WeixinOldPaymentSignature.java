@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.foxinmy.weixin4j.sign.AbstractWeixinSignature;
+import com.foxinmy.weixin4j.type.SignType;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 
@@ -46,6 +47,11 @@ public class WeixinOldPaymentSignature extends AbstractWeixinSignature {
 		}
 		JSONPath.set(obj, "appKey", paySignKey);
 		return DigestUtil.SHA1(join(obj).toString());
+	}
+
+	@Override
+	public SignType getSignType() {
+		return SignType.SHA1;
 	}
 
 	/**
