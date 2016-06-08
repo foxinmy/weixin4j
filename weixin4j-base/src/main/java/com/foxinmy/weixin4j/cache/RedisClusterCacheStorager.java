@@ -68,9 +68,11 @@ public class RedisClusterCacheStorager<T extends Cacheable> implements
 	public void caching(String cacheKey, T cache) {
 		byte[] key = cacheKey.getBytes(Consts.UTF_8);
 		byte[] value = SerializationUtils.serialize(cache);
-		jedisCluster.set(key, value);
 		if (cache.getExpires() > 0) {
-			jedisCluster.expire(key, (int) (cache.getExpires() - CUTMS) / 1000);
+			jedisCluster.setex(key, (int) (cache.getExpires() - CUTMS) / 1000,
+					value);
+		} else {
+			jedisCluster.set(key, value);
 		}
 		jedisCluster.sadd(ALLKEY, cacheKey);
 	}

@@ -81,9 +81,11 @@ public class RedisCacheStorager<T extends Cacheable> implements
 			jedis = jedisPool.getResource();
 			byte[] key = cacheKey.getBytes(Consts.UTF_8);
 			byte[] value = SerializationUtils.serialize(cache);
-			jedis.set(key, value);
 			if (cache.getExpires() > 0) {
-				jedis.expire(key, (int) (cache.getExpires() - CUTMS) / 1000);
+				jedis.setex(key, (int) (cache.getExpires() - CUTMS) / 1000,
+						value);
+			} else {
+				jedis.set(key, value);
 			}
 			jedis.sadd(ALLKEY, cacheKey);
 		} finally {
