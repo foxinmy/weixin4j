@@ -7,7 +7,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.model.Consts;
 
@@ -51,14 +50,7 @@ public class WeixinSSLRequestExecutor extends WeixinRequestExecutor {
 	@Override
 	protected WeixinResponse doRequest(HttpRequest request)
 			throws WeixinException {
-		HttpParams params = null;
-		if (request.getParams() != null) {
-			params = HttpParams.copy(request.getParams())
-					.setSslContext(sslContext).build();
-		} else {
-			params = HttpParams.custom().setSslContext(sslContext).build();
-		}
-		request.setParams(params);
+		httpParams.setSSLContext(sslContext);
 		return super.doRequest(request);
 	}
 }

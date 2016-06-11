@@ -117,8 +117,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 			}
 			logger.debug("request >> " + request.getMethod() + " "
 					+ request.getURI().toString());
-			for (Entry<String, List<String>> header : headers
-					.entrySet()) {
+			for (Entry<String, List<String>> header : headers.entrySet()) {
 				if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
 					connection.setRequestProperty(header.getKey(),
 							StringUtil.join(header.getValue(), ';'));
@@ -170,8 +169,8 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 			response = new SimpleHttpResponse(connection, content);
 			logger.debug("response << " + response.getProtocol()
 					+ response.getStatus().toString());
-			for (Entry<String, List<String>> header : response
-					.getHeaders().entrySet()) {
+			for (Entry<String, List<String>> header : response.getHeaders()
+					.entrySet()) {
 				logger.debug("headers << " + header.getKey() + ":"
 						+ StringUtil.join(header.getValue(), ';'));
 			}

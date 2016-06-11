@@ -505,9 +505,9 @@ public class MediaApi extends MpApi {
 						}
 					});
 		} else {
-			mediaRecord = response
-					.getAsObject(new TypeReference<MediaRecord>() {
-					});
+			obj = response.getAsJson();
+			obj.put("items", obj.remove("itemlist"));
+			mediaRecord = JSON.toJavaObject(obj, MediaRecord.class);
 		}
 		mediaRecord.setMediaType(mediaType);
 		mediaRecord.setPageable(pageable);

@@ -38,11 +38,11 @@ public class WeixinRequestExecutor {
 	protected final InternalLogger logger = InternalLoggerFactory
 			.getInstance(getClass());
 
-	private final HttpClient httpClient;
-	private final HttpParams httpParams;
+	protected final HttpClient httpClient;
+	protected final HttpParams httpParams;
 
 	public WeixinRequestExecutor() {
-		this(HttpParams.custom().build());
+		this(new HttpParams());
 	}
 
 	public WeixinRequestExecutor(HttpParams httpParams) {

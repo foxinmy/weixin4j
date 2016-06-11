@@ -16,82 +16,121 @@ import javax.net.ssl.SSLContext;
  */
 public final class HttpParams {
 
-	private final boolean allowUserInteraction;
-	private final int connectTimeout;
-	private final int socketTimeout;
-	private final int readTimeout;
-	private final int chunkSize;
-	private final boolean followRedirects;
+	private boolean allowUserInteraction;
+	private int connectTimeout;
+	private int socketTimeout;
+	private int readTimeout;
+	private int chunkSize;
+	private boolean followRedirects;
 	/**
 	 * 代理对象
 	 */
-	private final Proxy proxy;
+	private Proxy proxy;
 	/**
 	 * SSL对象
 	 */
-	private final SSLContext sslContext;
+	private SSLContext sslContext;
 	/**
 	 * hostname对象
 	 */
-	private final HostnameVerifier hostnameVerifier;
+	private HostnameVerifier hostnameVerifier;
 
-	HttpParams(boolean allowUserInteraction, int connectTimeout,
-			int socketTimeout, int readTimeout, int chunkSize,
-			boolean followRedirects, Proxy proxy, SSLContext sslContext,
-			HostnameVerifier hostnameVerifier) {
-		this.allowUserInteraction = allowUserInteraction;
+	public HttpParams() {
+		this(5000, 5000, 5000);
+	}
+
+	public HttpParams(int connectTimeout, int socketTimeout, int readTimeout) {
+		this.allowUserInteraction = true;
 		this.connectTimeout = connectTimeout;
 		this.socketTimeout = socketTimeout;
 		this.readTimeout = readTimeout;
-		this.chunkSize = chunkSize;
-		this.followRedirects = followRedirects;
-		this.proxy = proxy;
-		this.sslContext = sslContext;
-		this.hostnameVerifier = hostnameVerifier;
+		this.chunkSize = 4096;
+		this.followRedirects = false;
 	}
 
 	public boolean isAllowUserInteraction() {
 		return allowUserInteraction;
 	}
 
+	public HttpParams setAllowUserInteraction(boolean allowUserInteraction) {
+		this.allowUserInteraction = allowUserInteraction;
+		return this;
+	}
+
 	public int getConnectTimeout() {
 		return connectTimeout;
+	}
+
+	public HttpParams setConnectTimeout(int connectTimeout) {
+		this.connectTimeout = connectTimeout;
+		return this;
 	}
 
 	public int getSocketTimeout() {
 		return socketTimeout;
 	}
 
+	public HttpParams setSocketTimeout(int socketTimeout) {
+		this.socketTimeout = socketTimeout;
+		return this;
+	}
+
 	public int getReadTimeout() {
 		return readTimeout;
+	}
+
+	public HttpParams setReadTimeout(int readTimeout) {
+		this.readTimeout = readTimeout;
+		return this;
 	}
 
 	public int getChunkSize() {
 		return chunkSize;
 	}
 
+	public HttpParams setChunkSize(int chunkSize) {
+		this.chunkSize = chunkSize;
+		return this;
+	}
+
 	public boolean isFollowRedirects() {
 		return followRedirects;
+	}
+
+	public HttpParams setFollowRedirects(boolean followRedirects) {
+		this.followRedirects = followRedirects;
+		return this;
 	}
 
 	public Proxy getProxy() {
 		return proxy;
 	}
 
+	public HttpParams setProxy(Proxy proxy) {
+		this.proxy = proxy;
+		return this;
+	}
+
 	public SSLContext getSSLContext() {
 		return sslContext;
+	}
+
+	public HttpParams setSSLContext(SSLContext sslContext) {
+		this.sslContext = sslContext;
+		return this;
 	}
 
 	public HostnameVerifier getHostnameVerifier() {
 		return hostnameVerifier;
 	}
 
-	public static HttpParams.Builder custom() {
-		return new Builder();
+	public HttpParams setHostnameVerifier(HostnameVerifier hostnameVerifier) {
+		this.hostnameVerifier = hostnameVerifier;
+		return this;
 	}
 
-	public static HttpParams.Builder copy(final HttpParams params) {
-		return new Builder()
+	public static HttpParams copy(final HttpParams params) {
+		return new HttpParams()
 				.setAllowUserInteraction(params.isAllowUserInteraction())
 				.setConnectTimeout(params.getConnectTimeout())
 				.setSocketTimeout(params.getSocketTimeout())
@@ -100,120 +139,13 @@ public final class HttpParams {
 				.setFollowRedirects(params.isFollowRedirects());
 	}
 
-	public static class Builder {
-		private boolean allowUserInteraction;
-		private int connectTimeout;
-		private int socketTimeout;
-		private int readTimeout;
-		private int chunkSize;
-		private boolean followRedirects;
-		/**
-		 * 代理对象
-		 */
-		private Proxy proxy;
-		/**
-		 * SSL对象
-		 */
-		private SSLContext sslContext;
-		/**
-		 * hostname对象
-		 */
-		private HostnameVerifier hostnameVerifier;
-
-		Builder() {
-			this.allowUserInteraction = true;
-			this.connectTimeout = 5000;
-			this.socketTimeout = 5000;
-			this.readTimeout = 5000;
-			this.chunkSize = 4096;
-			this.followRedirects = false;
-		}
-
-		public boolean isAllowUserInteraction() {
-			return allowUserInteraction;
-		}
-
-		public Builder setAllowUserInteraction(boolean allowUserInteraction) {
-			this.allowUserInteraction = allowUserInteraction;
-			return this;
-		}
-
-		public int getConnectTimeout() {
-			return connectTimeout;
-		}
-
-		public Builder setConnectTimeout(int connectTimeout) {
-			this.connectTimeout = connectTimeout;
-			return this;
-		}
-
-		public int getSocketTimeout() {
-			return socketTimeout;
-		}
-
-		public Builder setSocketTimeout(int socketTimeout) {
-			this.socketTimeout = socketTimeout;
-			return this;
-		}
-
-		public int getReadTimeout() {
-			return readTimeout;
-		}
-
-		public Builder setReadTimeout(int readTimeout) {
-			this.readTimeout = readTimeout;
-			return this;
-		}
-
-		public int getChunkSize() {
-			return chunkSize;
-		}
-
-		public Builder setChunkSize(int chunkSize) {
-			this.chunkSize = chunkSize;
-			return this;
-		}
-
-		public boolean isFollowRedirects() {
-			return followRedirects;
-		}
-
-		public Builder setFollowRedirects(boolean followRedirects) {
-			this.followRedirects = followRedirects;
-			return this;
-		}
-
-		public Proxy getProxy() {
-			return proxy;
-		}
-
-		public Builder setProxy(Proxy proxy) {
-			this.proxy = proxy;
-			return this;
-		}
-
-		public SSLContext getSslContext() {
-			return sslContext;
-		}
-
-		public Builder setSslContext(SSLContext sslContext) {
-			this.sslContext = sslContext;
-			return this;
-		}
-
-		public HostnameVerifier getHostnameVerifier() {
-			return hostnameVerifier;
-		}
-
-		public Builder setHostnameVerifier(HostnameVerifier hostnameVerifier) {
-			this.hostnameVerifier = hostnameVerifier;
-			return this;
-		}
-
-		public HttpParams build() {
-			return new HttpParams(allowUserInteraction, connectTimeout,
-					socketTimeout, readTimeout, chunkSize, followRedirects,
-					proxy, sslContext, hostnameVerifier);
-		}
+	@Override
+	public String toString() {
+		return "HttpParams [allowUserInteraction=" + allowUserInteraction
+				+ ", connectTimeout=" + connectTimeout + ", socketTimeout="
+				+ socketTimeout + ", readTimeout=" + readTimeout
+				+ ", chunkSize=" + chunkSize + ", followRedirects="
+				+ followRedirects + ", proxy=" + proxy + ", sslContext="
+				+ sslContext + ", hostnameVerifier=" + hostnameVerifier + "]";
 	}
 }

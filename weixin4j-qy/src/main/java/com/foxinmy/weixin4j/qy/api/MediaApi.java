@@ -417,6 +417,7 @@ public class MediaApi extends QyApi {
 				obj.toJSONString());
 		obj = response.getAsJson();
 
+		obj.put("items", obj.remove("itemlist"));
 		MediaRecord mediaRecord = JSON.toJavaObject(obj, MediaRecord.class);
 		mediaRecord.setMediaType(mediaType);
 		mediaRecord.setPageable(pageable);
