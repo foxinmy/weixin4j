@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.example.server;
 
-import io.netty.util.internal.logging.InternalLoggerFactory;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,6 +11,8 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.spring.SpringBeanFactory;
 import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 import com.foxinmy.weixin4j.util.AesToken;
+
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 /**
  * 微信消息服务:需要另外开启一个线程去启动服务,比如在spring mvc中
