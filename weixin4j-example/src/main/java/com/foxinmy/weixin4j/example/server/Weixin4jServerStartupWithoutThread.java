@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.example.server;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -41,12 +42,12 @@ public class Weixin4jServerStartupWithoutThread {
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws WeixinException {
 		// 单独服务启动
-		//new WeixinServerBootstrap(aesToken)
-				//.handlerPackagesToScan(handlerPackage)
-				//.addHandler(DebugMessageHandler.global).openAlwaysResponse()
-				//.startup(port);
+		// new WeixinServerBootstrap(aesToken)
+		// .handlerPackagesToScan(handlerPackage)
+		// .addHandler(DebugMessageHandler.global).openAlwaysResponse()
+		// .startup(port);
 		// spring容器启动
-		new ClassPathXmlApplicationContext(
+		ApplicationContext app = new ClassPathXmlApplicationContext(
 				new String[] { "classpath:/spring-bean.xml" });
 	}
 }

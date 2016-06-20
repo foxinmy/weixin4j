@@ -21,7 +21,6 @@ import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.ButtonType;
-import com.foxinmy.weixin4j.util.ReflectionUtil;
 
 /**
  * 辅助相关API
@@ -142,6 +141,7 @@ public class HelperApi extends MpApi {
 	private static final class ButtonExtraProcessor implements ExtraProcessor {
 		private static ButtonExtraProcessor global = new ButtonExtraProcessor();
 		private static final String KEY = "news_info";
+
 		private ButtonExtraProcessor() {
 		}
 
@@ -160,11 +160,7 @@ public class HelperApi extends MpApi {
 							article.remove("source_url"));
 					newsList.add(JSON.toJavaObject(article, MpArticle.class));
 				}
-				if (ReflectionUtil.getAccessibleField(object, "articles") != null) {
-					JSONPath.set(object, "$.articles", newsList);
-				} else {
-					JSONPath.set(object, "$.content", newsList);
-				}
+				JSONPath.set(object, "$.extar", newsList);
 			} else {
 				JSONPath.set(object, "$.content", value);
 			}

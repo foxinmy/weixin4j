@@ -714,3 +714,7 @@
   + 优化PayOldApi
 
   + weixin4j-mp:新增接口调用次数清零接口
+  
+* 2016-06-20
+
+  + version upgrade to 1.7.0

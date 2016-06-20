@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
@@ -49,10 +48,10 @@ public class Button implements Serializable {
 	 */
 	private String content;
 	/**
-	 * 图文列表 只有在公众平台设置的菜单才有
+	 * 扩展属性，比如在公众平台设置菜单时的图文列表
 	 */
 	@JSONField(serialize = false, deserialize = false)
-	private List<MpArticle> articles;
+	private Object extra;
 	/**
 	 * 二级菜单数组，个数应为1~5个
 	 */
@@ -117,17 +116,17 @@ public class Button implements Serializable {
 		this.content = content;
 	}
 
-	public List<MpArticle> getArticles() {
-		return articles;
+	public Object getExtra() {
+		return extra;
 	}
 
 	/**
-	 * <font color="red">创建菜单设置无效</font>
-	 *
-	 * @param articles
+	 * 扩展只读属性，设置无效
+	 * 
+	 * @param extra
 	 */
-	public void setArticles(List<MpArticle> articles) {
-		this.articles = articles;
+	public void setExtra(Object extra) {
+		this.extra = extra;
 	}
 
 	public List<Button> getSubs() {
@@ -146,6 +145,6 @@ public class Button implements Serializable {
 	@Override
 	public String toString() {
 		return "Button [name=" + name + ", type=" + type + ", content="
-				+ content + ", articles=" + articles + ", subs=" + subs + "]";
+				+ content + ", extra=" + extra + ", subs=" + subs + "]";
 	}
 }
