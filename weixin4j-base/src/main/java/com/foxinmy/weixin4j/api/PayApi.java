@@ -387,8 +387,8 @@ public class PayApi extends MchApi {
 			String outTradeNo, double totalFee, String createIp, String attach)
 			throws WeixinException {
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, null, createIp, TradeType.MICROPAY, null, null, null,
-				attach);
+				totalFee, null, createIp, TradeType.MICROPAY, null, authCode,
+				null, attach);
 		return createPayRequest(payPackage);
 	}
 
