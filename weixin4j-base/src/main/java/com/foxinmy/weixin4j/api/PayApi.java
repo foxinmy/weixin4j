@@ -386,9 +386,9 @@ public class PayApi extends MchApi {
 	public MchPayRequest createMicroPayRequest(String authCode, String body,
 			String outTradeNo, double totalFee, String createIp, String attach)
 			throws WeixinException {
+		// 刷卡支付不需要设置TradeType.MICROPAY
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, null, createIp, TradeType.MICROPAY, null, authCode,
-				null, attach);
+				totalFee, null, createIp, null, null, authCode, null, attach);
 		return createPayRequest(payPackage);
 	}
 
