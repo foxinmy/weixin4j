@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentOverview;
 import com.foxinmy.weixin4j.qy.model.AgentSetter;
 import com.foxinmy.weixin4j.qy.model.User;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 管理应用接口
@@ -26,10 +26,10 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%BA%94%E7%94%A8">管理应用接口说明</a>
  */
 public class AgentApi extends QyApi {
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public AgentApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public AgentApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class AgentApi extends QyApi {
 	 */
 	public AgentInfo getAgent(int agentid) throws WeixinException {
 		String agent_get_uri = getRequestUri("agent_get_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(agent_get_uri,
 				token.getAccessToken(), agentid));
 		JSONObject jsonObj = response.getAsJson();
@@ -74,7 +74,7 @@ public class AgentApi extends QyApi {
 	 */
 	public JsonResult setAgent(AgentSetter agentSet) throws WeixinException {
 		String agent_set_uri = getRequestUri("agent_set_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(agent_set_uri, token.getAccessToken()),
 				JSON.toJSONString(agentSet, typeFilter));
@@ -108,7 +108,7 @@ public class AgentApi extends QyApi {
 	 */
 	public List<AgentOverview> listAgentOverview() throws WeixinException {
 		String agent_list_uri = getRequestUri("agent_list_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(agent_list_uri,
 				token.getAccessToken()));
 

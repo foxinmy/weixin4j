@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.util.NameValue;
 
 /**
  * 模板消息
- * 
+ *
  * @className TemplateMessage
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月29日
@@ -56,10 +56,7 @@ public class TemplateMessage implements Serializable {
 	private final static String TAIL_KEY = "remark";
 	private final static String DEFAULT_COLOR = "#173177";
 
-	@JSONCreator
-	public TemplateMessage(@JSONField(name = "toUser") String toUser,
-			@JSONField(name = "templateId") String templateId,
-			@JSONField(name = "url") String url) {
+	public TemplateMessage(String toUser, String templateId, String url) {
 		this.toUser = toUser;
 		this.templateId = templateId;
 		this.url = url;
@@ -92,7 +89,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增头部字段(默认颜色为#FF0000)
-	 * 
+	 *
 	 * @param text
 	 *            字段文本
 	 * @return
@@ -103,7 +100,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增头部字段
-	 * 
+	 *
 	 * @param color
 	 *            文字颜色
 	 * @param text
@@ -118,7 +115,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增尾部字段(默认颜色为#173177)
-	 * 
+	 *
 	 * @param text
 	 *            字段文本
 	 * @return
@@ -129,7 +126,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增尾部字段
-	 * 
+	 *
 	 * @param color
 	 *            文字颜色
 	 * @param text
@@ -144,7 +141,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增字段项(默认颜色为#173177)
-	 * 
+	 *
 	 * @param key
 	 *            预留的字段名
 	 * @param text
@@ -157,7 +154,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增字段项
-	 * 
+	 *
 	 * @param key
 	 *            预留的字段名
 	 * @param color
@@ -173,7 +170,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 设置所有字段项
-	 * 
+	 *
 	 * @param items
 	 */
 	public void pushItems(Map<String, NameValue> items) {

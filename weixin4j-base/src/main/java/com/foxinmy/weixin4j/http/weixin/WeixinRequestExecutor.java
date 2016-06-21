@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 负责微信请求的执行
- * 
+ *
  * @className WeixinRequestExecutor
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月15日
@@ -39,15 +39,15 @@ public class WeixinRequestExecutor {
 			.getInstance(getClass());
 
 	protected final HttpClient httpClient;
-	protected final HttpParams params;
+	protected final HttpParams httpParams;
 
 	public WeixinRequestExecutor() {
 		this(new HttpParams());
 	}
 
-	public WeixinRequestExecutor(HttpParams params) {
+	public WeixinRequestExecutor(HttpParams httpParams) {
 		this.httpClient = HttpClientFactory.getInstance();
-		this.params = params;
+		this.httpParams = httpParams;
 	}
 
 	public WeixinResponse get(String url) throws WeixinException {
@@ -95,7 +95,7 @@ public class WeixinRequestExecutor {
 
 	protected WeixinResponse doRequest(HttpRequest request)
 			throws WeixinException {
-		request.setParams(params);
+		request.setParams(httpParams);
 		try {
 			logger.info("weixin request >> " + request.getMethod() + " "
 					+ request.getURI().toString());
@@ -103,8 +103,7 @@ public class WeixinRequestExecutor {
 			HttpHeaders headers = httpResponse.getHeaders();
 			WeixinResponse response = new WeixinResponse(httpResponse);
 			logger.info("weixin response << " + httpResponse.getProtocol()
-					+ httpResponse.getStatus().toString() + ":"
-					+ response.getAsString());
+					+ httpResponse.getStatus() + ":" + response.getAsString());
 			String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
 			String disposition = headers
 					.getFirst(HttpHeaders.CONTENT_DISPOSITION);
@@ -181,6 +180,6 @@ public class WeixinRequestExecutor {
 	}
 
 	public HttpParams getExecuteParams() {
-		return params;
+		return httpParams;
 	}
 }

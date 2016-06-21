@@ -25,7 +25,7 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
  * 服务启动测试类
- * 
+ *
  * @className MessageServerStartup
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
@@ -43,7 +43,7 @@ public class MessageServerStartup {
 
 	/**
 	 * 调试输出用户发来的消息
-	 * 
+	 *
 	 * @throws WeixinException
 	 */
 	public void test1() throws WeixinException {
@@ -51,13 +51,13 @@ public class MessageServerStartup {
 		new WeixinServerBootstrap(token).addHandler(DebugMessageHandler.global)
 				.startup();
 		// 密文模式
-		new WeixinServerBootstrap(weixinId, token, aesKey).addHandler(
-				DebugMessageHandler.global).startup();
+		// new WeixinServerBootstrap(weixinId, token, aesKey).addHandler(
+			//	DebugMessageHandler.global).startup();
 	}
 
 	/**
 	 * 针对特定消息类型
-	 * 
+	 *
 	 * @throws WeixinException
 	 */
 	public void test2() throws WeixinException {
@@ -85,7 +85,7 @@ public class MessageServerStartup {
 
 	/**
 	 * 多种消息类型处理
-	 * 
+	 *
 	 * @throws WeixinException
 	 */
 	public void test3() throws WeixinException {
@@ -105,7 +105,7 @@ public class MessageServerStartup {
 
 	/**
 	 * 扫描包添加handler
-	 * 
+	 *
 	 * @throws WeixinException
 	 */
 	public void test4() throws WeixinException {
@@ -121,7 +121,7 @@ public class MessageServerStartup {
 
 	/**
 	 * 拦截器应用
-	 * 
+	 *
 	 * @throws WeixinException
 	 */
 	public void test5() throws WeixinException {
@@ -162,7 +162,7 @@ public class MessageServerStartup {
 
 	/**
 	 * main方法入口
-	 * 
+	 *
 	 * @param args
 	 * @throws Exception
 	 */

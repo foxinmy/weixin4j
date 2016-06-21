@@ -15,7 +15,7 @@ public class TemplateTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.tmplApi = new TmplApi(tokenHolder);
+		this.tmplApi = new TmplApi(tokenManager);
 	}
 
 	@Test

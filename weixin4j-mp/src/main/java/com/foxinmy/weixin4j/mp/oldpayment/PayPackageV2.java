@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
  * V2支付的订单详情
- * 
+ *
  * @className PayPackageV2
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年8月17日
@@ -65,12 +65,56 @@ public class PayPackageV2 extends PayPackage {
 		// jaxb required
 	}
 
+	/**
+	 * 支付信息
+	 *
+	 * @param partner
+	 *            商户号 <font color="red">必填</font>
+	 * @param body
+	 *            支付详情 <font color="red">必填</font>
+	 * @param outTradeNo
+	 *            订单号 <font color="red">必填</font>
+	 * @param totalFee
+	 *            订单总额(元) <font color="red">必填</font>
+	 * @param notifyUrl
+	 *            支付回调URL <font color="red">必填</font>
+	 * @param createIp
+	 *            订单生成的机器 IP <font color="red">必填</font>
+	 */
 	public PayPackageV2(String partner, String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp) {
 		this(partner, body, outTradeNo, totalFee, notifyUrl, createIp, null,
 				null, null, 0d, 0d, null);
 	}
 
+	/**
+	 * 支付信息 完整参数
+	 *
+	 * @param partner
+	 *            商户号 <font color="red">必填</font>
+	 * @param body
+	 *            支付详情 <font color="red">必填</font>
+	 * @param outTradeNo
+	 *            订单号 <font color="red">必填</font>
+	 * @param totalFee
+	 *            订单总额(元) <font color="red">必填</font>
+	 * @param notifyUrl
+	 *            支付回调URL <font color="red">必填</font>
+	 * @param createIp
+	 *            订单生成的机器 IP <font color="red">必填</font>
+	 * @param attach
+	 *            附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
+	 * @param timeStart
+	 *            订单生成时间，格式为yyyyMMddHHmmss
+	 * @param timeExpire
+	 *            订单失效时间，格式为yyyyMMddHHmmss;注意：最短失效时间间隔必须大于5分钟
+	 * @param transportFee
+	 *            物流费用 如有值 必须保证 transportFee+productFee=totalFee
+	 * @param transportFee
+	 *            商品费用 如有值 必须保证 transportFee+productFee=totalFee
+	 * @param goodsTag
+	 *            商品标记，代金券或立减优惠功能的参数
+	 */
 	public PayPackageV2(String partner, String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp, String attach,
 			Date timeStart, Date timeExpire, double transportFee,
@@ -80,8 +124,8 @@ public class PayPackageV2 extends PayPackage {
 		setTotalFee(totalFee);
 		setNotifyUrl(notifyUrl);
 		setCreateIp(createIp);
-		setAttach(attach);;
-		setTimeStart(timeStart); 
+		setAttach(attach);
+		setTimeStart(timeStart);
 		setTimeExpire(timeExpire);
 		setGoodsTag(goodsTag);
 		this.bankType = "WX";
@@ -116,7 +160,7 @@ public class PayPackageV2 extends PayPackage {
 
 	/**
 	 * <font color="red">单位为元,自动格式化为分</font>
-	 * 
+	 *
 	 * @param transportFee
 	 *            物流费用 单位为元
 	 */
@@ -130,7 +174,7 @@ public class PayPackageV2 extends PayPackage {
 
 	/**
 	 * <font color="red">单位为元,自动格式化为分</font>
-	 * 
+	 *
 	 * @param productFee
 	 *            商品 单位为元
 	 */

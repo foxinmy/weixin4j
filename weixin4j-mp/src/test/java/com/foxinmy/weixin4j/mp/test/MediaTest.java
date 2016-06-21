@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 媒体上传下载测试
- * 
+ *
  * @className MediaTest
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
@@ -39,7 +39,7 @@ public class MediaTest extends TokenTest {
 
 	@Before
 	public void init() {
-		mediaApi = new MediaApi(tokenHolder);
+		mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test
@@ -87,14 +87,14 @@ public class MediaTest extends TokenTest {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
 		articles.add(new MpArticle("8790403529", "title", "content"));
 		String mediaId = mediaApi.uploadMaterialArticle(articles);
-		// 17385064953
+		// DVWwU0u9ommOTPgyJszpK943IWCCVAcFGNmiIBObf5E
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);
 	}
 
 	@Test
 	public void downloadArticle() throws WeixinException {
-		List<MpArticle> articles = mediaApi.downloadArticle("17385064953");
+		List<MpArticle> articles = mediaApi.downloadArticle("DVWwU0u9ommOTPgyJszpK943IWCCVAcFGNmiIBObf5E");
 		Assert.assertTrue(articles != null && !articles.isEmpty());
 		System.err.println(articles);
 	}

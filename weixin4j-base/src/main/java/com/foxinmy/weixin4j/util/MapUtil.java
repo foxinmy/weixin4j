@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultSerializer;
 
 /**
  * 签名工具类
- * 
+ *
  * @className MapUtil
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
@@ -23,7 +23,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultSerializer;
 public class MapUtil {
 	/**
 	 * 连接字符串
-	 * 
+	 *
 	 * @param object
 	 *            对象
 	 * @param encoder
@@ -39,7 +39,7 @@ public class MapUtil {
 		Map<String, String> map = new HashMap<String, String>();
 		JSONObject obj = null;
 		if (object instanceof String) {
-			obj = JSONObject.parseObject(object.toString());
+			obj = JSONObject.parseObject((String) object);
 		} else {
 			obj = ListsuffixResultSerializer.serializeToJSON(object);
 		}
@@ -51,7 +51,7 @@ public class MapUtil {
 
 	/**
 	 * 拼接字符串
-	 * 
+	 *
 	 * @param map
 	 *            对象
 	 * @param encoder

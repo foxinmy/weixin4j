@@ -9,6 +9,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.payment.mch.MerchantResult;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.type.IdQuery;
@@ -17,7 +18,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 商户支付
- * 
+ *
  * @className MchApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月26日
@@ -49,7 +50,7 @@ public class MchApi extends BaseApi {
 
 	/**
 	 * 创建 SSL支付请求
-	 * 
+	 *
 	 * @param certificate
 	 *            *.p12证书文件
 	 * @return
@@ -63,7 +64,7 @@ public class MchApi extends BaseApi {
 
 	/**
 	 * 支付接口请求基本数据
-	 * 
+	 *
 	 * @param idQuery
 	 *            ID信息 可为空
 	 * @return 基础map
@@ -86,5 +87,28 @@ public class MchApi extends BaseApi {
 			map.put(idQuery.getType().getName(), idQuery.getId());
 		}
 		return map;
+	}
+
+	/**
+	 * 微信签名类
+	 *
+	 * @return
+	 */
+	public WeixinSignature getWeixinSignature() {
+		return this.weixinSignature;
+	}
+
+	/**
+	 * 设置商户信息
+	 *
+	 * @param merchant
+	 */
+	protected <T extends MerchantResult> void declareMerchant(T merchant) {
+		merchant.setAppId(weixinAccount.getId());
+		merchant.setMchId(weixinAccount.getMchId());
+		merchant.setDeviceInfo(weixinAccount.getDeviceInfo());
+		merchant.setSubId(weixinAccount.getSubId());
+		merchant.setSubMchId(weixinAccount.getSubMchId());
+		merchant.setNonceStr(RandomUtil.generateString(16));
 	}
 }

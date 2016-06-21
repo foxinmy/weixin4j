@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.util.NameValue;
 
 /**
  * 部门成员对象
- * 
+ *
  * @className User
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月19日
@@ -32,7 +32,7 @@ public class User implements Serializable {
 	 */
 	private String name;
 	/**
-	 * 非必须 成员所属部门id列表。注意，每个部门的直属员工上限为1000个
+	 * 非必须 成员所属部门id列表,不超过20个
 	 */
 	@JSONField(name = "department")
 	private List<Integer> partyIds;

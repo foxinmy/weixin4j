@@ -1,69 +1,89 @@
-package com.foxinmy.weixin4j.token;
+package com.foxinmy.weixin4j.cache;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import com.danga.MemCached.MemCachedClient;
-import com.danga.MemCached.SockIOPool;
-import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.model.Token;
+import com.whalin.MemCached.MemCachedClient;
+import com.whalin.MemCached.SockIOPool;
 
 /**
- * 用Memcache保存Token信息(推荐使用)
- * 
- * @className MemcacheTokenStorager
+ * 用Memcache保存缓存对象(推荐使用)
+ *
+ * @className MemcacheCacheStorager
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年5月11日
  * @since JDK 1.6
  * @see
  */
-public class MemcacheTokenStorager implements TokenStorager {
+public class MemcacheCacheStorager<T extends Cacheable> implements
+		CacheStorager<T> {
 
 	private final MemCachedClient mc;
 
-	public MemcacheTokenStorager(MemcachePoolConfig poolConfig) {
+	public MemcacheCacheStorager() {
+		this(new MemcachePoolConfig());
+	}
+
+	public MemcacheCacheStorager(MemcachePoolConfig poolConfig) {
 		mc = new MemCachedClient();
 		poolConfig.initSocketIO();
+		mc.set(ALLKEY, new HashSet<String>());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Token lookup(String cacheKey) throws WeixinException {
-		return (Token) mc.get(cacheKey);
+	public T lookup(String cacheKey) {
+		return (T) mc.get(cacheKey);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void caching(String cacheKey, Token token) throws WeixinException {
-		if (token.getExpiresIn() > 0) {
-			mc.set(cacheKey, token,
-					new Date(token.getCreateTime() + token.getExpiresIn()
-							* 1000 - CUTMS));
+	public void caching(String cacheKey, T cache) {
+		if (cache.getCreateTime() > 0l) {
+			mc.set(cacheKey,
+					cache,
+					new Date(cache.getCreateTime() + cache.getExpires() - CUTMS));
 		} else {
-			mc.set(cacheKey, token);
+			mc.set(cacheKey, cache);
 		}
+		Set<String> all = (Set<String>) mc.get(ALLKEY);
+		all.add(cacheKey);
+		mc.set(ALLKEY, all);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Token evict(String cacheKey) throws WeixinException {
-		Token token = lookup(cacheKey);
+	public T evict(String cacheKey) {
+		T cache = lookup(cacheKey);
 		mc.delete(cacheKey);
-		return token;
+		Set<String> all = (Set<String>) mc.get(ALLKEY);
+		all.remove(cacheKey);
+		mc.set(ALLKEY, all);
+		return cache;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void clear() throws WeixinException {
-		throw new UnsupportedOperationException();
+	public void clear() {
+		Set<String> all = (Set<String>) mc.get(ALLKEY);
+		for (String key : all) {
+			mc.delete(key);
+		}
+		mc.delete(ALLKEY);
 	}
 
 	public static class MemcachePoolConfig {
-		public final static String HOST = "localhost";
+		public final static String HOST = "127.0.0.1";
 		public final static int PORT = 11211;
 		public final static int WEIGHT = 1;
 
 		public static int minConn = 5;
 		public static int initConn = 5;
 		public static int maxConn = 100;
-		public static long maxIdle = 300000L;
+		public static int maxIdle = 300000;
 		public static long maxBusyTime = 30000L;
 		public static int socketTO = 3000;
 		public static int socketConnectTO = 3000;
@@ -105,7 +125,7 @@ public class MemcacheTokenStorager implements TokenStorager {
 
 		/**
 		 * {host:11211,1}
-		 * 
+		 *
 		 * @param host
 		 *            主机
 		 */
@@ -115,7 +135,7 @@ public class MemcacheTokenStorager implements TokenStorager {
 
 		/**
 		 * {host:port,1}
-		 * 
+		 *
 		 * @param host
 		 *            主机
 		 * @param port
@@ -127,7 +147,7 @@ public class MemcacheTokenStorager implements TokenStorager {
 
 		/**
 		 * {host:port,weight}
-		 * 
+		 *
 		 * @param host
 		 *            主机
 		 * @param port

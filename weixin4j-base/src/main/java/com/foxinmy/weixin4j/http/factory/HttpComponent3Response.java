@@ -12,8 +12,8 @@ import com.foxinmy.weixin4j.http.HttpStatus;
 import com.foxinmy.weixin4j.http.HttpVersion;
 
 /**
- * HttpComponent3 Response
- * 
+ * HttpComponent3 Response:Requires commons-httpclient 3.0 or higher
+ *
  * @className HttpComponent3Response
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月17日

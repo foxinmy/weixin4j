@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Menu;
 import com.foxinmy.weixin4j.mp.model.MenuMatchRule;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
@@ -30,10 +30,10 @@ import com.foxinmy.weixin4j.type.ButtonType;
  */
 public class MenuApi extends MpApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public MenuApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public MenuApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class MenuApi extends MpApi {
 	private WeixinResponse createMenu0(String url, JSONObject data)
 			throws WeixinException {
 		return weixinExecutor.post(
-				String.format(url, tokenHolder.getAccessToken()),
+				String.format(url, tokenManager.getAccessToken()),
 				JSON.toJSONString(data, new NameFilter() {
 					@Override
 					public String process(Object object, String name,
@@ -98,7 +98,7 @@ public class MenuApi extends MpApi {
 
 	private JSONObject getMenu0() throws WeixinException {
 		String menu_get_uri = getRequestUri("menu_get_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				menu_get_uri, token.getAccessToken()));
 		return response.getAsJson();
@@ -150,7 +150,7 @@ public class MenuApi extends MpApi {
 	 */
 	public JsonResult deleteMenu() throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				menu_delete_uri, token.getAccessToken()));
 
@@ -192,7 +192,7 @@ public class MenuApi extends MpApi {
 	 */
 	public JsonResult deleteCustomMenu(String menuId) throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_custom_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("menuid", menuId);
 		WeixinResponse response = weixinExecutor.post(
@@ -216,7 +216,7 @@ public class MenuApi extends MpApi {
 	 */
 	public List<Button> matchCustomMenu(String userId) throws WeixinException {
 		String menu_trymatch_uri = getRequestUri("menu_trymatch_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("user_id", userId);
 		WeixinResponse response = weixinExecutor.post(

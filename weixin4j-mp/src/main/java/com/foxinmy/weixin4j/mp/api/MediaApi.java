@@ -17,7 +17,6 @@ import com.foxinmy.weixin4j.http.ContentType;
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
-import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
@@ -35,7 +34,7 @@ import com.foxinmy.weixin4j.model.MediaRecord;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.type.MediaType;
@@ -47,7 +46,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 素材相关API
- * 
+ *
  * @className MediaApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
@@ -55,16 +54,16 @@ import com.foxinmy.weixin4j.util.StringUtil;
  */
 public class MediaApi extends MpApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public MediaApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public MediaApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
 	 * 上传图片获取URL
 	 * 请注意，本接口所上传的图片不占用公众号的素材库中图片数量的5000个的限制。图片仅支持jpg/png格式，大小必须在1MB以下。
-	 * 
+	 *
 	 * @param is
 	 *            图片数据流
 	 * @param fileName
@@ -81,7 +80,7 @@ public class MediaApi extends MpApi {
 			fileName = String.format("%s.jpg", fileName);
 		}
 		String image_upload_uri = getRequestUri("image_upload_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(String.format(
 				image_upload_uri, token.getAccessToken()),
 				new FormBodyPart("media", new InputStreamBody(is,
@@ -91,7 +90,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 上传群发中的视频素材
-	 * 
+	 *
 	 * @param is
 	 *            图片数据流
 	 * @param fileName
@@ -114,7 +113,7 @@ public class MediaApi extends MpApi {
 		obj.put("title", title);
 		obj.put("description", description);
 		String video_upload_uri = getRequestUri("video_upload_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(video_upload_uri, token.getAccessToken()),
 				obj.toJSONString());
@@ -130,7 +129,7 @@ public class MediaApi extends MpApi {
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
 	 * 否则抛出异常.
 	 * </p>
-	 * 
+	 *
 	 * @param isMaterial
 	 *            是否永久上传
 	 * @param is
@@ -180,7 +179,7 @@ public class MediaApi extends MpApi {
 			throw new WeixinException(
 					"please invoke uploadMaterialVideo method");
 		}
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = null;
 		try {
 			if (isMaterial) {
@@ -222,13 +221,13 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 下载媒体素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            媒体ID
 	 * @param isMaterial
 	 *            是否下载永久素材
 	 * @return 媒体下载结果
-	 * 
+	 *
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.model.MediaDownloadResult
 	 * @see <a
@@ -238,7 +237,7 @@ public class MediaApi extends MpApi {
 	 */
 	public MediaDownloadResult downloadMedia(String mediaId, boolean isMaterial)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		try {
 			HttpRequest request = null;
 			if (isMaterial) {
@@ -252,8 +251,7 @@ public class MediaApi extends MpApi {
 				request = new HttpRequest(HttpMethod.GET, String.format(
 						meida_download_uri, token.getAccessToken(), mediaId));
 			}
-			HttpParams params = weixinExecutor.getExecuteParams();
-			request.setParams(params);
+			request.setParams(weixinExecutor.getExecuteParams());
 			logger.info("weixin request >> " + request.getMethod() + " "
 					+ request.getURI().toString());
 			HttpResponse response = weixinExecutor.getExecuteClient().execute(
@@ -299,7 +297,7 @@ public class MediaApi extends MpApi {
 	 * 、新增的永久素材也可以在公众平台官网素材管理模块中看到,永久素材的数量是有上限的，请谨慎新增。图文消息素材和图片素材的上限为5000，
 	 * 其他类型为1000
 	 * </P>
-	 * 
+	 *
 	 * @param articles
 	 *            图文列表
 	 * @return 上传到微信服务器返回的媒体标识
@@ -310,7 +308,7 @@ public class MediaApi extends MpApi {
 	 */
 	public String uploadMaterialArticle(List<MpArticle> articles)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_article_upload_uri = getRequestUri("material_article_upload_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("articles", articles);
@@ -323,7 +321,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 下载永久图文素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            媒体ID
 	 * @return 图文列表
@@ -342,7 +340,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 更新永久图文素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            要修改的图文消息的id
 	 * @param index
@@ -357,7 +355,7 @@ public class MediaApi extends MpApi {
 	 */
 	public JsonResult updateMaterialArticle(String mediaId, int index,
 			MpArticle article) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_article_update_uri = getRequestUri("material_article_update_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("articles", article);
@@ -372,7 +370,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 删除永久媒体素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            媒体素材的media_id
 	 * @return 处理结果
@@ -382,7 +380,7 @@ public class MediaApi extends MpApi {
 	 */
 	public JsonResult deleteMaterialMedia(String mediaId)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_media_del_uri = getRequestUri("material_media_del_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("media_id", mediaId);
@@ -395,7 +393,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 上传永久视频素材
-	 * 
+	 *
 	 * @param is
 	 *            大小不超过1M且格式为MP4的视频文件
 	 * @param fileName
@@ -418,7 +416,7 @@ public class MediaApi extends MpApi {
 			fileName = String.format("%s.mp4", fileName);
 		}
 		String material_media_upload_uri = getRequestUri("material_media_upload_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		try {
 			JSONObject description = new JSONObject();
 			description.put("title", title);
@@ -446,7 +444,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 获取永久媒体素材的总数</br> .图片和图文消息素材（包括单图文和多图文）的总数上限为5000，其他素材的总数上限为1000
-	 * 
+	 *
 	 * @return 总数对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.model.MediaCounter
@@ -454,7 +452,7 @@ public class MediaApi extends MpApi {
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738733&token=&lang=zh_CN">获取素材总数</a>
 	 */
 	public MediaCounter countMaterialMedia() throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_media_count_uri = getRequestUri("material_media_count_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(
 				material_media_count_uri, token.getAccessToken()));
@@ -465,7 +463,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 获取媒体素材记录列表
-	 * 
+	 *
 	 * @param mediaType
 	 *            素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
 	 * @param pageable
@@ -482,7 +480,7 @@ public class MediaApi extends MpApi {
 	 */
 	public MediaRecord listMaterialMedia(MediaType mediaType, Pageable pageable)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_media_list_uri = getRequestUri("material_media_list_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("type", mediaType.name());
@@ -507,9 +505,9 @@ public class MediaApi extends MpApi {
 						}
 					});
 		} else {
-			mediaRecord = response
-					.getAsObject(new TypeReference<MediaRecord>() {
-					});
+			obj = response.getAsJson();
+			obj.put("items", obj.remove("itemlist"));
+			mediaRecord = JSON.toJavaObject(obj, MediaRecord.class);
 		}
 		mediaRecord.setMediaType(mediaType);
 		mediaRecord.setPageable(pageable);
@@ -518,7 +516,7 @@ public class MediaApi extends MpApi {
 
 	/**
 	 * 获取全部的媒体素材
-	 * 
+	 *
 	 * @param mediaType
 	 *            媒体类型
 	 * @return 素材列表

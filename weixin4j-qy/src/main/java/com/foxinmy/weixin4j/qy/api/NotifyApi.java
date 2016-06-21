@@ -15,12 +15,13 @@ import com.foxinmy.weixin4j.qy.message.CustomeMessage;
 import com.foxinmy.weixin4j.qy.message.NotifyMessage;
 import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.qy.type.KfType;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
+import com.foxinmy.weixin4j.tuple.MpNews;
 import com.foxinmy.weixin4j.tuple.NotifyTuple;
 
 /**
  * 客服消息API
- * 
+ *
  * @className NotifyApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月21日
@@ -39,10 +40,10 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
  */
 public class NotifyApi extends QyApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public NotifyApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public NotifyApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -52,7 +53,7 @@ public class NotifyApi extends QyApi {
 	 * 2）发送人员不在通讯录权限范围内：不执行发送任务，返回首个出错的userid</br>
 	 * 3）发送人员不在应用可见范围内：不执行发送任务，返回首个出错的userid</br>
 	 * </p>
-	 * 
+	 *
 	 * @param message
 	 *            普通消息对象
 	 * @return 如果无权限，则本次发送失败；如果收件人不存在或未关注，发送仍然执行。两种情况下均返回无效的部分</br> { "errcode":
@@ -76,6 +77,11 @@ public class NotifyApi extends QyApi {
 	public IdParameter sendNotifyMessage(NotifyMessage message)
 			throws WeixinException {
 		NotifyTuple tuple = message.getTuple();
+		if (tuple instanceof MpNews) {
+			if (((MpNews) tuple).getArticles().isEmpty()) {
+				throw new WeixinException("notify fail:articles is required");
+			}
+		}
 		Map<String, String> target = message.getTarget().getParameter();
 		String msgtype = tuple.getMessageType();
 		JSONObject obj = (JSONObject) JSON.toJSON(message);
@@ -87,19 +93,19 @@ public class NotifyApi extends QyApi {
 			obj.putAll(target);
 		}
 		String message_send_uri = getRequestUri("message_send_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(message_send_uri, token.getAccessToken()),
 				obj.toJSONString());
 		obj = response.getAsJson();
 		IdParameter idParameter = new IdParameter();
 		if (obj.containsKey("invaliduser")) {
-			idParameter.setUserIds(Arrays.asList(obj.getString("invalidlist")
+			idParameter.setUserIds(Arrays.asList(obj.getString("invaliduser")
 					.split(IdParameter.SEPARATORS)));
 		}
 		if (obj.containsKey("invalidparty")) {
 			List<Integer> partyIds = new ArrayList<Integer>();
-			for (String id : obj.getString("invalidlist").split(
+			for (String id : obj.getString("invalidparty").split(
 					IdParameter.SEPARATORS)) {
 				partyIds.add(Integer.parseInt(id));
 			}
@@ -118,7 +124,7 @@ public class NotifyApi extends QyApi {
 
 	/**
 	 * 发送客服消息
-	 * 
+	 *
 	 * @param message
 	 *            客服消息对象
 	 * @return 发送结果
@@ -140,7 +146,7 @@ public class NotifyApi extends QyApi {
 		obj.put("msgtype", msgtype);
 		obj.put(msgtype, tuple);
 		String message_kf_send_uri = getRequestUri("message_kf_send_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(message_kf_send_uri, token.getAccessToken()),
 				obj.toJSONString());
@@ -149,7 +155,7 @@ public class NotifyApi extends QyApi {
 
 	/**
 	 * 获取客服列表
-	 * 
+	 *
 	 * @param kfType
 	 *            客服类型 为空时返回全部类型的客服
 	 * @return 第一个元素为内部客服(internal),第二个元素为外部客服(external)
@@ -163,7 +169,7 @@ public class NotifyApi extends QyApi {
 		if (kfType != null) {
 			message_kf_list_uri += "&type=" + kfType.name();
 		}
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				message_kf_list_uri, token.getAccessToken()));
 		JSONObject obj = response.getAsJson();

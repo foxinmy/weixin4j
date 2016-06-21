@@ -9,12 +9,21 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.mp.api.HelperApi;
 
-public class HelpTest extends TokenTest {
+/**
+ * 辅助API测试
+ *
+ * @className HelperTest
+ * @author jinyu(foxinmy@gmail.com)
+ * @date 2016年5月24日
+ * @since JDK 1.6
+ * @see
+ */
+public class HelperTest extends TokenTest {
 	private HelperApi helperApi;
 
 	@Before
 	public void init() {
-		helperApi = new HelperApi(tokenHolder);
+		helperApi = new HelperApi(tokenManager);
 	}
 
 	@Test
@@ -31,5 +40,10 @@ public class HelpTest extends TokenTest {
 	@Test
 	public void getAutoReplySetting() throws WeixinException {
 		System.err.println(helperApi.getAutoReplySetting());
+	}
+
+	@Test
+	public void clearQuota() throws WeixinException {
+		System.err.println(helperApi.clearQuota(settings.getAccount().getId()));
 	}
 }

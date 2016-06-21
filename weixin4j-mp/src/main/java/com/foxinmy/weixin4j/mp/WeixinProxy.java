@@ -50,18 +50,19 @@ import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.mp.type.Lang;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.setting.Weixin4jSettings;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.tuple.Tuple;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
-import com.foxinmy.weixin4j.util.Weixin4jSettings;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * 微信公众平台接口实现
- * 
+ *
  * @className WeixinProxy
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年3月23日
@@ -121,89 +122,91 @@ public class WeixinProxy {
 	/**
 	 * token实现
 	 */
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 	/**
 	 * 配置信息
 	 */
-	private Weixin4jSettings settings;
+	private Weixin4jSettings<WeixinAccount> settings;
 
 	/**
 	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinProxy() {
-		this(new Weixin4jSettings());
+		this(new Weixin4jSettings<WeixinAccount>(
+				Weixin4jConfigUtil.getWeixinAccount()));
 	}
 
 	/**
-	 * 
+	 *
 	 * @param settings
 	 *            微信配置信息
-	 * @see com.foxinmy.weixin4j.util.Weixin4jSettings
+	 * @see com.foxinmy.weixin4j.setting.Weixin4jSettings
 	 */
-	public WeixinProxy(Weixin4jSettings settings) {
-		this(new TokenHolder(new WeixinTokenCreator(settings.getWeixinAccount()
-				.getId(), settings.getWeixinAccount().getSecret()),
-				settings.getTokenStorager0()));
+	public WeixinProxy(Weixin4jSettings<WeixinAccount> settings) {
+		this(new TokenManager(new WeixinTokenCreator(settings.getAccount()
+				.getId(), settings.getAccount().getSecret()),
+				settings.getCacheStorager0()));
 		this.settings = settings;
 	}
 
 	/**
 	 * 注意：TokenCreator 需为 <font color="red">WeixinTokenCreator</font>
-	 * 
+	 *
 	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator
-	 * @param tokenHolder
+	 * @param tokenManager
+	 *            token管理
 	 */
-	private WeixinProxy(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
-		this.mediaApi = new MediaApi(tokenHolder);
-		this.notifyApi = new NotifyApi(tokenHolder);
-		this.customApi = new CustomApi(tokenHolder);
-		this.massApi = new MassApi(tokenHolder);
-		this.userApi = new UserApi(tokenHolder);
-		this.groupApi = new GroupApi(tokenHolder);
-		this.menuApi = new MenuApi(tokenHolder);
-		this.qrApi = new QrApi(tokenHolder);
-		this.tmplApi = new TmplApi(tokenHolder);
-		this.helperApi = new HelperApi(tokenHolder);
-		this.dataApi = new DataApi(tokenHolder);
-		this.tagApi = new TagApi(tokenHolder);
+	private WeixinProxy(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
+		this.mediaApi = new MediaApi(tokenManager);
+		this.notifyApi = new NotifyApi(tokenManager);
+		this.customApi = new CustomApi(tokenManager);
+		this.massApi = new MassApi(tokenManager);
+		this.userApi = new UserApi(tokenManager);
+		this.groupApi = new GroupApi(tokenManager);
+		this.menuApi = new MenuApi(tokenManager);
+		this.qrApi = new QrApi(tokenManager);
+		this.tmplApi = new TmplApi(tokenManager);
+		this.helperApi = new HelperApi(tokenManager);
+		this.dataApi = new DataApi(tokenManager);
+		this.tagApi = new TagApi(tokenManager);
 	}
 
 	/**
 	 * 获取微信账号信息
-	 * 
+	 *
 	 * @return
 	 */
 	public WeixinAccount getWeixinAccount() {
-		return this.settings.getWeixinAccount();
+		return this.settings.getAccount();
 	}
 
 	/**
-	 * token获取
-	 * 
+	 * token管理
+	 *
 	 * @return
 	 */
-	public TokenHolder getTokenHolder() {
-		return this.tokenHolder;
+	public TokenManager getTokenManager() {
+		return this.tokenManager;
 	}
 
 	/**
-	 * 获取JSSDK Ticket的tokenHolder
-	 * 
+	 * 获取JSSDK Ticket的tokenManager
+	 *
 	 * @param ticketType
 	 *            票据类型
 	 * @return
 	 */
-	public TokenHolder getTicketHolder(TicketType ticketType) {
-		return new TokenHolder(new WeixinTicketCreator(getWeixinAccount()
-				.getId(), ticketType, this.tokenHolder),
-				this.settings.getTokenStorager0());
+	public TokenManager getTicketManager(TicketType ticketType) {
+		return new TokenManager(new WeixinTicketCreator(getWeixinAccount()
+				.getId(), ticketType, this.tokenManager),
+				this.settings.getCacheStorager0());
 	}
 
 	/**
 	 * 上传图文消息内的图片获取URL
 	 * 请注意，本接口所上传的图片不占用公众号的素材库中图片数量的5000个的限制。图片仅支持jpg/png格式，大小必须在1MB以下。
-	 * 
+	 *
 	 * @param is
 	 *            图片数据流
 	 * @param fileName
@@ -219,7 +222,7 @@ public class WeixinProxy {
 
 	/**
 	 * 上传群发中的视频素材
-	 * 
+	 *
 	 * @param is
 	 *            图片数据流
 	 * @param fileName
@@ -244,7 +247,7 @@ public class WeixinProxy {
 	/**
 	 * 上传媒体文件 </br> <font color="red">此接口只包含图片、语音、缩略图、视频(临时)四种媒体类型的上传</font>
 	 * </p>
-	 * 
+	 *
 	 * @param isMaterial
 	 *            是否永久上传
 	 * @param is
@@ -270,7 +273,7 @@ public class WeixinProxy {
 
 	/**
 	 * 下载媒体文件
-	 * 
+	 *
 	 * @param mediaId
 	 *            媒体ID
 	 * @param isMaterial
@@ -297,7 +300,7 @@ public class WeixinProxy {
 	 * 、新增的永久素材也可以在公众平台官网素材管理模块中看到,永久素材的数量是有上限的，请谨慎新增。图文消息素材和图片素材的上限为5000，
 	 * 其他类型为1000
 	 * </P>
-	 * 
+	 *
 	 * @param articles
 	 *            图文列表
 	 * @return 上传到微信服务器返回的媒体标识
@@ -315,7 +318,7 @@ public class WeixinProxy {
 
 	/**
 	 * 下载永久图文素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            媒体ID
 	 * @return 图文列表
@@ -331,7 +334,7 @@ public class WeixinProxy {
 
 	/**
 	 * 更新永久图文素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            要修改的图文消息的id
 	 * @param index
@@ -353,7 +356,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除永久媒体素材
-	 * 
+	 *
 	 * @param mediaId
 	 *            媒体素材的media_id
 	 * @return 处理结果
@@ -370,7 +373,7 @@ public class WeixinProxy {
 
 	/**
 	 * 上传永久视频素材
-	 * 
+	 *
 	 * @param is
 	 *            大小不超过1M且格式为MP4的视频文件
 	 * @param fileName
@@ -393,7 +396,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取永久媒体素材的总数</br> .图片和图文消息素材（包括单图文和多图文）的总数上限为5000，其他素材的总数上限为1000
-	 * 
+	 *
 	 * @return 总数对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.MediaCounter
@@ -408,7 +411,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取媒体素材记录列表
-	 * 
+	 *
 	 * @param mediaType
 	 *            素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
 	 * @param pageable
@@ -432,7 +435,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取全部的媒体素材
-	 * 
+	 *
 	 * @param mediaType
 	 *            媒体类型
 	 * @return 素材列表
@@ -447,7 +450,7 @@ public class WeixinProxy {
 
 	/**
 	 * 发送客服消息(在48小时内不限制发送次数)
-	 * 
+	 *
 	 * @param notify
 	 *            客服消息对象
 	 * @return 处理结果
@@ -460,7 +463,7 @@ public class WeixinProxy {
 
 	/**
 	 * 发送客服消息(在48小时内不限制发送次数)
-	 * 
+	 *
 	 * @param notify
 	 *            客服消息对象
 	 * @param kfAccount
@@ -485,7 +488,7 @@ public class WeixinProxy {
 
 	/**
 	 * 客服聊天记录
-	 * 
+	 *
 	 * @param startTime
 	 *            查询开始时间
 	 * @param endTime
@@ -507,7 +510,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取公众号中所设置的客服基本信息，包括客服工号、客服昵称、客服登录账号
-	 * 
+	 *
 	 * @param isOnline
 	 *            是否在线 为ture时可以可以获取客服在线状态（手机在线、PC客户端在线、手机和PC客户端全都在线）、客服自动接入最大值、
 	 *            客服当前接待客户数
@@ -529,7 +532,7 @@ public class WeixinProxy {
 
 	/**
 	 * 新增客服账号
-	 * 
+	 *
 	 * @param id
 	 *            完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符。如果没有公众号微信号，
 	 *            请前往微信公众平台设置。
@@ -551,7 +554,7 @@ public class WeixinProxy {
 
 	/**
 	 * 更新客服账号
-	 * 
+	 *
 	 * @param id
 	 *            完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符。如果没有公众号微信号，
 	 *            请前往微信公众平台设置。
@@ -575,7 +578,7 @@ public class WeixinProxy {
 	 * 邀请绑定客服帐号
 	 * 新添加的客服帐号是不能直接使用的，只有客服人员用微信号绑定了客服账号后，方可登录Web客服进行操作。此接口发起一个绑定邀请到客服人员微信号
 	 * ，客服人员需要在微信客户端上用该微信号确认后帐号才可用。尚未绑定微信号的帐号可以进行绑定邀请操作，邀请未失效时不能对该帐号进行再次绑定微信号邀请。
-	 * 
+	 *
 	 * @param kfAccount
 	 *            完整客服帐号，格式为：帐号前缀@公众号微信号
 	 * @param inviteAccount
@@ -594,7 +597,7 @@ public class WeixinProxy {
 
 	/**
 	 * 上传客服头像
-	 * 
+	 *
 	 * @param accountId
 	 *            完整客服账号，格式为：账号前缀@公众号微信号
 	 * @param is
@@ -615,7 +618,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除客服账号
-	 * 
+	 *
 	 * @param id
 	 *            完整客服账号，格式为：账号前缀@公众号微信号
 	 * @return 处理结果
@@ -635,7 +638,7 @@ public class WeixinProxy {
 	 * 开发者可以使用本接口，为多客服的客服工号创建会话，将某个客户直接指定给客服工号接待，需要注意此接口不会受客服自动接入数以及自动接入开关限制。
 	 * 只能为在线的客服（PC客户端在线，或者已绑定多客服助手）创建会话。
 	 * </p>
-	 * 
+	 *
 	 * @param userOpenId
 	 *            用户的userOpenId
 	 * @param kfAccount
@@ -656,7 +659,7 @@ public class WeixinProxy {
 
 	/**
 	 * 关闭客服会话
-	 * 
+	 *
 	 * @param userOpenId
 	 *            用户的userOpenId
 	 * @param kfAccount
@@ -677,7 +680,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取客户的会话状态:获取客户当前的会话状态。
-	 * 
+	 *
 	 * @param userOpenId
 	 *            用户的openid
 	 * @return 会话对象
@@ -694,7 +697,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取客服的会话列表:获取某个客服正在接待的会话列表。
-	 * 
+	 *
 	 * @param kfAccount
 	 *            完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符。
 	 * @return 会话列表
@@ -712,7 +715,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取未接入会话列表:获取当前正在等待队列中的会话列表，此接口最多返回最早进入队列的100个未接入会话
-	 * 
+	 *
 	 * @return 会话列表
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
@@ -728,7 +731,7 @@ public class WeixinProxy {
 
 	/**
 	 * 上传群发的图文消息,一个图文消息支持1到10条图文
-	 * 
+	 *
 	 * @param articles
 	 *            图片消息
 	 * @return 媒体ID
@@ -750,7 +753,7 @@ public class WeixinProxy {
 	 * 在返回成功时,意味着群发任务提交成功,并不意味着此时群发已经结束,所以,仍有可能在后续的发送过程中出现异常情况导致用户未收到消息,
 	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
 	 * </p>
-	 * 
+	 *
 	 * @param MassTuple
 	 *            消息元件
 	 * @param isToAll
@@ -780,7 +783,7 @@ public class WeixinProxy {
 
 	/**
 	 * 分组ID群发图文消息
-	 * 
+	 *
 	 * @param articles
 	 *            图文列表
 	 * @param groupId
@@ -800,12 +803,12 @@ public class WeixinProxy {
 
 	/**
 	 * openId群发
-	 * 
+	 *
 	 * <p>
 	 * 在返回成功时,意味着群发任务提交成功,并不意味着此时群发已经结束,所以,仍有可能在后续的发送过程中出现异常情况导致用户未收到消息,
 	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
 	 * </p>
-	 * 
+	 *
 	 * @param tuple
 	 *            消息元件
 	 * @param openIds
@@ -832,7 +835,7 @@ public class WeixinProxy {
 
 	/**
 	 * 根据openid群发图文消息
-	 * 
+	 *
 	 * @param articles
 	 *            图文列表
 	 * @param openIds
@@ -855,7 +858,7 @@ public class WeixinProxy {
 	 * <p>
 	 * 请注意,只有已经发送成功的消息才能删除删除消息只是将消息的图文详情页失效,已经收到的用户,还是能在其本地看到消息卡片
 	 * </p>
-	 * 
+	 *
 	 * @param msgid
 	 *            发送出去的消息ID
 	 * @throws WeixinException
@@ -864,8 +867,8 @@ public class WeixinProxy {
 	 *      删除群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see {@link #massByGroupId(Tuple, int)}
-	 * @see {@link #massByOpenIds(Tuple, String...)
-	 * 
+	 * @see {@link #massByOpenIds(Tuple, String...)
+	 *
 	 */
 	public JsonResult deleteMassNews(String msgid) throws WeixinException {
 		return massApi.deleteMassNews(msgid);
@@ -873,7 +876,7 @@ public class WeixinProxy {
 
 	/**
 	 * 预览群发消息</br> 开发者可通过该接口发送消息给指定用户，在手机端查看消息的样式和排版
-	 * 
+	 *
 	 * @param toUser
 	 *            接收用户的openID
 	 * @param toWxName
@@ -895,7 +898,7 @@ public class WeixinProxy {
 
 	/**
 	 * 查询群发发送状态
-	 * 
+	 *
 	 * @param msgId
 	 *            消息ID
 	 * @return 消息发送状态
@@ -911,7 +914,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取用户信息
-	 * 
+	 *
 	 * @param openId
 	 *            用户对应的ID
 	 * @return 用户对象
@@ -933,7 +936,7 @@ public class WeixinProxy {
 	 * 在关注者与公众号产生消息交互后,公众号可获得关注者的OpenID（加密后的微信号,每个用户对每个公众号的OpenID是唯一的,对于不同公众号,
 	 * 同一用户的openid不同）,公众号可通过本接口来根据OpenID获取用户基本信息,包括昵称、头像、性别、所在城市、语言和关注时间
 	 * </p>
-	 * 
+	 *
 	 * @param openId
 	 *            用户对应的ID
 	 * @param lang
@@ -953,7 +956,7 @@ public class WeixinProxy {
 
 	/**
 	 * 批量获取用户信息
-	 * 
+	 *
 	 * @param openIds
 	 *            用户ID
 	 * @return 用户列表
@@ -971,7 +974,7 @@ public class WeixinProxy {
 
 	/**
 	 * 批量获取用户信息
-	 * 
+	 *
 	 * @param lang
 	 *            国家地区语言版本
 	 * @param openIds
@@ -992,7 +995,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取公众号一定数量(10000)的关注者列表 <font corlor="red">请慎重使用</font>
-	 * 
+	 *
 	 * @param nextOpenId
 	 *            下一次拉取数据的openid 不填写则默认从头开始拉取
 	 * @return 关注者信息 <font color="red">包含用户的详细信息</font>
@@ -1013,7 +1016,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取公众号一定数量(10000)的关注者列表
-	 * 
+	 *
 	 * @param nextOpenId
 	 *            下一次拉取数据的openid 不填写则默认从头开始拉取
 	 * @return 关注者信息 <font color="red">不包含用户的详细信息</font>
@@ -1035,7 +1038,7 @@ public class WeixinProxy {
 	 * 当公众号关注者数量超过10000时,可通过填写next_openid的值,从而多次拉取列表的方式来满足需求,
 	 * 将上一次调用得到的返回中的next_openid值,作为下一次调用中的next_openid值
 	 * </p>
-	 * 
+	 *
 	 * @return 用户对象集合
 	 * @throws WeixinException
 	 * @see <a href=
@@ -1059,7 +1062,7 @@ public class WeixinProxy {
 	 * 当公众号关注者数量超过10000时,可通过填写next_openid的值,从而多次拉取列表的方式来满足需求,
 	 * 将上一次调用得到的返回中的next_openid值,作为下一次调用中的next_openid值
 	 * </p>
-	 * 
+	 *
 	 * @return 用户openid集合
 	 * @throws WeixinException
 	 * @see <a href=
@@ -1074,7 +1077,7 @@ public class WeixinProxy {
 
 	/**
 	 * 设置用户备注名
-	 * 
+	 *
 	 * @param openId
 	 *            用户ID
 	 * @param remark
@@ -1092,7 +1095,7 @@ public class WeixinProxy {
 
 	/**
 	 * 创建分组
-	 * 
+	 *
 	 * @param name
 	 *            组名称
 	 * @return group对象
@@ -1110,7 +1113,7 @@ public class WeixinProxy {
 
 	/**
 	 * 查询所有分组
-	 * 
+	 *
 	 * @return 组集合
 	 * @throws WeixinException
 	 * @see <a href=
@@ -1125,7 +1128,7 @@ public class WeixinProxy {
 
 	/**
 	 * 查询用户所在分组
-	 * 
+	 *
 	 * @param openId
 	 *            用户对应的ID
 	 * @return 组ID
@@ -1142,7 +1145,7 @@ public class WeixinProxy {
 
 	/**
 	 * 修改分组名
-	 * 
+	 *
 	 * @param groupId
 	 *            组ID
 	 * @param name
@@ -1161,7 +1164,7 @@ public class WeixinProxy {
 
 	/**
 	 * 移动用户到分组
-	 * 
+	 *
 	 * @param groupId
 	 *            组ID
 	 * @param openId
@@ -1180,7 +1183,7 @@ public class WeixinProxy {
 
 	/**
 	 * 批量移动分组
-	 * 
+	 *
 	 * @param groupId
 	 *            组ID
 	 * @param openIds
@@ -1199,7 +1202,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除用户分组,所有该分组内的用户自动进入默认分组.
-	 * 
+	 *
 	 * @param groupId
 	 *            组ID
 	 * @throws WeixinException
@@ -1215,7 +1218,7 @@ public class WeixinProxy {
 
 	/**
 	 * 自定义菜单
-	 * 
+	 *
 	 * @param buttons
 	 *            菜单列表
 	 * @throws WeixinException
@@ -1232,7 +1235,7 @@ public class WeixinProxy {
 
 	/**
 	 * 查询菜单
-	 * 
+	 *
 	 * @return 菜单集合
 	 * @throws WeixinException
 	 * @see <a href=
@@ -1247,7 +1250,7 @@ public class WeixinProxy {
 
 	/**
 	 * 查询全部菜单(包含个性化菜单)
-	 * 
+	 *
 	 * @return 菜单集合
 	 * @throws WeixinException
 	 * @see <a href=
@@ -1266,7 +1269,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除菜单
-	 * 
+	 *
 	 * @throws WeixinException
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141015&token=&lang=zh_CN">
@@ -1280,7 +1283,7 @@ public class WeixinProxy {
 
 	/**
 	 * 创建个性化菜单
-	 * 
+	 *
 	 * @param buttons
 	 *            菜单列表
 	 * @param matchRule
@@ -1300,7 +1303,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除个性化菜单
-	 * 
+	 *
 	 * @throws WeixinException
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN">
@@ -1314,7 +1317,7 @@ public class WeixinProxy {
 
 	/**
 	 * 测试个性化菜单匹配结果
-	 * 
+	 *
 	 * @param userId
 	 *            可以是粉丝的OpenID，也可以是粉丝的微信号。
 	 * @see <a href=
@@ -1331,7 +1334,7 @@ public class WeixinProxy {
 
 	/**
 	 * 生成带参数的二维码
-	 * 
+	 *
 	 * @param parameter
 	 *            二维码参数
 	 * @return 二维码结果对象
@@ -1349,7 +1352,7 @@ public class WeixinProxy {
 
 	/**
 	 * 设置所属行业(每月可修改行业1次，账号仅可使用所属行业中相关的模板)
-	 * 
+	 *
 	 * @param industryTypes
 	 *            所处行业 目前不超过两个
 	 * @return 操作结果
@@ -1367,7 +1370,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取模板ID
-	 * 
+	 *
 	 * @param shortId
 	 *            模板库中模板的编号，有“TM**”和“OPENTMTM**”等形式
 	 * @return 模板ID
@@ -1383,7 +1386,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取模板列表
-	 * 
+	 *
 	 * @return 模板列表
 	 * @see com.foxinmy.weixin4j.mp.model.TemplateMessageInfo
 	 * @see <a href=
@@ -1398,7 +1401,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除模板
-	 * 
+	 *
 	 * @param templateId
 	 *            公众帐号下模板消息ID
 	 * @return 处理结果
@@ -1414,7 +1417,7 @@ public class WeixinProxy {
 
 	/**
 	 * 发送模板消息
-	 * 
+	 *
 	 * @param tplMessage
 	 *            模板消息主体
 	 * @return 发送结果
@@ -1436,7 +1439,7 @@ public class WeixinProxy {
 
 	/**
 	 * 长链接转短链接
-	 * 
+	 *
 	 * @param url
 	 *            待转换的链接
 	 * @return 短链接
@@ -1452,7 +1455,7 @@ public class WeixinProxy {
 
 	/**
 	 * 语义理解
-	 * 
+	 *
 	 * @param semQuery
 	 *            语义理解协议
 	 * @return 语义理解结果
@@ -1470,7 +1473,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取微信服务器IP地址
-	 * 
+	 *
 	 * @return IP地址
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140187&token=&lang=zh_CN">
@@ -1483,9 +1486,25 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 接口调用次数调用清零：公众号调用接口并不是无限制的。为了防止公众号的程序错误而引发微信服务器负载异常，默认情况下，
+	 * 每个公众号调用接口都不能超过一定限制
+	 * ，当超过一定限制时，调用对应接口会收到{"errcode":45009,"errmsg":"api freq out of limit"
+	 * }错误返回码。
+	 *
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433744592&token=&lang=zh_CN">接口清零</a>
+	 * @see com.foxinmy.weixin4j.mp.api.HelperApi
+	 * @return 操作结果
+	 * @throws WeixinException
+	 */
+	public JsonResult clearQuota() throws WeixinException {
+		return helperApi.clearQuota(getWeixinAccount().getId());
+	}
+
+	/**
 	 * 获取公众号当前使用的自定义菜单的配置，如果公众号是通过API调用设置的菜单，则返回菜单的开发配置，
 	 * 而如果公众号是在公众平台官网通过网站功能发布菜单，则本接口返回运营者设置的菜单配置。
-	 * 
+	 *
 	 * @return 菜单集合
 	 * @see {@link #getMenu()}
 	 * @see <a href=
@@ -1503,7 +1522,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取公众号当前使用的自动回复规则，包括关注后自动回复、消息自动回复（60分钟内触发一次）、关键词自动回复。
-	 * 
+	 *
 	 * @see com.foxinmy.weixin4j.mp.model.AutoReplySetting
 	 * @see com.foxinmy.weixin4j.mp.api.HelperApi
 	 * @see <a href=
@@ -1517,7 +1536,7 @@ public class WeixinProxy {
 
 	/**
 	 * 数据统计
-	 * 
+	 *
 	 * @param datacubeType
 	 *            数据统计类型
 	 * @param beginDate
@@ -1555,7 +1574,7 @@ public class WeixinProxy {
 
 	/**
 	 * 数据统计
-	 * 
+	 *
 	 * @param datacubeType
 	 *            统计类型
 	 * @param beginDate
@@ -1573,7 +1592,7 @@ public class WeixinProxy {
 
 	/**
 	 * 数据统计
-	 * 
+	 *
 	 * @param datacubeType
 	 *            统计类型
 	 * @param offset
@@ -1591,7 +1610,7 @@ public class WeixinProxy {
 
 	/**
 	 * 查询日期跨度为0的统计数据(当天)
-	 * 
+	 *
 	 * @param datacubeType
 	 *            统计类型
 	 * @param date
@@ -1607,7 +1626,7 @@ public class WeixinProxy {
 
 	/**
 	 * 创建标签
-	 * 
+	 *
 	 * @param name
 	 *            标签名（30个字符以内）
 	 * @return 标签对象
@@ -1623,7 +1642,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取标签
-	 * 
+	 *
 	 * @return 标签列表
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.TagApi
@@ -1637,7 +1656,7 @@ public class WeixinProxy {
 
 	/**
 	 * 更新标签
-	 * 
+	 *
 	 * @param tag
 	 *            标签对象
 	 * @return 操作结果
@@ -1653,7 +1672,7 @@ public class WeixinProxy {
 
 	/**
 	 * 删除标签
-	 * 
+	 *
 	 * @param tagId
 	 *            标签id
 	 * @return 操作结果
@@ -1668,7 +1687,7 @@ public class WeixinProxy {
 
 	/**
 	 * 批量为用户打标签:标签功能目前支持公众号为用户打上最多三个标签
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @param openIds
@@ -1686,7 +1705,7 @@ public class WeixinProxy {
 
 	/**
 	 * 批量为用户取消标签
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @param openIds
@@ -1704,7 +1723,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取标签下粉丝列表
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @param nextOpenId
@@ -1722,7 +1741,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取标签下粉丝列表 <font corlor="red">请慎重使用</font>
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @param nextOpenId
@@ -1740,7 +1759,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取标签下全部的粉丝列表 <font corlor="red">请慎重使用</font>
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @return 用户openid列表
@@ -1757,7 +1776,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取标签下全部的粉丝列表 <font corlor="red">请慎重使用</font>
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @return 被打标签者信息 <font color="red">包含用户的详细信息</font>
@@ -1773,7 +1792,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取用户身上的标签列表
-	 * 
+	 *
 	 * @param openId
 	 *            用户ID
 	 * @return 标签ID集合
@@ -1787,5 +1806,5 @@ public class WeixinProxy {
 		return tagApi.getUserTags(openId);
 	}
 
-	public final static String VERSION = "1.6.9";
+	public final static String VERSION = "1.7.0";
 }

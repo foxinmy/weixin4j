@@ -28,7 +28,7 @@ public class AgentTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.agentApi = new AgentApi(tokenHolder);
+		this.agentApi = new AgentApi(tokenManager);
 	}
 
 	@Test

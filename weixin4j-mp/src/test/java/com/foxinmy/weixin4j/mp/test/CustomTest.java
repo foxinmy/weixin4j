@@ -22,8 +22,8 @@ import com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter;
 
 /**
  * 客服消息测试
- * 
- * @className MessageNotifyTest
+ *
+ * @className CustomTest
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
@@ -35,7 +35,7 @@ public class CustomTest extends TokenTest {
 
 	@Before
 	public void init() {
-		customApi = new CustomApi(tokenHolder);
+		customApi = new CustomApi(tokenManager);
 	}
 
 	@Test
@@ -75,9 +75,9 @@ public class CustomTest extends TokenTest {
 
 	@Test
 	public void uploadKfAvatar() throws WeixinException, IOException {
-		JsonResult result = customApi.uploadKfAvatar(
-				"temp1@canyidianzhang", new FileInputStream(new File(
-						"/Users/jy/Music/简谱/风动草.jpg")), "风动草.jpg");
+		JsonResult result = customApi.uploadKfAvatar("temp1@canyidianzhang",
+				new FileInputStream(new File("/Users/jy/Music/简谱/风动草.jpg")),
+				"风动草.jpg");
 		Assert.assertEquals(0, result.getCode());
 	}
 

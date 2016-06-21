@@ -4,7 +4,7 @@ import java.nio.charset.Charset;
 
 /**
  * 常量类
- * 
+ *
  * @className Consts
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月3日

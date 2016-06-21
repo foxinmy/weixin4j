@@ -10,12 +10,13 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.mp.api.PayOldApi;
 import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPayAccount;
+import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 
 /**
  * 支付测试（V2版本 2014年9月之前申请微信支付的公众号）
- * 
+ *
  * @className PayTest
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月30日
@@ -24,12 +25,13 @@ import com.foxinmy.weixin4j.type.IdType;
  */
 public class PayTest {
 	protected final static PayOldApi PAY2;
-	protected final static WeixinOldPayAccount ACCOUNT2;
+	protected final static Weixin4jSettings<WeixinOldPayAccount> settings;
 	static {
-		ACCOUNT2 = new WeixinOldPayAccount("请填入v2版本的appid",
-				"请填入v2版本的appSecret", "请填入v2版本的paysignkey", "请填入v2版本的partnerId",
-				"请填入v2版本的partnerKey");
-		PAY2 = new PayOldApi(ACCOUNT2);
+		settings = new Weixin4jSettings<WeixinOldPayAccount>(
+				new WeixinOldPayAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
+						"请填入v2版本的paysignkey", "请填入v2版本的partnerId",
+						"请填入v2版本的partnerKey"));
+		PAY2 = new PayOldApi(settings);
 	}
 	/**
 	 * 商户证书文件

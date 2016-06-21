@@ -3,8 +3,8 @@ package com.foxinmy.weixin4j.http.factory;
 import org.apache.commons.httpclient.HttpClient;
 
 /**
- * 使用Apache的HttpClient3.x
- * 
+ * 使用commons-httpclient3.x
+ *
  * @className HttpComponent3Factory
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月12日

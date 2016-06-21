@@ -1,12 +1,13 @@
 package com.foxinmy.weixin4j.example.server;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.handler.DebugMessageHandler;
-import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
  * 微信消息服务:单独作为一个服务jar包启动
- * 
+ *
  * @className Weixin4jServerStartupWithoutThread
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
@@ -34,14 +35,19 @@ public class Weixin4jServerStartupWithoutThread {
 	/**
 	 * 入口函数 可使用assembly插件打成可执行zip包:https://github.com/foxinmy/weixin4j/wiki/
 	 * assembly%E6%89%93%E5%8C%85
-	 * 
+	 *
 	 * @param args
 	 * @throws WeixinException
 	 */
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws WeixinException {
-		new WeixinServerBootstrap(aesToken)
-				.handlerPackagesToScan(handlerPackage)
-				.addHandler(DebugMessageHandler.global).openAlwaysResponse()
-				.startup(port);
+		// 单独服务启动
+		// new WeixinServerBootstrap(aesToken)
+		// .handlerPackagesToScan(handlerPackage)
+		// .addHandler(DebugMessageHandler.global).openAlwaysResponse()
+		// .startup(port);
+		// spring容器启动
+		ApplicationContext app = new ClassPathXmlApplicationContext(
+				new String[] { "classpath:/spring-bean.xml" });
 	}
 }

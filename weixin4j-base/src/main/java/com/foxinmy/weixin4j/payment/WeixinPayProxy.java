@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
+import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.api.CashApi;
 import com.foxinmy.weixin4j.api.CouponApi;
 import com.foxinmy.weixin4j.api.CustomsApi;
@@ -36,16 +37,17 @@ import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
 import com.foxinmy.weixin4j.payment.mch.RefundResult;
 import com.foxinmy.weixin4j.payment.mch.SettlementRecord;
+import com.foxinmy.weixin4j.setting.Weixin4jSettings;
+import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.CustomsCity;
 import com.foxinmy.weixin4j.type.IdQuery;
-import com.foxinmy.weixin4j.type.TradeType;
-import com.foxinmy.weixin4j.util.Weixin4jSettings;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * 微信支付接口实现
- * 
+ *
  * @className WeixinPayProxy
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月3日
@@ -73,43 +75,55 @@ public class WeixinPayProxy {
 	/**
 	 * 配置信息
 	 */
-	private final Weixin4jSettings settings;
+	private final Weixin4jSettings<WeixinPayAccount> settings;
 
 	/**
 	 * 使用weixin4j.properties配置的支付账号信息
 	 */
 	public WeixinPayProxy() {
-		this(new Weixin4jSettings());
+		this(
+				new Weixin4jSettings<WeixinPayAccount>(JSON.parseObject(
+						Weixin4jConfigUtil.getValue("account"),
+						WeixinPayAccount.class)));
 	}
 
 	/**
 	 *
 	 * @param settings
 	 *            支付相关配置信息
-	 * @see com.foxinmy.weixin4j.util.Weixin4jSettings
+	 * @see com.foxinmy.weixin4j.setting.Weixin4jSettings
 	 */
-	public WeixinPayProxy(Weixin4jSettings settings) {
+	public WeixinPayProxy(Weixin4jSettings<WeixinPayAccount> settings) {
 		this.settings = settings;
-		this.payApi = new PayApi(settings.getWeixinPayAccount());
-		this.couponApi = new CouponApi(settings.getWeixinPayAccount());
-		this.cashApi = new CashApi(settings.getWeixinPayAccount());
-		this.customsApi = new CustomsApi(settings.getWeixinPayAccount());
+		this.payApi = new PayApi(settings.getAccount());
+		this.couponApi = new CouponApi(settings.getAccount());
+		this.cashApi = new CashApi(settings.getAccount());
+		this.customsApi = new CustomsApi(settings.getAccount());
 	}
 
 	/**
-	 * 获取微信商户支付信息
-	 * 
+	 * 获取微信商户账号信息
+	 *
 	 * @return
 	 */
-	public WeixinPayAccount getPayAccount() {
-		return this.settings.getWeixinPayAccount();
+	public WeixinPayAccount getWeixinPayAccount() {
+		return settings.getAccount();
+	}
+
+	/**
+	 * 获取微信签名类
+	 *
+	 * @return
+	 */
+	public WeixinSignature getWeixinSignature() {
+		return payApi.getWeixinSignature();
 	}
 
 	/**
 	 * 统一下单接口</br>
 	 * 除被扫支付场景以外，商户系统先调用该接口在微信支付服务后台生成预支付交易单，返回正确的预支付交易回话标识后再按扫码、JSAPI
 	 * 、APP等不同场景生成交易串调起支付。
-	 * 
+	 *
 	 * @param payPackage
 	 *            包含订单信息的对象
 	 * @see com.foxinmy.weixin4j.api.PayApi
@@ -126,7 +140,7 @@ public class WeixinPayProxy {
 
 	/**
 	 * 创建支付请求对象
-	 * 
+	 *
 	 * @param payPackage
 	 *            支付详情
 	 * @return 支付请求对象
@@ -136,65 +150,17 @@ public class WeixinPayProxy {
 	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest 刷卡支付
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createPayRequest(MchPayPackage payPackage) throws WeixinException {
+	public MchPayRequest createPayRequest(MchPayPackage payPackage)
+			throws WeixinException {
 		return payApi.createPayRequest(payPackage);
 	}
 
 	/**
-	 * 创建支付请求对象【完整参数】
-	 * 
-	 * @param body
-	 *            商品描述 <font color="red">必填项</font>
-	 * @param detail
-	 *            商品名称明细列表 非必填项
-	 * @param outTradeNo
-	 *            商户内部唯一订单号 <font color="red">必填项</font>
-	 * @param totalFee
-	 *            商品总额 单位元 <font color="red">必填项</font>
-	 * @param notifyUrl
-	 *            支付回调URL <font color="red">必填项</font>
-	 * @param createIp
-	 *            订单生成的机器IP <font color="red">必填项</font>
-	 * @param tradeType
-	 *            交易类型 <font color="red">必填项</font>
-	 * @param openId
-	 *            用户ID <font color="red">tradeType=JSAPI时必填</font>
-	 * @param productId
-	 *            产品ID <font color="red">tradeType=NATIVE时必填</font>
-	 * @param attach
-	 *            附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据 非必填项
-	 * @param timeStart
-	 *            订单生成时间，格式为yyyyMMddHHmmss 非必填项
-	 * @param timeExpire
-	 *            订单失效时间，格式为yyyyMMddHHmmss;注意：最短失效时间间隔必须大于5分钟 非必填项
-	 * @param goodsTag
-	 *            商品标记，代金券或立减优惠功能的参数 非必填项
-	 * @param limitPay
-	 *            指定支付方式:no_credit--指定不能使用信用卡支付 非必填项
-	 * @param subOpenId
-	 *            用户在子商户appid下的唯一标识 非必填
-	 *            openid和sub_openid可以选传其中之一，如果选择传sub_openid ,则必须传sub_appid
-	 * @see com.foxinmy.weixin4j.api.PayApi
-	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest JS支付
-	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest 扫码支付
-	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest 刷卡支付
-	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest APP支付
-	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest WAP支付
-	 * @throws WeixinException
-	 */
-	public MchPayRequest createPayRequest(String body, String detail, String outTradeNo, double totalFee,
-			String notifyUrl, String createIp, TradeType tradeType, String openId, String productId, String attach,
-			Date timeStart, Date timeExpire, String goodsTag, String limitPay, String subOpenId)
-			throws WeixinException {
-		return payApi.createPayRequest(body, detail, outTradeNo, totalFee, notifyUrl, createIp, tradeType, openId,
-				productId, attach, timeStart, timeExpire, goodsTag, limitPay, subOpenId);
-	}
-
-	/**
 	 * 创建JSAPI支付请求对象
-	 * 
+	 *
 	 * @param openId
 	 *            用户ID
 	 * @param body
@@ -202,7 +168,7 @@ public class WeixinPayProxy {
 	 * @param outTradeNo
 	 *            订单号
 	 * @param totalFee
-	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
+	 *            订单总额(元)
 	 * @param notifyUrl
 	 *            支付通知地址
 	 * @param createIp
@@ -211,30 +177,28 @@ public class WeixinPayProxy {
 	 *            附加数据 非必填
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @return JSAPI支付对象
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createJSPayRequest(String openId, String body, String outTradeNo, double totalFee,
-			String notifyUrl, String createIp, String attach) throws WeixinException {
-		return payApi.createJSPayRequest(openId, body, outTradeNo, totalFee, notifyUrl, createIp, attach);
+	public MchPayRequest createJSPayRequest(String openId, String body,
+			String outTradeNo, double totalFee, String notifyUrl,
+			String createIp, String attach) throws WeixinException {
+		return payApi.createJSPayRequest(openId, body, outTradeNo, totalFee,
+				notifyUrl, createIp, attach);
 	}
 
 	/**
 	 * <p>
 	 * 生成编辑地址请求
 	 * </p>
-	 * 
-	 * err_msg edit_address:ok获取编辑收货地址成功</br>
-	 * edit_address:fail获取编辑收货地址失败</br>
-	 * userName 收货人姓名</br>
-	 * telNumber 收货人电话</br>
-	 * addressPostalCode 邮编</br>
-	 * proviceFirstStageName 国标收货地址第一级地址</br>
-	 * addressCitySecondStageName 国标收货地址第二级地址</br>
-	 * addressCountiesThirdStageName 国标收货地址第三级地址</br>
-	 * addressDetailInfo 详细收货地址信息</br>
-	 * nationalCode 收货地址国家码</br>
-	 * 
+	 *
+	 * err_msg edit_address:ok获取编辑收货地址成功</br> edit_address:fail获取编辑收货地址失败</br>
+	 * userName 收货人姓名</br> telNumber 收货人电话</br> addressPostalCode 邮编</br>
+	 * proviceFirstStageName 国标收货地址第一级地址</br> addressCitySecondStageName
+	 * 国标收货地址第二级地址</br> addressCountiesThirdStageName 国标收货地址第三级地址</br>
+	 * addressDetailInfo 详细收货地址信息</br> nationalCode 收货地址国家码</br>
+	 *
 	 * @param url
 	 *            当前访问页的URL
 	 * @param oauthToken
@@ -251,7 +215,7 @@ public class WeixinPayProxy {
 
 	/**
 	 * 创建Native支付(扫码支付)链接【模式一】
-	 * 
+	 *
 	 * @param productId
 	 *            与订单ID等价
 	 * @return 支付链接
@@ -269,7 +233,7 @@ public class WeixinPayProxy {
 
 	/**
 	 * 创建Native支付(扫码支付)回调对象【模式一】
-	 * 
+	 *
 	 * @param productId
 	 *            商品ID
 	 * @param body
@@ -295,14 +259,16 @@ public class WeixinPayProxy {
 	 *      </a>
 	 * @throws WeixinException
 	 */
-	public NativePayResponse createNativePayResponse(String productId, String body, String outTradeNo, double totalFee,
-			String notifyUrl, String createIp, String attach) throws WeixinException {
-		return payApi.createNativePayResponse(productId, body, outTradeNo, totalFee, notifyUrl, createIp, attach);
+	public NativePayResponse createNativePayResponse(String productId,
+			String body, String outTradeNo, double totalFee, String notifyUrl,
+			String createIp, String attach) throws WeixinException {
+		return payApi.createNativePayResponse(productId, body, outTradeNo,
+				totalFee, notifyUrl, createIp, attach);
 	}
 
 	/**
 	 * 创建Native支付(扫码支付)链接【模式二】
-	 * 
+	 *
 	 * @param productId
 	 *            商品ID
 	 * @param body
@@ -320,6 +286,7 @@ public class WeixinPayProxy {
 	 * @return Native支付对象
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @see <a href=
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1">扫码支付
 	 *      </a>
@@ -328,14 +295,16 @@ public class WeixinPayProxy {
 	 *      </a>
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createNativePayRequest(String productId, String body, String outTradeNo, double totalFee,
-			String notifyUrl, String createIp, String attach) throws WeixinException {
-		return payApi.createNativePayRequest(productId, body, outTradeNo, totalFee, notifyUrl, createIp, attach);
+	public MchPayRequest createNativePayRequest(String productId, String body,
+			String outTradeNo, double totalFee, String notifyUrl,
+			String createIp, String attach) throws WeixinException {
+		return payApi.createNativePayRequest(productId, body, outTradeNo,
+				totalFee, notifyUrl, createIp, attach);
 	}
 
 	/**
 	 * 创建APP支付请求对象
-	 * 
+	 *
 	 * @param body
 	 *            商品描述
 	 * @param outTradeNo
@@ -351,19 +320,22 @@ public class WeixinPayProxy {
 	 * @return APP支付对象
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @see <a href=
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1">
 	 *      APP支付</a>
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createAppPayRequest(String body, String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinException {
-		return payApi.createAppPayRequest(body, outTradeNo, totalFee, notifyUrl, createIp, attach);
+	public MchPayRequest createAppPayRequest(String body, String outTradeNo,
+			double totalFee, String notifyUrl, String createIp, String attach)
+			throws WeixinException {
+		return payApi.createAppPayRequest(body, outTradeNo, totalFee,
+				notifyUrl, createIp, attach);
 	}
 
 	/**
 	 * 创建WAP支付请求对象
-	 * 
+	 *
 	 * @param body
 	 *            商品描述
 	 * @param outTradeNo
@@ -379,19 +351,22 @@ public class WeixinPayProxy {
 	 * @return WAP支付对象
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @see <a href=
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付
 	 *      </a>
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createWAPPayRequest(String body, String outTradeNo, double totalFee, String notifyUrl,
-			String createIp, String attach) throws WeixinException {
-		return payApi.createWAPPayRequest(body, outTradeNo, totalFee, notifyUrl, createIp, attach);
+	public MchPayRequest createWapPayRequest(String body, String outTradeNo,
+			double totalFee, String notifyUrl, String createIp, String attach)
+			throws WeixinException {
+		return payApi.createWapPayRequest(body, outTradeNo, totalFee,
+				notifyUrl, createIp, attach);
 	}
 
 	/**
 	 * 提交被扫支付
-	 * 
+	 *
 	 * @param authCode
 	 *            扫码支付授权码 ,设备读取用户微信中的条码或者二维码信息
 	 * @param body
@@ -406,27 +381,28 @@ public class WeixinPayProxy {
 	 *            附加数据 非必填
 	 * @return 支付的订单信息
 	 * @see com.foxinmy.weixin4j.api.PayApi
-	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest
 	 * @see com.foxinmy.weixin4j.payment.mch.Order
+	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.MchPayRequest#toRequestString()
 	 * @see <a href=
 	 *      "http://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10">
 	 *      提交被扫支付API</a>
 	 * @throws WeixinException
 	 */
-	public MchPayRequest createMICROPayRequest(String authCode, String body, String outTradeNo, double totalFee,
-			String createIp, String attach) throws WeixinException {
-		return payApi.createMICROPayRequest(authCode, body, outTradeNo, totalFee, createIp, attach);
+	public MchPayRequest createMicroPayRequest(String authCode, String body,
+			String outTradeNo, double totalFee, String createIp, String attach)
+			throws WeixinException {
+		return payApi.createMicroPayRequest(authCode, body, outTradeNo,
+				totalFee, createIp, attach);
 	}
 
 	/**
 	 * 订单查询
 	 * <p>
-	 * 当商户后台、网络、服务器等出现异常，商户系统最终未接收到支付通知；</br>
-	 * 调用支付接口后，返回系统错误或未知交易状态情况；</br>
-	 * 调用被扫支付API，返回USERPAYING的状态；</br>
-	 * 调用关单或撤销接口API之前，需确认支付状态；
+	 * 当商户后台、网络、服务器等出现异常，商户系统最终未接收到支付通知；</br> 调用支付接口后，返回系统错误或未知交易状态情况；</br>
+	 * 调用被扫支付API，返回USERPAYING的状态；</br> 调用关单或撤销接口API之前，需确认支付状态；
 	 * </P>
-	 * 
+	 *
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id、out_trade_no 二 选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
@@ -454,7 +430,7 @@ public class WeixinPayProxy {
 	 * 2.微信支付退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交
 	 * ，要采用原来的退款单号。总退款金额不能超过用户实际支付金额。
 	 * </p>
-	 * 
+	 *
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param idQuery
@@ -470,7 +446,7 @@ public class WeixinPayProxy {
 	 *            货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
 	 * @param opUserId
 	 *            操作员帐号, 默认为商户号
-	 * 
+	 *
 	 * @return 退款申请结果
 	 * @see com.foxinmy.weixin4j.payment.mch.RefundResult
 	 * @see com.foxinmy.weixin4j.api.PayApi
@@ -480,21 +456,25 @@ public class WeixinPayProxy {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery, String outRefundNo, double totalFee,
-			double refundFee, CurrencyType refundFeeType, String opUserId) throws WeixinException {
-		return payApi.applyRefund(certificate, idQuery, outRefundNo, totalFee, refundFee, refundFeeType, opUserId);
+	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery,
+			String outRefundNo, double totalFee, double refundFee,
+			CurrencyType refundFeeType, String opUserId) throws WeixinException {
+		return payApi.applyRefund(certificate, idQuery, outRefundNo, totalFee,
+				refundFee, refundFeeType, opUserId);
 	}
 
 	/**
 	 * 退款申请(全额退款)
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 * @see {@link #applyRefund(InputStream, IdQuery, String, double, double, String,CurrencyType)}
 	 */
-	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo, double totalFee)
-			throws WeixinException, IOException {
-		return payApi.applyRefund(new FileInputStream(settings.getCertificateFile0()), idQuery, outRefundNo, totalFee);
+	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
+			double totalFee) throws WeixinException, IOException {
+		return payApi.applyRefund(
+				new FileInputStream(settings.getCertificateFile0()), idQuery,
+				outRefundNo, totalFee);
 	}
 
 	/**
@@ -502,7 +482,7 @@ public class WeixinPayProxy {
 	 * <p>
 	 * 提交退款申请后，通过调用该接口查询退款状态。退款有一定延时，用零钱支付的退款20分钟内到账，银行卡支付的退款3个工作日后重新查询退款状态。
 	 * </p>
-	 * 
+	 *
 	 * @param idQuery
 	 *            单号 refund_id、out_refund_no、 out_trade_no 、 transaction_id
 	 *            四个参数必填一个,优先级为:
@@ -526,7 +506,7 @@ public class WeixinPayProxy {
 	 * REVOKED;<br>
 	 * 2.微信在次日 9 点启动生成前一天的对账单,建议商户 9 点半后再获取;<br>
 	 * 3.对账单中涉及金额的字段单位为“元”。<br>
-	 * 
+	 *
 	 * @param billDate
 	 *            下载对账单的日期
 	 * @param billType
@@ -540,18 +520,17 @@ public class WeixinPayProxy {
 	 *      下载对账单API</a>
 	 * @throws WeixinException
 	 */
-	public File downloadBill(Date billDate, BillType billType) throws WeixinException {
+	public File downloadBill(Date billDate, BillType billType)
+			throws WeixinException {
 		return payApi.downloadBill(billDate, billType, settings.getTmpdir0());
 	}
 
 	/**
-	 * 冲正订单(需要证书)</br>
-	 * 当支付返回失败,或收银系统超时需要取消交易,可以调用该接口</br>
-	 * 接口逻辑:支 付失败的关单,支付成功的撤销支付</br>
-	 * <font color="red">7天以内的单可撤销,其他正常支付的单 如需实现相同功能请调用退款接口</font></br>
-	 * <font color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font>
-	 * </br>
-	 * 
+	 * 冲正订单(需要证书)</br> 当支付返回失败,或收银系统超时需要取消交易,可以调用该接口</br> 接口逻辑:支
+	 * 付失败的关单,支付成功的撤销支付</br> <font color="red">7天以内的单可撤销,其他正常支付的单
+	 * 如需实现相同功能请调用退款接口</font></br> <font
+	 * color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font> </br>
+	 *
 	 * @param certificate
 	 *            证书文件(V2版本后缀为*.pfx,V3版本后缀为*.p12)
 	 * @param idQuery
@@ -562,13 +541,14 @@ public class WeixinPayProxy {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public MerchantResult reverseOrder(InputStream certificate, IdQuery idQuery) throws WeixinException {
+	public MerchantResult reverseOrder(InputStream certificate, IdQuery idQuery)
+			throws WeixinException {
 		return payApi.reverseOrder(certificate, idQuery);
 	}
 
 	/**
 	 * 冲正撤销
-	 * 
+	 *
 	 * @param idQuery
 	 *            transaction_id、out_trade_no 二选一
 	 * @return 撤销结果
@@ -576,8 +556,10 @@ public class WeixinPayProxy {
 	 * @throws WeixinException
 	 * @throws IOException
 	 */
-	public MerchantResult reverseOrder(IdQuery idQuery) throws WeixinException, IOException {
-		return payApi.reverseOrder(new FileInputStream(settings.getCertificateFile0()), idQuery);
+	public MerchantResult reverseOrder(IdQuery idQuery) throws WeixinException,
+			IOException {
+		return payApi.reverseOrder(
+				new FileInputStream(settings.getCertificateFile0()), idQuery);
 	}
 
 	/**
@@ -586,7 +568,7 @@ public class WeixinPayProxy {
 	 * 商户订单支付失败需要生成新单号重新发起支付，要对原订单号调用关单，避免重复支付；系统下单后，用户支付超时，系统退出不再受理，避免用户继续
 	 * ，请调用关单接口,如果关单失败,返回已完 成支付请按正常支付处理。如果出现银行掉单,调用关单成功后,微信后台会主动发起退款。
 	 * </p>
-	 * 
+	 *
 	 * @param outTradeNo
 	 *            商户系统内部的订单号
 	 * @return 执行结果
@@ -604,7 +586,7 @@ public class WeixinPayProxy {
 	/**
 	 * native支付URL转短链接:用于扫码原生支付模式一中的二维码链接转成短链接(weixin://wxpay/s/XXXXXX)，减小二维码数据量
 	 * ，提升扫描速度和精确度。
-	 * 
+	 *
 	 * @param url
 	 *            具有native标识的支付URL
 	 * @return 转换后的短链接
@@ -621,7 +603,7 @@ public class WeixinPayProxy {
 
 	/**
 	 * 接口上报
-	 * 
+	 *
 	 * @param interfaceUrl
 	 *            上报对应的接口的完整 URL, 类似: https://api.mch.weixin.q
 	 *            q.com/pay/unifiedorder
@@ -642,14 +624,16 @@ public class WeixinPayProxy {
 	 *      接口测试上报API</a>
 	 * @throws WeixinException
 	 */
-	public XmlResult interfaceReport(String interfaceUrl, int executeTime, String outTradeNo, String ip, Date time,
-			XmlResult returnXml) throws WeixinException {
-		return payApi.interfaceReport(interfaceUrl, executeTime, outTradeNo, ip, time, returnXml);
+	public XmlResult interfaceReport(String interfaceUrl, int executeTime,
+			String outTradeNo, String ip, Date time, XmlResult returnXml)
+			throws WeixinException {
+		return payApi.interfaceReport(interfaceUrl, executeTime, outTradeNo,
+				ip, time, returnXml);
 	}
 
 	/**
 	 * 发放代金券(需要证书)
-	 * 
+	 *
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param couponStockId
@@ -668,25 +652,28 @@ public class WeixinPayProxy {
 	 *      发放代金券接口</a>
 	 * @throws WeixinException
 	 */
-	public CouponResult sendCoupon(InputStream certificate, String couponStockId, String partnerTradeNo, String openId,
+	public CouponResult sendCoupon(InputStream certificate,
+			String couponStockId, String partnerTradeNo, String openId,
 			String opUserId) throws WeixinException {
-		return couponApi.sendCoupon(certificate, couponStockId, partnerTradeNo, openId, opUserId);
+		return couponApi.sendCoupon(certificate, couponStockId, partnerTradeNo,
+				openId, opUserId);
 	}
 
 	/**
 	 * 发放代金券
-	 * 
+	 *
 	 * @see {@link com.foxinmy.weixin4j.payment.WeixinPayProxy#sendCoupon(InputStream, String, String, String, String)}
 	 */
-	public CouponResult sendCoupon(String couponStockId, String partnerTradeNo, String openId)
-			throws WeixinException, IOException {
-		return couponApi.sendCoupon(new FileInputStream(settings.getCertificateFile0()), couponStockId, partnerTradeNo,
-				openId, null);
+	public CouponResult sendCoupon(String couponStockId, String partnerTradeNo,
+			String openId) throws WeixinException, IOException {
+		return couponApi.sendCoupon(
+				new FileInputStream(settings.getCertificateFile0()),
+				couponStockId, partnerTradeNo, openId, null);
 	}
 
 	/**
 	 * 查询代金券批次
-	 * 
+	 *
 	 * @param couponStockId
 	 *            代金券批次ID
 	 * @return 代金券批次信息
@@ -697,13 +684,14 @@ public class WeixinPayProxy {
 	 *      查询代金券批次信息接口</a>
 	 * @throws WeixinException
 	 */
-	public CouponStock queryCouponStock(String couponStockId) throws WeixinException {
+	public CouponStock queryCouponStock(String couponStockId)
+			throws WeixinException {
 		return couponApi.queryCouponStock(couponStockId);
 	}
 
 	/**
 	 * 查询代金券详细
-	 * 
+	 *
 	 * @param couponId
 	 *            代金券ID
 	 * @return 代金券详细信息
@@ -714,13 +702,14 @@ public class WeixinPayProxy {
 	 *      查询代金券详细信息接口</a>
 	 * @throws WeixinException
 	 */
-	public CouponDetail queryCouponDetail(String couponId) throws WeixinException {
+	public CouponDetail queryCouponDetail(String couponId)
+			throws WeixinException {
 		return couponApi.queryCouponDetail(couponId);
 	}
 
 	/**
 	 * 发放红包 企业向微信用户个人发现金红包
-	 * 
+	 *
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param redpacket
@@ -737,22 +726,25 @@ public class WeixinPayProxy {
 	 *      发放裂变红包接口</a>
 	 * @throws WeixinException
 	 */
-	public RedpacketSendResult sendRedpack(InputStream certificate, Redpacket redpacket) throws WeixinException {
+	public RedpacketSendResult sendRedpack(InputStream certificate,
+			Redpacket redpacket) throws WeixinException {
 		return cashApi.sendRedpack(certificate, redpacket);
 	}
 
 	/**
 	 * 发放红包
-	 * 
+	 *
 	 * @see {@link #sendRedpack(InputStream, Redpacket)}
 	 */
-	public RedpacketSendResult sendRedpack(Redpacket redpacket) throws WeixinException, IOException {
-		return cashApi.sendRedpack(new FileInputStream(settings.getCertificateFile0()), redpacket);
+	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+			throws WeixinException, IOException {
+		return cashApi.sendRedpack(
+				new FileInputStream(settings.getCertificateFile0()), redpacket);
 	}
 
 	/**
 	 * 查询红包记录
-	 * 
+	 *
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param outTradeNo
@@ -768,22 +760,36 @@ public class WeixinPayProxy {
 	 *      查询裂变红包接口</a>
 	 * @throws WeixinException
 	 */
-	public RedpacketRecord queryRedpack(InputStream certificate, String outTradeNo) throws WeixinException {
+	public RedpacketRecord queryRedpack(InputStream certificate,
+			String outTradeNo) throws WeixinException {
 		return cashApi.queryRedpack(certificate, outTradeNo);
 	}
 
 	/**
 	 * 查询红包
-	 * 
+	 *
 	 * @see {@link #queryRedpack(InputStream,String)}
 	 */
-	public RedpacketRecord queryRedpack(String outTradeNo) throws WeixinException, IOException {
-		return cashApi.queryRedpack(new FileInputStream(settings.getCertificateFile0()), outTradeNo);
+	public RedpacketRecord queryRedpack(String outTradeNo)
+			throws WeixinException, IOException {
+		return cashApi
+				.queryRedpack(
+						new FileInputStream(settings.getCertificateFile0()),
+						outTradeNo);
 	}
 
 	/**
 	 * 企业付款 实现企业向个人付款，针对部分有开发能力的商户， 提供通过API完成企业付款的功能。 比如目前的保险行业向客户退保、给付、理赔。
-	 * 
+	 * <p>
+	 * 接口调用规则：
+	 * <p>
+	 * <li>给同一个实名用户付款，单笔单日限额2W/2W
+	 * <li>给同一个非实名用户付款，单笔单日限额2000/2000
+	 * <li>一个商户同一日付款总额限额100W
+	 * <li>单笔最小金额默认为1元
+	 * <li>每个用户每天最多可付款10次，可以在商户平台--API安全进行设置
+	 * <li>给同一个用户付款时间间隔不得低于15秒
+	 *
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param payment
@@ -797,22 +803,25 @@ public class WeixinPayProxy {
 	 *      企业付款接口</a>
 	 * @throws WeixinException
 	 */
-	public CorpPaymentResult sendCorpPayment(InputStream certificate, CorpPayment payment) throws WeixinException {
+	public CorpPaymentResult sendCorpPayment(InputStream certificate,
+			CorpPayment payment) throws WeixinException {
 		return cashApi.sendCorpPayment(certificate, payment);
 	}
 
 	/**
 	 * 企业付款
-	 * 
+	 *
 	 * @see {@link #sendCorpPayment(InputStream, CorpPayment)}
 	 */
-	public CorpPaymentResult sendCorpPayment(CorpPayment payment) throws WeixinException, IOException {
-		return cashApi.sendCorpPayment(new FileInputStream(settings.getCertificateFile0()), payment);
+	public CorpPaymentResult sendCorpPayment(CorpPayment payment)
+			throws WeixinException, IOException {
+		return cashApi.sendCorpPayment(
+				new FileInputStream(settings.getCertificateFile0()), payment);
 	}
 
 	/**
 	 * 企业付款查询 用于商户的企业付款操作进行结果查询，返回付款操作详细结果
-	 * 
+	 *
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param outTradeNo
@@ -825,22 +834,27 @@ public class WeixinPayProxy {
 	 *      企业付款查询接口</a>
 	 * @throws WeixinException
 	 */
-	public CorpPaymentRecord queryCorpPayment(InputStream certificate, String outTradeNo) throws WeixinException {
+	public CorpPaymentRecord queryCorpPayment(InputStream certificate,
+			String outTradeNo) throws WeixinException {
 		return cashApi.queryCorpPayment(certificate, outTradeNo);
 	}
 
 	/**
 	 * 企业付款查询
-	 * 
+	 *
 	 * @see {@link #CorpPaymentRecord(InputStream, String)}
 	 */
-	public CorpPaymentRecord queryCorpPayment(String outTradeNo) throws WeixinException, IOException {
-		return cashApi.queryCorpPayment(new FileInputStream(settings.getCertificateFile0()), outTradeNo);
+	public CorpPaymentRecord queryCorpPayment(String outTradeNo)
+			throws WeixinException, IOException {
+		return cashApi
+				.queryCorpPayment(
+						new FileInputStream(settings.getCertificateFile0()),
+						outTradeNo);
 	}
 
 	/**
 	 * 授权码查询OPENID
-	 * 
+	 *
 	 * @param authCode
 	 *            扫码支付授权码，设备读取用户微信中的条码或者二维码信息
 	 * @return 查询结果
@@ -857,7 +871,7 @@ public class WeixinPayProxy {
 
 	/**
 	 * 查询结算资金
-	 * 
+	 *
 	 * @param status
 	 *            是否结算
 	 * @param pageable
@@ -874,14 +888,14 @@ public class WeixinPayProxy {
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/external/micropay.php?chapter=9_14&index=7">
 	 *      查询结算资金接口</a>
 	 */
-	public SettlementRecord querySettlement(boolean status, Pageable pageable, Date start, Date end)
-			throws WeixinException {
+	public SettlementRecord querySettlement(boolean status, Pageable pageable,
+			Date start, Date end) throws WeixinException {
 		return cashApi.querySettlement(status, pageable, start, end);
 	}
 
 	/**
 	 * 查询汇率
-	 * 
+	 *
 	 * @param currencyType
 	 *            外币币种
 	 * @param date
@@ -893,13 +907,14 @@ public class WeixinPayProxy {
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/external/micropay.php?chapter=9_15&index=8">
 	 *      查询汇率接口</a>
 	 */
-	public double queryExchageRate(CurrencyType currencyType, Date date) throws WeixinException {
+	public double queryExchageRate(CurrencyType currencyType, Date date)
+			throws WeixinException {
 		return cashApi.queryExchageRate(currencyType, date);
 	}
 
 	/**
 	 * 订单附加信息提交
-	 * 
+	 *
 	 * @param customsOrder
 	 *            附加订单信息
 	 * @return 报关结果
@@ -911,13 +926,14 @@ public class WeixinPayProxy {
 	 *      附加订单信息提交接口</a>
 	 * @throws WeixinException
 	 */
-	public CustomsOrderResult declareCustomsOrder(CustomsOrder customsOrder) throws WeixinException {
+	public CustomsOrderResult declareCustomsOrder(CustomsOrder customsOrder)
+			throws WeixinException {
 		return customsApi.declareCustomsOrder(customsOrder);
 	}
 
 	/**
 	 * 订单附加信息查询
-	 * 
+	 *
 	 * @param idQuery
 	 *            out_trade_no,transaction_id,sub_order_no,sub_order_id四选一
 	 * @param customsCity
@@ -930,9 +946,10 @@ public class WeixinPayProxy {
 	 *      附加订单信息查询接口</a>
 	 * @throws WeixinException
 	 */
-	public CustomsOrderRecord queryCustomsOrder(IdQuery idQuery, CustomsCity customsCity) throws WeixinException {
+	public CustomsOrderRecord queryCustomsOrder(IdQuery idQuery,
+			CustomsCity customsCity) throws WeixinException {
 		return customsApi.queryCustomsOrder(idQuery, customsCity);
 	}
 
-	public final static String VERSION = "1.6.9";
+	public final static String VERSION = "1.7.0";
 }

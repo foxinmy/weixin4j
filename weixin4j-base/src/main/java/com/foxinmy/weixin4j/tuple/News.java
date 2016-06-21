@@ -13,7 +13,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * <p>
  * <font color="red">可用于「客服消息」</font>
  * </p>
- * 
+ *
  * @className News
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月21日
@@ -36,7 +36,7 @@ public class News implements NotifyTuple {
 
 	/**
 	 * 图文列表
-	 * 
+	 *
 	 * @see com.foxinmy.weixin4j.tuple.Article
 	 */
 	@JSONField(name = "articles")
@@ -47,6 +47,17 @@ public class News implements NotifyTuple {
 		this.articles = new LinkedList<Article>();
 	}
 
+	/**
+	 *
+	 * @param title
+	 *            标题
+	 * @param desc
+	 *            描述
+	 * @param picUrl
+	 *            图片链接
+	 * @param url
+	 *            跳转URL
+	 */
 	public News addArticle(String title, String desc, String picUrl, String url) {
 		return addArticle(new Article(title, desc, picUrl, url));
 	}

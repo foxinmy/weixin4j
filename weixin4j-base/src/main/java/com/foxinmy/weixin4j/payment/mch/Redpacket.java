@@ -126,42 +126,6 @@ public class Redpacket extends MerchantResult {
 	public Redpacket(String outTradeNo, String sendName, String openId,
 			double totalAmount, int totalNum, String wishing, String clientIp,
 			String actName, String remark) {
-		this(null, null, outTradeNo, sendName, openId, totalAmount, totalNum,
-				wishing, clientIp, actName, remark);
-	}
-
-	/**
-	 * 红包 完整参数
-	 *
-	 * @param msgAppId
-	 *            触达用户appid 服务商模式下触达用户时的appid(可填服务商自己的appid或子商户的appid)，服务商模式下必填，
-	 *            服务商模式下填入的子商户appid必须在微信支付商户平台中先录入，否则会校验不过。
-	 * @param consumeMchId
-	 *            常规模式下无效，服务商模式下选填，服务商模式下不填默认扣子商户的钱
-	 * @param outTradeNo
-	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
-	 * @param sendName
-	 *            红包发送者名称 必填
-	 * @param openid
-	 *            接受收红包的用户的openid 必填
-	 * @param totalAmount
-	 *            付款金额 <font color="red">单位为元,自动格式化为分</font> 必填
-	 * @param totalNum
-	 *            红包发放总人数 大于1视为裂变红包 必填
-	 * @param wishing
-	 *            红包祝福语 必填
-	 * @param clientIp
-	 *            Ip地址 必填
-	 * @param actName
-	 *            活动名称 必填
-	 * @param remark
-	 *            备注 必填
-	 */
-	public Redpacket(String msgAppId, String consumeMchId, String outTradeNo,
-			String sendName, String openId, double totalAmount, int totalNum,
-			String wishing, String clientIp, String actName, String remark) {
-		this.msgAppId = msgAppId;
-		this.consumeMchId = consumeMchId;
 		this.outTradeNo = outTradeNo;
 		this.sendName = sendName;
 		this.openId = openId;
@@ -212,6 +176,22 @@ public class Redpacket extends MerchantResult {
 
 	public String getRemark() {
 		return remark;
+	}
+
+	public String getMsgAppId() {
+		return msgAppId;
+	}
+
+	public void setMsgAppId(String msgAppId) {
+		this.msgAppId = msgAppId;
+	}
+
+	public String getConsumeMchId() {
+		return consumeMchId;
+	}
+
+	public void setConsumeMchId(String consumeMchId) {
+		this.consumeMchId = consumeMchId;
 	}
 
 	@Override

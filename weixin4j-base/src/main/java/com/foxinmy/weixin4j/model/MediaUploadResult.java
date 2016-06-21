@@ -1,15 +1,13 @@
 package com.foxinmy.weixin4j.model;
 
-import com.alibaba.fastjson.annotation.JSONCreator;
-import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.MediaType;
-
 import java.io.Serializable;
 import java.util.Date;
 
+import com.foxinmy.weixin4j.type.MediaType;
+
 /**
  * 媒体文件上传结果
- * 
+ *
  * @className MediaUploadResult
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年7月25日
@@ -27,11 +25,8 @@ public class MediaUploadResult implements Serializable {
 	 */
 	private String url;
 
-	@JSONCreator
-	public MediaUploadResult(@JSONField(name = "media_id") String mediaId,
-			@JSONField(name = "type") MediaType mediaType,
-			@JSONField(name = "created_at") Date createdAt,
-			@JSONField(name = "url") String url) {
+	public MediaUploadResult(String mediaId, MediaType mediaType,
+			Date createdAt, String url) {
 		this.mediaId = mediaId;
 		this.mediaType = mediaType;
 		this.createdAt = createdAt;

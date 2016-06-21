@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.type.TradeType;
 
 /**
  * 支付订单详情
- * 
+ *
  * @className MchPayPackage
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月21日
@@ -71,7 +71,7 @@ public class MchPayPackage extends PayPackage {
 
 	/**
 	 * 微信支付
-	 * 
+	 *
 	 * @param body
 	 *            支付详情 必填
 	 * @param outTradeNo
@@ -103,39 +103,37 @@ public class MchPayPackage extends PayPackage {
 
 	/**
 	 * 完整参数
-	 * 
+	 *
 	 * @param body
-	 *            支付详情 必填
+	 *            商品描述 <font color="red">必填项</font>
 	 * @param detail
-	 *            订单详情 非必填
+	 *            商品名称明细列表 非必填项
 	 * @param outTradeNo
-	 *            商户侧订单号 必填
+	 *            商户内部唯一订单号 <font color="red">必填项</font>
 	 * @param totalFee
-	 *            支付金额(单位元) 必填
+	 *            商品总额 单位元 <font color="red">必填项</font>
 	 * @param notifyUrl
-	 *            支付回调URL 必填
+	 *            支付回调URL <font color="red">必填项</font>
 	 * @param createIp
-	 *            发起支付的IP地址 必填
+	 *            订单生成的机器IP <font color="red">必填项</font>
 	 * @param tradeType
-	 *            支付类型 必填
+	 *            交易类型 <font color="red">必填项</font>
 	 * @param openId
-	 *            用户唯一标识 公众号JSAPI支付必填
+	 *            用户ID <font color="red">tradeType=JSAPI时必填</font>
 	 * @param authCode
-	 *            支付授权码 刷卡MICROPAY支付必填
+	 *            刷卡支付授权码 <font color="red">tradeType=MICROPAY时必填</font>
 	 * @param productId
-	 *            商品ID 扫码NATIVE支付必填
+	 *            产品ID <font color="red">tradeType=NATIVE时必填</font>
 	 * @param attach
-	 *            支付时附加信息 非必填
+	 *            附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据 非必填项
 	 * @param timeStart
-	 *            订单生成时间 非必填
+	 *            订单生成时间，格式为yyyyMMddHHmmss 非必填项
 	 * @param timeExpire
-	 *            订单失效时间 非必填
+	 *            订单失效时间，格式为yyyyMMddHHmmss;注意：最短失效时间间隔必须大于5分钟 非必填项
 	 * @param goodsTag
-	 *            商品标记 非必填
-	 * @param productId
-	 *            商品ID native支付必填
+	 *            商品标记，代金券或立减优惠功能的参数 非必填项
 	 * @param limitPay
-	 *            指定支付方式 非必填
+	 *            指定支付方式:no_credit--指定不能使用信用卡支付 非必填项
 	 * @param subOpenId
 	 *            用户在子商户appid下的唯一标识 非必填
 	 *            openid和sub_openid可以选传其中之一，如果选择传sub_openid ,则必须传sub_appid
@@ -147,7 +145,9 @@ public class MchPayPackage extends PayPackage {
 			String goodsTag, String limitPay, String subOpenId) {
 		super(body, detial, outTradeNo, totalFee, notifyUrl, createIp, attach,
 				timeStart, timeExpire, goodsTag);
-		this.tradeType = tradeType.name();
+		if (tradeType.isPayRequestParameter()) {
+			this.tradeType = tradeType.name();
+		}
 		this.openId = openId;
 		this.authCode = authCode;
 		this.productId = productId;

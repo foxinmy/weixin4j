@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.http.weixin.JsonResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
@@ -29,10 +29,10 @@ import com.foxinmy.weixin4j.type.ButtonType;
  */
 public class MenuApi extends QyApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public MenuApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public MenuApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class MenuApi extends QyApi {
 	 */
 	public JsonResult createMenu(int agentid, List<Button> buttons) throws WeixinException {
 		String menu_create_uri = getRequestUri("menu_create_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("button", buttons);
 		WeixinResponse response = weixinExecutor.post(String.format(menu_create_uri, token.getAccessToken(), agentid),
@@ -91,7 +91,7 @@ public class MenuApi extends QyApi {
 	 */
 	public List<Button> getMenu(int agentid) throws WeixinException {
 		String menu_get_uri = getRequestUri("menu_get_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(menu_get_uri, token.getAccessToken(), agentid));
 
 		JSONArray buttons = response.getAsJson().getJSONObject("menu").getJSONArray("button");
@@ -121,7 +121,7 @@ public class MenuApi extends QyApi {
 	 */
 	public JsonResult deleteMenu(int agentid) throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(menu_delete_uri, token.getAccessToken(), agentid));
 
 		return response.getAsJsonResult();

@@ -28,7 +28,7 @@ public class TagTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.tagApi = new TagApi(tokenHolder);
+		this.tagApi = new TagApi(tokenManager);
 	}
 
 	@Test

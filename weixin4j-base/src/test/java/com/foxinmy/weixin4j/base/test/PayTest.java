@@ -15,21 +15,22 @@ import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.WeixinPayProxy;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
+import com.foxinmy.weixin4j.payment.mch.MchPayRequest;
 import com.foxinmy.weixin4j.payment.mch.MerchantResult;
 import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.payment.mch.PrePay;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
 import com.foxinmy.weixin4j.payment.mch.RefundResult;
+import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.TradeType;
-import com.foxinmy.weixin4j.util.Weixin4jSettings;
 
 /**
  * 支付测试（商户平台）
- * 
+ *
  * @className PayTest
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月30日
@@ -149,5 +150,17 @@ public class PayTest {
 		returnXml = PAY.interfaceReport(interfaceUrl, executeTime, outTradeNo,
 				ip, time, returnXml);
 		System.err.println(returnXml);
+	}
+
+	@Test
+	public void testMicroPay() throws WeixinException {
+		String authCode = "扫描码";
+		String body = "商品描述";
+		String outTradeNo = "M001";
+		double totalFee = 1d;
+		String createIp = "127.0.0.1";
+		MchPayRequest request = PAY.createMicroPayRequest(authCode, body,
+				outTradeNo, totalFee, createIp, null);
+		System.err.println(request);
 	}
 }

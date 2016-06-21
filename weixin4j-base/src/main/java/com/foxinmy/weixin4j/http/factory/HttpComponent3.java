@@ -43,8 +43,8 @@ import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
- * Apache HttpComponent 3.x
- * 
+ * Requires commons-httpclient 3.0 or higher
+ *
  * @className HttpComponent3
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月18日
@@ -116,8 +116,11 @@ public class HttpComponent3 extends AbstractHttpClient {
 				httpClient.getHttpConnectionManager().getParams()
 						.setSendBufferSize(params.getChunkSize());
 				httpMethod.getParams().setSoTimeout(params.getSocketTimeout());
-				httpMethod.getParams().setHttpElementCharset(Consts.UTF_8.name());
-				httpMethod.getParams().setUriCharset(Consts.UTF_8.name());
+				httpMethod.getParams().setHttpElementCharset(
+						Consts.UTF_8.name());
+				httpMethod.getParams().setParameter(
+						"http.protocol.uri-charset", Consts.UTF_8.name());
+				// httpMethod.getParams().setUriCharset(Consts.UTF_8.name());
 				httpMethod.getParams().setContentCharset(Consts.UTF_8.name());
 			}
 			if (useSSL) {
@@ -143,8 +146,7 @@ public class HttpComponent3 extends AbstractHttpClient {
 			if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
 				headers.set(HttpHeaders.USER_AGENT, "apache/httpclient3");
 			}
-			for (Entry<String, List<String>> header : headers
-					.entrySet()) {
+			for (Entry<String, List<String>> header : headers.entrySet()) {
 				if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
 					httpMethod.setRequestHeader(header.getKey(),
 							StringUtil.join(header.getValue(), ';'));

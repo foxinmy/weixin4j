@@ -24,7 +24,7 @@ public class GroupTest extends TokenTest {
 
 	@Before
 	public void init() {
-		groupApi = new GroupApi(tokenHolder);
+		groupApi = new GroupApi(tokenManager);
 	}
 
 	@Test

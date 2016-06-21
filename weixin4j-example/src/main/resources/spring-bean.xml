@@ -9,7 +9,7 @@
 	<!-- 微信接口代理～start -->
 	<bean id="weixinProxy" class="com.foxinmy.weixin4j.mp.WeixinProxy">
 		<constructor-arg>
-			<bean class="com.foxinmy.weixin4j.util.Weixin4jSettings">
+			<bean class="com.foxinmy.weixin4j.setting.Weixin4jSettings">
 				<!-- 公众号信息:不声明则默认使用weixin4j.properties配置的weixin4j.account字段 -->
 				<constructor-arg>
 					<bean class="com.foxinmy.weixin4j.model.WeixinAccount">
@@ -39,7 +39,7 @@
 				</property -->
 				<!-- http参数:http请求时的参数,比如代理、超时等配置信息,暂时还未实现 -->
 				<property name="httpParams">
-					<bean class="com.foxinmy.weixin4j.http.HttpParams" />
+					<bean class="com.foxinmy.weixin4j.http.HttpParams"/>
 				</property>
 				<!-- 临时目录:weixin4j调用某些接口时需要用到的临时目录,不声明则获取顺序为:weixin4j.properties#weixin4j.tmpdir->`java.io.tmp` -->
 				<property name="tmpdir" value="/tmp/weixin4j" />
@@ -51,7 +51,7 @@
 	<!-- 微信支付接口代理～start -->
 	<bean id="weixinPayProxy" class="com.foxinmy.weixin4j.payment.WeixinPayProxy">
 		<constructor-arg>
-			<bean class="com.foxinmy.weixin4j.util.Weixin4jSettings">
+			<bean class="com.foxinmy.weixin4j.setting.Weixin4jSettings">
 				<!-- 商户信息:不声明则默认使用weixin4j.properties配置的weixin4j.account字段 -->
 				<constructor-arg>
 					<bean class="com.foxinmy.weixin4j.model.WeixinPayAccount">
@@ -64,7 +64,7 @@
 				<property name="certificateFile" value="/path/to/certificate/file" />
 				<!-- http参数:http请求时的参数,比如代理、超时等配置信息,暂时还未实现 -->
 				<property name="httpParams">
-					<bean class="com.foxinmy.weixin4j.http.HttpParams" />
+					<bean class="com.foxinmy.weixin4j.http.HttpParams"/>
 				</property>
 				<!-- 临时目录:weixin4j调用某些接口时需要用到的临时目录,不声明则获取顺序为:weixin4j.properties#weixin4j.tmpdir->`java.io.tmp` -->
 				<property name="tmpdir" value="/tmp/weixin4j" />
@@ -75,7 +75,7 @@
 
 	<!-- 微信消息服务～start -->
 	<bean
-		class="com.foxinmy.weixin4j.example.server.Weixin4jServerStartupWithThread">
+		class="com.foxinmy.weixin4j.example.server.Weixin4jServerStartupWithThread" init-method="start" destroy-method="stop">
 		<!-- 端口号 微信暂时只支持80端口 所以需要自己把微信被动消息请求转发(nginx等)到这个端口上来 -->
 		<constructor-arg index="0" value="30000" />
 		<!-- token信息 -->
@@ -85,8 +85,8 @@
 				<constructor-arg index="0" value="weixin4j" />
 			</bean>
 			<!-- 加密模式 -->
-			<!-- bean class="com.foxinmy.weixin4j.util.AesToken"> <constructor-arg 
-				index="0" value="公众号的应用ID(appid/corpid)" /> <constructor-arg index="1" value="开发者Token" 
+			<!-- bean class="com.foxinmy.weixin4j.util.AesToken"> <constructor-arg
+				index="0" value="公众号的应用ID(appid/corpid)" /> <constructor-arg index="1" value="开发者Token"
 				/> <constructor-arg index="2" value="解密的EncodingAESKey" /> </bean -->
 		</constructor-arg>
 		<!-- 处理微信消息的全限包名 -->

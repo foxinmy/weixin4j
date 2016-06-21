@@ -23,10 +23,9 @@ public class HttpClientTest {
 	static HttpRequest request = new HttpRequest(HttpMethod.GET,
 			"http://www.iteye.com/");
 	static {
-		HttpParams params = new HttpParams();
-		params.setProxy(new Proxy(Type.HTTP, new InetSocketAddress(
-				"117.136.234.9", 80)));
-		//request.setParams(params);
+		HttpParams params = new HttpParams().setProxy(new Proxy(Type.HTTP,
+				new InetSocketAddress("117.136.234.9", 80)));
+		// request.setParams(params);
 	}
 
 	public static void test1() throws HttpClientException {
@@ -68,6 +67,6 @@ public class HttpClientTest {
 
 	public static void main(String[] args) throws Exception {
 		test1();
-		
+
 	}
 }

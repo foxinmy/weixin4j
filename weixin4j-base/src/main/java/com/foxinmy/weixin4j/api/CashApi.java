@@ -27,7 +27,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 现金API
- * 
+ *
  * @className CashApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月28日
@@ -47,7 +47,7 @@ public class CashApi extends MchApi {
 
 	/**
 	 * 发放红包 企业向微信用户个人发现金红包
-	 * 
+	 *
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param redpacket
@@ -63,16 +63,18 @@ public class CashApi extends MchApi {
 	 *      发放裂变红包接口</a>
 	 * @throws WeixinException
 	 */
-	public RedpacketSendResult sendRedpack(InputStream certificate, Redpacket redpacket) throws WeixinException {
-		redpacket.declareWeixinPayAccount(weixinAccount);
+	public RedpacketSendResult sendRedpack(InputStream certificate,
+			Redpacket redpacket) throws WeixinException {
+		super.declareMerchant(redpacket);
 		JSONObject obj = (JSONObject) JSON.toJSON(redpacket);
 		obj.put("wxappid", obj.remove("appid"));
 		obj.put("sign", weixinSignature.sign(obj));
 		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;
 		try {
-			response = createSSLRequestExecutor(certificate).post(redpacket.getTotalNum() > 1
-					? getRequestUri("groupredpack_send_uri") : getRequestUri("redpack_send_uri"), param);
+			response = createSSLRequestExecutor(certificate)
+					.post(redpacket.getTotalNum() > 1 ? getRequestUri("groupredpack_send_uri")
+							: getRequestUri("redpack_send_uri"), param);
 		} finally {
 			if (certificate != null) {
 				try {
@@ -82,14 +84,15 @@ public class CashApi extends MchApi {
 				}
 			}
 		}
-		String text = response.getAsString().replaceFirst("<wxappid>", "<appid>").replaceFirst("</wxappid>",
-				"</appid>");
+		String text = response.getAsString()
+				.replaceFirst("<wxappid>", "<appid>")
+				.replaceFirst("</wxappid>", "</appid>");
 		return XmlStream.fromXML(text, RedpacketSendResult.class);
 	}
 
 	/**
 	 * 查询红包记录
-	 * 
+	 *
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param outTradeNo
@@ -104,7 +107,8 @@ public class CashApi extends MchApi {
 	 *      查询裂变红包接口</a>
 	 * @throws WeixinException
 	 */
-	public RedpacketRecord queryRedpack(InputStream certificate, String outTradeNo) throws WeixinException {
+	public RedpacketRecord queryRedpack(InputStream certificate,
+			String outTradeNo) throws WeixinException {
 		Map<String, String> para = createBaseRequestMap(null);
 		para.put("bill_type", "MCHT");
 		para.put("mch_billno", outTradeNo);
@@ -112,7 +116,8 @@ public class CashApi extends MchApi {
 		String param = XmlStream.map2xml(para);
 		WeixinResponse response = null;
 		try {
-			response = createSSLRequestExecutor(certificate).post(getRequestUri("redpack_query_uri"), param);
+			response = createSSLRequestExecutor(certificate).post(
+					getRequestUri("redpack_query_uri"), param);
 		} finally {
 			if (certificate != null) {
 				try {
@@ -128,7 +133,16 @@ public class CashApi extends MchApi {
 
 	/**
 	 * 企业付款 实现企业向个人付款，针对部分有开发能力的商户， 提供通过API完成企业付款的功能。 比如目前的保险行业向客户退保、给付、理赔。
-	 * 
+	 * <p>
+	 * 接口调用规则：
+	 * <p>
+	 * <li>给同一个实名用户付款，单笔单日限额2W/2W
+	 * <li>给同一个非实名用户付款，单笔单日限额2000/2000
+	 * <li>一个商户同一日付款总额限额100W
+	 * <li>单笔最小金额默认为1元
+	 * <li>每个用户每天最多可付款10次，可以在商户平台--API安全进行设置
+	 * <li>给同一个用户付款时间间隔不得低于15秒
+	 *
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param payment
@@ -141,8 +155,9 @@ public class CashApi extends MchApi {
 	 *      企业付款接口</a>
 	 * @throws WeixinException
 	 */
-	public CorpPaymentResult sendCorpPayment(InputStream certificate, CorpPayment payment) throws WeixinException {
-		payment.declareWeixinPayAccount(weixinAccount);
+	public CorpPaymentResult sendCorpPayment(InputStream certificate,
+			CorpPayment payment) throws WeixinException {
+		super.declareMerchant(payment);
 		JSONObject obj = (JSONObject) JSON.toJSON(payment);
 		obj.put("mchid", obj.remove("mch_id"));
 		obj.put("mch_appid", obj.remove("appid"));
@@ -150,7 +165,8 @@ public class CashApi extends MchApi {
 		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;
 		try {
-			response = createSSLRequestExecutor(certificate).post(getRequestUri("corppayment_send_uri"), param);
+			response = createSSLRequestExecutor(certificate).post(
+					getRequestUri("corppayment_send_uri"), param);
 		} finally {
 			if (certificate != null) {
 				try {
@@ -160,15 +176,17 @@ public class CashApi extends MchApi {
 				}
 			}
 		}
-		String text = response.getAsString().replaceFirst("<mch_appid>", "<appid>")
-				.replaceFirst("</mch_appid>", "</appid>").replaceFirst("<mchid>", "<mch_id>")
+		String text = response.getAsString()
+				.replaceFirst("<mch_appid>", "<appid>")
+				.replaceFirst("</mch_appid>", "</appid>")
+				.replaceFirst("<mchid>", "<mch_id>")
 				.replaceFirst("</mchid>", "</mch_id>");
 		return XmlStream.fromXML(text, CorpPaymentResult.class);
 	}
 
 	/**
 	 * 企业付款查询 用于商户的企业付款操作进行结果查询，返回付款操作详细结果
-	 * 
+	 *
 	 * @param certificate
 	 *            后缀为*.p12的证书文件
 	 * @param outTradeNo
@@ -180,7 +198,8 @@ public class CashApi extends MchApi {
 	 *      企业付款查询接口</a>
 	 * @throws WeixinException
 	 */
-	public CorpPaymentRecord queryCorpPayment(InputStream certificate, String outTradeNo) throws WeixinException {
+	public CorpPaymentRecord queryCorpPayment(InputStream certificate,
+			String outTradeNo) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("nonce_str", RandomUtil.generateString(16));
 		obj.put("mch_id", weixinAccount.getMchId());
@@ -190,7 +209,8 @@ public class CashApi extends MchApi {
 		String param = XmlStream.map2xml(obj);
 		WeixinResponse response = null;
 		try {
-			response = createSSLRequestExecutor(certificate).post(getRequestUri("corppayment_query_uri"), param);
+			response = createSSLRequestExecutor(certificate).post(
+					getRequestUri("corppayment_query_uri"), param);
 		} finally {
 			if (certificate != null) {
 				try {
@@ -206,7 +226,7 @@ public class CashApi extends MchApi {
 
 	/**
 	 * 查询结算资金
-	 * 
+	 *
 	 * @param status
 	 *            是否结算
 	 * @param pageable
@@ -222,8 +242,8 @@ public class CashApi extends MchApi {
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/external/micropay.php?chapter=9_14&index=7">
 	 *      查询结算资金接口</a>
 	 */
-	public SettlementRecord querySettlement(boolean status, Pageable pageable, Date start, Date end)
-			throws WeixinException {
+	public SettlementRecord querySettlement(boolean status, Pageable pageable,
+			Date start, Date end) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("nonce_str", RandomUtil.generateString(16));
 		obj.put("mch_id", weixinAccount.getMchId());
@@ -239,14 +259,15 @@ public class CashApi extends MchApi {
 		}
 		obj.put("sign", weixinSignature.sign(obj));
 		String param = XmlStream.map2xml(obj);
-		WeixinResponse response = weixinExecutor.post(getRequestUri("settlement_query_uri"), param);
+		WeixinResponse response = weixinExecutor.post(
+				getRequestUri("settlement_query_uri"), param);
 		return response.getAsObject(new TypeReference<SettlementRecord>() {
 		});
 	}
 
 	/**
 	 * 查询汇率
-	 * 
+	 *
 	 * @param currencyType
 	 *            外币币种
 	 * @param date
@@ -257,7 +278,8 @@ public class CashApi extends MchApi {
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/external/micropay.php?chapter=9_15&index=8">
 	 *      查询汇率接口</a>
 	 */
-	public double queryExchageRate(CurrencyType currencyType, Date date) throws WeixinException {
+	public double queryExchageRate(CurrencyType currencyType, Date date)
+			throws WeixinException {
 		if (date == null) {
 			date = new Date();
 		}
@@ -269,8 +291,10 @@ public class CashApi extends MchApi {
 		obj.put("date", DateUtil.fortmat2yyyyMMdd(date));
 		obj.put("sign", weixinSignature.sign(obj));
 		String param = XmlStream.map2xml(obj);
-		WeixinResponse response = weixinExecutor.post(getRequestUri("exchagerate_query_uri"), param);
-		BigDecimal rate = new BigDecimal(XmlStream.xml2map(response.getAsString()).get("rate"));
+		WeixinResponse response = weixinExecutor.post(
+				getRequestUri("exchagerate_query_uri"), param);
+		BigDecimal rate = new BigDecimal(XmlStream.xml2map(
+				response.getAsString()).get("rate"));
 		return rate.divide(new BigDecimal(100000000d)).doubleValue();
 	}
 }

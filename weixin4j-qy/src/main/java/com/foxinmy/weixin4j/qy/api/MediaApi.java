@@ -20,7 +20,6 @@ import com.foxinmy.weixin4j.http.ContentType;
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
-import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
@@ -39,7 +38,7 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.Callback;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.User;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.util.FileUtil;
@@ -50,7 +49,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 媒体相关API
- * 
+ *
  * @className MediaApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
@@ -61,16 +60,16 @@ import com.foxinmy.weixin4j.util.StringUtil;
  */
 public class MediaApi extends QyApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public MediaApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public MediaApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
 	 * 上传图文消息内的图片:用于上传图片到企业号服务端，接口返回图片url，请注意，该url仅可用于图文消息的发送，
 	 * 且每个企业每天最多只能上传100张图片。
-	 * 
+	 *
 	 * @param is
 	 *            图片数据
 	 * @param fileName
@@ -89,7 +88,7 @@ public class MediaApi extends QyApi {
 			fileName = String.format("%s.jpg", fileName);
 		}
 		String media_uploadimg_uri = getRequestUri("media_uploadimg_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(String.format(
 				media_uploadimg_uri, token.getAccessToken()),
 				new FormBodyPart("media", new InputStreamBody(is,
@@ -103,7 +102,7 @@ public class MediaApi extends QyApi {
 	 * 正常情况下返回{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789},
 	 * 否则抛出异常.
 	 * </p>
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID(<font color="red">大于0时视为上传永久媒体文件</font>)
 	 * @param is
@@ -146,7 +145,7 @@ public class MediaApi extends QyApi {
 				",%s,", suffixName))) {
 			mediaType = MediaType.video;
 		}
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		try {
 			WeixinResponse response = null;
 			if (agentid > 0) {
@@ -185,7 +184,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 下载媒体文件
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用Id(<font color="red">大于0时视为获取永久媒体文件</font>)
 	 * @param mediaId
@@ -200,7 +199,7 @@ public class MediaApi extends QyApi {
 	 */
 	public MediaDownloadResult downloadMedia(int agentid, String mediaId)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		try {
 			HttpRequest request = null;
 			if (agentid > 0) {
@@ -213,8 +212,7 @@ public class MediaApi extends QyApi {
 				request = new HttpRequest(HttpMethod.GET, String.format(
 						media_download_uri, token.getAccessToken(), mediaId));
 			}
-			HttpParams params = weixinExecutor.getExecuteParams();
-			request.setParams(params);
+			request.setParams(weixinExecutor.getExecuteParams());
 			logger.info("weixin request >> " + request.getMethod() + " "
 					+ request.getURI().toString());
 			HttpResponse response = weixinExecutor.getExecuteClient().execute(
@@ -260,7 +258,7 @@ public class MediaApi extends QyApi {
 	 * 、新增的永久素材也可以在公众平台官网素材管理模块中看到,永久素材的数量是有上限的，请谨慎新增。图文消息素材和图片素材的上限为5000，
 	 * 其他类型为1000
 	 * </P>
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用的id
 	 * @param articles
@@ -273,7 +271,7 @@ public class MediaApi extends QyApi {
 	 */
 	public String uploadMaterialArticle(int agentid, List<MpArticle> articles)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_article_upload_uri = getRequestUri("material_article_upload_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("agentid", agentid);
@@ -289,7 +287,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 删除永久媒体素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID
 	 * @param mediaId
@@ -301,7 +299,7 @@ public class MediaApi extends QyApi {
 	 */
 	public JsonResult deleteMaterialMedia(int agentid, String mediaId)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_media_del_uri = getRequestUri("material_media_del_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(
 				material_media_del_uri, token.getAccessToken(), mediaId,
@@ -311,7 +309,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 下载永久图文素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID
 	 * @param mediaId
@@ -333,7 +331,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 修改永久图文素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用的id
 	 * @param mediaId
@@ -348,7 +346,7 @@ public class MediaApi extends QyApi {
 	 */
 	public String updateMaterialArticle(int agentid, String mediaId,
 			List<MpArticle> articles) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_article_update_uri = getRequestUri("material_article_update_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("agentid", agentid);
@@ -365,7 +363,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 获取永久媒体素材的总数
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用id
 	 * @return 总数对象
@@ -375,7 +373,7 @@ public class MediaApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%B4%A0%E6%9D%90%E6%80%BB%E6%95%B0">获取素材总数</a>
 	 */
 	public MediaCounter countMaterialMedia(int agentid) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_media_count_uri = getRequestUri("material_media_count_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(
 				material_media_count_uri, token.getAccessToken(), agentid));
@@ -387,7 +385,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 获取媒体素材记录列表
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用ID
 	 * @param mediaType
@@ -406,7 +404,7 @@ public class MediaApi extends QyApi {
 	 */
 	public MediaRecord listMaterialMedia(int agentid, MediaType mediaType,
 			Pageable pageable) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String material_media_list_uri = getRequestUri("material_media_list_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("agentid", agentid);
@@ -419,6 +417,7 @@ public class MediaApi extends QyApi {
 				obj.toJSONString());
 		obj = response.getAsJson();
 
+		obj.put("items", obj.remove("itemlist"));
 		MediaRecord mediaRecord = JSON.toJavaObject(obj, MediaRecord.class);
 		mediaRecord.setMediaType(mediaType);
 		mediaRecord.setPageable(pageable);
@@ -427,7 +426,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 获取全部的媒体素材
-	 * 
+	 *
 	 * @param agentid
 	 *            企业应用id
 	 * @param mediaType
@@ -458,7 +457,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 批量上传成员
-	 * 
+	 *
 	 * @param users
 	 *            成员列表
 	 * @see {@link BatchApi#syncUser(String,Callback)}
@@ -474,7 +473,7 @@ public class MediaApi extends QyApi {
 
 	/**
 	 * 批量上传部门
-	 * 
+	 *
 	 * @param parties
 	 *            部门列表
 	 * @see {@link BatchApi#replaceParty(String,Callback)}

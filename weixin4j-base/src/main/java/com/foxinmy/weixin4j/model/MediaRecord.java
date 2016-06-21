@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 媒体素材记录
- * 
+ *
  * @className MediaRecord
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月22日
@@ -37,7 +37,7 @@ public class MediaRecord implements Serializable {
 	/**
 	 * 媒体信息
 	 */
-	@JSONField(name = "itemlist")
+	@JSONField(name = "items")
 	private List<MediaItem> items;
 	/**
 	 * 分页信息

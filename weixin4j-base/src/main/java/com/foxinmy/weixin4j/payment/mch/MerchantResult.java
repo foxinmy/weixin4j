@@ -7,13 +7,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.type.SignType;
-import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
  * 调用商户平台接口返回的公用字段
- * 
+ *
  * @className MerchantResult
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月21日
@@ -166,22 +164,6 @@ public class MerchantResult extends XmlResult {
 	@JSONField(serialize = false)
 	public boolean getFormatRecall() {
 		return recall != null && recall.equalsIgnoreCase("y");
-	}
-
-	/**
-	 * 赋值给对应字段
-	 * 
-	 * @param weixinPayAccount
-	 *            商户信息
-	 */
-	@JSONField(deserialize = false)
-	public void declareWeixinPayAccount(WeixinPayAccount weixinPayAccount) {
-		this.appId = weixinPayAccount.getId();
-		this.mchId = weixinPayAccount.getMchId();
-		this.deviceInfo = weixinPayAccount.getDeviceInfo();
-		this.subId = weixinPayAccount.getSubId();
-		this.subMchId = weixinPayAccount.getSubMchId();
-		this.nonceStr = RandomUtil.generateString(16);
 	}
 
 	@Override

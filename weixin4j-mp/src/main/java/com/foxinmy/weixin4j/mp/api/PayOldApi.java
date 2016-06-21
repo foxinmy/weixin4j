@@ -40,11 +40,10 @@ import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPayAccount;
 import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPaymentSignature;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.payment.PayRequest;
+import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
-import com.foxinmy.weixin4j.token.FileTokenStorager;
-import com.foxinmy.weixin4j.token.TokenHolder;
-import com.foxinmy.weixin4j.token.TokenStorager;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.RefundType;
@@ -59,7 +58,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 
 /**
  * V2老支付API
- * 
+ *
  * @className PayOldApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月28日
@@ -68,8 +67,9 @@ import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
  */
 public class PayOldApi extends MpApi {
 
+	private final Weixin4jSettings<WeixinOldPayAccount> settings;
 	private final WeixinOldPayAccount weixinAccount;
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 	private final WeixinSignature weixinMD5Signature;
 	private final WeixinOldPaymentSignature weixinOldSignature;
 
@@ -77,47 +77,45 @@ public class PayOldApi extends MpApi {
 	 * 默认使用weixin4j.properties配置信息
 	 */
 	public PayOldApi() {
-		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinOldPayAccount.class), new FileTokenStorager(
-				Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
-						System.getProperty("java.io.tmpdir"))));
+		this(new Weixin4jSettings<WeixinOldPayAccount>(JSON.parseObject(
+				Weixin4jConfigUtil.getValue("account"),
+				WeixinOldPayAccount.class)));
 	}
 
-	public PayOldApi(WeixinOldPayAccount payAccount) {
-		this(payAccount, new FileTokenStorager(
-				Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
-						System.getProperty("java.io.tmpdir"))));
-	}
-
-	public PayOldApi(TokenStorager tokenStorager) {
-		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
-				WeixinOldPayAccount.class), tokenStorager);
-	}
-
-	public PayOldApi(WeixinOldPayAccount weixinAccount,
-			TokenStorager tokenStorager) {
-		this.weixinAccount = weixinAccount;
-		this.tokenHolder = new TokenHolder(new WeixinTokenCreator(
+	/**
+	 *
+	 * @param settings
+	 *            微信配置信息
+	 */
+	public PayOldApi(Weixin4jSettings<WeixinOldPayAccount> settings) {
+		this.settings = settings;
+		this.weixinAccount = settings.getAccount();
+		this.tokenManager = new TokenManager(new WeixinTokenCreator(
 				weixinAccount.getId(), weixinAccount.getSecret()),
-				tokenStorager);
+				settings.getCacheStorager0());
 		this.weixinMD5Signature = new WeixinPaymentSignature(
 				weixinAccount.getPartnerKey());
-		this.weixinOldSignature = new WeixinOldPaymentSignature();
+		this.weixinOldSignature = new WeixinOldPaymentSignature(
+				weixinAccount.getPaySignKey(), weixinAccount.getPartnerKey());
 	}
 
-	public WeixinOldPayAccount getPayAccount() {
+	public WeixinOldPayAccount getWeixinPayAccount() {
 		return this.weixinAccount;
+	}
+
+	public WeixinOldPaymentSignature getWeixinPaymentSignature() {
+		return this.weixinOldSignature;
 	}
 
 	/**
 	 * 生成V2.x版本JSAPI支付字符串
-	 * 
+	 *
 	 * @param body
 	 *            支付详情
 	 * @param outTradeNo
 	 *            订单号
 	 * @param totalFee
-	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
+	 *            订单总额(元)
 	 * @param notifyUrl
 	 *            支付回调URL
 	 * @param createIp
@@ -126,62 +124,30 @@ public class PayOldApi extends MpApi {
 	 */
 	public String createPayJsRequestJson(String body, String outTradeNo,
 			double totalFee, String notifyUrl, String createIp) {
-		return createPayJsRequestJson(body, outTradeNo, totalFee, notifyUrl,
-				createIp, null, null, null, 0d, 0d, null);
+		PayPackageV2 payPackage = new PayPackageV2(
+				weixinAccount.getPartnerId(), body, outTradeNo, totalFee,
+				notifyUrl, createIp);
+		return createPayJsRequestJson(payPackage);
 	}
 
 	/**
 	 * 生成V2.x版本JSAPI支付字符串
-	 * 
-	 * @param body
-	 *            支付详情
-	 * @param outTradeNo
-	 *            订单号
-	 * @param totalFee
-	 *            订单总额 按实际金额传入即可(元) 构造函数会转换为分
-	 * @param notifyUrl
-	 *            支付回调URL
-	 * @param createIp
-	 *            订单生成的机器 IP
-	 * @param attach
-	 *            附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
-	 * @param timeStart
-	 *            订单生成时间，格式为yyyyMMddHHmmss
-	 * @param timeExpire
-	 *            订单失效时间，格式为yyyyMMddHHmmss;注意：最短失效时间间隔必须大于5分钟
-	 * @param transportFee
-	 *            物流费用 如有值 必须保证 transportFee+productFee=totalFee
-	 * @param transportFee
-	 *            商品费用 如有值 必须保证 transportFee+productFee=totalFee
-	 * @param goodsTag
-	 *            商品标记，代金券或立减优惠功能的参数
+	 *
+	 * @param payPackage
+	 *            支付信息
 	 * @return 支付json串
 	 */
-	public String createPayJsRequestJson(String body, String outTradeNo,
-			double totalFee, String notifyUrl, String createIp, String attach,
-			Date timeStart, Date timeExpire, double transportFee,
-			double productFee, String goodsTag) {
-		PayPackageV2 payPackage = new PayPackageV2(getPayAccount()
-				.getPartnerId(), body, outTradeNo, totalFee, notifyUrl,
-				createIp);
-		payPackage.setAttach(attach);
-		payPackage.setTimeStart(timeStart);
-		payPackage.setTimeExpire(timeExpire);
-		payPackage.setTransportFee(transportFee);
-		payPackage.setProductFee(productFee);
-		payPackage.setGoodsTag(goodsTag);
-		PayRequest payRequest = new PayRequest(getPayAccount().getId(),
-				weixinOldSignature.sign(payPackage, getPayAccount()
-						.getPartnerKey()));
-		payRequest.setPaySign(weixinOldSignature.sign(payRequest,
-				getPayAccount().getPaySignKey()));
+	public String createPayJsRequestJson(PayPackageV2 payPackage) {
+		PayRequest payRequest = new PayRequest(weixinAccount.getId(),
+				weixinOldSignature.sign(payPackage));
+		payRequest.setPaySign(weixinOldSignature.sign(payRequest));
 		payRequest.setSignType(SignType.SHA1);
 		return JSON.toJSONString(payRequest);
 	}
 
 	/**
 	 * 创建V2.x NativePay支付链接
-	 * 
+	 *
 	 * @param productId
 	 *            与订单ID等价
 	 * @return 支付链接
@@ -190,20 +156,20 @@ public class PayOldApi extends MpApi {
 		Map<String, String> map = new HashMap<String, String>();
 		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(16);
-		map.put("appid", getPayAccount().getId());
+		map.put("appid", weixinAccount.getId());
 		map.put("timestamp", timestamp);
 		map.put("noncestr", noncestr);
 		map.put("productid", productId);
-		map.put("appkey", getPayAccount().getPaySignKey());
+		map.put("appkey", weixinAccount.getPaySignKey());
 		String sign = weixinOldSignature.sign(map);
 		String nativepay_uri = getRequestUri("nativepay_old_uri");
-		return String.format(nativepay_uri, sign, getPayAccount().getId(),
+		return String.format(nativepay_uri, sign, weixinAccount.getId(),
 				productId, timestamp, noncestr);
 	}
 
 	/**
 	 * 订单查询
-	 * 
+	 *
 	 * @param idQuery
 	 *            订单号
 	 * @return 订单信息
@@ -213,27 +179,27 @@ public class PayOldApi extends MpApi {
 	 */
 	public OrderV2 queryOrder(IdQuery idQuery) throws WeixinException {
 		String orderquery_uri = getRequestUri("orderquery_old_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		StringBuilder sb = new StringBuilder();
 		sb.append(idQuery.getType().getName()).append("=")
 				.append(idQuery.getId());
-		sb.append("&partner=").append(getPayAccount().getPartnerId());
+		sb.append("&partner=").append(weixinAccount.getPartnerId());
 		String part = sb.toString();
-		sb.append("&key=").append(getPayAccount().getPartnerKey());
+		sb.append("&key=").append(weixinAccount.getPartnerKey());
 		String sign = DigestUtil.MD5(sb.toString()).toUpperCase();
 		sb.delete(0, sb.length());
 		sb.append(part).append("&sign=").append(sign);
 
 		String timestamp = DateUtil.timestamp2string();
 		JSONObject obj = new JSONObject();
-		obj.put("appid", getPayAccount().getId());
-		obj.put("appkey", getPayAccount().getPaySignKey());
+		obj.put("appid", weixinAccount.getId());
+		obj.put("appkey", weixinAccount.getPaySignKey());
 		obj.put("package", sb.toString());
 		obj.put("timestamp", timestamp);
 		String signature = weixinOldSignature.sign(obj);
 
 		obj.clear();
-		obj.put("appid", getPayAccount().getId());
+		obj.put("appid", weixinAccount.getId());
 		obj.put("package", sb.toString());
 		obj.put("timestamp", timestamp);
 		obj.put("app_signature", signature);
@@ -259,7 +225,7 @@ public class PayOldApi extends MpApi {
 	 * 交易时间超过 1 年的订单无法提交退款; </br> 支持部分退款,部分退需要设置相同的订单号和不同的 out_refund_no。一笔退款失
 	 * 败后重新提交,要采用原来的 out_refund_no。总退款金额不能超过用户实际支付金额。</br>
 	 * </p>
-	 * 
+	 *
 	 * @param certificate
 	 *            证书文件(V2版本后缀为*.pfx)
 	 * @param idQuery
@@ -275,7 +241,7 @@ public class PayOldApi extends MpApi {
 	 *            操作员帐号, 默认为商户号
 	 * @param mopara
 	 *            如 opUserPasswd
-	 * 
+	 *
 	 * @return 退款申请结果
 	 * @see com.foxinmy.weixin4j.mp.oldpayment.RefundResultV2
 	 * @since V2
@@ -294,13 +260,13 @@ public class PayOldApi extends MpApi {
 			// 填写为 1.0 时,操作员密码为明文
 			// 填写为 1.1 时,操作员密码为 MD5(密码)值
 			map.put("service_version", "1.1");
-			map.put("partner", getPayAccount().getPartnerId());
+			map.put("partner", weixinAccount.getPartnerId());
 			map.put("out_refund_no", outRefundNo);
 			map.put("total_fee", DateUtil.formaFee2Fen(totalFee));
 			map.put("refund_fee", DateUtil.formaFee2Fen(refundFee));
 			map.put(idQuery.getType().getName(), idQuery.getId());
 			if (StringUtil.isBlank(opUserId)) {
-				opUserId = getPayAccount().getPartnerId();
+				opUserId = weixinAccount.getPartnerId();
 			}
 			map.put("op_user_id", opUserId);
 			if (mopara != null && !mopara.isEmpty()) {
@@ -312,9 +278,8 @@ public class PayOldApi extends MpApi {
 			SSLContext ctx = null;
 			KeyStore ks = null;
 			String jksPwd = "";
-			File jksFile = new File(String.format("%s/tenpay_cacert.jks",
-					Weixin4jConfigUtil.getClassPathValue("weixin4j.tmpdir",
-							System.getProperty("java.io.tmpdir"))));
+			File jksFile = new File(String.format("%s%stenpay_cacert.jks",
+					settings.getTmpdir0(), File.separator));
 			// create jks ca
 			if (!jksFile.exists()) {
 				CertificateFactory cf = CertificateFactory
@@ -341,8 +306,8 @@ public class PayOldApi extends MpApi {
 			KeyManagerFactory kmf = KeyManagerFactory
 					.getInstance(Consts.SunX509);
 			ks = KeyStore.getInstance(Consts.PKCS12);
-			ks.load(certificate, getPayAccount().getPartnerId().toCharArray());
-			kmf.init(ks, getPayAccount().getPartnerId().toCharArray());
+			ks.load(certificate, weixinAccount.getPartnerId().toCharArray());
+			kmf.init(ks, weixinAccount.getPartnerId().toCharArray());
 
 			ctx = SSLContext.getInstance(Consts.TLS);
 			ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(),
@@ -370,7 +335,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 退款申请
-	 * 
+	 *
 	 * @param certificate
 	 *            证书文件(V2版本后缀为*.pfx)
 	 * @param idQuery
@@ -399,7 +364,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 退款申请
-	 * 
+	 *
 	 * @param certificate
 	 *            证书文件(V2版本后缀为*.pfx)
 	 * @param idQuery
@@ -452,7 +417,7 @@ public class PayOldApi extends MpApi {
 	 * REVOKED;<br>
 	 * 2.微信在次日 9 点启动生成前一天的对账单,建议商户 9 点半后再获取;<br>
 	 * 3.对账单中涉及金额的字段单位为“元”。<br>
-	 * 
+	 *
 	 * @param billDate
 	 *            下载对账单的日期 为空则取前一天
 	 * @param billType
@@ -475,21 +440,23 @@ public class PayOldApi extends MpApi {
 			billType = BillType.ALL;
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
-		String fileName = String.format("weixin4j_bill_%s_%s_%s.txt", formatBillDate,
-				billType.name().toLowerCase(), getPayAccount().getId());
-		File file = new File(String.format("%s/%s", billPath, fileName));
+		String fileName = String.format("weixin4j_bill_%s_%s_%s.txt",
+				formatBillDate, billType.name().toLowerCase(),
+				weixinAccount.getId());
+		File file = new File(String.format("%s%s%s", billPath, File.separator,
+				fileName));
 		if (file.exists()) {
 			return file;
 		}
 		String downloadbill_uri = getRequestUri("downloadbill_old_uri");
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("spid", getPayAccount().getPartnerId());
+		map.put("spid", weixinAccount.getPartnerId());
 		map.put("trans_time", DateUtil.fortmat2yyyy_MM_dd(billDate));
 		map.put("stamp", DateUtil.timestamp2string());
 		map.put("cft_signtype", "0");
 		map.put("mchtype", Integer.toString(billType.getVal()));
-		map.put("key", getPayAccount().getPartnerKey());
+		map.put("key", weixinAccount.getPartnerKey());
 		String sign = DigestUtil.MD5(MapUtil.toJoinString(map, false, false));
 		map.put("sign", sign.toLowerCase());
 		WeixinResponse response = weixinExecutor.get(downloadbill_uri, map);
@@ -524,7 +491,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 退款查询</br> 退款有一定延时,用零钱支付的退款20分钟内到账,银行卡支付的退款 3 个工作日后重新查询退款状态
-	 * 
+	 *
 	 * @param idQuery
 	 *            单号 refund_id、out_refund_no、 out_trade_no 、 transaction_id
 	 *            四个参数必填一个,优先级为:
@@ -539,7 +506,7 @@ public class PayOldApi extends MpApi {
 		String refundquery_uri = getRequestUri("refundquery_old_uri");
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("input_charset", Consts.UTF_8.name());
-		map.put("partner", getPayAccount().getPartnerId());
+		map.put("partner", weixinAccount.getPartnerId());
 		map.put(idQuery.getType().getName(), idQuery.getId());
 		String sign = weixinMD5Signature.sign(map);
 		map.put("sign", sign.toLowerCase());
@@ -550,7 +517,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 发货通知
-	 * 
+	 *
 	 * @param openId
 	 *            用户ID
 	 * @param transid
@@ -568,11 +535,11 @@ public class PayOldApi extends MpApi {
 			String outTradeNo, boolean status, String statusMsg)
 			throws WeixinException {
 		String delivernotify_uri = getRequestUri("delivernotify_old_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("appid", getPayAccount().getId());
-		map.put("appkey", getPayAccount().getPaySignKey());
+		map.put("appid", weixinAccount.getId());
+		map.put("appkey", weixinAccount.getPaySignKey());
 		map.put("openid", openId);
 		map.put("transid", transid);
 		map.put("out_trade_no", outTradeNo);
@@ -590,7 +557,7 @@ public class PayOldApi extends MpApi {
 
 	/**
 	 * 维权处理
-	 * 
+	 *
 	 * @param openId
 	 *            用户ID
 	 * @param feedbackId
@@ -601,7 +568,7 @@ public class PayOldApi extends MpApi {
 	public JsonResult updateFeedback(String openId, String feedbackId)
 			throws WeixinException {
 		String payfeedback_uri = getRequestUri("payfeedback_old_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				payfeedback_uri, token.getAccessToken(), openId, feedbackId));
 		return response.getAsJsonResult();

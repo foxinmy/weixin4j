@@ -1,13 +1,14 @@
 package com.foxinmy.weixin4j.model;
 
-import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.cache.Cacheable;
 
 /**
  * access_token是公众号的全局唯一票据,公众号调用各接口时都需使用access_token,正常情况下access_token有效期为7200秒,
  * 重复获取将导致上次获取的access_token失效
- * 
+ *
  * @className Token
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月5日
@@ -17,75 +18,95 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%BB%E5%8A%A8%E8%B0%83%E7%94%A8">微信企业号的主动模式</a>
  */
-public class Token implements Serializable {
+public class Token implements Cacheable {
 
 	private static final long serialVersionUID = -7564855472419104084L;
 
 	/**
 	 * 获取到的凭证
 	 */
-	@JSONField(name = "access_token")
 	private String accessToken;
 	/**
-	 * 凭证有效时间，单位：秒
+	 * 凭证有效时间，单位：毫秒
 	 */
-	@JSONField(name = "expires_in")
-	private int expiresIn;
+	private long expires;
 	/**
 	 * token创建的时间,单位：毫秒
 	 */
-	@JSONField(name = "create_time")
 	private long createTime;
 	/**
-	 * 请求返回的原始结果
+	 * 扩展信息
 	 */
-	@JSONField(name = "original_result")
-	private String originalResult;
+	private Map<String, String> extra;
 
-	protected Token() {
-		// jaxb required
+	/**
+	 * 永不过期、创建时间为当前时间戳的token对象
+	 *
+	 * @param accessToken
+	 *            凭证字符串
+	 */
+	public Token(String accessToken) {
+		this(accessToken, -1);
 	}
 
-	public Token(String accessToken) {
+	/**
+	 * 有过期时间、创建时间为当前时间戳的token对象
+	 *
+	 * @param accessToken
+	 *            凭证字符串
+	 * @param expires
+	 *            过期时间 单位毫秒
+	 */
+	public Token(String accessToken, long expires) {
+		this(accessToken, expires, System.currentTimeMillis());
+	}
+
+	/**
+	 *
+	 * @param accessToken
+	 *            凭证字符串
+	 * @param expires
+	 *            过期时间 单位毫秒
+	 * @param createTime
+	 *            创建时间戳 单位毫秒
+	 */
+	public Token(String accessToken, long expires, long createTime) {
 		this.accessToken = accessToken;
-		this.createTime = System.currentTimeMillis();
+		this.expires = expires;
+		this.createTime = createTime;
+		this.extra = new HashMap<String, String>();
 	}
 
 	public String getAccessToken() {
 		return accessToken;
 	}
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	@Override
+	public long getExpires() {
+		return expires;
 	}
 
-	public int getExpiresIn() {
-		return expiresIn;
-	}
-
-	public void setExpiresIn(int expiresIn) {
-		this.expiresIn = expiresIn;
-	}
-
+	@Override
 	public long getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(long createTime) {
-		this.createTime = createTime;
+	public Map<String, String> getExtra() {
+		return extra;
 	}
 
-	public String getOriginalResult() {
-		return originalResult;
+	public void setExtra(Map<String, String> extra) {
+		this.extra = extra;
 	}
 
-	public void setOriginalResult(String originalResult) {
-		this.originalResult = originalResult;
+	public Token pushExtra(String name, String value) {
+		this.extra.put(name, value);
+		return this;
 	}
 
 	@Override
 	public String toString() {
-		return "Token [accessToken=" + accessToken + ", expiresIn=" + expiresIn
-				+ ", createTime=" + createTime + "]";
+		return "Token [accessToken=" + accessToken + ", expires=" + expires
+				+ ", createTime=" + createTime + ", extra=" + extra + "]";
 	}
 }

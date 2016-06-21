@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.response;
 
 /**
  * 单一内容回复
- * 
+ *
  * @className SingleResponse
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月3日
