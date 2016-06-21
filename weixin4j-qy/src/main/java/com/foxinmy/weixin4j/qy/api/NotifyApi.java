@@ -100,12 +100,12 @@ public class NotifyApi extends QyApi {
 		obj = response.getAsJson();
 		IdParameter idParameter = new IdParameter();
 		if (obj.containsKey("invaliduser")) {
-			idParameter.setUserIds(Arrays.asList(obj.getString("invalidlist")
+			idParameter.setUserIds(Arrays.asList(obj.getString("invaliduser")
 					.split(IdParameter.SEPARATORS)));
 		}
 		if (obj.containsKey("invalidparty")) {
 			List<Integer> partyIds = new ArrayList<Integer>();
-			for (String id : obj.getString("invalidlist").split(
+			for (String id : obj.getString("invalidparty").split(
 					IdParameter.SEPARATORS)) {
 				partyIds.add(Integer.parseInt(id));
 			}
