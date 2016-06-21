@@ -13,21 +13,36 @@ public enum TradeType {
 	/**
 	 * JS支付
 	 */
-	JSAPI,
+	JSAPI(true),
 	/**
-	 * 刷卡支付
+	 * 刷卡支付:不需要设置TradeType参数
 	 */
-	MICROPAY,
+	MICROPAY(false),
 	/**
 	 * 扫码支付
 	 */
-	NATIVE,
+	NATIVE(true),
 	/**
 	 * APP支付
 	 */
-	APP,
+	APP(true),
 	/**
 	 * WAP支付
 	 */
-	WAP;
+	WAP(true);
+
+	boolean isPayRequestParameter;
+
+	private TradeType(boolean isPayRequestParameter) {
+		this.isPayRequestParameter = isPayRequestParameter;
+	}
+
+	/**
+	 * 是否作为支付请求参数
+	 * 
+	 * @return
+	 */
+	public boolean isPayRequestParameter() {
+		return isPayRequestParameter;
+	}
 }

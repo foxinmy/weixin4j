@@ -145,7 +145,9 @@ public class MchPayPackage extends PayPackage {
 			String goodsTag, String limitPay, String subOpenId) {
 		super(body, detial, outTradeNo, totalFee, notifyUrl, createIp, attach,
 				timeStart, timeExpire, goodsTag);
-		this.tradeType = tradeType.name();
+		if (tradeType.isPayRequestParameter()) {
+			this.tradeType = tradeType.name();
+		}
 		this.openId = openId;
 		this.authCode = authCode;
 		this.productId = productId;

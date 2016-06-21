@@ -103,8 +103,11 @@ public class PayApi extends MchApi {
 	 */
 	public MchPayRequest createPayRequest(MchPayPackage payPackage)
 			throws WeixinException {
-		String tradeType = payPackage.getTradeType();
-		if (TradeType.MICROPAY.name().equalsIgnoreCase(tradeType)) {
+		if (StringUtil.isBlank(payPackage.getTradeType())) {
+			throw new WeixinException("tradeType not be empty");
+		}
+		String tradeType = payPackage.getTradeType().toUpperCase();
+		if (TradeType.MICROPAY.name().equals(tradeType)) {
 			super.declareMerchant(payPackage);
 			payPackage.setSign(weixinSignature.sign(payPackage));
 			String para = XmlStream.toXML(payPackage);
@@ -117,14 +120,14 @@ public class PayApi extends MchApi {
 			return microPayRequest;
 		}
 		PrePay prePay = createPrePay(payPackage);
-		if (TradeType.APP.name().equalsIgnoreCase(tradeType)) {
+		if (TradeType.APP.name().equals(tradeType)) {
 			return new APPPayRequest(prePay.getPrepayId(), weixinAccount);
-		} else if (TradeType.JSAPI.name().equalsIgnoreCase(tradeType)) {
+		} else if (TradeType.JSAPI.name().equals(tradeType)) {
 			return new JSAPIPayRequest(prePay.getPrepayId(), weixinAccount);
-		} else if (TradeType.NATIVE.name().equalsIgnoreCase(tradeType)) {
+		} else if (TradeType.NATIVE.name().equals(tradeType)) {
 			return new NATIVEPayRequest(prePay.getPrepayId(),
 					prePay.getCodeUrl(), weixinAccount);
-		} else if (TradeType.WAP.name().equalsIgnoreCase(tradeType)) {
+		} else if (TradeType.WAP.name().equals(tradeType)) {
 			return new WAPPayRequest(prePay.getPrepayId(), weixinAccount);
 		} else {
 			throw new WeixinException("unknown tradeType:" + tradeType);
@@ -386,9 +389,9 @@ public class PayApi extends MchApi {
 	public MchPayRequest createMicroPayRequest(String authCode, String body,
 			String outTradeNo, double totalFee, String createIp, String attach)
 			throws WeixinException {
-		// 刷卡支付不需要设置TradeType.MICROPAY
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, null, createIp, null, null, authCode, null, attach);
+				totalFee, null, createIp, TradeType.MICROPAY, null, authCode,
+				null, attach);
 		return createPayRequest(payPackage);
 	}
 
