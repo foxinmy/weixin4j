@@ -12,6 +12,7 @@ import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Tag;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.token.TokenManager;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 标签相关API
@@ -234,7 +235,7 @@ public class TagApi extends MpApi {
 		Following f = null;
 		for (;;) {
 			f = getTagFollowingOpenIds(tagId, nextOpenId);
-			if (f.getCount() == 0) {
+			if (f.getCount() == 0 || StringUtil.isBlank(f.getNextOpenId())) {
 				break;
 			}
 			openIds.addAll(f.getOpenIds());
@@ -260,7 +261,7 @@ public class TagApi extends MpApi {
 		Following f = null;
 		for (;;) {
 			f = getTagFollowing(tagId, nextOpenId);
-			if (f.getCount() == 0) {
+			if (f.getCount() == 0 || StringUtil.isBlank(f.getNextOpenId())) {
 				break;
 			}
 			userList.addAll(f.getUserList());

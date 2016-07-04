@@ -14,6 +14,7 @@ import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.type.Lang;
 import com.foxinmy.weixin4j.token.TokenManager;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 用户相关API
@@ -199,10 +200,10 @@ public class UserApi extends MpApi {
 	 * @return 用户对象集合
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
 	 *      获取关注者列表</a>
 	 * @see <a href=
-	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
 	 *      批量获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @see com.foxinmy.weixin4j.mp.model.Following
@@ -215,7 +216,8 @@ public class UserApi extends MpApi {
 		for (;;) {
 			f = getFollowing(nextOpenId);
 			userList.addAll(f.getUserList());
-			if (f.getCount() == f.getTotal() || f.getCount() == 0) {
+			if (f.getCount() == f.getTotal() || f.getCount() == 0
+					|| StringUtil.isBlank(f.getNextOpenId())) {
 				break;
 			}
 			nextOpenId = f.getNextOpenId();
@@ -233,7 +235,7 @@ public class UserApi extends MpApi {
 	 * @return 用户openid集合
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
 	 *      获取关注者列表</a>
 	 * @see #getFollowingOpenIds(String)
 	 */
@@ -244,7 +246,8 @@ public class UserApi extends MpApi {
 		for (;;) {
 			f = getFollowingOpenIds(nextOpenId);
 			openIds.addAll(f.getOpenIds());
-			if (f.getCount() == f.getTotal() || f.getCount() == 0) {
+			if (f.getCount() == f.getTotal() || f.getCount() == 0
+					|| StringUtil.isBlank(f.getNextOpenId())) {
 				break;
 			}
 			nextOpenId = f.getNextOpenId();

@@ -29,7 +29,7 @@ public class UserTest extends TokenTest {
 
 	@Test
 	public void getUser() throws WeixinException {
-		User user = userApi.getUser("o9Onds6fbeK0lDwD8lJt2PY1VRys");
+		User user = userApi.getUser("owGBftyJWx21nqKlWpI3po5K_Q9o");
 		Assert.assertNotNull(user);
 		System.out.println(user);
 		// following();

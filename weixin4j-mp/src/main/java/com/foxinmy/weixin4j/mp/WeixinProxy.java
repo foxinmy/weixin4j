@@ -1042,10 +1042,10 @@ public class WeixinProxy {
 	 * @return 用户对象集合
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
 	 *      获取关注者列表</a>
 	 * @see <a href=
-	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
 	 *      批量获取用户信息</a>
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
 	 * @see com.foxinmy.weixin4j.mp.model.Following
@@ -1066,7 +1066,7 @@ public class WeixinProxy {
 	 * @return 用户openid集合
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
 	 *      获取关注者列表</a>
 	 * @see com.foxinmy.weixin4j.mp.api.UserApi
 	 * @see #getFollowingOpenIds(String)
