@@ -168,7 +168,7 @@ public class UserApi extends MpApi {
 	 * @return 关注者信息 <font color="red">不包含用户的详细信息</font>
 	 * @throws WeixinException
 	 * @see <a href=
-	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140839&token=&lang=zh_CN">
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140840&token=&lang=zh_CN">
 	 *      获取关注者列表</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Following
 	 */
