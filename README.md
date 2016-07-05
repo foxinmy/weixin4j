@@ -50,3 +50,7 @@ weixin4j
 * [微信连WI-FI](http://mp.weixin.qq.com/wiki/9/fd2d692e28b938a8d618f57cf9c79fb1.html)
 
 * [微信扫一扫](http://mp.weixin.qq.com/wiki/19/e833eb10470cc25cad4719677c46ecdb.html)
+
+交流群
+-----
+559850102
