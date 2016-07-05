@@ -215,11 +215,11 @@ public class UserApi extends MpApi {
 		Following f = null;
 		for (;;) {
 			f = getFollowing(nextOpenId);
-			userList.addAll(f.getUserList());
 			if (f.getCount() == f.getTotal() || f.getCount() == 0
 					|| StringUtil.isBlank(f.getNextOpenId())) {
 				break;
 			}
+			userList.addAll(f.getUserList());
 			nextOpenId = f.getNextOpenId();
 		}
 		return userList;
@@ -245,11 +245,11 @@ public class UserApi extends MpApi {
 		Following f = null;
 		for (;;) {
 			f = getFollowingOpenIds(nextOpenId);
-			openIds.addAll(f.getOpenIds());
 			if (f.getCount() == f.getTotal() || f.getCount() == 0
 					|| StringUtil.isBlank(f.getNextOpenId())) {
 				break;
 			}
+			openIds.addAll(f.getOpenIds());
 			nextOpenId = f.getNextOpenId();
 		}
 		return openIds;
