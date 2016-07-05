@@ -34,15 +34,15 @@ public class WeixinSuiteTokenCreator extends TokenCreator {
 
 	@Override
 	public String key0() {
-		return String.format("qy_suite_token_%s", ticketManager.getId());
+		return String.format("qy_suite_token_%s", ticketManager.getThirdId());
 	}
 
 	@Override
 	public Token create() throws WeixinException {
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", ticketManager.getId());
-		obj.put("suite_secret", ticketManager.getSecret());
-		obj.put("suite_ticket", ticketManager.getTicket());
+		obj.put("suite_id", ticketManager.getThirdId());
+		obj.put("suite_secret", ticketManager.getThirdSecret());
+		obj.put("suite_ticket", ticketManager.getAccessTicket());
 		WeixinResponse response = weixinExecutor.post(
 				URLConsts.SUITE_TOKEN_URL, obj.toJSONString());
 		obj = response.getAsJson();

@@ -233,3 +233,5 @@
 * 2016-07-05
 
   + 初始化开放平台第三方组件TokenCreator
+  
+  + 新增第三方组件ComponentApi

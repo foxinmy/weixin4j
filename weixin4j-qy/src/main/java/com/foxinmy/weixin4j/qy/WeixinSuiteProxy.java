@@ -9,6 +9,7 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.qy.api.ProviderApi;
 import com.foxinmy.weixin4j.qy.api.SuiteApi;
@@ -54,8 +55,8 @@ public class WeixinSuiteProxy {
 	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
 	 */
 	public WeixinSuiteProxy() {
-		this(new Weixin4jSettings<WeixinQyAccount>(
-				JSON.parseObject(Weixin4jConfigUtil.getValue("account"), WeixinQyAccount.class)));
+		this(new Weixin4jSettings<WeixinQyAccount>(JSON.parseObject(
+				Weixin4jConfigUtil.getValue("account"), WeixinQyAccount.class)));
 	}
 
 	/**
@@ -70,15 +71,18 @@ public class WeixinSuiteProxy {
 			this.suiteMap = new HashMap<String, SuiteApi>(suites.size());
 			for (WeixinAccount suite : suites) {
 				this.suiteMap.put(suite.getId(), new SuiteApi(
-						new TicketManager(suite.getId(), suite.getSecret(), settings.getCacheStorager0())));
+						new TicketManager(suite.getId(), suite.getSecret(),
+								settings.getCacheStorager0())));
 			}
 			this.suiteMap.put(null, suiteMap.get(suites.get(0).getId()));
 		}
 		if (StringUtil.isNotBlank(settings.getAccount().getId())
-				&& StringUtil.isNotBlank(settings.getAccount().getProviderSecret())) {
+				&& StringUtil.isNotBlank(settings.getAccount()
+						.getProviderSecret())) {
 			this.providerApi = new ProviderApi(
-					new TokenManager(new WeixinProviderTokenCreator(settings.getAccount().getId(),
-							settings.getAccount().getProviderSecret()), settings.getCacheStorager0()),
+					new TokenManager(new WeixinProviderTokenCreator(settings
+							.getAccount().getId(), settings.getAccount()
+							.getProviderSecret()), settings.getCacheStorager0()),
 					settings.getCacheStorager0());
 		}
 	}
@@ -115,6 +119,24 @@ public class WeixinSuiteProxy {
 	}
 
 	/**
+	 * 获取套件的预授权码
+	 * 
+	 * @param suiteId
+	 *            套件ID
+	 * @return 预授权码
+	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi
+	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi#getPreCodeManager()
+	 * @throws WeixinException
+	 */
+	public String preSuiteTicket(String suiteId) throws WeixinException {
+		Token token = suite(suiteId).getTicketManager().getTicket();
+		if (token == null || StringUtil.isBlank(token.getAccessToken())) {
+			throw new WeixinException("maybe oauth first?");
+		}
+		return token.getAccessToken();
+	}
+
+	/**
 	 * 缓存套件ticket(多个套件
 	 *
 	 * @param suiteId
@@ -126,7 +148,8 @@ public class WeixinSuiteProxy {
 	 *      推送suite_ticket协议</a>
 	 * @throws WeixinException
 	 */
-	public void cacheTicket(String suiteId, String suiteTicket) throws WeixinException {
+	public void cacheTicket(String suiteId, String suiteTicket)
+			throws WeixinException {
 		suite(suiteId).getTicketManager().cachingTicket(suiteTicket);
 	}
 
@@ -141,7 +164,8 @@ public class WeixinSuiteProxy {
 	 * @throws WeixinException
 	 */
 	public String getSuiteAuthorizeURL(String suiteId) throws WeixinException {
-		String redirectUri = Weixin4jConfigUtil.getValue("suite.oauth.redirect.uri");
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("suite.oauth.redirect.uri");
 		return getSuiteAuthorizeURL(suiteId, redirectUri, "state");
 	}
 
@@ -161,9 +185,11 @@ public class WeixinSuiteProxy {
 	 * @return 请求授权的URL
 	 * @throws WeixinException
 	 */
-	public String getSuiteAuthorizeURL(String suiteId, String redirectUri, String state) throws WeixinException {
+	public String getSuiteAuthorizeURL(String suiteId, String redirectUri,
+			String state) throws WeixinException {
 		try {
-			return String.format(URLConsts.SUITE_OAUTH_URL, suiteId, suite(suiteId).getTicketManager().getTicket(),
+			return String.format(URLConsts.SUITE_OAUTH_URL, suiteId,
+					suite(suiteId).getTicketManager().getTicket(),
 					URLEncoder.encode(redirectUri, Consts.UTF_8.name()), state);
 		} catch (UnsupportedEncodingException e) {
 			;
@@ -205,7 +231,8 @@ public class WeixinSuiteProxy {
 	 *      获取登录企业号官网的url</a>
 	 * @throws WeixinException
 	 */
-	public String getLoginUrl(String corpId, LoginTargetType targetType, int agentId) throws WeixinException {
+	public String getLoginUrl(String corpId, LoginTargetType targetType,
+			int agentId) throws WeixinException {
 		return providerApi.getLoginUrl(corpId, targetType, agentId);
 	}
 
@@ -220,8 +247,8 @@ public class WeixinSuiteProxy {
 	 * @return
 	 */
 	public WeixinProxy getWeixinProxy(String suiteId, String authCorpId) {
-		return new WeixinProxy(suite(suiteId).getPerCodeManager(authCorpId),
-				suite(suiteId).getPerTokenManager(authCorpId));
+		return new WeixinProxy(suite(suiteId).getPerTicketManager(authCorpId),
+				suite(suiteId).getTokenManager());
 	}
 
 	public final static String VERSION = "1.7.0";

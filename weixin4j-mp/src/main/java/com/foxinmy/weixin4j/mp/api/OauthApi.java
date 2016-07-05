@@ -45,7 +45,7 @@ public class OauthApi extends MpApi {
 	}
 
 	/**
-	 * base静默授权:重定向URL使用weixin4j.properties#user.oauth.redirect.uri
+	 * 公众号base静默oauth授权:重定向URL使用weixin4j.properties#user.oauth.redirect.uri
 	 *
 	 * @see {@link #getAuthorizeURL(String, String,String)}
 	 *
@@ -204,5 +204,39 @@ public class OauthApi extends MpApi {
 
 		return response.getAsObject(new TypeReference<User>() {
 		});
+	}
+
+	/**
+	 * 微信开放平台oauth授权:重定向URL使用weixin4j.properties#user.oauth.redirect.uri
+	 *
+	 * @see {@link #getOpenAuthorizeURL(String, String)}
+	 *
+	 * @return 请求授权的URL
+	 */
+	public String getOpenAuthorizeURL() {
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("user.oauth.redirect.uri");
+		return getOpenAuthorizeURL(redirectUri, "state");
+	}
+
+	/**
+	 * 请求CODE
+	 *
+	 * @param redirectUri
+	 *            重定向地址 域名与审核时填写的授权域名一致
+	 * @param state
+	 *            用于保持请求和回调的状态，授权请求后原样带回给第三方
+	 * @return 请求授权的URL
+	 */
+	public String getOpenAuthorizeURL(String redirectUri, String state) {
+		String open_user_auth_uri = getRequestUri("open_user_auth_uri");
+		try {
+			return String.format(open_user_auth_uri, account.getId(),
+					URLEncoder.encode(redirectUri, Consts.UTF_8.name()),
+					"snsapi_login", state);
+		} catch (UnsupportedEncodingException e) {
+			;
+		}
+		return "";
 	}
 }

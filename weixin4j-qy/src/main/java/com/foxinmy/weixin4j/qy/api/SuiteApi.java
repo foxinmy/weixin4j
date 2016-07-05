@@ -10,10 +10,10 @@ import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentSetter;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
 import com.foxinmy.weixin4j.qy.model.User;
-import com.foxinmy.weixin4j.qy.suite.SuitePerCodeManager;
 import com.foxinmy.weixin4j.qy.suite.WeixinSuitePreCodeCreator;
 import com.foxinmy.weixin4j.qy.suite.WeixinSuiteTokenCreator;
 import com.foxinmy.weixin4j.qy.suite.WeixinTokenSuiteCreator;
+import com.foxinmy.weixin4j.token.PerTicketManager;
 import com.foxinmy.weixin4j.token.TicketManager;
 import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenManager;
@@ -51,9 +51,8 @@ public class SuiteApi extends QyApi {
 		this.ticketManager = ticketManager;
 		this.tokenManager = new TokenManager(new WeixinSuiteTokenCreator(
 				ticketManager), ticketManager.getCacheStorager());
-		this.preCodeManager = new TokenManager(
-				new WeixinSuitePreCodeCreator(tokenManager,
-						ticketManager.getId()),
+		this.preCodeManager = new TokenManager(new WeixinSuitePreCodeCreator(
+				tokenManager, ticketManager.getThirdId()),
 				ticketManager.getCacheStorager());
 	}
 
@@ -91,9 +90,9 @@ public class SuiteApi extends QyApi {
 	 *            授权方corpid
 	 * @return
 	 */
-	public SuitePerCodeManager getPerCodeManager(String authCorpId) {
-		return new SuitePerCodeManager(authCorpId,
-				ticketManager.getId(),
+	public PerTicketManager getPerTicketManager(String authCorpId) {
+		return new PerTicketManager(authCorpId, ticketManager.getThirdId(),
+				ticketManager.getThirdSecret(),
 				ticketManager.getCacheStorager());
 	}
 
@@ -106,7 +105,7 @@ public class SuiteApi extends QyApi {
 	 */
 	public TokenManager getPerTokenManager(String authCorpId) {
 		return new TokenManager(new WeixinTokenSuiteCreator(
-				getPerCodeManager(authCorpId), tokenManager),
+				getPerTicketManager(authCorpId), tokenManager),
 				ticketManager.getCacheStorager());
 	}
 
@@ -130,8 +129,7 @@ public class SuiteApi extends QyApi {
 		para.put("session_info", appid);
 		WeixinResponse response = weixinExecutor.post(
 				String.format(suite_set_session_uri,
-						tokenManager.getAccessToken()),
-				para.toJSONString());
+						tokenManager.getAccessToken()), para.toJSONString());
 		return response.getAsJsonResult();
 	}
 
@@ -151,28 +149,26 @@ public class SuiteApi extends QyApi {
 			throws WeixinException {
 		String suite_get_permanent_uri = getRequestUri("suite_get_permanent_uri");
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", ticketManager.getId());
+		obj.put("suite_id", ticketManager.getThirdId());
 		obj.put("auth_code", authCode);
-		WeixinResponse response = weixinExecutor
-				.post(String.format(suite_get_permanent_uri,
+		WeixinResponse response = weixinExecutor.post(
+				String.format(suite_get_permanent_uri,
 						tokenManager.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
 		obj.put("corp_info", obj.remove("auth_corp_info"));
 		obj.put("user_info", obj.remove("auth_user_info"));
 		OUserInfo oInfo = JSON.toJavaObject(obj, OUserInfo.class);
 		// 微信授权企业号的永久授权码
-		SuitePerCodeManager suitePerCodeManager = getPerCodeManager(oInfo
+		PerTicketManager perTicketManager = getPerTicketManager(oInfo
 				.getCorpInfo().getCorpId());
-		// 缓存微信企业号access_token
+		// 缓存微信企业号的access_token
 		TokenCreator tokenCreator = new WeixinTokenSuiteCreator(
-				suitePerCodeManager, tokenManager);
+				perTicketManager, tokenManager);
 		Token token = new Token(obj.getString("access_token"),
 				obj.getLongValue("expires_in") * 1000l);
-		ticketManager.getCacheStorager()
-				.caching(tokenCreator.key(), token);
-		// 缓存微信企业号永久授权码
-		suitePerCodeManager.cachingPermanentCode(obj
-				.getString("permanent_code"));
+		ticketManager.getCacheStorager().caching(tokenCreator.key(), token);
+		// 缓存微信企业号的永久授权码
+		perTicketManager.cachingTicket(obj.getString("permanent_code"));
 		return oInfo;
 	}
 
@@ -190,12 +186,11 @@ public class SuiteApi extends QyApi {
 	public OUserInfo getOAuthInfo(String authCorpId) throws WeixinException {
 		String suite_get_authinfo_uri = getRequestUri("suite_get_authinfo_uri");
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", ticketManager.getId());
+		obj.put("suite_id", ticketManager.getThirdId());
 		obj.put("auth_corpid", authCorpId);
-		obj.put("permanent_code", getPerCodeManager(authCorpId)
-				.getPermanentCode());
-		WeixinResponse response = weixinExecutor
-				.post(String.format(suite_get_authinfo_uri,
+		obj.put("permanent_code", getPerTicketManager(authCorpId).getAccessTicket());
+		WeixinResponse response = weixinExecutor.post(
+				String.format(suite_get_authinfo_uri,
 						tokenManager.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
 		obj.put("corp_info", obj.remove("auth_corp_info"));
@@ -220,13 +215,12 @@ public class SuiteApi extends QyApi {
 			throws WeixinException {
 		String suite_get_agent_uri = getRequestUri("suite_get_agent_uri");
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", ticketManager.getId());
+		obj.put("suite_id", ticketManager.getThirdId());
 		obj.put("auth_corpid", authCorpId);
-		obj.put("permanent_code", getPerCodeManager(authCorpId)
-				.getPermanentCode());
+		obj.put("permanent_code", getPerTicketManager(authCorpId).getAccessTicket());
 		obj.put("agentid", agentid);
-		WeixinResponse response = weixinExecutor
-				.post(String.format(suite_get_agent_uri,
+		WeixinResponse response = weixinExecutor.post(
+				String.format(suite_get_agent_uri,
 						tokenManager.getAccessToken()), obj.toJSONString());
 		JSONObject jsonObj = response.getAsJson();
 		AgentInfo agent = JSON.toJavaObject(jsonObj, AgentInfo.class);
@@ -258,10 +252,9 @@ public class SuiteApi extends QyApi {
 			throws WeixinException {
 		String suite_set_agent_uri = getRequestUri("suite_set_agent_uri");
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", ticketManager.getId());
+		obj.put("suite_id", ticketManager.getThirdId());
 		obj.put("auth_corpid", authCorpId);
-		obj.put("permanent_code", getPerCodeManager(authCorpId)
-				.getPermanentCode());
+		obj.put("permanent_code", getPerTicketManager(authCorpId).getAccessTicket());
 		obj.put("agent", agentSet);
 		WeixinResponse response = weixinExecutor.post(
 				String.format(suite_set_agent_uri,

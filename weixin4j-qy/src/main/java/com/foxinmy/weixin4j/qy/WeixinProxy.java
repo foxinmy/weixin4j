@@ -38,7 +38,6 @@ import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
-import com.foxinmy.weixin4j.qy.suite.SuitePerCodeManager;
 import com.foxinmy.weixin4j.qy.suite.WeixinTokenSuiteCreator;
 import com.foxinmy.weixin4j.qy.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.qy.token.WeixinTokenCreator;
@@ -47,6 +46,7 @@ import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.KfType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
 import com.foxinmy.weixin4j.setting.Weixin4jSettings;
+import com.foxinmy.weixin4j.token.PerTicketManager;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
@@ -137,21 +137,21 @@ public class WeixinProxy {
 	/**
 	 * 第三方套件(永久授权码机制)
 	 *
-	 * @param perCodeManager
+	 * @param perTicketManager
 	 *            第三方套件永久授权码
 	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getPerCodeManager(String)}
-	 * @param perTokenManager
+	 * @param suiteTokenManager
 	 *            第三方套件凭证token
-	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getPerTokenManager(String)}
+	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getTokenManager}
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi
 	 * @see WeixinSuiteProxy#getWeixinProxy(String, String)
 	 */
-	public WeixinProxy(SuitePerCodeManager perCodeManager,
-			TokenManager perTokenManager) {
-		this(new TokenManager(new WeixinTokenSuiteCreator(perCodeManager,
-				perTokenManager), perCodeManager.getCacheStorager()));
+	public WeixinProxy(PerTicketManager perTicketManager,
+			TokenManager suiteTokenManager) {
+		this(new TokenManager(new WeixinTokenSuiteCreator(perTicketManager,
+				suiteTokenManager), perTicketManager.getCacheStorager()));
 		this.settings = new Weixin4jSettings<WeixinAccount>(new WeixinAccount(
-				perCodeManager.getAuthCorpId(), null));
+				perTicketManager.getAuthAppId(), null));
 	}
 
 	/**

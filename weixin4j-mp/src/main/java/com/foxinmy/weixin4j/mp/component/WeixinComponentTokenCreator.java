@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.token.TicketManager;
 import com.foxinmy.weixin4j.token.TokenCreator;
 
 /**
- * 微信公众号应用组件凭证创建
+ * 微信开发平台应用组件凭证创建
  *
  * @className WeixinComponentTokenCreator
  * @author jinyu(foxinmy@gmail.com)
@@ -30,19 +30,19 @@ public class WeixinComponentTokenCreator extends TokenCreator {
 
 	@Override
 	public String key0() {
-		return String.format("mp_component_token_%s", ticketManager.getId());
+		return String.format("mp_component_token_%s", ticketManager.getThirdId());
 	}
 
 	@Override
 	public Token create() throws WeixinException {
 		JSONObject obj = new JSONObject();
-		obj.put("component_appid", ticketManager.getId());
-		obj.put("component_appsecret", ticketManager.getSecret());
-		obj.put("component_verify_ticket", ticketManager.getTicket());
+		obj.put("component_appid", ticketManager.getThirdId());
+		obj.put("component_appsecret", ticketManager.getThirdSecret());
+		obj.put("component_verify_ticket", ticketManager.getAccessTicket());
 		WeixinResponse response = weixinExecutor.post(
 				URLConsts.COMPONENT_TOKEN_URL, obj.toJSONString());
 		obj = response.getAsJson();
-		return new Token(obj.getString("suite_access_token"),
+		return new Token(obj.getString("component_access_token"),
 				obj.getLongValue("expires_in") * 1000l);
 	}
 }

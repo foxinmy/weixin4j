@@ -5,6 +5,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
+import com.foxinmy.weixin4j.token.PerTicketManager;
 import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenManager;
 
@@ -22,36 +23,36 @@ import com.foxinmy.weixin4j.token.TokenManager;
  */
 public class WeixinTokenSuiteCreator extends TokenCreator {
 
-	private final SuitePerCodeManager perCodeManager;
+	private final PerTicketManager perTicketManager;
 	private final TokenManager suiteTokenManager;
 
 	/**
 	 *
-	 * @param perCodeManager
+	 * @param perTicketManager
 	 *            第三方套件永久授权码
-	 * @param suitetokenManager
+	 * @param suiteTokenManager
 	 *            第三方套件凭证token
 	 */
-	public WeixinTokenSuiteCreator(SuitePerCodeManager perCodeManager,
+	public WeixinTokenSuiteCreator(PerTicketManager perTicketManager,
 			TokenManager suiteTokenManager) {
-		this.perCodeManager = perCodeManager;
+		this.perTicketManager = perTicketManager;
 		this.suiteTokenManager = suiteTokenManager;
 	}
 
 	@Override
 	public String key0() {
 		return String.format("qy_token_suite_%s_%s",
-				perCodeManager.getSuiteId(), perCodeManager.getAuthCorpId());
+				perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
 	}
 
 	@Override
 	public Token create() throws WeixinException {
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", perCodeManager.getSuiteId());
-		obj.put("auth_corpid", perCodeManager.getAuthCorpId());
-		obj.put("permanent_code", perCodeManager.getPermanentCode());
-		WeixinResponse response = weixinExecutor
-				.post(String.format(URLConsts.TOKEN_SUITE_URL,
+		obj.put("suite_id", perTicketManager.getThirdId());
+		obj.put("auth_corpid", perTicketManager.getAuthAppId());
+		obj.put("permanent_code", perTicketManager.getAccessTicket());
+		WeixinResponse response = weixinExecutor.post(
+				String.format(URLConsts.TOKEN_SUITE_URL,
 						suiteTokenManager.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
 		return new Token(obj.getString("access_token"),

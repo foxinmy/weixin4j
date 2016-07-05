@@ -722,3 +722,5 @@
 * 2016-07-05
 
   + weixin4j-mp:初始化开放平台第三方组件TokenCreator
+  
+  + weixin4j-mp:新增第三方组件ComponentApi

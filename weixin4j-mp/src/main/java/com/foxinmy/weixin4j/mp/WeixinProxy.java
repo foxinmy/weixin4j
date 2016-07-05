@@ -26,6 +26,7 @@ import com.foxinmy.weixin4j.mp.api.QrApi;
 import com.foxinmy.weixin4j.mp.api.TagApi;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
 import com.foxinmy.weixin4j.mp.api.UserApi;
+import com.foxinmy.weixin4j.mp.component.WeixinTokenComponentCreator;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;
 import com.foxinmy.weixin4j.mp.message.TemplateMessage;
 import com.foxinmy.weixin4j.mp.model.AutoReplySetting;
@@ -51,6 +52,7 @@ import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.mp.type.Lang;
 import com.foxinmy.weixin4j.setting.Weixin4jSettings;
+import com.foxinmy.weixin4j.token.PerTicketManager;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
@@ -147,6 +149,25 @@ public class WeixinProxy {
 				.getId(), settings.getAccount().getSecret()),
 				settings.getCacheStorager0()));
 		this.settings = settings;
+	}
+
+	/**
+	 * 第三方组件(永久刷新令牌机制)
+	 *
+	 * @param perTicketManager
+	 *            第三方组件永久刷新令牌
+	 *            {@link com.foxinmy.weixin4j.mp.api.ComponentApi#getPerCodeManager(String)}
+	 * @param componentTokenManager
+	 *            第三方组件凭证token
+	 *            {@link com.foxinmy.weixin4j.mp.api.ComponentApi#getTokenManager}
+	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi
+	 */
+	public WeixinProxy(PerTicketManager perTicketManager,
+			TokenManager componentTokenManager) {
+		this(new TokenManager(new WeixinTokenComponentCreator(perTicketManager,
+				componentTokenManager), perTicketManager.getCacheStorager()));
+		this.settings = new Weixin4jSettings<WeixinAccount>(new WeixinAccount(
+				perTicketManager.getAuthAppId(), null));
 	}
 
 	/**

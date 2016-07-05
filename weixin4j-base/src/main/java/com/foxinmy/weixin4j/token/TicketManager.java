@@ -18,11 +18,11 @@ public class TicketManager {
 	/**
 	 * 第三方ID
 	 */
-	private final String id;
+	private final String thirdId;
 	/**
 	 * 第三方secret
 	 */
-	private final String secret;
+	private final String thirdSecret;
 	/**
 	 * ticket存储策略
 	 */
@@ -30,27 +30,38 @@ public class TicketManager {
 
 	/**
 	 * 
-	 * @param id
-	 *            第三方ID
-	 * @param secret
+	 * @param thirdId
+	 *            第三方ID suiteId/componentId
+	 * @param thirdSecret
 	 *            第三方secret
 	 * @param cacheStorager
 	 *            ticket存储策略
 	 */
-	public TicketManager(String id, String secret, CacheStorager<Token> cacheStorager) {
-		this.id = id;
-		this.secret = secret;
+	public TicketManager(String thirdId, String thirdSecret,
+			CacheStorager<Token> cacheStorager) {
+		this.thirdId = thirdId;
+		this.thirdSecret = thirdSecret;
 		this.cacheStorager = cacheStorager;
+	}
+
+	/**
+	 * 获取ticket对象
+	 *
+	 * @return token对象
+	 * @throws WeixinException
+	 */
+	public Token getTicket() throws WeixinException {
+		return cacheStorager.lookup(getCacheKey());
 	}
 
 	/**
 	 * 获取ticket
 	 *
-	 * @return
+	 * @return ticket
 	 * @throws WeixinException
 	 */
-	public String getTicket() throws WeixinException {
-		return cacheStorager.lookup(getCacheKey()).getAccessToken();
+	public String getAccessTicket() throws WeixinException {
+		return getTicket().getAccessToken();
 	}
 
 	/**
@@ -59,13 +70,15 @@ public class TicketManager {
 	 * @return
 	 */
 	public String getCacheKey() {
-		return String.format("%sthird_party_ticket_%s", TokenCreator.CACHEKEY_PREFIX, id);
+		return String.format("%sthird_party_ticket_%s",
+				TokenCreator.CACHEKEY_PREFIX, thirdId);
 	}
 
 	/**
 	 * 缓存ticket
 	 *
 	 * @param ticket
+	 *            票据凭证
 	 * @throws WeixinException
 	 */
 	public void cachingTicket(String ticket) throws WeixinException {
@@ -73,12 +86,12 @@ public class TicketManager {
 		cacheStorager.caching(getCacheKey(), token);
 	}
 
-	public String getId() {
-		return id;
+	public String getThirdId() {
+		return thirdId;
 	}
 
-	public String getSecret() {
-		return secret;
+	public String getThirdSecret() {
+		return thirdSecret;
 	}
 
 	public CacheStorager<Token> getCacheStorager() {
