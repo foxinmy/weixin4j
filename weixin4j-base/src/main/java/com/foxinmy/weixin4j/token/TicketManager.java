@@ -1,29 +1,45 @@
-package com.foxinmy.weixin4j.qy.suite;
+package com.foxinmy.weixin4j.token;
 
 import com.foxinmy.weixin4j.cache.CacheStorager;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.token.TokenCreator;
 
 /**
- * 应用套件ticket的存取
+ * 第三方应用ticket的存取
  *
- * @className SuiteTicketManager
+ * @className TicketManager
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月22日
  * @since JDK 1.6
  * @see
  */
-public class SuiteTicketManager {
+public class TicketManager {
 
-	private final String suiteId;
-	private final String suiteSecret;
+	/**
+	 * 第三方ID
+	 */
+	private final String id;
+	/**
+	 * 第三方secret
+	 */
+	private final String secret;
+	/**
+	 * ticket存储策略
+	 */
 	private final CacheStorager<Token> cacheStorager;
 
-	public SuiteTicketManager(String suiteId, String suiteSecret,
-			CacheStorager<Token> cacheStorager) {
-		this.suiteId = suiteId;
-		this.suiteSecret = suiteSecret;
+	/**
+	 * 
+	 * @param id
+	 *            第三方ID
+	 * @param secret
+	 *            第三方secret
+	 * @param cacheStorager
+	 *            ticket存储策略
+	 */
+	public TicketManager(String id, String secret, CacheStorager<Token> cacheStorager) {
+		this.id = id;
+		this.secret = secret;
 		this.cacheStorager = cacheStorager;
 	}
 
@@ -43,8 +59,7 @@ public class SuiteTicketManager {
 	 * @return
 	 */
 	public String getCacheKey() {
-		return String.format("%sqy_suite_ticket_%s",
-				TokenCreator.CACHEKEY_PREFIX, suiteId);
+		return String.format("%sthird_party_ticket_%s", TokenCreator.CACHEKEY_PREFIX, id);
 	}
 
 	/**
@@ -58,12 +73,12 @@ public class SuiteTicketManager {
 		cacheStorager.caching(getCacheKey(), token);
 	}
 
-	public String getSuiteId() {
-		return this.suiteId;
+	public String getId() {
+		return id;
 	}
 
-	public String getSuiteSecret() {
-		return this.suiteSecret;
+	public String getSecret() {
+		return secret;
 	}
 
 	public CacheStorager<Token> getCacheStorager() {

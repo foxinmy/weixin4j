@@ -5,6 +5,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
+import com.foxinmy.weixin4j.token.TicketManager;
 import com.foxinmy.weixin4j.token.TokenCreator;
 
 /**
@@ -20,27 +21,27 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  */
 public class WeixinSuiteTokenCreator extends TokenCreator {
 
-	private final SuiteTicketManager ticketManager;
+	private final TicketManager ticketManager;
 
 	/**
 	 *
 	 * @param ticketManager
 	 *            套件ticket存取
 	 */
-	public WeixinSuiteTokenCreator(SuiteTicketManager ticketManager) {
+	public WeixinSuiteTokenCreator(TicketManager ticketManager) {
 		this.ticketManager = ticketManager;
 	}
 
 	@Override
 	public String key0() {
-		return String.format("qy_suite_token_%s", ticketManager.getSuiteId());
+		return String.format("qy_suite_token_%s", ticketManager.getId());
 	}
 
 	@Override
 	public Token create() throws WeixinException {
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", ticketManager.getSuiteId());
-		obj.put("suite_secret", ticketManager.getSuiteSecret());
+		obj.put("suite_id", ticketManager.getId());
+		obj.put("suite_secret", ticketManager.getSecret());
 		obj.put("suite_ticket", ticketManager.getTicket());
 		WeixinResponse response = weixinExecutor.post(
 				URLConsts.SUITE_TOKEN_URL, obj.toJSONString());

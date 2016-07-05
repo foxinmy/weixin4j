@@ -705,7 +705,7 @@
 
 * 2016-05-28
 
-  + 重构Cache实现
+  + weixin4j-base:重构Cache实现
 
 * 2016-05-30
 
@@ -718,3 +718,7 @@
 * 2016-06-20
 
   + version upgrade to 1.7.0
+  
+* 2016-07-05
+
+  + weixin4j-mp:初始化开放平台第三方组件TokenCreator

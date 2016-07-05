@@ -140,16 +140,16 @@ public class WeixinProxy {
 	 * @param perCodeManager
 	 *            第三方套件永久授权码
 	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getPerCodeManager(String)}
-	 * @param suitetokenManager
+	 * @param perTokenManager
 	 *            第三方套件凭证token
-	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getTokenSuiteManager(String)}
+	 *            {@link com.foxinmy.weixin4j.qy.api.SuiteApi#getPerTokenManager(String)}
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi
 	 * @see WeixinSuiteProxy#getWeixinProxy(String, String)
 	 */
 	public WeixinProxy(SuitePerCodeManager perCodeManager,
-			TokenManager suiteTokenManager) {
+			TokenManager perTokenManager) {
 		this(new TokenManager(new WeixinTokenSuiteCreator(perCodeManager,
-				suiteTokenManager), perCodeManager.getCacheStorager()));
+				perTokenManager), perCodeManager.getCacheStorager()));
 		this.settings = new Weixin4jSettings<WeixinAccount>(new WeixinAccount(
 				perCodeManager.getAuthCorpId(), null));
 	}

@@ -14,11 +14,18 @@ public final class URLConsts {
 	/**
 	 * 公众平台获取token的url
 	 */
-	public static final String ASSESS_TOKEN_URL = BASE_URL
-			+ "/token?grant_type=client_credential&appid=%s&secret=%s";
+	public static final String ASSESS_TOKEN_URL = BASE_URL + "/token?grant_type=client_credential&appid=%s&secret=%s";
 	/**
 	 * 公众平台jssdk获取token的url
 	 */
-	public static final String JS_TICKET_URL = BASE_URL
-			+ "/ticket/getticket?access_token=%s&type=%s";
+	public static final String JS_TICKET_URL = BASE_URL + "/ticket/getticket?access_token=%s&type=%s";
+	/**
+	 * 开发平台获取token的url
+	 */
+	public static final String COMPONENT_TOKEN_URL = BASE_URL + "/component/api_component_token";
+	/**
+	 * 开发平台获取预授权码的url
+	 */
+	public static final String COMPONENET_PRE_CODE_URL = BASE_URL
+			+ "/component/api_create_preauthcode?component_access_token=%s";
 }
