@@ -77,7 +77,7 @@ public class WeixinQyAccount extends WeixinAccount {
 
 	@Override
 	public String toString() {
-		return "WeixinQyAccount [" + super.toString() + ", suiteAccounts="
+		return "WeixinQyAccount [" + super.toString() + ", suites="
 				+ suites + ", providerSecret=" + providerSecret
 				+ ",  chatSecret=" + chatSecret + "]";
 	}

@@ -63,7 +63,7 @@ public class ComponentApi extends MpApi {
 	/**
 	 * 应用组件token
 	 *
-	 * @return
+	 * @return 应用组件的token管理
 	 */
 	public TokenManager getTokenManager() {
 		return this.tokenManager;
@@ -72,7 +72,7 @@ public class ComponentApi extends MpApi {
 	/**
 	 * 应用组件ticket
 	 *
-	 * @return
+	 * @return 应用组件的ticket管理
 	 */
 	public TicketManager getTicketManager() {
 		return this.ticketManager;
@@ -81,7 +81,7 @@ public class ComponentApi extends MpApi {
 	/**
 	 * 应用组件预授权码
 	 *
-	 * @return
+	 * @return 应用组件的precode管理
 	 */
 	public TokenManager getPreCodeManager() {
 		return this.preCodeManager;
@@ -93,7 +93,7 @@ public class ComponentApi extends MpApi {
 	 *
 	 * @param authAppId
 	 *            授权方appid
-	 * @return
+	 * @return 应用组件的perticket管理
 	 */
 	public PerTicketManager getRefreshTokenManager(String authAppId) {
 		return new PerTicketManager(authAppId, ticketManager.getThirdId(),

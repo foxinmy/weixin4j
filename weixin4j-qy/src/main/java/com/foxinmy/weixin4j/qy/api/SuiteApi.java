@@ -59,7 +59,7 @@ public class SuiteApi extends QyApi {
 	/**
 	 * 应用套件token
 	 *
-	 * @return
+	 * @return 应用套件的token管理
 	 */
 	public TokenManager getTokenManager() {
 		return this.tokenManager;
@@ -68,7 +68,7 @@ public class SuiteApi extends QyApi {
 	/**
 	 * 应用套件ticket
 	 *
-	 * @return
+	 * @return 应用套件的ticket管理
 	 */
 	public TicketManager getTicketManager() {
 		return this.ticketManager;
@@ -77,7 +77,7 @@ public class SuiteApi extends QyApi {
 	/**
 	 * 应用套件预授权码
 	 *
-	 * @return
+	 * @return 应用套件的precode管理
 	 */
 	public TokenManager getPreCodeManager() {
 		return this.preCodeManager;
@@ -88,7 +88,7 @@ public class SuiteApi extends QyApi {
 	 *
 	 * @param authCorpid
 	 *            授权方corpid
-	 * @return
+	 * @return 应用套件的preticket管理
 	 */
 	public PerTicketManager getPerTicketManager(String authCorpId) {
 		return new PerTicketManager(authCorpId, ticketManager.getThirdId(),
