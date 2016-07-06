@@ -70,11 +70,6 @@ public class WeixinQyAccount extends WeixinAccount {
 		return chatSecret;
 	}
 
-	public WeixinAccount[] suitesToArray() {
-		return suites != null ? suites
-				.toArray(new WeixinAccount[suites.size()]) : null;
-	}
-
 	@Override
 	public String toString() {
 		return "WeixinQyAccount [" + super.toString() + ", suites="
