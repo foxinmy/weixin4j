@@ -76,7 +76,7 @@ public class WeixinComponentProxy {
 	}
 
 	/**
-	 * 获取组接口对象(只关注第一个套件
+	 * 获取组接口对象(只关注第一个组件
 	 *
 	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi
 	 * @return API实例
@@ -86,7 +86,7 @@ public class WeixinComponentProxy {
 	}
 
 	/**
-	 * 获取套件接口对象(多个套件
+	 * 获取套件接口对象(多个组件
 	 *
 	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi
 	 * @param componentId
