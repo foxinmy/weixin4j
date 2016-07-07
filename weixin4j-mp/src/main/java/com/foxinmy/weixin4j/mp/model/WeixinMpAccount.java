@@ -26,9 +26,9 @@ public class WeixinMpAccount extends WeixinAccount {
 	/**
 	 *
 	 * @param appId
-	 *            应用组件ID 必填
+	 *            应用ID 使用普通接口(WeixinProxy对象)必须填写
 	 * @param appSecret
-	 *            应用组件密钥 使用普通接口(WeixinProxy对象)必须填写
+	 *            应用密钥 使用普通接口(WeixinProxy对象)必须填写
 	 * @param components
 	 *            应用组件集合 使用套件接口(WeixinComponentProxy#ComponentApi)必须填写
 	 */

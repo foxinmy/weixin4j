@@ -36,7 +36,7 @@ public class WeixinQyAccount extends WeixinAccount {
 	/**
 	 *
 	 * @param corpid
-	 *            企业ID 必填
+	 *            企业ID 使用普通接口(WeixinProxy对象)必须填写
 	 * @param corpsecret
 	 *            管理组的凭证密钥 使用普通接口(WeixinProxy对象)必须填写
 	 * @param suites

@@ -155,7 +155,7 @@ public class WeixinProxy {
 	 * 第三方组件(永久刷新令牌机制)
 	 *
 	 * @param perTicketManager
-	 *            第三方组件永久刷新令牌
+	 *            第三方组件永久刷新token
 	 *            {@link com.foxinmy.weixin4j.mp.api.ComponentApi#getPerCodeManager(String)}
 	 * @param componentTokenManager
 	 *            第三方组件凭证token
