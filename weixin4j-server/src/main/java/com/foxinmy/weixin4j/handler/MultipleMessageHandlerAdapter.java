@@ -16,28 +16,25 @@ import com.foxinmy.weixin4j.request.WeixinRequest;
  * @since JDK 1.6
  * @see
  */
-public abstract class MultipleMessageHandlerAdapter implements
-		WeixinMessageHandler {
+public abstract class MultipleMessageHandlerAdapter implements WeixinMessageHandler {
 
 	private final Set<Class<? extends WeixinMessage>> messageClasses;
 
-	public MultipleMessageHandlerAdapter(
-			Class<? extends WeixinMessage>... messageClasses) {
+	public MultipleMessageHandlerAdapter(Class<? extends WeixinMessage>... messageClasses) {
 		if (messageClasses == null) {
 			throw new IllegalArgumentException("messageClasses not be empty");
 		}
 		this.messageClasses = new HashSet<Class<? extends WeixinMessage>>(
-				(int) Math.ceil(messageClasses.length * 0.75));
+				Math.max((int) (messageClasses.length / .75f) + 1, 16));
 		for (Class<? extends WeixinMessage> clazz : messageClasses) {
 			this.messageClasses.add(clazz);
 		}
 	}
 
 	@Override
-	public boolean canHandle(WeixinRequest request, WeixinMessage message,
-			Set<String> nodeNames) throws WeixinException {
-		return message != null && messageClasses.contains(message.getClass())
-				&& canHandle0(request, message);
+	public boolean canHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames)
+			throws WeixinException {
+		return message != null && messageClasses.contains(message.getClass()) && canHandle0(request, message);
 	}
 
 	/**
@@ -50,8 +47,7 @@ public abstract class MultipleMessageHandlerAdapter implements
 	 * @return true则执行doHandler
 	 * @throws WeixinException
 	 */
-	public boolean canHandle0(WeixinRequest request, WeixinMessage message)
-			throws WeixinException {
+	public boolean canHandle0(WeixinRequest request, WeixinMessage message) throws WeixinException {
 		return true;
 	}
 

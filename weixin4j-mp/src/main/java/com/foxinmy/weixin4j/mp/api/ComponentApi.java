@@ -114,7 +114,7 @@ public class ComponentApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.ComponentAuthInfo
 	 * @throws WeixinException
 	 */
-	public ComponentAuthInfo exchangeComponentAuthInfo(String authCode)
+	public ComponentAuthInfo exchangeAuthInfo(String authCode)
 			throws WeixinException {
 		String component_exchange_authorizer_uri = getRequestUri("component_exchange_authorizer_uri");
 		JSONObject obj = new JSONObject();
@@ -143,7 +143,7 @@ public class ComponentApi extends MpApi {
 		Token token = new Token(authObj.getString("authorizer_access_token"),
 				authObj.getLongValue("expires_in") * 1000l);
 		ticketManager.getCacheStorager().caching(tokenCreator.key(), token);
-		// 缓存微信企业号的永久授权码
+		// 缓存微信公众号的永久授权码(refresh_token)
 		perTicketManager.cachingTicket(authObj
 				.getString("authorizer_refresh_token"));
 		return info;
@@ -160,7 +160,7 @@ public class ComponentApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.ComponentAuthInfo
 	 * @throws WeixinException
 	 */
-	public ComponentAuthInfo getComponentAuthInfo(String authAppId)
+	public ComponentAuthInfo getAuthInfo(String authAppId)
 			throws WeixinException {
 		String component_get_authorizer_uri = getRequestUri("component_get_authorizer_uri");
 		JSONObject obj = new JSONObject();
@@ -222,7 +222,7 @@ public class ComponentApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.AuthorizerOption
 	 * @throws WeixinException
 	 */
-	public JsonResult getAuthorizerOption(String authAppId,
+	public JsonResult setAuthorizerOption(String authAppId,
 			AuthorizerOption option) throws WeixinException {
 		String component_set_authorizer_option_uri = getRequestUri("component_set_authorizer_option_uri");
 		JSONObject obj = new JSONObject();

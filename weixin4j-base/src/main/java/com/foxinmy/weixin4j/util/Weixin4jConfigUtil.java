@@ -21,8 +21,7 @@ public class Weixin4jConfigUtil {
 	private final static String CLASSPATH_VALUE;
 	private static ResourceBundle weixinBundle;
 	static {
-		CLASSPATH_VALUE = Thread.currentThread().getContextClassLoader()
-				.getResource("").getPath();
+		CLASSPATH_VALUE = Thread.currentThread().getContextClassLoader().getResource("").getPath();
 		try {
 			weixinBundle = ResourceBundle.getBundle(Consts.WEIXIN4J);
 		} catch (MissingResourceException e) {
@@ -89,21 +88,22 @@ public class Weixin4jConfigUtil {
 	 * @return
 	 */
 	public static String getClassPathValue(String key, String defaultValue) {
-		return getValue(key, defaultValue).replaceFirst(CLASSPATH_PREFIX,
-				CLASSPATH_VALUE);
+		return getValue(key, defaultValue).replaceFirst(CLASSPATH_PREFIX, CLASSPATH_VALUE);
 	}
 
+	/**
+	 * 获取微信账号信息
+	 * 
+	 * @return 微信账号信息
+	 */
 	public static WeixinAccount getWeixinAccount() {
 		WeixinAccount account = null;
 		try {
-			account = JSON
-					.parseObject(getValue("account"), WeixinAccount.class);
+			account = JSON.parseObject(getValue("account"), WeixinAccount.class);
 		} catch (NullPointerException e) {
-			System.err
-					.println("'weixin4j.account' key not found in weixin4j.properties.");
+			System.err.println("'weixin4j.account' key not found in weixin4j.properties.");
 		} catch (MissingResourceException e) {
-			System.err
-					.println("'weixin4j.account' key not found in weixin4j.properties.");
+			System.err.println("'weixin4j.account' key not found in weixin4j.properties.");
 		}
 		return account;
 	}
