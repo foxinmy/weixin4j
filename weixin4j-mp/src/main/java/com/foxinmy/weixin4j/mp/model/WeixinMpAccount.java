@@ -30,7 +30,7 @@ public class WeixinMpAccount extends WeixinAccount {
 	 * @param appSecret
 	 *            应用组件密钥 使用普通接口(WeixinProxy对象)必须填写
 	 * @param components
-	 *            应用组件集合 使用套件接口(WeixinSuiteProxy#SuiteApi)必须填写
+	 *            应用组件集合 使用套件接口(WeixinComponentProxy#ComponentApi)必须填写
 	 */
 	@JSONCreator
 	public WeixinMpAccount(@JSONField(name = "id") String appId, @JSONField(name = "secret") String appSecret,
@@ -41,10 +41,6 @@ public class WeixinMpAccount extends WeixinAccount {
 
 	public List<WeixinAccount> getComponents() {
 		return components;
-	}
-
-	public WeixinAccount[] componentsToArray() {
-		return components != null ? components.toArray(new WeixinAccount[components.size()]) : null;
 	}
 
 	@Override
