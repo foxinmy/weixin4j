@@ -59,29 +59,29 @@ public class RedisClusterCacheStorager<T extends Cacheable> implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T lookup(String cacheKey) {
-		byte[] value = jedisCluster.get(cacheKey.getBytes(Consts.UTF_8));
+	public T lookup(String key) {
+		byte[] value = jedisCluster.get(key.getBytes(Consts.UTF_8));
 		return value != null ? (T) SerializationUtils.deserialize(value) : null;
 	}
 
 	@Override
-	public void caching(String cacheKey, T cache) {
-		byte[] key = cacheKey.getBytes(Consts.UTF_8);
+	public void caching(String key, T cache) {
+		byte[] cacheKey = key.getBytes(Consts.UTF_8);
 		byte[] value = SerializationUtils.serialize(cache);
 		if (cache.getExpires() > 0) {
-			jedisCluster.setex(key, (int) (cache.getExpires() - CUTMS) / 1000,
-					value);
+			jedisCluster.setex(cacheKey,
+					(int) (cache.getExpires() - CUTMS) / 1000, value);
 		} else {
-			jedisCluster.set(key, value);
+			jedisCluster.set(cacheKey, value);
 		}
-		jedisCluster.sadd(ALLKEY, cacheKey);
+		jedisCluster.sadd(ALLKEY, key);
 	}
 
 	@Override
-	public T evict(String cacheKey) {
-		T cache = lookup(cacheKey);
-		jedisCluster.del(cacheKey);
-		jedisCluster.srem(ALLKEY, cacheKey);
+	public T evict(String key) {
+		T cache = lookup(key);
+		jedisCluster.del(key);
+		jedisCluster.srem(ALLKEY, key);
 		return cache;
 	}
 

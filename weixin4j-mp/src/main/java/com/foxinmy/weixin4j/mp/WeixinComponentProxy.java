@@ -125,7 +125,7 @@ public class WeixinComponentProxy {
 	 *            组件ticket内容
 	 * @throws WeixinException
 	 */
-	public void cacheTicket(String componentId, String componentTicket) throws WeixinException {
+	public void cacheComponentTicket(String componentId, String componentTicket) throws WeixinException {
 		component(componentId).getTicketManager().cachingTicket(componentTicket);
 	}
 
@@ -135,7 +135,7 @@ public class WeixinComponentProxy {
 	 * @see {@link #getComponentAuthorizeURL(String, String,String)}
 	 * @param componentId
 	 *            组件ID
-	 * @see {@link #cacheTicket(String, String)}
+	 * @see {@link #cacheComponentTicket(String, String)}
 	 * @return 请求授权的URL
 	 * @throws WeixinException
 	 */

@@ -146,7 +146,7 @@ public class WeixinSuiteProxy {
 	 *      推送suite_ticket协议</a>
 	 * @throws WeixinException
 	 */
-	public void cacheTicket(String suiteId, String suiteTicket) throws WeixinException {
+	public void cacheSuiteTicket(String suiteId, String suiteTicket) throws WeixinException {
 		suite(suiteId).getTicketManager().cachingTicket(suiteTicket);
 	}
 
@@ -156,7 +156,7 @@ public class WeixinSuiteProxy {
 	 * @see {@link #getSuiteAuthorizeURL(String, String,String)}
 	 * @param suiteId
 	 *            套件ID
-	 * @see {@link #cacheTicket(String, String)}
+	 * @see {@link #cacheSuiteTicket(String, String)}
 	 * @return 请求授权的URL
 	 * @throws WeixinException
 	 */
