@@ -35,32 +35,32 @@ public class MemcacheCacheStorager<T extends Cacheable> implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T lookup(String cacheKey) {
-		return (T) mc.get(cacheKey);
+	public T lookup(String key) {
+		return (T) mc.get(key);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void caching(String cacheKey, T cache) {
+	public void caching(String key, T cache) {
 		if (cache.getCreateTime() > 0l) {
-			mc.set(cacheKey,
+			mc.set(key,
 					cache,
 					new Date(cache.getCreateTime() + cache.getExpires() - CUTMS));
 		} else {
-			mc.set(cacheKey, cache);
+			mc.set(key, cache);
 		}
 		Set<String> all = (Set<String>) mc.get(ALLKEY);
-		all.add(cacheKey);
+		all.add(key);
 		mc.set(ALLKEY, all);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T evict(String cacheKey) {
-		T cache = lookup(cacheKey);
-		mc.delete(cacheKey);
+	public T evict(String key) {
+		T cache = lookup(key);
+		mc.delete(key);
 		Set<String> all = (Set<String>) mc.get(ALLKEY);
-		all.remove(cacheKey);
+		all.remove(key);
 		mc.set(ALLKEY, all);
 		return cache;
 	}

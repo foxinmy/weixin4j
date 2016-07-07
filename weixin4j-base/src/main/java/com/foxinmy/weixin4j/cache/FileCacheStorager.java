@@ -21,16 +21,16 @@ public class FileCacheStorager<T extends Cacheable> implements CacheStorager<T> 
 	private final File tmpdir;
 	private final String SEPARATOR = File.separator;
 
-	public FileCacheStorager(String cachePath) {
+	public FileCacheStorager(String path) {
 		this.tmpdir = new File(String.format("%s%sweixin4j_token_temp",
-				cachePath, SEPARATOR));
+				path, SEPARATOR));
 		this.tmpdir.mkdirs();
 	}
 
 	@Override
-	public T lookup(String cacheKey) {
+	public T lookup(String key) {
 		File cacheFile = new File(String.format("%s%s%s",
-				tmpdir.getAbsolutePath(), SEPARATOR, cacheKey));
+				tmpdir.getAbsolutePath(), SEPARATOR, key));
 		try {
 			if (cacheFile.exists()) {
 				T cache = SerializationUtils.deserialize(new FileInputStream(
@@ -50,22 +50,22 @@ public class FileCacheStorager<T extends Cacheable> implements CacheStorager<T> 
 	}
 
 	@Override
-	public void caching(String cacheKey, T cache) {
+	public void caching(String key, T cache) {
 		try {
 			SerializationUtils.serialize(
 					cache,
 					new FileOutputStream(new File(String.format("%s%s%s",
-							tmpdir.getAbsolutePath(), SEPARATOR, cacheKey))));
+							tmpdir.getAbsolutePath(), SEPARATOR, key))));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	@Override
-	public T evict(String cacheKey) {
+	public T evict(String key) {
 		T cache = null;
 		File cacheFile = new File(String.format("%s%s%s",
-				tmpdir.getAbsolutePath(), SEPARATOR, cacheKey));
+				tmpdir.getAbsolutePath(), SEPARATOR, key));
 		try {
 			if (cacheFile.exists()) {
 				cache = SerializationUtils.deserialize(new FileInputStream(

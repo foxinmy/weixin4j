@@ -4,7 +4,7 @@ import com.foxinmy.weixin4j.cache.CacheStorager;
 import com.foxinmy.weixin4j.model.Token;
 
 /**
- * 第三方应用组件永久授权码的存取
+ * 第三方应用永久授权码的存取
  *
  * @className PerTicketManager
  * @author jinyu(foxinmy@gmail.com)

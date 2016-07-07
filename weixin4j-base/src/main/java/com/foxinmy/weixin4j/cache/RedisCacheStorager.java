@@ -60,11 +60,11 @@ public class RedisCacheStorager<T extends Cacheable> implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T lookup(String cacheKey) {
+	public T lookup(String key) {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
-			byte[] value = jedis.get(cacheKey.getBytes(Consts.UTF_8));
+			byte[] value = jedis.get(key.getBytes(Consts.UTF_8));
 			return value != null ? (T) SerializationUtils.deserialize(value)
 					: null;
 		} finally {
@@ -75,19 +75,19 @@ public class RedisCacheStorager<T extends Cacheable> implements
 	}
 
 	@Override
-	public void caching(String cacheKey, T cache) {
+	public void caching(String key, T cache) {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
-			byte[] key = cacheKey.getBytes(Consts.UTF_8);
+			byte[] cacheKey = key.getBytes(Consts.UTF_8);
 			byte[] value = SerializationUtils.serialize(cache);
 			if (cache.getExpires() > 0) {
-				jedis.setex(key, (int) (cache.getExpires() - CUTMS) / 1000,
+				jedis.setex(cacheKey, (int) (cache.getExpires() - CUTMS) / 1000,
 						value);
 			} else {
-				jedis.set(key, value);
+				jedis.set(cacheKey, value);
 			}
-			jedis.sadd(ALLKEY, cacheKey);
+			jedis.sadd(ALLKEY, key);
 		} finally {
 			if (jedis != null) {
 				jedis.close();
@@ -96,13 +96,13 @@ public class RedisCacheStorager<T extends Cacheable> implements
 	}
 
 	@Override
-	public T evict(String cacheKey) {
-		T cache = lookup(cacheKey);
+	public T evict(String key) {
+		T cache = lookup(key);
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
-			jedis.del(cacheKey);
-			jedis.srem(ALLKEY, cacheKey);
+			jedis.del(key);
+			jedis.srem(ALLKEY, key);
 		} finally {
 			if (jedis != null) {
 				jedis.close();

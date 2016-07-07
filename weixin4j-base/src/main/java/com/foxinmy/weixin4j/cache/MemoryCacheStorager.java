@@ -22,8 +22,8 @@ public class MemoryCacheStorager<T extends Cacheable> implements
 	}
 
 	@Override
-	public T lookup(String cacheKey) {
-		T cache = this.CONMAP.get(cacheKey);
+	public T lookup(String key) {
+		T cache = this.CONMAP.get(key);
 		if (cache != null) {
 			if ((cache.getCreateTime() + cache.getExpires() - CUTMS) > System
 					.currentTimeMillis()) {
@@ -34,13 +34,13 @@ public class MemoryCacheStorager<T extends Cacheable> implements
 	}
 
 	@Override
-	public void caching(String cacheKey, T cache) {
-		this.CONMAP.put(cacheKey, cache);
+	public void caching(String key, T cache) {
+		this.CONMAP.put(key, cache);
 	}
 
 	@Override
-	public T evict(String cacheKey) {
-		return this.CONMAP.remove(cacheKey);
+	public T evict(String key) {
+		return this.CONMAP.remove(key);
 	}
 
 	@Override
