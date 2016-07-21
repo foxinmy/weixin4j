@@ -11,7 +11,7 @@ import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.alibaba.fastjson.parser.deserializer.ParseProcess;
 import com.alibaba.fastjson.serializer.NameFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
@@ -49,7 +49,7 @@ public class MenuApi extends QyApi {
 	 *      创建自定义菜单</a>
 	 * @see com.foxinmy.weixin4j.model.Button
 	 */
-	public JsonResult createMenu(int agentid, List<Button> buttons) throws WeixinException {
+	public ApiResult createMenu(int agentid, List<Button> buttons) throws WeixinException {
 		String menu_create_uri = getRequestUri("menu_create_uri");
 		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
@@ -74,7 +74,7 @@ public class MenuApi extends QyApi {
 					}
 				}));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -119,11 +119,11 @@ public class MenuApi extends QyApi {
 	 *      删除菜单</a>
 	 * @return 处理结果
 	 */
-	public JsonResult deleteMenu(int agentid) throws WeixinException {
+	public ApiResult deleteMenu(int agentid) throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(menu_delete_uri, token.getAccessToken(), agentid));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

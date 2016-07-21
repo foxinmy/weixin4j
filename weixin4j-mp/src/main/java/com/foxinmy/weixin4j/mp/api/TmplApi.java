@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.NameFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.message.TemplateMessage;
@@ -43,7 +43,7 @@ public class TmplApi extends MpApi {
 	 * @see <a
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">设置所处行业</a>
 	 */
-	public JsonResult setTmplIndustry(IndustryType... industryTypes)
+	public ApiResult setTmplIndustry(IndustryType... industryTypes)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		for (int i = 0; i < industryTypes.length; i++) {
@@ -56,7 +56,7 @@ public class TmplApi extends MpApi {
 				template_set_industry_uri, token.getAccessToken()), obj
 				.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -133,13 +133,13 @@ public class TmplApi extends MpApi {
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">删除模板</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteTemplate(String templateId) throws WeixinException {
+	public ApiResult deleteTemplate(String templateId) throws WeixinException {
 		Token token = tokenManager.getCache();
 		String template_del_uri = getRequestUri("template_del_uri");
 		WeixinResponse response = weixinExecutor.post(
 				String.format(template_del_uri, token.getAccessToken()),
 				String.format("{\"template_id\"=\"%s\"}", templateId));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class TmplApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.message.TemplateMessage
 	 * @see com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 */
-	public JsonResult sendTmplMessage(TemplateMessage tplMessage)
+	public ApiResult sendTmplMessage(TemplateMessage tplMessage)
 			throws WeixinException {
 		Token token = tokenManager.getCache();
 		String template_send_uri = getRequestUri("template_send_uri");
@@ -174,6 +174,6 @@ public class TmplApi extends MpApi {
 					}
 				}));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

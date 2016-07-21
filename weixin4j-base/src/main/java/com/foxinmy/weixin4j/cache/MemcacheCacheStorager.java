@@ -18,8 +18,7 @@ import com.whalin.MemCached.SockIOPool;
  * @since JDK 1.6
  * @see
  */
-public class MemcacheCacheStorager<T extends Cacheable> implements
-		CacheStorager<T> {
+public class MemcacheCacheStorager<T extends Cacheable> implements CacheStorager<T> {
 
 	private final MemCachedClient mc;
 
@@ -30,7 +29,13 @@ public class MemcacheCacheStorager<T extends Cacheable> implements
 	public MemcacheCacheStorager(MemcachePoolConfig poolConfig) {
 		mc = new MemCachedClient();
 		poolConfig.initSocketIO();
-		mc.set(ALLKEY, new HashSet<String>());
+		init();
+	}
+
+	private void init() {
+		if (!mc.keyExists(ALLKEY)) {
+			mc.set(ALLKEY, new HashSet<String>());
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -43,9 +48,7 @@ public class MemcacheCacheStorager<T extends Cacheable> implements
 	@Override
 	public void caching(String key, T cache) {
 		if (cache.getCreateTime() > 0l) {
-			mc.set(key,
-					cache,
-					new Date(cache.getCreateTime() + cache.getExpires() - CUTMS));
+			mc.set(key, cache, new Date(cache.getCreateTime() + cache.getExpires() - CUTMS));
 		} else {
 			mc.set(key, cache);
 		}

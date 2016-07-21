@@ -9,10 +9,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.ContentType;
+import com.foxinmy.weixin4j.http.MimeType;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
 import com.foxinmy.weixin4j.http.apache.InputStreamBody;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.Token;
@@ -130,7 +130,7 @@ public class CustomApi extends MpApi {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      新增客服账号</a>
 	 */
-	public JsonResult createKfAccount(String id, String name, String pwd) throws WeixinException {
+	public ApiResult createKfAccount(String id, String name, String pwd) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("kf_account", id);
 		obj.put("nickname", name);
@@ -139,7 +139,7 @@ public class CustomApi extends MpApi {
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(String.format(kf_create_uri, token.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class CustomApi extends MpApi {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      新增客服账号</a>
 	 */
-	public JsonResult updateKfAccount(String id, String name, String pwd) throws WeixinException {
+	public ApiResult updateKfAccount(String id, String name, String pwd) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("kf_account", id);
 		obj.put("nickname", name);
@@ -167,7 +167,7 @@ public class CustomApi extends MpApi {
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(String.format(kf_update_uri, token.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class CustomApi extends MpApi {
 	 *      >邀请绑定客服帐号<a/>
 	 * @throws WeixinException
 	 */
-	public JsonResult inviteKfAccount(String kfAccount, String inviteAccount) throws WeixinException {
+	public ApiResult inviteKfAccount(String kfAccount, String inviteAccount) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("kf_account", kfAccount);
 		obj.put("invite_wx", inviteAccount);
@@ -193,7 +193,7 @@ public class CustomApi extends MpApi {
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(String.format(kf_invite_uri, token.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -211,19 +211,20 @@ public class CustomApi extends MpApi {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      上传客服头像</a>
 	 */
-	public JsonResult uploadKfAvatar(String accountId, InputStream is, String fileName) throws WeixinException {
+	public ApiResult uploadKfAvatar(String accountId, InputStream is, String fileName) throws WeixinException {
 		if (StringUtil.isBlank(fileName)) {
 			fileName = ObjectId.get().toHexString();
 		}
 		if (StringUtil.isBlank(FileUtil.getFileExtension(fileName))) {
 			fileName = String.format("%s.jpg", fileName);
 		}
+		MimeType mimeType = new MimeType("image", FileUtil.getFileExtension(fileName));
 		Token token = tokenManager.getCache();
 		String kf_avatar_uri = getRequestUri("kf_avatar_uri");
 		WeixinResponse response = weixinExecutor.post(String.format(kf_avatar_uri, token.getAccessToken(), accountId),
-				new FormBodyPart("media", new InputStreamBody(is, ContentType.IMAGE_JPG.getMimeType(), fileName)));
+				new FormBodyPart("media", new InputStreamBody(is, mimeType.toString(), fileName)));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -237,12 +238,12 @@ public class CustomApi extends MpApi {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      删除客服账号</a>
 	 */
-	public JsonResult deleteKfAccount(String id) throws WeixinException {
+	public ApiResult deleteKfAccount(String id) throws WeixinException {
 		Token token = tokenManager.getCache();
 		String kf_delete_uri = getRequestUri("kf_delete_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(kf_delete_uri, token.getAccessToken(), id));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -264,7 +265,7 @@ public class CustomApi extends MpApi {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
 	 *      创建会话</a>
 	 */
-	public JsonResult createKfSession(String userOpenId, String kfAccount, String text) throws WeixinException {
+	public ApiResult createKfSession(String userOpenId, String kfAccount, String text) throws WeixinException {
 		Token token = tokenManager.getCache();
 		String kfsession_create_uri = getRequestUri("kfsession_create_uri");
 		JSONObject obj = new JSONObject();
@@ -274,7 +275,7 @@ public class CustomApi extends MpApi {
 		WeixinResponse response = weixinExecutor.post(String.format(kfsession_create_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -292,7 +293,7 @@ public class CustomApi extends MpApi {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
 	 *      关闭会话</a>
 	 */
-	public JsonResult closeKfSession(String userOpenId, String kfAccount, String text) throws WeixinException {
+	public ApiResult closeKfSession(String userOpenId, String kfAccount, String text) throws WeixinException {
 		Token token = tokenManager.getCache();
 		String kfsession_close_uri = getRequestUri("kfsession_close_uri");
 		JSONObject obj = new JSONObject();
@@ -302,7 +303,7 @@ public class CustomApi extends MpApi {
 		WeixinResponse response = weixinExecutor.post(String.format(kfsession_close_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**

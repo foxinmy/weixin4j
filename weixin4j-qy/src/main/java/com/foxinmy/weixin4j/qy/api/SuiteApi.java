@@ -3,7 +3,7 @@ package com.foxinmy.weixin4j.qy.api;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
@@ -117,7 +117,7 @@ public class SuiteApi extends QyApi {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E8.AE.BE.E7.BD.AE.E6.8E.88.E6.9D.83.E9.85.8D.E7.BD.AE"
 	 *      >设置套件授权配置</a>
 	 */
-	public JsonResult setSuiteSession(int... appids) throws WeixinException {
+	public ApiResult setSuiteSession(int... appids) throws WeixinException {
 		String suite_set_session_uri = getRequestUri("suite_set_session_uri");
 		JSONObject para = new JSONObject();
 		para.put("pre_auth_code", preCodeManager.getAccessToken());
@@ -126,7 +126,7 @@ public class SuiteApi extends QyApi {
 		para.put("session_info", appid);
 		WeixinResponse response = weixinExecutor
 				.post(String.format(suite_set_session_uri, tokenManager.getAccessToken()), para.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -232,7 +232,7 @@ public class SuiteApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult setAgent(String authCorpId, AgentSetter agentSet) throws WeixinException {
+	public ApiResult setAgent(String authCorpId, AgentSetter agentSet) throws WeixinException {
 		String suite_set_agent_uri = getRequestUri("suite_set_agent_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("suite_id", ticketManager.getThirdId());
@@ -241,6 +241,6 @@ public class SuiteApi extends QyApi {
 		obj.put("agent", agentSet);
 		WeixinResponse response = weixinExecutor.post(String.format(suite_set_agent_uri, tokenManager.getAccessToken()),
 				JSON.toJSONString(obj, AgentApi.typeFilter));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

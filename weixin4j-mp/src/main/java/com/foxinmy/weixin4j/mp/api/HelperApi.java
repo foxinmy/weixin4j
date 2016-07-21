@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSONPath;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
@@ -233,12 +233,12 @@ public class HelperApi extends MpApi {
 	 * @return 操作结果
 	 * @throws WeixinException
 	 */
-	public JsonResult clearQuota(String appId) throws WeixinException {
+	public ApiResult clearQuota(String appId) throws WeixinException {
 		String clearquota_uri = getRequestUri("clearquota_uri");
 		String body = String.format("{\"appid\":\"%s\"}", appId);
 		WeixinResponse response = weixinExecutor.post(
 				String.format(clearquota_uri, tokenManager.getAccessToken()),
 				body);
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

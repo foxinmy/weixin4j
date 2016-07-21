@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.ValueFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
@@ -72,13 +72,13 @@ public class AgentApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult setAgent(AgentSetter agentSet) throws WeixinException {
+	public ApiResult setAgent(AgentSetter agentSet) throws WeixinException {
 		String agent_set_uri = getRequestUri("agent_set_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(agent_set_uri, token.getAccessToken()),
 				JSON.toJSONString(agentSet, typeFilter));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	public final static ValueFilter typeFilter;

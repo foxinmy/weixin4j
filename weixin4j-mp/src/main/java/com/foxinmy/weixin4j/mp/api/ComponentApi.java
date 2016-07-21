@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.component.WeixinComponentPreCodeCreator;
@@ -222,7 +222,7 @@ public class ComponentApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.AuthorizerOption
 	 * @throws WeixinException
 	 */
-	public JsonResult setAuthorizerOption(String authAppId,
+	public ApiResult setAuthorizerOption(String authAppId,
 			AuthorizerOption option) throws WeixinException {
 		String component_set_authorizer_option_uri = getRequestUri("component_set_authorizer_option_uri");
 		JSONObject obj = new JSONObject();
@@ -233,6 +233,6 @@ public class ComponentApi extends MpApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(component_set_authorizer_option_uri,
 						tokenManager.getAccessToken()), obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

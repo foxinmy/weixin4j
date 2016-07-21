@@ -148,7 +148,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 				}
 				if (httpEntity.getContentType() != null) {
 					connection.setRequestProperty(HttpHeaders.CONTENT_TYPE,
-							httpEntity.getContentType().getMimeType());
+							httpEntity.getContentType().toString());
 				}
 				logger.debug("entity >> " + httpEntity.getContentType() + "("
 						+ httpEntity.getContentLength() + "byte)");

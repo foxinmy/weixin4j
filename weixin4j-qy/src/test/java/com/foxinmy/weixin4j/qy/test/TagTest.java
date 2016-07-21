@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.model.Contacts;
 import com.foxinmy.weixin4j.qy.model.IdParameter;
@@ -39,8 +39,8 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void update() throws WeixinException {
-		JsonResult result = tagApi.updateTag(new Tag(1, "coder456"));
-		Assert.assertEquals("updated", result.getDesc());
+		ApiResult result = tagApi.updateTag(new Tag(1, "coder456"));
+		Assert.assertEquals("updated", result.getReturnMsg());
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void delete() throws WeixinException {
-		JsonResult result = tagApi.deleteTag(3);
-		Assert.assertEquals("deleted", result.getDesc());
+		ApiResult result = tagApi.deleteTag(3);
+		Assert.assertEquals("deleted", result.getReturnMsg());
 	}
 }

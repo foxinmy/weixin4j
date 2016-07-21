@@ -82,6 +82,10 @@ public class Following implements Serializable {
 		this.nextOpenId = nextOpenId;
 	}
 
+	public boolean hasContent() {
+		return userList != null && !userList.isEmpty();
+	}
+
 	@Override
 	public String toString() {
 		return "Following [total=" + total + ", count=" + count + ", openIds=" + openIds + ", nextOpenId=" + nextOpenId

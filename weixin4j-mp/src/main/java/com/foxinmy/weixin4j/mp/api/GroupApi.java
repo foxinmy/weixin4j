@@ -5,7 +5,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Group;
@@ -104,7 +104,7 @@ public class GroupApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 * @see com.foxinmy.weixin4j.mp.model.Group#toModifyJson()
 	 */
-	public JsonResult modifyGroup(int groupId, String name)
+	public ApiResult modifyGroup(int groupId, String name)
 			throws WeixinException {
 		String group_modify_uri = getRequestUri("group_modify_uri");
 		Token token = tokenManager.getCache();
@@ -113,7 +113,7 @@ public class GroupApi extends MpApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(group_modify_uri, token.getAccessToken()),
 				group.toModifyJson());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class GroupApi extends MpApi {
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">移动分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
-	public JsonResult moveGroup(int groupId, String openId)
+	public ApiResult moveGroup(int groupId, String openId)
 			throws WeixinException {
 		String group_move_uri = getRequestUri("group_move_uri");
 		Token token = tokenManager.getCache();
@@ -136,7 +136,7 @@ public class GroupApi extends MpApi {
 				token.getAccessToken()), String.format(
 				"{\"openid\":\"%s\",\"to_groupid\":%d}", openId, groupId));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class GroupApi extends MpApi {
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">批量移动分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
-	public JsonResult moveGroup(int groupId, String... openIds)
+	public ApiResult moveGroup(int groupId, String... openIds)
 			throws WeixinException {
 		String group_batchmove_uri = getRequestUri("group_batchmove_uri");
 		Token token = tokenManager.getCache();
@@ -162,7 +162,7 @@ public class GroupApi extends MpApi {
 				String.format(group_batchmove_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -175,13 +175,13 @@ public class GroupApi extends MpApi {
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">删除用户分组</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Group
 	 */
-	public JsonResult deleteGroup(int groupId) throws WeixinException {
+	public ApiResult deleteGroup(int groupId) throws WeixinException {
 		String group_delete_uri = getRequestUri("group_delete_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(group_delete_uri, token.getAccessToken()),
 				String.format("{\"group\":{\"id\":%d}}", groupId));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

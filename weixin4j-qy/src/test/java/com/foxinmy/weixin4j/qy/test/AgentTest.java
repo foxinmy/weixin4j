@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentOverview;
@@ -44,8 +44,8 @@ public class AgentTest extends TokenTest {
 		agentSet.setDescription("test");
 		agentSet.setRedirectDomain("test.com");
 		agentSet.setReportLocationType(ReportLocationType.DIALOG);
-		JsonResult result = agentApi.setAgent(agentSet);
-		Assert.assertTrue(result.getCode() == 0);
+		ApiResult result = agentApi.setAgent(agentSet);
+		Assert.assertEquals("0",result.getReturnCode());
 	}
 	
 	@Test

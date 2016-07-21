@@ -7,7 +7,7 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.token.TokenManager;
@@ -224,7 +224,7 @@ public class MassApi extends MpApi {
 	 * @see {@link #massByGroupId(Tuple, int)}
 	 * @see {@link #massByOpenIds(Tuple, String...)
 	 */
-	public JsonResult deleteMassNews(String msgid) throws WeixinException {
+	public ApiResult deleteMassNews(String msgid) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("msgid", msgid);
 		String mass_delete_uri = getRequestUri("mass_delete_uri");
@@ -233,7 +233,7 @@ public class MassApi extends MpApi {
 				String.format(mass_delete_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class MassApi extends MpApi {
 	 * @see <a
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">预览群发消息</a>
 	 */
-	public JsonResult previewMassNews(String toUser, String toWxName,
+	public ApiResult previewMassNews(String toUser, String toWxName,
 			MassTuple tuple) throws WeixinException {
 		String msgtype = tuple.getMessageType();
 		JSONObject obj = new JSONObject();
@@ -265,7 +265,7 @@ public class MassApi extends MpApi {
 				String.format(mass_preview_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**

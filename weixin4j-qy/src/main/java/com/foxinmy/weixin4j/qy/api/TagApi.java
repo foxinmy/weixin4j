@@ -6,7 +6,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.Contacts;
@@ -70,13 +70,13 @@ public class TagApi extends QyApi {
 	 * @see com.foxinmy.weixin4j.qy.model.Tag
 	 * @throws WeixinException
 	 */
-	public JsonResult updateTag(Tag tag) throws WeixinException {
+	public ApiResult updateTag(Tag tag) throws WeixinException {
 		String tag_update_uri = getRequestUri("tag_update_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(tag_update_uri, token.getAccessToken()),
 				JSON.toJSONString(tag));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -90,12 +90,12 @@ public class TagApi extends QyApi {
 	 *      删除标签说明</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteTag(int tagId) throws WeixinException {
+	public ApiResult deleteTag(int tagId) throws WeixinException {
 		String tag_delete_uri = getRequestUri("tag_delete_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				tag_delete_uri, token.getAccessToken(), tagId));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**

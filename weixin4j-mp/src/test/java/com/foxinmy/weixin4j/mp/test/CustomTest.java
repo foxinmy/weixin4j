@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
@@ -61,44 +61,44 @@ public class CustomTest extends TokenTest {
 
 	@Test
 	public void createKfAccount() throws WeixinException {
-		JsonResult result = customApi.createKfAccount("test@test", "test",
+		ApiResult result = customApi.createKfAccount("test@test", "test",
 				"123456");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 
 	@Test
 	public void updateKfAccount() throws WeixinException {
-		JsonResult result = customApi.updateKfAccount("temp1@canyidianzhang",
+		ApiResult result = customApi.updateKfAccount("temp1@canyidianzhang",
 				"temp", "123456");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 
 	@Test
 	public void uploadKfAvatar() throws WeixinException, IOException {
-		JsonResult result = customApi.uploadKfAvatar("temp1@canyidianzhang",
+		ApiResult result = customApi.uploadKfAvatar("temp1@canyidianzhang",
 				new FileInputStream(new File("/Users/jy/Music/简谱/风动草.jpg")),
 				"风动草.jpg");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 
 	@Test
 	public void deleteKfAccount() throws WeixinException, IOException {
-		JsonResult result = customApi.deleteKfAccount("temp@canyidianzhang");
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = customApi.deleteKfAccount("temp@canyidianzhang");
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 
 	@Test
 	public void createSession() throws WeixinException {
-		JsonResult result = customApi.createKfSession(
+		ApiResult result = customApi.createKfSession(
 				"opKwyt6IhrqPmTTZshyqH5W9gIVo", "kfAccount", "text");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 
 	@Test
 	public void closeSession() throws WeixinException {
-		JsonResult result = customApi.closeKfSession(
+		ApiResult result = customApi.closeKfSession(
 				"opKwyt6IhrqPmTTZshyqH5W9gIVo", "kfAccount", "text");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 
 	@Test

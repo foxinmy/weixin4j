@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.mp.api.TagApi;
 import com.foxinmy.weixin4j.mp.model.Tag;
 import com.foxinmy.weixin4j.mp.model.User;
@@ -44,19 +44,19 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void update() throws WeixinException {
-		JsonResult result = tagApi.updateTag(new Tag(120, "测试12"));
+		ApiResult result = tagApi.updateTag(new Tag(120, "测试12"));
 		System.err.println(result);
 	}
 
 	@Test
 	public void remove() throws WeixinException {
-		JsonResult result = tagApi.deleteTag(134);
+		ApiResult result = tagApi.deleteTag(134);
 		System.err.print(result);
 	}
 
 	@Test
 	public void batchtagging() throws WeixinException {
-		JsonResult result = tagApi.taggingUsers(120,
+		ApiResult result = tagApi.taggingUsers(120,
 				"owGBft-GyGJuKXBzpkzrfl-RG8TI", "owGBfty5TYNwh-3iUTGtxAHcD310",
 				"owGBftzXEfBml_bYvbrYxE5lE5U8");
 		System.err.println(result);
@@ -64,7 +64,7 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void batchuntagging() throws WeixinException {
-		JsonResult result = tagApi.taggingUsers(120,
+		ApiResult result = tagApi.taggingUsers(120,
 				"owGBftwS5Yr6xKH_Hb9mGv1nbd3o");
 		System.err.println(result);
 	}

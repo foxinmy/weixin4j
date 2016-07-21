@@ -69,7 +69,7 @@ public final class XmlStream {
 				unmarshaller = jaxbContext.createUnmarshaller();
 				messageUnmarshaller.put(clazz, unmarshaller);
 			} catch (JAXBException e) {
-				throw new IllegalArgumentException(e);
+				throw new RuntimeException(e);
 			}
 		}
 		try {
@@ -83,7 +83,7 @@ public final class XmlStream {
 				return (T) unmarshaller.unmarshal(source);
 			}
 		} catch (Exception e) {
-			throw new IllegalArgumentException(e);
+			throw new RuntimeException(e);
 		} finally {
 			if (content != null) {
 				try {

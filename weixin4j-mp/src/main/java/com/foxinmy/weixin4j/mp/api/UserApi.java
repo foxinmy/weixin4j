@@ -7,14 +7,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.type.Lang;
 import com.foxinmy.weixin4j.token.TokenManager;
-import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 用户相关API
@@ -68,8 +67,8 @@ public class UserApi extends MpApi {
 	public User getUser(String openId, Lang lang) throws WeixinException {
 		String user_info_uri = getRequestUri("api_user_info_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor.get(String.format(
-				user_info_uri, token.getAccessToken(), openId, lang.name()));
+		WeixinResponse response = weixinExecutor
+				.get(String.format(user_info_uri, token.getAccessToken(), openId, lang.name()));
 
 		return response.getAsObject(new TypeReference<User>() {
 		});
@@ -107,25 +106,21 @@ public class UserApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.model.User
 	 * @throws WeixinException
 	 */
-	public List<User> getUsers(Lang lang, String... openIds)
-			throws WeixinException {
+	public List<User> getUsers(Lang lang, String... openIds) throws WeixinException {
 		String api_users_info_uri = getRequestUri("api_users_info_uri");
 		StringBuilder parameter = new StringBuilder();
 		parameter.append("{\"user_list\": [");
 		for (String openId : openIds) {
 			parameter.append("{\"openid\": \"").append(openId).append("\"");
-			parameter.append(",\"lang\": \"").append(lang.name()).append("\"")
-					.append("},");
+			parameter.append(",\"lang\": \"").append(lang.name()).append("\"").append("},");
 		}
 		parameter.delete(parameter.length() - 1, parameter.length());
 		parameter.append("]}");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor.post(
-				String.format(api_users_info_uri, token.getAccessToken()),
+		WeixinResponse response = weixinExecutor.post(String.format(api_users_info_uri, token.getAccessToken()),
 				parameter.toString());
 
-		return JSON.parseArray(
-				response.getAsJson().getString("user_info_list"), User.class);
+		return JSON.parseArray(response.getAsJson().getString("user_info_list"), User.class);
 	}
 
 	/**
@@ -149,11 +144,8 @@ public class UserApi extends MpApi {
 		if (following.getCount() > 0) {
 			List<User> users = new ArrayList<User>(following.getCount());
 			for (int i = 1; i <= (int) Math.ceil(following.getCount() / 100d); i++) {
-				users.addAll(getUsers(following
-						.getOpenIds()
-						.subList((i - 1) * 100,
-								Math.min(i * 100, following.getCount()))
-						.toArray(new String[] {})));
+				users.addAll(getUsers(following.getOpenIds()
+						.subList((i - 1) * 100, Math.min(i * 100, following.getCount())).toArray(new String[] {})));
 			}
 			following.setUserList(users);
 		}
@@ -172,20 +164,17 @@ public class UserApi extends MpApi {
 	 *      获取关注者列表</a>
 	 * @see com.foxinmy.weixin4j.mp.model.Following
 	 */
-	public Following getFollowingOpenIds(String nextOpenId)
-			throws WeixinException {
+	public Following getFollowingOpenIds(String nextOpenId) throws WeixinException {
 		String following_uri = getRequestUri("following_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor.get(String.format(
-				following_uri, token.getAccessToken(), nextOpenId == null ? ""
-						: nextOpenId));
+		WeixinResponse response = weixinExecutor
+				.get(String.format(following_uri, token.getAccessToken(), nextOpenId == null ? "" : nextOpenId));
 
 		JSONObject result = response.getAsJson();
 		Following following = JSON.toJavaObject(result, Following.class);
 
 		if (following.getCount() > 0) {
-			following.setOpenIds(JSON.parseArray(result.getJSONObject("data")
-					.getString("openid"), String.class));
+			following.setOpenIds(JSON.parseArray(result.getJSONObject("data").getString("openid"), String.class));
 		}
 		return following;
 	}
@@ -215,12 +204,12 @@ public class UserApi extends MpApi {
 		Following f = null;
 		for (;;) {
 			f = getFollowing(nextOpenId);
-			if (f.getCount() == f.getTotal() || f.getCount() == 0
-					|| StringUtil.isBlank(f.getNextOpenId())) {
-				break;
+			if (f.hasContent()) {
+				userList.addAll(f.getUserList());
+				nextOpenId = f.getNextOpenId();
+				continue;
 			}
-			userList.addAll(f.getUserList());
-			nextOpenId = f.getNextOpenId();
+			break;
 		}
 		return userList;
 	}
@@ -245,12 +234,12 @@ public class UserApi extends MpApi {
 		Following f = null;
 		for (;;) {
 			f = getFollowingOpenIds(nextOpenId);
-			if (f.getCount() == f.getTotal() || f.getCount() == 0
-					|| StringUtil.isBlank(f.getNextOpenId())) {
-				break;
+			if (f.hasContent()) {
+				openIds.addAll(f.getOpenIds());
+				nextOpenId = f.getNextOpenId();
+				continue;
 			}
-			openIds.addAll(f.getOpenIds());
-			nextOpenId = f.getNextOpenId();
+			break;
 		}
 		return openIds;
 	}
@@ -267,17 +256,15 @@ public class UserApi extends MpApi {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140838&token=&lang=zh_CN">
 	 *      设置用户备注名</a>
 	 */
-	public JsonResult remarkUserName(String openId, String remark)
-			throws WeixinException {
+	public ApiResult remarkUserName(String openId, String remark) throws WeixinException {
 		String username_remark_uri = getRequestUri("username_remark_uri");
 		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("openid", openId);
 		obj.put("remark", remark);
-		WeixinResponse response = weixinExecutor.post(
-				String.format(username_remark_uri, token.getAccessToken()),
+		WeixinResponse response = weixinExecutor.post(String.format(username_remark_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

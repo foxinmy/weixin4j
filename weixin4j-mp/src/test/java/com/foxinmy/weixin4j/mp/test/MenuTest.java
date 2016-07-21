@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.mp.api.MenuApi;
 import com.foxinmy.weixin4j.mp.model.Menu;
@@ -54,8 +54,8 @@ public class MenuTest extends TokenTest {
 		button.pushSub(new Button("在线客服", "KF", ButtonType.click));
 		buttons.add(button);
 
-		JsonResult result = menuApi.createMenu(buttons);
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = menuApi.createMenu(buttons);
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 
 	@Test
@@ -69,8 +69,8 @@ public class MenuTest extends TokenTest {
 		buttons.add(b2);
 		Button b3 = new Button("最新资讯", "NEWS", ButtonType.click);
 		buttons.add(b3);
-		JsonResult result = menuApi.createMenu(buttons);
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = menuApi.createMenu(buttons);
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 
 	@Test
@@ -92,8 +92,8 @@ public class MenuTest extends TokenTest {
 
 	@Test
 	public void delete() throws WeixinException {
-		JsonResult result = menuApi.deleteMenu();
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = menuApi.deleteMenu();
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 
 	@Test

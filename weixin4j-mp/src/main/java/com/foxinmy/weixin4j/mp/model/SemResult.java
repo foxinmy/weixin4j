@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.mp.model;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 
 /**
  * 语义理解结果
@@ -11,10 +11,10 @@ import com.foxinmy.weixin4j.http.weixin.JsonResult;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月7日
  * @since JDK 1.6
- * @see <a
- *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141241&token=&lang=zh_CN">语义理解</a>
+ * @see <a href=
+ *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141241&token=&lang=zh_CN">语义理解</a>
  */
-public class SemResult extends JsonResult {
+public class SemResult extends ApiResult {
 
 	private static final long serialVersionUID = 9051214458161068387L;
 	/**
@@ -92,8 +92,7 @@ public class SemResult extends JsonResult {
 
 	@Override
 	public String toString() {
-		return "SemResult [query=" + query + ", type=" + type + ", semantic="
-				+ semantic + ", result=" + result + ", answer=" + answer + ", "
-				+ super.toString() + "]";
+		return "SemResult [" + super.toString() + ", query=" + query + ", type=" + type + ", semantic=" + semantic
+				+ ", result=" + result + ", answer=" + answer + ", " + super.toString() + "]";
 	}
 }

@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.exception.WeixinPayException;
-import com.foxinmy.weixin4j.http.weixin.XmlResult;
+import com.foxinmy.weixin4j.http.message.XmlResult;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.WeixinPayProxy;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
@@ -45,7 +45,7 @@ public class PayTest {
 	static {
 		ACCOUNT = new WeixinPayAccount("appid", "paysignkey", "mchid");
 		SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
-		PAY = new WeixinPayProxy(new Weixin4jSettings(ACCOUNT));
+		PAY = new WeixinPayProxy(new Weixin4jSettings<WeixinPayAccount>(ACCOUNT));
 	}
 	/**
 	 * 商户证书文件

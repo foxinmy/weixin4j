@@ -1,13 +1,11 @@
 package com.foxinmy.weixin4j.http.weixin;
 
+import java.io.IOException;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSONException;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.ContentType;
 import com.foxinmy.weixin4j.http.HttpClient;
 import com.foxinmy.weixin4j.http.HttpClientException;
-import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
@@ -19,10 +17,12 @@ import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.http.entity.StringEntity;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
+import com.foxinmy.weixin4j.http.message.ApiResult;
+import com.foxinmy.weixin4j.http.message.XmlMessageConverter;
+import com.foxinmy.weixin4j.http.message.XmlResult;
 import com.foxinmy.weixin4j.logging.InternalLogger;
 import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 负责微信请求的执行
@@ -35,8 +35,9 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  */
 public class WeixinRequestExecutor {
 
-	protected final InternalLogger logger = InternalLoggerFactory
-			.getInstance(getClass());
+	protected final InternalLogger logger = InternalLoggerFactory.getInstance(getClass());
+
+	private static final String SUCCESS_CODE = ",0,success,";
 
 	protected final HttpClient httpClient;
 	protected final HttpParams httpParams;
@@ -55,8 +56,7 @@ public class WeixinRequestExecutor {
 		return doRequest(request);
 	}
 
-	public WeixinResponse get(String url, Map<String, String> parameters)
-			throws WeixinException {
+	public WeixinResponse get(String url, Map<String, String> parameters) throws WeixinException {
 		StringBuilder buf = new StringBuilder(url);
 		if (parameters != null && !parameters.isEmpty()) {
 			if (url.indexOf("?") < 0) {
@@ -81,10 +81,8 @@ public class WeixinRequestExecutor {
 		return doRequest(request);
 	}
 
-	public WeixinResponse post(String url, FormBodyPart... bodyParts)
-			throws WeixinException {
-		MultipartEntity entity = new MultipartEntity(
-				HttpMultipartMode.BROWSER_COMPATIBLE, null, Consts.UTF_8);
+	public WeixinResponse post(String url, FormBodyPart... bodyParts) throws WeixinException {
+		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, null, Consts.UTF_8);
 		for (FormBodyPart bodyPart : bodyParts) {
 			entity.addPart(bodyPart);
 		}
@@ -93,85 +91,35 @@ public class WeixinRequestExecutor {
 		return doRequest(request);
 	}
 
-	protected WeixinResponse doRequest(HttpRequest request)
-			throws WeixinException {
+	protected WeixinResponse doRequest(HttpRequest request) throws WeixinException {
 		request.setParams(httpParams);
 		try {
-			logger.info("weixin request >> " + request.getMethod() + " "
-					+ request.getURI().toString());
+			logger.info("weixin request >> " + request.getMethod() + " " + request.getURI().toString());
 			HttpResponse httpResponse = httpClient.execute(request);
-			HttpHeaders headers = httpResponse.getHeaders();
 			WeixinResponse response = new WeixinResponse(httpResponse);
-			logger.info("weixin response << " + httpResponse.getProtocol()
-					+ httpResponse.getStatus() + ":" + response.getAsString());
-			String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
-			String disposition = headers
-					.getFirst(HttpHeaders.CONTENT_DISPOSITION);
-			// json
-			if (contentType
-					.contains(ContentType.APPLICATION_JSON.getMimeType())
-					|| (disposition != null && disposition.indexOf(".json") > 0)) {
-				checkJson(response);
-			} else if (contentType.contains(ContentType.TEXT_XML.getMimeType())) {
-				checkXml(response);
-			} else if (contentType.contains(ContentType.TEXT_PLAIN
-					.getMimeType())
-					|| contentType
-							.contains(ContentType.TEXT_HTML.getMimeType())) {
-				try {
-					checkJson(response);
-					return response;
-				} catch (JSONException e) {
-					;
-				}
-				try {
-					checkXml(response);
-					return response;
-				} catch (IllegalArgumentException ex) {
-					;
-				}
-				throw new WeixinException(response.getAsString());
-			}
+			logger.info("weixin response << " + httpResponse.getProtocol() + httpResponse.getStatus() + ":"
+					+ response.getAsString());
+			handlResponse(response);
 			return response;
 		} catch (HttpClientException e) {
 			throw new WeixinException(e);
 		}
 	}
 
-	protected void checkJson(WeixinResponse response) throws WeixinException {
-		JsonResult jsonResult = response.getAsJsonResult();
-		response.setJsonResult(true);
-		if (jsonResult.getCode() != 0) {
-			throw new WeixinException(Integer.toString(jsonResult.getCode()),
-					jsonResult.getDesc());
+	protected void handlResponse(WeixinResponse response) throws WeixinException {
+		ApiResult result = response.getAsResult();
+		if (!SUCCESS_CODE.contains(String.format(",%s,", result.getReturnCode().toLowerCase()))) {
+			throw new WeixinException(result.getReturnCode(), result.getReturnMsg());
 		}
-	}
-
-	protected void checkXml(WeixinResponse response) throws WeixinException {
-		String xmlContent = response.getAsString();
-		if (xmlContent.length() != xmlContent.replaceFirst("<retcode>",
-				"<return_code>").length()) {
-			// <?xml><root><data..../data></root>
-			xmlContent = xmlContent.replaceFirst("<root>", "<xml>")
-					.replaceFirst("<retcode>", "<return_code>")
-					.replaceFirst("</retcode>", "</return_code>")
-					.replaceFirst("<retmsg>", "<return_msg>")
-					.replaceFirst("</retmsg>", "</return_msg>")
-					.replaceFirst("</root>", "</xml>");
-		}
-		XmlResult xmlResult = XmlStream.fromXML(xmlContent, XmlResult.class);
-		response.setText(xmlContent);
-		response.setXmlResult(true);
-		if ("0".equals(xmlResult.getReturnCode())) {
-			return;
-		}
-		if (!Consts.SUCCESS.equalsIgnoreCase(xmlResult.getReturnCode())) {
-			throw new WeixinException(xmlResult.getReturnCode(),
-					xmlResult.getReturnMsg());
-		}
-		if (!Consts.SUCCESS.equalsIgnoreCase(xmlResult.getResultCode())) {
-			throw new WeixinException(xmlResult.getErrCode(),
-					xmlResult.getErrCodeDes());
+		if (XmlMessageConverter.GLOBAL.canConvert(XmlResult.class, response)) {
+			try {
+				XmlResult xmlResult = XmlMessageConverter.GLOBAL.convert(XmlResult.class, response);
+				if (!SUCCESS_CODE.contains(xmlResult.getResultCode())) {
+					throw new WeixinException(xmlResult.getErrCode(), xmlResult.getErrCodeDes());
+				}
+			} catch (IOException e) {
+				;
+			}
 		}
 	}
 

@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.mp.api.UserApi;
 import com.foxinmy.weixin4j.mp.model.User;
 
@@ -46,8 +46,8 @@ public class UserTest extends TokenTest {
 
 	@Test
 	public void remark() throws WeixinException {
-		JsonResult result = userApi.remarkUserName(
+		ApiResult result = userApi.remarkUserName(
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU", "foo");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 }

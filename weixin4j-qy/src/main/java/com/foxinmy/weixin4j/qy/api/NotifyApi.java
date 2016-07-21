@@ -8,7 +8,7 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.message.CustomeMessage;
@@ -138,7 +138,7 @@ public class NotifyApi extends QyApi {
 	 * @see com.foxinmy.weixin4j.qy.message.CustomeMessage
 	 * @throws WeixinException
 	 */
-	public JsonResult sendCustomeMessage(CustomeMessage message)
+	public ApiResult sendCustomeMessage(CustomeMessage message)
 			throws WeixinException {
 		NotifyTuple tuple = message.getTuple();
 		String msgtype = tuple.getMessageType();
@@ -150,7 +150,7 @@ public class NotifyApi extends QyApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(message_kf_send_uri, token.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**

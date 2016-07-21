@@ -25,7 +25,6 @@ public interface HttpResponse extends HttpMessage {
 	 * @return
 	 */
 	HttpStatus getStatus();
-
 	/**
 	 * 响应内容
 	 * 

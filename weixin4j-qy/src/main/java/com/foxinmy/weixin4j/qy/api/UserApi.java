@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
@@ -52,7 +52,7 @@ public class UserApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult createUser(User user) throws WeixinException {
+	public ApiResult createUser(User user) throws WeixinException {
 		String user_create_uri = getRequestUri("user_create_uri");
 		return excute(user_create_uri, user, null);
 	}
@@ -71,7 +71,7 @@ public class UserApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult createUser(User user, InputStream avatar)
+	public ApiResult createUser(User user, InputStream avatar)
 			throws WeixinException {
 		String user_create_uri = getRequestUri("user_create_uri");
 		return excute(user_create_uri, user, avatar);
@@ -89,7 +89,7 @@ public class UserApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateUser(User user) throws WeixinException {
+	public ApiResult updateUser(User user) throws WeixinException {
 		String user_update_uri = getRequestUri("user_update_uri");
 		return excute(user_update_uri, user, null);
 	}
@@ -108,13 +108,13 @@ public class UserApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateUser(User user, InputStream avatar)
+	public ApiResult updateUser(User user, InputStream avatar)
 			throws WeixinException {
 		String user_update_uri = getRequestUri("user_update_uri");
 		return excute(user_update_uri, user, avatar);
 	}
 
-	private JsonResult excute(String uri, User user, InputStream avatar)
+	private ApiResult excute(String uri, User user, InputStream avatar)
 			throws WeixinException {
 		JSONObject obj = (JSONObject) JSON.toJSON(user);
 		Object val = obj.remove("extattr");
@@ -135,7 +135,7 @@ public class UserApi extends QyApi {
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(uri, token.getAccessToken()), obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -314,12 +314,12 @@ public class UserApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteUser(String userid) throws WeixinException {
+	public ApiResult deleteUser(String userid) throws WeixinException {
 		String user_delete_uri = getRequestUri("user_delete_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				user_delete_uri, token.getAccessToken(), userid));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -333,7 +333,7 @@ public class UserApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult batchDeleteUser(List<String> userIds)
+	public ApiResult batchDeleteUser(List<String> userIds)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("useridlist", userIds);
@@ -341,7 +341,7 @@ public class UserApi extends QyApi {
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(String.format(
 				user_delete_uri, token.getAccessToken(), obj.toJSONString()));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -355,12 +355,12 @@ public class UserApi extends QyApi {
 	 *      二次验证说明</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult authsucc(String userId) throws WeixinException {
+	public ApiResult authsucc(String userId) throws WeixinException {
 		String user_authsucc_uri = getRequestUri("user_authsucc_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				user_authsucc_uri, token.getAccessToken(), userId));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**

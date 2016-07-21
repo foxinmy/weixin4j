@@ -728,3 +728,7 @@
 * 2016-07-06
 
   + weixin4j-mp:新增第三方组件WeixinComponentProxy
+  
+* 2016-07-21
+
+  + 新增MessageConverter

@@ -11,7 +11,7 @@ import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.alibaba.fastjson.parser.deserializer.ParseProcess;
 import com.alibaba.fastjson.serializer.NameFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
@@ -48,11 +48,11 @@ public class MenuApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.model.Button
 	 * @return 处理结果
 	 */
-	public JsonResult createMenu(List<Button> buttons) throws WeixinException {
+	public ApiResult createMenu(List<Button> buttons) throws WeixinException {
 		String menu_create_uri = getRequestUri("menu_create_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("button", buttons);
-		return createMenu0(menu_create_uri, obj).getAsJsonResult();
+		return createMenu0(menu_create_uri, obj).getAsResult();
 	}
 
 	private WeixinResponse createMenu0(String url, JSONObject data)
@@ -148,13 +148,13 @@ public class MenuApi extends MpApi {
 	 *      删除菜单</a>
 	 * @return 处理结果
 	 */
-	public JsonResult deleteMenu() throws WeixinException {
+	public ApiResult deleteMenu() throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				menu_delete_uri, token.getAccessToken()));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -190,7 +190,7 @@ public class MenuApi extends MpApi {
 	 *      删除个性化菜单</a>
 	 * @return 处理结果
 	 */
-	public JsonResult deleteCustomMenu(String menuId) throws WeixinException {
+	public ApiResult deleteCustomMenu(String menuId) throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_custom_uri");
 		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
@@ -199,7 +199,7 @@ public class MenuApi extends MpApi {
 				String.format(menu_delete_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**

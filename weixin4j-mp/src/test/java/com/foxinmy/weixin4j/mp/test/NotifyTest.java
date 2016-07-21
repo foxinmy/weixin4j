@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
@@ -87,8 +87,8 @@ public class NotifyTest extends TokenTest {
 		NotifyMessage notify = new NotifyMessage(
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU", new Text(
 						"this is a notify message!"));
-		JsonResult result = notifyApi.sendNotify(notify);
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = notifyApi.sendNotify(notify);
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class NotifyTest extends TokenTest {
 		NotifyMessage imageNotify = new NotifyMessage(
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU", new Image(
 						mediaResult.getMediaId()));
-		JsonResult result = notifyApi.sendNotify(imageNotify);
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = notifyApi.sendNotify(imageNotify);
+		Assert.assertEquals(0, result.getReturnCode());
 	}
 }

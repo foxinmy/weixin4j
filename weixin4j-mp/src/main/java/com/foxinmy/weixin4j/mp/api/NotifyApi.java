@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;
@@ -41,7 +41,7 @@ public class NotifyApi extends MpApi {
 	 * @see {@link #sendNotify(NotifyMessage, String)}
 	 * @throws WeixinException
 	 */
-	public JsonResult sendNotify(NotifyMessage notify) throws WeixinException {
+	public ApiResult sendNotify(NotifyMessage notify) throws WeixinException {
 		return sendNotify(notify, null);
 	}
 
@@ -64,7 +64,7 @@ public class NotifyApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.tuple.News
 	 * @see com.foxinmy.weixin4j.mp.message.NotifyMessage
 	 */
-	public JsonResult sendNotify(NotifyMessage notify, String kfAccount)
+	public ApiResult sendNotify(NotifyMessage notify, String kfAccount)
 			throws WeixinException {
 		NotifyTuple tuple = notify.getTuple();
 		if (tuple instanceof MpNews) {
@@ -94,6 +94,6 @@ public class NotifyApi extends MpApi {
 				String.format(custom_notify_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

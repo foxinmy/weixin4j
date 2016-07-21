@@ -18,8 +18,8 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.http.message.XmlResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
-import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.mch.APPPayRequest;
@@ -746,7 +746,7 @@ public class PayApi extends MchApi {
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
 				getRequestUri("interface_report_uri"), param);
-		return response.getAsXmlResult();
+		return response.getAsXml();
 	}
 
 	/**

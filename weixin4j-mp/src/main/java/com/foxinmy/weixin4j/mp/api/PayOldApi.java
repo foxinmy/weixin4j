@@ -26,7 +26,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.Feature;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
@@ -531,7 +531,7 @@ public class PayOldApi extends MpApi {
 	 * @return 发货处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult deliverNotify(String openId, String transid,
+	public ApiResult deliverNotify(String openId, String transid,
 			String outTradeNo, boolean status, String statusMsg)
 			throws WeixinException {
 		String delivernotify_uri = getRequestUri("delivernotify_old_uri");
@@ -552,7 +552,7 @@ public class PayOldApi extends MpApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(delivernotify_uri, token.getAccessToken()),
 				JSON.toJSONString(map));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -565,12 +565,12 @@ public class PayOldApi extends MpApi {
 	 * @return 维权处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateFeedback(String openId, String feedbackId)
+	public ApiResult updateFeedback(String openId, String feedbackId)
 			throws WeixinException {
 		String payfeedback_uri = getRequestUri("payfeedback_old_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				payfeedback_uri, token.getAccessToken(), openId, feedbackId));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

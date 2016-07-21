@@ -5,7 +5,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.Party;
@@ -67,7 +67,7 @@ public class PartyApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateParty(Party party) throws WeixinException {
+	public ApiResult updateParty(Party party) throws WeixinException {
 		if (party.getId() < 1) {
 			throw new WeixinException("department id must gt 1");
 		}
@@ -83,7 +83,7 @@ public class PartyApi extends QyApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(department_update_uri, token.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -119,11 +119,11 @@ public class PartyApi extends QyApi {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteParty(int partId) throws WeixinException {
+	public ApiResult deleteParty(int partId) throws WeixinException {
 		String department_delete_uri = getRequestUri("department_delete_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(String.format(
 				department_delete_uri, token.getAccessToken(), partId));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

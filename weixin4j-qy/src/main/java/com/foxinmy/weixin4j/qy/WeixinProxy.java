@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.MediaCounter;
 import com.foxinmy.weixin4j.model.MediaDownloadResult;
@@ -259,7 +259,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.qy.message.CustomeMessage
 	 * @throws WeixinException
 	 */
-	public JsonResult sendCustomeMessage(CustomeMessage message)
+	public ApiResult sendCustomeMessage(CustomeMessage message)
 			throws WeixinException {
 		return notifyApi.sendCustomeMessage(message);
 	}
@@ -296,7 +296,7 @@ public class WeixinProxy {
 	 *      创建自定义菜单</a>
 	 * @see com.foxinmy.weixin4j.model.Button
 	 */
-	public JsonResult createMenu(int agentid, List<Button> buttons)
+	public ApiResult createMenu(int agentid, List<Button> buttons)
 			throws WeixinException {
 		return menuApi.createMenu(agentid, buttons);
 	}
@@ -330,7 +330,7 @@ public class WeixinProxy {
 	 *      删除菜单</a>
 	 * @return 处理结果
 	 */
-	public JsonResult deleteMenu(int agentid) throws WeixinException {
+	public ApiResult deleteMenu(int agentid) throws WeixinException {
 		return menuApi.deleteMenu(agentid);
 	}
 
@@ -444,7 +444,7 @@ public class WeixinProxy {
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%88%A0%E9%99%A4%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">
 	 *      删除永久媒体素材</a>
 	 */
-	public JsonResult deleteMaterialMedia(int agentid, String mediaId)
+	public ApiResult deleteMaterialMedia(int agentid, String mediaId)
 			throws WeixinException {
 		return mediaApi.deleteMaterialMedia(agentid, mediaId);
 	}
@@ -579,7 +579,7 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateParty(Party party) throws WeixinException {
+	public ApiResult updateParty(Party party) throws WeixinException {
 		return partyApi.updateParty(party);
 	}
 
@@ -612,7 +612,7 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteParty(int partyId) throws WeixinException {
+	public ApiResult deleteParty(int partyId) throws WeixinException {
 		return partyApi.deleteParty(partyId);
 	}
 
@@ -648,7 +648,7 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult createUser(User user) throws WeixinException {
+	public ApiResult createUser(User user) throws WeixinException {
 		return userApi.createUser(user);
 	}
 
@@ -667,7 +667,7 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult createUser(User user, InputStream avatar)
+	public ApiResult createUser(User user, InputStream avatar)
 			throws WeixinException {
 		return userApi.createUser(user, avatar);
 	}
@@ -685,7 +685,7 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateUser(User user) throws WeixinException {
+	public ApiResult updateUser(User user) throws WeixinException {
 		return userApi.updateUser(user);
 	}
 
@@ -704,7 +704,7 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateUser(User user, InputStream avatar)
+	public ApiResult updateUser(User user, InputStream avatar)
 			throws WeixinException {
 		return userApi.updateUser(user, avatar);
 	}
@@ -815,7 +815,7 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteUser(String userid) throws WeixinException {
+	public ApiResult deleteUser(String userid) throws WeixinException {
 		return userApi.deleteUser(userid);
 	}
 
@@ -831,7 +831,7 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult batchDeleteUser(List<String> userIds)
+	public ApiResult batchDeleteUser(List<String> userIds)
 			throws WeixinException {
 		return userApi.batchDeleteUser(userIds);
 	}
@@ -885,7 +885,7 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult updateTag(Tag tag) throws WeixinException {
+	public ApiResult updateTag(Tag tag) throws WeixinException {
 		return tagApi.updateTag(tag);
 	}
 
@@ -901,7 +901,7 @@ public class WeixinProxy {
 	 * @see com.foxinmy.weixin4j.qy.api.TagApi
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteTag(int tagId) throws WeixinException {
+	public ApiResult deleteTag(int tagId) throws WeixinException {
 		return tagApi.deleteTag(tagId);
 	}
 
@@ -1026,7 +1026,7 @@ public class WeixinProxy {
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
-	public JsonResult setAgent(AgentSetter agentSet) throws WeixinException {
+	public ApiResult setAgent(AgentSetter agentSet) throws WeixinException {
 		return agentApi.setAgent(agentSet);
 	}
 
@@ -1270,7 +1270,7 @@ public class WeixinProxy {
 	 *      修改会话信息</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult updateChat(ChatInfo chatInfo, String operator,
+	public ApiResult updateChat(ChatInfo chatInfo, String operator,
 			List<String> addUsers, List<String> deleteUsers)
 			throws WeixinException {
 		return chatApi.updateChat(chatInfo, operator, addUsers, deleteUsers);
@@ -1290,7 +1290,7 @@ public class WeixinProxy {
 	 *      退出会话</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult quitChat(String chatId, String operator)
+	public ApiResult quitChat(String chatId, String operator)
 			throws WeixinException {
 		return chatApi.quitChat(chatId, operator);
 	}
@@ -1311,7 +1311,7 @@ public class WeixinProxy {
 	 *      清除会话未读状态</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult clearChatNotify(String targetId, String owner,
+	public ApiResult clearChatNotify(String targetId, String owner,
 			ChatType chatType) throws WeixinException {
 		return chatApi.clearChatNotify(targetId, owner, chatType);
 	}
@@ -1348,7 +1348,7 @@ public class WeixinProxy {
 	 *      发送消息</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult sendChatMessage(ChatMessage message)
+	public ApiResult sendChatMessage(ChatMessage message)
 			throws WeixinException {
 		return chatApi.sendChatMessage(message);
 	}

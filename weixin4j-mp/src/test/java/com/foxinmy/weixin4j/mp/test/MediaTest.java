@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.model.MediaCounter;
 import com.foxinmy.weixin4j.model.MediaDownloadResult;
 import com.foxinmy.weixin4j.model.MediaItem;
@@ -56,7 +56,7 @@ public class MediaTest extends TokenTest {
 	public void download1() throws WeixinException, IOException {
 		MediaDownloadResult content = mediaApi
 				.downloadMedia(
-						"fbyQZL96sK9evnTgDx21jPZgWAnw6YPgslNzcqLFp0lqPCD-XipoPfkwFU1OM9J_",
+						"DVWwU0u9ommOTPgyJszpKw5OSL9M-bdRY6gQkax1uuo",
 						false);
 		Assert.assertTrue(content != null);
 		System.err.println(content);
@@ -64,7 +64,7 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void upload2() throws IOException, WeixinException {
-		File file = new File("/Users/jy/Downloads/weixin4j.png");
+		File file = new File("/root/Pictures/2.jpg");
 		MediaUploadResult mediaId = mediaApi.uploadMedia(true,
 				new FileInputStream(file), file.getName());
 		// 8790403529
@@ -101,7 +101,7 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void deleteMaterialMedia() throws WeixinException {
-		JsonResult result = mediaApi.deleteMaterialMedia("17385064953");
+		ApiResult result = mediaApi.deleteMaterialMedia("17385064953");
 		System.err.println(result);
 	}
 
@@ -112,7 +112,7 @@ public class MediaTest extends TokenTest {
 		article.setDigest("digest_update");
 		article.setShowCoverPic(false);
 		article.setSourceUrl("http://www.baidu.com");
-		JsonResult result = mediaApi.updateMaterialArticle("17385064953", 0,
+		ApiResult result = mediaApi.updateMaterialArticle("17385064953", 0,
 				article);
 		System.err.println(result);
 		// 17385065153
