@@ -624,10 +624,10 @@ public class WeixinPayProxy {
 	 *      接口测试上报API</a>
 	 * @throws WeixinException
 	 */
-	public XmlResult interfaceReport(String interfaceUrl, int executeTime,
+	public XmlResult reportInterface(String interfaceUrl, int executeTime,
 			String outTradeNo, String ip, Date time, XmlResult returnXml)
 			throws WeixinException {
-		return payApi.interfaceReport(interfaceUrl, executeTime, outTradeNo,
+		return payApi.reportInterface(interfaceUrl, executeTime, outTradeNo,
 				ip, time, returnXml);
 	}
 

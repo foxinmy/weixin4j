@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
- * 微信开发平台应用组件预授权码创建
+ * 微信开放平台应用组件预授权码创建
  *
  * @className WeixinComponentPreCodeCreator
  * @author jinyu(foxinmy@gmail.com)

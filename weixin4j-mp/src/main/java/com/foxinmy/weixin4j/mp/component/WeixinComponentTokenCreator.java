@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.token.TicketManager;
 import com.foxinmy.weixin4j.token.TokenCreator;
 
 /**
- * 微信开发平台应用组件凭证创建
+ * 微信开放平台应用组件凭证创建
  *
  * @className WeixinComponentTokenCreator
  * @author jinyu(foxinmy@gmail.com)

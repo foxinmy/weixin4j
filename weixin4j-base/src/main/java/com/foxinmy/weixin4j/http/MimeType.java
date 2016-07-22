@@ -97,7 +97,7 @@ public class MimeType implements Serializable {
 	}
 
 	/**
-	 * reference of apache Spring Web
+	 * reference of Spring Web
 	 */
 	public boolean includes(MimeType other) {
 		if (other == null) {

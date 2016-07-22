@@ -37,7 +37,7 @@ public class WeixinTokenComponentCreator extends TokenCreator {
 
 	@Override
 	public String key0() {
-		return String.format("mp_token_suite_%s_%s",
+		return String.format("mp_token_component_%s_%s",
 				perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
 	}
 

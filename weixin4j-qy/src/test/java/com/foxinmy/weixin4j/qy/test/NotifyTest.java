@@ -35,7 +35,7 @@ public class NotifyTest extends TokenTest {
 
 	@Test
 	public void text() throws WeixinException {
-		NotifyMessage notify = new NotifyMessage(0, new Text("content"));
+		NotifyMessage notify = new NotifyMessage(40, new Text("content"));
 		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 

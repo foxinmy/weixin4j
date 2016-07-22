@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.http.message;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,10 +20,22 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class XmlResult extends ApiResult {
+public class XmlResult implements Serializable {
 
 	private static final long serialVersionUID = -6185313616955051150L;
-	
+	/**
+	 * 调用接口返回码，通信标识
+	 */
+	@XmlElement(name = "return_code")
+	@JSONField(name = "return_code")
+	private String returnCode;
+
+	/**
+	 * 调用接口返回消息,如非 空,为错误原因 可能为空
+	 */
+	@XmlElement(name = "return_msg")
+	@JSONField(name = "return_msg")
+	private String returnMsg;
 	/**
 	 * 业务结果SUCCESS/FAIL 非空
 	 */
@@ -42,10 +56,12 @@ public class XmlResult extends ApiResult {
 	private String errCodeDes;
 
 	protected XmlResult() {
+		// jaxb required
 	}
 
 	public XmlResult(String returnCode, String returnMsg) {
-		super(returnCode, returnMsg);
+		this.returnCode = returnCode;
+		this.returnMsg = returnMsg;
 	}
 
 	public String getResultCode() {
@@ -58,6 +74,14 @@ public class XmlResult extends ApiResult {
 
 	public String getErrCodeDes() {
 		return errCodeDes;
+	}
+
+	public String getReturnCode() {
+		return returnCode;
+	}
+
+	public String getReturnMsg() {
+		return returnMsg;
 	}
 
 	public void setResultCode(String resultCode) {
@@ -74,6 +98,8 @@ public class XmlResult extends ApiResult {
 
 	@Override
 	public String toString() {
-		return super.toString() + ", resultCode=" + resultCode + ", errCode=" + errCode + ", errCodeDes=" + errCodeDes;
+		return "returnCode=" + returnCode + ", returnMsg=" + returnMsg
+				+ ", resultCode=" + resultCode + ", errCode=" + errCode
+				+ ", errCodeDes=" + errCodeDes;
 	}
 }

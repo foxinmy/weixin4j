@@ -34,7 +34,7 @@ import com.foxinmy.weixin4j.type.TradeType;
  * @className PayTest
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月30日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class PayTest {
@@ -50,11 +50,11 @@ public class PayTest {
 	/**
 	 * 商户证书文件
 	 */
-	protected File caFile = new File("商户证书:*.p12");
+	protected File caFile = new File("*.p12");
 
 	@Test
 	public void queryOrder() throws WeixinException {
-		Order order = PAY.queryOrder(new IdQuery("BY2016010800025",
+		Order order = PAY.queryOrder(new IdQuery("201601131632321",
 				IdType.TRADENO));
 		System.err.println(order);
 		String sign = order.getSign();
@@ -70,7 +70,6 @@ public class PayTest {
 		RefundRecord record = PAY.queryRefund(new IdQuery("TT_1427183696238",
 				IdType.TRADENO));
 		System.err.println(record);
-		// 这里的验证签名需要把details循环拼接
 		String sign = record.getSign();
 		record.setSign(null);
 		String valiSign = SIGNATURE.sign(record);
@@ -139,7 +138,7 @@ public class PayTest {
 	}
 
 	@Test
-	public void interfaceReport() throws WeixinException {
+	public void reportInterface() throws WeixinException {
 		String interfaceUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 		int executeTime = 2500;
 		String outTradeNo = null;
@@ -147,7 +146,7 @@ public class PayTest {
 		Date time = new Date();
 		XmlResult returnXml = new XmlResult("SUCCESS", "");
 		returnXml.setResultCode("SUCCESS");
-		returnXml = PAY.interfaceReport(interfaceUrl, executeTime, outTradeNo,
+		returnXml = PAY.reportInterface(interfaceUrl, executeTime, outTradeNo,
 				ip, time, returnXml);
 		System.err.println(returnXml);
 	}

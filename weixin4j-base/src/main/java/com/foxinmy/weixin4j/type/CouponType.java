@@ -21,7 +21,16 @@ public enum CouponType {
 	/**
 	 * 门槛叠加
 	 */
-	THRESHOLD_PLUS(3);
+	THRESHOLD_PLUS(3),
+
+	/**
+	 * 充值代金券
+	 */
+	CASH(-1),
+	/**
+	 * 非充值代金券
+	 */
+	NO_CASH(-2);
 	private int val;
 
 	CouponType(int val) {

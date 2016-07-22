@@ -220,7 +220,7 @@ public class OauthApi extends MpApi {
 	}
 
 	/**
-	 * 请求CODE
+	 * 微信开放平台oauth授权:请求CODE
 	 *
 	 * @param redirectUri
 	 *            重定向地址 域名与审核时填写的授权域名一致
