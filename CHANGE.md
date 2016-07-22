@@ -736,3 +736,5 @@
 * 2016-07-22
 
   + weixin4j-base:主要调整退款相关类与官网一致
+  
+  + weixin4j-base:获取cache时加锁处理(via 风车车)
