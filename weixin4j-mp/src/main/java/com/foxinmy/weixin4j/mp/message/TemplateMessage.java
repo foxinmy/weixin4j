@@ -56,7 +56,10 @@ public class TemplateMessage implements Serializable {
 	private final static String TAIL_KEY = "remark";
 	private final static String DEFAULT_COLOR = "#173177";
 
-	public TemplateMessage(String toUser, String templateId, String url) {
+	@JSONCreator
+	public TemplateMessage(@JSONField(name = "toUser") String toUser,
+			@JSONField(name = "templateId") String templateId,
+			@JSONField(name = "url") String url) {
 		this.toUser = toUser;
 		this.templateId = templateId;
 		this.url = url;

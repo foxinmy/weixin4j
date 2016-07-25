@@ -8,11 +8,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.type.CouponType;
 
 /**
- * 代金券信息(订单,退款中体现)
+ * 订单代金券信息
  * 
- * @className CouponInfo
+ * @className OrderCouponInfo
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月24日
  * @since JDK 1.6
@@ -20,7 +21,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CouponInfo implements Serializable {
+public class OrderCouponInfo implements Serializable {
 
 	private static final long serialVersionUID = -8744999305258786901L;
 
@@ -30,6 +31,14 @@ public class CouponInfo implements Serializable {
 	@XmlElement(name = "coupon_batch_id")
 	@JSONField(name = "coupon_batch_id")
 	private String couponBatchId;
+	/**
+	 * 代金券类型
+	 * 
+	 * @see com.foxinmy.weixin4j.type.CouponType
+	 */
+	@XmlElement(name = "coupon_type")
+	@JSONField(name = "coupon_type")
+	private String couponType;
 	/**
 	 * 代金券或立减优惠ID
 	 */
@@ -43,12 +52,22 @@ public class CouponInfo implements Serializable {
 	@JSONField(name = "coupon_fee")
 	private Integer couponFee;
 
-	public CouponInfo() {
-
+	protected OrderCouponInfo() {
+		// jaxb requried
 	}
 
 	public String getCouponBatchId() {
 		return couponBatchId;
+	}
+
+	public String getCouponType() {
+		return couponType;
+	}
+
+	@JSONField(serialize = false)
+	public CouponType getFormatCouponType() {
+		return couponType != null ? CouponType
+				.valueOf(couponType.toUpperCase()) : null;
 	}
 
 	public String getCouponId() {
@@ -69,13 +88,9 @@ public class CouponInfo implements Serializable {
 		return couponFee != null ? couponFee.doubleValue() / 100d : 0d;
 	}
 
-	public void setCouponId(String couponId) {
-		this.couponId = couponId;
-	}
-
 	@Override
 	public String toString() {
-		return "couponBatchId=" + couponBatchId + ", couponId=" + couponId
-				+ ", couponFee=" + couponFee;
+		return "couponBatchId=" + couponBatchId + ", couponType=" + couponType
+				+ ", couponId=" + couponId + ", couponFee=" + couponFee;
 	}
 }

@@ -12,8 +12,7 @@ import com.foxinmy.weixin4j.http.MimeType;
  * @className MessageConverter
  * @author jinyu
  * @date Jul 20, 2016
- * @since JDK 1.8
- * @see
+ * @since JDK 1.6
  */
 public interface MessageConverter {
 	/**

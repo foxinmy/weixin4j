@@ -821,7 +821,7 @@
 	</error>
 	<error>
 		<code>60008</code>
-		<text>部门名称已存在</text>
+		<text>部门ID或者部门名称已存在</text>
 	</error>
 	<error>
 		<code>60009</code>

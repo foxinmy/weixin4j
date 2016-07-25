@@ -114,7 +114,7 @@ public class WeixinRequestExecutor {
 		if (XmlMessageConverter.GLOBAL.canConvert(XmlResult.class, response)) {
 			try {
 				XmlResult xmlResult = XmlMessageConverter.GLOBAL.convert(XmlResult.class, response);
-				if (!SUCCESS_CODE.contains(xmlResult.getResultCode())) {
+				if (!SUCCESS_CODE.contains(String.format(",%s,", xmlResult.getResultCode().toLowerCase()))) {
 					throw new WeixinException(xmlResult.getErrCode(), xmlResult.getErrCodeDes());
 				}
 			} catch (IOException e) {

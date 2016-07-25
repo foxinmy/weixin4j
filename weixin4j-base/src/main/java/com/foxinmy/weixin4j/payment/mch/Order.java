@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.payment.coupon.CouponInfo;
+import com.foxinmy.weixin4j.payment.coupon.OrderCouponInfo;
 import com.foxinmy.weixin4j.type.BankType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.TradeState;
@@ -28,7 +28,7 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Order extends MerchantResult {
+public class Order extends MerchantTradeResult {
 
 	private static final long serialVersionUID = 5636828325595317079L;
 	/**
@@ -65,14 +65,17 @@ public class Order extends MerchantResult {
 	@XmlElement(name = "bank_type")
 	@JSONField(name = "bank_type")
 	private String bankType;
+
 	/**
-	 * 订单总金额,单位为分
+	 * 现金支付货币类型,符合 ISO 4217 标准的三位字母代码,默认人民币:CNY
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
 	 */
-	@XmlElement(name = "total_fee")
-	@JSONField(name = "total_fee")
-	private Integer totalFee;
+	@XmlElement(name = "cash_fee_type")
+	@JSONField(name = "cash_fee_type")
+	private String cashFeeType;
 	/**
-	 * 现金券支付金额<=订单总金 额,订单总金额-现金券金额 为现金支付金额
+	 * 代金券金额:“代金券”金额<=订单金额，订单金额-“代金券”金额=现金支付金额
 	 */
 	@XmlElement(name = "coupon_fee")
 	@JSONField(name = "coupon_fee")
@@ -87,33 +90,7 @@ public class Order extends MerchantResult {
 	 * 代金券信息 验证签名有点麻烦
 	 */
 	@ListsuffixResult
-	private List<CouponInfo> couponList;
-	/**
-	 * 现金支付金额
-	 */
-	@XmlElement(name = "cash_fee")
-	@JSONField(name = "cash_fee")
-	private Integer cashFee;
-	/**
-	 * 货币类型,符合 ISO 4217 标准的三位字母代码,默认人民币:CNY
-	 * 
-	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
-	 */
-	@XmlElement(name = "fee_type")
-	@JSONField(name = "fee_type")
-	private String feeType;
-	/**
-	 * 微信支付订单号
-	 */
-	@XmlElement(name = "transaction_id")
-	@JSONField(name = "transaction_id")
-	private String transactionId;
-	/**
-	 * 商户订单号
-	 */
-	@XmlElement(name = "out_trade_no")
-	@JSONField(name = "out_trade_no")
-	private String outTradeNo;
+	private List<OrderCouponInfo> couponList;
 	/**
 	 * 商家数据包
 	 */
@@ -183,20 +160,6 @@ public class Order extends MerchantResult {
 				: null;
 	}
 
-	public Integer getTotalFee() {
-		return totalFee;
-	}
-
-	/**
-	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
-	 * 
-	 * @return 元单位
-	 */
-	@JSONField(serialize = false)
-	public double getFormatTotalFee() {
-		return totalFee != null ? totalFee / 100d : 0d;
-	}
-
 	public Integer getCouponFee() {
 		return couponFee;
 	}
@@ -215,44 +178,12 @@ public class Order extends MerchantResult {
 		return couponCount;
 	}
 
-	public Integer getCashFee() {
-		return cashFee;
-	}
-
-	/**
-	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
-	 * 
-	 * @return 元单位
-	 */
-	@JSONField(serialize = false)
-	public double getFormatCashFee() {
-		return cashFee != null ? cashFee / 100d : 0d;
-	}
-
-	@JSONField(serialize = false)
-	public CurrencyType getFormatFeeType() {
-		return feeType != null ? CurrencyType.valueOf(feeType.toUpperCase())
-				: null;
-	}
-
 	public String getTradeState() {
 		return tradeState;
 	}
 
 	public String getTradeType() {
 		return tradeType;
-	}
-
-	public String getFeeType() {
-		return feeType;
-	}
-
-	public String getTransactionId() {
-		return transactionId;
-	}
-
-	public String getOutTradeNo() {
-		return outTradeNo;
 	}
 
 	public String getAttach() {
@@ -272,11 +203,11 @@ public class Order extends MerchantResult {
 		return tradeStateDesc;
 	}
 
-	public List<CouponInfo> getCouponList() {
+	public List<OrderCouponInfo> getCouponList() {
 		return couponList;
 	}
 
-	public void setCouponList(List<CouponInfo> couponList) {
+	public void setCouponList(List<OrderCouponInfo> couponList) {
 		this.couponList = couponList;
 	}
 
@@ -293,19 +224,25 @@ public class Order extends MerchantResult {
 		return subIsSubscribe != null && subIsSubscribe.equalsIgnoreCase("y");
 	}
 
+	public String getCashFeeType() {
+		return cashFeeType;
+	}
+
+	@JSONField(serialize = false)
+	public CurrencyType getFormatCashFeeType() {
+		return cashFeeType != null ? CurrencyType.valueOf(cashFeeType
+				.toUpperCase()) : null;
+	}
+
 	@Override
 	public String toString() {
 		return "Order [tradeState=" + tradeState + ", openId=" + openId
 				+ ", isSubscribe=" + isSubscribe + ", tradeType=" + tradeType
-				+ ", bankType=" + bankType + ", feeType=" + feeType
-				+ ", transactionId=" + transactionId + ", outTradeNo="
-				+ outTradeNo + ", attach=" + attach + ", timeEnd=" + timeEnd
-				+ ", totalFee=" + getFormatTotalFee() + ", couponFee="
-				+ getFormatCouponFee() + ", couponCount=" + couponCount
-				+ ", couponList=" + couponList + ", cashFee="
-				+ getFormatCashFee() + ", timeEnd=" + getFormatTimeEnd()
-				+ ", tradeStateDesc=" + tradeStateDesc + ", subOpenId="
-				+ subOpenId + ", subIsSubscribe=" + subIsSubscribe
-				+ super.toString() + "]";
+				+ ", bankType=" + bankType + ", cashFeeType=" + cashFeeType
+				+ ", couponFee=" + couponFee + ", couponCount=" + couponCount
+				+ ", couponList=" + couponList + ", attach=" + attach
+				+ ", timeEnd=" + timeEnd + ", tradeStateDesc=" + tradeStateDesc
+				+ ", subOpenId=" + subOpenId + ", subIsSubscribe="
+				+ subIsSubscribe + ", " + super.toString() + "]";
 	}
 }

@@ -33,6 +33,8 @@ weixin4j-mp
 
   * UserApi `用户管理API`
   
+  * TagApi `用户标签管理API`
+  
   * ComponentApi `第三方组件API`
 
 [如何使用](https://github.com/foxinmy/weixin4j/wiki)

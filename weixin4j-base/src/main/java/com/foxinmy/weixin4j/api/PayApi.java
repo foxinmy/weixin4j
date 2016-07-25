@@ -729,10 +729,10 @@ public class PayApi extends MchApi {
 	 * @throws WeixinException
 	 * @see <a href=
 	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_8">
-	 *      接口测试上报API</a>
+	 *      交易保障</a>
 	 */
 	@SuppressWarnings("unchecked")
-	public XmlResult interfaceReport(String interfaceUrl, int executeTime,
+	public XmlResult reportInterface(String interfaceUrl, int executeTime,
 			String outTradeNo, String ip, Date time, XmlResult returnXml)
 			throws WeixinException {
 		Map<String, String> map = createBaseRequestMap(null);
