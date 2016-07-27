@@ -35,6 +35,7 @@ public class APPPayRequest extends AbstractPayRequest {
 	public PayRequest toRequestObject() {
 		PayRequest payRequest = new PayRequest(getPaymentAccount().getId(),
 				"Sign=WXPay");
+		payRequest.setPartnerId(getPaymentAccount().getPartnerId());
 		payRequest.setPrepayId(getPrePayId());
 		return payRequest;
 	}

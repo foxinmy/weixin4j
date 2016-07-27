@@ -61,6 +61,14 @@ public class PayRequest extends PayBaseInfo {
 		this.prepayId = prepayId;
 	}
 
+	public String getPartnerId() {
+		return partnerId;
+	}
+
+	public void setPartnerId(String partnerId) {
+		this.partnerId = partnerId;
+	}
+
 	@Override
 	public String toString() {
 		return "package" + packageInfo + ", prepayId=" + prepayId
