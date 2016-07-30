@@ -3,6 +3,8 @@ package com.foxinmy.weixin4j.http.support.okhttp;
 import com.foxinmy.weixin4j.http.HttpClient;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 使用OkHttp
@@ -21,7 +23,7 @@ public class OkHttpClientFactory extends HttpClientFactory {
 			try {
 				okHttpClientFactory = new OkHttpClient3Factory();
 			} catch (Throwable e2) {
-				throw e2;
+				throw new RuntimeException(e2);
 			}
 		}
 	}
