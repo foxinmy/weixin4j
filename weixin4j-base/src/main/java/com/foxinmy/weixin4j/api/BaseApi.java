@@ -25,11 +25,11 @@ public abstract class BaseApi {
 
 	protected final WeixinRequestExecutor weixinExecutor;
 
-	protected abstract ResourceBundle weixinBundle();
-
 	public BaseApi() {
 		this.weixinExecutor = new WeixinRequestExecutor();
 	}
+
+	protected abstract ResourceBundle weixinBundle();
 
 	protected String getRequestUri(String key) {
 		String url = weixinBundle().getString(key);

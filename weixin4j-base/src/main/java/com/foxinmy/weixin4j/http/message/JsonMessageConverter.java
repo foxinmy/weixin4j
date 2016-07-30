@@ -29,15 +29,19 @@ public class JsonMessageConverter extends AbstractMessageConverter {
 	private static final int MASK = BRACE | BRACKET;
 
 	public JsonMessageConverter() {
-		super(MimeType.APPLICATION_JSON, new MimeType("application", "*+json"));
+		super(MimeType.APPLICATION_JSON, MimeType.TEXT_JSON, new MimeType(
+				"application", "*+json"));
 	}
 
 	@Override
 	public boolean canConvert(Class<?> clazz, HttpResponse response) {
 		if (!super.canConvert(clazz, response)) {
-			String disposition = response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION);
-			String fileName = RegexUtil.regexFileNameFromContentDispositionHeader(disposition);
-			return (fileName != null && FileUtil.getFileExtension(fileName).equalsIgnoreCase(JSO));
+			String disposition = response.getHeaders().getFirst(
+					HttpHeaders.CONTENT_DISPOSITION);
+			String fileName = RegexUtil
+					.regexFileNameFromContentDispositionHeader(disposition);
+			return (fileName != null && FileUtil.getFileExtension(fileName)
+					.equalsIgnoreCase(JSO));
 		}
 		return true;
 	}
@@ -48,8 +52,10 @@ public class JsonMessageConverter extends AbstractMessageConverter {
 	}
 
 	@Override
-	protected <T> T convertInternal(Class<? extends T> clazz, InputStream body) throws IOException {
+	protected <T> T convertInternal(Class<? extends T> clazz, InputStream body)
+			throws IOException {
 		byte[] bytes = IOUtil.toByteArray(body);
-		return JSON.parseObject(bytes, 0, bytes.length, charset.newDecoder(), clazz);
+		return JSON.parseObject(bytes, 0, bytes.length, charset.newDecoder(),
+				clazz);
 	}
 }

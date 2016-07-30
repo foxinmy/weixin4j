@@ -24,12 +24,14 @@ public final class ContentType implements Serializable {
 	private final Charset charset;
 	private static final Charset DEFAULT_CHARSET = Consts.UTF_8;
 
+	public static final ContentType APPLICATION_JSON;
 	public static final ContentType APPLICATION_FORM_URLENCODED;
 	public static final ContentType MULTIPART_FORM_DATA;
 	public static final ContentType DEFAULT_BINARY;
 	public static final ContentType DEFAULT_TEXT;
 
 	static {
+		APPLICATION_JSON = new ContentType(MimeType.APPLICATION_JSON);
 		APPLICATION_FORM_URLENCODED = new ContentType(MimeType.APPLICATION_FORM_URLENCODED);
 		MULTIPART_FORM_DATA = new ContentType(MimeType.MULTIPART_FORM_DATA);
 		DEFAULT_BINARY = new ContentType(MimeType.APPLICATION_OCTET_STREAM);

@@ -122,7 +122,7 @@ public class PartyApi extends QyApi {
 	public ApiResult deleteParty(int partId) throws WeixinException {
 		String department_delete_uri = getRequestUri("department_delete_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor.post(String.format(
+		WeixinResponse response = weixinExecutor.get(String.format(
 				department_delete_uri, token.getAccessToken(), partId));
 		return response.getAsResult();
 	}

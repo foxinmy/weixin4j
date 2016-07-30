@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.http.factory;
+package com.foxinmy.weixin4j.http.support.netty;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -8,7 +8,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
@@ -16,7 +15,6 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.ssl.SslHandler;
-import io.netty.handler.timeout.ReadTimeoutHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -25,7 +23,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -37,6 +34,7 @@ import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
+import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.util.SettableFuture;
 import com.foxinmy.weixin4j.util.StringUtil;
@@ -53,25 +51,19 @@ import com.foxinmy.weixin4j.util.StringUtil;
 public class Netty4HttpClient extends AbstractHttpClient {
 
 	private final Bootstrap bootstrap;
+	private final HttpParams params;
 
-	public Netty4HttpClient(Bootstrap bootstrap) {
+	public Netty4HttpClient(Bootstrap bootstrap, HttpParams params) {
 		this.bootstrap = bootstrap;
+		this.params = params;
 	}
 
 	@Override
-	public HttpResponse execute(HttpRequest request) throws HttpClientException {
+	public HttpResponse execute(final HttpRequest request)
+			throws HttpClientException {
 		HttpResponse response = null;
 		try {
 			final URI uri = request.getURI();
-			final HttpParams params = request.getParams();
-			if (params != null) {
-				bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
-						params.getConnectTimeout());
-			}
-			final boolean useProxy = params != null
-					&& params.getProxy() != null;
-			final boolean useSSL = "https".equals(uri.getScheme()) && !useProxy;
-			final DefaultHttpRequest uriRequest = createRequest(request);
 			final SettableFuture<HttpResponse> future = new SettableFuture<HttpResponse>();
 			ChannelFutureListener listener = new ChannelFutureListener() {
 				@Override
@@ -79,9 +71,8 @@ public class Netty4HttpClient extends AbstractHttpClient {
 						throws Exception {
 					if (channelFuture.isSuccess()) {
 						Channel channel = channelFuture.channel();
-						// ssl
-						SSLContext sslContext = null;
-						if (useSSL) {
+						if ("https".equals(uri.getScheme())) {
+							SSLContext sslContext;
 							if (params != null
 									&& params.getSSLContext() != null) {
 								sslContext = params.getSSLContext();
@@ -93,25 +84,20 @@ public class Netty4HttpClient extends AbstractHttpClient {
 							sslEngine.setUseClientMode(true);
 							channel.pipeline().addFirst(
 									new SslHandler(sslEngine));
-							if (params != null && params.getReadTimeout() > 0) {
-								channel.pipeline().addFirst(
-										new ReadTimeoutHandler(params
-												.getReadTimeout(),
-												TimeUnit.MILLISECONDS));
-							}
 						}
 						channel.pipeline().addLast(new RequestHandler(future));
+						DefaultHttpRequest uriRequest = createRequest(request);
 						channel.writeAndFlush(uriRequest);
 					} else {
 						future.setException(channelFuture.cause());
 					}
 				}
 			};
-			InetSocketAddress address = useProxy ? (InetSocketAddress) params
+			InetSocketAddress address = params != null
+					&& params.getProxy() != null ? (InetSocketAddress) params
 					.getProxy().address() : new InetSocketAddress(
 					InetAddress.getByName(uri.getHost()), getPort(uri));
-			bootstrap.connect(address).syncUninterruptibly()
-					.addListener(listener);
+			bootstrap.connect(address).addListener(listener);
 			response = future.get();
 			handleResponse(response);
 		} catch (IOException e) {

@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @className MimeType
  * @author jinyu
  * @date Jul 20, 2016
- * @since JDK 1.8
+ * @since JDK 1.6
  */
 public class MimeType implements Serializable {
 
@@ -33,6 +33,7 @@ public class MimeType implements Serializable {
 	public static final MimeType AUDIO_MP3;
 	public static final MimeType VIDEO_MPEG4;
 	public static final MimeType TEXT_XML;
+	public static final MimeType TEXT_JSON;
 
 	static {
 		APPLICATION_FORM_URLENCODED = valueOf("application/x-www-form-urlencoded");
@@ -46,6 +47,7 @@ public class MimeType implements Serializable {
 		AUDIO_MP3 = valueOf("audio/mp3");
 		VIDEO_MPEG4 = valueOf("video/mpeg4");
 		TEXT_XML = valueOf("text/xml");
+		TEXT_JSON = valueOf("text/json");
 	}
 
 	public MimeType(String type) {

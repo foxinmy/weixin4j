@@ -339,8 +339,9 @@ public class UserApi extends QyApi {
 		obj.put("useridlist", userIds);
 		String user_delete_uri = getRequestUri("user_batchdelete_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor.post(String.format(
-				user_delete_uri, token.getAccessToken(), obj.toJSONString()));
+		WeixinResponse response = weixinExecutor.post(
+				String.format(user_delete_uri, token.getAccessToken()),
+				obj.toJSONString());
 		return response.getAsResult();
 	}
 
@@ -418,9 +419,9 @@ public class UserApi extends QyApi {
 			obj.put("agentid", agentid);
 		}
 		String userid2openid_uri = getRequestUri("userid2openid_uri");
-		WeixinResponse response = weixinExecutor.post(
-				String.format(userid2openid_uri, tokenManager.getAccessToken()),
-				obj.toJSONString());
+		WeixinResponse response = weixinExecutor
+				.post(String.format(userid2openid_uri,
+						tokenManager.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
 		return new String[] { obj.getString("openid"), obj.getString("appid") };
 	}
@@ -439,9 +440,10 @@ public class UserApi extends QyApi {
 	 */
 	public String openid2userid(String openid) throws WeixinException {
 		String openid2userid_uri = getRequestUri("openid2userid_uri");
-		WeixinResponse response = weixinExecutor.post(
-				String.format(openid2userid_uri, tokenManager.getAccessToken()),
-				String.format("{\"openid\": \"%s\"}", openid));
+		WeixinResponse response = weixinExecutor
+				.post(String.format(openid2userid_uri,
+						tokenManager.getAccessToken()),
+						String.format("{\"openid\": \"%s\"}", openid));
 		return response.getAsJson().getString("userid");
 	}
 }

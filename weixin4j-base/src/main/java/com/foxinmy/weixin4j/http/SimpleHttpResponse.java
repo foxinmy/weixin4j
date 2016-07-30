@@ -42,7 +42,7 @@ public class SimpleHttpResponse extends AbstractHttpResponse {
 			} else {
 				String connect = connection.getHeaderField("Connection");
 				protocol = new HttpVersion(version,
-						"keep-alive".equalsIgnoreCase(connect));
+						KEEP_ALIVE.equalsIgnoreCase(connect));
 			}
 		}
 		return protocol;

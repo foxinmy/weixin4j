@@ -1,7 +1,12 @@
 package com.foxinmy.weixin4j.http.weixin;
 
 import java.io.IOException;
-import java.util.Map;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.util.Arrays;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.HttpClient;
@@ -10,6 +15,7 @@ import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
+import com.foxinmy.weixin4j.http.URLParameter;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
 import com.foxinmy.weixin4j.http.apache.HttpMultipartMode;
 import com.foxinmy.weixin4j.http.apache.MultipartEntity;
@@ -35,45 +41,31 @@ import com.foxinmy.weixin4j.model.Consts;
  */
 public class WeixinRequestExecutor {
 
-	protected final InternalLogger logger = InternalLoggerFactory.getInstance(getClass());
+	protected final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 
 	private static final String SUCCESS_CODE = ",0,success,";
 
-	protected final HttpClient httpClient;
-	protected final HttpParams httpParams;
+	private final HttpClient httpClient;
 
 	public WeixinRequestExecutor() {
-		this(new HttpParams());
-	}
-
-	public WeixinRequestExecutor(HttpParams httpParams) {
 		this.httpClient = HttpClientFactory.getInstance();
-		this.httpParams = httpParams;
 	}
 
-	public WeixinResponse get(String url) throws WeixinException {
-		HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-		return doRequest(request);
+	public WeixinRequestExecutor(HttpParams params) {
+		this.httpClient = HttpClientFactory.getInstance(params);
 	}
 
-	public WeixinResponse get(String url, Map<String, String> parameters) throws WeixinException {
-		StringBuilder buf = new StringBuilder(url);
-		if (parameters != null && !parameters.isEmpty()) {
-			if (url.indexOf("?") < 0) {
-				buf.append("?");
-			} else {
-				buf.append("&");
-			}
-			buf.append(FormUrlEntity.formatParameters(parameters));
-		}
-		return doRequest(new HttpRequest(HttpMethod.GET, buf.toString()));
-	}
-
-	public WeixinResponse post(String url) throws WeixinException {
-		HttpRequest request = new HttpRequest(HttpMethod.POST, url);
-		return doRequest(request);
-	}
-
+	/**
+	 * Post方法执行微信请求
+	 * 
+	 * @param url
+	 *            请求URL
+	 * @param body
+	 *            参数内容
+	 * @return 微信响应
+	 * @throws WeixinException
+	 */
 	public WeixinResponse post(String url, String body) throws WeixinException {
 		HttpEntity entity = new StringEntity(body);
 		HttpRequest request = new HttpRequest(HttpMethod.POST, url);
@@ -81,8 +73,20 @@ public class WeixinRequestExecutor {
 		return doRequest(request);
 	}
 
-	public WeixinResponse post(String url, FormBodyPart... bodyParts) throws WeixinException {
-		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, null, Consts.UTF_8);
+	/**
+	 * Post方法执行微信请求，用于文件上传
+	 * 
+	 * @param url
+	 *            请求URL
+	 * @param bodyParts
+	 *            文件内容
+	 * @return 微信响应
+	 * @throws WeixinException
+	 */
+	public WeixinResponse post(String url, FormBodyPart... bodyParts)
+			throws WeixinException {
+		MultipartEntity entity = new MultipartEntity(
+				HttpMultipartMode.BROWSER_COMPATIBLE, null, Consts.UTF_8);
 		for (FormBodyPart bodyPart : bodyParts) {
 			entity.addPart(bodyPart);
 		}
@@ -91,31 +95,74 @@ public class WeixinRequestExecutor {
 		return doRequest(request);
 	}
 
-	protected WeixinResponse doRequest(HttpRequest request) throws WeixinException {
-		request.setParams(httpParams);
+	/**
+	 * Get方法执行微信请求
+	 * 
+	 * @param url
+	 *            请求URL，如：https://api.weixin.qq.com/cgi-bin/token
+	 * @param parameters
+	 *            url上的参数，如:new URLParameter("appid",xxxxx)
+	 * @return 微信响应
+	 * @throws WeixinException
+	 */
+	public WeixinResponse get(String url, URLParameter... parameters)
+			throws WeixinException {
+		// always contain the question mark
+		StringBuilder buf = new StringBuilder(url).append("&");
+		if (parameters != null && parameters.length > 0) {
+			buf.append(FormUrlEntity.formatParameters(Arrays.asList(parameters)));
+		}
+		HttpRequest request = new HttpRequest(HttpMethod.GET, buf.toString());
+		return doRequest(request);
+	}
+
+	/**
+	 * 执行微信请求
+	 * 
+	 * @param request
+	 *            微信请求
+	 * @return 微信响应
+	 * @throws WeixinException
+	 */
+	protected WeixinResponse doRequest(HttpRequest request)
+			throws WeixinException {
 		try {
-			logger.info("weixin request >> " + request.getMethod() + " " + request.getURI().toString());
+			logger.info("weixin request >> " + request.getMethod() + " "
+					+ request.getURI().toString());
 			HttpResponse httpResponse = httpClient.execute(request);
 			WeixinResponse response = new WeixinResponse(httpResponse);
-			logger.info("weixin response << " + httpResponse.getProtocol() + httpResponse.getStatus() + ":"
-					+ response.getAsString());
-			handlResponse(response);
+			logger.info("weixin response << " + httpResponse.getProtocol()
+					+ httpResponse.getStatus() + ":" + response.getAsString());
+			handleResponse(response);
 			return response;
 		} catch (HttpClientException e) {
 			throw new WeixinException(e);
 		}
 	}
 
-	protected void handlResponse(WeixinResponse response) throws WeixinException {
+	/**
+	 * handle the weixin response
+	 * 
+	 * @param response
+	 *            微信请求响应
+	 * @throws WeixinException
+	 */
+	protected void handleResponse(WeixinResponse response)
+			throws WeixinException {
 		ApiResult result = response.getAsResult();
-		if (!SUCCESS_CODE.contains(String.format(",%s,", result.getReturnCode().toLowerCase()))) {
-			throw new WeixinException(result.getReturnCode(), result.getReturnMsg());
+		if (!SUCCESS_CODE.contains(String.format(",%s,", result.getReturnCode()
+				.toLowerCase()))) {
+			throw new WeixinException(result.getReturnCode(),
+					result.getReturnMsg());
 		}
 		if (XmlMessageConverter.GLOBAL.canConvert(XmlResult.class, response)) {
 			try {
-				XmlResult xmlResult = XmlMessageConverter.GLOBAL.convert(XmlResult.class, response);
-				if (!SUCCESS_CODE.contains(String.format(",%s,", xmlResult.getResultCode().toLowerCase()))) {
-					throw new WeixinException(xmlResult.getErrCode(), xmlResult.getErrCodeDes());
+				XmlResult xmlResult = XmlMessageConverter.GLOBAL.convert(
+						XmlResult.class, response);
+				if (!SUCCESS_CODE.contains(String.format(",%s,", xmlResult
+						.getResultCode().toLowerCase()))) {
+					throw new WeixinException(xmlResult.getErrCode(),
+							xmlResult.getErrCodeDes());
 				}
 			} catch (IOException e) {
 				;
@@ -127,7 +174,39 @@ public class WeixinRequestExecutor {
 		return httpClient;
 	}
 
-	public HttpParams getExecuteParams() {
-		return httpParams;
+	/**
+	 * 创建 SSL微信请求对象
+	 * 
+	 * @param password
+	 *            加载密钥
+	 * @param inputStream
+	 *            密钥内容
+	 * @return 微信请求
+	 * @throws WeixinException
+	 */
+	public WeixinRequestExecutor createSSLRequestExecutor(String password,
+			InputStream inputStream) throws WeixinException {
+		try {
+			KeyStore keyStore = KeyStore.getInstance(Consts.PKCS12);
+			keyStore.load(inputStream, password.toCharArray());
+			KeyManagerFactory kmf = KeyManagerFactory
+					.getInstance(Consts.SunX509);
+			kmf.init(keyStore, password.toCharArray());
+			SSLContext sslContext = SSLContext.getInstance("TLS");
+			sslContext.init(kmf.getKeyManagers(), null,
+					new java.security.SecureRandom());
+			return createSSLRequestExecutor(sslContext);
+		} catch (Exception e) {
+			throw new WeixinException("Key load error", e);
+		}
+	}
+
+	public WeixinRequestExecutor createSSLRequestExecutor(SSLContext sslContext) {
+		if (sslContext == null) {
+			throw new IllegalArgumentException("sslContext must not be empty");
+		}
+		HttpParams params = new HttpParams();
+		params.setSSLContext(sslContext);
+		return new WeixinRequestExecutor(params);
 	}
 }

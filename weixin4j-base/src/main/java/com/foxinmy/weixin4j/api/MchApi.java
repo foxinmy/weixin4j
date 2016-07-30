@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
-import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.mch.MerchantResult;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
@@ -58,8 +57,8 @@ public class MchApi extends BaseApi {
 	 */
 	protected WeixinRequestExecutor createSSLRequestExecutor(
 			InputStream certificate) throws WeixinException {
-		return new WeixinSSLRequestExecutor(weixinAccount.getCertificateKey(),
-				certificate);
+		return weixinExecutor.createSSLRequestExecutor(
+				weixinAccount.getCertificateKey(), certificate);
 	}
 
 	/**

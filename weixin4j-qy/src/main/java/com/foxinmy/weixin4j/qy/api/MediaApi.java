@@ -199,7 +199,6 @@ public class MediaApi extends QyApi {
 				request = new HttpRequest(HttpMethod.GET,
 						String.format(media_download_uri, token.getAccessToken(), mediaId));
 			}
-			request.setParams(weixinExecutor.getExecuteParams());
 			logger.info("weixin request >> " + request.getMethod() + " " + request.getURI().toString());
 			HttpResponse response = weixinExecutor.getExecuteClient().execute(request);
 			byte[] content = IOUtil.toByteArray(response.getBody());

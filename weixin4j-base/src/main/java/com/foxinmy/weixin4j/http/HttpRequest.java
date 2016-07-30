@@ -28,12 +28,6 @@ public class HttpRequest implements HttpMessage {
 	 */
 	private final URI uri;
 	/**
-	 * 协议参数
-	 * 
-	 * @return
-	 */
-	private HttpParams params;
-	/**
 	 * 内容参数
 	 */
 	private HttpEntity entity;
@@ -57,14 +51,6 @@ public class HttpRequest implements HttpMessage {
 
 	public URI getURI() {
 		return uri;
-	}
-
-	public HttpParams getParams() {
-		return params;
-	}
-
-	public void setParams(HttpParams params) {
-		this.params = params;
 	}
 
 	public HttpEntity getEntity() {

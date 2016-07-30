@@ -150,3 +150,9 @@
 * 2016-05-12
 
   + 添加MemcacheTokenStorager支持
+  
+* 2016-07-30
+
+  + 重新整理HttpClinet
+  
+  + 新增OkHttp实现

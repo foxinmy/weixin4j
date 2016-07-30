@@ -13,7 +13,6 @@ import java.util.Map.Entry;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
@@ -31,19 +30,15 @@ import com.foxinmy.weixin4j.util.StringUtil;
  */
 public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 
-	protected HostnameVerifier createHostnameVerifier() {
-		return new HostnameVerifier() {
-			@Override
-			public boolean verify(String hostname, SSLSession session) {
-				return true;
-			}
-		};
+	private final HttpParams params;
+
+	public SimpleHttpClient(HttpParams params) {
+		this.params = params;
 	}
 
 	protected HttpURLConnection createHttpConnection(HttpRequest request)
 			throws IOException {
 		URI uri = request.getURI();
-		HttpParams params = request.getParams();
 		Proxy proxy = params != null ? params.getProxy() : null;
 		URLConnection urlConnection = proxy != null ? uri.toURL()
 				.openConnection(proxy) : uri.toURL().openConnection();
@@ -59,7 +54,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 					sslContext = HttpClientFactory.allowSSLContext();
 				}
 				if (hostnameVerifier == null) {
-					hostnameVerifier = createHostnameVerifier();
+					hostnameVerifier = HttpClientFactory.AllowHostnameVerifier.GLOBAL;
 				}
 				HttpsURLConnection connection = (HttpsURLConnection) urlConnection;
 				connection.setSSLSocketFactory(sslContext.getSocketFactory());
@@ -81,14 +76,9 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 			HttpURLConnection connection = createHttpConnection(request);
 			String method = request.getMethod().name();
 			// set parameters
-			HttpParams params = request.getParams();
 			if (params != null) {
-				connection.setAllowUserInteraction(params
-						.isAllowUserInteraction());
 				connection.setConnectTimeout(params.getConnectTimeout());
 				connection.setReadTimeout(params.getReadTimeout());
-				connection.setInstanceFollowRedirects(params
-						.isFollowRedirects());
 			}
 			connection.setRequestMethod(method);
 			connection.setDoInput(true);
@@ -134,14 +124,6 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 			HttpEntity httpEntity = request.getEntity();
 			if (httpEntity != null) {
 				connection.setUseCaches(false);
-				// Read Out Exception when connection.disconnect();
-				/*
-				 * if (httpEntity.getContentLength() > 0l) {
-				 * connection.setFixedLengthStreamingMode(httpEntity
-				 * .getContentLength()); } else { connection
-				 * .setChunkedStreamingMode(params != null ? params
-				 * .getChunkSize() : 4096); }
-				 */
 				if (httpEntity.getContentLength() > 0l) {
 					connection.setRequestProperty(HttpHeaders.CONTENT_LENGTH,
 							Long.toString(httpEntity.getContentLength()));

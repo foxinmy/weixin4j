@@ -1,7 +1,8 @@
-package com.foxinmy.weixin4j.http.factory;
+package com.foxinmy.weixin4j.http.support.apache4;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Map.Entry;
@@ -29,6 +30,7 @@ import com.foxinmy.weixin4j.http.AbstractHttpClient;
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
+import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.apache.MultipartEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.util.StringUtil;
@@ -43,8 +45,25 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @see
  */
 public abstract class HttpComponent4 extends AbstractHttpClient {
-	protected HttpRequestBase createHttpRequest(HttpMethod method,
-			java.net.URI uri) throws HttpClientException {
+
+	/**
+	 * Create HttpRequest
+	 */
+	protected HttpRequestBase createRequest(HttpRequest request)
+			throws HttpClientException, IOException {
+		HttpRequestBase httpRequest = createMethod(request);
+		resolveHeaders(request.getHeaders(), httpRequest);
+		resolveContent(request.getEntity(), httpRequest);
+		return httpRequest;
+	}
+
+	/**
+	 * Create HttpMethod
+	 */
+	protected HttpRequestBase createMethod(HttpRequest request)
+			throws HttpClientException {
+		HttpMethod method = request.getMethod();
+		URI uri = request.getURI();
 		if (method == HttpMethod.GET) {
 			return new HttpGet(uri);
 		} else if (method == HttpMethod.HEAD) {
@@ -65,7 +84,11 @@ public abstract class HttpComponent4 extends AbstractHttpClient {
 		}
 	}
 
-	protected void addHeaders(HttpHeaders headers, HttpRequestBase uriRequest) {
+	/**
+	 * Resolve Headers
+	 */
+	protected void resolveHeaders(HttpHeaders headers,
+			HttpRequestBase httpRequest) {
 		if (headers == null) {
 			headers = new HttpHeaders();
 		}
@@ -77,21 +100,23 @@ public abstract class HttpComponent4 extends AbstractHttpClient {
 		if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
 			headers.set(HttpHeaders.USER_AGENT, "apache/httpclient4");
 		}
-		for (Entry<String, List<String>> header : headers
-				.entrySet()) {
+		for (Entry<String, List<String>> header : headers.entrySet()) {
 			if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
-				uriRequest.setHeader(header.getKey(),
+				httpRequest.setHeader(header.getKey(),
 						StringUtil.join(header.getValue(), ';'));
 			} else {
 				for (String headerValue : header.getValue()) {
-					uriRequest.setHeader(header.getKey(),
+					httpRequest.setHeader(header.getKey(),
 							headerValue != null ? headerValue : "");
 				}
 			}
 		}
 	}
 
-	protected void addEntity(HttpEntity entity, HttpRequestBase uriRequest)
+	/**
+	 * Resolve Content
+	 */
+	protected void resolveContent(HttpEntity entity, HttpRequestBase httpRequest)
 			throws IOException {
 		if (entity != null) {
 			AbstractHttpEntity httpEntity = null;
@@ -107,7 +132,8 @@ public abstract class HttpComponent4 extends AbstractHttpClient {
 						entity.getContentLength());
 			}
 			httpEntity.setContentType(entity.getContentType().toString());
-			((HttpEntityEnclosingRequestBase) uriRequest).setEntity(httpEntity);
+			((HttpEntityEnclosingRequestBase) httpRequest)
+					.setEntity(httpEntity);
 		}
 	}
 

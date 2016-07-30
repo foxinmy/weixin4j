@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.http.factory;
+package com.foxinmy.weixin4j.http.support.apache3;
 
 import java.io.IOException;
 
@@ -54,9 +54,9 @@ public class HttpComponent3Response extends AbstractHttpResponse {
 		}
 		Header connection = httpMethod.getResponseHeader("Connection");
 		if (protocol == null) {
-			protocol = new HttpVersion("HTTP", version.getMinor(),
-					version.getMajor(), connection != null
-							&& "keep-alive".equalsIgnoreCase(connection
+			protocol = new HttpVersion("HTTP", version.getMajor(),
+					version.getMinor(), connection != null
+							&& KEEP_ALIVE.equalsIgnoreCase(connection
 									.getValue()));
 		}
 		return protocol;

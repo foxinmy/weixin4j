@@ -93,13 +93,13 @@ public class NotifyTest extends TokenTest {
 
 	@Test
 	public void send2() throws WeixinException, IOException {
-		File file = new File("/tmp/test.jpg");
+		File file = new File("/Users/jy/Downloads/weixin4j.png");
 		MediaUploadResult mediaResult = mediaApi.uploadMedia(false,
 				new FileInputStream(file), file.getName());
 		NotifyMessage imageNotify = new NotifyMessage(
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU", new Image(
 						mediaResult.getMediaId()));
 		ApiResult result = notifyApi.sendNotify(imageNotify);
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 }

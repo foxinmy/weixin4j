@@ -234,7 +234,6 @@ public class MediaApi extends MpApi {
 				request = new HttpRequest(HttpMethod.GET,
 						String.format(meida_download_uri, token.getAccessToken(), mediaId));
 			}
-			request.setParams(weixinExecutor.getExecuteParams());
 			logger.info("weixin request >> " + request.getMethod() + " " + request.getURI().toString());
 			HttpResponse response = weixinExecutor.getExecuteClient().execute(request);
 			byte[] content = IOUtil.toByteArray(response.getBody());

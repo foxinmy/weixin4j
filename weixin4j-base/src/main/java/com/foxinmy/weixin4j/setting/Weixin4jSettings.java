@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.setting;
 
 import com.foxinmy.weixin4j.cache.CacheStorager;
 import com.foxinmy.weixin4j.cache.FileCacheStorager;
-import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
@@ -21,10 +20,6 @@ public class Weixin4jSettings<T> {
 	 * 账号信息
 	 */
 	private final T account;
-	/**
-	 * Http参数
-	 */
-	private HttpParams httpParams;
 	/**
 	 * 系统临时目录
 	 */
@@ -46,16 +41,8 @@ public class Weixin4jSettings<T> {
 		return account;
 	}
 
-	public HttpParams getHttpParams() {
-		return httpParams;
-	}
-
 	public String getTmpdir() {
 		return tmpdir;
-	}
-
-	public void setHttpParams(HttpParams httpParams) {
-		this.httpParams = httpParams;
 	}
 
 	public void setTmpdir(String tmpdir) {
@@ -103,8 +90,8 @@ public class Weixin4jSettings<T> {
 
 	@Override
 	public String toString() {
-		return "Weixin4jSettings [account=" + account + ", httpParams="
-				+ httpParams + ", tmpdir=" + tmpdir + ", cacheStorager="
-				+ cacheStorager + ", certificateFile=" + certificateFile + "]";
+		return "Weixin4jSettings [account=" + account + ", tmpdir=" + tmpdir
+				+ ", cacheStorager=" + cacheStorager + ", certificateFile="
+				+ certificateFile + "]";
 	}
 }

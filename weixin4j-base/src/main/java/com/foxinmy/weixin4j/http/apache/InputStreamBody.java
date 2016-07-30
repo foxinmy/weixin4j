@@ -85,7 +85,11 @@ public class InputStreamBody extends AbstractContentBody {
 	}
 
 	public long getContentLength() {
-		return this.contentLength;
+		try {
+			return Math.max(contentLength, this.in.available());
+		} catch (IOException e) {
+			return -1;
+		}
 	}
 
 	public String getFilename() {

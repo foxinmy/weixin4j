@@ -37,10 +37,6 @@
 						</constructor-arg>
 					</bean>
 				</property -->
-				<!-- http参数:http请求时的参数,比如代理、超时等配置信息,暂时还未实现 -->
-				<property name="httpParams">
-					<bean class="com.foxinmy.weixin4j.http.HttpParams"/>
-				</property>
 				<!-- 临时目录:weixin4j调用某些接口时需要用到的临时目录,不声明则获取顺序为:weixin4j.properties#weixin4j.tmpdir->`java.io.tmp` -->
 				<property name="tmpdir" value="/tmp/weixin4j" />
 			</bean>
@@ -62,10 +58,6 @@
 				</constructor-arg>
 				<!-- ca证书:调用某些支付接口(如退款、红包)需要用到的证书文件,不声明则获取顺序为:weixin4j.properties#weixin4j.certificate.file->`classpath:ca.p12` -->
 				<property name="certificateFile" value="/path/to/certificate/file" />
-				<!-- http参数:http请求时的参数,比如代理、超时等配置信息,暂时还未实现 -->
-				<property name="httpParams">
-					<bean class="com.foxinmy.weixin4j.http.HttpParams"/>
-				</property>
 				<!-- 临时目录:weixin4j调用某些接口时需要用到的临时目录,不声明则获取顺序为:weixin4j.properties#weixin4j.tmpdir->`java.io.tmp` -->
 				<property name="tmpdir" value="/tmp/weixin4j" />
 			</bean>

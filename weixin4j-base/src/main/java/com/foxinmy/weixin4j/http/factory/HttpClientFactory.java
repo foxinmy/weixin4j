@@ -5,11 +5,18 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
 import com.foxinmy.weixin4j.http.HttpClient;
 import com.foxinmy.weixin4j.http.HttpClientException;
+import com.foxinmy.weixin4j.http.HttpParams;
+import com.foxinmy.weixin4j.http.support.apache3.HttpComponent3Factory;
+import com.foxinmy.weixin4j.http.support.apache4.HttpComponent4Factory;
+import com.foxinmy.weixin4j.http.support.netty.Netty4HttpClientFactory;
+import com.foxinmy.weixin4j.http.support.okhttp.OkHttpClientFactory;
 
 /**
  * HttpClient工厂生产类:参考netty的InternalLoggerFactory
@@ -29,7 +36,7 @@ public abstract class HttpClientFactory {
 
 	/**
 	 * NettyHttpClient -> ApacheHttpClient(HttpComponent3&4) ->
-	 * SimpleHttpClient(HttpURLConnection)
+	 * OkHttpClient(2&3) -> SimpleHttpClient(HttpURLConnection)
 	 * 
 	 * @return
 	 */
@@ -44,7 +51,11 @@ public abstract class HttpClientFactory {
 				try {
 					f = new HttpComponent3Factory();
 				} catch (Throwable e3) {
-					f = new SimpleHttpClientFactory();
+					try {
+						f = new OkHttpClientFactory();
+					} catch (Throwable e4) {
+						f = new SimpleHttpClientFactory();
+					}
 				}
 			}
 		}
@@ -67,7 +78,8 @@ public abstract class HttpClientFactory {
 	 */
 	public static void setDefaultFactory(HttpClientFactory defaultFactory) {
 		if (defaultFactory == null) {
-			throw new NullPointerException("defaultFactory");
+			throw new IllegalArgumentException(
+					"'defaultFactory' must not be empty");
 		}
 		HttpClientFactory.defaultFactory = defaultFactory;
 	}
@@ -84,6 +96,40 @@ public abstract class HttpClientFactory {
 	/**
 	 * 获取HttpClient实例
 	 * 
+	 * @param params Http参数
+	 * 
+	 * @return HttpClinet实例
+	 */
+	public static HttpClient getInstance(HttpParams params) {
+		HttpClientFactory clientFactory = getDefaultFactory();
+		clientFactory.resolveHttpParams(params);
+		return clientFactory.newInstance();
+	}
+
+	/**
+	 * Resolve the Http Parameter
+	 * 
+	 * @param params
+	 *            请求参数
+	 */
+	public void resolveHttpParams(HttpParams params) {
+		if (params == null) {
+			throw new IllegalArgumentException("'params' must not be empty");
+		}
+		resolveHttpParams0(params);
+	}
+
+	/**
+	 * Resolve the Http Parameter
+	 * 
+	 * @param params
+	 *            请求参数
+	 */
+	protected abstract void resolveHttpParams0(HttpParams params);
+
+	/**
+	 * 获取HttpClient实例
+	 * 
 	 * @return
 	 */
 	public abstract HttpClient newInstance();
@@ -92,7 +138,7 @@ public abstract class HttpClientFactory {
 		try {
 			SSLContext sslContext = SSLContext.getInstance("TLS");
 			sslContext.init(null,
-					new X509TrustManager[] { createX509TrustManager() },
+					new X509TrustManager[] { AllowX509TrustManager.GLOBAL },
 					new java.security.SecureRandom());
 			return sslContext;
 		} catch (NoSuchAlgorithmException e) {
@@ -104,24 +150,39 @@ public abstract class HttpClientFactory {
 		}
 	}
 
-	protected static X509TrustManager createX509TrustManager() {
-		return new X509TrustManager() {
-			@Override
-			public X509Certificate[] getAcceptedIssuers() {
-				return null;
-			}
+	public static class AllowX509TrustManager implements X509TrustManager {
+		public static final X509TrustManager GLOBAL = new AllowX509TrustManager();
 
-			@Override
-			public void checkServerTrusted(
-					X509Certificate[] paramArrayOfX509Certificate,
-					String paramString) throws CertificateException {
-			}
+		private AllowX509TrustManager() {
+		}
 
-			@Override
-			public void checkClientTrusted(
-					X509Certificate[] paramArrayOfX509Certificate,
-					String paramString) throws CertificateException {
-			}
-		};
+		@Override
+		public X509Certificate[] getAcceptedIssuers() {
+			return new X509Certificate[0];
+		}
+
+		@Override
+		public void checkServerTrusted(
+				X509Certificate[] paramArrayOfX509Certificate,
+				String paramString) throws CertificateException {
+		}
+
+		@Override
+		public void checkClientTrusted(
+				X509Certificate[] paramArrayOfX509Certificate,
+				String paramString) throws CertificateException {
+		}
+	}
+
+	public static class AllowHostnameVerifier implements HostnameVerifier {
+		public static final HostnameVerifier GLOBAL = new AllowHostnameVerifier();
+
+		private AllowHostnameVerifier() {
+		}
+
+		@Override
+		public boolean verify(String hostname, SSLSession session) {
+			return true;
+		}
 	}
 }

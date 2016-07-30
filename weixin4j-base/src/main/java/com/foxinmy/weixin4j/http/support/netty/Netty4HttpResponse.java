@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.http.factory;
+package com.foxinmy.weixin4j.http.support.netty;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -27,7 +27,7 @@ public class Netty4HttpResponse extends AbstractHttpResponse {
 
 	private HttpVersion protocol;
 	private HttpStatus status;
-	private volatile HttpHeaders headers;
+	private HttpHeaders headers;
 
 	public Netty4HttpResponse(ChannelHandlerContext context,
 			FullHttpResponse response, byte[] content) {
@@ -40,11 +40,10 @@ public class Netty4HttpResponse extends AbstractHttpResponse {
 	@Override
 	public HttpHeaders getHeaders() {
 		if (this.headers == null) {
-			HttpHeaders headers = new HttpHeaders();
+			this.headers = new HttpHeaders();
 			for (Map.Entry<String, String> entry : this.response.headers()) {
 				headers.add(entry.getKey(), entry.getValue());
 			}
-			this.headers = headers;
 		}
 		return this.headers;
 	}

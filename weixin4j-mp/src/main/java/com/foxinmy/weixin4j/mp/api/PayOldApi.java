@@ -26,10 +26,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.Feature;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.message.ApiResult;
-import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
-import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.oldpayment.OrderV2;
@@ -312,10 +311,9 @@ public class PayOldApi extends MpApi {
 			ctx = SSLContext.getInstance(Consts.TLS);
 			ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(),
 					new SecureRandom());
-
-			WeixinRequestExecutor weixinExecutor = new WeixinSSLRequestExecutor(
-					ctx);
-			response = weixinExecutor.get(refund_uri, map);
+			response = weixinExecutor.createSSLRequestExecutor(ctx).get(
+					String.format("%s?%s", refund_uri,
+							FormUrlEntity.formatParameters(map)));
 		} catch (WeixinException e) {
 			throw e;
 		} catch (Exception e) {
@@ -459,7 +457,8 @@ public class PayOldApi extends MpApi {
 		map.put("key", weixinAccount.getPartnerKey());
 		String sign = DigestUtil.MD5(MapUtil.toJoinString(map, false, false));
 		map.put("sign", sign.toLowerCase());
-		WeixinResponse response = weixinExecutor.get(downloadbill_uri, map);
+		WeixinResponse response = weixinExecutor.get(String.format("%s?%s",
+				downloadbill_uri, FormUrlEntity.formatParameters(map)));
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 		try {
@@ -510,7 +509,8 @@ public class PayOldApi extends MpApi {
 		map.put(idQuery.getType().getName(), idQuery.getId());
 		String sign = weixinMD5Signature.sign(map);
 		map.put("sign", sign.toLowerCase());
-		WeixinResponse response = weixinExecutor.get(refundquery_uri, map);
+		WeixinResponse response = weixinExecutor.get(String.format(
+				refundquery_uri, FormUrlEntity.formatParameters(map)));
 		return ListsuffixResultDeserializer.deserialize(response.getAsString(),
 				RefundRecordV2.class);
 	}

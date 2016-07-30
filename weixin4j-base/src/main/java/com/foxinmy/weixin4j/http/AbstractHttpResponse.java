@@ -12,7 +12,7 @@ import java.io.InputStream;
  * @see
  */
 public abstract class AbstractHttpResponse implements HttpResponse {
-
+	protected final static String KEEP_ALIVE = "keep-alive";
 	private final byte[] content;
 
 	public AbstractHttpResponse(byte[] content) {

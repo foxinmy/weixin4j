@@ -34,7 +34,7 @@ import com.foxinmy.weixin4j.type.TradeType;
  * @className PayTest
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年1月30日
- * @since JDK 1.6
+ * @since JDK 1.7
  * @see
  */
 public class PayTest {
@@ -43,18 +43,18 @@ public class PayTest {
 	protected final static WeixinPayProxy PAY;
 
 	static {
-		ACCOUNT = new WeixinPayAccount("appid", "paysignkey", "mchid");
+		ACCOUNT = new WeixinPayAccount("wx0d1d598c0c03c999", "GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ", "10020674");
 		SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
 		PAY = new WeixinPayProxy(new Weixin4jSettings<WeixinPayAccount>(ACCOUNT));
 	}
 	/**
 	 * 商户证书文件
 	 */
-	protected File caFile = new File("*.p12");
+	protected File caFile = new File("/Users/jy/workspace/feican/canyi-weixin-parent/canyi-weixin-service/src/main/resources/10020674.p12");
 
 	@Test
 	public void queryOrder() throws WeixinException {
-		Order order = PAY.queryOrder(new IdQuery("201601131632321",
+		Order order = PAY.queryOrder(new IdQuery("BY2016010800025",
 				IdType.TRADENO));
 		System.err.println(order);
 		String sign = order.getSign();
@@ -70,6 +70,7 @@ public class PayTest {
 		RefundRecord record = PAY.queryRefund(new IdQuery("TT_1427183696238",
 				IdType.TRADENO));
 		System.err.println(record);
+		// 这里的验证签名需要把details循环拼接
 		String sign = record.getSign();
 		record.setSign(null);
 		String valiSign = SIGNATURE.sign(record);
@@ -138,7 +139,7 @@ public class PayTest {
 	}
 
 	@Test
-	public void reportInterface() throws WeixinException {
+	public void interfaceReport() throws WeixinException {
 		String interfaceUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 		int executeTime = 2500;
 		String outTradeNo = null;

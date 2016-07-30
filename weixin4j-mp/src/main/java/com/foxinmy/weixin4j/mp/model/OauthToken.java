@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.mp.model;
 
-import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.Token;
 

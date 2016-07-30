@@ -1,10 +1,8 @@
-package com.foxinmy.weixin4j.http.factory;
+package com.foxinmy.weixin4j.http.support.apache3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
@@ -27,14 +25,12 @@ import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.TraceMethod;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.ControllerThreadSocketFactory;
-import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 
 import com.foxinmy.weixin4j.http.AbstractHttpClient;
 import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
-import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.apache.MultipartEntity;
@@ -59,11 +55,47 @@ public class HttpComponent3 extends AbstractHttpClient {
 		this.httpClient = httpClient;
 	}
 
-	private org.apache.commons.httpclient.HttpMethod createHttpMethod(
-			HttpMethod method, java.net.URI url) throws HttpClientException {
+	@Override
+	public HttpResponse execute(HttpRequest request) throws HttpClientException {
+		HttpResponse response = null;
+		try {
+			org.apache.commons.httpclient.HttpMethod httpMethod = createRequest(request);
+			httpClient.executeMethod(httpMethod);
+			response = new HttpComponent3Response(httpMethod);
+			handleResponse(response);
+		} catch (IOException e) {
+			throw new HttpClientException("I/O error on "
+					+ request.getMethod().name() + " request for \""
+					+ request.getURI().toString() + "\":" + e.getMessage(), e);
+		} finally {
+			if (response != null) {
+				response.close();
+			}
+		}
+		return response;
+	}
+
+	/**
+	 * Create HttpMethod
+	 */
+	protected org.apache.commons.httpclient.HttpMethod createRequest(
+			HttpRequest request) throws HttpClientException, IOException {
+		org.apache.commons.httpclient.HttpMethod httpMethod = createMethod(request);
+		resolveHeaders(request, httpMethod);
+		resolveContent(request, httpMethod);
+		return httpMethod;
+	}
+
+	/**
+	 * Create HttpMethod
+	 */
+	protected org.apache.commons.httpclient.HttpMethod createMethod(
+			HttpRequest request) throws HttpClientException {
+		HttpMethod method = request.getMethod();
 		org.apache.commons.httpclient.HttpMethod httpMethod = null;
 		try {
-			URI uri = new URI(url.toString(), false, Consts.UTF_8.name());
+			URI uri = new URI(request.getURI().toString(), false,
+					Consts.UTF_8.name());
 			if (method == HttpMethod.GET) {
 				httpMethod = new GetMethod();
 			} else if (method == HttpMethod.HEAD) {
@@ -85,121 +117,79 @@ public class HttpComponent3 extends AbstractHttpClient {
 			httpMethod.setURI(uri);
 		} catch (IOException e) {
 			throw new HttpClientException("I/O error on " + method.name()
-					+ " setURI for \"" + url.toString() + "\":"
+					+ " setURI for \"" + request.toString() + "\":"
 					+ e.getMessage(), e);
 		}
 		return httpMethod;
 	}
 
-	@Override
-	public HttpResponse execute(HttpRequest request) throws HttpClientException {
-		HttpResponse response = null;
-		try {
-			org.apache.commons.httpclient.HttpMethod httpMethod = createHttpMethod(
-					request.getMethod(), request.getURI());
-			boolean useSSL = "https".equals(request.getURI().getScheme());
-			SSLContext sslContext = null;
-			HttpParams params = request.getParams();
-			if (params != null) {
-				Proxy proxy = params.getProxy();
-				if (proxy != null) {
-					InetSocketAddress socketAddress = (InetSocketAddress) proxy
-							.address();
-					httpClient.getHostConfiguration().setProxy(
-							socketAddress.getHostName(),
-							socketAddress.getPort());
-					useSSL = false;
-				}
-				sslContext = params.getSSLContext();
-				httpClient.getHttpConnectionManager().getParams()
-						.setConnectionTimeout(params.getConnectTimeout());
-				httpClient.getHttpConnectionManager().getParams()
-						.setSendBufferSize(params.getChunkSize());
-				httpMethod.getParams().setSoTimeout(params.getSocketTimeout());
-				httpMethod.getParams().setHttpElementCharset(
-						Consts.UTF_8.name());
-				httpMethod.getParams().setParameter(
-						"http.protocol.uri-charset", Consts.UTF_8.name());
-				// httpMethod.getParams().setUriCharset(Consts.UTF_8.name());
-				httpMethod.getParams().setContentCharset(Consts.UTF_8.name());
-			}
-			if (useSSL) {
-				if (sslContext == null) {
-					sslContext = HttpClientFactory.allowSSLContext();
-				}
-				Protocol.registerProtocol("https", new Protocol("https",
-						new SSLProtocolSocketFactory(sslContext), 443));
-			}
-			com.foxinmy.weixin4j.http.HttpHeaders headers = request
-					.getHeaders();
-			if (headers == null) {
-				headers = new HttpHeaders();
-			}
-			if (!headers.containsKey(HttpHeaders.HOST)) {
-				headers.set(HttpHeaders.HOST, request.getURI().getHost());
-			}
-			// Add default accept headers
-			if (!headers.containsKey(HttpHeaders.ACCEPT)) {
-				headers.set(HttpHeaders.ACCEPT, "*/*");
-			}
-			// Add default user agent
-			if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
-				headers.set(HttpHeaders.USER_AGENT, "apache/httpclient3");
-			}
-			for (Entry<String, List<String>> header : headers.entrySet()) {
-				if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
+	/**
+	 * Resolve Headers
+	 */
+	protected void resolveHeaders(HttpRequest request,
+			org.apache.commons.httpclient.HttpMethod httpMethod) {
+		com.foxinmy.weixin4j.http.HttpHeaders headers = request.getHeaders();
+		if (headers == null) {
+			headers = new HttpHeaders();
+		}
+		if (!headers.containsKey(HttpHeaders.HOST)) {
+			headers.set(HttpHeaders.HOST, request.getURI().getHost());
+		}
+		// Add default accept headers
+		if (!headers.containsKey(HttpHeaders.ACCEPT)) {
+			headers.set(HttpHeaders.ACCEPT, "*/*");
+		}
+		// Add default user agent
+		if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
+			headers.set(HttpHeaders.USER_AGENT, "apache/httpclient3");
+		}
+		for (Entry<String, List<String>> header : headers.entrySet()) {
+			if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
+				httpMethod.setRequestHeader(header.getKey(),
+						StringUtil.join(header.getValue(), ';'));
+			} else {
+				for (String headerValue : header.getValue()) {
 					httpMethod.setRequestHeader(header.getKey(),
-							StringUtil.join(header.getValue(), ';'));
-				} else {
-					for (String headerValue : header.getValue()) {
-						httpMethod.setRequestHeader(header.getKey(),
-								headerValue != null ? headerValue : "");
-					}
+							headerValue != null ? headerValue : "");
 				}
-			}
-			HttpEntity entity = request.getEntity();
-			if (entity != null) {
-				if (entity.getContentLength() > 0l) {
-					httpMethod.addRequestHeader(HttpHeaders.CONTENT_LENGTH,
-							Long.toString(entity.getContentLength()));
-				}
-				if (entity.getContentType() != null) {
-					httpMethod.addRequestHeader(HttpHeaders.CONTENT_TYPE,
-							entity.getContentType().toString());
-				}
-				RequestEntity requestEntity = null;
-				if (entity instanceof MultipartEntity) {
-					ByteArrayOutputStream os = new ByteArrayOutputStream();
-					entity.writeTo(os);
-					os.flush();
-					requestEntity = new ByteArrayRequestEntity(
-							os.toByteArray(), entity.getContentType()
-									.toString());
-					os.close();
-				} else {
-					requestEntity = new InputStreamRequestEntity(
-							entity.getContent(), entity.getContentType()
-									.toString());
-				}
-				((EntityEnclosingMethod) httpMethod)
-						.setRequestEntity(requestEntity);
-			}
-			httpClient.executeMethod(httpMethod);
-			response = new HttpComponent3Response(httpMethod);
-			handleResponse(response);
-		} catch (IOException e) {
-			throw new HttpClientException("I/O error on "
-					+ request.getMethod().name() + " request for \""
-					+ request.getURI().toString() + "\":" + e.getMessage(), e);
-		} finally {
-			if (response != null) {
-				response.close();
 			}
 		}
-		return response;
 	}
 
-	private static class SSLProtocolSocketFactory implements
+	/**
+	 * Resolve Content
+	 */
+	protected void resolveContent(HttpRequest request,
+			org.apache.commons.httpclient.HttpMethod httpMethod)
+			throws IOException {
+		HttpEntity entity = request.getEntity();
+		if (entity != null) {
+			if (entity.getContentLength() > 0l) {
+				httpMethod.addRequestHeader(HttpHeaders.CONTENT_LENGTH,
+						Long.toString(entity.getContentLength()));
+			}
+			if (entity.getContentType() != null) {
+				httpMethod.addRequestHeader(HttpHeaders.CONTENT_TYPE, entity
+						.getContentType().toString());
+			}
+			RequestEntity requestEntity = null;
+			if (entity instanceof MultipartEntity) {
+				ByteArrayOutputStream os = new ByteArrayOutputStream();
+				entity.writeTo(os);
+				os.flush();
+				requestEntity = new ByteArrayRequestEntity(os.toByteArray(),
+						entity.getContentType().toString());
+				os.close();
+			} else {
+				requestEntity = new InputStreamRequestEntity(
+						entity.getContent(), entity.getContentType().toString());
+			}
+			((EntityEnclosingMethod) httpMethod)
+					.setRequestEntity(requestEntity);
+		}
+	}
+
+	public static class SSLProtocolSocketFactory implements
 			SecureProtocolSocketFactory {
 
 		private final SSLContext sslContext;
