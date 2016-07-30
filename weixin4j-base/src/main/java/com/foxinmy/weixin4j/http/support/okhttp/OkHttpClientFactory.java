@@ -21,7 +21,7 @@ public class OkHttpClientFactory extends HttpClientFactory {
 			try {
 				okHttpClientFactory = new OkHttpClient3Factory();
 			} catch (Throwable e2) {
-				throw e2;
+				throw new RuntimeException(e2);
 			}
 		}
 	}
