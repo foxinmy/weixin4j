@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.mp.model;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.foxinmy.weixin4j.http.message.ApiResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 
 /**
  * 语义理解结果

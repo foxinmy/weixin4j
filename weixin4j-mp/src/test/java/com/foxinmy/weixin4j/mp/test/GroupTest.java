@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.message.ApiResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
 import com.foxinmy.weixin4j.mp.model.Group;
 
@@ -49,26 +49,26 @@ public class GroupTest extends TokenTest {
 	@Test
 	public void modify() throws WeixinException {
 		ApiResult result = groupApi.modifyGroup(100, "my1");
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void move() throws WeixinException {
 		ApiResult result = groupApi.moveGroup(100,
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void batchMove() throws WeixinException {
 		ApiResult result = groupApi.moveGroup(100,
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void delete() throws WeixinException {
 		ApiResult result = groupApi.deleteGroup(100);
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 }

@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSONPath;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.message.ApiResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
@@ -95,7 +95,7 @@ public class HelperApi extends MpApi {
 	public List<String> getWechatServerIp() throws WeixinException {
 		String getcallbackip_uri = getRequestUri("getcallbackip_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor.post(String.format(
+		WeixinResponse response = weixinExecutor.get(String.format(
 				getcallbackip_uri, token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("ip_list"),
 				String.class);

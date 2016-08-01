@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.message.ApiResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
 import com.foxinmy.weixin4j.mp.message.TemplateMessage;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
@@ -40,6 +40,6 @@ public class TemplateTest extends TokenTest {
 				"template_id", "url");
 		tplMessage.pushHead("head").pushTail("tail").pushItem("key1", "text1");
 		ApiResult result = tmplApi.sendTmplMessage(tplMessage);
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 }

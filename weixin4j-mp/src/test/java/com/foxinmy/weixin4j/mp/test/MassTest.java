@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.message.ApiResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
@@ -87,14 +87,14 @@ public class MassTest extends TokenTest {
 	@Test
 	public void deleteMass() throws WeixinException {
 		ApiResult result = massApi.deleteMassNews("34182");
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void previewMass() throws WeixinException {
 		ApiResult result = massApi.previewMassNews(
 				"oyFLst1bqtuTcxK-ojF8hOGtLQao", null, new Text("test"));
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test

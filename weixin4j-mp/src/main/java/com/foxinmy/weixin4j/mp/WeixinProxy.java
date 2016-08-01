@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.message.ApiResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.MediaCounter;
 import com.foxinmy.weixin4j.model.MediaDownloadResult;

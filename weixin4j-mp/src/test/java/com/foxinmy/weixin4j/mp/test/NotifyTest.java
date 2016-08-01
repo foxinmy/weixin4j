@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.message.ApiResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.MediaUploadResult;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
@@ -88,7 +88,7 @@ public class NotifyTest extends TokenTest {
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU", new Text(
 						"this is a notify message!"));
 		ApiResult result = notifyApi.sendNotify(notify);
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test

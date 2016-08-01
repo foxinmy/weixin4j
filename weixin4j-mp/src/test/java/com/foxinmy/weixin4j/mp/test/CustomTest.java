@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.message.ApiResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
@@ -48,14 +48,17 @@ public class CustomTest extends TokenTest {
 		Date endtime = calendar.getTime();
 		List<KfChatRecord> recordList = customApi.getKfChatRecord(starttime,
 				endtime, new Pageable(1, 70));
+		Assert.assertFalse(recordList.isEmpty());
 		System.out.println(recordList);
 	}
 
 	@Test
 	public void kfList() throws WeixinException {
 		List<KfAccount> kfList = customApi.listKfAccount(false);
+		Assert.assertFalse(kfList.isEmpty());
 		System.out.println(kfList);
 		kfList = customApi.listKfAccount(true);
+		Assert.assertFalse(kfList.isEmpty());
 		System.out.println(kfList);
 	}
 
@@ -63,14 +66,14 @@ public class CustomTest extends TokenTest {
 	public void createKfAccount() throws WeixinException {
 		ApiResult result = customApi.createKfAccount("test@test", "test",
 				"123456");
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void updateKfAccount() throws WeixinException {
 		ApiResult result = customApi.updateKfAccount("temp1@canyidianzhang",
 				"temp", "123456");
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
@@ -78,27 +81,27 @@ public class CustomTest extends TokenTest {
 		ApiResult result = customApi.uploadKfAvatar("temp1@canyidianzhang",
 				new FileInputStream(new File("/Users/jy/Music/简谱/风动草.jpg")),
 				"风动草.jpg");
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void deleteKfAccount() throws WeixinException, IOException {
 		ApiResult result = customApi.deleteKfAccount("temp@canyidianzhang");
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void createSession() throws WeixinException {
 		ApiResult result = customApi.createKfSession(
 				"opKwyt6IhrqPmTTZshyqH5W9gIVo", "kfAccount", "text");
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void closeSession() throws WeixinException {
 		ApiResult result = customApi.closeKfSession(
 				"opKwyt6IhrqPmTTZshyqH5W9gIVo", "kfAccount", "text");
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
@@ -111,6 +114,7 @@ public class CustomTest extends TokenTest {
 	@Test
 	public void getSessionList() throws WeixinException {
 		List<KfSession> sessionList = customApi.listKfSession("kfAccount");
+		Assert.assertFalse(sessionList.isEmpty());
 		System.err.println(sessionList);
 	}
 
