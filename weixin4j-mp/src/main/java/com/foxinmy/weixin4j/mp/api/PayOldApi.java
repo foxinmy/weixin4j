@@ -261,8 +261,8 @@ public class PayOldApi extends MpApi {
 			map.put("service_version", "1.1");
 			map.put("partner", weixinAccount.getPartnerId());
 			map.put("out_refund_no", outRefundNo);
-			map.put("total_fee", DateUtil.formaFee2Fen(totalFee));
-			map.put("refund_fee", DateUtil.formaFee2Fen(refundFee));
+			map.put("total_fee", DateUtil.formatFee2Fen(totalFee));
+			map.put("refund_fee", DateUtil.formatFee2Fen(refundFee));
 			map.put(idQuery.getType().getName(), idQuery.getId());
 			if (StringUtil.isBlank(opUserId)) {
 				opUserId = weixinAccount.getPartnerId();

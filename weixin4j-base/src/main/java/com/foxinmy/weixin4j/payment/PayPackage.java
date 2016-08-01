@@ -117,7 +117,7 @@ public class PayPackage extends MerchantResult {
 		this.body = body;
 		this.detail = detail;
 		this.outTradeNo = outTradeNo;
-		this.totalFee = DateUtil.formaFee2Fen(totalFee);
+		this.totalFee = DateUtil.formatFee2Fen(totalFee);
 		this.notifyUrl = notifyUrl;
 		this.createIp = createIp;
 		this.attach = attach;
@@ -163,7 +163,7 @@ public class PayPackage extends MerchantResult {
 	 *            订单总额 单位为元
 	 */
 	public void setTotalFee(double totalFee) {
-		this.totalFee = DateUtil.formaFee2Fen(totalFee);
+		this.totalFee = DateUtil.formatFee2Fen(totalFee);
 	}
 
 	public String getNotifyUrl() {

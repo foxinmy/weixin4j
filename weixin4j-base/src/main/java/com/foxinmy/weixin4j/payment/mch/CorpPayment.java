@@ -91,7 +91,7 @@ public class CorpPayment extends MerchantResult {
 		this.openId = openId;
 		this.checkNameType = checkNameType;
 		this.desc = desc;
-		this.amount = DateUtil.formaFee2Fen(amount);
+		this.amount = DateUtil.formatFee2Fen(amount);
 		this.clientIp = clientIp;
 	}
 

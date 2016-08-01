@@ -133,8 +133,8 @@ public class PayPackageV2 extends PayPackage {
 		this.inputCharset = "UTF-8";
 		this.partner = partner;
 		this.transportFee = transportFee > 0d ? DateUtil
-				.formaFee2Fen(transportFee) : null;
-		this.productFee = productFee > 0 ? DateUtil.formaFee2Fen(productFee)
+				.formatFee2Fen(transportFee) : null;
+		this.productFee = productFee > 0 ? DateUtil.formatFee2Fen(productFee)
 				: null;
 	}
 
@@ -165,7 +165,7 @@ public class PayPackageV2 extends PayPackage {
 	 *            物流费用 单位为元
 	 */
 	public void setTransportFee(double transportFee) {
-		this.transportFee = DateUtil.formaFee2Fen(transportFee);
+		this.transportFee = DateUtil.formatFee2Fen(transportFee);
 	}
 
 	public String getProductFee() {
@@ -179,7 +179,7 @@ public class PayPackageV2 extends PayPackage {
 	 *            商品 单位为元
 	 */
 	public void setProductFee(double productFee) {
-		this.productFee = DateUtil.formaFee2Fen(productFee);
+		this.productFee = DateUtil.formatFee2Fen(productFee);
 	}
 
 	public String getInputCharset() {

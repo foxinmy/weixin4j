@@ -134,7 +134,7 @@ public class Redpacket extends MerchantResult {
 		this.clientIp = clientIp;
 		this.actName = actName;
 		this.remark = remark;
-		this.totalAmount = DateUtil.formaFee2Fen(totalAmount);
+		this.totalAmount = DateUtil.formatFee2Fen(totalAmount);
 		this.amtType = totalNum > 1 ? "ALL_RAND" : null;
 	}
 

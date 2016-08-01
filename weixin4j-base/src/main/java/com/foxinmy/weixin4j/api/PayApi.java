@@ -465,8 +465,8 @@ public class PayApi extends MchApi {
 		try {
 			Map<String, String> map = createBaseRequestMap(idQuery);
 			map.put("out_refund_no", outRefundNo);
-			map.put("total_fee", DateUtil.formaFee2Fen(totalFee));
-			map.put("refund_fee", DateUtil.formaFee2Fen(refundFee));
+			map.put("total_fee", DateUtil.formatFee2Fen(totalFee));
+			map.put("refund_fee", DateUtil.formatFee2Fen(refundFee));
 			if (StringUtil.isBlank(opUserId)) {
 				opUserId = weixinAccount.getMchId();
 			}

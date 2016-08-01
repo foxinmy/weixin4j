@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.util;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,10 +74,13 @@ public class DateUtil {
 	 * 
 	 * @param fee
 	 *            金额 单位为分
-	 * @return
+	 * @return 四舍五入后的字符串形式金额
 	 */
-	public static String formaFee2Fen(double fee) {
-		return new DecimalFormat("#").format(fee * 100);
+	public static String formatFee2Fen(double fee) {
+		BigDecimal _fee = new BigDecimal(Double.toString(fee));
+		fee = _fee.multiply(new BigDecimal("100"))
+				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		return new DecimalFormat("#").format(fee);
 	}
 
 	/**
