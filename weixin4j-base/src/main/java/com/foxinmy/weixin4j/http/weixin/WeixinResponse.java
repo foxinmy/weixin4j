@@ -12,11 +12,9 @@ import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.HttpStatus;
 import com.foxinmy.weixin4j.http.HttpVersion;
-import com.foxinmy.weixin4j.http.message.ApiResult;
 import com.foxinmy.weixin4j.http.message.JsonMessageConverter;
 import com.foxinmy.weixin4j.http.message.MessageConverter;
 import com.foxinmy.weixin4j.http.message.XmlMessageConverter;
-import com.foxinmy.weixin4j.http.message.XmlResult;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**

@@ -10,8 +10,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.exception.WeixinPayException;
-import com.foxinmy.weixin4j.http.message.XmlResult;
+import com.foxinmy.weixin4j.http.weixin.XmlResult;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.WeixinPayProxy;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
@@ -43,19 +43,24 @@ public class PayTest {
 	protected final static WeixinPayProxy PAY;
 
 	static {
-		ACCOUNT = new WeixinPayAccount("wx0d1d598c0c03c999", "GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ", "10020674");
+		ACCOUNT = new WeixinPayAccount("wx0d1d598c0c03c999",
+				"GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ", "10020674");
 		SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
-		PAY = new WeixinPayProxy(new Weixin4jSettings<WeixinPayAccount>(ACCOUNT));
+		PAY = new WeixinPayProxy(
+				new Weixin4jSettings<WeixinPayAccount>(ACCOUNT));
 	}
 	/**
 	 * 商户证书文件
 	 */
-	protected File caFile = new File("/Users/jy/workspace/feican/canyi-weixin-parent/canyi-weixin-service/src/main/resources/10020674.p12");
+	protected File caFile = new File(
+			"/Users/jy/workspace/feican/canyi-weixin-parent/canyi-weixin-service/src/main/resources/10020674.p12");
 
 	@Test
 	public void queryOrder() throws WeixinException {
 		Order order = PAY.queryOrder(new IdQuery("BY2016010800025",
 				IdType.TRADENO));
+		Assert.assertEquals(Consts.SUCCESS, order.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, order.getResultCode());
 		System.err.println(order);
 		String sign = order.getSign();
 		order.setSign(null);
@@ -69,8 +74,9 @@ public class PayTest {
 	public void queryRefund() throws WeixinException {
 		RefundRecord record = PAY.queryRefund(new IdQuery("TT_1427183696238",
 				IdType.TRADENO));
+		Assert.assertEquals(Consts.SUCCESS, record.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, record.getResultCode());
 		System.err.println(record);
-		// 这里的验证签名需要把details循环拼接
 		String sign = record.getSign();
 		record.setSign(null);
 		String valiSign = SIGNATURE.sign(record);
@@ -96,6 +102,8 @@ public class PayTest {
 		RefundResult result = PAY.applyRefund(new FileInputStream(caFile),
 				idQuery, "TT_R" + System.currentTimeMillis(), 0.01d, 0.01d,
 				null, "10020674");
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
@@ -110,18 +118,17 @@ public class PayTest {
 		MchPayPackage payPackageV3 = new MchPayPackage("native测试", "T0001",
 				0.1d, "notify_url", "127.0.0.1", TradeType.NATIVE, null, null,
 				"productId", null);
-		PrePay prePay = null;
-		try {
-			prePay = PAY.createPrePay(payPackageV3);
-		} catch (WeixinPayException e) {
-			e.printStackTrace();
-		}
-		System.err.println(prePay);
+		PrePay result = PAY.createPrePay(payPackageV3);
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+		System.err.println(result);
 	}
 
 	@Test
 	public void closeOrder() throws WeixinException {
 		MerchantResult result = PAY.closeOrder("D111");
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
 		System.err.println(result);
 		String sign = result.getSign();
 		result.setSign(null);
@@ -149,6 +156,8 @@ public class PayTest {
 		returnXml.setResultCode("SUCCESS");
 		returnXml = PAY.reportInterface(interfaceUrl, executeTime, outTradeNo,
 				ip, time, returnXml);
+		Assert.assertEquals(Consts.SUCCESS, returnXml.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, returnXml.getResultCode());
 		System.err.println(returnXml);
 	}
 

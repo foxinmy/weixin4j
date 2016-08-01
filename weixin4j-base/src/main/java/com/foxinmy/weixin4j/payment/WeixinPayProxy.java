@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.api.CouponApi;
 import com.foxinmy.weixin4j.api.CustomsApi;
 import com.foxinmy.weixin4j.api.PayApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.message.XmlResult;
+import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.coupon.CouponDetail;

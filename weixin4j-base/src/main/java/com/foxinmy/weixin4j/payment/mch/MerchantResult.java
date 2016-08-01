@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.http.message.XmlResult;
+import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.type.SignType;
 
 /**

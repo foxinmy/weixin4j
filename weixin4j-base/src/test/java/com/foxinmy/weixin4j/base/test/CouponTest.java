@@ -31,18 +31,24 @@ public class CouponTest extends PayTest {
 				DateUtil.fortmat2yyyyMMdd(new Date()), "1");
 		CouponResult result = PAY.sendCoupon(new FileInputStream(caFile),
 				"123", partnerTradeNo, "oyFLst1bqtuTcxK-ojF8hOGtLQao", null);
-		Assert.assertTrue(result.getRetCode().equalsIgnoreCase(Consts.SUCCESS));
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+		System.err.println(result);
 	}
 
 	@Test
 	public void queryCouponStock() throws WeixinException {
-		CouponStock couponStock = PAY.queryCouponStock("couponStockId");
-		System.err.println(couponStock);
+		CouponStock result = PAY.queryCouponStock("couponStockId");
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+		System.err.println(result);
 	}
 
 	@Test
 	public void queryCouponDetail() throws WeixinException {
-		CouponDetail couponDetail = PAY.queryCouponDetail("couponId");
-		System.err.println(couponDetail);
+		CouponDetail result = PAY.queryCouponDetail("couponId");
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+		System.err.println(result);
 	}
 }

@@ -320,6 +320,10 @@
 		<text>invalid args</text>
 	</error>
 	<error>
+		<code>40095</code>
+		<text>修改失败，并发冲突</text>
+	</error>
+	<error>
 		<code>40099</code>
 		<text>卡券已被核销。</text>
 	</error>

@@ -3,10 +3,13 @@ package com.foxinmy.weixin4j.base.test;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.payment.mch.CorpPayment;
+import com.foxinmy.weixin4j.payment.mch.CorpPaymentRecord;
 import com.foxinmy.weixin4j.payment.mch.CorpPaymentResult;
 import com.foxinmy.weixin4j.payment.mch.Redpacket;
 import com.foxinmy.weixin4j.payment.mch.RedpacketRecord;
@@ -31,15 +34,19 @@ public class CashTest extends PayTest {
 				"快来领取红包吧！", "来就送钱");
 		RedpacketSendResult result = PAY.sendRedpack(
 				new FileInputStream(caFile), redpacket);
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
 		System.err.println(result);
 	}
 
 	@Test
 	public void queryRedpacket() throws WeixinException, IOException {
 		String outTradeNo = "HB001";
-		RedpacketRecord record = PAY.queryRedpack(new FileInputStream(caFile),
+		RedpacketRecord result = PAY.queryRedpack(new FileInputStream(caFile),
 				outTradeNo);
-		System.err.println(record);
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+		System.err.println(result);
 	}
 
 	@Test
@@ -49,12 +56,17 @@ public class CashTest extends PayTest {
 				CorpPaymentCheckNameType.NO_CHECK, "企业付款测试", 1d, "127.0.0.1");
 		CorpPaymentResult result = PAY.sendCorpPayment(new FileInputStream(
 				caFile), payment);
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
 		System.err.println(result);
 	}
 
 	@Test
 	public void queryCorpPayment() throws WeixinException, IOException {
-		System.err.println(PAY.queryCorpPayment(new FileInputStream(caFile),
-				"MP001"));
+		CorpPaymentRecord result = PAY.queryCorpPayment(new FileInputStream(caFile),
+				"MP001");
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+		System.err.println(result);
 	}
 }
