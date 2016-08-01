@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.message.ApiResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.qy.api.MenuApi;
 import com.foxinmy.weixin4j.type.ButtonType;
@@ -43,7 +43,7 @@ public class MenuTest extends TokenTest {
 		b = new Button("photo", "photo", ButtonType.pic_photo_or_album);
 		btnList.add(b);
 		ApiResult result = menuApi.createMenu(1, btnList);
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
@@ -58,6 +58,6 @@ public class MenuTest extends TokenTest {
 	@Test
 	public void delete() throws WeixinException {
 		ApiResult result = menuApi.deleteMenu(1);
-		Assert.assertEquals(0, result.getReturnCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 }
