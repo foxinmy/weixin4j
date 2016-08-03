@@ -27,8 +27,8 @@ public class OkHttpClientFactory extends HttpClientFactory {
 	}
 
 	@Override
-	protected void resolveHttpParams0(HttpParams params) {
-		okHttpClientFactory.resolveHttpParams(params);
+	protected void resolveHttpParams(HttpParams params) {
+		okHttpClientFactory.setDefaultParams(params);
 	}
 
 	@Override

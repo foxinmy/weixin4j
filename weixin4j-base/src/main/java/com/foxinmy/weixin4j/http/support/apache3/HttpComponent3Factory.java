@@ -41,7 +41,7 @@ public class HttpComponent3Factory extends HttpClientFactory {
 	 * Resolve Parameter
 	 */
 	@Override
-	protected void resolveHttpParams0(HttpParams params) {
+	protected void resolveHttpParams(HttpParams params) {
 		if (params.getProxy() != null) {
 			InetSocketAddress socketAddress = (InetSocketAddress) params
 					.getProxy().address();

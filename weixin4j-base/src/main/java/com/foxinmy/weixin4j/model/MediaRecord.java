@@ -45,7 +45,7 @@ public class MediaRecord implements Serializable {
 	@JSONField(serialize = false, deserialize = false)
 	private Pageable pageable;
 	@JSONField(serialize = false, deserialize = false)
-	private Pagedata<MediaItem> pagedata;
+	private volatile Pagedata<MediaItem> pagedata;
 
 	public int getTotalCount() {
 		return totalCount;

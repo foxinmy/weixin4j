@@ -42,7 +42,7 @@ public class HttpComponent4_2Factory extends HttpClientFactory {
 	}
 
 	@Override
-	public void resolveHttpParams0(HttpParams params) {
+	public void resolveHttpParams(HttpParams params) {
 		clientBuilder.setDefaultRequestConfig(RequestConfig.custom()
 				.setConnectTimeout(params.getConnectTimeout())
 				.setConnectionRequestTimeout(params.getReadTimeout()).build());

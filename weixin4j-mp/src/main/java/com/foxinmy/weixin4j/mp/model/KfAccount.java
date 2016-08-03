@@ -1,9 +1,10 @@
 package com.foxinmy.weixin4j.mp.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.mp.type.KfOnlineStatus;
+import com.foxinmy.weixin4j.mp.type.KfInviteStatus;
 
 /**
  * 多客服账号信息
@@ -17,7 +18,11 @@ import com.foxinmy.weixin4j.mp.type.KfOnlineStatus;
 public class KfAccount implements Serializable {
 
 	private static final long serialVersionUID = -4565570894727129245L;
-
+	/**
+	 * 客服工号
+	 */
+	@JSONField(name = "kf_id")
+	private String id;
 	/**
 	 * 客服账号@微信别名 微信别名如有修改，旧账号返回旧的微信别名，新增的账号返回新的微信别名
 	 */
@@ -29,31 +34,30 @@ public class KfAccount implements Serializable {
 	@JSONField(name = "kf_nick")
 	private String nickName;
 	/**
-	 * 客服工号
-	 */
-	@JSONField(name = "kf_id")
-	private String id;
-	/**
 	 * 客服头像
 	 */
-	@JSONField(name = "kf_headimg")
-	private String headImg;
-
-	// 以下字段是调用在线客服状态返回的字段
+	@JSONField(name = "kf_headimgurl")
+	private String headimgurl;
 	/**
-	 * 客服在线状态 1：pc在线，2：手机在线 若pc和手机同时在线则为 1+2=3
+	 * 客服微信
 	 */
-	private int status;
+	@JSONField(name = "kf_wx")
+	private String wx;
 	/**
-	 * 客服设置的最大自动接入数
+	 * 客服绑定邀请的微信号
 	 */
-	@JSONField(name = "auto_accept")
-	private int autoAccept;
+	@JSONField(name = "invite_wx")
+	private String inviteWx;
 	/**
-	 * 客服当前正在接待的会话数
+	 * 客服邀请的过期时间
 	 */
-	@JSONField(name = "accepted_case")
-	private int acceptedCase;
+	@JSONField(name = "invite_expire_time")
+	private long inviteExpireTime;
+	/**
+	 * 客服邀请的状态
+	 */
+	@JSONField(name = "invite_status")
+	private String inviteStatus;
 
 	public String getAccount() {
 		return account;
@@ -79,53 +83,62 @@ public class KfAccount implements Serializable {
 		this.id = id;
 	}
 
-	public String getHeadImg() {
-		return headImg;
+	public String getHeadimgurl() {
+		return headimgurl;
 	}
 
-	public void setHeadImg(String headImg) {
-		this.headImg = headImg;
+	public void setHeadimgurl(String headimgurl) {
+		this.headimgurl = headimgurl;
 	}
 
-	public int getStatus() {
-		return status;
+	public String getWx() {
+		return wx;
+	}
+
+	public void setWx(String wx) {
+		this.wx = wx;
+	}
+
+	public String getInviteWx() {
+		return inviteWx;
+	}
+
+	public void setInviteWx(String inviteWx) {
+		this.inviteWx = inviteWx;
+	}
+
+	public long getInviteExpireTime() {
+		return inviteExpireTime;
 	}
 
 	@JSONField(serialize = false)
-	public KfOnlineStatus getFormatStatus() {
-		if (status == 1) {
-			return KfOnlineStatus.PC;
-		} else if (status == 2) {
-			return KfOnlineStatus.MOBILE;
-		} else {
-			return KfOnlineStatus.BOTH;
-		}
+	public Date getFormatInviteExpireTime() {
+		return new Date(inviteExpireTime * 1000l);
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setInviteExpireTime(long inviteExpireTime) {
+		this.inviteExpireTime = inviteExpireTime;
 	}
 
-	public int getAutoAccept() {
-		return autoAccept;
+	public String getInviteStatus() {
+		return inviteStatus;
 	}
 
-	public void setAutoAccept(int autoAccept) {
-		this.autoAccept = autoAccept;
+	@JSONField(serialize = false)
+	public KfInviteStatus getFormatInviteStatus() {
+		return inviteStatus != null ? KfInviteStatus.valueOf(inviteStatus
+				.toUpperCase()) : null;
 	}
 
-	public int getAcceptedCase() {
-		return acceptedCase;
-	}
-
-	public void setAcceptedCase(int acceptedCase) {
-		this.acceptedCase = acceptedCase;
+	public void setInviteStatus(String inviteStatus) {
+		this.inviteStatus = inviteStatus;
 	}
 
 	@Override
 	public String toString() {
-		return "KfAccount [account=" + account + ", nickName=" + nickName
-				+ ", id=" + id + ", status=" + status + ", autoAccept="
-				+ autoAccept + ", acceptedCase=" + acceptedCase + "]";
+		return "KfAccount [id=" + id + ", account=" + account + ", nickName="
+				+ nickName + ", headimgurl=" + headimgurl + ", wx=" + wx
+				+ ", inviteWx=" + inviteWx + ", inviteExpireTime="
+				+ inviteExpireTime + ", inviteStatus=" + inviteStatus + "]";
 	}
 }

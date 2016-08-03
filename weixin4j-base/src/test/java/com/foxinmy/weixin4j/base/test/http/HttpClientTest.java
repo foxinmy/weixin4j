@@ -61,7 +61,7 @@ public abstract class HttpClientTest {
 
 	protected HttpClient createHttpClient(HttpParams params) {
 		HttpClientFactory httpClientFactory = createHttpFactory();
-		httpClientFactory.resolveHttpParams(params);
+		httpClientFactory.setDefaultParams(params);
 		return httpClientFactory.newInstance();
 	}
 

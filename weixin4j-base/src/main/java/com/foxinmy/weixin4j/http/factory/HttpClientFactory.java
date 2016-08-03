@@ -102,7 +102,7 @@ public abstract class HttpClientFactory {
 	 */
 	public static HttpClient getInstance(HttpParams params) {
 		HttpClientFactory clientFactory = getDefaultFactory();
-		clientFactory.resolveHttpParams(params);
+		clientFactory.setDefaultParams(params);
 		return clientFactory.newInstance();
 	}
 
@@ -112,11 +112,11 @@ public abstract class HttpClientFactory {
 	 * @param params
 	 *            请求参数
 	 */
-	public void resolveHttpParams(HttpParams params) {
+	public void setDefaultParams(HttpParams params) {
 		if (params == null) {
 			throw new IllegalArgumentException("'params' must not be empty");
 		}
-		resolveHttpParams0(params);
+		resolveHttpParams(params);
 	}
 
 	/**
@@ -125,7 +125,7 @@ public abstract class HttpClientFactory {
 	 * @param params
 	 *            请求参数
 	 */
-	protected abstract void resolveHttpParams0(HttpParams params);
+	protected abstract void resolveHttpParams(HttpParams params);
 
 	/**
 	 * 获取HttpClient实例

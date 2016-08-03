@@ -79,7 +79,7 @@ public class DateUtil {
 	public static String formatFee2Fen(double fee) {
 		BigDecimal _fee = new BigDecimal(Double.toString(fee));
 		fee = _fee.multiply(new BigDecimal("100"))
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				.setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
 		return new DecimalFormat("#").format(fee);
 	}
 

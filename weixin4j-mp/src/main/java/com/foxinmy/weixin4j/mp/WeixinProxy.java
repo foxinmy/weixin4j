@@ -34,6 +34,7 @@ import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfChatRecord;
+import com.foxinmy.weixin4j.mp.model.KfOnlineAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter;
 import com.foxinmy.weixin4j.mp.model.Menu;
@@ -387,8 +388,7 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738731&token=&lang=zh_CN">
 	 *      删除永久媒体素材</a>
 	 */
-	public ApiResult deleteMaterialMedia(String mediaId)
-			throws WeixinException {
+	public ApiResult deleteMaterialMedia(String mediaId) throws WeixinException {
 		return mediaApi.deleteMaterialMedia(mediaId);
 	}
 
@@ -514,8 +514,8 @@ public class WeixinProxy {
 	 *            查询开始时间
 	 * @param endTime
 	 *            查询结束时间 每次查询不能跨日查询
-	 * @param pageable
-	 *            分页数据
+	 * @param number
+	 *            最多10000条
 	 * @see com.foxinmy.weixin4j.mp.model.CustomRecord
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
 	 * @see <a href="http://dkf.qq.com/document-1_1.html">查询客服聊天记录</a>
@@ -525,30 +525,38 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 */
 	public List<KfChatRecord> getKfChatRecord(Date startTime, Date endTime,
-			Pageable pageable) throws WeixinException {
-		return customApi.getKfChatRecord(startTime, endTime, pageable);
+			int number) throws WeixinException {
+		return customApi.getKfChatRecord(startTime, endTime, number);
 	}
 
 	/**
 	 * 获取公众号中所设置的客服基本信息，包括客服工号、客服昵称、客服登录账号
 	 *
-	 * @param isOnline
-	 *            是否在线 为ture时可以可以获取客服在线状态（手机在线、PC客户端在线、手机和PC客户端全都在线）、客服自动接入最大值、
-	 *            客服当前接待客户数
 	 * @return 多客服信息列表
 	 * @see com.foxinmy.weixin4j.mp.model.KfAccount
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
-	 * @see <a href="http://dkf.qq.com/document-3_1.html">获取客服基本信息</a>
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      获取客服基本信息</a>
-	 * @see <a href="http://dkf.qq.com/document-3_2.html">获取在线客服接待信息</a>
-	 *      获取在线客服接待信息</a>
 	 * @throws WeixinException
 	 */
-	public List<KfAccount> listKfAccount(boolean isOnline)
-			throws WeixinException {
-		return customApi.listKfAccount(isOnline);
+	public List<KfAccount> listKfAccount() throws WeixinException {
+		return customApi.listKfAccount();
+	}
+
+	/**
+	 * 获取在线客服在线状态（手机在线、PC客户端在线、手机和PC客户端全都在线）、客服自动接入最大值、 客服当前接待客户数
+	 *
+	 * @return 多客服在线信息列表
+	 * @see com.foxinmy.weixin4j.mp.model.KfOnlineAccount
+	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
+	 *      获取客服在线信息</a>
+	 * @throws WeixinException
+	 */
+	public List<KfOnlineAccount> listOnlineKfAccount() throws WeixinException {
+		return customApi.listOnlineKfAccount();
 	}
 
 	/**

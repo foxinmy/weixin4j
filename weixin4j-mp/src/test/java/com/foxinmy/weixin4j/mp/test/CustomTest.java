@@ -13,10 +13,10 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
-import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfChatRecord;
+import com.foxinmy.weixin4j.mp.model.KfOnlineAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter;
 
@@ -47,19 +47,19 @@ public class CustomTest extends TokenTest {
 		calendar.set(Calendar.HOUR_OF_DAY, 21);
 		Date endtime = calendar.getTime();
 		List<KfChatRecord> recordList = customApi.getKfChatRecord(starttime,
-				endtime, new Pageable(1, 70));
+				endtime, 10);
 		Assert.assertFalse(recordList.isEmpty());
 		System.out.println(recordList);
 	}
 
 	@Test
 	public void kfList() throws WeixinException {
-		List<KfAccount> kfList = customApi.listKfAccount(false);
+		List<KfAccount> kfList = customApi.listKfAccount();
 		Assert.assertFalse(kfList.isEmpty());
 		System.out.println(kfList);
-		kfList = customApi.listKfAccount(true);
-		Assert.assertFalse(kfList.isEmpty());
-		System.out.println(kfList);
+		List<KfOnlineAccount> kfOnlineList = customApi.listOnlineKfAccount();
+		Assert.assertFalse(kfOnlineList.isEmpty());
+		System.out.println(kfOnlineList);
 	}
 
 	@Test

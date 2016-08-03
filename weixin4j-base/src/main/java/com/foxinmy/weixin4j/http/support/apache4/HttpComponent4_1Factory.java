@@ -39,7 +39,7 @@ public class HttpComponent4_1Factory extends HttpClientFactory {
 	}
 
 	@Override
-	protected void resolveHttpParams0(HttpParams params) {
+	protected void resolveHttpParams(HttpParams params) {
 		if (params == null) {
 			throw new IllegalArgumentException("'params' must not be empty");
 		}

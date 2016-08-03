@@ -94,7 +94,7 @@ public class Pageable implements Serializable {
 	}
 
 	public Pageable first() {
-		return new Pageable(0, getPageSize(), getSort());
+		return new Pageable(1, getPageSize(), getSort());
 	}
 
 	@Override
