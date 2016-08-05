@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.payment.coupon.RefundCouponInfo;
-import com.foxinmy.weixin4j.type.CouponType;
-import com.foxinmy.weixin4j.type.RefundChannel;
-import com.foxinmy.weixin4j.type.RefundStatus;
+import com.foxinmy.weixin4j.type.mch.CouponType;
+import com.foxinmy.weixin4j.type.mch.RefundChannel;
+import com.foxinmy.weixin4j.type.mch.RefundStatus;
 import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
 /**
@@ -83,7 +83,7 @@ public class RefundDetail implements Serializable {
 	/**
 	 * 代金券类型
 	 * 
-	 * @see com.foxinmy.weixin4j.type.CouponType
+	 * @see com.foxinmy.weixin4j.type.mch.CouponType
 	 */
 	@XmlElement(name = "coupon_type")
 	@JSONField(name = "coupon_type")

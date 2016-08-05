@@ -156,3 +156,12 @@
   + 重新整理HttpClinet
   
   + 新增OkHttp实现
+  
+  
+* 2016-08-05
+
+  + model包拆分media/paing
+  
+  + type包拆分card/mch
+  
+  + 新增card卡券相关类

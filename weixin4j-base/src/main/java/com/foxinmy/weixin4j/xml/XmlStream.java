@@ -29,7 +29,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
 import com.alibaba.fastjson.JSONObject;
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**

@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.http.HttpClient;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
 import com.foxinmy.weixin4j.http.support.apache4.HttpComponent4.CustomHostnameVerifier;
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 
 /**
  * 使用Apache的HttpClient>=4.3

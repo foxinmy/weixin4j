@@ -35,7 +35,7 @@ import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.apache.MultipartEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**

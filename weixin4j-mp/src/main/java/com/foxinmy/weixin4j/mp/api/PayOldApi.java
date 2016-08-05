@@ -29,7 +29,6 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.oldpayment.OrderV2;
 import com.foxinmy.weixin4j.mp.oldpayment.PayPackageV2;
@@ -43,10 +42,11 @@ import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.token.TokenManager;
-import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.IdQuery;
-import com.foxinmy.weixin4j.type.RefundType;
 import com.foxinmy.weixin4j.type.SignType;
+import com.foxinmy.weixin4j.type.mch.BillType;
+import com.foxinmy.weixin4j.type.mch.RefundType;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
@@ -261,8 +261,10 @@ public class PayOldApi extends MpApi {
 			map.put("service_version", "1.1");
 			map.put("partner", weixinAccount.getPartnerId());
 			map.put("out_refund_no", outRefundNo);
-			map.put("total_fee", DateUtil.formatFee2Fen(totalFee));
-			map.put("refund_fee", DateUtil.formatFee2Fen(refundFee));
+			map.put("total_fee",
+					Integer.toString(DateUtil.formatYuan2Fen(totalFee)));
+			map.put("refund_fee",
+					Integer.toString(DateUtil.formatYuan2Fen(refundFee)));
 			map.put(idQuery.getType().getName(), idQuery.getId());
 			if (StringUtil.isBlank(opUserId)) {
 				opUserId = weixinAccount.getPartnerId();
@@ -465,7 +467,7 @@ public class PayOldApi extends MpApi {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(file), Consts.GBK));
 			reader = new BufferedReader(new InputStreamReader(
-					response.getBody(), com.foxinmy.weixin4j.model.Consts.GBK));
+					response.getBody(), com.foxinmy.weixin4j.util.Consts.GBK));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				writer.write(line);

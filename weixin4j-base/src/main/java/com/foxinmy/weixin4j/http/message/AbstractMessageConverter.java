@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.MimeType;
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 
 public abstract class AbstractMessageConverter implements MessageConverter {
 

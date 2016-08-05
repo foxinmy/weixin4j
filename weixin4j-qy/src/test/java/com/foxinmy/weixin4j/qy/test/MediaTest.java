@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.model.MediaDownloadResult;
-import com.foxinmy.weixin4j.model.MediaUploadResult;
+import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
+import com.foxinmy.weixin4j.model.media.MediaUploadResult;
 import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.type.MediaType;
 

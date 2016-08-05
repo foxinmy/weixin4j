@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.api.ComponentApi;
@@ -16,6 +15,7 @@ import com.foxinmy.weixin4j.mp.model.WeixinMpAccount;
 import com.foxinmy.weixin4j.mp.type.URLConsts;
 import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.TicketManager;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 

@@ -35,7 +35,7 @@ public class MpArticle implements Serializable {
 	 */
 	private String title;
 	/**
-	 * 图文页的URL 获取图文消息时
+	 * 图文页的URL 获取图文消息时，群发消息时填写无效。
 	 */
 	private String url;
 	/**

@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.alibaba.fastjson.JSONObject;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.xml.ListsuffixResultSerializer;
 
 /**

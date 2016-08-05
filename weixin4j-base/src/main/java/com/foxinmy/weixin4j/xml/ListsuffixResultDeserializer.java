@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.stream.StreamSource;
 
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.ReflectionUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 

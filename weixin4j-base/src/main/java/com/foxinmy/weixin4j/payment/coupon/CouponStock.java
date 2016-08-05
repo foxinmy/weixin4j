@@ -9,8 +9,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.payment.mch.MerchantResult;
-import com.foxinmy.weixin4j.type.CouponStockStatus;
-import com.foxinmy.weixin4j.type.CouponType;
+import com.foxinmy.weixin4j.type.mch.CouponStockStatus;
+import com.foxinmy.weixin4j.type.mch.CouponType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**

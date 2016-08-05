@@ -7,11 +7,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.User;
 import com.foxinmy.weixin4j.mp.type.Lang;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**

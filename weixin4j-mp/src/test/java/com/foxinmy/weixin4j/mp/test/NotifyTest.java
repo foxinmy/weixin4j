@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
-import com.foxinmy.weixin4j.model.MediaUploadResult;
+import com.foxinmy.weixin4j.model.media.MediaUploadResult;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;

@@ -1,6 +1,6 @@
 package com.foxinmy.weixin4j.http;
 
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.NameValue;
 import com.foxinmy.weixin4j.util.URLEncodingUtil;
 

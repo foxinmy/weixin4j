@@ -4,16 +4,19 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import com.foxinmy.weixin4j.card.CardCoupon;
+import com.foxinmy.weixin4j.card.CardCoupons;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
-import com.foxinmy.weixin4j.model.MediaCounter;
-import com.foxinmy.weixin4j.model.MediaDownloadResult;
-import com.foxinmy.weixin4j.model.MediaItem;
-import com.foxinmy.weixin4j.model.MediaRecord;
-import com.foxinmy.weixin4j.model.MediaUploadResult;
-import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.media.MediaCounter;
+import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
+import com.foxinmy.weixin4j.model.media.MediaItem;
+import com.foxinmy.weixin4j.model.media.MediaRecord;
+import com.foxinmy.weixin4j.model.media.MediaUploadResult;
+import com.foxinmy.weixin4j.model.paging.Pageable;
+import com.foxinmy.weixin4j.mp.api.CardApi;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.api.DataApi;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
@@ -123,6 +126,10 @@ public class WeixinProxy {
 	 */
 	private final TagApi tagApi;
 	/**
+	 * 卡券API
+	 */
+	private final CardApi cardApi;
+	/**
 	 * token实现
 	 */
 	private final TokenManager tokenManager;
@@ -192,6 +199,7 @@ public class WeixinProxy {
 		this.helperApi = new HelperApi(tokenManager);
 		this.dataApi = new DataApi(tokenManager);
 		this.tagApi = new TagApi(tokenManager);
+		this.cardApi = new CardApi(tokenManager);
 	}
 
 	/**
@@ -283,7 +291,7 @@ public class WeixinProxy {
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729&token=&lang=zh_CN">
 	 *      上传永久素材</a>
-	 * @see com.foxinmy.weixin4j.model.MediaUploadResult
+	 * @see com.foxinmy.weixin4j.model.media.MediaUploadResult
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
 	 * @throws WeixinException
@@ -303,7 +311,7 @@ public class WeixinProxy {
 	 * @return 媒体文件下载结果
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
-	 * @see com.foxinmy.weixin4j.model.MediaDownloadResult
+	 * @see com.foxinmy.weixin4j.model.media.MediaDownloadResult
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738727&token=&lang=zh_CN">
 	 *      下载临时媒体素材</a>
@@ -420,7 +428,7 @@ public class WeixinProxy {
 	 *
 	 * @return 总数对象
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.MediaCounter
+	 * @see com.com.foxinmy.weixin4j.model.media.MediaCounter
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738733&token=&lang=zh_CN">
 	 *      获取素材总数</a>
@@ -440,11 +448,11 @@ public class WeixinProxy {
 	 * @return 媒体素材的记录对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.MediaApi
-	 * @see com.foxinmy.weixin4j.mp.model.MediaRecord
+	 * @see com.com.foxinmy.weixin4j.model.media.MediaRecord
 	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see com.foxinmy.weixin4j.model.MediaItem
-	 * @see com.foxinmy.weixin4j.model.Pageable
-	 * @see com.foxinmy.weixin4j.model.Pagedata
+	 * @see com.foxinmy.weixin4j.model.media.MediaItem
+	 * @see com.foxinmy.weixin4j.model.paging.Pageable
+	 * @see com.foxinmy.weixin4j.model.paging.Pagedata
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738734&token=&lang=zh_CN">
 	 *      获取素材列表</a>
@@ -1833,6 +1841,67 @@ public class WeixinProxy {
 	 */
 	public Integer[] getUserTags(String openId) throws WeixinException {
 		return tagApi.getUserTags(openId);
+	}
+
+	/**
+	 * 创建卡券:创建卡券接口是微信卡券的基础接口，用于创建一类新的卡券，获取card_id，创建成功并通过审核后，
+	 * 商家可以通过文档提供的其他接口将卡券下发给用户，每次成功领取，库存数量相应扣除。
+	 * 
+	 * <li>1.需自定义Code码的商家必须在创建卡券时候，设定use_custom_code为true，且在调用投放卡券接口时填入指定的Code码。
+	 * 指定OpenID同理。特别注意：在公众平台创建的卡券均为非自定义Code类型。 <li>
+	 * 2.can_share字段指领取卡券原生页面是否可分享，建议指定Code码、指定OpenID等强限制条件的卡券填写false。 <li>
+	 * 3.创建成功后该卡券会自动提交审核
+	 * ，审核结果将通过事件通知商户。开发者可调用设置白名单接口设置用户白名单，领取未通过审核的卡券，测试整个卡券的使用流程。
+	 * 
+	 * @param cardCoupon
+	 *            卡券对象
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025056&token=&lang=zh_CN">创建卡券</a>
+	 * @see CardCoupons
+	 * @see MediaApi#uploadImage(java.io.InputStream, String)
+	 * @see com.foxinmy.weixin4j.mp.api.CardApi
+	 * @return 卡券ID
+	 * @throws WeixinException
+	 */
+	public String createCardCoupon(CardCoupon cardCoupon)
+			throws WeixinException {
+		return cardApi.createCardCoupon(cardCoupon);
+	}
+
+	/**
+	 * 设置卡券买单：创建卡券之后，开发者可以通过设置微信买单接口设置该card_id支持微信买单功能。值得开发者注意的是，
+	 * 设置买单的card_id必须已经配置了门店，否则会报错。
+	 * 
+	 * @param cardId
+	 *            卡券ID
+	 * @param isOpen
+	 *            是否开启买单功能，填true/false
+	 * @see #createCardCoupon(CardCoupon)
+	 * @see com.foxinmy.weixin4j.mp.api.CardApi
+	 * @return 操作结果
+	 * @throws WeixinException
+	 */
+	public ApiResult setCardPayCell(String cardId, boolean isOpen)
+			throws WeixinException {
+		return cardApi.setCardPayCell(cardId, isOpen);
+	}
+
+	/**
+	 * 设置自助核销:创建卡券之后，开发者可以通过设置微信买单接口设置该card_id支持自助核销功能。值得开发者注意的是，
+	 * 设置自助核销的card_id必须已经配置了门店，否则会报错。
+	 * 
+	 * @param cardId
+	 *            卡券ID
+	 * @param isOpen
+	 *            是否开启买单功能，填true/false
+	 * @see #createCardCoupon(CardCoupon)
+	 * @see com.foxinmy.weixin4j.mp.api.CardApi
+	 * @return 操作结果
+	 * @throws WeixinException
+	 */
+	public ApiResult setCardSelfConsumeCell(String cardId, boolean isOpen)
+			throws WeixinException {
+		return cardApi.setCardSelfConsumeCell(cardId, isOpen);
 	}
 
 	public final static String VERSION = "1.7.0";

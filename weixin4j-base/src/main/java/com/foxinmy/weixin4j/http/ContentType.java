@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Locale;
 
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 
 /**
  * reference of apache pivot

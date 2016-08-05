@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.CorpPaymentCheckNameType;
+import com.foxinmy.weixin4j.type.mch.CorpPaymentCheckNameType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -38,7 +38,7 @@ public class CorpPayment extends MerchantResult {
 	/**
 	 * 校验用户姓名选项
 	 * 
-	 * @see com.foxinmy.weixin4j.CorpPaymentCheckNameType.type.MPPaymentCheckNameType
+	 * @see com.foxinmy.weixin4j.type.mch.CorpPaymentCheckNameType.type.MPPaymentCheckNameType
 	 */
 	@XmlElement(name = "check_name")
 	@JSONField(name = "check_name")
@@ -54,9 +54,9 @@ public class CorpPayment extends MerchantResult {
 	 */
 	private String desc;
 	/**
-	 * 付款金额
+	 * 付款金额 单位分
 	 */
-	private String amount;
+	private int amount;
 	/**
 	 * 调用接口的机器Ip地址
 	 */
@@ -80,7 +80,7 @@ public class CorpPayment extends MerchantResult {
 	 * @param desc
 	 *            描述
 	 * @param amount
-	 *            金额
+	 *            金额 单位元
 	 * @param clientIp
 	 *            调用接口IP
 	 */
@@ -91,7 +91,7 @@ public class CorpPayment extends MerchantResult {
 		this.openId = openId;
 		this.checkNameType = checkNameType;
 		this.desc = desc;
-		this.amount = DateUtil.formatFee2Fen(amount);
+		this.amount = DateUtil.formatYuan2Fen(amount);
 		this.clientIp = clientIp;
 	}
 
@@ -115,8 +115,18 @@ public class CorpPayment extends MerchantResult {
 		return desc;
 	}
 
-	public String getAmount() {
+	public int getAmount() {
 		return amount;
+	}
+	
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	@JSONField(serialize = false)
+	public double getFormatAmount() {
+		return amount / 100d;
 	}
 
 	public String getClientIp() {

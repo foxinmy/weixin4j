@@ -36,6 +36,8 @@ weixin4j-mp
   * TagApi `用户标签管理API`
   
   * ComponentApi `第三方组件API`
+  
+  * CardApi `卡券API`
 
 [如何使用](https://github.com/foxinmy/weixin4j/wiki)
 ---------

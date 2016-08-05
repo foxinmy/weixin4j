@@ -13,12 +13,12 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
-import com.foxinmy.weixin4j.model.MediaCounter;
-import com.foxinmy.weixin4j.model.MediaDownloadResult;
-import com.foxinmy.weixin4j.model.MediaItem;
-import com.foxinmy.weixin4j.model.MediaRecord;
-import com.foxinmy.weixin4j.model.MediaUploadResult;
-import com.foxinmy.weixin4j.model.Pageable;
+import com.foxinmy.weixin4j.model.media.MediaCounter;
+import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
+import com.foxinmy.weixin4j.model.media.MediaItem;
+import com.foxinmy.weixin4j.model.media.MediaRecord;
+import com.foxinmy.weixin4j.model.media.MediaUploadResult;
+import com.foxinmy.weixin4j.model.paging.Pageable;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;

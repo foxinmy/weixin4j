@@ -1,9 +1,9 @@
 package com.foxinmy.weixin4j.payment.mch;
 
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.type.TradeType;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.URLEncodingUtil;

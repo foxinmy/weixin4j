@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.foxinmy.weixin4j.type.RedpacketSendType;
-import com.foxinmy.weixin4j.type.RedpacketStatus;
-import com.foxinmy.weixin4j.type.RedpacketType;
+import com.foxinmy.weixin4j.type.mch.RedpacketSendType;
+import com.foxinmy.weixin4j.type.mch.RedpacketStatus;
+import com.foxinmy.weixin4j.type.mch.RedpacketType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**

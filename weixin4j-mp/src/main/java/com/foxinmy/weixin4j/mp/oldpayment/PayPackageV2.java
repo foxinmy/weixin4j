@@ -47,13 +47,13 @@ public class PayPackageV2 extends PayPackage {
 	 */
 	@XmlElement(name = "transport_fee")
 	@JSONField(name = "transport_fee")
-	private String transportFee;
+	private Integer transportFee;
 	/**
 	 * 商品费用 可为空 商品费用,单位为分。如果有值,必须保 证 transport_fee +product_fee=total_fee;
 	 */
 	@XmlElement(name = "product_fee")
 	@JSONField(name = "product_fee")
-	private String productFee;
+	private Integer productFee;
 	/**
 	 * 传入参数字符编码 取值范围:"GBK"、"UTF-8",默认:"GBK" 可为空
 	 */
@@ -133,8 +133,8 @@ public class PayPackageV2 extends PayPackage {
 		this.inputCharset = "UTF-8";
 		this.partner = partner;
 		this.transportFee = transportFee > 0d ? DateUtil
-				.formatFee2Fen(transportFee) : null;
-		this.productFee = productFee > 0 ? DateUtil.formatFee2Fen(productFee)
+				.formatYuan2Fen(transportFee) : null;
+		this.productFee = productFee > 0 ? DateUtil.formatYuan2Fen(productFee)
 				: null;
 	}
 
@@ -154,8 +154,18 @@ public class PayPackageV2 extends PayPackage {
 		return feeType;
 	}
 
-	public String getTransportFee() {
+	public Integer getTransportFee() {
 		return transportFee;
+	}
+	
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	@JSONField(serialize = false)
+	public double getFormatTransportFee() {
+		return transportFee != null ? transportFee / 100d : 0d;
 	}
 
 	/**
@@ -165,11 +175,21 @@ public class PayPackageV2 extends PayPackage {
 	 *            物流费用 单位为元
 	 */
 	public void setTransportFee(double transportFee) {
-		this.transportFee = DateUtil.formatFee2Fen(transportFee);
+		this.transportFee = DateUtil.formatYuan2Fen(transportFee);
 	}
 
-	public String getProductFee() {
+	public Integer getProductFee() {
 		return productFee;
+	}
+	
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	@JSONField(serialize = false)
+	public double getFormatProductFee() {
+		return productFee != null ? productFee / 100d : 0d;
 	}
 
 	/**
@@ -179,7 +199,7 @@ public class PayPackageV2 extends PayPackage {
 	 *            商品 单位为元
 	 */
 	public void setProductFee(double productFee) {
-		this.productFee = DateUtil.formatFee2Fen(productFee);
+		this.productFee = DateUtil.formatYuan2Fen(productFee);
 	}
 
 	public String getInputCharset() {

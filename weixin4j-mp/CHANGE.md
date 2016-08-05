@@ -239,3 +239,7 @@
 * 2016-07-06
 
   + 新增第三方组件WeixinComponentProxy
+  
+* 2016-08-05
+
+  + 新增CardApi:创建卡券接口

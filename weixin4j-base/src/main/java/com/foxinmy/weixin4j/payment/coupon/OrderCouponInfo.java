@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.CouponType;
+import com.foxinmy.weixin4j.type.mch.CouponType;
 
 /**
  * 订单代金券信息
@@ -34,7 +34,7 @@ public class OrderCouponInfo implements Serializable {
 	/**
 	 * 代金券类型
 	 * 
-	 * @see com.foxinmy.weixin4j.type.CouponType
+	 * @see com.foxinmy.weixin4j.type.mch.CouponType
 	 */
 	@XmlElement(name = "coupon_type")
 	@JSONField(name = "coupon_type")

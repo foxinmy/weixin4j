@@ -3,8 +3,8 @@ package com.foxinmy.weixin4j.qy.api;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**

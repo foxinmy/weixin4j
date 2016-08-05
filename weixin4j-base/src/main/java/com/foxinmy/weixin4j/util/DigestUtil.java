@@ -3,8 +3,6 @@ package com.foxinmy.weixin4j.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.foxinmy.weixin4j.model.Consts;
-
 /**
  * 签名工具类
  * 

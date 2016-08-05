@@ -696,6 +696,10 @@
 		<text>用户领取次数超过限制get_limit</text>
 	</error>
 	<error>
+		<code>45046</code>
+		<text>该card_id已经设置了买单功能，不可变更为自助核销功能，设置冲突</text>
+	</error>
+	<error>
 		<code>45047</code>
 		<text>客服接口下行条数超过上限</text>
 	</error>

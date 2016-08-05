@@ -4,7 +4,6 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import com.alibaba.fastjson.JSON;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 
 /**

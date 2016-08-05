@@ -49,7 +49,7 @@ public class Redpacket extends MerchantResult {
 	 */
 	@XmlElement(name = "total_amount")
 	@JSONField(name = "total_amount")
-	private String totalAmount;
+	private int totalAmount;
 	/**
 	 * 红包发放总人数
 	 */
@@ -134,7 +134,7 @@ public class Redpacket extends MerchantResult {
 		this.clientIp = clientIp;
 		this.actName = actName;
 		this.remark = remark;
-		this.totalAmount = DateUtil.formatFee2Fen(totalAmount);
+		this.totalAmount = DateUtil.formatYuan2Fen(totalAmount);
 		this.amtType = totalNum > 1 ? "ALL_RAND" : null;
 	}
 
@@ -150,8 +150,18 @@ public class Redpacket extends MerchantResult {
 		return openId;
 	}
 
-	public String getTotalAmount() {
+	public int getTotalAmount() {
 		return totalAmount;
+	}
+	
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	@JSONField(serialize = false)
+	public double getFormatTotalAmount() {
+		return totalAmount / 100d;
 	}
 
 	public int getTotalNum() {

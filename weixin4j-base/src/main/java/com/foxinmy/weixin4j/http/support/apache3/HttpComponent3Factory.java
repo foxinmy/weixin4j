@@ -10,7 +10,7 @@ import org.apache.commons.httpclient.protocol.Protocol;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
 import com.foxinmy.weixin4j.http.support.apache3.HttpComponent3.SSLProtocolSocketFactory;
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 
 /**
  * 使用commons-httpclient3.x

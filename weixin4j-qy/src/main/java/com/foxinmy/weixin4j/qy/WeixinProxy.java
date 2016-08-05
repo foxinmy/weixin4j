@@ -6,13 +6,13 @@ import java.util.List;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
-import com.foxinmy.weixin4j.model.MediaCounter;
-import com.foxinmy.weixin4j.model.MediaDownloadResult;
-import com.foxinmy.weixin4j.model.MediaItem;
-import com.foxinmy.weixin4j.model.MediaRecord;
-import com.foxinmy.weixin4j.model.MediaUploadResult;
-import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.media.MediaCounter;
+import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
+import com.foxinmy.weixin4j.model.media.MediaItem;
+import com.foxinmy.weixin4j.model.media.MediaRecord;
+import com.foxinmy.weixin4j.model.media.MediaUploadResult;
+import com.foxinmy.weixin4j.model.paging.Pageable;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.api.BatchApi;
 import com.foxinmy.weixin4j.qy.api.ChatApi;
@@ -369,7 +369,7 @@ public class WeixinProxy {
 	 *            文件名
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see com.foxinmy.weixin4j.model.MediaUploadResult
+	 * @see com.foxinmy.weixin4j.model.media.MediaUploadResult
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%B4%E6%97%B6%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">
 	 *      上传临时素材文件说明</a>
@@ -391,7 +391,7 @@ public class WeixinProxy {
 	 * @param mediaId
 	 *            媒体ID
 	 * @return 媒体下载结果
-	 * @see com.foxinmy.weixin4j.model.MediaDownloadResult
+	 * @see com.foxinmy.weixin4j.model.media.MediaDownloadResult
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E4%B8%B4%E6%97%B6%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">
@@ -497,7 +497,7 @@ public class WeixinProxy {
 	 * @return 总数对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see com.foxinmy.weixin4j.model.MediaCounter
+	 * @see com.foxinmy.weixin4j.model.media.MediaCounter
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%B4%A0%E6%9D%90%E6%80%BB%E6%95%B0">
 	 *      获取素材总数</a>
@@ -518,11 +518,11 @@ public class WeixinProxy {
 	 * @return 媒体素材的记录对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.qy.api.MediaApi
-	 * @see com.foxinmy.weixin4j.model.MediaRecord
+	 * @see com.foxinmy.weixin4j.model.media.MediaRecord
 	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see com.foxinmy.weixin4j.model.MediaItem
-	 * @see com.foxinmy.weixin4j.model.Pageable
-	 * @see com.foxinmy.weixin4j.model.Pagedata
+	 * @see com.foxinmy.weixin4j.model.media.MediaItem
+	 * @see com.foxinmy.weixin4j.model.paging.Pageable
+	 * @see com.foxinmy.weixin4j.model.paging.Pagedata
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E7%B4%A0%E6%9D%90%E5%88%97%E8%A1%A8">
 	 *      获取素材列表</a>

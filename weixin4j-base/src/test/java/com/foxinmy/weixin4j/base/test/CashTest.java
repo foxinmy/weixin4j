@@ -7,14 +7,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.payment.mch.CorpPayment;
 import com.foxinmy.weixin4j.payment.mch.CorpPaymentRecord;
 import com.foxinmy.weixin4j.payment.mch.CorpPaymentResult;
 import com.foxinmy.weixin4j.payment.mch.Redpacket;
 import com.foxinmy.weixin4j.payment.mch.RedpacketRecord;
 import com.foxinmy.weixin4j.payment.mch.RedpacketSendResult;
-import com.foxinmy.weixin4j.type.CorpPaymentCheckNameType;
+import com.foxinmy.weixin4j.type.mch.CorpPaymentCheckNameType;
+import com.foxinmy.weixin4j.util.Consts;
 
 /**
  * 现金发放测试

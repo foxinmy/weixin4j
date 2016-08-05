@@ -30,7 +30,7 @@ public class MpNews implements MassTuple, NotifyTuple {
 	/**
 	 * 允许最多的图文列表数
 	 */
-	private static final int MAX_ARTICLE_COUNT = 10;
+	private static final int MAX_ARTICLE_COUNT = 8;
 
 	@Override
 	public String getMessageType() {

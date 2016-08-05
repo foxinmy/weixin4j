@@ -5,9 +5,9 @@ import java.util.Date;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.Gender;
 import com.foxinmy.weixin4j.mp.type.FaceSize;
 import com.foxinmy.weixin4j.mp.type.Lang;
+import com.foxinmy.weixin4j.type.Gender;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**

@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.Gender;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
+import com.foxinmy.weixin4j.type.Gender;
 import com.foxinmy.weixin4j.util.NameValue;
 
 /**

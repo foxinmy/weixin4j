@@ -20,7 +20,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.mch.APPPayRequest;
 import com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest;
@@ -36,12 +35,13 @@ import com.foxinmy.weixin4j.payment.mch.PrePay;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
 import com.foxinmy.weixin4j.payment.mch.RefundResult;
 import com.foxinmy.weixin4j.payment.mch.WAPPayRequest;
-import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.SignType;
 import com.foxinmy.weixin4j.type.TradeType;
+import com.foxinmy.weixin4j.type.mch.BillType;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
@@ -465,8 +465,8 @@ public class PayApi extends MchApi {
 		try {
 			Map<String, String> map = createBaseRequestMap(idQuery);
 			map.put("out_refund_no", outRefundNo);
-			map.put("total_fee", DateUtil.formatFee2Fen(totalFee));
-			map.put("refund_fee", DateUtil.formatFee2Fen(refundFee));
+			map.put("total_fee", Integer.toString(DateUtil.formatYuan2Fen(totalFee)));
+			map.put("refund_fee", Integer.toString(DateUtil.formatYuan2Fen(refundFee)));
 			if (StringUtil.isBlank(opUserId)) {
 				opUserId = weixinAccount.getMchId();
 			}

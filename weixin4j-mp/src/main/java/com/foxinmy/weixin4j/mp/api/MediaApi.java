@@ -28,18 +28,18 @@ import com.foxinmy.weixin4j.http.entity.StringEntity;
 import com.foxinmy.weixin4j.http.message.JsonMessageConverter;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
-import com.foxinmy.weixin4j.model.Consts;
-import com.foxinmy.weixin4j.model.MediaCounter;
-import com.foxinmy.weixin4j.model.MediaDownloadResult;
-import com.foxinmy.weixin4j.model.MediaItem;
-import com.foxinmy.weixin4j.model.MediaRecord;
-import com.foxinmy.weixin4j.model.MediaUploadResult;
-import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.model.media.MediaCounter;
+import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
+import com.foxinmy.weixin4j.model.media.MediaItem;
+import com.foxinmy.weixin4j.model.media.MediaRecord;
+import com.foxinmy.weixin4j.model.media.MediaUploadResult;
+import com.foxinmy.weixin4j.model.paging.Pageable;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.type.MediaType;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
@@ -140,7 +140,7 @@ public class MediaApi extends MpApi {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738726&token=&lang=zh_CN">上传临时素材</a>
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729&token=&lang=zh_CN">上传永久素材</a>
-	 * @see com.foxinmy.weixin4j.model.MediaUploadResult
+	 * @see com.foxinmy.weixin4j.model.media.MediaUploadResult
 	 * @see com.foxinmy.weixin4j.type.MediaType
 	 * @throws WeixinException
 	 */
@@ -214,7 +214,7 @@ public class MediaApi extends MpApi {
 	 * @return 媒体下载结果
 	 *
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.model.MediaDownloadResult
+	 * @see com.foxinmy.weixin4j.model.media.MediaDownloadResult
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738727&token=&lang=zh_CN">下载临时媒体素材</a>
 	 * @see <a href=
@@ -407,7 +407,7 @@ public class MediaApi extends MpApi {
 	 *
 	 * @return 总数对象
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.model.MediaCounter
+	 * @see com.foxinmy.weixin4j.model.media.MediaCounter
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738733&token=&lang=zh_CN">获取素材总数</a>
 	 */
@@ -429,11 +429,11 @@ public class MediaApi extends MpApi {
 	 *            分页数据
 	 * @return 媒体素材的记录对象
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.model.MediaRecord
+	 * @see com.foxinmy.weixin4j.model.media.MediaRecord
 	 * @see com.foxinmy.weixin4j.type.MediaType
-	 * @see com.foxinmy.weixin4j.model.MediaItem
-	 * @see com.foxinmy.weixin4j.model.Pageable
-	 * @see com.foxinmy.weixin4j.model.Pagedata
+	 * @see com.foxinmy.weixin4j.model.media.MediaItem
+	 * @see com.foxinmy.weixin4j.model.paging.Pageable
+	 * @see com.foxinmy.weixin4j.model.paging.Pagedata
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738734&token=&lang=zh_CN">获取素材列表</a>
 	 */

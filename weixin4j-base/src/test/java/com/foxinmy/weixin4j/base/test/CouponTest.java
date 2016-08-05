@@ -8,10 +8,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.payment.coupon.CouponStock;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**

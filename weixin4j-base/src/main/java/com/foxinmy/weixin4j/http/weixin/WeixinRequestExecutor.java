@@ -26,7 +26,7 @@ import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
 import com.foxinmy.weixin4j.http.message.XmlMessageConverter;
 import com.foxinmy.weixin4j.logging.InternalLogger;
 import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 
 /**
  * 负责微信请求的执行

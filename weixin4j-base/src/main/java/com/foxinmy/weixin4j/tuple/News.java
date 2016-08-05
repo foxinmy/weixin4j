@@ -32,7 +32,7 @@ public class News implements NotifyTuple {
 	/**
 	 * 允许最多的图文列表数
 	 */
-	private static final int MAX_ARTICLE_COUNT = 10;
+	private static final int MAX_ARTICLE_COUNT = 8;
 
 	/**
 	 * 图文列表

@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.WeixinPayProxy;
 import com.foxinmy.weixin4j.payment.mch.MchPayPackage;
@@ -27,6 +26,7 @@ import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.TradeType;
+import com.foxinmy.weixin4j.util.Consts;
 
 /**
  * 支付测试（商户平台）

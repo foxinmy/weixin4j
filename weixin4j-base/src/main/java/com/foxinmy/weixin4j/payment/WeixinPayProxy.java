@@ -13,8 +13,8 @@ import com.foxinmy.weixin4j.api.CustomsApi;
 import com.foxinmy.weixin4j.api.PayApi;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.foxinmy.weixin4j.model.Pageable;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.model.paging.Pageable;
 import com.foxinmy.weixin4j.payment.coupon.CouponDetail;
 import com.foxinmy.weixin4j.payment.coupon.CouponResult;
 import com.foxinmy.weixin4j.payment.coupon.CouponStock;
@@ -39,10 +39,10 @@ import com.foxinmy.weixin4j.payment.mch.RefundResult;
 import com.foxinmy.weixin4j.payment.mch.SettlementRecord;
 import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
-import com.foxinmy.weixin4j.type.BillType;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.CustomsCity;
 import com.foxinmy.weixin4j.type.IdQuery;
+import com.foxinmy.weixin4j.type.mch.BillType;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
