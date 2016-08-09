@@ -10,7 +10,9 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.card.CardCoupon;
 import com.foxinmy.weixin4j.model.card.CardCoupons;
+import com.foxinmy.weixin4j.model.card.CardQR;
 import com.foxinmy.weixin4j.model.card.CouponBaseInfo;
+import com.foxinmy.weixin4j.model.qr.QRResult;
 import com.foxinmy.weixin4j.mp.api.CardApi;
 import com.foxinmy.weixin4j.type.card.CardCodeType;
 import com.foxinmy.weixin4j.type.card.CardColor;
@@ -67,7 +69,7 @@ public class CardTest extends TokenTest {
 		String cardId = "pwGBft8tDsk_gj2rfVeAfreCxQS8";
 		cardApi.setCardPayCell(cardId, true);
 	}
-	
+
 	/**
 	 * 设置自助核销
 	 * 
@@ -77,5 +79,18 @@ public class CardTest extends TokenTest {
 	public void setCardSelfConsumeCell() throws WeixinException {
 		String cardId = "pwGBft8tDsk_gj2rfVeAfreCxQS8";
 		cardApi.setCardSelfConsumeCell(cardId, true);
+	}
+
+	/**
+	 * 创建卡券二维码
+	 * 
+	 * @throws WeixinException
+	 */
+	@Test
+	public void createCardQR() throws WeixinException {
+		CardQR.Builder builder = new CardQR.Builder("cardId");
+		builder.sceneValuer("sceneValue");
+		QRResult qrResult = cardApi.createCardQR(null, builder.build());
+		System.err.println(qrResult);
 	}
 }
