@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.card.CardQR;
 import com.foxinmy.weixin4j.type.QRType;
+import com.foxinmy.weixin4j.util.Consts;
 
 /**
  * 二维码参数对象
@@ -22,7 +23,7 @@ import com.foxinmy.weixin4j.type.QRType;
 public class QRParameter implements Serializable {
 
 	private static final long serialVersionUID = 6611187606558274253L;
-	
+
 	/**
 	 * 二维码的类型
 	 * 
@@ -36,15 +37,21 @@ public class QRParameter implements Serializable {
 	@JSONField(name = "expire_seconds")
 	private Integer expireSeconds;
 	/**
+	 * 二维码的场景值
+	 */
+	@JSONField(serialize = false)
+	private String sceneValue;
+	/**
 	 * 二维码的内容
 	 */
 	@JSONField(name = "action_info")
 	private JSONObject sceneContent;
 
 	private QRParameter(QRType qrType, Integer expireSeconds,
-			JSONObject sceneContent) {
+			String sceneValue, JSONObject sceneContent) {
 		this.qrType = qrType;
 		this.expireSeconds = expireSeconds;
+		this.sceneValue = sceneValue;
 		this.sceneContent = sceneContent;
 	}
 
@@ -54,6 +61,10 @@ public class QRParameter implements Serializable {
 
 	public QRType getQrType() {
 		return qrType;
+	}
+
+	public String getSceneValue() {
+		return sceneValue;
 	}
 
 	public JSONObject getSceneContent() {
@@ -75,7 +86,8 @@ public class QRParameter implements Serializable {
 		JSONObject scene = new JSONObject();
 		scene.put("scene_id", sceneValue);
 		sceneContent.put("scene", scene);
-		return new QRParameter(QRType.QR_SCENE, expireSeconds, sceneContent);
+		return new QRParameter(QRType.QR_SCENE, expireSeconds,
+				Long.toString(sceneValue), sceneContent);
 	}
 
 	/**
@@ -89,7 +101,8 @@ public class QRParameter implements Serializable {
 		JSONObject scene = new JSONObject();
 		scene.put("scene_id", sceneValue);
 		sceneContent.put("scene", scene);
-		return new QRParameter(QRType.QR_LIMIT_SCENE, null, sceneContent);
+		return new QRParameter(QRType.QR_LIMIT_SCENE, null,
+				Integer.toString(sceneValue), sceneContent);
 	}
 
 	/**
@@ -103,7 +116,8 @@ public class QRParameter implements Serializable {
 		JSONObject scene = new JSONObject();
 		scene.put("scene_str", sceneValue);
 		sceneContent.put("scene", scene);
-		return new QRParameter(QRType.QR_LIMIT_STR_SCENE, null, sceneContent);
+		return new QRParameter(QRType.QR_LIMIT_STR_SCENE, null, sceneValue,
+				sceneContent);
 	}
 
 	/**
@@ -118,15 +132,22 @@ public class QRParameter implements Serializable {
 			CardQR... cardQRs) {
 		QRType qrType = QRType.QR_CARD;
 		JSONObject sceneContent = new JSONObject();
+		StringBuilder sceneValue = new StringBuilder();
+		sceneValue.append(cardQRs[0].getSceneValue());
 		if (cardQRs.length > 1) {
 			qrType = QRType.QR_MULTIPLE_CARD;
 			JSONObject multipleCard = new JSONObject();
 			multipleCard.put("card_list", cardQRs);
 			sceneContent.put("multiple_card", multipleCard);
+			for (int i = 1; i < cardQRs.length; i++) {
+				sceneValue.append(Consts.SEPARATOR).append(
+						cardQRs[i].getSceneValue());
+			}
 		} else {
 			sceneContent.put("card", cardQRs[0]);
 		}
-		return new QRParameter(qrType, expireSeconds, sceneContent);
+		return new QRParameter(qrType, expireSeconds, sceneValue.toString(),
+				sceneContent);
 	}
 
 	@Override

@@ -28,4 +28,5 @@ public final class Consts {
 	public static final String SHA1 = "SHA-1";
 	public static final String PROTOCOL_FILE = "file";
 	public static final String PROTOCOL_JAR = "jar";
+	public static final String SEPARATOR = ",";
 }

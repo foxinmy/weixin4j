@@ -1353,5 +1353,5 @@ public class WeixinProxy {
 		return chatApi.sendChatMessage(message);
 	}
 
-	public final static String VERSION = "1.7.0";
+	public final static String VERSION = "1.7.1";
 }

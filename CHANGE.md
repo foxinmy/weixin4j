@@ -754,3 +754,5 @@
   + weixin4j-base:修复媒体消息转换错误bug
   
   + weixin4j-mp:新增创建卡券二维码接口
+  
+  + version upgrade to 1.7.1
