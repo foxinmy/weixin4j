@@ -5,8 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
-import com.foxinmy.weixin4j.logging.InternalLogger;
-import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 
 /**
  * API基础
@@ -19,9 +17,6 @@ import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">微信企业号API文档</a>
  */
 public abstract class BaseApi {
-
-	protected final InternalLogger logger = InternalLoggerFactory
-			.getInstance(getClass());
 
 	protected final WeixinRequestExecutor weixinExecutor;
 

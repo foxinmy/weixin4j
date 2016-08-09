@@ -14,7 +14,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.ContentType;
-import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.HttpRequest;
@@ -25,7 +24,6 @@ import com.foxinmy.weixin4j.http.apache.FormBodyPart;
 import com.foxinmy.weixin4j.http.apache.InputStreamBody;
 import com.foxinmy.weixin4j.http.apache.StringBody;
 import com.foxinmy.weixin4j.http.entity.StringEntity;
-import com.foxinmy.weixin4j.http.message.JsonMessageConverter;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
@@ -241,53 +239,30 @@ public class MediaApi extends MpApi {
 	public MediaDownloadResult downloadMedia(String mediaId, boolean isMaterial)
 			throws WeixinException {
 		Token token = tokenManager.getCache();
-		try {
-			HttpRequest request = null;
-			if (isMaterial) {
-				String material_media_download_uri = getRequestUri("material_media_download_uri");
-				request = new HttpRequest(HttpMethod.POST, String.format(
-						material_media_download_uri, token.getAccessToken()));
-				request.setEntity(new StringEntity(String.format(
-						"{\"media_id\":\"%s\"}", mediaId)));
-			} else {
-				String meida_download_uri = getRequestUri("meida_download_uri");
-				request = new HttpRequest(HttpMethod.GET, String.format(
-						meida_download_uri, token.getAccessToken(), mediaId));
-			}
-			logger.info("weixin request >> " + request.getMethod() + " "
-					+ request.getURI().toString());
-			HttpResponse response = weixinExecutor.getExecuteClient().execute(
-					request);
-			byte[] content = IOUtil.toByteArray(response.getBody());
-			HttpHeaders headers = response.getHeaders();
-			String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
-			String disposition = headers
-					.getFirst(HttpHeaders.CONTENT_DISPOSITION);
-			logger.info("weixin response << " + response.getProtocol()
-					+ response.getStatus().toString() + "[" + contentType
-					+ "]->" + disposition);
-			if (JsonMessageConverter.GLOBAL.canConvert(ApiResult.class,
-					response)) {
-				ApiResult result = JsonMessageConverter.GLOBAL.convert(
-						ApiResult.class, response);
-				if (!"0".equals(result.getReturnCode())) {
-					throw new WeixinException(result.getReturnCode(),
-							result.getReturnMsg());
-				}
-			}
-			String fileName = RegexUtil
-					.regexFileNameFromContentDispositionHeader(disposition);
-			if (StringUtil.isBlank(fileName)) {
-				fileName = String.format("%s.%s", mediaId,
-						contentType.split("/")[1]);
-			}
-			return new MediaDownloadResult(content,
-					ContentType.create(contentType), fileName);
-		} catch (IOException e) {
-			throw new WeixinException("I/O Error on getBody", e);
-		} catch (HttpClientException e) {
-			throw new WeixinException(e);
+		HttpRequest request = null;
+		if (isMaterial) {
+			String material_media_download_uri = getRequestUri("material_media_download_uri");
+			request = new HttpRequest(HttpMethod.POST, String.format(
+					material_media_download_uri, token.getAccessToken()));
+			request.setEntity(new StringEntity(String.format(
+					"{\"media_id\":\"%s\"}", mediaId)));
+		} else {
+			String meida_download_uri = getRequestUri("meida_download_uri");
+			request = new HttpRequest(HttpMethod.GET, String.format(
+					meida_download_uri, token.getAccessToken(), mediaId));
 		}
+		HttpResponse response = weixinExecutor.doRequest(request);
+		HttpHeaders headers = response.getHeaders();
+		String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
+		String disposition = headers.getFirst(HttpHeaders.CONTENT_DISPOSITION);
+		String fileName = RegexUtil
+				.regexFileNameFromContentDispositionHeader(disposition);
+		if (StringUtil.isBlank(fileName)) {
+			fileName = String.format("%s.%s", mediaId,
+					contentType.split("/")[1]);
+		}
+		return new MediaDownloadResult(response.getContent(),
+				ContentType.create(contentType), fileName);
 	}
 
 	/**

@@ -5,12 +5,8 @@ import java.util.Set;
 
 import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
-import com.foxinmy.weixin4j.logging.InternalLogger;
-import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 
 public abstract class AbstractHttpClient implements HttpClient {
-
-	protected final InternalLogger logger = InternalLoggerFactory.getInstance(getClass());
 
 	@Override
 	public HttpResponse get(String url) throws HttpClientException {
@@ -18,7 +14,8 @@ public abstract class AbstractHttpClient implements HttpClient {
 	}
 
 	@Override
-	public HttpResponse get(String url, URLParameter... parameters) throws HttpClientException {
+	public HttpResponse get(String url, URLParameter... parameters)
+			throws HttpClientException {
 		return execute(HttpMethod.GET, url, parameters);
 	}
 
@@ -28,7 +25,8 @@ public abstract class AbstractHttpClient implements HttpClient {
 	}
 
 	@Override
-	public HttpHeaders head(String url, URLParameter... parameters) throws HttpClientException {
+	public HttpHeaders head(String url, URLParameter... parameters)
+			throws HttpClientException {
 		return execute(HttpMethod.HEAD, url, parameters).getHeaders();
 	}
 
@@ -38,7 +36,8 @@ public abstract class AbstractHttpClient implements HttpClient {
 	}
 
 	@Override
-	public HttpResponse post(String url, URLParameter... parameters) throws HttpClientException {
+	public HttpResponse post(String url, URLParameter... parameters)
+			throws HttpClientException {
 		HttpEntity entity = null;
 		if (parameters != null && parameters.length > 0) {
 			entity = new FormUrlEntity(Arrays.asList(parameters));
@@ -47,7 +46,8 @@ public abstract class AbstractHttpClient implements HttpClient {
 	}
 
 	@Override
-	public HttpResponse post(String url, HttpEntity entity) throws HttpClientException {
+	public HttpResponse post(String url, HttpEntity entity)
+			throws HttpClientException {
 		HttpRequest request = new HttpRequest(HttpMethod.POST, url);
 		request.setEntity(entity);
 		return execute(request);
@@ -59,7 +59,8 @@ public abstract class AbstractHttpClient implements HttpClient {
 	}
 
 	@Override
-	public void put(String url, URLParameter... parameters) throws HttpClientException {
+	public void put(String url, URLParameter... parameters)
+			throws HttpClientException {
 		execute(HttpMethod.PUT, url, parameters);
 	}
 
@@ -69,7 +70,8 @@ public abstract class AbstractHttpClient implements HttpClient {
 	}
 
 	@Override
-	public void delete(String url, URLParameter... parameters) throws HttpClientException {
+	public void delete(String url, URLParameter... parameters)
+			throws HttpClientException {
 		execute(HttpMethod.DELETE, url, parameters);
 	}
 
@@ -79,17 +81,20 @@ public abstract class AbstractHttpClient implements HttpClient {
 	}
 
 	@Override
-	public Set<HttpMethod> options(String url, URLParameter... parameters) throws HttpClientException {
-		HttpHeaders headers = execute(HttpMethod.OPTIONS, url, parameters).getHeaders();
+	public Set<HttpMethod> options(String url, URLParameter... parameters)
+			throws HttpClientException {
+		HttpHeaders headers = execute(HttpMethod.OPTIONS, url, parameters)
+				.getHeaders();
 		return headers.getAllow();
 	}
 
-	protected HttpResponse execute(HttpMethod method, String url) throws HttpClientException {
+	protected HttpResponse execute(HttpMethod method, String url)
+			throws HttpClientException {
 		return execute(new HttpRequest(method, url));
 	}
 
-	protected HttpResponse execute(HttpMethod method, String url, URLParameter... parameters)
-			throws HttpClientException {
+	protected HttpResponse execute(HttpMethod method, String url,
+			URLParameter... parameters) throws HttpClientException {
 		StringBuilder buf = new StringBuilder(url);
 		if (parameters != null && parameters.length > 0) {
 			if (url.indexOf("?") < 0) {
@@ -103,20 +108,25 @@ public abstract class AbstractHttpClient implements HttpClient {
 	}
 
 	protected boolean hasError(HttpStatus status) {
-		return (status.series() == HttpStatus.Series.CLIENT_ERROR || status.series() == HttpStatus.Series.SERVER_ERROR);
+		return (status.series() == HttpStatus.Series.CLIENT_ERROR || status
+				.series() == HttpStatus.Series.SERVER_ERROR);
 	}
 
-	protected void handleResponse(HttpResponse response) throws HttpClientException {
+	protected void handleResponse(HttpResponse response)
+			throws HttpClientException {
 		HttpStatus status = response.getStatus();
 		HttpHeaders headers = response.getHeaders();
-		MimeType resultType = MimeType.valueOf(headers.getFirst(HttpHeaders.CONTENT_TYPE));
+		MimeType resultType = MimeType.valueOf(headers
+				.getFirst(HttpHeaders.CONTENT_TYPE));
 		if (!MimeType.APPLICATION_JSON.includes(resultType) && hasError(status)) {
 			switch (status.series()) {
 			case CLIENT_ERROR:
 			case SERVER_ERROR:
-				throw new HttpClientException(String.format("%d %s", status.getStatusCode(), status.getStatusText()));
+				throw new HttpClientException(String.format("%d %s",
+						status.getStatusCode(), status.getStatusText()));
 			default:
-				throw new HttpClientException("Unknown status code [" + status + "]");
+				throw new HttpClientException("Unknown status code [" + status
+						+ "]");
 			}
 		}
 	}

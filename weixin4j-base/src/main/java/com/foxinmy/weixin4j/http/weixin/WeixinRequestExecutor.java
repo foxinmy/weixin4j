@@ -25,6 +25,7 @@ import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.http.entity.StringEntity;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
 import com.foxinmy.weixin4j.http.message.XmlMessageConverter;
+import com.foxinmy.weixin4j.logging.InternalLogLevel;
 import com.foxinmy.weixin4j.logging.InternalLogger;
 import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 import com.foxinmy.weixin4j.util.Consts;
@@ -123,11 +124,13 @@ public class WeixinRequestExecutor {
 	 * @return 微信响应
 	 * @throws WeixinException
 	 */
-	protected WeixinResponse doRequest(HttpRequest request)
+	public WeixinResponse doRequest(HttpRequest request)
 			throws WeixinException {
 		try {
-			logger.info("weixin request >> " + request.getMethod() + " "
-					+ request.getURI().toString());
+			if (logger.isEnabled(InternalLogLevel.DEBUG)) {
+				logger.debug("weixin request >> " + request.getMethod() + " "
+						+ request.getURI().toString());
+			}
 			HttpResponse httpResponse = httpClient.execute(request);
 			WeixinResponse response = new WeixinResponse(httpResponse);
 			handleResponse(response);
@@ -165,12 +168,14 @@ public class WeixinRequestExecutor {
 	protected void handleResponse(WeixinResponse response)
 			throws WeixinException {
 		boolean hasStreamMimeType = hasStreamMimeType(response);
-		logger.info("weixin response << "
-				+ response.getProtocol()
-				+ response.getStatus()
-				+ ":"
-				+ (hasStreamMimeType ? response.getHeaders().getContentType()
-						: response.getAsString()));
+		if (logger.isEnabled(InternalLogLevel.DEBUG)) {
+			logger.debug("weixin response << "
+					+ response.getProtocol()
+					+ response.getStatus()
+					+ ":"
+					+ (hasStreamMimeType ? response.getHeaders()
+							.getContentType() : response.getAsString()));
+		}
 		if (hasStreamMimeType) {
 			return;
 		}

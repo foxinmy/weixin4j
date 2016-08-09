@@ -105,8 +105,6 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 			if (!headers.containsKey(HttpHeaders.USER_AGENT)) {
 				headers.set(HttpHeaders.USER_AGENT, "jdk/httpclient");
 			}
-			logger.debug("request >> " + request.getMethod() + " "
-					+ request.getURI().toString());
 			for (Entry<String, List<String>> header : headers.entrySet()) {
 				if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
 					connection.setRequestProperty(header.getKey(),
@@ -117,8 +115,6 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 								headerValue != null ? headerValue : "");
 					}
 				}
-				logger.debug("headers >> " + header.getKey() + ":"
-						+ StringUtil.join(header.getValue(), ';'));
 			}
 			// set inputstream
 			HttpEntity httpEntity = request.getEntity();
@@ -132,8 +128,6 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 					connection.setRequestProperty(HttpHeaders.CONTENT_TYPE,
 							httpEntity.getContentType().toString());
 				}
-				logger.debug("entity >> " + httpEntity.getContentType() + "("
-						+ httpEntity.getContentLength() + "byte)");
 			}
 			// connect
 			connection.connect();
@@ -149,13 +143,6 @@ public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
 					.getErrorStream() : connection.getInputStream();
 			byte[] content = IOUtil.toByteArray(input);
 			response = new SimpleHttpResponse(connection, content);
-			logger.debug("response << " + response.getProtocol()
-					+ response.getStatus().toString());
-			for (Entry<String, List<String>> header : response.getHeaders()
-					.entrySet()) {
-				logger.debug("headers << " + header.getKey() + ":"
-						+ StringUtil.join(header.getValue(), ';'));
-			}
 			input.close();
 			handleResponse(response);
 		} catch (IOException e) {
