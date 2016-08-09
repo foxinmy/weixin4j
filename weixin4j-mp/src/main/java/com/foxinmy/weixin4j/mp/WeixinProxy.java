@@ -4,18 +4,21 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import com.foxinmy.weixin4j.card.CardCoupon;
-import com.foxinmy.weixin4j.card.CardCoupons;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.WeixinAccount;
+import com.foxinmy.weixin4j.model.card.CardCoupon;
+import com.foxinmy.weixin4j.model.card.CardCoupons;
+import com.foxinmy.weixin4j.model.card.CardQR;
 import com.foxinmy.weixin4j.model.media.MediaCounter;
 import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
 import com.foxinmy.weixin4j.model.media.MediaItem;
 import com.foxinmy.weixin4j.model.media.MediaRecord;
 import com.foxinmy.weixin4j.model.media.MediaUploadResult;
 import com.foxinmy.weixin4j.model.paging.Pageable;
+import com.foxinmy.weixin4j.model.qr.QRParameter;
+import com.foxinmy.weixin4j.model.qr.QRResult;
 import com.foxinmy.weixin4j.mp.api.CardApi;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.api.DataApi;
@@ -43,8 +46,6 @@ import com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter;
 import com.foxinmy.weixin4j.mp.model.Menu;
 import com.foxinmy.weixin4j.mp.model.MenuMatchRule;
 import com.foxinmy.weixin4j.mp.model.MenuSetting;
-import com.foxinmy.weixin4j.mp.model.QRParameter;
-import com.foxinmy.weixin4j.mp.model.QRResult;
 import com.foxinmy.weixin4j.mp.model.SemQuery;
 import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.Tag;
@@ -176,6 +177,7 @@ public class WeixinProxy {
 				componentTokenManager), perTicketManager.getCacheStorager()));
 		this.settings = new Weixin4jSettings<WeixinAccount>(new WeixinAccount(
 				perTicketManager.getAuthAppId(), null));
+		this.settings.setCacheStorager(perTicketManager.getCacheStorager());
 	}
 
 	/**
@@ -1376,8 +1378,8 @@ public class WeixinProxy {
 	 *            二维码参数
 	 * @return 二维码结果对象
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.QRResult
-	 * @see com.foxinmy.weixin4j.mp.model.QRParameter
+	 * @see com.foxinmy.weixin4j.model.qr.QRResult
+	 * @see com.foxinmy.weixin4j.model.qr.QRParameter
 	 * @see com.foxinmy.weixin4j.mp.api.QrApi
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1443433542&token=&lang=zh_CN">
@@ -1902,6 +1904,26 @@ public class WeixinProxy {
 	public ApiResult setCardSelfConsumeCell(String cardId, boolean isOpen)
 			throws WeixinException {
 		return cardApi.setCardSelfConsumeCell(cardId, isOpen);
+	}
+
+	/**
+	 * 创建卡券二维码： 开发者可调用该接口生成一张卡券二维码供用户扫码后添加卡券到卡包。
+	 * 
+	 * @param expireSeconds
+	 *            指定二维码的有效时间，范围是60 ~ 1800秒。不填默认为365天有效
+	 * @param cardQRs
+	 *            二维码参数:二维码领取单张卡券/多张卡券
+	 * @return 二维码结果对象
+	 * @see com.foxinmy.weixin4j.model.qr.QRResult
+	 * @see com.foxinmy.weixin4j.model.qr.QRParameter
+	 * @see com.foxinmy.weixin4j.mp.api.CardApi
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062&token=&lang=zh_CN">投放卡券</a>
+	 * @throws WeixinException
+	 */
+	public QRResult createCardQR(Integer expireSeconds, CardQR... cardQRs)
+			throws WeixinException {
+		return cardApi.createCardQR(expireSeconds, cardQRs);
 	}
 
 	public final static String VERSION = "1.7.0";

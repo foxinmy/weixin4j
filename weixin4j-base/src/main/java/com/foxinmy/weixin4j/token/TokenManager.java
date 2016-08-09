@@ -32,7 +32,7 @@ public class TokenManager extends CacheManager<Token> {
 	/**
 	 * 获取token字符串
 	 *
-	 * @return
+	 * @return token字符串
 	 * @throws WeixinException
 	 */
 	public String getAccessToken() throws WeixinException {

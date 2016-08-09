@@ -1,32 +1,32 @@
-package com.foxinmy.weixin4j.card;
+package com.foxinmy.weixin4j.model.card;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.type.card.CardType;
 
 /**
- * 兑换券
+ * 普通优惠券
  * 
- * @className GifCoupon
+ * @className GeneralCoupon
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年8月4日
  * @since JDK 1.6
  */
-public class GiftCoupon extends CardCoupon {
+public class GeneralCoupon extends CardCoupon {
 	/**
-	 * 兑换说明
+	 * 优惠详情
 	 */
-	@JSONField(name = "gift")
+	@JSONField(name = "default_detail")
 	private final String explain;
 
 	/**
-	 * 构造兑换券
+	 * 构造普通优惠券
 	 * 
 	 * @param couponBaseInfo
 	 *            基础信息
 	 * @param explain
-	 *            兑换说明 如：可兑换音乐木盒一个。
+	 *            优惠详情 如：音乐木盒
 	 */
-	public GiftCoupon(CouponBaseInfo couponBaseInfo, String explain) {
+	public GeneralCoupon(CouponBaseInfo couponBaseInfo, String explain) {
 		super(couponBaseInfo);
 		this.explain = explain;
 	}
@@ -38,11 +38,12 @@ public class GiftCoupon extends CardCoupon {
 	@JSONField(serialize = false)
 	@Override
 	public CardType getCardType() {
-		return CardType.GIFT;
+		return CardType.GENERAL_COUPON;
 	}
 
 	@Override
 	public String toString() {
-		return "GiftCoupon [explain=" + explain + ", " + super.toString() + "]";
+		return "GrouponCoupon [explain=" + explain + ", " + super.toString()
+				+ "]";
 	}
 }

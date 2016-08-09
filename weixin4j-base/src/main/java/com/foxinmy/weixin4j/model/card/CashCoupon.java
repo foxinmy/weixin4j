@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.card;
+package com.foxinmy.weixin4j.model.card;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.type.card.CardType;

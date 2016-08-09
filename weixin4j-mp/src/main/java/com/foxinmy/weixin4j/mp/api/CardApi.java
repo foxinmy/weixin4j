@@ -1,13 +1,21 @@
 package com.foxinmy.weixin4j.mp.api;
 
+import java.io.IOException;
+
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.foxinmy.weixin4j.card.CardCoupon;
-import com.foxinmy.weixin4j.card.CardCoupons;
+import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
+import com.foxinmy.weixin4j.model.card.CardCoupon;
+import com.foxinmy.weixin4j.model.card.CardCoupons;
+import com.foxinmy.weixin4j.model.card.CardQR;
+import com.foxinmy.weixin4j.model.qr.QRParameter;
+import com.foxinmy.weixin4j.model.qr.QRResult;
 import com.foxinmy.weixin4j.token.TokenManager;
+import com.foxinmy.weixin4j.util.IOUtil;
 
 /**
  * 卡券API
@@ -110,5 +118,42 @@ public class CardApi extends MpApi {
 				.post(String.format(card_selfconsumecell_uri,
 						token.getAccessToken()), params.toJSONString());
 		return response.getAsResult();
+	}
+
+	/**
+	 * 创建卡券二维码： 开发者可调用该接口生成一张卡券二维码供用户扫码后添加卡券到卡包。
+	 * 
+	 * @param expireSeconds
+	 *            指定二维码的有效时间，范围是60 ~ 1800秒。不填默认为365天有效
+	 * @param cardQRs
+	 *            二维码参数:二维码领取单张卡券/多张卡券
+	 * @return 二维码结果对象
+	 * @see com.foxinmy.weixin4j.model.qr.QRResult
+	 * @see com.foxinmy.weixin4j.model.qr.QRParameter
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062&token=&lang=zh_CN">投放卡券</a>
+	 * @throws WeixinException
+	 */
+	public QRResult createCardQR(Integer expireSeconds, CardQR... cardQRs)
+			throws WeixinException {
+		QRParameter parameter = QRParameter.createCardCouponQR(expireSeconds,
+				cardQRs);
+		Token token = tokenManager.getCache();
+		String qr_uri = getRequestUri("card_qr_ticket_uri");
+		WeixinResponse response = weixinExecutor.post(
+				String.format(qr_uri, token.getAccessToken()),
+				JSON.toJSONString(parameter));
+		QRResult result = response.getAsObject(new TypeReference<QRResult>() {
+		});
+		qr_uri = String.format(getRequestUri("qr_image_uri"),
+				result.getTicket());
+		response = weixinExecutor.get(qr_uri);
+		result.setShowUrl(qr_uri);
+		try {
+			result.setContent(IOUtil.toByteArray(response.getBody()));
+		} catch (IOException e) {
+			throw new WeixinException(e);
+		}
+		return result;
 	}
 }

@@ -15,9 +15,10 @@ import com.foxinmy.weixin4j.type.TicketType;
  * @className WeixinTicketCreator
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
- * @since JDK 1.6 <a href=
- *        "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3#.E9.99.84.E5.BD.951-JS-SDK.E4.BD.BF.E7.94.A8.E6.9D.83.E9.99.90.E7.AD.BE.E5.90.8D.E7.AE.97.E6.B3.95"
- *        >JSTICKET</a>
+ * @since JDK 1.6
+ * @see <a href=
+ *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3#.E9.99.84.E5.BD.951-JS-SDK.E4.BD.BF.E7.94.A8.E6.9D.83.E9.99.90.E7.AD.BE.E5.90.8D.E7.AE.97.E6.B3.95"
+ *      >JSTICKET</a>
  */
 public class WeixinTicketCreator extends TokenCreator {
 

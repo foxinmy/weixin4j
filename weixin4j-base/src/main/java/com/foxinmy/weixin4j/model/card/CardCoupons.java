@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.card;
+package com.foxinmy.weixin4j.model.card;
 
 /**
  * 卡券构造器

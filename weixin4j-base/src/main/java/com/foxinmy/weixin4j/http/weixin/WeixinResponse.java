@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.http.HttpHeaders;
@@ -34,6 +33,8 @@ public class WeixinResponse implements HttpResponse {
 	};
 	private final TypeReference<XmlResult> XMLRESULT_CLAZZ = new TypeReference<XmlResult>() {
 	};
+	private final TypeReference<JSONObject> JSONOBJECT_CLAZZ = new TypeReference<JSONObject>() {
+	};
 
 	static {
 		messageConverters.add(new JsonMessageConverter());
@@ -56,7 +57,7 @@ public class WeixinResponse implements HttpResponse {
 	}
 
 	public JSONObject getAsJson() {
-		return JSON.parseObject(getAsString());
+		return getAsObject(JSONOBJECT_CLAZZ);
 	}
 
 	public XmlResult getAsXml() {
@@ -71,7 +72,8 @@ public class WeixinResponse implements HttpResponse {
 				try {
 					return messageConverter.convert(clazz, response);
 				} catch (IOException e) {
-					throw new RuntimeException("IO error on convert to " + typeReference, e);
+					throw new RuntimeException("IO error on convert to "
+							+ typeReference, e);
 				}
 			}
 		}

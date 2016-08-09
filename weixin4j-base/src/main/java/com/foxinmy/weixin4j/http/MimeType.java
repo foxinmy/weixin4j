@@ -1,6 +1,8 @@
 package com.foxinmy.weixin4j.http;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import com.foxinmy.weixin4j.util.StringUtil;
@@ -35,12 +37,14 @@ public class MimeType implements Serializable {
 	public static final MimeType TEXT_XML;
 	public static final MimeType TEXT_JSON;
 
+	public static final List<MimeType> STREAM_MIMETYPES;
+
 	static {
 		APPLICATION_FORM_URLENCODED = valueOf("application/x-www-form-urlencoded");
 		APPLICATION_JSON = valueOf("application/json");
 		APPLICATION_OCTET_STREAM = valueOf("application/octet-stream");
 		APPLICATION_XML = valueOf("application/xml");
-		MULTIPART_FORM_DATA = MimeType.valueOf("multipart/form-data");
+		MULTIPART_FORM_DATA = valueOf("multipart/form-data");
 		TEXT_HTML = valueOf("text/html");
 		TEXT_PLAIN = valueOf("text/plain");
 		IMAGE_JPG = valueOf("image/jpg");
@@ -48,6 +52,12 @@ public class MimeType implements Serializable {
 		VIDEO_MPEG4 = valueOf("video/mpeg4");
 		TEXT_XML = valueOf("text/xml");
 		TEXT_JSON = valueOf("text/json");
+
+		STREAM_MIMETYPES = new ArrayList<MimeType>(4);
+		STREAM_MIMETYPES.add(APPLICATION_OCTET_STREAM);
+		STREAM_MIMETYPES.add(valueOf("image/*"));
+		STREAM_MIMETYPES.add(valueOf("audio/*"));
+		STREAM_MIMETYPES.add(valueOf("video/*"));
 	}
 
 	public MimeType(String type) {
@@ -72,28 +82,33 @@ public class MimeType implements Serializable {
 	}
 
 	public boolean isWildcardSubtype() {
-		return WILDCARD_TYPE.equals(getSubType()) || getSubType().startsWith("*+");
+		return WILDCARD_TYPE.equals(getSubType())
+				|| getSubType().startsWith("*+");
 	}
 
 	public static MimeType valueOf(String value) {
 		if (StringUtil.isBlank(value)) {
 			return null;
 		}
-		String mimeType = StringUtil.tokenizeToStringArray(value, ";")[0].trim().toLowerCase(Locale.ENGLISH);
+		String mimeType = StringUtil.tokenizeToStringArray(value, ";")[0]
+				.trim().toLowerCase(Locale.ENGLISH);
 		if (WILDCARD_TYPE.equals(mimeType)) {
 			mimeType = "*/*";
 		}
 		int subIndex = mimeType.indexOf('/');
 		if (subIndex == -1) {
-			throw new IllegalArgumentException(mimeType + ":does not contain '/'");
+			throw new IllegalArgumentException(mimeType
+					+ ":does not contain '/'");
 		}
 		if (subIndex == mimeType.length() - 1) {
-			throw new IllegalArgumentException(mimeType + ":does not contain subtype after '/'");
+			throw new IllegalArgumentException(mimeType
+					+ ":does not contain subtype after '/'");
 		}
 		String type = mimeType.substring(0, subIndex);
 		String subType = mimeType.substring(subIndex + 1, mimeType.length());
 		if (WILDCARD_TYPE.equals(type) && !WILDCARD_TYPE.equals(subType)) {
-			throw new IllegalArgumentException(mimeType + ":wildcard type is legal only in '*/*' (all mime types)");
+			throw new IllegalArgumentException(mimeType
+					+ ":wildcard type is legal only in '*/*' (all mime types)");
 		}
 		return new MimeType(type, subType);
 	}
@@ -121,10 +136,14 @@ public class MimeType implements Serializable {
 					// application/*+xml includes application/soap+xml
 					int otherPlusIdx = other.getSubType().indexOf('+');
 					if (otherPlusIdx != -1) {
-						String thisSubtypeNoSuffix = getSubType().substring(0, thisPlusIdx);
-						String thisSubtypeSuffix = getSubType().substring(thisPlusIdx + 1);
-						String otherSubtypeSuffix = other.getSubType().substring(otherPlusIdx + 1);
-						if (thisSubtypeSuffix.equals(otherSubtypeSuffix) && WILDCARD_TYPE.equals(thisSubtypeNoSuffix)) {
+						String thisSubtypeNoSuffix = getSubType().substring(0,
+								thisPlusIdx);
+						String thisSubtypeSuffix = getSubType().substring(
+								thisPlusIdx + 1);
+						String otherSubtypeSuffix = other.getSubType()
+								.substring(otherPlusIdx + 1);
+						if (thisSubtypeSuffix.equals(otherSubtypeSuffix)
+								&& WILDCARD_TYPE.equals(thisSubtypeNoSuffix)) {
 							return true;
 						}
 					}
@@ -148,7 +167,8 @@ public class MimeType implements Serializable {
 			return false;
 		}
 		MimeType otherType = (MimeType) other;
-		return this.type.equalsIgnoreCase(otherType.type) && this.subType.equalsIgnoreCase(otherType.subType);
+		return this.type.equalsIgnoreCase(otherType.type)
+				&& this.subType.equalsIgnoreCase(otherType.subType);
 	}
 
 	@Override

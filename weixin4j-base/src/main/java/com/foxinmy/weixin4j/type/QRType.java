@@ -21,5 +21,13 @@ public enum QRType {
 	/**
 	 * 永久二维码(场景值为字符串长度在1-64之间)
 	 */
-	QR_LIMIT_STR_SCENE;
+	QR_LIMIT_STR_SCENE,
+	/**
+	 * 卡券二维码：单个卡券
+	 */
+	QR_CARD,
+	/**
+	 * 卡券二维码：多个卡券
+	 */
+	QR_MULTIPLE_CARD;
 }

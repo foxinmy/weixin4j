@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.card;
+package com.foxinmy.weixin4j.model.card;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.foxinmy.weixin4j.mp.model;
+package com.foxinmy.weixin4j.model.qr;
 
 import java.io.Serializable;
 
@@ -19,6 +19,8 @@ public class QRResult implements Serializable {
 
 	private String ticket;
 	private String url;
+	@JSONField(name = "show_qrcode_url")
+	private String showUrl;
 	@JSONField(name = "expire_seconds")
 	private int expireSeconds;
 	private byte[] content;
@@ -39,6 +41,14 @@ public class QRResult implements Serializable {
 		this.url = url;
 	}
 
+	public String getShowUrl() {
+		return showUrl;
+	}
+
+	public void setShowUrl(String showUrl) {
+		this.showUrl = showUrl;
+	}
+
 	public int getExpireSeconds() {
 		return expireSeconds;
 	}
@@ -57,7 +67,8 @@ public class QRResult implements Serializable {
 
 	@Override
 	public String toString() {
-		return "QRResult [ticket=" + ticket + ", url=" + url
-				+ ", expireSeconds=" + expireSeconds + ", content=...]";
+		return "QRResult [ticket=" + ticket + ", url=" + url + ", showUrl="
+				+ showUrl + ", expireSeconds=" + expireSeconds
+				+ ", content=..." + "]";
 	}
 }

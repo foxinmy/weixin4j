@@ -15,6 +15,7 @@ import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
+import com.foxinmy.weixin4j.http.MimeType;
 import com.foxinmy.weixin4j.http.URLParameter;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
 import com.foxinmy.weixin4j.http.apache.HttpMultipartMode;
@@ -129,13 +130,29 @@ public class WeixinRequestExecutor {
 					+ request.getURI().toString());
 			HttpResponse httpResponse = httpClient.execute(request);
 			WeixinResponse response = new WeixinResponse(httpResponse);
-			logger.info("weixin response << " + httpResponse.getProtocol()
-					+ httpResponse.getStatus() + ":" + response.getAsString());
 			handleResponse(response);
 			return response;
 		} catch (HttpClientException e) {
 			throw new WeixinException(e);
 		}
+	}
+
+	/**
+	 * 响应内容是否为流
+	 * 
+	 * @param response
+	 *            微信响应
+	 * @return true/false
+	 */
+	private boolean hasStreamMimeType(WeixinResponse response) {
+		MimeType responseMimeType = MimeType.valueOf(response.getHeaders()
+				.getContentType());
+		for (MimeType streamMimeType : MimeType.STREAM_MIMETYPES) {
+			if (streamMimeType.includes(responseMimeType)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -147,6 +164,16 @@ public class WeixinRequestExecutor {
 	 */
 	protected void handleResponse(WeixinResponse response)
 			throws WeixinException {
+		boolean hasStreamMimeType = hasStreamMimeType(response);
+		logger.info("weixin response << "
+				+ response.getProtocol()
+				+ response.getStatus()
+				+ ":"
+				+ (hasStreamMimeType ? response.getHeaders().getContentType()
+						: response.getAsString()));
+		if (hasStreamMimeType) {
+			return;
+		}
 		ApiResult result = response.getAsResult();
 		if (!SUCCESS_CODE.contains(String.format(",%s,", result.getReturnCode()
 				.toLowerCase()))) {

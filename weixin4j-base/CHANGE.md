@@ -160,7 +160,7 @@
   
 * 2016-08-05
 
-  + model包拆分media/paing
+  + model包拆分media/paging
   
   + type包拆分card/mch
   

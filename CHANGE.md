@@ -738,3 +738,19 @@
   + weixin4j-base:主要调整退款相关类与官网一致
   
   + weixin4j-base:获取cache时加锁处理(via 风车车)
+  
+* 2016-08-05
+
+  + weixin4j-base:model包拆分media/paging
+  
+  + weixin4j-base:type包拆分card/mch
+  
+  + weixin4j-base:新增card卡券相关类
+  
+  + weixin4j-mp:新增CardApi:创建卡券接口
+  
+* 2016-08-09
+
+  + weixin4j-base:修复媒体消息转换错误bug
+  
+  + weixin4j-mp:新增创建卡券二维码接口

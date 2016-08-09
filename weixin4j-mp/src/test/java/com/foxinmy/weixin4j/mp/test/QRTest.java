@@ -7,9 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.qr.QRParameter;
+import com.foxinmy.weixin4j.model.qr.QRResult;
 import com.foxinmy.weixin4j.mp.api.QrApi;
-import com.foxinmy.weixin4j.mp.model.QRParameter;
-import com.foxinmy.weixin4j.mp.model.QRResult;
 
 /**
  * 二维码相关测试
@@ -23,27 +23,27 @@ public class QRTest extends TokenTest {
 	private QrApi qrApi;
 
 	@Before
-	public void init() {
+	public void init() throws WeixinException {
 		qrApi = new QrApi(tokenManager);
 	}
 
 	@Test
 	public void temp_qr() throws WeixinException, IOException {
-		QRResult result = qrApi.createQR(QRParameter
-				.createTemporary(1200, 1200));
+		QRResult result = qrApi.createQR(QRParameter.createTemporaryQR(1200,
+				1200L));
 		Assert.assertTrue(!result.getTicket().isEmpty());
 	}
 
 	@Test
 	public void forever_qr_int() throws WeixinException, IOException {
-		QRResult result = qrApi.createQR(QRParameter.createPermanenceInt(2));
+		QRResult result = qrApi.createQR(QRParameter.createPermanenceQR(2));
 		Assert.assertTrue(!result.getTicket().isEmpty());
 	}
 
 	@Test
 	public void forever_qr_str() throws WeixinException, IOException {
 		QRResult result = qrApi.createQR(QRParameter
-				.createPermanenceStr("1200中文"));
+				.createPermanenceQR("1200中文"));
 		Assert.assertTrue(!result.getTicket().isEmpty());
 	}
 }

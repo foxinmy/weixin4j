@@ -63,7 +63,7 @@ public class Button implements Serializable {
 	}
 
 	/**
-	 * 创建一个菜单
+	 * 创建一个具有子菜单的菜单
 	 *
 	 * @param name
 	 *            菜单名
@@ -76,7 +76,7 @@ public class Button implements Serializable {
 	}
 
 	/**
-	 * 创建一个菜单
+	 * 创建一个普通菜单
 	 *
 	 * @param name
 	 *            菜单名

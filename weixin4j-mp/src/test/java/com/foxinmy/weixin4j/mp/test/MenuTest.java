@@ -40,7 +40,7 @@ public class MenuTest extends TokenTest {
 		String domain = "http://wx.jdxg.doubimeizhi.com";
 		buttons.add(new Button("立即下单", domain, ButtonType.view));
 
-		buttons.add(new Button("个人中心", domain + "/user", ButtonType.view));
+		//buttons.add(new Button("个人中心", domain + "/user", ButtonType.view));
 
 		Button button = new Button("小哥介绍", domain, ButtonType.view);
 		button.pushSub(new Button("小哥介绍", "http://x.eqxiu.com/s/89oy462U",
@@ -52,7 +52,7 @@ public class MenuTest extends TokenTest {
 				ButtonType.view));
 		button.pushSub(new Button("服务流程", "FLOW", ButtonType.click));
 		button.pushSub(new Button("在线客服", "KF", ButtonType.click));
-		buttons.add(button);
+		//buttons.add(button);
 
 		ApiResult result = menuApi.createMenu(buttons);
 		Assert.assertEquals("0", result.getReturnCode());

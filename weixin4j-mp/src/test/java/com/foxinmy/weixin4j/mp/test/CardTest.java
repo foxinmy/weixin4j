@@ -7,10 +7,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.foxinmy.weixin4j.card.CardCoupon;
-import com.foxinmy.weixin4j.card.CardCoupons;
-import com.foxinmy.weixin4j.card.CouponBaseInfo;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.card.CardCoupon;
+import com.foxinmy.weixin4j.model.card.CardCoupons;
+import com.foxinmy.weixin4j.model.card.CouponBaseInfo;
 import com.foxinmy.weixin4j.mp.api.CardApi;
 import com.foxinmy.weixin4j.type.card.CardCodeType;
 import com.foxinmy.weixin4j.type.card.CardColor;
