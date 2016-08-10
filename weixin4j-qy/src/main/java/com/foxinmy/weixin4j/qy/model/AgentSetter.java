@@ -41,8 +41,8 @@ public class AgentSetter implements Serializable {
 	 * 企业应用详情
 	 */
 	private String description;
-	/**chatExtensionUrl
-	 * 企业应用可信域名
+	/**
+	 * chatExtensionUrl 企业应用可信域名
 	 */
 	@JSONField(name = "redirect_domain")
 	private String redirectDomain;
@@ -93,6 +93,14 @@ public class AgentSetter implements Serializable {
 
 	public String getRedirectDomain() {
 		return redirectDomain;
+	}
+
+	public boolean isReportUser() {
+		return isReportUser;
+	}
+
+	public boolean isReportEnter() {
+		return isReportEnter;
 	}
 
 	public String getHomeUrl() {
@@ -151,9 +159,12 @@ public class AgentSetter implements Serializable {
 
 	@Override
 	public String toString() {
-		return "agentId=" + agentId + ", reportLocationType=" + reportLocationType + ", logoMediaId=" + logoMediaId
-				+ ", name=" + name + ", description=" + description + ", redirectDomain=" + redirectDomain
-				+ ", isReportUser=" + isReportUser + ", isReportEnter=" + isReportEnter + ", homeUrl=" + homeUrl
-				+ ", chatExtensionUrl=" + chatExtensionUrl;
+		return "agentId=" + agentId + ", reportLocationType="
+				+ reportLocationType + ", logoMediaId=" + logoMediaId
+				+ ", name=" + name + ", description=" + description
+				+ ", redirectDomain=" + redirectDomain + ", isReportUser="
+				+ isReportUser + ", isReportEnter=" + isReportEnter
+				+ ", homeUrl=" + homeUrl + ", chatExtensionUrl="
+				+ chatExtensionUrl;
 	}
 }

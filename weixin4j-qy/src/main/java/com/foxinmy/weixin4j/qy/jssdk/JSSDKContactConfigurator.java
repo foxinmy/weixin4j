@@ -18,8 +18,7 @@ import com.foxinmy.weixin4j.util.RandomUtil;
  * @className JSSDKContactConfigurator
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
- * @since JDK 1.7
- * @see
+ * @since JDK 1.6
  */
 public class JSSDKContactConfigurator {
 	private final TokenManager ticketTokenManager;

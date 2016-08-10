@@ -756,3 +756,5 @@
   + weixin4j-mp:新增创建卡券二维码接口
   
   + version upgrade to 1.7.1
+  
+  + LOGGER级别优化
