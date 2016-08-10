@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.util.RegexUtil;
  * @className JsonMessageConverter
  * @author jinyu
  * @date Jul 20, 2016
- * @since JDK 1.8
+ * @since JDK 1.6
  */
 public class JsonMessageConverter extends AbstractMessageConverter {
 

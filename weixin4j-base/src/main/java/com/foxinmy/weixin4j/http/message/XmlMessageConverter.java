@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @className XmlMessageConverter
  * @author jinyu
  * @date Jul 20, 2016
- * @since JDK 1.8
+ * @since JDK 1.6
  */
 public class XmlMessageConverter extends AbstractMessageConverter {
 

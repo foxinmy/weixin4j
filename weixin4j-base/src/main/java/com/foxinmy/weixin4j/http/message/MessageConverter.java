@@ -13,6 +13,8 @@ import com.foxinmy.weixin4j.http.MimeType;
  * @author jinyu
  * @date Jul 20, 2016
  * @since JDK 1.6
+ * @see JsonMessageConverter
+ * @see XmlMessageConverter
  */
 public interface MessageConverter {
 	/**
@@ -43,5 +45,6 @@ public interface MessageConverter {
 	 * @throws IOException
 	 * @return 消息对象
 	 */
-	public <T> T convert(Class<? extends T> clazz, HttpResponse response) throws IOException;
+	public <T> T convert(Class<? extends T> clazz, HttpResponse response)
+			throws IOException;
 }
