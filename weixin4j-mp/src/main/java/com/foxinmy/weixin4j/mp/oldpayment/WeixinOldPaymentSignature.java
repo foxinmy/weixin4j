@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.mp.oldpayment;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPath;
 import com.foxinmy.weixin4j.sign.AbstractWeixinSignature;
 import com.foxinmy.weixin4j.type.SignType;
 import com.foxinmy.weixin4j.util.DigestUtil;
@@ -41,11 +40,11 @@ public class WeixinOldPaymentSignature extends AbstractWeixinSignature {
 	@Override
 	public String sign(Object obj) {
 		if (obj instanceof String) {
-			obj = JSON.parse((String) obj);
+			obj = JSON.parse(String.valueOf(obj));
 		} else {
 			obj = ((JSONObject) JSON.toJSON(obj));
 		}
-		JSONPath.set(obj, "appKey", paySignKey);
+		((JSONObject) obj).put("appKey", paySignKey);
 		return DigestUtil.SHA1(join(obj).toString());
 	}
 

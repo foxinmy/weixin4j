@@ -6,7 +6,6 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPath;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -127,8 +126,10 @@ public class HelperApi extends MpApi {
 		for (int i = 0; i < buttons.size(); i++) {
 			buttonObj = buttons.getJSONObject(i);
 			if (buttonObj.containsKey("sub_button")) {
-				JSONPath.set(buttonObj, "$.sub_button", buttonObj
-						.getJSONObject("sub_button").getJSONArray("list"));
+				buttonObj.put(
+						"sub_button",
+						buttonObj.getJSONObject("sub_button").getJSONArray(
+								"list"));
 				buttonObj.put("type", ButtonType.popups);
 			}
 			buttonList.add(JSON.parseObject(buttonObj.toJSONString(),
@@ -160,9 +161,9 @@ public class HelperApi extends MpApi {
 							article.remove("source_url"));
 					newsList.add(JSON.toJavaObject(article, MpArticle.class));
 				}
-				JSONPath.set(object, "$.extar", newsList);
+				((Button) object).setExtra(newsList);
 			} else {
-				JSONPath.set(object, "$.content", value);
+				((Button) object).setContent(String.valueOf(value));
 			}
 		}
 	};

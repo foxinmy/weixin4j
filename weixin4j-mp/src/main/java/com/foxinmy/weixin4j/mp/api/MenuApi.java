@@ -6,7 +6,6 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPath;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.alibaba.fastjson.parser.deserializer.ParseProcess;
 import com.alibaba.fastjson.serializer.NameFilter;
@@ -229,7 +228,7 @@ public class MenuApi extends MpApi {
 	private final ParseProcess buttonProcess = new ExtraProcessor() {
 		@Override
 		public void processExtra(Object object, String key, Object value) {
-			JSONPath.set(object, "$.content", value);
+			((Button) object).setContent(String.valueOf(value));
 		}
 	};
 

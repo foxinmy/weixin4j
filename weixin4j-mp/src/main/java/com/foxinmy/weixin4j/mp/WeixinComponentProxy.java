@@ -73,7 +73,7 @@ public class WeixinComponentProxy {
 			CacheStorager<Token> cacheStorager) {
 		if (weixinMpAccount == null) {
 			throw new IllegalArgumentException(
-					"weixinPayAccount must not be empty");
+					"weixinMpAccount must not be empty");
 		}
 		if (cacheStorager == null) {
 			throw new IllegalArgumentException(
