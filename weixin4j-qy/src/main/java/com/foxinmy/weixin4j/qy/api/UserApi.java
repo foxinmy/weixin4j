@@ -12,6 +12,7 @@ import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.OUserInfo;
+import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.User;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
@@ -33,11 +34,13 @@ import com.foxinmy.weixin4j.util.StringUtil;
  */
 public class UserApi extends QyApi {
 	private final MediaApi mediaApi;
+	private final PartyApi partyApi;
 	private final TokenManager tokenManager;
 
 	public UserApi(TokenManager tokenManager) {
 		this.tokenManager = tokenManager;
 		this.mediaApi = new MediaApi(tokenManager);
+		this.partyApi = new PartyApi(tokenManager);
 	}
 
 	/**
@@ -243,11 +246,11 @@ public class UserApi extends QyApi {
 	 * 获取部门成员
 	 * 
 	 * @param partyId
-	 *            部门ID 必须
+	 *            部门ID
 	 * @param fetchChild
-	 *            是否递归获取子部门下面的成员 非必须
+	 *            是否递归获取子部门下面的成员
 	 * @param userStatus
-	 *            成员状态 status可叠加 非必须 未填写则默认为未关注(4)
+	 *            成员状态 status可叠加 未填写则默认为未关注(4)
 	 * @param findDetail
 	 *            是否获取详细信息
 	 * @see com.foxinmy.weixin4j.qy.model.User
@@ -301,6 +304,31 @@ public class UserApi extends QyApi {
 	 */
 	public List<User> listUser(int partyId) throws WeixinException {
 		return listUser(partyId, false, UserStatus.BOTH, false);
+	}
+
+	/**
+	 * 获取权限范围内的所有成员列表
+	 * 
+	 * @param userStatus
+	 *            成员状态 未填写则默认为全部状态下的成员
+	 * @return 成员列表
+	 * @see {@link #listUser(int, boolean, UserStatus,boolean)}
+	 * @see {@link PartyApi#listParty(int)}
+	 * @throws WeixinException
+	 */
+	public List<User> listAllUser(UserStatus userStatus) throws WeixinException {
+		List<User> users = null;
+		List<Party> parties = partyApi.listParty(0);
+		if (!parties.isEmpty()) {
+			if (userStatus == null) {
+				userStatus = UserStatus.BOTH;
+			}
+			users = new ArrayList<User>();
+			for (Party party : parties) {
+				users.addAll(listUser(party.getId(), true, userStatus, true));
+			}
+		}
+		return users;
 	}
 
 	/**

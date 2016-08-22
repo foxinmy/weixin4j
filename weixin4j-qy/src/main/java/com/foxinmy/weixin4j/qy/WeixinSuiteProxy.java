@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.foxinmy.weixin4j.cache.CacheStorager;
+import com.foxinmy.weixin4j.cache.FileCacheStorager;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
@@ -17,7 +19,6 @@ import com.foxinmy.weixin4j.qy.model.WeixinQyAccount;
 import com.foxinmy.weixin4j.qy.token.WeixinProviderTokenCreator;
 import com.foxinmy.weixin4j.qy.type.LoginTargetType;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
-import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.TicketManager;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.util.Consts;
@@ -47,40 +48,65 @@ public class WeixinSuiteProxy {
 	 */
 	private ProviderApi providerApi;
 	/**
-	 * 配置相关
+	 * 企业号账号信息
 	 */
-	private final Weixin4jSettings<WeixinQyAccount> settings;
+	private final WeixinQyAccount weixinQyAccount;
 
 	/**
-	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
+	 * 微信第三方套件接口实现(使用weixin4j.properties配置的account账号信息,
+	 * 使用FileCacheStorager文件方式缓存TOKEN)
 	 */
 	public WeixinSuiteProxy() {
-		this(new Weixin4jSettings<WeixinQyAccount>(
-				JSON.parseObject(Weixin4jConfigUtil.getValue("account"), WeixinQyAccount.class)));
+		this(new FileCacheStorager<Token>());
 	}
 
 	/**
-	 *
-	 * @param settings
-	 *            配置信息
+	 * 微信第三方套件接口实现(使用weixin4j.properties配置的account账号信息)
+	 * 
+	 * @param cacheStorager
+	 *            token管理
 	 */
-	public WeixinSuiteProxy(Weixin4jSettings<WeixinQyAccount> settings) {
-		this.settings = settings;
-		List<WeixinAccount> suites = settings.getAccount().getSuites();
+	public WeixinSuiteProxy(CacheStorager<Token> cacheStorager) {
+		this(JSON.parseObject(Weixin4jConfigUtil.getValue("account"),
+				WeixinQyAccount.class), cacheStorager);
+	}
+
+	/**
+	 * 微信第三方套件接口实现
+	 * 
+	 * @param weixinQyAccount
+	 *            账号信息
+	 * @param cacheStorager
+	 *            token管理
+	 */
+	public WeixinSuiteProxy(WeixinQyAccount weixinQyAccount,
+			CacheStorager<Token> cacheStorager) {
+		if (weixinQyAccount == null) {
+			throw new IllegalArgumentException(
+					"weixinQyAccount must not be empty");
+		}
+		if (cacheStorager == null) {
+			throw new IllegalArgumentException(
+					"cacheStorager must not be empty");
+		}
+		this.weixinQyAccount = weixinQyAccount;
+		List<WeixinAccount> suites = weixinQyAccount.getSuites();
 		if (suites != null && !suites.isEmpty()) {
 			this.suiteMap = new HashMap<String, SuiteApi>(suites.size());
 			for (WeixinAccount suite : suites) {
 				this.suiteMap.put(suite.getId(), new SuiteApi(
-						new TicketManager(suite.getId(), suite.getSecret(), settings.getCacheStorager0())));
+						new TicketManager(suite.getId(), suite.getSecret(),
+								cacheStorager)));
 			}
 			this.suiteMap.put(null, suiteMap.get(suites.get(0).getId()));
 		}
-		if (StringUtil.isNotBlank(settings.getAccount().getId())
-				&& StringUtil.isNotBlank(settings.getAccount().getProviderSecret())) {
+		if (StringUtil.isNotBlank(weixinQyAccount.getId())
+				&& StringUtil.isNotBlank(weixinQyAccount.getProviderSecret())) {
 			this.providerApi = new ProviderApi(
-					new TokenManager(new WeixinProviderTokenCreator(settings.getAccount().getId(),
-							settings.getAccount().getProviderSecret()), settings.getCacheStorager0()),
-					settings.getCacheStorager0());
+					new TokenManager(new WeixinProviderTokenCreator(
+							weixinQyAccount.getId(), weixinQyAccount
+									.getProviderSecret()), cacheStorager),
+					cacheStorager);
 		}
 	}
 
@@ -89,8 +115,8 @@ public class WeixinSuiteProxy {
 	 *
 	 * @return
 	 */
-	public WeixinQyAccount getWeixinAccount() {
-		return this.settings.getAccount();
+	public WeixinQyAccount getWeixinQyAccount() {
+		return weixinQyAccount;
 	}
 
 	/**
@@ -121,17 +147,19 @@ public class WeixinSuiteProxy {
 	 * @param suiteId
 	 *            套件ID
 	 * @return 预授权码
+	 * @see #cacheSuiteTicket(String, String)
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi#getTicketManager()
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi#getPreCodeManager()
 	 * @throws WeixinException
 	 */
 	public String getPreSuiteTicket(String suiteId) throws WeixinException {
-		Token token = suite(suiteId).getTicketManager().getTicket();
+		SuiteApi suite = suite(suiteId);
+		Token token = suite.getTicketManager().getTicket();
 		if (token == null || StringUtil.isBlank(token.getAccessToken())) {
 			throw new WeixinException("maybe oauth first?");
 		}
-		return token.getAccessToken();
+		return suite.getPreCodeManager().getAccessToken();
 	}
 
 	/**
@@ -146,27 +174,33 @@ public class WeixinSuiteProxy {
 	 *      推送suite_ticket协议</a>
 	 * @throws WeixinException
 	 */
-	public void cacheSuiteTicket(String suiteId, String suiteTicket) throws WeixinException {
+	public void cacheSuiteTicket(String suiteId, String suiteTicket)
+			throws WeixinException {
 		suite(suiteId).getTicketManager().cachingTicket(suiteTicket);
 	}
 
 	/**
-	 * 应用套件授权 <font color="red">需先缓存ticket</font>
-	 *
-	 * @see {@link #getSuiteAuthorizeURL(String, String,String)}
+	 * 应用套件授权 <font color="red">需先缓存ticket</font> <li>
+	 * redirectUri默认填写weixin4j.properties#suite.oauth.redirect.uri <li>
+	 * state默认填写state
+	 * 
 	 * @param suiteId
 	 *            套件ID
-	 * @see {@link #cacheSuiteTicket(String, String)}
+	 * @see {@link #getSuiteAuthorizationURL(String, String,String)}
 	 * @return 请求授权的URL
 	 * @throws WeixinException
 	 */
-	public String getSuiteAuthorizeURL(String suiteId) throws WeixinException {
-		String redirectUri = Weixin4jConfigUtil.getValue("suite.oauth.redirect.uri");
-		return getSuiteAuthorizeURL(suiteId, redirectUri, "state");
+	public String getSuiteAuthorizationURL(String suiteId)
+			throws WeixinException {
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("suite.oauth.redirect.uri");
+		return getSuiteAuthorizationURL(suiteId, redirectUri, "state");
 	}
 
 	/**
-	 * 应用套件授权 <font color="red">需先缓存ticket</font>
+	 * 应用套件授权 <font
+	 * color="red">需先缓存ticket，在授权完成之后需要调用SuiteApi#exchangeAuthInfo方法
+	 * ,否则无法缓存token相关导致后续的组件接口调用失败</font>
 	 *
 	 * @param suiteId
 	 *            套件ID
@@ -174,16 +208,22 @@ public class WeixinSuiteProxy {
 	 *            授权后重定向url
 	 * @param state
 	 *            回调后原样返回
+	 * @see #cacheSuiteTicket(String, String)
+	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi
+	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi#getTicketManager()
+	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi#getPreCodeManager()
+	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi#exchangeAuthInfo(String)
 	 * @see <a href="http://qydev.weixin.qq.com/wiki/index.php?title
 	 *      =%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%AE%A1%E7%90%86%E5%91%98%E6%
 	 *      8E%88%E6%9D%83%E5%BA%94%E7%94%A8">企业号第三方应用套件授权</a>
-	 * @see {@link SuiteApi#getPreCodeManager}
 	 * @return 请求授权的URL
 	 * @throws WeixinException
 	 */
-	public String getSuiteAuthorizeURL(String suiteId, String redirectUri, String state) throws WeixinException {
+	public String getSuiteAuthorizationURL(String suiteId, String redirectUri,
+			String state) throws WeixinException {
 		try {
-			return String.format(URLConsts.SUITE_OAUTH_URL, suiteId, getPreSuiteTicket(suiteId),
+			return String.format(URLConsts.SUITE_OAUTH_URL, suiteId,
+					getPreSuiteTicket(suiteId),
 					URLEncoder.encode(redirectUri, Consts.UTF_8.name()), state);
 		} catch (UnsupportedEncodingException e) {
 			;
@@ -225,7 +265,8 @@ public class WeixinSuiteProxy {
 	 *      获取登录企业号官网的url</a>
 	 * @throws WeixinException
 	 */
-	public String getLoginUrl(String corpId, LoginTargetType targetType, int agentId) throws WeixinException {
+	public String getLoginUrl(String corpId, LoginTargetType targetType,
+			int agentId) throws WeixinException {
 		return providerApi.getLoginUrl(corpId, targetType, agentId);
 	}
 
@@ -240,7 +281,8 @@ public class WeixinSuiteProxy {
 	 * @return
 	 */
 	public WeixinProxy getWeixinProxy(String suiteId, String authCorpId) {
-		return new WeixinProxy(suite(suiteId).getPerTicketManager(authCorpId), suite(suiteId).getTokenManager());
+		return new WeixinProxy(suite(suiteId).getPerTicketManager(authCorpId),
+				suite(suiteId).getTokenManager());
 	}
 
 	public final static String VERSION = "1.7.1";

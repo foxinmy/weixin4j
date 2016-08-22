@@ -1,5 +1,8 @@
 package com.foxinmy.weixin4j.api;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,10 +58,22 @@ public class MchApi extends BaseApi {
 	 * @return
 	 * @throws WeixinException
 	 */
-	protected WeixinRequestExecutor createSSLRequestExecutor(
-			InputStream certificate) throws WeixinException {
+	protected WeixinRequestExecutor createSSLRequestExecutor()
+			throws WeixinException {
+		InputStream certificateFile;
+		try {
+			File certificate = new File(weixinAccount.getCertificateFile());
+			if (!certificate.exists() || !certificate.isFile()) {
+				throw new WeixinException("invalid certificate file : "
+						+ certificate.toString());
+			}
+			certificateFile = new FileInputStream(
+					weixinAccount.getCertificateFile());
+		} catch (IOException e) {
+			throw new WeixinException("IO Error on createSSLRequestExecutor", e);
+		}
 		return weixinExecutor.createSSLRequestExecutor(
-				weixinAccount.getCertificateKey(), certificate);
+				weixinAccount.getCertificateKey(), certificateFile);
 	}
 
 	/**

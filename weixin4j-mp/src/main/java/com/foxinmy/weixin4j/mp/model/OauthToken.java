@@ -18,7 +18,7 @@ public class OauthToken extends Token {
 	/**
 	 * 用户的openid
 	 */
-	@JSONField(name = "openId")
+	@JSONField(name = "openid")
 	private String openId;
 	/**
 	 * 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段

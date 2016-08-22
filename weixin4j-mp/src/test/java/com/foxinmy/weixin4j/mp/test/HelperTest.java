@@ -44,6 +44,6 @@ public class HelperTest extends TokenTest {
 
 	@Test
 	public void clearQuota() throws WeixinException {
-		System.err.println(helperApi.clearQuota(settings.getAccount().getId()));
+		System.err.println(helperApi.clearQuota(weixinAccount.getId()));
 	}
 }

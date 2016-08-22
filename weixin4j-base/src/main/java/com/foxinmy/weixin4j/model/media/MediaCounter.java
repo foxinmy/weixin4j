@@ -23,7 +23,7 @@ public class MediaCounter implements Serializable {
 	@JSONField(name = "total_count")
 	private int totalCount;
 	/**
-	 * 文件素材总数目(企业号都有)
+	 * 文件素材总数目(企业号独有)
 	 */
 	@JSONField(name = "file_count")
 	private int fileCount;

@@ -7,10 +7,11 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
+import com.foxinmy.weixin4j.cache.FileCacheStorager;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.api.PayOldApi;
 import com.foxinmy.weixin4j.mp.oldpayment.WeixinOldPayAccount;
-import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 
@@ -24,14 +25,14 @@ import com.foxinmy.weixin4j.type.IdType;
  * @see
  */
 public class PayTest {
-	protected final static PayOldApi PAY2;
-	protected final static Weixin4jSettings<WeixinOldPayAccount> settings;
+	private final static PayOldApi PAY2;
+	private final static WeixinOldPayAccount WEIXIN_OLD_PAY_ACCOUNT;
 	static {
-		settings = new Weixin4jSettings<WeixinOldPayAccount>(
-				new WeixinOldPayAccount("请填入v2版本的appid", "请填入v2版本的appSecret",
-						"请填入v2版本的paysignkey", "请填入v2版本的partnerId",
-						"请填入v2版本的partnerKey"));
-		PAY2 = new PayOldApi(settings);
+		WEIXIN_OLD_PAY_ACCOUNT = new WeixinOldPayAccount("请填入v2版本的appid",
+				"请填入v2版本的appSecret", "请填入v2版本的paysignkey", "请填入v2版本的partnerId",
+				"请填入v2版本的partnerKey");
+		PAY2 = new PayOldApi(WEIXIN_OLD_PAY_ACCOUNT,
+				new FileCacheStorager<Token>());
 	}
 	/**
 	 * 商户证书文件

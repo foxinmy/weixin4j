@@ -44,33 +44,34 @@ public class OauthApi extends QyApi {
 	}
 
 	/**
-	 * 企业号用户身份授权:重定向URL使用weixin4j.properties#user.oauth.redirect.uri
-	 *
-	 * @see {@link #getUserAuthorizeURL(String,String)}
+	 * 企业号成员身份授权<li>
+	 * redirectUri默认填写weixin4j.properties#user.oauth.redirect.uri <li>
+	 * state默认填写state
+	 * 
+	 * @see {@link #getUserAuthorizationURL(String,String)}
 	 *
 	 * @return 请求授权的URL
 	 */
-	public String getUserAuthorizeURL() {
+	public String getUserAuthorizationURL() {
 		String redirectUri = Weixin4jConfigUtil
 				.getValue("user.oauth.redirect.uri");
-		return getUserAuthorizeURL(redirectUri, "state");
+		return getUserAuthorizationURL(redirectUri, "state");
 	}
 
 	/**
-	 * 企业号用户身份授权
+	 * 企业号成员身份授权
 	 *
 	 * @param redirectUri
 	 *            重定向地址
 	 * @param state
 	 *            用于保持请求和回调的状态
 	 * @return 请求授权的URL
-	 * @see UserApi
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinProxy#getUserByCode(String)}
+	 * @see UserApi#getOUserInfoByCode(String, String)
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81">
 	 *      企业号用户身份授权</a>
 	 */
-	public String getUserAuthorizeURL(String redirectUri, String state) {
+	public String getUserAuthorizationURL(String redirectUri, String state) {
 		String oauth_uri = getRequestUri("user_oauth_uri");
 		try {
 			return String.format(oauth_uri, account.getId(),
@@ -82,20 +83,22 @@ public class OauthApi extends QyApi {
 	}
 
 	/**
-	 * 企业号第三方提供商授权:重定向URL使用weixin4j.properties#third.oauth.redirect.uri
+	 * 企业号第三方提供商登陆授权<li>
+	 * redirectUri默认填写weixin4j.properties#third.oauth.redirect.uri <li>
+	 * state默认填写state
 	 *
-	 * @see {@link #getThirdAuthorizeURL(String,String)}
+	 * @see {@link #getThirdAuthorizationURL(String,String)}
 	 *
 	 * @return 请求授权的URL
 	 */
-	public String getThirdAuthorizeURL() {
+	public String getThirdAuthorizationURL() {
 		String redirectUri = Weixin4jConfigUtil
 				.getValue("third.oauth.redirect.uri");
-		return getThirdAuthorizeURL(redirectUri, "state");
+		return getThirdAuthorizationURL(redirectUri, "state");
 	}
 
 	/**
-	 * 企业号登陆授权
+	 * 企业号第三方提供商登陆授权
 	 *
 	 * @param corpId
 	 *            企业号（提供商）的corpid
@@ -104,13 +107,12 @@ public class OauthApi extends QyApi {
 	 * @param state
 	 *            用于保持请求和回调的状态，授权请求后原样带回给第三方
 	 * @return 请求授权的URL
-	 * @see ProviderApi
-	 * @see {@link com.foxinmy.weixin4j.qy.WeixinSuiteProxy#getOUserInfoByCode(String)}
+	 * @see ProviderApi#getOUserInfoByCode(String)
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E6%88%90%E5%91%98%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83">
 	 *      企业号第三方提供商授权</a>
 	 */
-	public String getThirdAuthorizeURL(String redirectUri, String state) {
+	public String getThirdAuthorizationURL(String redirectUri, String state) {
 		String oauth_uri = getRequestUri("provider_oauth_uri");
 		try {
 			return String.format(oauth_uri, account.getId(),

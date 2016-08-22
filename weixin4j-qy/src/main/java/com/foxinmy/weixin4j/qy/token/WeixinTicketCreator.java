@@ -60,6 +60,7 @@ public class WeixinTicketCreator extends TokenCreator {
 		}
 		JSONObject result = response.getAsJson();
 		return new Token(result.getString("ticket"),
-				result.getLong("expires_in") * 1000l);
+				result.getLong("expires_in") * 1000l).pushExtra("group_id",
+				result.getString("group_id"));
 	}
 }

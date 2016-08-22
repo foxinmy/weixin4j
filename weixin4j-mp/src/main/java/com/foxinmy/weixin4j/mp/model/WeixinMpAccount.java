@@ -12,8 +12,7 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  * @className WeixinMpAccount
  * @author jinyu
  * @date Jul 6, 2016
- * @since JDK 1.8
- * @see
+ * @since JDK 1.6
  */
 public class WeixinMpAccount extends WeixinAccount {
 

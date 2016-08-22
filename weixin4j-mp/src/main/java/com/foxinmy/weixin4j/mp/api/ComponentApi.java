@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.mp.api;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +16,15 @@ import com.foxinmy.weixin4j.mp.component.WeixinComponentPreCodeCreator;
 import com.foxinmy.weixin4j.mp.component.WeixinComponentTokenCreator;
 import com.foxinmy.weixin4j.mp.component.WeixinTokenComponentCreator;
 import com.foxinmy.weixin4j.mp.model.AuthorizerOption;
+import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.AuthorizerOption.AuthorizerOptionName;
 import com.foxinmy.weixin4j.mp.model.ComponentAuthInfo;
 import com.foxinmy.weixin4j.token.PerTicketManager;
 import com.foxinmy.weixin4j.token.TicketManager;
 import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenManager;
+import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * 第三方应用组件
@@ -102,6 +107,110 @@ public class ComponentApi extends MpApi {
 	}
 
 	/**
+	 * 第三方组件代替授权公众号发起网页授权：获取code <li>
+	 * redirectUri默认填写weixin4j.properties#component.user.oauth.redirect.uri <li>
+	 * scope默认填写snsapi_base <li>
+	 * state默认填写state
+	 * 
+	 * @param authAppId
+	 *            公众号的appid
+	 * @see #getAuthorizationURL(String, String, String, String)
+	 * @see <a
+	 *      href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318590&token=&lang=zh_CN">第三方组件代替授权公众号发起网页授权</a>
+	 */
+	public String getUserAuthorizationURL(String authAppId) {
+		String redirectUri = Weixin4jConfigUtil
+				.getValue("component.user.oauth.redirect.uri");
+		return getUserAuthorizationURL(authAppId, redirectUri, "snsapi_base",
+				"state");
+	}
+
+	/**
+	 * 第三方组件代替授权公众号发起网页授权：获取code
+	 * 
+	 * @param authAppId
+	 *            公众号的appid
+	 * @param redirectUri
+	 *            重定向地址，这里填写的应是服务开发方的回调地址
+	 * @param scope
+	 *            应用授权作用域，snsapi_base/snsapi_userinfo
+	 * @param state
+	 *            重定向后会带上state参数，开发者可以填写任意参数值，最多128字节
+	 * @return oauth授权URL
+	 * @see <a
+	 *      href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318590&token=&lang=zh_CN">第三方组件代替授权公众号发起网页授权</a>
+	 */
+	public String getUserAuthorizationURL(String authAppId, String redirectUri,
+			String scope, String state) {
+		String sns_component_user_auth_uri = getRequestUri("sns_component_user_auth_uri");
+		try {
+			return String.format(sns_component_user_auth_uri, authAppId,
+					URLEncoder.encode(redirectUri, Consts.UTF_8.name()), scope,
+					state, this.ticketManager.getThirdId());
+		} catch (UnsupportedEncodingException e) {
+			;
+		}
+		return "";
+	}
+
+	/**
+	 * 第三方组件代替授权公众号发起网页授权：换取token
+	 * 
+	 * @param authAppId
+	 *            公众号的appid
+	 * @param code
+	 *            用户同意授权获取的code
+	 * @return token信息
+	 * @see #getUserAuthorizationURL(String, String, String, String)
+	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
+	 * @throws WeixinException
+	 */
+	public OauthToken getAuthorizationToken(String authAppId, String code)
+			throws WeixinException {
+		String sns_component_user_token_uri = getRequestUri("sns_component_user_token_uri");
+		String accessToken = tokenManager.getAccessToken();
+		WeixinResponse response = weixinExecutor.get(String.format(
+				sns_component_user_token_uri, authAppId, code,
+				ticketManager.getThirdId(), accessToken));
+		JSONObject result = response.getAsJson();
+		OauthToken token = new OauthToken(result.getString("access_token"),
+				result.getLongValue("expires_in") * 1000l);
+		token.setOpenId(result.getString("openid"));
+		token.setScope(result.getString("scope"));
+		token.setRefreshToken(result.getString("refresh_token"));
+		return token;
+	}
+
+	/**
+	 * 第三方组件代替授权公众号发起网页授权：刷新token
+	 * 
+	 * @param authAppId
+	 *            公众号的appid
+	 * @param refreshToken
+	 *            填写通过access_token获取到的refresh_token参数
+	 * @return token信息
+	 * @see #getAuthorizationToken(String, String)
+	 * @see OauthApi#getAuthorizationUser(OauthToken)
+	 * @see com.foxinmy.weixin4j.mp.model.OauthToken
+	 * @throws WeixinException
+	 */
+	public OauthToken refreshAuthorizationToken(String authAppId,
+			String refreshToken) throws WeixinException {
+		String sns_component_token_refresh_uri = getRequestUri("sns_component_token_refresh_uri");
+		String accessToken = tokenManager.getAccessToken();
+		WeixinResponse response = weixinExecutor.get(String.format(
+				sns_component_token_refresh_uri, authAppId,
+				ticketManager.getThirdId(), accessToken, refreshToken));
+		JSONObject result = response.getAsJson();
+		OauthToken token = new OauthToken(result.getString("access_token"),
+				result.getLongValue("expires_in") * 1000l);
+		token.setOpenId(result.getString("openid"));
+		token.setScope(result.getString("scope"));
+		token.setRefreshToken(result.getString("refresh_token"));
+		return token;
+	}
+
+	/**
 	 * 使用授权码换取公众号的接口调用凭据和授权信息:用于使用授权码换取授权公众号的授权信息，
 	 * 并换取authorizer_access_token和authorizer_refresh_token。
 	 * 授权码的获取，需要在用户在第三方平台授权页中完成授权流程后
@@ -111,6 +220,7 @@ public class ComponentApi extends MpApi {
 	 * @param authCode
 	 *            授权code
 	 * @return 第三方组件授权信息
+	 * @see {@link com.foxinmy.weixin4j.mp.WeixinComponentProxy#getComponentAuthorizeURL(String, String, String)}
 	 * @see com.foxinmy.weixin4j.mp.model.ComponentAuthInfo
 	 * @throws WeixinException
 	 */
@@ -169,22 +279,23 @@ public class ComponentApi extends MpApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(component_get_authorizer_uri,
 						tokenManager.getAccessToken()), obj.toJSONString());
-		obj = response.getAsJson().getJSONObject("authorizer_info");
-		ComponentAuthInfo info = JSON
-				.toJavaObject(obj, ComponentAuthInfo.class);
-		info.setServiceType(obj.getJSONObject("service_type_info").getIntValue(
+		obj = response.getAsJson();
+		JSONObject auth = obj.getJSONObject("authorizer_info");
+		ComponentAuthInfo info = JSON.toJavaObject(auth,
+				ComponentAuthInfo.class);
+		info.setServiceType(auth.getJSONObject("service_type_info")
+				.getIntValue("id"));
+		info.setVerifyType(auth.getJSONObject("verify_type_info").getIntValue(
 				"id"));
-		info.setVerifyType(obj.getJSONObject("verify_type_info").getIntValue(
-				"id"));
-		JSONArray privilegesObj = obj.getJSONObject("authorization_info")
-				.getJSONArray("func_info");
+		auth = obj.getJSONObject("authorization_info");
+		JSONArray privilegesObj = auth.getJSONArray("func_info");
 		List<Integer> privileges = new ArrayList<Integer>(privilegesObj.size());
 		for (int i = 0; i < privilegesObj.size(); i++) {
 			privileges.add(privilegesObj.getJSONObject(i)
 					.getJSONObject("funcscope_category").getInteger("id"));
 		}
 		info.setPrivileges(privileges);
-		info.setAppId(authAppId);
+		info.setAppId(auth.getString("appid"));
 		return info;
 	}
 

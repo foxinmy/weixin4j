@@ -13,10 +13,10 @@ import com.foxinmy.weixin4j.model.Token;
  * @date 2015年6月12日
  * @since JDK 1.6
  * @see TokenCreator
+ * @see com.foxinmy.weixin4j.token.TokenCreator
  * @see com.foxinmy.weixin4j.cache.CacheStorager
  */
 public class TokenManager extends CacheManager<Token> {
-
 	/**
 	 *
 	 * @param tokenCreator

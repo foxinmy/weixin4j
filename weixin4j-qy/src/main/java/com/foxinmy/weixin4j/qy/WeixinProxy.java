@@ -3,9 +3,12 @@ package com.foxinmy.weixin4j.qy;
 import java.io.InputStream;
 import java.util.List;
 
+import com.foxinmy.weixin4j.cache.CacheStorager;
+import com.foxinmy.weixin4j.cache.FileCacheStorager;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
+import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.model.media.MediaCounter;
 import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
@@ -20,6 +23,7 @@ import com.foxinmy.weixin4j.qy.api.HelperApi;
 import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.qy.api.MenuApi;
 import com.foxinmy.weixin4j.qy.api.NotifyApi;
+import com.foxinmy.weixin4j.qy.api.OauthApi;
 import com.foxinmy.weixin4j.qy.api.PartyApi;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
@@ -45,8 +49,8 @@ import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.qy.type.InviteType;
 import com.foxinmy.weixin4j.qy.type.KfType;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
-import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.PerTicketManager;
+import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
@@ -63,7 +67,10 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">api文档</a>
  */
 public class WeixinProxy {
-
+	/**
+	 * 授权API
+	 */
+	private final OauthApi oauthApi;
 	/**
 	 * 媒体素材API
 	 */
@@ -105,33 +112,48 @@ public class WeixinProxy {
 	 */
 	private final ChatApi chatApi;
 	/**
-	 * token实现
+	 * token管理
 	 */
 	private final TokenManager tokenManager;
 	/**
-	 * 配置信息
+	 * 账号信息
 	 */
-	private Weixin4jSettings<WeixinAccount> settings;
+	private final WeixinAccount weixinAccount;
+	/**
+	 * token存储
+	 */
+	private final CacheStorager<Token> cacheStorager;
 
 	/**
-	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
+	 * 微信接口实现(使用weixin4j.properties配置的account账号信息,
+	 * 使用FileCacheStorager文件方式缓存TOKEN)
 	 */
 	public WeixinProxy() {
-		this(new Weixin4jSettings<WeixinAccount>(
-				Weixin4jConfigUtil.getWeixinAccount()));
+		this(new FileCacheStorager<Token>());
 	}
 
 	/**
-	 *
-	 * @param settings
-	 *            微信配置信息
-	 * @see com.foxinmy.weixin4j.setting.Weixin4jSettings
+	 * 微信接口实现(使用weixin4j.properties配置的account账号信息)
+	 * 
+	 * @param cacheStorager
+	 *            token管理
 	 */
-	public WeixinProxy(Weixin4jSettings<WeixinAccount> settings) {
-		this(new TokenManager(new WeixinTokenCreator(settings.getAccount()
-				.getId(), settings.getAccount().getSecret()),
-				settings.getCacheStorager0()));
-		this.settings = settings;
+	public WeixinProxy(CacheStorager<Token> cacheStorager) {
+		this(Weixin4jConfigUtil.getWeixinAccount(), cacheStorager);
+	}
+
+	/**
+	 * 微信接口实现
+	 * 
+	 * @param weixinAccount
+	 *            账号信息
+	 * @param cacheStorager
+	 *            token管理
+	 */
+	public WeixinProxy(WeixinAccount weixinAccount,
+			CacheStorager<Token> cacheStorager) {
+		this(weixinAccount, new WeixinTokenCreator(weixinAccount.getId(),
+				weixinAccount.getSecret()), cacheStorager);
 	}
 
 	/**
@@ -148,21 +170,37 @@ public class WeixinProxy {
 	 */
 	public WeixinProxy(PerTicketManager perTicketManager,
 			TokenManager suiteTokenManager) {
-		this(new TokenManager(new WeixinTokenSuiteCreator(perTicketManager,
-				suiteTokenManager), perTicketManager.getCacheStorager()));
-		this.settings = new Weixin4jSettings<WeixinAccount>(new WeixinAccount(
-				perTicketManager.getAuthAppId(), null));
+		this(
+				new WeixinAccount(perTicketManager.getThirdId(),
+						perTicketManager.getThirdSecret()),
+				new WeixinTokenSuiteCreator(perTicketManager, suiteTokenManager),
+				perTicketManager.getCacheStorager());
 	}
 
 	/**
-	 * 注意：TokenCreator 需为 <font
-	 * color="red">WeixinTokenCreator或WeixinTokenSuiteCreator</font>
-	 *
-	 * @see com.foxinmy.weixin4j.qy.token.WeixinTokenCreator
+	 * 微信接口实现
+	 * 
+	 * @param settings
+	 *            配置信息
 	 * @param tokenManager
+	 *            token管理
 	 */
-	private WeixinProxy(TokenManager tokenManager) {
-		this.tokenManager = tokenManager;
+	private WeixinProxy(WeixinAccount weixinAccount, TokenCreator tokenCreator,
+			CacheStorager<Token> cacheStorager) {
+		if (weixinAccount == null) {
+			throw new IllegalArgumentException("settings must not be empty");
+		}
+		if (tokenCreator == null) {
+			throw new IllegalArgumentException("tokenCreator must not be empty");
+		}
+		if (cacheStorager == null) {
+			throw new IllegalArgumentException(
+					"cacheStorager must not be empty");
+		}
+		this.tokenManager = new TokenManager(tokenCreator, cacheStorager);
+		this.weixinAccount = weixinAccount;
+		this.cacheStorager = cacheStorager;
+		this.oauthApi = new OauthApi(weixinAccount);
 		this.partyApi = new PartyApi(tokenManager);
 		this.userApi = new UserApi(tokenManager);
 		this.tagApi = new TagApi(tokenManager);
@@ -185,12 +223,22 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 获取oauth授权API
+	 * 
+	 * @see com.foxinmy.weixin4j.qy.api.OauthApi
+	 * @return
+	 */
+	public OauthApi getOauthApi() {
+		return oauthApi;
+	}
+
+	/**
 	 * 获取微信账号信息
 	 *
 	 * @return
 	 */
 	public WeixinAccount getWeixinAccount() {
-		return this.settings.getAccount();
+		return weixinAccount;
 	}
 
 	/**
@@ -201,9 +249,8 @@ public class WeixinProxy {
 	 * @return
 	 */
 	public TokenManager getTicketManager(TicketType ticketType) {
-		return new TokenManager(new WeixinTicketCreator(getWeixinAccount()
-				.getId(), ticketType, this.tokenManager),
-				this.settings.getCacheStorager0());
+		return new TokenManager(new WeixinTicketCreator(weixinAccount.getId(),
+				ticketType, this.tokenManager), cacheStorager);
 	}
 
 	/**
@@ -769,11 +816,11 @@ public class WeixinProxy {
 	 * 获取部门成员
 	 *
 	 * @param partyId
-	 *            部门ID 必须
+	 *            部门ID
 	 * @param fetchChild
-	 *            是否递归获取子部门下面的成员 非必须
+	 *            是否递归获取子部门下面的成员
 	 * @param userStatus
-	 *            成员状态 status可叠加 非必须 未填写则默认为未关注(4)
+	 *            成员状态 status可叠加 未填写则默认为未关注(4)
 	 * @param findDetail
 	 *            是否获取详细信息
 	 * @see com.foxinmy.weixin4j.qy.model.User
@@ -787,6 +834,21 @@ public class WeixinProxy {
 	public List<User> listUser(int partyId, boolean fetchChild,
 			UserStatus userStatus, boolean findDetail) throws WeixinException {
 		return userApi.listUser(partyId, fetchChild, userStatus, findDetail);
+	}
+
+	/**
+	 * 获取权限范围内的所有成员列表
+	 * 
+	 * @param userStatus
+	 *            成员状态 未填写则默认为全部状态下的成员
+	 * @return 成员列表
+	 * @see com.foxinmy.weixin4j.qy.api.UserApi
+	 * @see {@link #listUser(int, boolean, UserStatus,boolean)}
+	 * @see {@link PartyApi#listParty(int)}
+	 * @throws WeixinException
+	 */
+	public List<User> listAllUser(UserStatus userStatus) throws WeixinException {
+		return userApi.listAllUser(userStatus);
 	}
 
 	/**

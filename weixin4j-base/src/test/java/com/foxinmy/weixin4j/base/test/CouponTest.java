@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.base.test;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -26,11 +24,11 @@ import com.foxinmy.weixin4j.util.DateUtil;
 public class CouponTest extends PayTest {
 
 	@Test
-	public void sendCoupon() throws WeixinException, IOException {
+	public void sendCoupon() throws WeixinException {
 		String partnerTradeNo = String.format("%s%s%s", ACCOUNT.getMchId(),
 				DateUtil.fortmat2yyyyMMdd(new Date()), "1");
-		CouponResult result = PAY.sendCoupon(new FileInputStream(caFile),
-				"123", partnerTradeNo, "oyFLst1bqtuTcxK-ojF8hOGtLQao", null);
+		CouponResult result = PAY.sendCoupon("123", partnerTradeNo,
+				"oyFLst1bqtuTcxK-ojF8hOGtLQao", null);
 		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
 		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
 		System.err.println(result);

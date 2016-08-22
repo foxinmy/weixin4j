@@ -2,11 +2,9 @@ package com.foxinmy.weixin4j.api;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -213,7 +211,7 @@ public class PayApi extends MchApi {
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一
 	 *      </a>
 	 */
-	public String createNativePayRequestURL(String productId) {
+	public String createNativePayRequest(String productId) {
 		Map<String, String> map = new HashMap<String, String>();
 		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(16);
@@ -435,8 +433,6 @@ public class PayApi extends MchApi {
 	 * ，要采用原来的退款单号。总退款金额不能超过用户实际支付金额。
 	 * </p>
 	 *
-	 * @param certificate
-	 *            后缀为*.p12的证书文件
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
@@ -458,36 +454,28 @@ public class PayApi extends MchApi {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery,
-			String outRefundNo, double totalFee, double refundFee,
-			CurrencyType refundFeeType, String opUserId) throws WeixinException {
+	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
+			double totalFee, double refundFee, CurrencyType refundFeeType,
+			String opUserId) throws WeixinException {
 		WeixinResponse response = null;
-		try {
-			Map<String, String> map = createBaseRequestMap(idQuery);
-			map.put("out_refund_no", outRefundNo);
-			map.put("total_fee", Integer.toString(DateUtil.formatYuan2Fen(totalFee)));
-			map.put("refund_fee", Integer.toString(DateUtil.formatYuan2Fen(refundFee)));
-			if (StringUtil.isBlank(opUserId)) {
-				opUserId = weixinAccount.getMchId();
-			}
-			map.put("op_user_id", opUserId);
-			if (refundFeeType == null) {
-				refundFeeType = CurrencyType.CNY;
-			}
-			map.put("refund_fee_type", refundFeeType.name());
-			map.put("sign", weixinSignature.sign(map));
-			String param = XmlStream.map2xml(map);
-			response = createSSLRequestExecutor(certificate).post(
-					getRequestUri("refund_apply_uri"), param);
-		} finally {
-			if (certificate != null) {
-				try {
-					certificate.close();
-				} catch (IOException e) {
-					;
-				}
-			}
+		Map<String, String> map = createBaseRequestMap(idQuery);
+		map.put("out_refund_no", outRefundNo);
+		map.put("total_fee",
+				Integer.toString(DateUtil.formatYuan2Fen(totalFee)));
+		map.put("refund_fee",
+				Integer.toString(DateUtil.formatYuan2Fen(refundFee)));
+		if (StringUtil.isBlank(opUserId)) {
+			opUserId = weixinAccount.getMchId();
 		}
+		map.put("op_user_id", opUserId);
+		if (refundFeeType == null) {
+			refundFeeType = CurrencyType.CNY;
+		}
+		map.put("refund_fee_type", refundFeeType.name());
+		map.put("sign", weixinSignature.sign(map));
+		String param = XmlStream.map2xml(map);
+		response = createSSLRequestExecutor().post(
+				getRequestUri("refund_apply_uri"), param);
 		return response.getAsObject(new TypeReference<RefundResult>() {
 		});
 	}
@@ -495,8 +483,6 @@ public class PayApi extends MchApi {
 	/**
 	 * 退款申请(全额退款)
 	 *
-	 * @param certificate
-	 *            后缀为*.p12的证书文件
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
@@ -504,12 +490,11 @@ public class PayApi extends MchApi {
 	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
 	 * @param totalFee
 	 *            订单总金额,单位为元
-	 * @see {@link #applyRefund(InputStream, IdQuery, String, double, double,CurrencyType, String)}
+	 * @see {@link #applyRefund(IdQuery, String, double, double,CurrencyType, String)}
 	 */
-	public RefundResult applyRefund(InputStream certificate, IdQuery idQuery,
-			String outRefundNo, double totalFee) throws WeixinException {
-		return applyRefund(certificate, idQuery, outRefundNo, totalFee,
-				totalFee, null, null);
+	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
+			double totalFee) throws WeixinException {
+		return applyRefund(idQuery, outRefundNo, totalFee, totalFee, null, null);
 	}
 
 	/**
@@ -518,8 +503,6 @@ public class PayApi extends MchApi {
 	 * 如需实现相同功能请调用退款接口</font></br> <font
 	 * color="red">调用扣款接口后请勿立即调用撤销,需要等待5秒以上。先调用查单接口,如果没有确切的返回,再调用撤销</font> </br>
 	 *
-	 * @param certificate
-	 *            后缀为*.p12的证书文件
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
 	 *            transaction_id> out_trade_no
@@ -527,25 +510,14 @@ public class PayApi extends MchApi {
 	 * @since V3
 	 * @throws WeixinException
 	 */
-	public MerchantResult reverseOrder(InputStream certificate, IdQuery idQuery)
-			throws WeixinException {
-		try {
-			Map<String, String> map = createBaseRequestMap(idQuery);
-			map.put("sign", weixinSignature.sign(map));
-			String param = XmlStream.map2xml(map);
-			WeixinResponse response = createSSLRequestExecutor(certificate)
-					.post(getRequestUri("order_reverse_uri"), param);
-			return response.getAsObject(new TypeReference<MerchantResult>() {
-			});
-		} finally {
-			if (certificate != null) {
-				try {
-					certificate.close();
-				} catch (IOException e) {
-					;
-				}
-			}
-		}
+	public MerchantResult reverseOrder(IdQuery idQuery) throws WeixinException {
+		Map<String, String> map = createBaseRequestMap(idQuery);
+		map.put("sign", weixinSignature.sign(map));
+		String param = XmlStream.map2xml(map);
+		WeixinResponse response = createSSLRequestExecutor().post(
+				getRequestUri("order_reverse_uri"), param);
+		return response.getAsObject(new TypeReference<MerchantResult>() {
+		});
 	}
 
 	/**
@@ -614,17 +586,16 @@ public class PayApi extends MchApi {
 	 * @param billType
 	 *            下载对账单的类型 ALL,返回当日所有订单信息, 默认值 SUCCESS,返回当日成功支付的订单
 	 *            REFUND,返回当日退款订单
-	 * @param billPath
-	 *            对账单保存路径
-	 * @return excel表格
+	 * @param outputStream
+	 *            输出流
 	 * @since V3
 	 * @see <a href=
 	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6">
 	 *      下载对账单API</a>
 	 * @throws WeixinException
 	 */
-	public File downloadBill(Date billDate, BillType billType, String billPath)
-			throws WeixinException {
+	public void downloadBill(Date billDate, BillType billType,
+			OutputStream outputStream) throws WeixinException {
 		if (billDate == null) {
 			Calendar now = Calendar.getInstance();
 			now.add(Calendar.DAY_OF_MONTH, -1);
@@ -634,14 +605,6 @@ public class PayApi extends MchApi {
 			billType = BillType.ALL;
 		}
 		String formatBillDate = DateUtil.fortmat2yyyyMMdd(billDate);
-		String fileName = String.format("weixin4j_bill_%s_%s_%s.txt",
-				formatBillDate, billType.name().toLowerCase(),
-				weixinAccount.getId());
-		File file = new File(String.format("%s%s%s", billPath, File.separator,
-				fileName));
-		if (file.exists()) {
-			return file;
-		}
 		Map<String, String> map = createBaseRequestMap(null);
 		map.put("bill_date", formatBillDate);
 		map.put("bill_type", billType.name());
@@ -653,8 +616,8 @@ public class PayApi extends MchApi {
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 		try {
-			writer = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(file), Consts.UTF_8));
+			writer = new BufferedWriter(new OutputStreamWriter(outputStream,
+					Consts.UTF_8));
 			reader = new BufferedReader(new InputStreamReader(
 					response.getBody(), Consts.UTF_8));
 			String line = null;
@@ -676,7 +639,6 @@ public class PayApi extends MchApi {
 				;
 			}
 		}
-		return file;
 	}
 
 	/**

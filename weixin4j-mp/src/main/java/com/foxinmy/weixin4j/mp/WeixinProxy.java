@@ -4,9 +4,12 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import com.foxinmy.weixin4j.cache.CacheStorager;
+import com.foxinmy.weixin4j.cache.FileCacheStorager;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
+import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.model.card.CardCoupon;
 import com.foxinmy.weixin4j.model.card.CardCoupons;
@@ -28,6 +31,7 @@ import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.mp.api.MenuApi;
 import com.foxinmy.weixin4j.mp.api.NotifyApi;
+import com.foxinmy.weixin4j.mp.api.OauthApi;
 import com.foxinmy.weixin4j.mp.api.QrApi;
 import com.foxinmy.weixin4j.mp.api.TagApi;
 import com.foxinmy.weixin4j.mp.api.TmplApi;
@@ -56,8 +60,8 @@ import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
 import com.foxinmy.weixin4j.mp.type.Lang;
-import com.foxinmy.weixin4j.setting.Weixin4jSettings;
 import com.foxinmy.weixin4j.token.PerTicketManager;
+import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
@@ -77,7 +81,10 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @see <a href="http://mp.weixin.qq.com/wiki/index.php">api文档</a>
  */
 public class WeixinProxy {
-
+	/**
+	 * 授权API
+	 */
+	private final OauthApi oauthApi;
 	/**
 	 * 媒体素材API
 	 */
@@ -131,64 +138,94 @@ public class WeixinProxy {
 	 */
 	private final CardApi cardApi;
 	/**
-	 * token实现
+	 * token管理
 	 */
 	private final TokenManager tokenManager;
 	/**
-	 * 配置信息
+	 * 账号信息
 	 */
-	private Weixin4jSettings<WeixinAccount> settings;
+	private final WeixinAccount weixinAccount;
+	/**
+	 * token存储
+	 */
+	private final CacheStorager<Token> cacheStorager;
 
 	/**
-	 * 默认使用文件方式保存token、使用weixin4j.properties配置的账号信息
+	 * 微信接口实现(使用weixin4j.properties配置的account账号信息,
+	 * 使用FileCacheStorager文件方式缓存TOKEN)
 	 */
 	public WeixinProxy() {
-		this(new Weixin4jSettings<WeixinAccount>(
-				Weixin4jConfigUtil.getWeixinAccount()));
+		this(new FileCacheStorager<Token>());
 	}
 
 	/**
-	 *
-	 * @param settings
-	 *            微信配置信息
-	 * @see com.foxinmy.weixin4j.setting.Weixin4jSettings
+	 * 微信接口实现(使用weixin4j.properties配置的account账号信息)
+	 * 
+	 * @param cacheStorager
+	 *            token管理
 	 */
-	public WeixinProxy(Weixin4jSettings<WeixinAccount> settings) {
-		this(new TokenManager(new WeixinTokenCreator(settings.getAccount()
-				.getId(), settings.getAccount().getSecret()),
-				settings.getCacheStorager0()));
-		this.settings = settings;
+	public WeixinProxy(CacheStorager<Token> cacheStorager) {
+		this(Weixin4jConfigUtil.getWeixinAccount(), cacheStorager);
 	}
 
 	/**
-	 * 第三方组件(永久刷新令牌机制)
+	 * 微信接口实现
+	 * 
+	 * @param weixinAccount
+	 *            账号信息
+	 * @param cacheStorager
+	 *            token管理
+	 */
+	public WeixinProxy(WeixinAccount weixinAccount,
+			CacheStorager<Token> cacheStorager) {
+		this(weixinAccount, new WeixinTokenCreator(weixinAccount.getId(),
+				weixinAccount.getSecret()), cacheStorager);
+	}
+
+	/**
+	 * 第三方组件方式创建微信接口实现(永久刷新令牌机制)
 	 *
 	 * @param perTicketManager
 	 *            第三方组件永久刷新token
-	 *            {@link com.foxinmy.weixin4j.mp.api.ComponentApi#getPerCodeManager(String)}
 	 * @param componentTokenManager
 	 *            第三方组件凭证token
-	 *            {@link com.foxinmy.weixin4j.mp.api.ComponentApi#getTokenManager}
 	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi
+	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi#getPerCodeManager(String)
+	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi#getTokenManager
 	 */
 	public WeixinProxy(PerTicketManager perTicketManager,
 			TokenManager componentTokenManager) {
-		this(new TokenManager(new WeixinTokenComponentCreator(perTicketManager,
-				componentTokenManager), perTicketManager.getCacheStorager()));
-		this.settings = new Weixin4jSettings<WeixinAccount>(new WeixinAccount(
-				perTicketManager.getAuthAppId(), null));
-		this.settings.setCacheStorager(perTicketManager.getCacheStorager());
+		this(new WeixinAccount(perTicketManager.getThirdId(),
+				perTicketManager.getThirdSecret()),
+				new WeixinTokenComponentCreator(perTicketManager,
+						componentTokenManager), perTicketManager
+						.getCacheStorager());
 	}
 
 	/**
-	 * 注意：TokenCreator 需为 <font color="red">WeixinTokenCreator</font>
-	 *
-	 * @see com.foxinmy.weixin4j.mp.token.WeixinTokenCreator
+	 * 微信接口实现
+	 * 
+	 * @param settings
+	 *            配置信息
 	 * @param tokenManager
 	 *            token管理
 	 */
-	private WeixinProxy(TokenManager tokenManager) {
-		this.tokenManager = tokenManager;
+	private WeixinProxy(WeixinAccount weixinAccount, TokenCreator tokenCreator,
+			CacheStorager<Token> cacheStorager) {
+		if (weixinAccount == null) {
+			throw new IllegalArgumentException("settings must not be empty");
+		}
+		if (tokenCreator == null) {
+			throw new IllegalArgumentException("tokenCreator must not be empty");
+		}
+		if (cacheStorager == null) {
+			throw new IllegalArgumentException(
+					"cacheStorager must not be empty");
+		}
+		this.tokenManager = new TokenManager(tokenCreator, cacheStorager);
+		this.weixinAccount = weixinAccount;
+		this.cacheStorager = cacheStorager;
+		this.oauthApi = new OauthApi(weixinAccount);
 		this.mediaApi = new MediaApi(tokenManager);
 		this.notifyApi = new NotifyApi(tokenManager);
 		this.customApi = new CustomApi(tokenManager);
@@ -210,7 +247,7 @@ public class WeixinProxy {
 	 * @return
 	 */
 	public WeixinAccount getWeixinAccount() {
-		return this.settings.getAccount();
+		return weixinAccount;
 	}
 
 	/**
@@ -223,6 +260,16 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 获取oauth授权API
+	 * 
+	 * @see com.foxinmy.weixin4j.mp.api.OauthApi
+	 * @return
+	 */
+	public OauthApi getOauthApi() {
+		return oauthApi;
+	}
+
+	/**
 	 * 获取JSSDK Ticket的tokenManager
 	 *
 	 * @param ticketType
@@ -230,9 +277,8 @@ public class WeixinProxy {
 	 * @return
 	 */
 	public TokenManager getTicketManager(TicketType ticketType) {
-		return new TokenManager(new WeixinTicketCreator(getWeixinAccount()
-				.getId(), ticketType, this.tokenManager),
-				this.settings.getCacheStorager0());
+		return new TokenManager(new WeixinTicketCreator(weixinAccount.getId(),
+				ticketType, this.tokenManager), this.cacheStorager);
 	}
 
 	/**
@@ -1537,7 +1583,7 @@ public class WeixinProxy {
 	 * @throws WeixinException
 	 */
 	public ApiResult clearQuota() throws WeixinException {
-		return helperApi.clearQuota(getWeixinAccount().getId());
+		return helperApi.clearQuota(weixinAccount.getId());
 	}
 
 	/**

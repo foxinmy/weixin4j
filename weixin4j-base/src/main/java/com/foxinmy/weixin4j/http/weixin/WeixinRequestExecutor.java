@@ -124,8 +124,7 @@ public class WeixinRequestExecutor {
 	 * @return 微信响应
 	 * @throws WeixinException
 	 */
-	public WeixinResponse doRequest(HttpRequest request)
-			throws WeixinException {
+	public WeixinResponse doRequest(HttpRequest request) throws WeixinException {
 		try {
 			if (logger.isEnabled(InternalLogLevel.DEBUG)) {
 				logger.debug("weixin request >> " + request.getMethod() + " "
@@ -227,6 +226,12 @@ public class WeixinRequestExecutor {
 					new java.security.SecureRandom());
 			return createSSLRequestExecutor(sslContext);
 		} catch (Exception e) {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException ignore) {
+				}
+			}
 			throw new WeixinException("Key load error", e);
 		}
 	}

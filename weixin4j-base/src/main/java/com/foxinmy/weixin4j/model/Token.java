@@ -95,10 +95,6 @@ public class Token implements Cacheable {
 		return extra;
 	}
 
-	public void setExtra(Map<String, String> extra) {
-		this.extra = extra;
-	}
-
 	public Token pushExtra(String name, String value) {
 		this.extra.put(name, value);
 		return this;

@@ -165,3 +165,7 @@
   + type包拆分card/mch
   
   + 新增card卡券相关类
+  
+* 2016-08-22
+
+  + 删除`Weixin4jSettings`配置类

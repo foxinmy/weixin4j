@@ -21,6 +21,18 @@ public class FileCacheStorager<T extends Cacheable> implements CacheStorager<T> 
 	private final File tmpdir;
 	private final String SEPARATOR = File.separator;
 
+	/**
+	 * 默认缓存路径：java.io.tmpdir
+	 */
+	public FileCacheStorager() {
+		this(System.getProperty("java.io.tmpdir"));
+	}
+
+	/**
+	 * 
+	 * @param path
+	 *            缓存文件报错
+	 */
 	public FileCacheStorager(String path) {
 		this.tmpdir = new File(String.format("%s%s%s", path, SEPARATOR, ALLKEY));
 		this.tmpdir.mkdirs();
@@ -28,14 +40,17 @@ public class FileCacheStorager<T extends Cacheable> implements CacheStorager<T> 
 
 	@Override
 	public T lookup(String key) {
-		File cacheFile = new File(String.format("%s%s%s", tmpdir.getAbsolutePath(), SEPARATOR, key));
+		File cacheFile = new File(String.format("%s%s%s",
+				tmpdir.getAbsolutePath(), SEPARATOR, key));
 		try {
 			if (cacheFile.exists()) {
-				T cache = SerializationUtils.deserialize(new FileInputStream(cacheFile));
+				T cache = SerializationUtils.deserialize(new FileInputStream(
+						cacheFile));
 				if (cache.getCreateTime() < 0) {
 					return cache;
 				}
-				if ((cache.getCreateTime() + cache.getExpires() - CUTMS) > System.currentTimeMillis()) {
+				if ((cache.getCreateTime() + cache.getExpires() - CUTMS) > System
+						.currentTimeMillis()) {
 					return cache;
 				}
 			}
@@ -48,8 +63,10 @@ public class FileCacheStorager<T extends Cacheable> implements CacheStorager<T> 
 	@Override
 	public void caching(String key, T cache) {
 		try {
-			SerializationUtils.serialize(cache,
-					new FileOutputStream(new File(String.format("%s%s%s", tmpdir.getAbsolutePath(), SEPARATOR, key))));
+			SerializationUtils.serialize(
+					cache,
+					new FileOutputStream(new File(String.format("%s%s%s",
+							tmpdir.getAbsolutePath(), SEPARATOR, key))));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -58,10 +75,12 @@ public class FileCacheStorager<T extends Cacheable> implements CacheStorager<T> 
 	@Override
 	public T evict(String key) {
 		T cache = null;
-		File cacheFile = new File(String.format("%s%s%s", tmpdir.getAbsolutePath(), SEPARATOR, key));
+		File cacheFile = new File(String.format("%s%s%s",
+				tmpdir.getAbsolutePath(), SEPARATOR, key));
 		try {
 			if (cacheFile.exists()) {
-				cache = SerializationUtils.deserialize(new FileInputStream(cacheFile));
+				cache = SerializationUtils.deserialize(new FileInputStream(
+						cacheFile));
 				cacheFile.delete();
 			}
 		} catch (IOException e) {
