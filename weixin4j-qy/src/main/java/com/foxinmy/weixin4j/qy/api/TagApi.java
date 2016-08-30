@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 标签API
- * 
+ *
  * @className TagApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月19日
@@ -35,9 +35,9 @@ public class TagApi extends QyApi {
 
 	/**
 	 * 创建标签(创建的标签属于管理组；默认为加锁状态。加锁状态下只有本管理组才可以增删成员，解锁状态下其它管理组也可以增删成员)
-	 * 
+	 *
 	 * @param tag
-	 *            标签对象；</br> 标签名称，长度为1~64个字节，标签名不可与其他标签重名；</br> 标签id，整型，
+	 *            标签对象；</br> 标签名称，长度限制为32个字（汉字或英文字母），标签名不可与其他标签重名。</br> 标签id，整型，
 	 *            指定此参数时新增的标签会生成对应的标签id，不指定时则以目前最大的id自增。
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.9B.E5.BB.BA.E6.A0.87.E7.AD.BE">
@@ -60,7 +60,7 @@ public class TagApi extends QyApi {
 
 	/**
 	 * 更新标签(管理组必须是指定标签的创建者)
-	 * 
+	 *
 	 * @param tag
 	 *            标签信息
 	 * @see <a href=
@@ -81,7 +81,7 @@ public class TagApi extends QyApi {
 
 	/**
 	 * 删除标签(管理组必须是指定标签的创建者，并且标签的成员列表为空。)
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @return 处理结果
@@ -100,7 +100,7 @@ public class TagApi extends QyApi {
 
 	/**
 	 * 获取标签列表
-	 * 
+	 *
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E8.8E.B7.E5.8F.96.E6.A0.87.E7.AD.BE.E5.88.97.E8.A1.A8">
 	 *      获取标签列表说明</a>
@@ -119,7 +119,7 @@ public class TagApi extends QyApi {
 
 	/**
 	 * 获取标签成员(管理组须拥有“获取标签成员”的接口权限，返回列表仅包含管理组管辖范围的成员。)
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @see com.foxinmy.weixin4j.qy.model.Contacts
@@ -147,7 +147,7 @@ public class TagApi extends QyApi {
 
 	/**
 	 * 新增标签成员(标签对管理组可见且未加锁，成员属于管理组管辖范围。)
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @param userIds
@@ -169,7 +169,7 @@ public class TagApi extends QyApi {
 
 	/**
 	 * 删除标签成员(标签对管理组未加锁，成员属于管理组管辖范围)<br>
-	 * 
+	 *
 	 * @param tagId
 	 *            标签ID
 	 * @param userIds

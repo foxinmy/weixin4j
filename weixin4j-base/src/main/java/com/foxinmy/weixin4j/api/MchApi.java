@@ -121,7 +121,7 @@ public class MchApi extends BaseApi {
 		merchant.setAppId(weixinAccount.getId());
 		merchant.setMchId(weixinAccount.getMchId());
 		merchant.setDeviceInfo(weixinAccount.getDeviceInfo());
-		merchant.setSubId(weixinAccount.getSubId());
+		merchant.setSubAppId(weixinAccount.getSubId());
 		merchant.setSubMchId(weixinAccount.getSubMchId());
 		merchant.setNonceStr(RandomUtil.generateString(16));
 	}

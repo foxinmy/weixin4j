@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
@@ -107,7 +108,10 @@ public class PayApi extends MchApi {
 		String tradeType = payPackage.getTradeType().toUpperCase();
 		if (TradeType.MICROPAY.name().equals(tradeType)) {
 			super.declareMerchant(payPackage);
-			payPackage.setSign(weixinSignature.sign(payPackage));
+			JSONObject _payPackage = (JSONObject) JSON.toJSON(payPackage);
+			// 不需要设置TradeType参数
+			_payPackage.remove("tradeType");
+			payPackage.setSign(weixinSignature.sign(_payPackage));
 			String para = XmlStream.toXML(payPackage);
 			WeixinResponse response = weixinExecutor.post(
 					getRequestUri("micropay_uri"), para);

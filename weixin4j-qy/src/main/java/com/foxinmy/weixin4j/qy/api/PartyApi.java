@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 部门API
- * 
+ *
  * @className PartyApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
@@ -31,8 +31,8 @@ public class PartyApi extends QyApi {
 
 	/**
 	 * 创建部门(根部门的parentid为1)
-	 * 
-	 * @param depart
+	 *
+	 * @param party
 	 *            部门对象
 	 * @see com.foxinmy.weixin4j.qy.model.Party
 	 * @see <a
@@ -58,8 +58,8 @@ public class PartyApi extends QyApi {
 
 	/**
 	 * 更新部门(如果非必须的字段未指定 则不更新该字段之前的设置值)
-	 * 
-	 * @param depart
+	 *
+	 * @param party
 	 *            部门对象
 	 * @see com.foxinmy.weixin4j.qy.model.Party
 	 * @see <a
@@ -88,7 +88,7 @@ public class PartyApi extends QyApi {
 
 	/**
 	 * 查询部门列表(以部门的order字段从小到大排列)
-	 * 
+	 *
 	 * @param partId
 	 *            部门ID。获取指定部门ID下的子部门 传入0表示获取全部子部门
 	 * @see com.foxinmy.weixin4j.qy.model.Party
@@ -111,7 +111,7 @@ public class PartyApi extends QyApi {
 
 	/**
 	 * 删除部门(不能删除根部门；不能删除含有子部门、成员的部门)
-	 * 
+	 *
 	 * @param partId
 	 *            部门ID
 	 * @see <a

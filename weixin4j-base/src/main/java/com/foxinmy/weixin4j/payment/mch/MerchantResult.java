@@ -39,9 +39,9 @@ public class MerchantResult extends XmlResult {
 	/**
 	 * 微信分配的子商户公众账号ID 非必须
 	 */
-	@XmlElement(name = "sub_id")
-	@JSONField(name = "sub_id")
-	private String subId;
+	@XmlElement(name = "sub_appid")
+	@JSONField(name = "sub_appid")
+	private String subAppId;
 	/**
 	 * 微信支付分配的子商户号 非必须
 	 */
@@ -99,12 +99,12 @@ public class MerchantResult extends XmlResult {
 		this.mchId = mchId;
 	}
 
-	public String getSubId() {
-		return subId;
+	public String getSubAppId() {
+		return subAppId;
 	}
 
-	public void setSubId(String subId) {
-		this.subId = subId;
+	public void setSubAppId(String subAppId) {
+		this.subAppId = subAppId;
 	}
 
 	public String getSubMchId() {
@@ -168,7 +168,7 @@ public class MerchantResult extends XmlResult {
 
 	@Override
 	public String toString() {
-		return "appId=" + appId + ", mchId=" + mchId + ", subId=" + subId
+		return "appId=" + appId + ", mchId=" + mchId + ", subAppId=" + subAppId
 				+ ", subMchId=" + subMchId + ", nonceStr=" + nonceStr
 				+ ", sign=" + sign + ", deviceInfo=" + deviceInfo + ", recall="
 				+ getFormatRecall() + ", " + super.toString();
