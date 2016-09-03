@@ -6,7 +6,6 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPath;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.alibaba.fastjson.parser.deserializer.ParseProcess;
 import com.alibaba.fastjson.serializer.NameFilter;
@@ -93,13 +92,12 @@ public class MenuApi extends QyApi {
 		String menu_get_uri = getRequestUri("menu_get_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(menu_get_uri, token.getAccessToken(), agentid));
-
-		JSONArray buttons = response.getAsJson().getJSONObject("menu").getJSONArray("button");
+		JSONArray buttons = response.getAsJson().getJSONArray("button");
 		List<Button> buttonList = new ArrayList<Button>(buttons.size());
 		ParseProcess processor = new ExtraProcessor() {
 			@Override
 			public void processExtra(Object object, String key, Object value) {
-				JSONPath.set(object, "$.content", value);
+				((Button) object).setContent(String.valueOf(value));
 			}
 		};
 		for (int i = 0; i < buttons.size(); i++) {

@@ -188,7 +188,7 @@ public class WeixinProxy {
 	private WeixinProxy(WeixinAccount weixinAccount, TokenCreator tokenCreator,
 			CacheStorager<Token> cacheStorager) {
 		if (weixinAccount == null) {
-			throw new IllegalArgumentException("settings must not be empty");
+			throw new IllegalArgumentException("weixinAccount must not be empty");
 		}
 		if (tokenCreator == null) {
 			throw new IllegalArgumentException("tokenCreator must not be empty");
