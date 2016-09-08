@@ -31,7 +31,6 @@ public class Tag implements Serializable {
 	 */
 	private int count;
 
-	@JSONCreator
 	public Tag(@JSONField(name = "id") int id,
 			@JSONField(name = "name") String name) {
 		this(id, name, 0);
