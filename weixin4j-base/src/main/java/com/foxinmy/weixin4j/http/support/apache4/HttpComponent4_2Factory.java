@@ -8,6 +8,8 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -53,12 +55,17 @@ public class HttpComponent4_2Factory extends HttpClientFactory {
 					socketAddress.getPort());
 			clientBuilder.setProxy(proxy);
 		}
-		if (params.getHostnameVerifier() != null) {
-			clientBuilder.setHostnameVerifier(new CustomHostnameVerifier(params
-					.getHostnameVerifier()));
-		}
 		if (params.getSSLContext() != null) {
-			clientBuilder.setSslcontext(params.getSSLContext());
+			X509HostnameVerifier hostnameVerifier;
+			if (params.getHostnameVerifier() != null) {
+				hostnameVerifier = new CustomHostnameVerifier(
+						params.getHostnameVerifier());
+			} else {
+				hostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+			}
+			clientBuilder.setHostnameVerifier(hostnameVerifier);
+			clientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(
+					params.getSSLContext(), hostnameVerifier));
 		}
 	}
 
@@ -93,9 +100,6 @@ public class HttpComponent4_2Factory extends HttpClientFactory {
 
 	@Override
 	public HttpClient newInstance() {
-		if (httpClient == null) {
-			this.httpClient = clientBuilder.build();
-		}
-		return new HttpComponent4_2(httpClient);
+		return new HttpComponent4_2(clientBuilder.build());
 	}
 }

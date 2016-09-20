@@ -5,6 +5,7 @@ import java.util.Set;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.util.Pool;
 
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.SerializationUtils;
@@ -20,7 +21,7 @@ import com.foxinmy.weixin4j.util.SerializationUtils;
 public class RedisCacheStorager<T extends Cacheable> implements
 		CacheStorager<T> {
 
-	private JedisPool jedisPool;
+	private Pool<Jedis> jedisPool;
 
 	private final static String HOST = "127.0.0.1";
 	private final static int PORT = 6379;
@@ -54,7 +55,7 @@ public class RedisCacheStorager<T extends Cacheable> implements
 		this(new JedisPool(jedisPoolConfig, host, port, timeout));
 	}
 
-	public RedisCacheStorager(JedisPool jedisPool) {
+	public RedisCacheStorager(Pool<Jedis> jedisPool) {
 		this.jedisPool = jedisPool;
 	}
 

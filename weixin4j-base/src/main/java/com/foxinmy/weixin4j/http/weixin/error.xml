@@ -880,6 +880,10 @@
 		<text>主页型应用不支持的消息类型</text>
 	</error>
 	<error>
+		<code>60026</code>
+		<text>已授权的应用不允许企业管理组调用接口修改菜单</text>
+	</error>
+	<error>
 		<code>60027</code>
 		<text>不支持第三方修改主页型应用字段</text>
 	</error>
@@ -890,6 +894,10 @@
 	<error>
 		<code>60029</code>
 		<text>应用已授权予第三方，不允许通过接口修改可信域名</text>
+	</error>
+	<error>
+		<code>60031</code>
+		<text>未设置管理组的登录授权域名</text>
 	</error>
 	<error>
 		<code>60102</code>
@@ -998,6 +1006,10 @@
 	<error>
 		<code>60129</code>
 		<text>用户设置了拒绝邀请</text>
+	</error>
+	<error>
+		<code>60131</code>
+		<text>不合法的职位长度</text>
 	</error>
 	<error>
 		<code>61017</code>
