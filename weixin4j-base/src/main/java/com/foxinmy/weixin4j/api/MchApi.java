@@ -3,7 +3,6 @@ package com.foxinmy.weixin4j.api;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -38,6 +37,7 @@ public class MchApi extends BaseApi {
 
 	protected final WeixinPayAccount weixinAccount;
 	protected final WeixinSignature weixinSignature;
+	private volatile WeixinRequestExecutor weixinSSLExecutor;
 
 	public MchApi(WeixinPayAccount weixinAccount) {
 		this.weixinAccount = weixinAccount;
@@ -48,32 +48,6 @@ public class MchApi extends BaseApi {
 	@Override
 	protected ResourceBundle weixinBundle() {
 		return WEIXIN_BUNDLE;
-	}
-
-	/**
-	 * 创建 SSL支付请求
-	 *
-	 * @param certificate
-	 *            *.p12证书文件
-	 * @return
-	 * @throws WeixinException
-	 */
-	protected WeixinRequestExecutor createSSLRequestExecutor()
-			throws WeixinException {
-		InputStream certificateFile;
-		try {
-			File certificate = new File(weixinAccount.getCertificateFile());
-			if (!certificate.exists() || !certificate.isFile()) {
-				throw new WeixinException("invalid certificate file : "
-						+ certificate.toString());
-			}
-			certificateFile = new FileInputStream(
-					weixinAccount.getCertificateFile());
-		} catch (IOException e) {
-			throw new WeixinException("IO Error on createSSLRequestExecutor", e);
-		}
-		return weixinExecutor.createSSLRequestExecutor(
-				weixinAccount.getCertificateKey(), certificateFile);
 	}
 
 	/**
@@ -110,6 +84,32 @@ public class MchApi extends BaseApi {
 	 */
 	public WeixinSignature getWeixinSignature() {
 		return this.weixinSignature;
+	}
+
+	/**
+	 * 微信SSL
+	 * 
+	 * @return
+	 */
+	protected WeixinRequestExecutor getWeixinSSLExecutor()
+			throws WeixinException {
+		if (weixinSSLExecutor == null) {
+			try {
+				File certificate = new File(weixinAccount.getCertificateFile());
+				if (!certificate.exists() || !certificate.isFile()) {
+					throw new WeixinException("Invalid certificate file : "
+							+ certificate.toString());
+				}
+				this.weixinSSLExecutor = weixinExecutor
+						.createSSLRequestExecutor(
+								weixinAccount.getCertificateKey(),
+								new FileInputStream(certificate));
+			} catch (IOException e) {
+				throw new WeixinException(
+						"IO Error on createSSLRequestExecutor", e);
+			}
+		}
+		return this.weixinSSLExecutor;
 	}
 
 	/**

@@ -66,7 +66,7 @@ public class CashApi extends MchApi {
 		obj.put("wxappid", obj.remove("appid"));
 		obj.put("sign", weixinSignature.sign(obj));
 		String param = XmlStream.map2xml(obj);
-		WeixinResponse response = createSSLRequestExecutor()
+		WeixinResponse response = getWeixinSSLExecutor()
 				.post(redpacket.getTotalNum() > 1 ? getRequestUri("groupredpack_send_uri")
 						: getRequestUri("redpack_send_uri"), param);
 		String text = response.getAsString()
@@ -97,7 +97,7 @@ public class CashApi extends MchApi {
 		para.put("mch_billno", outTradeNo);
 		para.put("sign", weixinSignature.sign(para));
 		String param = XmlStream.map2xml(para);
-		WeixinResponse response = createSSLRequestExecutor().post(
+		WeixinResponse response = getWeixinSSLExecutor().post(
 				getRequestUri("redpack_query_uri"), param);
 		return response.getAsObject(new TypeReference<RedpacketRecord>() {
 		});
@@ -133,7 +133,7 @@ public class CashApi extends MchApi {
 		obj.put("mch_appid", obj.remove("appid"));
 		obj.put("sign", weixinSignature.sign(obj));
 		String param = XmlStream.map2xml(obj);
-		WeixinResponse response = createSSLRequestExecutor().post(
+		WeixinResponse response = getWeixinSSLExecutor().post(
 				getRequestUri("corppayment_send_uri"), param);
 		String text = response.getAsString()
 				.replaceFirst("<mch_appid>", "<appid>")
@@ -164,7 +164,7 @@ public class CashApi extends MchApi {
 		obj.put("partner_trade_no", outTradeNo);
 		obj.put("sign", weixinSignature.sign(obj));
 		String param = XmlStream.map2xml(obj);
-		WeixinResponse response = createSSLRequestExecutor().post(
+		WeixinResponse response = getWeixinSSLExecutor().post(
 				getRequestUri("corppayment_query_uri"), param);
 		return response.getAsObject(new TypeReference<CorpPaymentRecord>() {
 		});

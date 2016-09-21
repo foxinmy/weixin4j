@@ -478,7 +478,7 @@ public class PayApi extends MchApi {
 		map.put("refund_fee_type", refundFeeType.name());
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		response = createSSLRequestExecutor().post(
+		response = getWeixinSSLExecutor().post(
 				getRequestUri("refund_apply_uri"), param);
 		return response.getAsObject(new TypeReference<RefundResult>() {
 		});
@@ -518,7 +518,7 @@ public class PayApi extends MchApi {
 		Map<String, String> map = createBaseRequestMap(idQuery);
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = createSSLRequestExecutor().post(
+		WeixinResponse response = getWeixinSSLExecutor().post(
 				getRequestUri("order_reverse_uri"), param);
 		return response.getAsObject(new TypeReference<MerchantResult>() {
 		});

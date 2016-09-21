@@ -62,7 +62,7 @@ public class CouponApi extends MchApi {
 		map.put("type", "XML");
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = createSSLRequestExecutor().post(
+		WeixinResponse response = getWeixinSSLExecutor().post(
 				getRequestUri("coupon_send_uri"), param);
 		return response.getAsObject(new TypeReference<CouponResult>() {
 		});
