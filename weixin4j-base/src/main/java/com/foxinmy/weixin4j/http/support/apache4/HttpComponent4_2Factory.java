@@ -10,7 +10,6 @@ import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.HttpProcessor;
@@ -31,7 +30,6 @@ import com.foxinmy.weixin4j.util.Consts;
  */
 public class HttpComponent4_2Factory extends HttpClientFactory {
 
-	private volatile CloseableHttpClient httpClient;
 	private final HttpClientBuilder clientBuilder;
 
 	public HttpComponent4_2Factory() {

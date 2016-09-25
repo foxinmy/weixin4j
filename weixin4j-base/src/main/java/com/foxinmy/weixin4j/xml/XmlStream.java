@@ -44,12 +44,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 public final class XmlStream {
 	private final static String ROOT_ELEMENT_XML = "xml";
 	private final static String XML_VERSION = "1.0";
-	private final static Map<Class<?>, Unmarshaller> messageUnmarshaller;
-	private final static Map<Class<?>, Marshaller> messageMarshaller;
-	static {
-		messageUnmarshaller = new ConcurrentHashMap<Class<?>, Unmarshaller>();
-		messageMarshaller = new ConcurrentHashMap<Class<?>, Marshaller>();
-	}
+	private final static ConcurrentHashMap<Class<?>, JAXBContext> jaxbContexts = new ConcurrentHashMap<Class<?>, JAXBContext>();;
 
 	/**
 	 * Xml2Bean
@@ -62,28 +57,28 @@ public final class XmlStream {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T fromXML(InputStream content, Class<T> clazz) {
-		Unmarshaller unmarshaller = messageUnmarshaller.get(clazz);
-		if (unmarshaller == null) {
-			try {
-				JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
-				unmarshaller = jaxbContext.createUnmarshaller();
-				messageUnmarshaller.put(clazz, unmarshaller);
-			} catch (JAXBException e) {
-				throw new RuntimeException(e);
-			}
-		}
+		JAXBContext jaxbContext = getJaxbContext(clazz);
 		try {
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			Source source = new StreamSource(content);
-			XmlRootElement rootElement = clazz.getAnnotation(XmlRootElement.class);
+			XmlRootElement rootElement = clazz
+					.getAnnotation(XmlRootElement.class);
 			if (rootElement == null
-					|| rootElement.name().equals(XmlRootElement.class.getMethod("name").getDefaultValue().toString())) {
-				JAXBElement<T> jaxbElement = unmarshaller.unmarshal(source, clazz);
+					|| rootElement.name().equals(
+							XmlRootElement.class.getMethod("name")
+									.getDefaultValue().toString())) {
+				JAXBElement<T> jaxbElement = unmarshaller.unmarshal(source,
+						clazz);
 				return jaxbElement.getValue();
 			} else {
 				return (T) unmarshaller.unmarshal(source);
 			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not unmarshaller class [" + clazz
+					+ "]: " + ex.getMessage(), ex);
+		} catch (NoSuchMethodException ex) {
+			throw new RuntimeException("Could not unmarshaller class [" + clazz
+					+ "]: " + ex.getMessage(), ex);
 		} finally {
 			if (content != null) {
 				try {
@@ -105,7 +100,8 @@ public final class XmlStream {
 	 * @return
 	 */
 	public static <T> T fromXML(String content, Class<T> clazz) {
-		return fromXML(new ByteArrayInputStream(content.getBytes(Consts.UTF_8)), clazz);
+		return fromXML(
+				new ByteArrayInputStream(content.getBytes(Consts.UTF_8)), clazz);
 	}
 
 	/**
@@ -118,7 +114,8 @@ public final class XmlStream {
 	public static String map2xml(Map<String, String> map) {
 		StringWriter sw = new StringWriter();
 		try {
-			XMLStreamWriter xw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
+			XMLStreamWriter xw = XMLOutputFactory.newInstance()
+					.createXMLStreamWriter(sw);
 			xw.writeStartDocument(Consts.UTF_8.name(), XML_VERSION);
 			xw.writeStartElement(ROOT_ELEMENT_XML);
 			for (Entry<String, String> entry : map.entrySet()) {
@@ -154,7 +151,8 @@ public final class XmlStream {
 	public static String map2xml(JSONObject json) {
 		StringWriter sw = new StringWriter();
 		try {
-			XMLStreamWriter xw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
+			XMLStreamWriter xw = XMLOutputFactory.newInstance()
+					.createXMLStreamWriter(sw);
 			xw.writeStartDocument(Consts.UTF_8.name(), XML_VERSION);
 			xw.writeStartElement(ROOT_ELEMENT_XML);
 			for (Entry<String, Object> entry : json.entrySet()) {
@@ -191,7 +189,8 @@ public final class XmlStream {
 		Map<String, String> map = new HashMap<String, String>();
 		StringReader sr = new StringReader(content);
 		try {
-			XMLStreamReader xr = XMLInputFactory.newInstance().createXMLStreamReader(sr);
+			XMLStreamReader xr = XMLInputFactory.newInstance()
+					.createXMLStreamReader(sr);
 			while (true) {
 				int event = xr.next();
 				if (event == XMLStreamConstants.END_DOCUMENT) {
@@ -244,27 +243,28 @@ public final class XmlStream {
 	@SuppressWarnings("unchecked")
 	public static <T> void toXML(T t, OutputStream os) {
 		Class<T> clazz = (Class<T>) t.getClass();
-		Marshaller marshaller = messageMarshaller.get(clazz);
-		if (marshaller == null) {
-			try {
-				JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
-				marshaller = jaxbContext.createMarshaller();
-				marshaller.setProperty(Marshaller.JAXB_ENCODING, Consts.UTF_8.name());
-				messageMarshaller.put(clazz, marshaller);
-			} catch (JAXBException e) {
-				throw new IllegalArgumentException(e);
-			}
-		}
+		JAXBContext jaxbContext = getJaxbContext(clazz);
 		try {
-			XmlRootElement rootElement = clazz.getAnnotation(XmlRootElement.class);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING,
+					Consts.UTF_8.name());
+			XmlRootElement rootElement = clazz
+					.getAnnotation(XmlRootElement.class);
 			if (rootElement == null
-					|| rootElement.name().equals(XmlRootElement.class.getMethod("name").getDefaultValue().toString())) {
-				marshaller.marshal(new JAXBElement<T>(new QName(ROOT_ELEMENT_XML), clazz, t), os);
+					|| rootElement.name().equals(
+							XmlRootElement.class.getMethod("name")
+									.getDefaultValue().toString())) {
+				marshaller.marshal(new JAXBElement<T>(new QName(
+						ROOT_ELEMENT_XML), clazz, t), os);
 			} else {
 				marshaller.marshal(t, os);
 			}
-		} catch (Exception e) {
-			throw new IllegalArgumentException(e);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not marshal class [" + clazz
+					+ "]: " + ex.getMessage(), ex);
+		} catch (NoSuchMethodException ex) {
+			throw new RuntimeException("Could not marshaller class [" + clazz
+					+ "]: " + ex.getMessage(), ex);
 		} finally {
 			if (os != null) {
 				try {
@@ -274,5 +274,20 @@ public final class XmlStream {
 				}
 			}
 		}
+	}
+
+	private static JAXBContext getJaxbContext(Class<?> clazz) {
+		JAXBContext jaxbContext = jaxbContexts.get(clazz);
+		if (jaxbContext == null) {
+			try {
+				jaxbContext = JAXBContext.newInstance(clazz);
+				jaxbContexts.putIfAbsent(clazz, jaxbContext);
+			} catch (JAXBException ex) {
+				throw new RuntimeException(
+						"Could not instantiate JAXBContext for class [" + clazz
+								+ "]: " + ex.getMessage(), ex);
+			}
+		}
+		return jaxbContext;
 	}
 }
