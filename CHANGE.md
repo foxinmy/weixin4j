@@ -758,3 +758,12 @@
   + version upgrade to 1.7.1
   
   + LOGGER级别优化
+  
+  
+* 2016-08-22
+
+  + weixin4j-base:删除`Weixin4jSettings`配置类
+  
+* 2016-10-10
+
+  + version upgrade to 1.7.2
