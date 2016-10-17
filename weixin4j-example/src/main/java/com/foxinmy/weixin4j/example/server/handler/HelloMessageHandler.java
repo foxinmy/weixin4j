@@ -14,8 +14,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * @className HelloMessageHandler
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月27日
- * @since JDK 1.7
- * @see
+ * @since JDK 1.6
  */
 @Component
 public class HelloMessageHandler extends TextMessageHandler {

@@ -1,20 +1,18 @@
 package com.foxinmy.weixin4j.example.server;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.handler.DebugMessageHandler;
+import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
- * 微信消息服务:单独作为一个服务jar包启动
+ * 微信消息服务:单独作为一个服务jar包启动，推荐这种方式去处理微信消息，可在本项目的根目录运行 `mvn package`得到一个可执行的zip包。
  *
- * @className Weixin4jServerStartupWithoutThread
+ * @className Weixin4jServerStartup
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
- * @since JDK 1.7
- * @see
+ * @since JDK 1.6
  */
-public class Weixin4jServerStartupWithoutThread {
+public final class Weixin4jServerStartup {
 	/**
 	 * 服务监听的端口号,目前微信只支持80端口,可以考虑用nginx做转发到此端口
 	 */
@@ -39,15 +37,11 @@ public class Weixin4jServerStartupWithoutThread {
 	 * @param args
 	 * @throws WeixinException
 	 */
-	@SuppressWarnings("resource")
 	public static void main(String[] args) throws WeixinException {
-		// 单独服务启动
-		// new WeixinServerBootstrap(aesToken)
-		// .handlerPackagesToScan(handlerPackage)
-		// .addHandler(DebugMessageHandler.global).openAlwaysResponse()
-		// .startup(port);
-		// spring容器启动
-		ApplicationContext app = new ClassPathXmlApplicationContext(
-				new String[] { "classpath:/spring-bean.xml" });
+		new WeixinServerBootstrap(aesToken) // 指定开发者token信息。
+				.handlerPackagesToScan(handlerPackage) // 扫描处理消息的包。
+				.addHandler(DebugMessageHandler.global) // 当没有匹配到消息处理时输出调试信息，开发环境打开。
+				.openAlwaysResponse() // 当没有匹配到消息处理时输出空白回复(公众号不会出现「该公众号无法提供服务的提示」)，正式环境打开。
+				.startup(port); // 绑定服务的端口号，即对外暴露(微信服务器URL地址)的服务端口。
 	}
 }
