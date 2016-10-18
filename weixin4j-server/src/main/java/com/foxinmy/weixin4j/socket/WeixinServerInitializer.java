@@ -22,21 +22,27 @@ import com.foxinmy.weixin4j.util.AesToken;
  */
 public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 
-	private final Map<String, AesToken> aesTokenMap;
 	private final WeixinMessageDispatcher messageDispatcher;
+
+	private WeixinMessageDecoder messageDecoder;
 
 	public WeixinServerInitializer(Map<String, AesToken> aesTokenMap,
 			WeixinMessageDispatcher messageDispatcher) {
-		this.aesTokenMap = aesTokenMap;
 		this.messageDispatcher = messageDispatcher;
+		messageDecoder = new WeixinMessageDecoder(aesTokenMap);
+	}
+
+	public int addAesToken(final AesToken asetoken){
+		return messageDecoder.addAesToken(asetoken);
 	}
 
 	@Override
 	protected void initChannel(SocketChannel channel) {
+
 		ChannelPipeline pipeline = channel.pipeline();
 		pipeline.addLast(new HttpServerCodec());
 		pipeline.addLast(new HttpObjectAggregator(65536));
-		pipeline.addLast(new WeixinMessageDecoder(aesTokenMap));
+		pipeline.addLast(messageDecoder);
 		pipeline.addLast(new WeixinResponseEncoder());
 		pipeline.addLast(new SingleResponseEncoder());
 		pipeline.addLast(new WeixinRequestHandler(messageDispatcher));
