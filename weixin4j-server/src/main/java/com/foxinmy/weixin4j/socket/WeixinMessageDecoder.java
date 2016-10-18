@@ -10,6 +10,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
@@ -35,10 +36,24 @@ public class WeixinMessageDecoder extends
 	private final InternalLogger logger = InternalLoggerFactory
 			.getInstance(getClass());
 
-	private Map<String, AesToken> aesTokenMap;
+	private Map<String, AesToken> aesTokenMap = new ConcurrentHashMap<String, AesToken>();
 
 	public WeixinMessageDecoder(Map<String, AesToken> aesTokenMap) {
-		this.aesTokenMap = aesTokenMap;
+		//this.aesTokenMap = aesTokenMap;
+		AesToken[]tokens = aesTokenMap.values().toArray(new AesToken[0]);
+		for (AesToken token:tokens){
+			aesTokenMap.put(token.getWeixinId(), token);
+		}
+	}
+
+	public int addAesToken(final AesToken asetoken){
+		AesToken token = aesTokenMap.get(asetoken.getWeixinId());
+		if (token != null)
+			return -1;
+
+		aesTokenMap.put(asetoken.getWeixinId(), asetoken);
+
+		return 0;
 	}
 
 	@Override

@@ -78,6 +78,8 @@ public final class WeixinServerBootstrap {
 	 */
 	private final Map<String, AesToken> aesTokenMap;
 
+	WeixinServerInitializer wechatInitializer;
+
 	static {
 		DEFAULT_BOSSTHREADS = Runtime.getRuntime().availableProcessors();
 		DEFAULT_WORKERTHREADS = DEFAULT_BOSSTHREADS * 4;
@@ -189,10 +191,13 @@ public final class WeixinServerBootstrap {
 		EventLoopGroup bossGroup = new NioEventLoopGroup(bossThreads);
 		EventLoopGroup workerGroup = new NioEventLoopGroup(workerThreads);
 		try {
+
+			wechatInitializer = new WeixinServerInitializer(aesTokenMap, messageDispatcher);
+
 			ServerBootstrap b = new ServerBootstrap();
 			b.option(ChannelOption.SO_BACKLOG, 1024);
 			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).handler(new LoggingHandler())
-					.childHandler(new WeixinServerInitializer(aesTokenMap, messageDispatcher));
+					.childHandler(wechatInitializer);
 			Channel ch = b.bind(serverPort).addListener(new FutureListener<Void>() {
 				@Override
 				public void operationComplete(Future<Void> future) throws Exception {
@@ -305,6 +310,22 @@ public final class WeixinServerBootstrap {
 	public WeixinServerBootstrap openAlwaysResponse() {
 		messageDispatcher.openAlwaysResponse();
 		return this;
+	}
+
+
+	/**
+	 * aesTokenMap 最好是线程安全的
+	 * @param aesToken
+	 * @return
+	 */
+	public int addAesToken(AesToken aesToken){
+		AesToken token = aesTokenMap.get(aesToken.getWeixinId());
+		if (token != null)
+			return -1;
+
+		this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
+
+		return wechatInitializer.addAesToken(aesToken);
 	}
 
 	public final static String VERSION = "1.1.8";
