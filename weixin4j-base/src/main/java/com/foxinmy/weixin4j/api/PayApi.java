@@ -110,7 +110,7 @@ public class PayApi extends MchApi {
 			super.declareMerchant(payPackage);
 			JSONObject _payPackage = (JSONObject) JSON.toJSON(payPackage);
 			// 不需要设置TradeType参数
-			_payPackage.remove("tradeType");
+			_payPackage.remove("trade_type");
 			payPackage.setSign(weixinSignature.sign(_payPackage));
 			String para = XmlStream.toXML(payPackage);
 			WeixinResponse response = weixinExecutor.post(
