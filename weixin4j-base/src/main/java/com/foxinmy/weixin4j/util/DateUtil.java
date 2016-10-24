@@ -130,6 +130,6 @@ public final class DateUtil {
 	public static double formatFee2Yuan(int fee) {
 		BigDecimal _fee = new BigDecimal(Integer.toString(fee));
 		return _fee.divide(new BigDecimal("100"))
-				.setScale(0, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+				.setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
 	}
 }
