@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * 微信消息基类
  * 
  * @className WeixinMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月6日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.message.ImageMessage
@@ -59,7 +59,6 @@ public class WeixinMessage implements Serializable {
 	private long createTime;
 	/**
 	 * 消息类型
-	 * 
 	 */
 	@XmlElement(name = "MsgType")
 	private String msgType;
@@ -75,7 +74,7 @@ public class WeixinMessage implements Serializable {
 	private String agentId;
 
 	public WeixinMessage() {
-
+		// jaxb required
 	}
 
 	public WeixinMessage(String msgType) {
@@ -96,7 +95,7 @@ public class WeixinMessage implements Serializable {
 
 	@XmlTransient
 	public Date getFormatCreateTime() {
-		return createTime > 0l ? new Date(createTime * 1000l) : null;
+		return new Date(createTime * 1000l);
 	}
 
 	public String getMsgType() {

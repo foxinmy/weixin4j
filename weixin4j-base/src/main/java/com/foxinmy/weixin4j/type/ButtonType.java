@@ -6,13 +6,13 @@ package com.foxinmy.weixin4j.type;
  * ，旧版本微信用户点击后将没有回应
  * ，开发者也不能正常接收到事件推送。media_id和view_limited，是专门给第三方平台旗下未微信认证（具体而言，是资质认证未通过）的订阅号准备的事件类型
  * ，它们是没有事件推送的，能力相对受限，其他类型的公众号不必使用。</font>
- * 
+ *
  * @className ButtonType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月30日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">按钮类型</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013&token=&lang=zh_CN">按钮类型</a>
  */
 public enum ButtonType {
 	/**
@@ -62,5 +62,9 @@ public enum ButtonType {
 	 * 跳转图文消息URL:用户点击view_limited类型按钮后，微信客户端将打开开发者在按钮中填写的永久素材id对应的图文消息URL，
 	 * 永久素材类型只支持图文消息。 请注意：永久素材id必须是在“素材管理/新增永久素材”接口上传后获得的合法id。
 	 */
-	view_limited;
+	view_limited,
+	/**
+	 * 以下类型请勿使用,在公众平台设置的按钮类型,如果尝试使用API方式创建菜单则会出错。
+	 */
+	popups,text,img,voice,video,news;
 }

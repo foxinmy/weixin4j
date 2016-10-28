@@ -9,9 +9,9 @@ import com.alibaba.fastjson.annotation.JSONField;
  * <p>
  * <font color="red">可用于「客服消息」</font>
  * </p>
- * 
+ *
  * @className Music
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月29日
  * @since JDK 1.6
  * @see
@@ -55,10 +55,32 @@ public class Music implements NotifyTuple {
 	@XmlElement(name = "ThumbMediaId")
 	private String thumbMediaId;
 
+	/**
+	 *
+	 * @param musicUrl
+	 *            音乐链接
+	 * @param hqMusicUrl
+	 *            高品质音乐链接
+	 * @param thumbMediaId
+	 *            缩略图
+	 */
 	public Music(String musicUrl, String hqMusicUrl, String thumbMediaId) {
 		this(null, null, musicUrl, hqMusicUrl, thumbMediaId);
 	}
 
+	/**
+	 *
+	 * @param title
+	 *            标题
+	 * @param desc
+	 *            描述
+	 * @param musicUrl
+	 *            音乐链接
+	 * @param hqMusicUrl
+	 *            高品质音乐链接
+	 * @param thumbMediaId
+	 *            缩略图
+	 */
 	public Music(@JSONField(name = "title") String title,
 			@JSONField(name = "desc") String desc,
 			@JSONField(name = "musicUrl") String musicUrl,

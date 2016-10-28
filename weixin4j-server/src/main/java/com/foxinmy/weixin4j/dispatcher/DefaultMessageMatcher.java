@@ -32,7 +32,7 @@ import com.foxinmy.weixin4j.type.MessageType;
  * 默认MessageMatcher实现(可以改进)
  * 
  * @className DefaultMessageMatcher
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月10日
  * @since JDK 1.6
  * @see
@@ -173,13 +173,15 @@ public class DefaultMessageMatcher implements WeixinMessageMatcher {
 
 	private void initQyEventMessageClass() {
 		String messageType = MessageType.event.name();
-		// batch_job_result消息不好区分微信号类型
 		messageClassMap.put(new WeixinMessageKey(messageType,
-				EventType.batch_job_result.name(), AccountType.MP),
+				EventType.batch_job_result.name(), AccountType.QY),
 				BatchjobresultMessage.class);
 		messageClassMap.put(new WeixinMessageKey(messageType,
 				EventType.enter_agent.name(), AccountType.QY),
 				EnterAgentEventMessage.class);
+		//messageClassMap.put(new WeixinMessageKey(messageType,
+			//	EventType.suite.name(), AccountType.QY),
+				//SuiteMessage.class);
 	}
 
 	@Override
@@ -190,7 +192,7 @@ public class DefaultMessageMatcher implements WeixinMessageMatcher {
 	@Override
 	public void regist(WeixinMessageKey messageKey,
 			Class<? extends WeixinMessage> messageClass) {
-		Class<?> clazz = messageClassMap.get(messageKey);
+		Class<?> clazz = match(messageKey);
 		if (clazz != null) {
 			throw new IllegalArgumentException("duplicate messagekey '"
 					+ messageKey + "' define for " + clazz);

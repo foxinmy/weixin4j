@@ -7,7 +7,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -27,7 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.stream.StreamSource;
 
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.ReflectionUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
 
@@ -35,7 +34,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 对 后缀为_$n 的 xml节点反序列化
  * 
  * @className ListsuffixResultDeserializer
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月24日
  * @since JDK 1.6
  * @see
@@ -63,7 +62,7 @@ public class ListsuffixResultDeserializer {
 	}
 
 	/**
-	 * 对包含$n节点的xml序列化
+	 * 对包含$n节点的xml反序列化
 	 * 
 	 * @param content
 	 *            xml内容
@@ -74,10 +73,7 @@ public class ListsuffixResultDeserializer {
 		T t = XmlStream.fromXML(content, clazz);
 		Map<Field, String[]> listsuffixFields = getListsuffixFields(clazz);
 		if (!listsuffixFields.isEmpty()) {
-			Iterator<Entry<Field, String[]>> it = listsuffixFields.entrySet()
-					.iterator();
-			while (it.hasNext()) {
-				Entry<Field, String[]> entry = it.next();
+			for (Entry<Field, String[]> entry : listsuffixFields.entrySet()) {
 				Field field = entry.getKey();
 				Type type = field.getGenericType();
 				Class<?> wrapperClazz = null;
@@ -130,7 +126,7 @@ public class ListsuffixResultDeserializer {
 									name = xr.getLocalName();
 								} else if (event == XMLStreamConstants.END_ELEMENT) {
 									break;
-								} else if (event == XMLStreamConstants.CHARACTERS) {
+								} else if (event == XMLStreamConstants.CHARACTERS  || event == XMLStreamConstants.CDATA) {
 									String key = matcher.group();
 									if (!pattern.pattern().equals(
 											DEFAULT_PATTERN.pattern())) {
@@ -173,15 +169,13 @@ public class ListsuffixResultDeserializer {
 						;
 					}
 				}
-				for (Iterator<Entry<String, Map<String, String>>> outIt = outMap
-						.entrySet().iterator(); outIt.hasNext();) {
+				for (Entry<String, Map<String, String>> outE : outMap
+						.entrySet()) {
 					xw.writeStartElement(itemName);
-					for (Iterator<Entry<String, String>> innerIt = outIt.next()
-							.getValue().entrySet().iterator(); innerIt
-							.hasNext();) {
-						Entry<String, String> entry = innerIt.next();
-						xw.writeStartElement(entry.getKey());
-						xw.writeCharacters(entry.getValue());
+					for (Entry<String, String> innerE : outE
+							.getValue().entrySet()) {
+						xw.writeStartElement(innerE.getKey());
+						xw.writeCharacters(innerE.getValue());
 						xw.writeEndElement();
 					}
 					xw.writeEndElement();

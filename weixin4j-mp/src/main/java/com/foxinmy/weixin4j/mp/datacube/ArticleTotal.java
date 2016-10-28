@@ -10,7 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 数据统计:图文群发总数据
  * 
  * @className ArticleTotal
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月30日
  * @since JDK 1.6
  * @see

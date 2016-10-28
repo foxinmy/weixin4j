@@ -2,10 +2,13 @@ package com.foxinmy.weixin4j.mp.model;
 
 import java.io.Serializable;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 分组
  * 
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月4日
  * @since JDK 1.6
  */
@@ -26,26 +29,6 @@ public class Group implements Serializable {
 	 */
 	private int count;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getCount() {
-		return count;
-	}
-
 	public Group(int id, String name) {
 		this.id = id;
 		this.name = name;
@@ -55,8 +38,25 @@ public class Group implements Serializable {
 		this.name = name;
 	}
 
-	public Group() {
+	@JSONCreator
+	public Group(@JSONField(name = "id") int id,
+			@JSONField(name = "name") String name,
+			@JSONField(name = "count") int count) {
+		this.id = id;
+		this.name = name;
+		this.count = count;
+	}
 
+	public int getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getCount() {
+		return count;
 	}
 
 	/**

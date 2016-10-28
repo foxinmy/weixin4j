@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * ID类型
  * 
  * @className IdType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月1日
  * @since JDK 1.6
  * @see
@@ -25,7 +25,15 @@ public enum IdType {
 	/**
 	 * 商户退款号
 	 */
-	REFUNDNO("out_refund_no");
+	REFUNDNO("out_refund_no"),
+	/**
+	 * 商户子订单号
+	 */
+	SUBORDERNO("sub_order_no"),
+	/**
+	 * 微信子订单号
+	 */
+	SUBORDERID("sub_order_id");
 	private String name;
 
 	IdType(String name) {

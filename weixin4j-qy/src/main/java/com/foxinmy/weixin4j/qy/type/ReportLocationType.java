@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.qy.type;
  * 上报策略
  * 
  * @className ReportLocationType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月16日
  * @since JDK 1.6
  * @see

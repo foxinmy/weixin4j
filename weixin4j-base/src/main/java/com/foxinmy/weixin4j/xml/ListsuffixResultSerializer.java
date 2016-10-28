@@ -16,14 +16,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.NameFilter;
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 对 后缀为_$n 的 xml节点序列化
  * 
  * @className ListsuffixResultSerializer
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月24日
  * @since JDK 1.6
  * @see

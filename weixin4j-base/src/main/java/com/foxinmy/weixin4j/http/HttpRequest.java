@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.http.entity.HttpEntity;
  * HTTP 请求
  * 
  * @className HttpRequest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月29日
  * @since JDK 1.6
  * @see
@@ -27,12 +27,6 @@ public class HttpRequest implements HttpMessage {
 	 * @return
 	 */
 	private final URI uri;
-	/**
-	 * 协议参数
-	 * 
-	 * @return
-	 */
-	private HttpParams params;
 	/**
 	 * 内容参数
 	 */
@@ -57,14 +51,6 @@ public class HttpRequest implements HttpMessage {
 
 	public URI getURI() {
 		return uri;
-	}
-
-	public HttpParams getParams() {
-		return params;
-	}
-
-	public void setParams(HttpParams params) {
-		this.params = params;
 	}
 
 	public HttpEntity getEntity() {

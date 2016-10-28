@@ -142,3 +142,57 @@
 * 2015-12-15
   
   + version upgrade to 1.6.5
+  
+* 2015-12-25
+  
+  + WeixinProxy新增获取corpid(getCorpId)方法
+  
+  + WeixinProxy新增获取jsticket(getJSTicketHolder)方法
+  
+  + 私有化WeixinProxy(TokenHolder)构造器
+  
+  + SuiteApi新增获取Weixinproxy对象(getWeixinProxy)方法
+  
+  + 删除WeixinJSTicketCreator类
+  
+  + 新增企业号联系人筛选配置类(JSSDKContactConfigurator)
+      
+* 2015-12-30
+
+  + 新增服务商接口(ProviderApi)
+  
+* 2015-12-31
+
+  + version upgrade to 1.6.6
+  
+* 2016-01-23
+
+  + 新增获取客服列表接口
+
+* 2016-01-26
+
+  + 新增上传图文消息内的图片接口
+  
+* 2015-02-04
+
+  + version upgrade to 1.6.7
+  
+* 2016-04-02
+
+  + version upgrade to 1.6.8
+  
+* 2016-05-07
+
+  + version upgrade to 1.6.9
+  
+* 2016-06-20
+
+  + version upgrade to 1.7.0
+  
+* 2016-08-09
+
+  + version upgrade to 1.7.1
+  
+* 2016-10-10
+
+  + version upgrade to 1.7.2

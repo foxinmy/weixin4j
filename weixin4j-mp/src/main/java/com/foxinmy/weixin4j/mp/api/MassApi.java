@@ -7,10 +7,10 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpNews;
@@ -21,18 +21,16 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 群发相关API
  * 
  * @className MassApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
- * @see <a
- *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html">群发接口</a>
  */
 public class MassApi extends MpApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public MassApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public MassApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -44,13 +42,13 @@ public class MassApi extends MpApi {
 	 * @return 媒体ID
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E4.B8.8A.E4.BC.A0.E5.9B.BE.E6.96.87.E6.B6.88.E6.81.AF.E7.B4.A0.E6.9D.90.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">上传图文素材</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">上传图文素材</a>
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 */
 	public String uploadArticle(List<MpArticle> articles)
 			throws WeixinException {
 		String article_upload_uri = getRequestUri("article_upload_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("articles", articles);
 		WeixinResponse response = weixinExecutor.post(
@@ -86,7 +84,7 @@ public class MassApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.tuple.MassTuple
 	 * @see {@link GroupApi#getGroups()}
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">根据分组群发</a>
 	 */
 	public String[] massByGroupId(MassTuple tuple, boolean isToAll, int groupId)
 			throws WeixinException {
@@ -112,7 +110,7 @@ public class MassApi extends MpApi {
 		obj.put(msgtype, JSON.toJSON(tuple));
 		obj.put("msgtype", msgtype);
 		String mass_group_uri = getRequestUri("mass_group_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_group_uri, token.getAccessToken()),
 				obj.toJSONString());
@@ -131,7 +129,7 @@ public class MassApi extends MpApi {
 	 *            分组ID
 	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现。
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AE.E5.88.86.E7.BB.84.E8.BF.9B.E8.A1.8C.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">根据分组群发</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">根据分组群发</a>
 	 * @see {@link #massByGroupId(Tuple,int)}
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @throws WeixinException
@@ -160,7 +158,7 @@ public class MassApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.tuple.Card
 	 * @see com.foxinmy.weixin4j.tuple.MassTuple
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">根据openid群发</a>
 	 * @see {@link UserApi#getUser(String)}
 	 */
 	public String[] massByOpenIds(MassTuple tuple, String... openIds)
@@ -168,12 +166,13 @@ public class MassApi extends MpApi {
 		if (tuple instanceof MpNews) {
 			MpNews _news = (MpNews) tuple;
 			List<MpArticle> _articles = _news.getArticles();
-			if (StringUtil.isBlank(_news.getMediaId())
-					&& (_articles == null || _articles.isEmpty())) {
-				throw new WeixinException(
-						"mass fail:mediaId or articles is required");
+			if (StringUtil.isBlank(_news.getMediaId())) {
+				if (_articles.isEmpty()) {
+					throw new WeixinException(
+							"mass fail:mediaId or articles is required");
+				}
+				tuple = new MpNews(uploadArticle(_articles));
 			}
-			tuple = new MpNews(uploadArticle(_articles));
 		}
 		String msgtype = tuple.getMessageType();
 		JSONObject obj = new JSONObject();
@@ -181,7 +180,7 @@ public class MassApi extends MpApi {
 		obj.put(msgtype, JSON.toJSON(tuple));
 		obj.put("msgtype", msgtype);
 		String mass_openid_uri = getRequestUri("mass_openid_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_openid_uri, token.getAccessToken()),
 				obj.toJSONString());
@@ -200,7 +199,7 @@ public class MassApi extends MpApi {
 	 *            openId列表
 	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现,可以用于在图文分析数据接口中.
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.A0.B9.E6.8D.AEOpenID.E5.88.97.E8.A1.A8.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8D.E5.8F.AF.E7.94.A8.EF.BC.8C.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.8F.AF.E7.94.A8.E3.80.91">根据openid群发</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">根据openid群发</a>
 	 * @see {@link #massByOpenIds(Tuple,String...)}
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @throws WeixinException
@@ -221,20 +220,20 @@ public class MassApi extends MpApi {
 	 *            发送出去的消息ID
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E5.88.A0.E9.99.A4.E7.BE.A4.E5.8F.91.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">删除群发</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">删除群发</a>
 	 * @see {@link #massByGroupId(Tuple, int)}
 	 * @see {@link #massByOpenIds(Tuple, String...)
 	 */
-	public JsonResult deleteMassNews(String msgid) throws WeixinException {
+	public ApiResult deleteMassNews(String msgid) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("msgid", msgid);
 		String mass_delete_uri = getRequestUri("mass_delete_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_delete_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -250,9 +249,9 @@ public class MassApi extends MpApi {
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.tuple.MassTuple
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E9.A2.84.E8.A7.88.E6.8E.A5.E5.8F.A3.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">预览群发消息</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">预览群发消息</a>
 	 */
-	public JsonResult previewMassNews(String toUser, String toWxName,
+	public ApiResult previewMassNews(String toUser, String toWxName,
 			MassTuple tuple) throws WeixinException {
 		String msgtype = tuple.getMessageType();
 		JSONObject obj = new JSONObject();
@@ -261,12 +260,12 @@ public class MassApi extends MpApi {
 		obj.put(msgtype, JSON.toJSON(tuple));
 		obj.put("msgtype", msgtype);
 		String mass_preview_uri = getRequestUri("mass_preview_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_preview_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -277,13 +276,13 @@ public class MassApi extends MpApi {
 	 * @return 消息发送状态,如sendsuccess:发送成功、sendfail:发送失败
 	 * @throws WeixinException
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html#.E6.9F.A5.E8.AF.A2.E7.BE.A4.E5.8F.91.E6.B6.88.E6.81.AF.E5.8F.91.E9.80.81.E7.8A.B6.E6.80.81.E3.80.90.E8.AE.A2.E9.98.85.E5.8F.B7.E4.B8.8E.E6.9C.8D.E5.8A.A1.E5.8F.B7.E8.AE.A4.E8.AF.81.E5.90.8E.E5.9D.87.E5.8F.AF.E7.94.A8.E3.80.91">查询群发状态</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">查询群发状态</a>
 	 */
 	public String getMassNewStatus(String msgId) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("msg_id", msgId);
 		String mass_get_uri = getRequestUri("mass_get_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_get_uri, token.getAccessToken()),
 				obj.toJSONString());

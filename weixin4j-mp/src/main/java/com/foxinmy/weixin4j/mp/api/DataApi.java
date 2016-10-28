@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -21,16 +21,16 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * </p>
  * 
  * @className DataApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月7日
  * @since JDK 1.6
  * @see
  */
 public class DataApi extends MpApi {
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public DataApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public DataApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -107,19 +107,19 @@ public class DataApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.datacube.InterfaceSummary
 	 * @return 统计结果
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/3/ecfed6e1a0a03b5f35e5efac98e864b7.html">用户分析</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141082&token=&lang=zh_CN">用户分析</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/8/c0453610fb5131d1fcb17b4e87c82050.html">图文分析</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141084&token=&lang=zh_CN">图文分析</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/12/32d42ad542f2e4fc8a8aa60e1bce9838.html">消息分析</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141085&token=&lang=zh_CN">消息分析</a>
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/8/30ed81ae38cf4f977194bf1a5db73668.html">接口分析</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141086&token=&lang=zh_CN">接口分析</a>
 	 * @throws WeixinException
 	 */
 	public List<?> datacube(DatacubeType datacubeType, Date beginDate,
 			Date endDate) throws WeixinException {
 		String datacube_uri = getRequestUri("datacube_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("begin_date", DateUtil.fortmat2yyyy_MM_dd(beginDate));
 		obj.put("end_date", DateUtil.fortmat2yyyy_MM_dd(endDate));

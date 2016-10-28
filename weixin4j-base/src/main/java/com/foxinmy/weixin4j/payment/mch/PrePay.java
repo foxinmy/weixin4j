@@ -11,14 +11,14 @@ import com.foxinmy.weixin4j.type.TradeType;
  * V3预订单信息
  * 
  * @className PrePay
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月21日
  * @since JDK 1.6
  * @see
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PrePay extends ApiResult {
+public class PrePay extends MerchantResult {
 
 	private static final long serialVersionUID = -8430005768959715444L;
 

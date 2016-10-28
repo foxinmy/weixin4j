@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.mp.payment.v2.RefundRecordV2;
+import com.foxinmy.weixin4j.mp.oldpayment.RefundRecordV2;
 import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.xml.ListsuffixResultDeserializer;
 import com.foxinmy.weixin4j.xml.XmlStream;
@@ -14,10 +14,7 @@ import com.foxinmy.weixin4j.xml.XmlStream;
 public class XmlstreamTest {
 
 	public static void object2xmlWithRootElement() {
-		Token token = new Token();
-		token.setAccessToken("accessToken");
-		token.setExpiresIn(12);
-		token.setTime(13l);
+		Token token = new Token("accessToken", 12l, 13l);
 		String content = XmlStream.toXML(token);
 		System.err.println(content);
 	}

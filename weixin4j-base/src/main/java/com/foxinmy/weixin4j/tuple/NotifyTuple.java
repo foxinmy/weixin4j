@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.tuple;
  * 客服消息元件
  * 
  * @className NotifyTuple
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月22日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.tuple.Text

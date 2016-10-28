@@ -9,7 +9,7 @@ import org.junit.Test;
  * 消息验证测试
  * 
  * @className EncryptMessageTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月8日
  * @since JDK 1.6
  * @see

@@ -1,15 +1,15 @@
 package com.foxinmy.weixin4j.mp.type;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 模板消息所用到的行业信息
  * 
  * @className IndustryType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月12日
  * @since JDK 1.6
- * @see<a href=
- *        "http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1.9E.E8.A1.8C.E4.B8.9A"
- *        >所处行业</a>
  */
 public enum IndustryType {
 	ITKEJI_HULIANWANG$DIANZISHANGWU("IT科技", "互联网/电子商务", 1), ITKEJI_ITRUANJIANYUFUWU(
@@ -36,24 +36,43 @@ public enum IndustryType {
 			"商业服务", "审计", 36), WENTIYULE_CHUANMEI("文体娱乐", "传媒", 37), WENTIYULE_TIYU(
 			"文体娱乐", "体育", 38), WENTIYULE_YULEXIUXIAN("文体娱乐", "娱乐休闲", 39), YINSHUA_YINSHUA(
 			"印刷", "印刷", 40), QITA_QITA("其它", "其它", 41);
-	private String main;
-	private String sub;
-	private int value;
 
-	IndustryType(String main, String sub, int value) {
+	private String primary;
+	private String secondary;
+	private int typeId;
 
-		this.value = value;
+	IndustryType(String primary, String secondary, int typeId) {
+		this.primary = primary;
+		this.secondary = secondary;
+		this.typeId = typeId;
 	}
 
-	public String getMain() {
-		return main;
+	public String getPrimary() {
+		return primary;
 	}
 
-	public String getSub() {
-		return sub;
+	public String getSecondary() {
+		return secondary;
 	}
 
-	public int getValue() {
-		return value;
+	public int getTypeId() {
+		return typeId;
+	}
+
+	private static final Map<String, IndustryType> INDUSTRYTYPEMAP;
+	private static final String SEPARATOR;
+	static {
+		SEPARATOR = "-";
+		INDUSTRYTYPEMAP = new HashMap<String, IndustryType>();
+		for (IndustryType type : IndustryType.values()) {
+			INDUSTRYTYPEMAP.put(
+					String.format("%s%s%s", type.getPrimary(), SEPARATOR,
+							type.getSecondary()), type);
+		}
+	}
+
+	public static IndustryType getIndustry(String primary, String secondary) {
+		return INDUSTRYTYPEMAP.get(String.format("%s%s%s", primary, SEPARATOR,
+				secondary));
 	}
 }

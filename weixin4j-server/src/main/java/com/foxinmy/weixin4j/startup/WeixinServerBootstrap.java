@@ -7,12 +7,14 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.FutureListener;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  * 微信netty服务启动程序
  * 
  * @className WeixinServerBootstrap
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月12日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher
@@ -43,8 +45,7 @@ import com.foxinmy.weixin4j.util.AesToken;
  */
 public final class WeixinServerBootstrap {
 
-	private final InternalLogger logger = InternalLoggerFactory
-			.getInstance(getClass());
+	private final InternalLogger logger = InternalLoggerFactory.getInstance(getClass());
 
 	/**
 	 * boss线程数,默认设置为cpu的核数
@@ -77,6 +78,8 @@ public final class WeixinServerBootstrap {
 	 */
 	private final Map<String, AesToken> aesTokenMap;
 
+	WeixinServerInitializer wechatInitializer;
+
 	static {
 		DEFAULT_BOSSTHREADS = Runtime.getRuntime().availableProcessors();
 		DEFAULT_WORKERTHREADS = DEFAULT_BOSSTHREADS * 4;
@@ -96,6 +99,7 @@ public final class WeixinServerBootstrap {
 
 	/**
 	 * 明文模式 & 兼容模式 & 密文模式
+	 * <dl><font color="red">值得注意的是：企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font></dl>
 	 * 
 	 * @param weixinId
 	 *            公众号的应用ID(appid/corpid) 密文&兼容模式下需要填写
@@ -111,10 +115,9 @@ public final class WeixinServerBootstrap {
 
 	/**
 	 * 多个公众号的支持
-	 * <p>
-	 * <font color="red">请注意：需在服务接收事件的URL中附加一个名为wexin_id的参数,其值请填写公众号的appid/
-	 * corpid</font>
-	 * <p>
+	 * <dt>值得注意的是：
+	 * <dl><font color="red">1).企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font></dl>
+	 * <dl><font color="red">2).非明文模式下需要在服务器URL后面加多一个`weixin_id=对应的appid/corpid`的参数</font></dl>
 	 * 
 	 * @param aesTokens
 	 *            多个公众号
@@ -126,10 +129,9 @@ public final class WeixinServerBootstrap {
 
 	/**
 	 * 多个公众号的支持
-	 * <p>
-	 * <font color="red">请注意：需在服务接收事件的URL中附加一个名为wexin_id的参数,其值请填写公众号的appid/
-	 * corpid</font>
-	 * <p>
+	 * <dt>值得注意的是：
+	 * <dl><font color="red">1).企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font></dl>
+	 * <dl><font color="red">2).非明文模式下需要在服务器URL后面加多一个`weixin_id=对应的appid/corpid`的参数</font></dl>
 	 * 
 	 * @param messageMatcher
 	 *            消息匹配器
@@ -137,8 +139,7 @@ public final class WeixinServerBootstrap {
 	 *            公众号信息
 	 * @return
 	 */
-	public WeixinServerBootstrap(WeixinMessageMatcher messageMatcher,
-			AesToken... aesTokens) {
+	public WeixinServerBootstrap(WeixinMessageMatcher messageMatcher, AesToken... aesTokens) {
 		if (messageMatcher == null) {
 			throw new IllegalArgumentException("MessageMatcher not be null");
 		}
@@ -150,13 +151,13 @@ public final class WeixinServerBootstrap {
 			this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
 		}
 		this.aesTokenMap.put(null, aesTokens[0]);
-		this.messageHandlerList = new LinkedList<WeixinMessageHandler>();
-		this.messageInterceptorList = new LinkedList<WeixinMessageInterceptor>();
+		this.messageHandlerList = new ArrayList<WeixinMessageHandler>();
+		this.messageInterceptorList = new ArrayList<WeixinMessageInterceptor>();
 		this.messageDispatcher = new WeixinMessageDispatcher(messageMatcher);
 	}
 
 	/**
-	 * 默认端口启动服务
+	 * 默认端口(30000)启动服务
 	 * 
 	 */
 	public void startup() throws WeixinException {
@@ -183,29 +184,33 @@ public final class WeixinServerBootstrap {
 	 * @return
 	 * @throws WeixinException
 	 */
-	public void startup(int bossThreads, int workerThreads, int serverPort)
-			throws WeixinException {
+	public void startup(int bossThreads, int workerThreads, final int serverPort) throws WeixinException {
 		messageDispatcher.setMessageHandlerList(messageHandlerList);
 		messageDispatcher.setMessageInterceptorList(messageInterceptorList);
 
 		EventLoopGroup bossGroup = new NioEventLoopGroup(bossThreads);
 		EventLoopGroup workerGroup = new NioEventLoopGroup(workerThreads);
 		try {
+
+			wechatInitializer = new WeixinServerInitializer(aesTokenMap, messageDispatcher);
+
 			ServerBootstrap b = new ServerBootstrap();
 			b.option(ChannelOption.SO_BACKLOG, 1024);
-			b.group(bossGroup, workerGroup)
-					.channel(NioServerSocketChannel.class)
-					.handler(new LoggingHandler())
-					.childHandler(
-							new WeixinServerInitializer(aesTokenMap,
-									messageDispatcher));
-			Channel ch = b.bind(serverPort).sync().channel();
-			logger.info("weixin4j server startup OK:{}", serverPort);
+			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).handler(new LoggingHandler())
+					.childHandler(wechatInitializer);
+			Channel ch = b.bind(serverPort).addListener(new FutureListener<Void>() {
+				@Override
+				public void operationComplete(Future<Void> future) throws Exception {
+					if (future.isSuccess()) {
+						logger.info("weixin4j server startup OK:{}", serverPort);
+					} else {
+						logger.info("weixin4j server startup FAIL:{}", serverPort);
+					}
+				}
+			}).sync().channel();
 			ch.closeFuture().sync();
-		} catch (WeixinException e) {
-			throw e;
 		} catch (InterruptedException e) {
-			throw new WeixinException(e);
+			throw new WeixinException("netty server startup FAIL", e);
 		} finally {
 			bossGroup.shutdownGracefully();
 			workerGroup.shutdownGracefully();
@@ -219,22 +224,11 @@ public final class WeixinServerBootstrap {
 	 *            消息处理器
 	 * @return
 	 */
-	public WeixinServerBootstrap addHandler(
-			WeixinMessageHandler... messageHandler) {
+	public WeixinServerBootstrap addHandler(WeixinMessageHandler... messageHandler) {
+		if (messageHandler == null) {
+			throw new IllegalArgumentException("messageHandler not be null");
+		}
 		messageHandlerList.addAll(Arrays.asList(messageHandler));
-		return this;
-	}
-
-	/**
-	 * 将某个消息处理器插入到头部
-	 * 
-	 * @param messageHandler
-	 *            消息处理器
-	 * @return
-	 */
-	public WeixinServerBootstrap insertFirstHandler(
-			WeixinMessageHandler messageHandler) {
-		messageHandlerList.add(0, messageHandler);
 		return this;
 	}
 
@@ -245,22 +239,11 @@ public final class WeixinServerBootstrap {
 	 *            消息拦截器
 	 * @return
 	 */
-	public WeixinServerBootstrap addInterceptor(
-			WeixinMessageInterceptor... messageInterceptor) {
+	public WeixinServerBootstrap addInterceptor(WeixinMessageInterceptor... messageInterceptor) {
+		if (messageInterceptor == null) {
+			throw new IllegalArgumentException("messageInterceptor not be null");
+		}
 		messageInterceptorList.addAll(Arrays.asList(messageInterceptor));
-		return this;
-	}
-
-	/**
-	 * 将某个消息拦截器插入到头部
-	 * 
-	 * @param messageInterceptor
-	 *            消息拦截器
-	 * @return
-	 */
-	public WeixinServerBootstrap insertFirstInterceptor(
-			WeixinMessageInterceptor messageInterceptor) {
-		messageInterceptorList.add(0, messageInterceptor);
 		return this;
 	}
 
@@ -271,8 +254,10 @@ public final class WeixinServerBootstrap {
 	 *            消息处理器所在的包名
 	 * @return
 	 */
-	public WeixinServerBootstrap handlerPackagesToScan(
-			String... messageHandlerPackages) {
+	public WeixinServerBootstrap handlerPackagesToScan(String... messageHandlerPackages) {
+		if (messageHandlerPackages == null) {
+			throw new IllegalArgumentException("messageHandlerPackages not be null");
+		}
 		messageDispatcher.setMessageHandlerPackages(messageHandlerPackages);
 		return this;
 	}
@@ -284,10 +269,11 @@ public final class WeixinServerBootstrap {
 	 *            消息拦截器所在的包名
 	 * @return
 	 */
-	public WeixinServerBootstrap interceptorPackagesToScan(
-			String... messageInterceptorPackages) {
-		messageDispatcher
-				.setMessageInterceptorPackages(messageInterceptorPackages);
+	public WeixinServerBootstrap interceptorPackagesToScan(String... messageInterceptorPackages) {
+		if (messageInterceptorPackages == null) {
+			throw new IllegalArgumentException("messageInterceptorPackages not be null");
+		}
+		messageDispatcher.setMessageInterceptorPackages(messageInterceptorPackages);
 		return this;
 	}
 
@@ -312,8 +298,7 @@ public final class WeixinServerBootstrap {
 	 *            消息类
 	 * @return
 	 */
-	public WeixinServerBootstrap registMessageClass(
-			WeixinMessageKey messageKey,
+	public WeixinServerBootstrap registMessageClass(WeixinMessageKey messageKey,
 			Class<? extends WeixinMessage> messageClass) {
 		messageDispatcher.registMessageClass(messageKey, messageClass);
 		return this;
@@ -327,5 +312,21 @@ public final class WeixinServerBootstrap {
 		return this;
 	}
 
-	public final static String VERSION = "1.1.4";
+
+	/**
+	 * aesTokenMap 最好是线程安全的
+	 * @param aesToken
+	 * @return
+	 */
+	public int addAesToken(AesToken aesToken){
+		AesToken token = aesTokenMap.get(aesToken.getWeixinId());
+		if (token != null)
+			return -1;
+
+		this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
+
+		return wechatInitializer.addAesToken(aesToken);
+	}
+
+	public final static String VERSION = "1.1.8";
 }

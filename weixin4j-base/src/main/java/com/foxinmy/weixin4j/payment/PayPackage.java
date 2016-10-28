@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.payment;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -9,20 +8,20 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.payment.mch.MerchantResult;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
  * 订单信息
  * 
  * @className PayPackage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月18日
  * @since JDK 1.6
- * @see
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PayPackage implements Serializable {
+public class PayPackage extends MerchantResult {
 
 	private static final long serialVersionUID = 3450161267802545790L;
 
@@ -45,7 +44,7 @@ public class PayPackage implements Serializable {
 	 */
 	@XmlElement(name = "total_fee")
 	@JSONField(name = "total_fee")
-	private String totalFee;
+	private int totalFee;
 	/**
 	 * 通知地址接收微信支付成功通知 必须
 	 */
@@ -91,30 +90,33 @@ public class PayPackage implements Serializable {
 	 * 订单对象
 	 * 
 	 * @param body
-	 *            订单描述
+	 *            订单描述 必填
+	 * @param detail
+	 *            订单详情 非必填
 	 * @param outTradeNo
-	 *            商户内部ID
+	 *            商户内部ID 必填
 	 * @param totalFee
-	 *            订单总额 <font color="red">单位为元</font>
+	 *            订单总额 必填 <font color="red">单位为元</font>
 	 * @param notifyUrl
-	 *            回调地址
+	 *            回调地址 必填
 	 * @param createIp
-	 *            生成订单数据的机器IP
+	 *            生成订单数据的机器IP 必填
 	 * @param attach
-	 *            附加数据
+	 *            附加数据 非必填
 	 * @param timeStart
-	 *            订单生成时间
+	 *            订单生成时间 非必填
 	 * @param timeExpire
-	 *            订单失效时间
+	 *            订单失效时间 非必填
 	 * @param goodsTag
-	 *            订单标记
+	 *            订单标记 非必填
 	 */
-	public PayPackage(String body, String outTradeNo, double totalFee,
-			String notifyUrl, String createIp, String attach, Date timeStart,
-			Date timeExpire, String goodsTag) {
+	public PayPackage(String body, String detail, String outTradeNo,
+			double totalFee, String notifyUrl, String createIp, String attach,
+			Date timeStart, Date timeExpire, String goodsTag) {
 		this.body = body;
+		this.detail = detail;
 		this.outTradeNo = outTradeNo;
-		this.totalFee = DateUtil.formaFee2Fen(totalFee);
+		this.totalFee = DateUtil.formatYuan2Fen(totalFee);
 		this.notifyUrl = notifyUrl;
 		this.createIp = createIp;
 		this.attach = attach;
@@ -149,8 +151,18 @@ public class PayPackage implements Serializable {
 		this.outTradeNo = outTradeNo;
 	}
 
-	public String getTotalFee() {
+	public int getTotalFee() {
 		return totalFee;
+	}
+	
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	@JSONField(serialize = false)
+	public double getFormatTotalFee() {
+		return totalFee / 100d;
 	}
 
 	/**
@@ -160,7 +172,7 @@ public class PayPackage implements Serializable {
 	 *            订单总额 单位为元
 	 */
 	public void setTotalFee(double totalFee) {
-		this.totalFee = DateUtil.formaFee2Fen(totalFee);
+		this.totalFee = DateUtil.formatYuan2Fen(totalFee);
 	}
 
 	public String getNotifyUrl() {
@@ -223,10 +235,10 @@ public class PayPackage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PayPackage [body=" + body + ", detail=" + detail
-				+ ", outTradeNo=" + outTradeNo + ", totalFee=" + totalFee
-				+ ", notifyUrl=" + notifyUrl + ", createIp=" + createIp
-				+ ", attach=" + attach + ", timeStart=" + timeStart
-				+ ", timeExpire=" + timeExpire + ", goodsTag=" + goodsTag + "]";
+		return "body=" + body + ", detail=" + detail + ", outTradeNo="
+				+ outTradeNo + ", totalFee=" + totalFee + ", notifyUrl="
+				+ notifyUrl + ", createIp=" + createIp + ", attach=" + attach
+				+ ", timeStart=" + timeStart + ", timeExpire=" + timeExpire
+				+ ", goodsTag=" + goodsTag;
 	}
 }

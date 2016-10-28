@@ -9,11 +9,11 @@ import com.foxinmy.weixin4j.type.MessageType;
  * 图片消息
  * 
  * @className ImageMessage
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月6日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/10/79502792eef98d6e0c6e1739da387346.html#.E5.9B.BE.E7.89.87.E6.B6.88.E6.81.AF">订阅号、服务号的图片消息</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140453&token=&lang=zh_CN">订阅号、服务号的图片消息</a>
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E6%94%B6%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF#image.E6.B6.88.E6.81.AF">企业号的图片消息</a>
  */

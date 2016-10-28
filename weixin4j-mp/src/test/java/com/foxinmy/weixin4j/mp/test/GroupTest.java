@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.mp.api.GroupApi;
 import com.foxinmy.weixin4j.mp.model.Group;
 
@@ -15,7 +15,7 @@ import com.foxinmy.weixin4j.mp.model.Group;
  * 用户分组测试
  * 
  * @className GroupTest
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  */
@@ -24,7 +24,7 @@ public class GroupTest extends TokenTest {
 
 	@Before
 	public void init() {
-		groupApi = new GroupApi(tokenHolder);
+		groupApi = new GroupApi(tokenManager);
 	}
 
 	@Test
@@ -36,10 +36,8 @@ public class GroupTest extends TokenTest {
 	@Test
 	public void get() throws WeixinException {
 		List<Group> groups = groupApi.getGroups();
-		for (Group group : groups) {
-			System.out.println(group.toModifyJson());
-		}
-		Assert.assertEquals(1, groups.size());
+		System.err.println(groups);
+		Assert.assertTrue(groups.size() > 0);
 	}
 
 	@Test
@@ -50,27 +48,27 @@ public class GroupTest extends TokenTest {
 
 	@Test
 	public void modify() throws WeixinException {
-		JsonResult result = groupApi.modifyGroup(100, "my1");
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = groupApi.modifyGroup(100, "my1");
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void move() throws WeixinException {
-		JsonResult result = groupApi.moveGroup(100,
+		ApiResult result = groupApi.moveGroup(100,
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void batchMove() throws WeixinException {
-		JsonResult result = groupApi.moveGroup(100,
+		ApiResult result = groupApi.moveGroup(100,
 				"owGBft_vbBbOaQOmpEUE4xDLeRSU");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void delete() throws WeixinException {
-		JsonResult result = groupApi.deleteGroup(100);
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = groupApi.deleteGroup(100);
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 }

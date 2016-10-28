@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.mp.type.DatacuteCountIntervalType;
  * 数据统计:消息发送分布数据
  * 
  * @className UpstreamMsgDist
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月30日
  * @since JDK 1.6
  * @see

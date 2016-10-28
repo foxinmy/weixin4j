@@ -1,8 +1,7 @@
 package com.foxinmy.weixin4j.mp.token;
 
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.type.URLConsts;
@@ -10,23 +9,22 @@ import com.foxinmy.weixin4j.token.TokenCreator;
 
 /**
  * 微信公众平台TOKEN创建者
- * 
+ *
  * @className WeixinTokenCreator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/11/0e4b294685f817b95cbed85ba5e82b8f.html">微信公众平台获取token说明</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140183&token=&lang=zh_CN">微信公众平台获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class WeixinTokenCreator implements TokenCreator {
+public class WeixinTokenCreator extends TokenCreator {
 
-	private final WeixinRequestExecutor weixinExecutor;
 	private final String appid;
 	private final String secret;
 
 	/**
-	 * 
+	 *
 	 * @param appid
 	 *            公众号ID
 	 * @param secret
@@ -35,22 +33,20 @@ public class WeixinTokenCreator implements TokenCreator {
 	public WeixinTokenCreator(String appid, String secret) {
 		this.appid = appid;
 		this.secret = secret;
-		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
-	public String getCacheKey() {
-		return String.format("wx_mp_token_%s", appid);
+	public String key0() {
+		return String.format("mp_token_%s", appid);
 	}
 
 	@Override
-	public Token createToken() throws WeixinException {
+	public Token create() throws WeixinException {
 		String tokenUrl = String.format(URLConsts.ASSESS_TOKEN_URL, appid,
 				secret);
 		WeixinResponse response = weixinExecutor.get(tokenUrl);
-		Token token = response.getAsObject(new TypeReference<Token>() {
-		});
-		token.setTime(System.currentTimeMillis());
-		return token;
+		JSONObject result = response.getAsJson();
+		return new Token(result.getString("access_token"),
+				result.getLongValue("expires_in") * 1000l);
 	}
 }

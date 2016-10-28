@@ -10,13 +10,13 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
  * 获取加密的密文内容
  * 
  * @className EncryptMessageHandler
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月17日
  * @since JDK 1.6
  * @see
@@ -71,7 +71,7 @@ public class EncryptMessageHandler extends DefaultHandler {
 			XMLReader xmlReader = XMLReaderFactory.createXMLReader();
 			xmlReader.setContentHandler(global);
 			xmlReader.parse(new InputSource(new ByteArrayInputStream(xmlContent
-					.getBytes(Consts.UTF_8))));
+					.getBytes(ServerToolkits.UTF_8))));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} catch (SAXException e) {

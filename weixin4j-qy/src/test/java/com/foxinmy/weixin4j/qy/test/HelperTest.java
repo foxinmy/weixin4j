@@ -13,7 +13,7 @@ import com.foxinmy.weixin4j.qy.api.HelperApi;
  * 辅助API测试
  * 
  * @className HelperTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月28日
  * @since JDK 1.6
  * @see
@@ -23,12 +23,12 @@ public class HelperTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.helperApi = new HelperApi(tokenHolder);
+		this.helperApi = new HelperApi(tokenManager);
 	}
 
 	@Test
 	public void backip() throws WeixinException {
-		List<String> ips = helperApi.getCallbackip();
+		List<String> ips = helperApi.getWechatServerIp();
 		Assert.assertTrue(ips != null && !ips.isEmpty());
 		System.out.println(ips);
 	}

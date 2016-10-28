@@ -3,13 +3,11 @@ package com.foxinmy.weixin4j.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.foxinmy.weixin4j.model.Consts;
-
 /**
  * 签名工具类
  * 
  * @className DigestUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月6日
  * @since JDK 1.6
  * @see

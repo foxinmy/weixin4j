@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * 正则表达式工具类
  * 
  * @className RegexUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月8日
  * @since JDK 1.7
  * @see

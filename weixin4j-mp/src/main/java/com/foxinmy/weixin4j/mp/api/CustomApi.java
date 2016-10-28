@@ -1,8 +1,7 @@
 package com.foxinmy.weixin4j.mp.api;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,112 +9,123 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.apache.ByteArrayBody;
+import com.foxinmy.weixin4j.http.MimeType;
 import com.foxinmy.weixin4j.http.apache.FormBodyPart;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.apache.InputStreamBody;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.mp.model.CustomRecord;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
+import com.foxinmy.weixin4j.mp.model.KfChatRecord;
+import com.foxinmy.weixin4j.mp.model.KfOnlineAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.util.DigestUtil;
-import com.foxinmy.weixin4j.util.IOUtil;
+import com.foxinmy.weixin4j.util.FileUtil;
+import com.foxinmy.weixin4j.util.ObjectId;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 多客服API
- * 
+ *
  * @className CustomApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月16日
  * @since JDK 1.6
  * @see <a href="http://dkf.qq.com">多客服说明</a>
- * @see<a 
- *        href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html"
- *        >多客服说明</a>
  */
 public class CustomApi extends MpApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public CustomApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public CustomApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
 	 * 客服聊天记录
-	 * 
-	 * @param openId
-	 *            用户标识 可为空
-	 * @param starttime
+	 *
+	 * @param startTime
 	 *            查询开始时间
-	 * @param endtime
+	 * @param endTime
 	 *            查询结束时间 每次查询不能跨日查询
-	 * @param pagesize
-	 *            每页大小 每页最多拉取50条
-	 * @param pageindex
-	 *            查询第几页 从1开始
+	 * @param number
+	 *            最多10000条
 	 * @throws WeixinException
-	 * @see com.foxinmy.weixin4j.mp.model.CustomRecord
+	 * @see com.foxinmy.weixin4j.mp.model.KfChatRecord
 	 * @see <a href="http://dkf.qq.com/document-1_1.html">查询客服聊天记录</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/19/7c129ec71ddfa60923ea9334557e8b23.html">查询客服聊天记录</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044854&token=&lang=zh_CN">
+	 *      查询客服聊天记录</a>
 	 */
-	public List<CustomRecord> getCustomRecord(String openId, Date starttime,
-			Date endtime, int pagesize, int pageindex) throws WeixinException {
+	public List<KfChatRecord> getKfChatRecord(Date startTime, Date endTime,
+			int number) throws WeixinException {
+		List<KfChatRecord> records = new ArrayList<KfChatRecord>();
+		String kf_chatrecord_uri = getRequestUri("kf_chatrecord_uri");
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
-		obj.put("openId", openId == null ? "" : openId);
-		obj.put("starttime", starttime.getTime() / 1000);
-		obj.put("endtime", endtime.getTime() / 1000);
-		obj.put("pagesize", pagesize > 1000 ? 1000 : pagesize);
-		obj.put("pageindex", pageindex);
-		String custom_record_uri = getRequestUri("custom_record_uri");
-		Token token = tokenHolder.getToken();
-		WeixinResponse response = weixinExecutor.post(
-				String.format(custom_record_uri, token.getAccessToken()),
-				obj.toJSONString());
-
-		String text = response.getAsJson().getString("recordlist");
-		return JSON.parseArray(text, CustomRecord.class);
+		obj.put("starttime", startTime.getTime() / 1000);
+		obj.put("endtime", endTime.getTime() / 1000);
+		obj.put("msgid", "1");
+		obj.put("number", Math.min(10000, number));
+		JSONObject result = null;
+		do {
+			WeixinResponse response = weixinExecutor.post(
+					String.format(kf_chatrecord_uri, token.getAccessToken()),
+					obj.toJSONString());
+			result = response.getAsJson();
+			String text = result.getString("recordlist");
+			if (StringUtil.isBlank(text) || "[]".equals(text)) {
+				break;
+			}
+			records.addAll(JSON.parseArray(text, KfChatRecord.class));
+			obj.put("msgid", result.getString("msgid"));
+		} while (obj.getIntValue("number") == result.getIntValue("number"));
+		return records;
 	}
 
 	/**
 	 * 获取公众号中所设置的客服基本信息，包括客服工号、客服昵称、客服登录账号
-	 * 
-	 * @param isOnline
-	 *            是否在线 为ture时可以可以获取客服在线状态（手机在线、PC客户端在线、手机和PC客户端全都在线）、客服自动接入最大值、
-	 *            客服当前接待客户数
+	 *
 	 * @return 多客服信息列表
 	 * @see com.foxinmy.weixin4j.mp.model.KfAccount
-	 * @see <a href="http://dkf.qq.com/document-3_1.html">获取客服基本信息</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.9C.8D.E5.9F.BA.E6.9C.AC.E4.BF.A1.E6.81.AF">获取客服基本信息</a>
-	 * @see <a href="http://dkf.qq.com/document-3_2.html">获取在线客服接待信息</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E8.8E.B7.E5.8F.96.E5.9C.A8.E7.BA.BF.E5.AE.A2.E6.9C.8D.E6.8E.A5.E5.BE.85.E4.BF.A1.E6.81.AF">获取在线客服接待信息</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
+	 *      获取客服基本信息</a>
 	 * @throws WeixinException
 	 */
-	public List<KfAccount> listKfAccount(boolean isOnline)
-			throws WeixinException {
-		Token token = tokenHolder.getToken();
-		String text = "";
-		if (isOnline) {
-			String getonlinekflist_uri = getRequestUri("getonlinekflist_uri");
-			WeixinResponse response = weixinExecutor.get(String.format(getonlinekflist_uri,
-					token.getAccessToken()));
-			text = response.getAsJson().getString("kf_online_list");
-		} else {
-			String getkflist_uri = getRequestUri("getkflist_uri");
-			WeixinResponse response = weixinExecutor.get(String.format(getkflist_uri,
-					token.getAccessToken()));
-			text = response.getAsJson().getString("kf_list");
-		}
+	public List<KfAccount> listKfAccount() throws WeixinException {
+		Token token = tokenManager.getCache();
+		String kf_list_uri = getRequestUri("kf_list_uri");
+		WeixinResponse response = weixinExecutor.get(String.format(kf_list_uri,
+				token.getAccessToken()));
+		String text = response.getAsJson().getString("kf_list");
 		return JSON.parseArray(text, KfAccount.class);
 	}
 
 	/**
+	 * 获取在线客服在线状态（手机在线、PC客户端在线、手机和PC客户端全都在线）、客服自动接入最大值、 客服当前接待客户数
+	 *
+	 * @return 多客服在线信息列表
+	 * @see com.foxinmy.weixin4j.mp.model.KfOnlineAccount
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
+	 *      获取客服在线信息</a>
+	 * @throws WeixinException
+	 */
+	public List<KfOnlineAccount> listOnlineKfAccount() throws WeixinException {
+		Token token = tokenManager.getCache();
+		String kf_onlinelist_uri = getRequestUri("kf_onlinelist_uri");
+		WeixinResponse response = weixinExecutor.get(String.format(
+				kf_onlinelist_uri, token.getAccessToken()));
+		String text = response.getAsJson().getString("kf_online_list");
+		return JSON.parseArray(text, KfOnlineAccount.class);
+	}
+
+	/**
 	 * 新增客服账号
-	 * 
+	 *
 	 * @param id
 	 *            完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符。如果没有公众号微信号，
 	 *            请前往微信公众平台设置。
@@ -125,28 +135,27 @@ public class CustomApi extends MpApi {
 	 *            客服账号登录密码
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.AE.A2.E6.9C.8D.E7.AE.A1.E7.90.86.E6.8E.A5.E5.8F.A3.E8.BF.94.E5.9B.9E.E7.A0.81.E8.AF.B4.E6.98.8E">客服管理接口返回码</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E6.B7.BB.E5.8A.A0.E5.AE.A2.E6.9C.8D.E8.B4.A6.E5.8F.B7">新增客服账号</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
+	 *      新增客服账号</a>
 	 */
-	public JsonResult createAccount(String id, String name, String pwd)
+	public ApiResult createKfAccount(String id, String name, String pwd)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("kf_account", id);
 		obj.put("nickname", name);
 		obj.put("password", DigestUtil.MD5(pwd));
-		String custom_add_uri = getRequestUri("custom_add_uri");
-		Token token = tokenHolder.getToken();
+		String kf_create_uri = getRequestUri("kf_create_uri");
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
-				String.format(custom_add_uri, token.getAccessToken()),
+				String.format(kf_create_uri, token.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
 	 * 更新客服账号
-	 * 
+	 *
 	 * @param id
 	 *            完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符。如果没有公众号微信号，
 	 *            请前往微信公众平台设置。
@@ -156,73 +165,105 @@ public class CustomApi extends MpApi {
 	 *            客服账号登录密码
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.AE.A2.E6.9C.8D.E7.AE.A1.E7.90.86.E6.8E.A5.E5.8F.A3.E8.BF.94.E5.9B.9E.E7.A0.81.E8.AF.B4.E6.98.8E">客服管理接口返回码</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E8.AE.BE.E7.BD.AE.E5.AE.A2.E6.9C.8D.E4.BF.A1.E6.81.AF">新增客服账号</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
+	 *      新增客服账号</a>
 	 */
-	public JsonResult updateAccount(String id, String name, String pwd)
+	public ApiResult updateKfAccount(String id, String name, String pwd)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("kf_account", id);
 		obj.put("nickname", name);
 		obj.put("password", DigestUtil.MD5(pwd));
-		String custom_update_uri = getRequestUri("custom_update_uri");
-		Token token = tokenHolder.getToken();
+		String kf_update_uri = getRequestUri("kf_update_uri");
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
-				String.format(custom_update_uri, token.getAccessToken()),
+				String.format(kf_update_uri, token.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
+	}
+
+	/**
+	 * 邀请绑定客服帐号
+	 * 新添加的客服帐号是不能直接使用的，只有客服人员用微信号绑定了客服账号后，方可登录Web客服进行操作。此接口发起一个绑定邀请到客服人员微信号
+	 * ，客服人员需要在微信客户端上用该微信号确认后帐号才可用。尚未绑定微信号的帐号可以进行绑定邀请操作，邀请未失效时不能对该帐号进行再次绑定微信号邀请。
+	 *
+	 * @param kfAccount
+	 *            完整客服帐号，格式为：帐号前缀@公众号微信号
+	 * @param inviteAccount
+	 *            接收绑定邀请的客服微信号
+	 * @return 处理结果
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN"
+	 *      >邀请绑定客服帐号<a/>
+	 * @throws WeixinException
+	 */
+	public ApiResult inviteKfAccount(String kfAccount, String inviteAccount)
+			throws WeixinException {
+		JSONObject obj = new JSONObject();
+		obj.put("kf_account", kfAccount);
+		obj.put("invite_wx", inviteAccount);
+		String kf_invite_uri = getRequestUri("kf_invite_uri");
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(kf_invite_uri, token.getAccessToken()),
+				obj.toJSONString());
+		return response.getAsResult();
 	}
 
 	/**
 	 * 上传客服头像
-	 * 
-	 * @param id
+	 *
+	 * @param accountId
 	 *            完整客服账号，格式为：账号前缀@公众号微信号
-	 * @param headimg
+	 * @param is
 	 *            头像图片文件必须是jpg格式，推荐使用640*640大小的图片以达到最佳效果
+	 * @param fileName
+	 *            文件名 为空时将自动生成
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @throws IOException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.AE.A2.E6.9C.8D.E7.AE.A1.E7.90.86.E6.8E.A5.E5.8F.A3.E8.BF.94.E5.9B.9E.E7.A0.81.E8.AF.B4.E6.98.8E">客服管理接口返回码</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E4.B8.8A.E4.BC.A0.E5.AE.A2.E6.9C.8D.E5.A4.B4.E5.83.8F">上传客服头像</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
+	 *      上传客服头像</a>
 	 */
-	public JsonResult uploadAccountHeadimg(String id, File headimg)
-			throws WeixinException, IOException {
-		Token token = tokenHolder.getToken();
-		String custom_uploadheadimg_uri = getRequestUri("custom_uploadheadimg_uri");
-		byte[] bytes = IOUtil.toByteArray(new FileInputStream(headimg));
-		WeixinResponse response = weixinExecutor.post(
-				String.format(custom_uploadheadimg_uri, token.getAccessToken(),
-						id),
-				new FormBodyPart("media", new ByteArrayBody(bytes, headimg
-						.getName())));
+	public ApiResult uploadKfAvatar(String accountId, InputStream is,
+			String fileName) throws WeixinException {
+		if (StringUtil.isBlank(fileName)) {
+			fileName = ObjectId.get().toHexString();
+		}
+		if (StringUtil.isBlank(FileUtil.getFileExtension(fileName))) {
+			fileName = String.format("%s.jpg", fileName);
+		}
+		MimeType mimeType = new MimeType("image",
+				FileUtil.getFileExtension(fileName));
+		Token token = tokenManager.getCache();
+		String kf_avatar_uri = getRequestUri("kf_avatar_uri");
+		WeixinResponse response = weixinExecutor
+				.post(String.format(kf_avatar_uri, token.getAccessToken(),
+						accountId), new FormBodyPart("media",
+						new InputStreamBody(is, mimeType.toString(), fileName)));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
 	 * 删除客服账号
-	 * 
+	 *
 	 * @param id
 	 *            完整客服账号，格式为：账号前缀@公众号微信号
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.AE.A2.E6.9C.8D.E7.AE.A1.E7.90.86.E6.8E.A5.E5.8F.A3.E8.BF.94.E5.9B.9E.E7.A0.81.E8.AF.B4.E6.98.8E">客服管理接口返回码</a>
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/9/6fff6f191ef92c126b043ada035cc935.html#.E5.88.A0.E9.99.A4.E5.AE.A2.E6.9C.8D.E8.B4.A6.E5.8F.B7">删除客服账号</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
+	 *      删除客服账号</a>
 	 */
-	public JsonResult deleteAccount(String id) throws WeixinException {
-		Token token = tokenHolder.getToken();
-		String custom_delete_uri = getRequestUri("custom_delete_uri");
-		WeixinResponse response = weixinExecutor.get(String.format(custom_delete_uri,
-				token.getAccessToken(), id));
+	public ApiResult deleteKfAccount(String id) throws WeixinException {
+		Token token = tokenManager.getCache();
+		String kf_delete_uri = getRequestUri("kf_delete_uri");
+		WeixinResponse response = weixinExecutor.get(String.format(
+				kf_delete_uri, token.getAccessToken(), id));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -231,7 +272,7 @@ public class CustomApi extends MpApi {
 	 * 开发者可以使用本接口，为多客服的客服工号创建会话，将某个客户直接指定给客服工号接待，需要注意此接口不会受客服自动接入数以及自动接入开关限制。
 	 * 只能为在线的客服（PC客户端在线，或者已绑定多客服助手）创建会话。
 	 * </p>
-	 * 
+	 *
 	 * @param userOpenId
 	 *            用户的userOpenId
 	 * @param kfAccount
@@ -240,12 +281,13 @@ public class CustomApi extends MpApi {
 	 *            附加信息，文本会展示在客服人员的多客服客户端
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.88.9B.E5.BB.BA.E4.BC.9A.E8.AF.9D">创建会话</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
+	 *      创建会话</a>
 	 */
-	public JsonResult createKfSession(String userOpenId, String kfAccount,
+	public ApiResult createKfSession(String userOpenId, String kfAccount,
 			String text) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String kfsession_create_uri = getRequestUri("kfsession_create_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("openid", userOpenId);
@@ -255,12 +297,12 @@ public class CustomApi extends MpApi {
 				String.format(kfsession_create_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
 	 * 关闭会话
-	 * 
+	 *
 	 * @param userOpenId
 	 *            用户的userOpenId
 	 * @param kfAccount
@@ -269,12 +311,13 @@ public class CustomApi extends MpApi {
 	 *            附加信息，文本会展示在客服人员的多客服客户端
 	 * @return 处理结果
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E5.85.B3.E9.97.AD.E4.BC.9A.E8.AF.9D">创建会话</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
+	 *      关闭会话</a>
 	 */
-	public JsonResult closeKfSession(String userOpenId, String kfAccount,
+	public ApiResult closeKfSession(String userOpenId, String kfAccount,
 			String text) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String kfsession_close_uri = getRequestUri("kfsession_close_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("openid", userOpenId);
@@ -284,25 +327,26 @@ public class CustomApi extends MpApi {
 				String.format(kfsession_close_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
 	 * 获取客户的会话状态:获取客户当前的会话状态。
-	 * 
+	 *
 	 * @param userOpenId
 	 *            用户的openid
 	 * @return 会话对象
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.KfSession
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.88.B7.E7.9A.84.E4.BC.9A.E8.AF.9D.E7.8A.B6.E6.80.81">获取会话状态</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
+	 *      获取会话状态</a>
 	 */
 	public KfSession getKfSession(String userOpenId) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String kfsession_get_uri = getRequestUri("kfsession_get_uri");
-		WeixinResponse response = weixinExecutor.get(String.format(kfsession_get_uri,
-				token.getAccessToken(), userOpenId));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				kfsession_get_uri, token.getAccessToken(), userOpenId));
 
 		KfSession session = response
 				.getAsObject(new TypeReference<KfSession>() {
@@ -313,21 +357,22 @@ public class CustomApi extends MpApi {
 
 	/**
 	 * 获取客服的会话列表:获取某个客服正在接待的会话列表。
-	 * 
+	 *
 	 * @param kfAccount
 	 *            完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符。
 	 * @return 会话列表
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.KfSession
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E5.AE.A2.E6.9C.8D.E7.9A.84.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
+	 *      获取客服的会话列表</a>
 	 */
 	public List<KfSession> listKfSession(String kfAccount)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String kfsession_list_uri = getRequestUri("kfsession_list_uri");
-		WeixinResponse response = weixinExecutor.get(String.format(kfsession_list_uri,
-				token.getAccessToken(), kfAccount));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				kfsession_list_uri, token.getAccessToken(), kfAccount));
 
 		List<KfSession> sessionList = JSON.parseArray(response.getAsJson()
 				.getString("sessionlist"), KfSession.class);
@@ -335,22 +380,24 @@ public class CustomApi extends MpApi {
 	}
 
 	/**
-	 * 获取未接入会话列表:获取当前正在等待队列中的会话列表，此接口最多返回最早进入队列的100个未接入会话。</br>
-	 * <font color="red">缺陷：没有count字段</font>
+	 * 获取未接入会话列表:获取当前正在等待队列中的会话列表，此接口最多返回最早进入队列的100个未接入会话。</br> <font
+	 * color="red">缺陷：没有count字段</font>
+	 *
 	 * @return 会话列表
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.model.KfSession
-	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/2/6c20f3e323bdf5986cfcb33cbd3b829a.html#.E8.8E.B7.E5.8F.96.E6.9C.AA.E6.8E.A5.E5.85.A5.E4.BC.9A.E8.AF.9D.E5.88.97.E8.A1.A8">获取客服的会话列表</a>
+	 * @see com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044820&token=&lang=zh_CN">
+	 *      获取客服的会话列表</a>
 	 */
-	public List<KfSession> listKfSessionWait() throws WeixinException {
-		Token token = tokenHolder.getToken();
+	public KfSessionCounter listKfWaitSession() throws WeixinException {
+		Token token = tokenManager.getCache();
 		String kfsession_wait_uri = getRequestUri("kfsession_wait_uri");
-		WeixinResponse response = weixinExecutor.get(String.format(kfsession_wait_uri,
-				token.getAccessToken()));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				kfsession_wait_uri, token.getAccessToken()));
 
-		List<KfSession> sessionList = JSON.parseArray(response.getAsJson()
-				.getString("waitcaselist"), KfSession.class);
-		return sessionList;
+		return response.getAsObject(new TypeReference<KfSessionCounter>() {
+		});
 	}
 }

@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.util;
 
-import java.io.File;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -9,9 +8,9 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 
 /**
  * 公众号配置信息 class路径下weixin4j.properties文件
- * 
+ *
  * @className Weixin4jConfigUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
  * @since JDK 1.6
  * @see
@@ -19,22 +18,14 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 public class Weixin4jConfigUtil {
 	private final static String CLASSPATH_PREFIX = "classpath:";
 	private final static String CLASSPATH_VALUE;
-	private final static ResourceBundle weixinBundle;
+	private static ResourceBundle weixinBundle;
 	static {
-		weixinBundle = ResourceBundle.getBundle("weixin4j");
-		File file = null;
 		CLASSPATH_VALUE = Thread.currentThread().getContextClassLoader()
 				.getResource("").getPath();
-		for (String key : weixinBundle.keySet()) {
-			if (!key.endsWith(".path")) {
-				continue;
-			}
-			file = new File(getValue(key).replaceFirst(CLASSPATH_PREFIX,
-					CLASSPATH_VALUE));
-			if (!file.exists() && !file.mkdirs()) {
-				System.err.append(String.format("%s create fail.%n",
-						file.getAbsolutePath()));
-			}
+		try {
+			weixinBundle = ResourceBundle.getBundle(Consts.WEIXIN4J);
+		} catch (MissingResourceException e) {
+			;
 		}
 	}
 
@@ -46,10 +37,10 @@ public class Weixin4jConfigUtil {
 		}
 		return key;
 	}
-	
+
 	/**
 	 * 获取weixin4j.properties文件中的key值
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
@@ -60,7 +51,7 @@ public class Weixin4jConfigUtil {
 
 	/**
 	 * key不存在时则返回传入的默认值
-	 * 
+	 *
 	 * @param key
 	 * @param defaultValue
 	 * @return
@@ -69,52 +60,57 @@ public class Weixin4jConfigUtil {
 		String value = defaultValue;
 		try {
 			value = getValue(key);
+			if (StringUtil.isBlank(value)) {
+				value = defaultValue;
+			}
 		} catch (MissingResourceException e) {
-			System.err.println("'" + key
-					+ "' key not found in weixin4j.properties file.");
-			; // error
+			;
+		} catch (NullPointerException e) {
+			;
 		}
 		return value;
 	}
 
 	/**
 	 * 判断属性是否存在[classpath:]如果存在则拼接项目路径后返回 一般用于文件的绝对路径获取
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
 	public static String getClassPathValue(String key) {
-		return new File(getValue(key).replaceFirst(CLASSPATH_PREFIX,
-				CLASSPATH_VALUE)).getPath();
+		return replaceClassPathValue(getValue(key));
 	}
 
 	/**
-	 * 
+	 *
 	 * @param key
 	 * @param defaultValue
 	 * @return
 	 */
 	public static String getClassPathValue(String key, String defaultValue) {
-		String value = defaultValue;
-		try {
-			value = getClassPathValue(key);
-		} catch (MissingResourceException e) {
-			System.err.println("'" + key
-					+ "' key not found in weixin4j.properties file.");
-			; // error
-		}
-		return value;
+		return replaceClassPathValue(getValue(key, defaultValue));
 	}
 
+	public static String replaceClassPathValue(String value) {
+		return value.replaceFirst(CLASSPATH_PREFIX, CLASSPATH_VALUE);
+	}
+
+	/**
+	 * 获取微信账号信息
+	 * 
+	 * @return 微信账号信息
+	 */
 	public static WeixinAccount getWeixinAccount() {
 		WeixinAccount account = null;
 		try {
 			account = JSON
 					.parseObject(getValue("account"), WeixinAccount.class);
+		} catch (NullPointerException e) {
+			System.err
+					.println("'weixin4j.account' key not found in weixin4j.properties.");
 		} catch (MissingResourceException e) {
 			System.err
-					.println("'account' key not found in weixin4j.properties file.");
-			; // error
+					.println("'weixin4j.account' key not found in weixin4j.properties.");
 		}
 		return account;
 	}

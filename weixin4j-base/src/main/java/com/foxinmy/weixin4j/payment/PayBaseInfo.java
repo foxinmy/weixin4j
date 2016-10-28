@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.type.SignType;
@@ -14,7 +15,7 @@ import com.foxinmy.weixin4j.type.SignType;
  * 基本信息
  * 
  * @className PayBaseInfo
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月5日
  * @since JDK 1.6
  * @see
@@ -92,6 +93,7 @@ public class PayBaseInfo implements Serializable {
 		return signType;
 	}
 
+	@XmlTransient
 	@JSONField(serialize = false)
 	public SignType getFormatSignType() {
 		return signType != null ? SignType.valueOf(signType.toUpperCase())

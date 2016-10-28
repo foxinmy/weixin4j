@@ -8,16 +8,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.qy.api.TagApi;
+import com.foxinmy.weixin4j.qy.model.Contacts;
+import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.qy.model.Tag;
-import com.foxinmy.weixin4j.qy.model.User;
 
 /**
  * 标签API测试
  * 
  * @className TagTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see
@@ -27,7 +28,7 @@ public class TagTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.tagApi = new TagApi(tokenHolder);
+		this.tagApi = new TagApi(tokenManager);
 	}
 
 	@Test
@@ -38,27 +39,28 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void update() throws WeixinException {
-		JsonResult result = tagApi.updateTag(new Tag(1, "coder456"));
-		Assert.assertEquals("updated", result.getDesc());
+		ApiResult result = tagApi.updateTag(new Tag(1, "coder456"));
+		Assert.assertEquals("updated", result.getReturnMsg());
 	}
 
 	@Test
 	public void getUsers() throws WeixinException {
-		List<User> listUser = tagApi.getTagUsers(1);
-		Assert.assertFalse(listUser.isEmpty());
-		System.out.println(listUser);
+		Contacts contacts = tagApi.getTagUsers(1);
+		System.out.println(contacts);
 	}
 
 	@Test
 	public void addUsers() throws WeixinException {
-		JsonResult result = tagApi.addTagUsers(1, Arrays.asList("jinyu"), null);
-		Assert.assertEquals("ok", result.getDesc());
+		IdParameter result = tagApi
+				.addTagUsers(1, Arrays.asList("jinyu"), null);
+		Assert.assertTrue(result.getUserIds().isEmpty());
 	}
 
 	@Test
 	public void deleteUsers() throws WeixinException {
-		JsonResult result = tagApi.deleteTagUsers(1, Arrays.asList("jinyu"), null);
-		Assert.assertEquals("ok", result.getDesc());
+		IdParameter result = tagApi.deleteTagUsers(1, Arrays.asList("jinyu"),
+				null);
+		Assert.assertTrue(result.getUserIds().isEmpty());
 		System.out.println(result);
 	}
 
@@ -71,7 +73,7 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void delete() throws WeixinException {
-		JsonResult result = tagApi.deleteTag(3);
-		Assert.assertEquals("deleted", result.getDesc());
+		ApiResult result = tagApi.deleteTag(3);
+		Assert.assertEquals("deleted", result.getReturnMsg());
 	}
 }

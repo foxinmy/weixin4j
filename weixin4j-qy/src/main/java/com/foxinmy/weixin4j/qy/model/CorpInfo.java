@@ -1,15 +1,17 @@
 package com.foxinmy.weixin4j.qy.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.qy.type.CorpType;
+import com.foxinmy.weixin4j.qy.type.CorporateType;
 
 /**
  * 授权方企业号信息
  * 
  * @className CorpInfo
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月12日
  * @since JDK 1.6
  * @see
@@ -57,6 +59,21 @@ public class CorpInfo implements Serializable {
 	 */
 	@JSONField(name = "corp_wxqrcode")
 	private String wxQrCode;
+	/**
+	 * 所绑定的企业号主体名称
+	 */
+	@JSONField(name = "corp_full_name")
+	private String fullName;
+	/**
+	 * 认证到期时间
+	 */
+	@JSONField(name = "verified_end_time")
+	private long verifiedEndTime;
+	/**
+	 * 企业类型
+	 */
+	@JSONField(name = "subject_type")
+	private int corporateType;
 
 	public String getCorpId() {
 		return corpId;
@@ -95,6 +112,30 @@ public class CorpInfo implements Serializable {
 		return wxQrCode;
 	}
 
+	public String getFullName() {
+		return fullName;
+	}
+
+	public long getVerifiedEndTime() {
+		return verifiedEndTime;
+	}
+
+	@JSONField(serialize = false)
+	public Date getFormatVerifiedEndTime() {
+		return verifiedEndTime > 0l ? new Date(verifiedEndTime * 1000l) : null;
+	}
+
+	public int getCorporateType() {
+		return corporateType;
+	}
+
+	@JSONField(serialize = false)
+	public CorporateType getFormatCorporateType() {
+		return corporateType > 0
+				&& corporateType <= CorporateType.values().length ? CorporateType
+				.values()[corporateType - 1] : null;
+	}
+
 	// ---------- setter 应该全部去掉
 
 	public void setCorpId(String corpId) {
@@ -129,12 +170,25 @@ public class CorpInfo implements Serializable {
 		this.wxQrCode = wxQrCode;
 	}
 
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public void setVerifiedEndTime(long verifiedEndTime) {
+		this.verifiedEndTime = verifiedEndTime;
+	}
+
+	public void setCorporateType(int corporateType) {
+		this.corporateType = corporateType;
+	}
+
 	@Override
 	public String toString() {
-		return "CorpInfo [corpType=" + corpId + ", corpName=" + corpName
+		return "CorpInfo [corpId=" + corpId + ", corpName=" + corpName
 				+ ", squareLogoUrl=" + squareLogoUrl + ", roundLogoUrl="
 				+ roundLogoUrl + ", corpType=" + corpType + ", userMax="
 				+ userMax + ", agentMax=" + agentMax + ", wxQrCode=" + wxQrCode
-				+ "]";
+				+ ", fullName=" + fullName + ", verifiedEndTime="
+				+ verifiedEndTime + ", corporateType=" + corporateType + "]";
 	}
 }

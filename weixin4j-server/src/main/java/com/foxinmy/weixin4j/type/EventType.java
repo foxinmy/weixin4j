@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 事件类型
  * 
  * @className EventType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月30日
  * @since JDK 1.6
  * @see
@@ -150,5 +150,10 @@ public enum EventType {
 	 * 
 	 * @see com.foxinmy.weixin4j.qy.event.EnterAgentEventMessage
 	 */
-	enter_agent;
+	enter_agent,
+	/**
+	 * 第三方应用套件消息
+	 * @see com.foxinmy.weixin4j.qy.suite.WeixinSuiteMessage
+	 */
+	suite;
 }

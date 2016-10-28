@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.qy.type;
  * 授权方企业号类型
  * 
  * @className CorpType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月12日
  * @since JDK 1.6
  * @see

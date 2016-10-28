@@ -2,8 +2,8 @@ package com.foxinmy.weixin4j.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
  * 接口调用错误获取
  * 
  * @className WeixinErrorUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月12日
  * @since JDK 1.6
  * @see
@@ -27,7 +27,7 @@ public final class WeixinErrorUtil {
 	private static byte[] errorXmlByteArray;
 	private final static Map<String, String> errorCacheMap;
 	static {
-		errorCacheMap = new HashMap<String, String>();
+		errorCacheMap = new ConcurrentHashMap<String, String>();
 		try {
 			errorXmlByteArray = IOUtil.toByteArray(WeixinResponse.class
 					.getResourceAsStream("error.xml"));
@@ -74,11 +74,14 @@ public final class WeixinErrorUtil {
 		}
 
 		public String getText() {
-			return StringUtil.isBlank(text) ? "未知错误" : text;
+			return StringUtil.isBlank(text) ? "" : text;
 		}
 	}
 
 	public static String getText(String code) throws RuntimeException {
+		if (StringUtil.isBlank(code)) {
+			return "";
+		}
 		String text = errorCacheMap.get(code);
 		if (StringUtil.isBlank(text)) {
 			ErrorTextHandler textHandler = new ErrorTextHandler(code);

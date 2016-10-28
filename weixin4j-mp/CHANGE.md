@@ -179,3 +179,77 @@
 * 2015-12-15
   
   + version upgrade to 1.6.5
+  
+* 2015-12-18
+
+  + 新增个性化菜单接口
+  
+  + WeixinProxy.getCustomRecord 参数变更为 Date startTime, Date endTime, Pageable pageable
+  
+* 2015-12-25
+  
+  + WeixinProxy新增获取appid(getAppId)方法
+  
+  + WeixinProxy新增获取jsticket(getJSTicketHolder)方法
+  
+  + 私有化WeixinProxy(TokenHolder)构造器
+  
+  + 调整WeixinTicketCreator类
+  
+* 2015-12-31
+
+  + version upgrade to 1.6.6
+  
+* 2016-01-20
+
+  + 新增获取模板和删除模板接口
+  
+  + 新增自定义个性化菜单语言信息匹配项
+  
+* 2015-02-04
+
+  + version upgrade to 1.6.7
+  
+* 2016-04-02
+
+  + version upgrade to 1.6.8
+  
+* 2016-04-29
+
+  + weixin4j-mp:新增标签管理API
+  
+* 2016-05-07
+
+  + version upgrade to 1.6.9
+  
+* 2016-05-30
+
+  + 新增接口调用次数清零接口
+  
+* 2016-06-20
+
+  + version upgrade to 1.7.0
+  
+* 2016-07-05
+
+  + 初始化开放平台第三方组件TokenCreator
+  
+  + 新增第三方组件ComponentApi
+  
+* 2016-07-06
+
+  + 新增第三方组件WeixinComponentProxy
+  
+* 2016-08-05
+
+  + 新增CardApi:创建卡券接口
+  
+* 2016-08-09
+
+  + 新增创建卡券二维码接口
+  
+  + version upgrade to 1.7.1
+  
+* 2016-10-10
+
+  + version upgrade to 1.7.2

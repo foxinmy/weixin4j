@@ -18,7 +18,7 @@ public class ChatTest extends TokenTest {
 
 	@Before
 	public void init() {
-		chatApi = new ChatApi(tokenHolder);
+		chatApi = new ChatApi(tokenManager);
 	}
 
 	@Test

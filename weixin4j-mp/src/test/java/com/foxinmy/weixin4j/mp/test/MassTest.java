@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
-import com.foxinmy.weixin4j.model.MediaUploadResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
+import com.foxinmy.weixin4j.model.media.MediaUploadResult;
 import com.foxinmy.weixin4j.mp.api.MassApi;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.tuple.Image;
@@ -23,7 +23,7 @@ import com.foxinmy.weixin4j.tuple.Text;
  * 群发消息
  * 
  * @className MpNewsTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月27日
  * @since JDK 1.6
  * @see
@@ -34,8 +34,8 @@ public class MassTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.massApi = new MassApi(tokenHolder);
-		this.mediaApi = new MediaApi(tokenHolder);
+		this.massApi = new MassApi(tokenManager);
+		this.mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test
@@ -86,15 +86,15 @@ public class MassTest extends TokenTest {
 
 	@Test
 	public void deleteMass() throws WeixinException {
-		JsonResult result = massApi.deleteMassNews("34182");
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = massApi.deleteMassNews("34182");
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void previewMass() throws WeixinException {
-		JsonResult result = massApi.previewMassNews(
+		ApiResult result = massApi.previewMassNews(
 				"oyFLst1bqtuTcxK-ojF8hOGtLQao", null, new Text("test"));
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test

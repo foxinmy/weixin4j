@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.qy.type;
  * 邀请类型
  * 
  * @className InviteType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月15日
  * @since JDK 1.6
  * @see

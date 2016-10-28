@@ -2,16 +2,14 @@ package com.foxinmy.weixin4j.qy.message;
 
 import java.io.Serializable;
 
-import com.alibaba.fastjson.annotation.JSONCreator;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.qy.type.ChatType;
 import com.foxinmy.weixin4j.tuple.ChatTuple;
 
 /**
  * 会话消息对象
- * 
+ *
  * @className ChatMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月1日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.tuple.Text
@@ -39,11 +37,8 @@ public class ChatMessage implements Serializable {
 	 */
 	private ChatTuple chatTuple;
 
-	@JSONCreator
-	public ChatMessage(@JSONField(name = "targetId") String targetId,
-			@JSONField(name = "chatType") ChatType chatType,
-			@JSONField(name = "senderId") String senderId,
-			@JSONField(name = "chatTuple") ChatTuple chatTuple) {
+	public ChatMessage(String targetId, ChatType chatType, String senderId,
+			ChatTuple chatTuple) {
 		this.targetId = targetId;
 		this.chatType = chatType;
 		this.senderId = senderId;

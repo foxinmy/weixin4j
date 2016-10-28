@@ -12,13 +12,12 @@ import com.foxinmy.weixin4j.exception.WeixinException;
  * 消息工具类
  * 
  * @className MessageUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
  * @since JDK 1.6
  * @see
  */
 public final class MessageUtil {
-
 	/**
 	 * 验证微信签名
 	 * 
@@ -27,7 +26,7 @@ public final class MessageUtil {
 	 * @return 开发者通过检验signature对请求进行相关校验。若确认此次GET请求来自微信服务器
 	 *         请原样返回echostr参数内容，则接入生效 成为开发者成功，否则接入失败
 	 * @see <a
-	 *      href="http://mp.weixin.qq.com/wiki/0/61c3a8b9d50ac74f18bdf2e54ddfc4e0.html">接入指南</a>
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421135319&token=&lang=zh_CN">接入指南</a>
 	 */
 	public static String signature(String... para) {
 		Arrays.sort(para);
@@ -35,7 +34,7 @@ public final class MessageUtil {
 		for (String str : para) {
 			sb.append(str);
 		}
-		return DigestUtil.SHA1(sb.toString());
+		return ServerToolkits.digestSHA1(sb.toString());
 	}
 
 	/**
@@ -58,16 +57,16 @@ public final class MessageUtil {
 		 * 
 		 * random(16B)为16字节的随机字符串；msg_len为msg长度，占4个字节(网络字节序)，$AppId为公众账号的AppId
 		 */
-		byte[] randomBytes = StringUtil.getBytesUtf8(RandomUtil
-				.generateString(16));
-		byte[] xmlBytes = StringUtil.getBytesUtf8(xmlContent);
+		byte[] randomBytes = ServerToolkits.getBytesUtf8(ServerToolkits
+				.generateRandomString(16));
+		byte[] xmlBytes = ServerToolkits.getBytesUtf8(xmlContent);
 		int xmlLength = xmlBytes.length;
 		byte[] orderBytes = new byte[4];
 		orderBytes[3] = (byte) (xmlLength & 0xFF);
 		orderBytes[2] = (byte) (xmlLength >> 8 & 0xFF);
 		orderBytes[1] = (byte) (xmlLength >> 16 & 0xFF);
 		orderBytes[0] = (byte) (xmlLength >> 24 & 0xFF);
-		byte[] appidBytes = StringUtil.getBytesUtf8(appId);
+		byte[] appidBytes = ServerToolkits.getBytesUtf8(appId);
 
 		int byteLength = randomBytes.length + xmlLength + orderBytes.length
 				+ appidBytes.length;
@@ -90,10 +89,10 @@ public final class MessageUtil {
 		byteLength += appidBytes.length;
 		System.arraycopy(padBytes, 0, unencrypted, byteLength, padBytes.length);
 		try {
-			byte[] aesKey = Base64.decodeBase64(encodingAesKey + "=");
+			byte[] aesKey = NettyBase64.decodeBase64(encodingAesKey + "=");
 			// 设置加密模式为AES的CBC模式
 			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-			SecretKeySpec keySpec = new SecretKeySpec(aesKey, Consts.AES);
+			SecretKeySpec keySpec = new SecretKeySpec(aesKey, ServerToolkits.AES);
 			IvParameterSpec iv = new IvParameterSpec(aesKey, 0, 16);
 			cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
 			// 加密
@@ -120,17 +119,17 @@ public final class MessageUtil {
 	 */
 	public static String aesDecrypt(String appId, String encodingAesKey,
 			String encryptContent) throws WeixinException {
-		byte[] aesKey = Base64.decodeBase64(encodingAesKey + "=");
+		byte[] aesKey = NettyBase64.decodeBase64(encodingAesKey + "=");
 		byte[] original;
 		try {
 			// 设置解密模式为AES的CBC模式
 			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-			SecretKeySpec key_spec = new SecretKeySpec(aesKey, Consts.AES);
+			SecretKeySpec key_spec = new SecretKeySpec(aesKey, ServerToolkits.AES);
 			IvParameterSpec iv = new IvParameterSpec(Arrays.copyOfRange(aesKey,
 					0, 16));
 			cipher.init(Cipher.DECRYPT_MODE, key_spec, iv);
 			// 使用BASE64对密文进行解码
-			byte[] encrypted = Base64.decodeBase64(encryptContent);
+			byte[] encrypted = NettyBase64.decodeBase64(encryptContent);
 			// 解密
 			original = cipher.doFinal(encrypted);
 		} catch (Exception e) {
@@ -151,9 +150,9 @@ public final class MessageUtil {
 			int xmlLength = lengthByte[3] & 0xff | (lengthByte[2] & 0xff) << 8
 					| (lengthByte[1] & 0xff) << 16
 					| (lengthByte[0] & 0xff) << 24;
-			xmlContent = StringUtil.newStringUtf8(Arrays.copyOfRange(bytes, 20,
+			xmlContent = ServerToolkits.newStringUtf8(Arrays.copyOfRange(bytes, 20,
 					20 + xmlLength));
-			fromAppId = StringUtil.newStringUtf8(Arrays.copyOfRange(bytes,
+			fromAppId = ServerToolkits.newStringUtf8(Arrays.copyOfRange(bytes,
 					20 + xmlLength, bytes.length));
 		} catch (Exception e) {
 			throw new WeixinException("-40008", "xml内容不合法:" + e.getMessage());

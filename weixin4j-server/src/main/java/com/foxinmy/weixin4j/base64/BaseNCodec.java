@@ -22,7 +22,7 @@ import io.netty.handler.codec.EncoderException;
 
 import java.util.Arrays;
 
-import com.foxinmy.weixin4j.util.StringUtil;
+import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
  * <p>
@@ -372,7 +372,7 @@ public abstract class BaseNCodec {
 	 * @return A String containing only Base-N character data
 	 */
 	public String encodeToString(final byte[] pArray) {
-		return StringUtil.newStringUtf8(encode(pArray));
+		return ServerToolkits.newStringUtf8(encode(pArray));
 	}
 
 	/**
@@ -385,7 +385,7 @@ public abstract class BaseNCodec {
 	 *         alphabet.
 	 */
 	public String encodeAsString(final byte[] pArray) {
-		return StringUtil.newStringUtf8(encode(pArray));
+		return ServerToolkits.newStringUtf8(encode(pArray));
 	}
 
 	/**
@@ -420,7 +420,7 @@ public abstract class BaseNCodec {
 	 * @return a byte array containing binary data
 	 */
 	public byte[] decode(final String pArray) {
-		return decode(StringUtil.getBytesUtf8(pArray));
+		return decode(ServerToolkits.getBytesUtf8(pArray));
 	}
 
 	/**
@@ -517,7 +517,7 @@ public abstract class BaseNCodec {
 	 * @see #isInAlphabet(byte[], boolean)
 	 */
 	public boolean isInAlphabet(final String basen) {
-		return isInAlphabet(StringUtil.getBytesUtf8(basen), true);
+		return isInAlphabet(ServerToolkits.getBytesUtf8(basen), true);
 	}
 
 	/**

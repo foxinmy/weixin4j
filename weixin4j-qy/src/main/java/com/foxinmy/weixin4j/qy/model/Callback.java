@@ -7,9 +7,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * 调用某些接口时填入的回调信息
- * 
+ *
  * @className Callback
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月30日
  * @since JDK 1.6
  * @see

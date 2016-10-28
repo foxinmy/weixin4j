@@ -3,13 +3,13 @@ weixin4j
 
 微信开发工具包
 -------------
- > `weixin4j`是一个用java编写针对微信开发的工具包,包含[weixin4j-mp](./weixin4j-mp)(微信公众平台API)、[weixin4j-qy](./weixin4j-qy)(微信企业号API)以及[weixin4j-server](./weixin4j-server)(微信回调消息服务器)三个工程.
+ > `weixin4j`是一个用Java编写针对微信开发的工具包,包含[weixin4j-mp](./weixin4j-mp)(微信公众平台API)、[weixin4j-qy](./weixin4j-qy)(微信企业号API)以及[weixin4j-server](./weixin4j-server)(微信回调消息服务器)三个工程.
 
-功能列表
+模块说明
 -------
 * **weixin4j-base**
 
- `微信支付(刷卡/扫码/公众号/现金红包/企业付款)`
+  `Http Client实现&token实现&微信支付实现(刷卡/扫码/JS/APP/WAP/现金红包/企业付款)`,如果只使用`微信支付`功能可只引用此工程
 
 * **weixin4j-mp**
 
@@ -22,60 +22,33 @@ weixin4j
 * **weixin4j-server**
   
   `netty服务器&消息分发`
-
-如何获取
-----------
-###1.maven依赖
-微信公众平台API(1.6.5,2015-12-15 released)
-
-	<dependency>
-	    <groupId>com.foxinmy</groupId>
-	    <artifactId>weixin4j-mp</artifactId>
-	    <version>1.6.5</version>
-	</dependency>
-微信企业号API(1.6.5,2015-12-15 released)
-
-	<dependency>
-	    <groupId>com.foxinmy</groupId>
-	    <artifactId>weixin4j-qy</artifactId>
-	    <version>1.6.5</version>
-	</dependency>
-微信回调消息服务器(1.1.4,2015-12-08 released)
-
-	<dependency>
-	    <groupId>com.foxinmy</groupId>
-	    <artifactId>weixin4j-server</artifactId>
-	    <version>1.1.4</version>
-	</dependency>
-
-以上依赖如果出现Missing artifact错误 请尝试在eclipse里这么做
-
-  + 进入 Window > Show View > Other > Maven Repositories 展开 Global Repositories 在group或者central上右键执行`update index` 操作
   
-  + 或者进入 Windows > Preferences > Maven 选中 `Download repository index updates on startup` 即可
+* **weixin4j-example**
 
+  示例工程,包含了如何构建weixin4j-server服务器和与spring集成,建议看看
 
-###2.直接下载jar包
-
-  * [weixin4j-mp-xx-full.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-mp%22)&nbsp;[weixin4j-qy-xx-full.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-qy%22)&nbsp;[weixin4j-server-xx.jar](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.foxinmy%22%20AND%20a%3A%22weixin4j-server%22)
-
-  * weixin4j-mp & weixin4j-qy 所需的依赖包: [fastjson1.2.x](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.alibaba%22%20AND%20a%3A%22fastjson%22)
-  
-  * weixin4j-server 所需的依赖包: [netty4.x](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.netty%22%20AND%20a%3A%22netty-all%22)
-
-###3.从源码打包
-
-`git clone`&`mvn package`
+[如何使用](https://github.com/foxinmy/weixin4j/wiki)
+--------
 
 [更新LOG](./CHANGE.md)
 ----------------------
   
 接下来
 ------
-* 公众号第三方服务应用
+* [微信硬件平台](http://iot.weixin.qq.com/)
 
-* 硬件设备 & 摇一摇周边
+* [微信小店](http://mp.weixin.qq.com/wiki/6/ae98ac4a7219405153cedc9dddccacca.html)
 
-* 微信小店&门店
+* [微信卡券](http://mp.weixin.qq.com/wiki/10/597cb57750f375a4b37e2536fd3331ea.html)
 
-* 微信卡券
+* [微信门店](http://mp.weixin.qq.com/wiki/11/081986f089826bf94393bef9bf287b8b.html)
+
+* [微信摇一摇](http://mp.weixin.qq.com/wiki/19/9fe9fdbb50fee9f9660438c551142ccf.html)
+
+* [微信连WI-FI](http://mp.weixin.qq.com/wiki/9/fd2d692e28b938a8d618f57cf9c79fb1.html)
+
+* [微信扫一扫](http://mp.weixin.qq.com/wiki/19/e833eb10470cc25cad4719677c46ecdb.html)
+
+交流群
+-----
+559850102

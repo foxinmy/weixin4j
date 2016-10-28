@@ -6,7 +6,7 @@ import java.io.Serializable;
  * ID查询
  * 
  * @className IdQuery
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月1日
  * @since JDK 1.6
  * @see
@@ -25,25 +25,17 @@ public class IdQuery implements Serializable {
 	 */
 	private IdType type;
 
+	public IdQuery(String id, IdType idType) {
+		this.id = id;
+		this.type = idType;
+	}
+
 	public String getId() {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public IdType getType() {
 		return type;
-	}
-
-	public void setType(IdType type) {
-		this.type = type;
-	}
-
-	public IdQuery(String id, IdType idType) {
-		this.id = id;
-		this.type = idType;
 	}
 
 	@Override

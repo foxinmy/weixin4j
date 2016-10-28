@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 企业号应用的设置信息
  * 
  * @className AgentInfo
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月17日
  * @since JDK 1.6
  * @see
@@ -46,6 +46,10 @@ public class AgentInfo extends AgentSetter {
 	 * 企业应用是否被禁用
 	 */
 	private boolean close;
+	/**
+	 * 应用类型。1：消息型；2：主页型
+	 */
+	private int type;
 
 	public AgentInfo() {
 		super(0);
@@ -101,11 +105,18 @@ public class AgentInfo extends AgentSetter {
 		this.close = close;
 	}
 
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
-		return "AgentInfo [squareLogoUrl=" + squareLogoUrl + ", roundLogoUrl="
-				+ roundLogoUrl + ", allowUsers=" + allowUsers
-				+ ", allowPartys=" + allowPartys + ", allowTags=" + allowTags
+		return "AgentInfo [type=" + type + ", squareLogoUrl=" + squareLogoUrl + ", roundLogoUrl=" + roundLogoUrl
+				+ ", allowUsers=" + allowUsers + ", allowPartys=" + allowPartys + ", allowTags=" + allowTags
 				+ ", close=" + close + ", " + super.toString() + "]";
 	}
 }

@@ -92,3 +92,80 @@
   +【重要】修改PayUtil中的createPayJsRequest方法的返回值为MchPayRequest，便于二次发起支付。
   
   +【重要】添加MchPayRequest的构造函数，便于二次发起支付。
+  
+* 2015-12-19
+
+  + 删除PayUtil类,接口转移到PayApi类
+  
+* 2015-12-25
+  
+  + WeixinPayProxy类新增获取支付信息#getWeixinAccount方法
+  
+  + 新增JSSDK的config生成类
+  
+  + JSSDKHelper 重命名为 JSSDKConfigurator
+  
+  + 重构了token类
+  
+* 2015-12-26
+  
+  + MchPayRequest抽象化
+  
+* 2016-01-24
+
+  + 新增MemoryTokenStorager(内存保存token)类
+  
+  + TokenStorager类新增evict和clear接口
+  
+* 2016-01-29
+
+  + 新增Weixin4jSettings配置类
+  
+* 2016-03-22
+
+  + 企业付款相关类更名
+  
+* 2016-03-25
+
+  + v2和v3支付改名
+  
+  + 支持服务商版支付
+  
+  + 签名类接口化
+  
+  + 新增查询结算金额接口
+  
+  + 新增查询汇率接口
+  
+* 2016-03-27
+
+  + 删除Mciro支付接口,新增MCIROPayRequest对象
+  
+  + 支付对象优化
+  
+  + 新增海关接口
+  
+  + 添加日志支持
+ 
+* 2016-05-12
+
+  + 添加MemcacheTokenStorager支持
+  
+* 2016-07-30
+
+  + 重新整理HttpClinet
+  
+  + 新增OkHttp实现
+  
+  
+* 2016-08-05
+
+  + model包拆分media/paging
+  
+  + type包拆分card/mch
+  
+  + 新增card卡券相关类
+  
+* 2016-08-22
+
+  + 删除`Weixin4jSettings`配置类

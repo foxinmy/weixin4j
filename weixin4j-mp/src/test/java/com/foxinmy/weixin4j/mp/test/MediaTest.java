@@ -12,13 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
-import com.foxinmy.weixin4j.model.MediaCounter;
-import com.foxinmy.weixin4j.model.MediaDownloadResult;
-import com.foxinmy.weixin4j.model.MediaItem;
-import com.foxinmy.weixin4j.model.MediaRecord;
-import com.foxinmy.weixin4j.model.MediaUploadResult;
-import com.foxinmy.weixin4j.model.Pageable;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
+import com.foxinmy.weixin4j.model.media.MediaCounter;
+import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
+import com.foxinmy.weixin4j.model.media.MediaItem;
+import com.foxinmy.weixin4j.model.media.MediaRecord;
+import com.foxinmy.weixin4j.model.media.MediaUploadResult;
+import com.foxinmy.weixin4j.model.paging.Pageable;
 import com.foxinmy.weixin4j.mp.api.MediaApi;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
@@ -26,9 +26,9 @@ import com.foxinmy.weixin4j.type.MediaType;
 
 /**
  * 媒体上传下载测试
- * 
+ *
  * @className MediaTest
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  * @see
@@ -39,7 +39,7 @@ public class MediaTest extends TokenTest {
 
 	@Before
 	public void init() {
-		mediaApi = new MediaApi(tokenHolder);
+		mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test
@@ -47,22 +47,24 @@ public class MediaTest extends TokenTest {
 		File file = new File("/Users/jy/Downloads/weixin4j.png");
 		MediaUploadResult mediaId = mediaApi.uploadMedia(false,
 				new FileInputStream(file), file.getName());
-		// zloeIROuS3YJFZwugGNM5oGBolqJmU_8FKTUmJwTFbSjfky904S9OPly5Wq0BRn2
+		// PPHCwX-13V4_IdIchHIsI1VDcJyUB5ttJdnRArbAmWrNXSxX55fQ831N7B_R3l1c
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);
 	}
 
 	@Test
 	public void download1() throws WeixinException, IOException {
-		MediaDownloadResult content = mediaApi.downloadMedia(
-				"nD05mhmkW-SHVS8NfWSxdzJi-6VnVF5YSP5hmMWnKJUxLK5czAWtN4NhVmgEfVoe", false);
+		MediaDownloadResult content = mediaApi
+				.downloadMedia(
+						"PPHCwX-13V4_IdIchHIsI1VDcJyUB5ttJdnRArbAmWrNXSxX55fQ831N7B_R3l1c",
+						false);
 		Assert.assertTrue(content != null);
 		System.err.println(content);
 	}
 
 	@Test
 	public void upload2() throws IOException, WeixinException {
-		File file = new File("/Users/jy/Downloads/weixin4j.png");
+		File file = new File("/root/Pictures/2.jpg");
 		MediaUploadResult mediaId = mediaApi.uploadMedia(true,
 				new FileInputStream(file), file.getName());
 		// 8790403529
@@ -72,9 +74,9 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void uploadMaterialVideo() throws IOException, WeixinException {
-		File file = new File("/Users/jy/Downloads/test.jpg");
+		File file = new File("/Users/jy/Downloads/test.mp4");
 		String mediaId = mediaApi.uploadMaterialVideo(
-				new FileInputStream(file), "title", "introduction");
+				new FileInputStream(file), "filename", "title", "introduction");
 		// Sy1KOLsi4ri3kB3TYUuculVelcW2I7W6BrfGwkGvSW8beTCAarxuGQLjuNJChJr8
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);
@@ -85,41 +87,33 @@ public class MediaTest extends TokenTest {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
 		articles.add(new MpArticle("8790403529", "title", "content"));
 		String mediaId = mediaApi.uploadMaterialArticle(articles);
-		// 17385064953
+		// DVWwU0u9ommOTPgyJszpK943IWCCVAcFGNmiIBObf5E
 		Assert.assertNotNull(mediaId);
 		System.err.println(mediaId);
 	}
 
 	@Test
-	public void download2() throws WeixinException, IOException {
-		File file = mediaApi.downloadMediaFile("8790403529", true);
-		Assert.assertTrue(file.exists());
-	}
-
-	@Test
 	public void downloadArticle() throws WeixinException {
-		List<MpArticle> articles = mediaApi.downloadArticle("17385064953");
+		List<MpArticle> articles = mediaApi.downloadArticle("DVWwU0u9ommOTPgyJszpK943IWCCVAcFGNmiIBObf5E");
 		Assert.assertTrue(articles != null && !articles.isEmpty());
 		System.err.println(articles);
 	}
 
 	@Test
 	public void deleteMaterialMedia() throws WeixinException {
-		JsonResult result = mediaApi.deleteMaterialMedia("17385064953");
+		ApiResult result = mediaApi.deleteMaterialMedia("17385064953");
 		System.err.println(result);
 	}
 
 	@Test
 	public void updateMaterialArticle() throws WeixinException {
-		MpArticle mpArticle = new MpArticle("8790403529", "title", "content");
-		mpArticle.setAuthor("author_update");
-		mpArticle.setDigest("digest_update");
-		mpArticle.setShowCoverPic(false);
-		mpArticle.setSourceUrl("http://www.baidu.com");
-		List<MpArticle> articles = new ArrayList<MpArticle>();
-		articles.add(mpArticle);
-		JsonResult result = mediaApi.updateMaterialArticle("17385064953", 0,
-				articles);
+		MpArticle article = new MpArticle("8790403529", "title", "content");
+		article.setAuthor("author_update");
+		article.setDigest("digest_update");
+		article.setShowCoverPic(false);
+		article.setSourceUrl("http://www.baidu.com");
+		ApiResult result = mediaApi.updateMaterialArticle("17385064953", 0,
+				article);
 		System.err.println(result);
 		// 17385065153
 	}

@@ -2,14 +2,13 @@ package com.foxinmy.weixin4j.qy.model;
 
 import java.io.Serializable;
 
-import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * 成员新消息免打扰
- * 
+ *
  * @className ChatMute
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月1日
  * @since JDK 1.6
  * @see
@@ -24,7 +23,7 @@ public class ChatMute implements Serializable {
 
 	/**
 	 * 默认关闭免打扰
-	 * 
+	 *
 	 * @param userid
 	 */
 	public ChatMute(String userId) {
@@ -33,15 +32,13 @@ public class ChatMute implements Serializable {
 
 	/**
 	 * 传入true时开启免打扰
-	 * 
-	 * @param userid
+	 *
+	 * @param userId
 	 *            成员userid
 	 * @param status
 	 *            是否开启免打扰
 	 */
-	@JSONCreator
-	public ChatMute(@JSONField(name = "userId") String userId,
-			@JSONField(name = "status") boolean status) {
+	public ChatMute(String userId, boolean status) {
 		this.userId = userId;
 		this.status = status ? 1 : 0;
 	}

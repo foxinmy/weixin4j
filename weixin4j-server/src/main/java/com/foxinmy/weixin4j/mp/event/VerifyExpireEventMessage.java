@@ -1,6 +1,9 @@
 package com.foxinmy.weixin4j.mp.event;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.foxinmy.weixin4j.message.event.EventMessage;
 import com.foxinmy.weixin4j.type.EventType;
@@ -9,11 +12,11 @@ import com.foxinmy.weixin4j.type.EventType;
  * 认证通知(资质认证成功/名称认证成功/年审通知/认证过期失效通知)
  * 
  * @className VerifyExpireEventMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年10月25日
  * @since JDK 1.6
  * @see <a
- *      href="http://mp.weixin.qq.com/wiki/1/7f81dec16b801b34629091094c099439.html">认证事件</a>
+ *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455785130&token=&lang=zh_CN">认证事件</a>
  */
 public class VerifyExpireEventMessage extends EventMessage {
 
@@ -31,6 +34,11 @@ public class VerifyExpireEventMessage extends EventMessage {
 
 	public long getExpiredTime() {
 		return expiredTime;
+	}
+
+	@XmlTransient
+	public Date getFormatExpiredTime() {
+		return new Date(expiredTime * 1000l);
 	}
 
 	@Override

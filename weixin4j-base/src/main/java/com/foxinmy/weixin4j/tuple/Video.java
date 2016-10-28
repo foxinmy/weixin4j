@@ -11,9 +11,9 @@ import com.alibaba.fastjson.annotation.JSONField;
  * <p>
  * <font color="red">可用于「客服消息」</font>
  * </p>
- * 
+ *
  * @className Video
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月29日
  * @since JDK 1.6
  * @see
@@ -53,7 +53,7 @@ public class Video implements NotifyTuple {
 
 	/**
 	 * 企业号的视频消息不需要缩略图
-	 * 
+	 *
 	 * @param mediaId
 	 *            视频媒体文件id，可以调用上传临时素材或者永久素材接口获取
 	 * @param title
@@ -65,6 +65,18 @@ public class Video implements NotifyTuple {
 		this(mediaId, null, title, desc);
 	}
 
+	/**
+	 * 公众平台发送视频消息
+	 *
+	 * @param mediaId
+	 *            视频媒体文件id，可以调用上传临时素材或者永久素材接口获取
+	 * @param thumbMediaId
+	 *            视频缩略图
+	 * @param title
+	 *            视频标题
+	 * @param desc
+	 *            视频描述
+	 */
 	@JSONCreator
 	public Video(@JSONField(name = "mediaId") String mediaId,
 			@JSONField(name = "thumbMediaId") String thumbMediaId,

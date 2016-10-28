@@ -5,14 +5,14 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.message.ChatMessage;
 import com.foxinmy.weixin4j.qy.model.ChatInfo;
 import com.foxinmy.weixin4j.qy.model.ChatMute;
 import com.foxinmy.weixin4j.qy.type.ChatType;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.ChatTuple;
 import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.StringUtil;
@@ -21,17 +21,17 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 会话服务接口
  * 
  * @className ChatApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年7月31日
  * @since JDK 1.6
  * @see <a
  *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%9C%8D%E5%8A%A1">企业号消息服务</a>
  */
 public class ChatApi extends QyApi {
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public ChatApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public ChatApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class ChatApi extends QyApi {
 			obj.put("chatid", chatId);
 		}
 		String message_chat_create_uri = getRequestUri("message_chat_create_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		weixinExecutor.post(
 				String.format(message_chat_create_uri, token.getAccessToken()),
 				obj.toJSONString());
@@ -73,7 +73,7 @@ public class ChatApi extends QyApi {
 	 */
 	public ChatInfo getChat(String chatId) throws WeixinException {
 		String message_chat_get_uri = getRequestUri("message_chat_get_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				message_chat_get_uri, token.getAccessToken(), chatId));
 		return response.getAsJson().getObject("chat_info", ChatInfo.class);
@@ -96,7 +96,7 @@ public class ChatApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E4.BF.AE.E6.94.B9.E4.BC.9A.E8.AF.9D.E4.BF.A1.E6.81.AF">修改会话信息</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult updateChat(ChatInfo chatInfo, String operator,
+	public ApiResult updateChat(ChatInfo chatInfo, String operator,
 			List<String> addUsers, List<String> deleteUsers)
 			throws WeixinException {
 		JSONObject obj = (JSONObject) JSON.toJSON(chatInfo);
@@ -105,11 +105,11 @@ public class ChatApi extends QyApi {
 		obj.put("add_user_list", addUsers);
 		obj.put("del_user_list", deleteUsers);
 		String message_chat_update_uri = getRequestUri("message_chat_update_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(message_chat_update_uri, token.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -124,17 +124,17 @@ public class ChatApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E9.80.80.E5.87.BA.E4.BC.9A.E8.AF.9D">退出会话</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult quitChat(String chatId, String operator)
+	public ApiResult quitChat(String chatId, String operator)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("chatid", chatId);
 		obj.put("op_user", operator);
 		String message_chat_quit_uri = getRequestUri("message_chat_quit_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(message_chat_quit_uri, token.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -151,19 +151,19 @@ public class ChatApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E6.B8.85.E9.99.A4.E4.BC.9A.E8.AF.9D.E6.9C.AA.E8.AF.BB.E7.8A.B6.E6.80.81">清除会话未读状态</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult clearChatNotify(String targetId, String owner,
+	public ApiResult clearChatNotify(String targetId, String owner,
 			ChatType chatType) throws WeixinException {
 		JSONObject chat = new JSONObject();
 		chat.put("type", chatType.name());
 		chat.put("id", targetId);
 		String message_chat_clearnotify_uri = getRequestUri("message_chat_clearnotify_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(message_chat_clearnotify_uri,
 						token.getAccessToken()),
 				String.format("{\"op_user\": \"%s\",\"chat\":%s", owner,
 						chat.toJSONString()));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class ChatApi extends QyApi {
 		JSONObject mute = new JSONObject();
 		mute.put("user_mute_list", chatMutes);
 		String message_chat_setmute_uri = getRequestUri("message_chat_setmute_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor
 				.post(String.format(message_chat_setmute_uri,
 						token.getAccessToken()), mute.toJSONString());
@@ -203,7 +203,7 @@ public class ChatApi extends QyApi {
 	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%8F%B7%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E#.E5.8F.91.E6.B6.88.E6.81.AF">发送消息</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult sendChatMessage(ChatMessage message)
+	public ApiResult sendChatMessage(ChatMessage message)
 			throws WeixinException {
 		ChatTuple tuple = message.getChatTuple();
 		String msgtype = tuple.getMessageType();
@@ -216,10 +216,10 @@ public class ChatApi extends QyApi {
 		msg.put("msgtype", msgtype);
 		msg.put(msgtype, tuple);
 		String message_chat_send_uri = getRequestUri("message_chat_send_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(message_chat_send_uri, token.getAccessToken()),
 				msg.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

@@ -6,9 +6,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * 部门对象
- * 
+ *
  * @className Party
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see <a
@@ -22,7 +22,7 @@ public class Party implements Serializable {
 	 */
 	private int id;
 	/**
-	 * 部门名称。长度限制为1~64个字符
+	 * 部门名称。长度限制为32个字（汉字或英文字母），字符不能包括\:*?"&lt;&gt;｜
 	 */
 	private String name;
 	/**

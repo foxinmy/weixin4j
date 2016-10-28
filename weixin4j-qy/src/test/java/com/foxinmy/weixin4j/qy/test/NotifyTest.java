@@ -1,14 +1,12 @@
 package com.foxinmy.weixin4j.qy.test;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.qy.api.NotifyApi;
 import com.foxinmy.weixin4j.qy.message.NotifyMessage;
+import com.foxinmy.weixin4j.qy.model.IdParameter;
 import com.foxinmy.weixin4j.tuple.File;
 import com.foxinmy.weixin4j.tuple.Image;
 import com.foxinmy.weixin4j.tuple.MpNews;
@@ -21,7 +19,7 @@ import com.foxinmy.weixin4j.tuple.Voice;
  * 客服消息测试
  * 
  * @className NotifyTest
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  * @see
@@ -32,12 +30,12 @@ public class NotifyTest extends TokenTest {
 
 	@Before
 	public void init() {
-		notifyApi = new NotifyApi(tokenHolder);
+		notifyApi = new NotifyApi(tokenManager);
 	}
 
 	@Test
 	public void text() throws WeixinException {
-		NotifyMessage notify = new NotifyMessage(0, new Text("content"));
+		NotifyMessage notify = new NotifyMessage(40, new Text("content"));
 		System.out.println(notifyApi.sendNotifyMessage(notify));
 	}
 
@@ -88,8 +86,8 @@ public class NotifyTest extends TokenTest {
 	@Test
 	public void send1() throws WeixinException {
 		Text text = new Text("this is a text");
-		JSONObject result = notifyApi.sendNotifyMessage(new NotifyMessage(1,
+		IdParameter result = notifyApi.sendNotifyMessage(new NotifyMessage(1,
 				text));
-		Assert.assertEquals(0, result.getIntValue("errcode"));
+		System.err.println(result);
 	}
 }
