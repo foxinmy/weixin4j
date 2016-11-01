@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.socket;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -31,6 +32,7 @@ import com.foxinmy.weixin4j.xml.EncryptMessageHandler;
  *      href="http://mp.weixin.qq.com/wiki/0/61c3a8b9d50ac74f18bdf2e54ddfc4e0.html">加密接入指引</a>
  * @see com.foxinmy.weixin4j.request.WeixinRequest
  */
+@ChannelHandler.Sharable
 public class WeixinMessageDecoder extends
 		MessageToMessageDecoder<FullHttpRequest> {
 	private final InternalLogger logger = InternalLoggerFactory
@@ -39,20 +41,18 @@ public class WeixinMessageDecoder extends
 	private Map<String, AesToken> aesTokenMap = new ConcurrentHashMap<String, AesToken>();
 
 	public WeixinMessageDecoder(Map<String, AesToken> aesTokenMap) {
-		//this.aesTokenMap = aesTokenMap;
-		AesToken[]tokens = aesTokenMap.values().toArray(new AesToken[0]);
-		for (AesToken token:tokens){
+		// this.aesTokenMap = aesTokenMap;
+		AesToken[] tokens = aesTokenMap.values().toArray(new AesToken[0]);
+		for (AesToken token : tokens) {
 			aesTokenMap.put(token.getWeixinId(), token);
 		}
 	}
 
-	public int addAesToken(final AesToken asetoken){
+	public int addAesToken(final AesToken asetoken) {
 		AesToken token = aesTokenMap.get(asetoken.getWeixinId());
 		if (token != null)
 			return -1;
-
 		aesTokenMap.put(asetoken.getWeixinId(), asetoken);
-
 		return 0;
 	}
 

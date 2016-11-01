@@ -38,7 +38,6 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 
 	@Override
 	protected void initChannel(SocketChannel channel) {
-
 		ChannelPipeline pipeline = channel.pipeline();
 		pipeline.addLast(new HttpServerCodec());
 		pipeline.addLast(new HttpObjectAggregator(65536));
