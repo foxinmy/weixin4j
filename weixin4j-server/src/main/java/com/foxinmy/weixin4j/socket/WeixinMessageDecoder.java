@@ -11,6 +11,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -40,11 +41,9 @@ public class WeixinMessageDecoder extends
 
 	private Map<String, AesToken> aesTokenMap = new ConcurrentHashMap<String, AesToken>();
 
-	public WeixinMessageDecoder(Map<String, AesToken> aesTokenMap) {
-		// this.aesTokenMap = aesTokenMap;
-		AesToken[] tokens = aesTokenMap.values().toArray(new AesToken[0]);
-		for (AesToken token : tokens) {
-			aesTokenMap.put(token.getWeixinId(), token);
+	public WeixinMessageDecoder(final Map<String, AesToken> aesTokenMap) {
+		for (Entry<String, AesToken> entry : aesTokenMap.entrySet()) {  
+			this.aesTokenMap.put(entry.getKey(), entry.getValue());
 		}
 	}
 
