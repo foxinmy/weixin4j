@@ -42,8 +42,9 @@ public class WeixinMessageDecoder extends
 	private Map<String, AesToken> aesTokenMap = new ConcurrentHashMap<String, AesToken>();
 
 	public WeixinMessageDecoder(final Map<String, AesToken> aesTokenMap) {
-		for (Entry<String, AesToken> entry : aesTokenMap.entrySet()) {  
-			this.aesTokenMap.put(entry.getKey(), entry.getValue());
+		for (Entry<String, AesToken> entry : aesTokenMap.entrySet()) {
+			this.aesTokenMap.put(entry.getKey() == null ? "" : entry.getKey(),
+					entry.getValue());
 		}
 	}
 
@@ -79,7 +80,7 @@ public class WeixinMessageDecoder extends
 		String msgSignature = parameters.containsKey("msg_signature") ? parameters
 				.get("msg_signature").get(0) : "";
 		String weixinId = parameters.containsKey("weixin_id") ? parameters.get(
-				"weixin_id").get(0) : null;
+				"weixin_id").get(0) : "";
 		AesToken aesToken = aesTokenMap.get(weixinId);
 		String encryptContent = null;
 		if (!ServerToolkits.isBlank(messageContent)
