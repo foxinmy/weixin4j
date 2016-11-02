@@ -95,7 +95,7 @@ public final class WeixinServerBootstrap {
 	 * 
 	 */
 	public WeixinServerBootstrap(String token) {
-		this(null, token, null);
+		this("", token, null);
 	}
 
 	/**
@@ -163,7 +163,7 @@ public final class WeixinServerBootstrap {
 		for (AesToken aesToken : aesTokens) {
 			this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
 		}
-		this.aesTokenMap.put(null, aesTokens[0]);
+		this.aesTokenMap.put("", aesTokens[0]);
 		this.messageHandlerList = new ArrayList<WeixinMessageHandler>();
 		this.messageInterceptorList = new ArrayList<WeixinMessageInterceptor>();
 		this.messageDispatcher = new WeixinMessageDispatcher(messageMatcher);
@@ -205,7 +205,6 @@ public final class WeixinServerBootstrap {
 		EventLoopGroup bossGroup = new NioEventLoopGroup(bossThreads);
 		EventLoopGroup workerGroup = new NioEventLoopGroup(workerThreads);
 		try {
-
 			wechatInitializer = new WeixinServerInitializer(aesTokenMap,
 					messageDispatcher);
 			ServerBootstrap b = new ServerBootstrap();

@@ -167,6 +167,6 @@ public class MessageServerStartup {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		new MessageServerStartup().test2();
+		new MessageServerStartup().test1();
 	}
 }
