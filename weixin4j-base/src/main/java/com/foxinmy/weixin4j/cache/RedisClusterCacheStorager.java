@@ -1,13 +1,12 @@
 package com.foxinmy.weixin4j.cache;
 
-import java.util.Set;
-
+import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.HessianCodecUtil;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPoolConfig;
 
-import com.foxinmy.weixin4j.util.Consts;
-import com.foxinmy.weixin4j.util.SerializationUtils;
+import java.util.Set;
 
 /**
  * 用Redis(集群)保存缓存对象(推荐使用)
@@ -61,18 +60,19 @@ public class RedisClusterCacheStorager<T extends Cacheable> implements
 	@Override
 	public T lookup(String key) {
 		byte[] value = jedisCluster.get(key.getBytes(Consts.UTF_8));
-		return value != null ? (T) SerializationUtils.deserialize(value) : null;
+
+		return value != null ?(T) HessianCodecUtil.decode(value):null;
 	}
 
 	@Override
 	public void caching(String key, T cache) {
 		byte[] cacheKey = key.getBytes(Consts.UTF_8);
-		byte[] value = SerializationUtils.serialize(cache);
+		final byte[] valueBytes = HessianCodecUtil.encode(cache);
 		if (cache.getExpires() > 0) {
 			jedisCluster.setex(cacheKey,
-					(int) (cache.getExpires() - CUTMS) / 1000, value);
+					(int) (cache.getExpires() - CUTMS) / 1000, valueBytes);
 		} else {
-			jedisCluster.set(cacheKey, value);
+			jedisCluster.set(cacheKey, valueBytes);
 		}
 		jedisCluster.sadd(ALLKEY, key);
 	}

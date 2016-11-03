@@ -1,14 +1,13 @@
 package com.foxinmy.weixin4j.cache;
 
-import java.util.Set;
-
+import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.HessianCodecUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.util.Pool;
 
-import com.foxinmy.weixin4j.util.Consts;
-import com.foxinmy.weixin4j.util.SerializationUtils;
+import java.util.Set;
 
 /**
  * 用Redis保存缓存对象(推荐使用)
@@ -66,8 +65,9 @@ public class RedisCacheStorager<T extends Cacheable> implements
 		try {
 			jedis = jedisPool.getResource();
 			byte[] value = jedis.get(key.getBytes(Consts.UTF_8));
-			return value != null ? (T) SerializationUtils.deserialize(value)
-					: null;
+
+			return value != null ?(T)HessianCodecUtil.decode(value):null;
+
 		} finally {
 			if (jedis != null) {
 				jedis.close();
@@ -81,12 +81,12 @@ public class RedisCacheStorager<T extends Cacheable> implements
 		try {
 			jedis = jedisPool.getResource();
 			byte[] cacheKey = key.getBytes(Consts.UTF_8);
-			byte[] value = SerializationUtils.serialize(cache);
+			final byte[] valueBytes = HessianCodecUtil.encode(cache);
 			if (cache.getExpires() > 0) {
 				jedis.setex(cacheKey,
-						(int) (cache.getExpires() - CUTMS) / 1000, value);
+						(int) (cache.getExpires() - CUTMS) / 1000, valueBytes);
 			} else {
-				jedis.set(cacheKey, value);
+				jedis.set(cacheKey, valueBytes);
 			}
 			jedis.sadd(ALLKEY, key);
 		} finally {

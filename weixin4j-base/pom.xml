@@ -69,5 +69,11 @@
 			<version>1.7.19</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.caucho</groupId>
+			<artifactId>hessian</artifactId>
+			<version>4.0.38</version>
+		</dependency>
+
 	</dependencies>
 </project>
