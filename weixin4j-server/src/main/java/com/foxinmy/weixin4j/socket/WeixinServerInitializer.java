@@ -29,7 +29,7 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 	public WeixinServerInitializer(Map<String, AesToken> aesTokenMap,
 			WeixinMessageDispatcher messageDispatcher) {
 		this.messageDispatcher = messageDispatcher;
-		messageDecoder = new WeixinMessageDecoder(aesTokenMap);
+		this.messageDecoder = new WeixinMessageDecoder(aesTokenMap);
 	}
 
 	public int addAesToken(final AesToken asetoken){
@@ -38,7 +38,6 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 
 	@Override
 	protected void initChannel(SocketChannel channel) {
-
 		ChannelPipeline pipeline = channel.pipeline();
 		pipeline.addLast(new HttpServerCodec());
 		pipeline.addLast(new HttpObjectAggregator(65536));

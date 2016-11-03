@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.socket;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.util.internal.logging.InternalLogger;
@@ -21,6 +22,7 @@ import com.foxinmy.weixin4j.util.ServerToolkits;
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.response.SingleResponse
  */
+@ChannelHandler.Sharable
 public class SingleResponseEncoder extends
 		MessageToMessageEncoder<SingleResponse> {
 

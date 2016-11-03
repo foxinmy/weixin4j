@@ -45,7 +45,8 @@ import com.foxinmy.weixin4j.util.AesToken;
  */
 public final class WeixinServerBootstrap {
 
-	private final InternalLogger logger = InternalLoggerFactory.getInstance(getClass());
+	private final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 
 	/**
 	 * boss线程数,默认设置为cpu的核数
@@ -94,12 +95,15 @@ public final class WeixinServerBootstrap {
 	 * 
 	 */
 	public WeixinServerBootstrap(String token) {
-		this(null, token, null);
+		this("", token, null);
 	}
 
 	/**
 	 * 明文模式 & 兼容模式 & 密文模式
-	 * <dl><font color="red">值得注意的是：企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font></dl>
+	 * <dl>
+	 * <font
+	 * color="red">值得注意的是：企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font>
+	 * </dl>
 	 * 
 	 * @param weixinId
 	 *            公众号的应用ID(appid/corpid) 密文&兼容模式下需要填写
@@ -114,10 +118,14 @@ public final class WeixinServerBootstrap {
 	}
 
 	/**
-	 * 多个公众号的支持
-	 * <dt>值得注意的是：
-	 * <dl><font color="red">1).企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font></dl>
-	 * <dl><font color="red">2).非明文模式下需要在服务器URL后面加多一个`weixin_id=对应的appid/corpid`的参数</font></dl>
+	 * 多个公众号的支持 <dt>值得注意的是：
+	 * <dl>
+	 * <font color="red">1).企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font>
+	 * </dl>
+	 * <dl>
+	 * <font
+	 * color="red">2).非明文模式下需要在服务器URL后面加多一个`weixin_id=对应的appid/corpid`的参数</font>
+	 * </dl>
 	 * 
 	 * @param aesTokens
 	 *            多个公众号
@@ -128,10 +136,14 @@ public final class WeixinServerBootstrap {
 	}
 
 	/**
-	 * 多个公众号的支持
-	 * <dt>值得注意的是：
-	 * <dl><font color="red">1).企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font></dl>
-	 * <dl><font color="red">2).非明文模式下需要在服务器URL后面加多一个`weixin_id=对应的appid/corpid`的参数</font></dl>
+	 * 多个公众号的支持 <dt>值得注意的是：
+	 * <dl>
+	 * <font color="red">1).企业号服务时需要在服务器URL后面加多一个`encrypt_type=aes`的参数</font>
+	 * </dl>
+	 * <dl>
+	 * <font
+	 * color="red">2).非明文模式下需要在服务器URL后面加多一个`weixin_id=对应的appid/corpid`的参数</font>
+	 * </dl>
 	 * 
 	 * @param messageMatcher
 	 *            消息匹配器
@@ -139,7 +151,8 @@ public final class WeixinServerBootstrap {
 	 *            公众号信息
 	 * @return
 	 */
-	public WeixinServerBootstrap(WeixinMessageMatcher messageMatcher, AesToken... aesTokens) {
+	public WeixinServerBootstrap(WeixinMessageMatcher messageMatcher,
+			AesToken... aesTokens) {
 		if (messageMatcher == null) {
 			throw new IllegalArgumentException("MessageMatcher not be null");
 		}
@@ -150,7 +163,7 @@ public final class WeixinServerBootstrap {
 		for (AesToken aesToken : aesTokens) {
 			this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
 		}
-		this.aesTokenMap.put(null, aesTokens[0]);
+		this.aesTokenMap.put("", aesTokens[0]);
 		this.messageHandlerList = new ArrayList<WeixinMessageHandler>();
 		this.messageInterceptorList = new ArrayList<WeixinMessageInterceptor>();
 		this.messageDispatcher = new WeixinMessageDispatcher(messageMatcher);
@@ -184,30 +197,36 @@ public final class WeixinServerBootstrap {
 	 * @return
 	 * @throws WeixinException
 	 */
-	public void startup(int bossThreads, int workerThreads, final int serverPort) throws WeixinException {
+	public void startup(int bossThreads, int workerThreads, final int serverPort)
+			throws WeixinException {
 		messageDispatcher.setMessageHandlerList(messageHandlerList);
 		messageDispatcher.setMessageInterceptorList(messageInterceptorList);
 
 		EventLoopGroup bossGroup = new NioEventLoopGroup(bossThreads);
 		EventLoopGroup workerGroup = new NioEventLoopGroup(workerThreads);
 		try {
-
-			wechatInitializer = new WeixinServerInitializer(aesTokenMap, messageDispatcher);
-
+			wechatInitializer = new WeixinServerInitializer(aesTokenMap,
+					messageDispatcher);
 			ServerBootstrap b = new ServerBootstrap();
 			b.option(ChannelOption.SO_BACKLOG, 1024);
-			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).handler(new LoggingHandler())
+			b.group(bossGroup, workerGroup)
+					.channel(NioServerSocketChannel.class)
+					.handler(new LoggingHandler())
 					.childHandler(wechatInitializer);
-			Channel ch = b.bind(serverPort).addListener(new FutureListener<Void>() {
-				@Override
-				public void operationComplete(Future<Void> future) throws Exception {
-					if (future.isSuccess()) {
-						logger.info("weixin4j server startup OK:{}", serverPort);
-					} else {
-						logger.info("weixin4j server startup FAIL:{}", serverPort);
-					}
-				}
-			}).sync().channel();
+			Channel ch = b.bind(serverPort)
+					.addListener(new FutureListener<Void>() {
+						@Override
+						public void operationComplete(Future<Void> future)
+								throws Exception {
+							if (future.isSuccess()) {
+								logger.info("weixin4j server startup OK:{}",
+										serverPort);
+							} else {
+								logger.info("weixin4j server startup FAIL:{}",
+										serverPort);
+							}
+						}
+					}).sync().channel();
 			ch.closeFuture().sync();
 		} catch (InterruptedException e) {
 			throw new WeixinException("netty server startup FAIL", e);
@@ -224,7 +243,8 @@ public final class WeixinServerBootstrap {
 	 *            消息处理器
 	 * @return
 	 */
-	public WeixinServerBootstrap addHandler(WeixinMessageHandler... messageHandler) {
+	public WeixinServerBootstrap addHandler(
+			WeixinMessageHandler... messageHandler) {
 		if (messageHandler == null) {
 			throw new IllegalArgumentException("messageHandler not be null");
 		}
@@ -239,7 +259,8 @@ public final class WeixinServerBootstrap {
 	 *            消息拦截器
 	 * @return
 	 */
-	public WeixinServerBootstrap addInterceptor(WeixinMessageInterceptor... messageInterceptor) {
+	public WeixinServerBootstrap addInterceptor(
+			WeixinMessageInterceptor... messageInterceptor) {
 		if (messageInterceptor == null) {
 			throw new IllegalArgumentException("messageInterceptor not be null");
 		}
@@ -254,9 +275,11 @@ public final class WeixinServerBootstrap {
 	 *            消息处理器所在的包名
 	 * @return
 	 */
-	public WeixinServerBootstrap handlerPackagesToScan(String... messageHandlerPackages) {
+	public WeixinServerBootstrap handlerPackagesToScan(
+			String... messageHandlerPackages) {
 		if (messageHandlerPackages == null) {
-			throw new IllegalArgumentException("messageHandlerPackages not be null");
+			throw new IllegalArgumentException(
+					"messageHandlerPackages not be null");
 		}
 		messageDispatcher.setMessageHandlerPackages(messageHandlerPackages);
 		return this;
@@ -269,11 +292,14 @@ public final class WeixinServerBootstrap {
 	 *            消息拦截器所在的包名
 	 * @return
 	 */
-	public WeixinServerBootstrap interceptorPackagesToScan(String... messageInterceptorPackages) {
+	public WeixinServerBootstrap interceptorPackagesToScan(
+			String... messageInterceptorPackages) {
 		if (messageInterceptorPackages == null) {
-			throw new IllegalArgumentException("messageInterceptorPackages not be null");
+			throw new IllegalArgumentException(
+					"messageInterceptorPackages not be null");
 		}
-		messageDispatcher.setMessageInterceptorPackages(messageInterceptorPackages);
+		messageDispatcher
+				.setMessageInterceptorPackages(messageInterceptorPackages);
 		return this;
 	}
 
@@ -298,7 +324,8 @@ public final class WeixinServerBootstrap {
 	 *            消息类
 	 * @return
 	 */
-	public WeixinServerBootstrap registMessageClass(WeixinMessageKey messageKey,
+	public WeixinServerBootstrap registMessageClass(
+			WeixinMessageKey messageKey,
 			Class<? extends WeixinMessage> messageClass) {
 		messageDispatcher.registMessageClass(messageKey, messageClass);
 		return this;
@@ -312,19 +339,13 @@ public final class WeixinServerBootstrap {
 		return this;
 	}
 
-
 	/**
 	 * aesTokenMap 最好是线程安全的
+	 * 
 	 * @param aesToken
 	 * @return
 	 */
-	public int addAesToken(AesToken aesToken){
-		AesToken token = aesTokenMap.get(aesToken.getWeixinId());
-		if (token != null)
-			return -1;
-
-		this.aesTokenMap.put(aesToken.getWeixinId(), aesToken);
-
+	public int addAesToken(AesToken aesToken) {
 		return wechatInitializer.addAesToken(aesToken);
 	}
 

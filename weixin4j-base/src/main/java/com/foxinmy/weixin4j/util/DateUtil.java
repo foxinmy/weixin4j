@@ -119,4 +119,17 @@ public final class DateUtil {
 		return _fee.multiply(new BigDecimal("100"))
 				.setScale(0, BigDecimal.ROUND_HALF_EVEN).intValue();
 	}
+
+	/**
+	 * 单位为分的金额格式化为元
+	 * 
+	 * @param fee
+	 *            金额 单位为分
+	 * @return 四舍六入五成双的金额
+	 */
+	public static double formatFee2Yuan(int fee) {
+		BigDecimal _fee = new BigDecimal(Integer.toString(fee));
+		return _fee.divide(new BigDecimal("100"))
+				.setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+	}
 }

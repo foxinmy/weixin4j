@@ -17,7 +17,7 @@
 		<!-- token存储:不声明则默认使用文件方式(FileCacheStorager)保存,请自行引入redis配置文件 -->
 		<!-- constructor-arg>
 			<bean class="com.foxinmy.weixin4j.cache.RedisCacheStorager">
-				<constructor-arg type="redis.clients.jedis.JedisPool">
+				<constructor-arg type="redis.clients.util.Pool">
 					<bean class="redis.clients.jedis.JedisPool">
 						<constructor-arg index="0">
 							<bean class="redis.clients.jedis.JedisPoolConfig">

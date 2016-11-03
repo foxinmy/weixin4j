@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.payment.PayPackage;
+import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.TradeType;
 
 /**
@@ -32,6 +33,12 @@ public class MchPayPackage extends PayPackage {
 	@XmlElement(name = "trade_type")
 	@JSONField(name = "trade_type")
 	private String tradeType;
+	/**
+	 * 符合ISO 4217标准的三位字母代码，默认人民币：CNY 非必须
+	 */
+	@XmlElement(name = "fee_type")
+	@JSONField(name = "fee_type")
+	private String feeType;
 	/**
 	 * 用户在商户 appid 下的唯一 标识, trade_type 为 JSAPI 时,此参数必传
 	 */
@@ -96,9 +103,9 @@ public class MchPayPackage extends PayPackage {
 	public MchPayPackage(String body, String outTradeNo, double totalFee,
 			String notifyUrl, String createIp, TradeType tradeType,
 			String openId, String authCode, String productId, String attach) {
-		this(body, null, outTradeNo, totalFee, notifyUrl, createIp, tradeType,
-				openId, authCode, productId, attach, null, null, null, null,
-				null);
+		this(body, null, outTradeNo, totalFee, CurrencyType.CNY, notifyUrl,
+				createIp, tradeType, openId, authCode, productId, attach, null,
+				null, null, null, null);
 	}
 
 	/**
@@ -118,6 +125,8 @@ public class MchPayPackage extends PayPackage {
 	 *            订单生成的机器IP <font color="red">必填项</font>
 	 * @param tradeType
 	 *            交易类型 <font color="red">必填项</font>
+	 * @param feeType
+	 *            货币类型 非必填项
 	 * @param openId
 	 *            用户ID <font color="red">tradeType=JSAPI时必填</font>
 	 * @param authCode
@@ -139,13 +148,15 @@ public class MchPayPackage extends PayPackage {
 	 *            openid和sub_openid可以选传其中之一，如果选择传sub_openid ,则必须传sub_appid
 	 */
 	public MchPayPackage(String body, String detial, String outTradeNo,
-			double totalFee, String notifyUrl, String createIp,
-			TradeType tradeType, String openId, String authCode,
-			String productId, String attach, Date timeStart, Date timeExpire,
-			String goodsTag, String limitPay, String subOpenId) {
+			double totalFee, CurrencyType feeType, String notifyUrl,
+			String createIp, TradeType tradeType, String openId,
+			String authCode, String productId, String attach, Date timeStart,
+			Date timeExpire, String goodsTag, String limitPay, String subOpenId) {
 		super(body, detial, outTradeNo, totalFee, notifyUrl, createIp, attach,
 				timeStart, timeExpire, goodsTag);
-		this.tradeType = tradeType.name();
+		this.tradeType = tradeType != null ? tradeType.name() : null;
+		this.feeType = feeType == null ? CurrencyType.CNY.name() : feeType
+				.name();
 		this.openId = openId;
 		this.authCode = authCode;
 		this.productId = productId;
@@ -155,6 +166,10 @@ public class MchPayPackage extends PayPackage {
 
 	public String getTradeType() {
 		return tradeType;
+	}
+
+	public String getFeeType() {
+		return feeType;
 	}
 
 	public String getOpenId() {
@@ -187,9 +202,9 @@ public class MchPayPackage extends PayPackage {
 
 	@Override
 	public String toString() {
-		return "MchPayPackage [tradeType=" + tradeType + ", openId=" + openId
-				+ ", productId=" + productId + ", authCode=" + authCode
-				+ ", limitPay=" + limitPay + ", subOpenId=" + subOpenId + ", "
-				+ super.toString() + "]";
+		return "MchPayPackage [tradeType=" + tradeType + ",feeType=" + feeType
+				+ ", openId=" + openId + ", productId=" + productId
+				+ ", authCode=" + authCode + ", limitPay=" + limitPay
+				+ ", subOpenId=" + subOpenId + ", " + super.toString() + "]";
 	}
 }
