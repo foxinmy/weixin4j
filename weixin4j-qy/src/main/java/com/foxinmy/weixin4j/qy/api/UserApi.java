@@ -222,8 +222,6 @@ public class UserApi extends QyApi {
 	/**
 	 * 获取企业号管理员登录信息
 	 * 
-	 * @param providerToken
-	 *            提供商的token
 	 * @param authCode
 	 *            oauth2.0授权企业号管理员登录产生的code
 	 * @return 登陆信息
@@ -233,11 +231,11 @@ public class UserApi extends QyApi {
 	 * @see com.foxinmy.weixin4j.qy.model.OUserInfo
 	 * @throws WeixinException
 	 */
-	public OUserInfo getOUserInfoByCode(String providerToken, String authCode)
-			throws WeixinException {
+	public OUserInfo getOUserInfoByCode(String authCode) throws WeixinException {
+		Token token = tokenManager.getCache();
 		String oauth_logininfo_uri = getRequestUri("oauth_logininfo_uri");
 		WeixinResponse response = weixinExecutor.post(
-				String.format(oauth_logininfo_uri, providerToken),
+				String.format(oauth_logininfo_uri, token.getAccessToken()),
 				String.format("{\"auth_code\":\"%s\"}", authCode));
 		return JSON.parseObject(response.getAsString(), OUserInfo.class);
 	}
