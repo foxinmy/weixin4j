@@ -6,24 +6,22 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
 /**
- * Http 参数
- * 
+ * Http请求参数
+ *
  * @className HttpParams
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月13日
  * @since JDK 1.6
- * @see
  */
 public final class HttpParams {
-
-	private boolean allowUserInteraction = true;
-	private int connectTimeout = 5000;
-	private int socketTimeout = 5000;
-	private int readTimeout = 5000;
-	private int chunkSize = 4096;
-	private long ifModifiedSince = 0l;
-	private boolean followRedirects = false;
-
+	/**
+	 * 连接超时时间(单位毫秒)
+	 */
+	private int connectTimeout;
+	/**
+	 * 读取超时时间(单位毫秒)
+	 */
+	private int readTimeout;
 	/**
 	 * 代理对象
 	 */
@@ -37,83 +35,65 @@ public final class HttpParams {
 	 */
 	private HostnameVerifier hostnameVerifier;
 
-	public boolean isAllowUserInteraction() {
-		return allowUserInteraction;
+	/**
+	 * connectTimeout = 15000,readTimeout=20000
+	 */
+	public HttpParams() {
+		this(15000, 20000);
 	}
 
-	public void setAllowUserInteraction(boolean allowUserInteraction) {
-		this.allowUserInteraction = allowUserInteraction;
+	public HttpParams(int connectTimeout, int readTimeout) {
+		this.connectTimeout = connectTimeout;
+		this.readTimeout = readTimeout;
 	}
 
 	public int getConnectTimeout() {
 		return connectTimeout;
 	}
 
-	public void setConnectTimeout(int connectTimeout) {
-		this.connectTimeout = connectTimeout;
-	}
-
-	public int getSocketTimeout() {
-		return socketTimeout;
-	}
-
-	public void setSocketTimeout(int socketTimeout) {
-		this.socketTimeout = socketTimeout;
-	}
-
 	public int getReadTimeout() {
 		return readTimeout;
-	}
-
-	public void setReadTimeout(int readTimeout) {
-		this.readTimeout = readTimeout;
-	}
-
-	public int getChunkSize() {
-		return chunkSize;
-	}
-
-	public void setChunkSize(int chunkSize) {
-		this.chunkSize = chunkSize;
-	}
-
-	public long getIfModifiedSince() {
-		return ifModifiedSince;
-	}
-
-	public void setIfModifiedSince(long ifModifiedSince) {
-		this.ifModifiedSince = ifModifiedSince;
-	}
-
-	public boolean isFollowRedirects() {
-		return followRedirects;
-	}
-
-	public void setFollowRedirects(boolean followRedirects) {
-		this.followRedirects = followRedirects;
 	}
 
 	public Proxy getProxy() {
 		return proxy;
 	}
 
-	public void setProxy(Proxy proxy) {
+	public HttpParams setProxy(Proxy proxy) {
 		this.proxy = proxy;
+		return this;
 	}
 
 	public SSLContext getSSLContext() {
 		return sslContext;
 	}
 
-	public void setSSLContext(SSLContext sslContext) {
+	public HttpParams setSSLContext(SSLContext sslContext) {
 		this.sslContext = sslContext;
+		return this;
 	}
 
 	public HostnameVerifier getHostnameVerifier() {
 		return hostnameVerifier;
 	}
 
-	public void setHostnameVerifier(HostnameVerifier hostnameVerifier) {
+	public HttpParams setHostnameVerifier(HostnameVerifier hostnameVerifier) {
 		this.hostnameVerifier = hostnameVerifier;
+		return this;
+	}
+
+	public static HttpParams copy(final HttpParams params) {
+		return new HttpParams(params.getConnectTimeout(),
+				params.getReadTimeout()).setProxy(params.getProxy())
+				.setHostnameVerifier(params.getHostnameVerifier())
+				.setSSLContext(params.getSSLContext());
+	}
+
+	@Override
+	public String toString() {
+		return "HttpParams [connectTimeout=" + connectTimeout
+				+ ", readTimeout=" + readTimeout + ", proxy=" + proxy
+				+ ", sslContext=" + sslContext + ", hostnameVerifier="
+				+ hostnameVerifier + "]";
 	}
 }

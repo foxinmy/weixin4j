@@ -9,7 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 标签对象
  * 
  * @className Tag
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月24日
  * @since JDK 1.6
  * @see
@@ -31,7 +31,6 @@ public class Tag implements Serializable {
 	 */
 	private int count;
 
-	@JSONCreator
 	public Tag(@JSONField(name = "id") int id,
 			@JSONField(name = "name") String name) {
 		this(id, name, 0);

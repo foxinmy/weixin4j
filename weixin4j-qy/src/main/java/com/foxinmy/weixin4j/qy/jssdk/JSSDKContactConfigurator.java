@@ -3,11 +3,10 @@ package com.foxinmy.weixin4j.qy.jssdk;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
@@ -15,30 +14,29 @@ import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
  * JSSDK联系人筛选配置
- * 
+ *
  * @className JSSDKContactConfigurator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
- * @since JDK 1.7
- * @see
+ * @since JDK 1.6
  */
 public class JSSDKContactConfigurator {
-	private final TokenHolder ticketTokenHolder;
+	private final TokenManager ticketTokenManager;
 	private JSSDKContactParameter contactParameter;
 
 	/**
-	 * ticket保存类 可调用WeixinProxy#getTicketHolder获取
-	 * 
-	 * @param ticketTokenHolder
+	 * ticket保存类 可调用WeixinProxy#getTicketManager获取
+	 *
+	 * @param ticketTokenManager
 	 */
-	public JSSDKContactConfigurator(TokenHolder ticketTokenHolder) {
-		this.ticketTokenHolder = ticketTokenHolder;
+	public JSSDKContactConfigurator(TokenManager ticketTokenManager) {
+		this.ticketTokenManager = ticketTokenManager;
 		this.contactParameter = new JSSDKContactParameter();
 	}
 
 	/**
 	 * 可选范围：部门ID列表(如果partyIds为0则表示显示管理组下所有部门)
-	 * 
+	 *
 	 * @param departmentIds
 	 * @return
 	 */
@@ -49,7 +47,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 可选范围：标签ID列表(如果tagIds为0则表示显示所有标签)
-	 * 
+	 *
 	 * @param tagIds
 	 * @return
 	 */
@@ -60,7 +58,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 可选范围：用户ID列表
-	 * 
+	 *
 	 * @param userIds
 	 * @return
 	 */
@@ -71,7 +69,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 单选模式
-	 * 
+	 *
 	 * @return
 	 */
 	public JSSDKContactConfigurator singleMode() {
@@ -81,7 +79,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 多选模式
-	 * 
+	 *
 	 * @return
 	 */
 	public JSSDKContactConfigurator multiMode() {
@@ -91,7 +89,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 限制部门
-	 * 
+	 *
 	 * @return
 	 */
 	public JSSDKContactConfigurator limitDepartment() {
@@ -101,7 +99,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 限制标签
-	 * 
+	 *
 	 * @return
 	 */
 	public JSSDKContactConfigurator limitTag() {
@@ -111,7 +109,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 限制用户
-	 * 
+	 *
 	 * @return
 	 */
 	public JSSDKContactConfigurator limitUser() {
@@ -121,7 +119,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 已选部门ID
-	 * 
+	 *
 	 * @param selectedDepartmentIds
 	 * @return
 	 */
@@ -133,7 +131,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 已选标签ID
-	 * 
+	 *
 	 * @param selectedTagIds
 	 * @return
 	 */
@@ -144,7 +142,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 已选用户ID
-	 * 
+	 *
 	 * @param selectedUserIds
 	 * @return
 	 */
@@ -155,7 +153,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 生成config配置JSON串
-	 * 
+	 *
 	 * @param url
 	 *            当前网页的URL，不包含#及其后面部分
 	 * @return
@@ -167,7 +165,7 @@ public class JSSDKContactConfigurator {
 
 	/**
 	 * 生成config配置JSON串
-	 * 
+	 *
 	 * @param url
 	 *            当前网页的URL，不包含#及其后面部分
 	 * @param parameter
@@ -180,7 +178,7 @@ public class JSSDKContactConfigurator {
 		Map<String, String> signMap = new HashMap<String, String>();
 		String timestamp = DateUtil.timestamp2string();
 		String noncestr = RandomUtil.generateString(24);
-		Token token = this.ticketTokenHolder.getToken();
+		Token token = this.ticketTokenManager.getCache();
 		signMap.put("timestamp", timestamp);
 		signMap.put("nonceStr", noncestr);
 		signMap.put("group_ticket", token.getAccessToken());
@@ -189,8 +187,7 @@ public class JSSDKContactConfigurator {
 				.toJoinString(signMap, false, true));
 		JSONObject config = new JSONObject();
 		config.put("signature", sign);
-		config.put("groupId", JSON.parseObject(token.getOriginalResult())
-				.getString("group_id"));
+		config.put("groupId", token.getExtra().get("group_id"));
 		config.put("timestamp", timestamp);
 		config.put("noncestr", noncestr);
 		config.put("params", parameter);

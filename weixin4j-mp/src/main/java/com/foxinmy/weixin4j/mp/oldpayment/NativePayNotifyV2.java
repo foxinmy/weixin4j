@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.payment.JsPayNotify;
  * V2 Native支付回调时POST的信息
  * 
  * @className PayNativeNotifyV2
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月28日
  * @since JDK 1.6
  * @see

@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * 群发消息事件推送
  * 
  * @className MassEventMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月27日
  * @since JDK 1.6
  * @see <a

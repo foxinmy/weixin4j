@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * @title 反射工具类
  * @description 提供对类,字段的反射调用
- * @author jy.hu , 2012-10-26
+ * @author jinyu(foxinmy@gmail.com) , 2012-10-26
  */
 public class ReflectionUtil {
 

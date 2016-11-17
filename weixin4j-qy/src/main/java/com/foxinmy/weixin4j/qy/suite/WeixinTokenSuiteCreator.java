@@ -5,14 +5,15 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
-import com.foxinmy.weixin4j.token.AbstractTokenCreator;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.PerTicketManager;
+import com.foxinmy.weixin4j.token.TokenCreator;
+import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 微信企业号token创建(永久授权码)
- * 
+ *
  * @className WeixinTokenSuiteCreator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月17日
  * @since JDK 1.6
  * @see <a href=
@@ -20,40 +21,41 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  *      获取企业号access_token</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class WeixinTokenSuiteCreator extends AbstractTokenCreator {
+public class WeixinTokenSuiteCreator extends TokenCreator {
 
-	private final SuitePerCodeHolder perCodeHolder;
-	private final TokenHolder suiteTokenHolder;
+	private final PerTicketManager perTicketManager;
+	private final TokenManager suiteTokenManager;
 
 	/**
-	 * 
-	 * @param perCodeHolder
+	 *
+	 * @param perTicketManager
 	 *            第三方套件永久授权码
-	 * @param suiteTokenHolder
+	 * @param suiteTokenManager
 	 *            第三方套件凭证token
 	 */
-	public WeixinTokenSuiteCreator(SuitePerCodeHolder perCodeHolder, TokenHolder suiteTokenHolder) {
-		this.perCodeHolder = perCodeHolder;
-		this.suiteTokenHolder = suiteTokenHolder;
+	public WeixinTokenSuiteCreator(PerTicketManager perTicketManager,
+			TokenManager suiteTokenManager) {
+		this.perTicketManager = perTicketManager;
+		this.suiteTokenManager = suiteTokenManager;
 	}
 
 	@Override
-	public String getCacheKey0() {
-		return String.format("qy_token_suite_%s_%s", perCodeHolder.getSuiteId(), perCodeHolder.getAuthCorpId());
+	public String key0() {
+		return String.format("qy_token_suite_%s_%s",
+				perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
 	}
 
 	@Override
-	public Token createToken() throws WeixinException {
+	public Token create() throws WeixinException {
 		JSONObject obj = new JSONObject();
-		obj.put("suite_id", perCodeHolder.getSuiteId());
-		obj.put("auth_corpid", perCodeHolder.getAuthCorpId());
-		obj.put("permanent_code", perCodeHolder.getPermanentCode());
-		WeixinResponse response = weixinExecutor
-				.post(String.format(URLConsts.TOKEN_SUITE_URL, suiteTokenHolder.getAccessToken()), obj.toJSONString());
+		obj.put("suite_id", perTicketManager.getThirdId());
+		obj.put("auth_corpid", perTicketManager.getAuthAppId());
+		obj.put("permanent_code", perTicketManager.getAccessTicket());
+		WeixinResponse response = weixinExecutor.post(
+				String.format(URLConsts.TOKEN_SUITE_URL,
+						suiteTokenManager.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
-		Token token = new Token(obj.getString("access_token"));
-		token.setExpiresIn(obj.getIntValue("expires_in"));
-		token.setOriginalResult(response.getAsString());
-		return token;
+		return new Token(obj.getString("access_token"),
+				obj.getLongValue("expires_in") * 1000l);
 	}
 }

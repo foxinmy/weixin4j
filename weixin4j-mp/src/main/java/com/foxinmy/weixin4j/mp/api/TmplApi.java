@@ -6,30 +6,30 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.NameFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.message.TemplateMessage;
 import com.foxinmy.weixin4j.mp.model.TemplateMessageInfo;
 import com.foxinmy.weixin4j.mp.type.IndustryType;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.util.NameValue;
 
 /**
  * 模板消息相关API
  * 
  * @className TemplApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月30日
  * @since JDK 1.6
  * @see
  */
 public class TmplApi extends MpApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public TmplApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public TmplApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -43,20 +43,20 @@ public class TmplApi extends MpApi {
 	 * @see <a
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">设置所处行业</a>
 	 */
-	public JsonResult setTmplIndustry(IndustryType... industryTypes)
+	public ApiResult setTmplIndustry(IndustryType... industryTypes)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		for (int i = 0; i < industryTypes.length; i++) {
 			obj.put(String.format("industry_id%d", i + 1),
 					Integer.toString(industryTypes[i].getTypeId()));
 		}
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String template_set_industry_uri = getRequestUri("template_set_industry_uri");
 		WeixinResponse response = weixinExecutor.post(String.format(
 				template_set_industry_uri, token.getAccessToken()), obj
 				.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class TmplApi extends MpApi {
 	public IndustryType[] getTmplIndustry() throws WeixinException {
 		String template_get_industry_uri = getRequestUri("template_get_industry_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(
-				template_get_industry_uri, tokenHolder.getAccessToken()));
+				template_get_industry_uri, tokenManager.getAccessToken()));
 		JSONObject primary = response.getAsJson().getJSONObject(
 				"primary_industry");
 		JSONObject secondary = response.getAsJson().getJSONObject(
@@ -96,7 +96,7 @@ public class TmplApi extends MpApi {
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">获得模板ID</a>
 	 */
 	public String getTemplateId(String shortId) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String template_getid_uri = getRequestUri("template_getid_uri");
 		WeixinResponse response = weixinExecutor.post(
 				String.format(template_getid_uri, token.getAccessToken()),
@@ -115,7 +115,7 @@ public class TmplApi extends MpApi {
 	 * @throws WeixinException
 	 */
 	public List<TemplateMessageInfo> getAllTemplates() throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String template_getall_uri = getRequestUri("template_getall_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(
 				template_getall_uri, token.getAccessToken()));
@@ -133,13 +133,13 @@ public class TmplApi extends MpApi {
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">删除模板</a>
 	 * @throws WeixinException
 	 */
-	public JsonResult deleteTemplate(String templateId) throws WeixinException {
-		Token token = tokenHolder.getToken();
+	public ApiResult deleteTemplate(String templateId) throws WeixinException {
+		Token token = tokenManager.getCache();
 		String template_del_uri = getRequestUri("template_del_uri");
 		WeixinResponse response = weixinExecutor.post(
 				String.format(template_del_uri, token.getAccessToken()),
 				String.format("{\"template_id\"=\"%s\"}", templateId));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -157,9 +157,9 @@ public class TmplApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.message.TemplateMessage
 	 * @see com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 */
-	public JsonResult sendTmplMessage(TemplateMessage tplMessage)
+	public ApiResult sendTmplMessage(TemplateMessage tplMessage)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String template_send_uri = getRequestUri("template_send_uri");
 		WeixinResponse response = weixinExecutor.post(
 				String.format(template_send_uri, token.getAccessToken()),
@@ -174,6 +174,6 @@ public class TmplApi extends MpApi {
 					}
 				}));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

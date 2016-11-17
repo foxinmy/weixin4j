@@ -5,15 +5,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.Gender;
 import com.foxinmy.weixin4j.qy.type.UserStatus;
+import com.foxinmy.weixin4j.type.Gender;
 import com.foxinmy.weixin4j.util.NameValue;
 
 /**
  * 部门成员对象
- * 
+ *
  * @className User
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月19日
  * @since JDK 1.6
  * @see <a
@@ -32,7 +32,7 @@ public class User implements Serializable {
 	 */
 	private String name;
 	/**
-	 * 非必须 成员所属部门id列表。注意，每个部门的直属员工上限为1000个
+	 * 非必须 成员所属部门id列表,不超过20个
 	 */
 	@JSONField(name = "department")
 	private List<Integer> partyIds;
@@ -228,6 +228,31 @@ public class User implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
+			return false;
+		return true;
 	}
 
 	@Override

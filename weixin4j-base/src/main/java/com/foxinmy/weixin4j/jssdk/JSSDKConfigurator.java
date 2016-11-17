@@ -7,7 +7,7 @@ import java.util.Set;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
@@ -17,25 +17,25 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
  * JSSDK配置类
- * 
+ *
  * @className JSSDKConfigurator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月23日
  * @since JDK 1.6
  * @see
  */
 public class JSSDKConfigurator {
-	private final TokenHolder ticketTokenHolder;
+	private final TokenManager ticketTokenManager;
 	private JSONObject config;
 	private Set<JSSDKAPI> apis;
 
 	/**
-	 * ticket保存类 可调用WeixinProxy#getTicketHolder获取
-	 * 
-	 * @param ticketTokenHolder
+	 * ticket保存类 可调用WeixinProxy#getTicketManager获取
+	 *
+	 * @param ticketTokenManager
 	 */
-	public JSSDKConfigurator(TokenHolder ticketTokenHolder) {
-		this.ticketTokenHolder = ticketTokenHolder;
+	public JSSDKConfigurator(TokenManager ticketTokenManager) {
+		this.ticketTokenManager = ticketTokenManager;
 		this.config = new JSONObject();
 		this.apis = new HashSet<JSSDKAPI>();
 	}
@@ -43,7 +43,7 @@ public class JSSDKConfigurator {
 	/**
 	 * 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，
 	 * 仅在pc端时才会打印。
-	 * 
+	 *
 	 * @return
 	 */
 	public JSSDKConfigurator debugMode() {
@@ -53,7 +53,7 @@ public class JSSDKConfigurator {
 
 	/**
 	 * 公众号的唯一标识 不填则获取weixin4j.properties#account中的id
-	 * 
+	 *
 	 * @param appId
 	 * @return
 	 */
@@ -64,7 +64,7 @@ public class JSSDKConfigurator {
 
 	/**
 	 * 需要使用的JS接口列表
-	 * 
+	 *
 	 * @see JSSDKAPI
 	 * @param apis
 	 * @return
@@ -78,7 +78,7 @@ public class JSSDKConfigurator {
 
 	/**
 	 * 需要使用的JS接口列表
-	 * 
+	 *
 	 * @see JSSDKAPI
 	 * @param apis
 	 * @return
@@ -94,7 +94,7 @@ public class JSSDKConfigurator {
 
 	/**
 	 * 生成config配置JSON串
-	 * 
+	 *
 	 * @param url
 	 *            当前网页的URL，不包含#及其后面部分
 	 * @return jssdk配置JSON字符串
@@ -113,7 +113,7 @@ public class JSSDKConfigurator {
 		String noncestr = RandomUtil.generateString(24);
 		signMap.put("timestamp", timestamp);
 		signMap.put("noncestr", noncestr);
-		signMap.put("jsapi_ticket", this.ticketTokenHolder.getAccessToken());
+		signMap.put("jsapi_ticket", this.ticketTokenManager.getAccessToken());
 		signMap.put("url", url);
 		String sign = DigestUtil.SHA1(MapUtil.toJoinString(signMap, false,
 				false));

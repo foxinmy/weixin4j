@@ -6,14 +6,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
  * 红包
- * 
+ *
  * @className Redpacket
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月28日
  * @since JDK 1.6
  * @see <a
@@ -26,19 +25,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
 public class Redpacket extends MerchantResult {
 
 	private static final long serialVersionUID = -7021352305575714281L;
-	/**
-	 * 服务商模式下触达用户时的appid(可填服务商自己的appid或子商户的appid)，服务商模式下必填，
-	 * 服务商模式下填入的子商户appid必须在微信支付商户平台中先录入，否则会校验不过。 非必须
-	 */
-	@XmlElement(name = "msgappid")
-	@JSONField(name = "msgappid")
-	private String subMsgId;
-	/**
-	 * 扣钱方mchid,常规模式下无效，服务商模式下选填，服务商模式下不填默认扣子商户的钱.非必须
-	 */
-	@XmlElement(name = "consume_mch_id")
-	@JSONField(name = "consume_mch_id")
-	private String consumeMchId;
+
 	/**
 	 * 商户订单号（每个订单号必须唯一） 组成： mch_id+yyyymmdd+10位一天内不能重复的数字。
 	 */
@@ -56,13 +43,13 @@ public class Redpacket extends MerchantResult {
 	 */
 	@XmlElement(name = "re_openid")
 	@JSONField(name = "re_openid")
-	private String openid;
+	private String openId;
 	/**
 	 * 付款金额，单位分
 	 */
 	@XmlElement(name = "total_amount")
 	@JSONField(name = "total_amount")
-	private String totalAmount;
+	private int totalAmount;
 	/**
 	 * 红包发放总人数
 	 */
@@ -96,18 +83,32 @@ public class Redpacket extends MerchantResult {
 	 */
 	private String remark;
 
+	/**
+	 * 服务商模式下触达用户时的appid(可填服务商自己的appid或子商户的appid)，服务商模式下必填，
+	 * 服务商模式下填入的子商户appid必须在微信支付商户平台中先录入，否则会校验不过。 非必须
+	 */
+	@XmlElement(name = "msgappid")
+	@JSONField(name = "msgappid")
+	private String msgAppId;
+	/**
+	 * 扣钱方mchid,常规模式下无效，服务商模式下选填，服务商模式下不填默认扣子商户的钱.非必须
+	 */
+	@XmlElement(name = "consume_mch_id")
+	@JSONField(name = "consume_mch_id")
+	private String consumeMchId;
+
 	protected Redpacket() {
 		// jaxb required
 	}
 
 	/**
 	 * 红包
-	 * 
+	 *
 	 * @param outTradeNo
 	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
 	 * @param sendName
 	 *            红包发送者名称 必填
-	 * @param openid
+	 * @param openId
 	 *            接受收红包的用户的openid 必填
 	 * @param totalAmount
 	 *            付款金额 <font color="red">单位为元,自动格式化为分</font> 必填
@@ -122,55 +123,18 @@ public class Redpacket extends MerchantResult {
 	 * @param remark
 	 *            备注 必填
 	 */
-	public Redpacket(WeixinPayAccount weixinPayAccount, String outTradeNo,
-			String sendName, String openid, double totalAmount, int totalNum,
-			String wishing, String clientIp, String actName, String remark) {
-		this(null, null, outTradeNo, sendName, openid, totalAmount, totalNum,
-				wishing, clientIp, actName, remark);
-	}
-
-	/**
-	 * 红包 完整参数
-	 * 
-	 * @param subMchId
-	 *            子商户商户号 非必填
-	 * @param subMsgId
-	 *            触达用户appid 非必填
-	 * @param consumeMchId
-	 *            扣钱方mchid 非必填
-	 * @param outTradeNo
-	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
-	 * @param sendName
-	 *            红包发送者名称 必填
-	 * @param openid
-	 *            接受收红包的用户的openid 必填
-	 * @param totalAmount
-	 *            付款金额 <font color="red">单位为元,自动格式化为分</font> 必填
-	 * @param totalNum
-	 *            红包发放总人数 大于1视为裂变红包 必填
-	 * @param wishing
-	 *            红包祝福语 必填
-	 * @param clientIp
-	 *            Ip地址 必填
-	 * @param actName
-	 *            活动名称 必填
-	 * @param remark
-	 *            备注 必填
-	 */
-	public Redpacket(String subMsgId, String consumeMchId, String outTradeNo,
-			String sendName, String openid, double totalAmount, int totalNum,
-			String wishing, String clientIp, String actName, String remark) {
-		this.subMsgId = subMsgId;
-		this.consumeMchId = consumeMchId;
+	public Redpacket(String outTradeNo, String sendName, String openId,
+			double totalAmount, int totalNum, String wishing, String clientIp,
+			String actName, String remark) {
 		this.outTradeNo = outTradeNo;
 		this.sendName = sendName;
-		this.openid = openid;
+		this.openId = openId;
 		this.totalNum = totalNum;
 		this.wishing = wishing;
 		this.clientIp = clientIp;
 		this.actName = actName;
 		this.remark = remark;
-		this.totalAmount = DateUtil.formaFee2Fen(totalAmount);
+		this.totalAmount = DateUtil.formatYuan2Fen(totalAmount);
 		this.amtType = totalNum > 1 ? "ALL_RAND" : null;
 	}
 
@@ -182,12 +146,22 @@ public class Redpacket extends MerchantResult {
 		return sendName;
 	}
 
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
 	}
 
-	public String getTotalAmount() {
+	public int getTotalAmount() {
 		return totalAmount;
+	}
+	
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	@JSONField(serialize = false)
+	public double getFormatTotalAmount() {
+		return totalAmount / 100d;
 	}
 
 	public int getTotalNum() {
@@ -214,11 +188,27 @@ public class Redpacket extends MerchantResult {
 		return remark;
 	}
 
+	public String getMsgAppId() {
+		return msgAppId;
+	}
+
+	public void setMsgAppId(String msgAppId) {
+		this.msgAppId = msgAppId;
+	}
+
+	public String getConsumeMchId() {
+		return consumeMchId;
+	}
+
+	public void setConsumeMchId(String consumeMchId) {
+		this.consumeMchId = consumeMchId;
+	}
+
 	@Override
 	public String toString() {
-		return "Redpacket [subMsgId=" + subMsgId + ", consumeMchId="
+		return "Redpacket [msgAppId=" + msgAppId + ", consumeMchId="
 				+ consumeMchId + ", outTradeNo=" + outTradeNo + ", sendName="
-				+ sendName + ", openid=" + openid + ", totalAmount="
+				+ sendName + ", openId=" + openId + ", totalAmount="
 				+ totalAmount + ", totalNum=" + totalNum + ", amtType="
 				+ amtType + ", wishing=" + wishing + ", clientIp=" + clientIp
 				+ ", actName=" + actName + ", remark=" + remark + ", "

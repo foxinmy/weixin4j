@@ -6,7 +6,7 @@ import com.foxinmy.weixin4j.request.WeixinMessage;
  * 微信消息匹配
  * 
  * @className WeixinMessageMatcher
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月17日
  * @since JDK 1.6
  * @see DefaultMessageMatcher

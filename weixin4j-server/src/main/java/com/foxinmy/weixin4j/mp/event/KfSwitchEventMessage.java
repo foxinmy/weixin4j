@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * 客服转接会话事件
  * 
  * @className KfSwitchEventMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月22日
  * @since JDK 1.6
  * @see <a

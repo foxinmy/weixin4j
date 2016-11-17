@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 事件类型
  * 
  * @className EventType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月30日
  * @since JDK 1.6
  * @see

@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * authcode2openid
  * 
  * @className OpenIdResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年7月23日
  * @since JDK 1.6
  * @see

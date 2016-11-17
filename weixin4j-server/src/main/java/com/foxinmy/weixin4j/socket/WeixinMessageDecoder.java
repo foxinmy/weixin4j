@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.socket;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -10,6 +11,8 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
@@ -23,22 +26,34 @@ import com.foxinmy.weixin4j.xml.EncryptMessageHandler;
  * 微信消息解码类
  * 
  * @className WeixinMessageDecoder
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月13日
  * @since JDK 1.6
  * @see <a
  *      href="http://mp.weixin.qq.com/wiki/0/61c3a8b9d50ac74f18bdf2e54ddfc4e0.html">加密接入指引</a>
  * @see com.foxinmy.weixin4j.request.WeixinRequest
  */
+@ChannelHandler.Sharable
 public class WeixinMessageDecoder extends
 		MessageToMessageDecoder<FullHttpRequest> {
 	private final InternalLogger logger = InternalLoggerFactory
 			.getInstance(getClass());
 
-	private Map<String, AesToken> aesTokenMap;
+	private Map<String, AesToken> aesTokenMap = new ConcurrentHashMap<String, AesToken>();
 
-	public WeixinMessageDecoder(Map<String, AesToken> aesTokenMap) {
-		this.aesTokenMap = aesTokenMap;
+	public WeixinMessageDecoder(final Map<String, AesToken> aesTokenMap) {
+		for (Entry<String, AesToken> entry : aesTokenMap.entrySet()) {
+			this.aesTokenMap.put(entry.getKey() == null ? "" : entry.getKey(),
+					entry.getValue());
+		}
+	}
+
+	public int addAesToken(final AesToken asetoken) {
+		AesToken token = aesTokenMap.get(asetoken.getWeixinId());
+		if (token != null)
+			return -1;
+		aesTokenMap.put(asetoken.getWeixinId(), asetoken);
+		return 0;
 	}
 
 	@Override
@@ -65,7 +80,7 @@ public class WeixinMessageDecoder extends
 		String msgSignature = parameters.containsKey("msg_signature") ? parameters
 				.get("msg_signature").get(0) : "";
 		String weixinId = parameters.containsKey("weixin_id") ? parameters.get(
-				"weixin_id").get(0) : null;
+				"weixin_id").get(0) : "";
 		AesToken aesToken = aesTokenMap.get(weixinId);
 		String encryptContent = null;
 		if (!ServerToolkits.isBlank(messageContent)

@@ -5,14 +5,14 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
-import com.foxinmy.weixin4j.token.AbstractTokenCreator;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenCreator;
+import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 微信企业号应用套件预授权码创建
- * 
+ *
  * @className WeixinSuitePreCodeCreator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月17日
  * @since JDK 1.6
  * @see <a href=
@@ -20,37 +20,37 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  *      获取应用套件预授权码</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class WeixinSuitePreCodeCreator extends AbstractTokenCreator {
+public class WeixinSuitePreCodeCreator extends TokenCreator {
 
-	private final TokenHolder suiteTokenHolder;
+	private final TokenManager suiteTokenManager;
 	private final String suiteId;
 
 	/**
-	 * 
-	 * @param suiteTokenHolder
+	 *
+	 * @param suiteTokenManager
 	 *            应用套件的token
 	 * @param suiteId
 	 *            应用套件ID
 	 */
-	public WeixinSuitePreCodeCreator(TokenHolder suiteTokenHolder, String suiteId) {
-		this.suiteTokenHolder = suiteTokenHolder;
+	public WeixinSuitePreCodeCreator(TokenManager suiteTokenManager,
+			String suiteId) {
+		this.suiteTokenManager = suiteTokenManager;
 		this.suiteId = suiteId;
 	}
 
 	@Override
-	public String getCacheKey0() {
+	public String key0() {
 		return String.format("qy_suite_precode_%s", suiteId);
 	}
 
 	@Override
-	public Token createToken() throws WeixinException {
+	public Token create() throws WeixinException {
 		WeixinResponse response = weixinExecutor.post(
-				String.format(URLConsts.SUITE_PRE_CODE_URL, suiteTokenHolder.getAccessToken()),
+				String.format(URLConsts.SUITE_PRE_CODE_URL,
+						suiteTokenManager.getAccessToken()),
 				String.format("{\"suite_id\":\"%s\"}", suiteId));
 		JSONObject result = response.getAsJson();
-		Token token = new Token(result.getString("pre_auth_code"));
-		token.setExpiresIn(result.getIntValue("expires_in"));
-		token.setOriginalResult(response.getAsString());
-		return token;
+		return new Token(result.getString("pre_auth_code"),
+				result.getLongValue("expires_in") * 1000l);
 	}
 }

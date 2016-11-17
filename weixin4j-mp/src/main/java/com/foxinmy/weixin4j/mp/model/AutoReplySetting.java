@@ -7,12 +7,13 @@ import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.mp.type.AutomatchMode;
 import com.foxinmy.weixin4j.mp.type.AutoreplyMode;
+import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
  * 自动回复设置
- * 
+ *
  * @className AutoReplySetting
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年4月15日
  * @since JDK 1.6
  * @see
@@ -34,7 +35,7 @@ public class AutoReplySetting implements Serializable {
 
 	/**
 	 * 关注后自动回复的信息
-	 * 
+	 *
 	 * @see com.foxinmy.weixin4j.mp.model.AutoReplySetting.Entry
 	 */
 	@JSONField(name = "add_friend_autoreply_info")
@@ -42,7 +43,7 @@ public class AutoReplySetting implements Serializable {
 
 	/**
 	 * 默认自动回复的信息
-	 * 
+	 *
 	 * @see com.foxinmy.weixin4j.mp.model.AutoReplySetting.Entry
 	 */
 	@JSONField(name = "message_default_autoreply_info")
@@ -50,7 +51,7 @@ public class AutoReplySetting implements Serializable {
 
 	/**
 	 * 关键词自动回复的信息
-	 * 
+	 *
 	 * @see com.foxinmy.weixin4j.mp.model.AutoReplySetting.Rule
 	 */
 	private List<Rule> keywordReplyList;
@@ -105,9 +106,9 @@ public class AutoReplySetting implements Serializable {
 
 	/**
 	 * 关键字规则
-	 * 
+	 *
 	 * @className Rule
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年4月15日
 	 * @since JDK 1.6
 	 * @see
@@ -127,21 +128,21 @@ public class AutoReplySetting implements Serializable {
 		private Date createTime;
 		/**
 		 * 回复模式
-		 * 
+		 *
 		 * @see com.foxinmy.weixin4j.mp.type.AutoreplyMode
 		 */
 		@JSONField(name = "reply_mode")
 		private AutoreplyMode replyMode;
 		/**
 		 * 匹配的关键词列表
-		 * 
+		 *
 		 * @see com.foxinmy.weixin4j.mp.model.AutoReplySetting.Entry
 		 */
 		@JSONField(name = "keyword_list_info")
 		private List<Entry> keywordList;
 		/**
 		 * 回复的信息列表
-		 * 
+		 *
 		 * @see com.foxinmy.weixin4j.mp.model.AutoReplySetting.Entry
 		 */
 		@JSONField(name = "reply_list_info")
@@ -189,18 +190,17 @@ public class AutoReplySetting implements Serializable {
 
 		@Override
 		public String toString() {
-			return "Rule [ruleName=" + ruleName + ", createTime="
-					+ createTime + ", replyMode=" + replyMode
-					+ ", keywordList=" + keywordList + ", replyList="
-					+ replyList + "]";
+			return "Rule [ruleName=" + ruleName + ", createTime=" + createTime
+					+ ", replyMode=" + replyMode + ", keywordList="
+					+ keywordList + ", replyList=" + replyList + "]";
 		}
 	}
 
 	/**
 	 * 数据项
-	 * 
+	 *
 	 * @className Entry
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年4月15日
 	 * @since JDK 1.6
 	 * @see
@@ -212,26 +212,26 @@ public class AutoReplySetting implements Serializable {
 		 * 自动回复的类型。关注后自动回复和消息自动回复的类型仅支持文本（text）、图片（img）、语音（voice）、视频（video），
 		 * 关键词自动回复则还多了图文消息(news)
 		 */
-		private String type;
+		private ButtonType type;
 		/**
 		 * 对于文本类型，content是文本内容，对于图片、语音、视频类型，content是mediaID,news是article
-		 * 
+		 *
 		 * @see com.foxinmy.weixin4j.tuple.MpArticle
 		 */
 		private Serializable content;
 		/**
 		 * 匹配模式(仅但关键字列表)
-		 * 
+		 *
 		 * @see com.foxinmy.weixin4j.mp.type.AutomatchMode
 		 */
 		@JSONField(name = "match_mode")
 		private AutomatchMode matchMode;
 
-		public String getType() {
+		public ButtonType getType() {
 			return type;
 		}
 
-		public void setType(String type) {
+		public void setType(ButtonType type) {
 			this.type = type;
 		}
 

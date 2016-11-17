@@ -6,29 +6,29 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Tag;
 import com.foxinmy.weixin4j.mp.model.User;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 标签相关API
  * 
  * @className TagApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年4月29日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.mp.model.Tag
  */
 public class TagApi extends MpApi {
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 	private final UserApi userApi;
 
-	public TagApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
-		this.userApi = new UserApi(tokenHolder);
+	public TagApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
+		this.userApi = new UserApi(tokenManager);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class TagApi extends MpApi {
 	public Tag createTag(String name) throws WeixinException {
 		String tag_create_uri = getRequestUri("tag_create_uri");
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_create_uri, tokenHolder.getAccessToken()),
+				String.format(tag_create_uri, tokenManager.getAccessToken()),
 				String.format("{\"tag\":{\"name\":\"%s\"}}", name));
 
 		return JSON.parseObject(response.getAsJson().getString("tag"),
@@ -64,7 +64,7 @@ public class TagApi extends MpApi {
 	public List<Tag> listTags() throws WeixinException {
 		String tag_get_uri = getRequestUri("tag_get_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(tag_get_uri,
-				tokenHolder.getAccessToken()));
+				tokenManager.getAccessToken()));
 
 		return JSON.parseArray(response.getAsJson().getString("tags"),
 				Tag.class);
@@ -81,14 +81,14 @@ public class TagApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">更新标签</a>
 	 */
-	public JsonResult updateTag(Tag tag) throws WeixinException {
+	public ApiResult updateTag(Tag tag) throws WeixinException {
 		String tag_update_uri = getRequestUri("tag_update_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("tag", tag);
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_update_uri, tokenHolder.getAccessToken()),
+				String.format(tag_update_uri, tokenManager.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -101,12 +101,12 @@ public class TagApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">删除标签</a>
 	 */
-	public JsonResult deleteTag(int tagId) throws WeixinException {
+	public ApiResult deleteTag(int tagId) throws WeixinException {
 		String tag_delete_uri = getRequestUri("tag_delete_uri");
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_delete_uri, tokenHolder.getAccessToken()),
+				String.format(tag_delete_uri, tokenManager.getAccessToken()),
 				String.format("{\"tagid\":%d}", tagId));
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -121,21 +121,21 @@ public class TagApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">批量为用户打标签</a>
 	 */
-	public JsonResult taggingUsers(int tagId, String... openIds)
+	public ApiResult taggingUsers(int tagId, String... openIds)
 			throws WeixinException {
 		return batchUsers("tag_tagging_uri", tagId, openIds);
 	}
 
-	private JsonResult batchUsers(String batchType, int tagId,
+	private ApiResult batchUsers(String batchType, int tagId,
 			String... openIds) throws WeixinException {
 		String tag_batch_uri = getRequestUri(batchType);
 		JSONObject obj = new JSONObject();
 		obj.put("openid_list", openIds);
 		obj.put("tagid", tagId);
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_batch_uri, tokenHolder.getAccessToken()),
+				String.format(tag_batch_uri, tokenManager.getAccessToken()),
 				obj.toJSONString());
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class TagApi extends MpApi {
 	 * @see <a
 	 *      href="http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN">批量为用户取消标签</a>
 	 */
-	public JsonResult untaggingUsers(int tagId, String... openIds)
+	public ApiResult untaggingUsers(int tagId, String... openIds)
 			throws WeixinException {
 		return batchUsers("tag_untagging_uri", tagId, openIds);
 	}
@@ -174,7 +174,7 @@ public class TagApi extends MpApi {
 		obj.put("tagid", tagId);
 		obj.put("next_openid", nextOpenId);
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_user_uri, tokenHolder.getAccessToken()),
+				String.format(tag_user_uri, tokenManager.getAccessToken()),
 				obj.toJSONString());
 
 		JSONObject result = response.getAsJson();
@@ -234,11 +234,12 @@ public class TagApi extends MpApi {
 		Following f = null;
 		for (;;) {
 			f = getTagFollowingOpenIds(tagId, nextOpenId);
-			if (f.getCount() == 0) {
-				break;
+			if (f.hasContent()) {
+				openIds.addAll(f.getOpenIds());
+				nextOpenId = f.getNextOpenId();
+				continue;
 			}
-			openIds.addAll(f.getOpenIds());
-			nextOpenId = f.getNextOpenId();
+			break;
 		}
 		return openIds;
 	}
@@ -260,11 +261,12 @@ public class TagApi extends MpApi {
 		Following f = null;
 		for (;;) {
 			f = getTagFollowing(tagId, nextOpenId);
-			if (f.getCount() == 0) {
-				break;
+			if (f.hasContent()) {
+				userList.addAll(f.getUserList());
+				nextOpenId = f.getNextOpenId();
+				continue;
 			}
-			userList.addAll(f.getUserList());
-			nextOpenId = f.getNextOpenId();
+			break;
 		}
 		return userList;
 	}
@@ -283,7 +285,7 @@ public class TagApi extends MpApi {
 	public Integer[] getUserTags(String openId) throws WeixinException {
 		String tag_userids_uri = getRequestUri("tag_userids_uri");
 		WeixinResponse response = weixinExecutor.post(
-				String.format(tag_userids_uri, tokenHolder.getAccessToken()),
+				String.format(tag_userids_uri, tokenManager.getAccessToken()),
 				String.format("{\"openid\":\"%s\"}", openId));
 		return response.getAsJson().getJSONArray("tagid_list")
 				.toArray(new Integer[] {});

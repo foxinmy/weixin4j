@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.model.Button;
  * 底部菜单
  * 
  * @className Menu
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月18日
  * @since JDK 1.7
  * @see

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 微信公众号SDK -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+	<!-- 微信接口代理～start -->
+	<bean id="weixinProxy" class="com.foxinmy.weixin4j.mp.WeixinProxy">
+		<!-- 公众号信息:不声明则默认使用weixin4j.properties配置的weixin4j.account字段 -->
+		<!-- constructor-arg>
+			<bean class="com.foxinmy.weixin4j.model.WeixinAccount">
+				<constructor-arg index="0" value="公众账号的appid" />
+				<constructor-arg index="1" value="公众账号的appsecret" />
+			</bean>
+		</constructor-arg -->
+		<!-- token存储:不声明则默认使用文件方式(FileCacheStorager)保存,请自行引入redis配置文件 -->
+		<!-- constructor-arg>
+			<bean class="com.foxinmy.weixin4j.cache.RedisCacheStorager">
+				<constructor-arg type="redis.clients.util.Pool">
+					<bean class="redis.clients.jedis.JedisPool">
+						<constructor-arg index="0">
+							<bean class="redis.clients.jedis.JedisPoolConfig">
+								<property name="maxTotal" value="${redis.maxTotal}" />
+								<property name="maxIdle" value="${redis.maxIdle}" />
+								<property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+								<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+							</bean>
+						</constructor-arg>
+						<constructor-arg index="1" value="${redis.host}" />
+						<constructor-arg index="2" value="${redis.port}" />
+						<constructor-arg index="3" value="${redis.timeout}" />
+					</bean>
+				</constructor-arg>
+			</bean>
+		</constructor-arg -->
+	</bean>
+	<!-- 微信接口代理～end -->
+
+	<!-- 微信支付接口代理～start -->
+	<bean id="weixinPayProxy" class="com.foxinmy.weixin4j.payment.WeixinPayProxy">
+		<constructor-arg>
+			<!-- 商户信息:不声明则默认使用weixin4j.properties配置的weixin4j.account字段 -->
+			<bean class="com.foxinmy.weixin4j.model.WeixinPayAccount">
+				<constructor-arg index="0" value="公众账号的appid" />
+				<constructor-arg index="1" value="商户平台的支付密钥:paySignkey" />
+				<constructor-arg index="2" value="商户平台的商户ID:mchId" />
+				<!-- 以下是证书配置，如用到请配置 -->
+				<constructor-arg index="3" value="加载支付证书文件的密码(默认为商户号)" />
+				<!-- ca证书:调用某些支付接口(如退款、红包)需要用到的证书文件,不声明则获取顺序为:weixin4j.properties#weixin4j.certificate.file->`classpath:ca.p12` -->
+				<constructor-arg index="4" value="/path/to/certificate/file" />
+			</bean>
+		</constructor-arg>
+	</bean>
+	<!-- 微信支付接口代理～end -->
+</beans>

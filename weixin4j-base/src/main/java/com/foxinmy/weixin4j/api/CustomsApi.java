@@ -16,11 +16,11 @@ import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
  * 报关接口
- * 
+ *
  * @className CustomsApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月67日
- * @since JDK 1.7
+ * @since JDK 1.6
  * @see
  */
 public class CustomsApi extends MchApi {
@@ -31,7 +31,7 @@ public class CustomsApi extends MchApi {
 
 	/**
 	 * 订单附加信息提交
-	 * 
+	 *
 	 * @param customsOrder
 	 *            附加订单信息
 	 * @return 报关结果
@@ -56,7 +56,7 @@ public class CustomsApi extends MchApi {
 
 	/**
 	 * 订单附加信息查询
-	 * 
+	 *
 	 * @param idQuery
 	 *            out_trade_no,transaction_id,sub_order_no,sub_order_id四选一
 	 * @param customsCity

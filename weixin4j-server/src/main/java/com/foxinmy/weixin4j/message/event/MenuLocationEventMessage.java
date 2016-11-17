@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.type.EventType;
  * 弹出地理位置选择器的事件推送
  * 
  * @className MenuLocationEventMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月30日
  * @since JDK 1.6
  * @see <a
@@ -40,7 +40,7 @@ public class MenuLocationEventMessage extends MenuEventMessage {
 	 * 地理位置信息
 	 * 
 	 * @className LocationInfo
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年3月29日
 	 * @since JDK 1.6
 	 * @see

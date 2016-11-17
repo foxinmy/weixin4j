@@ -137,6 +137,7 @@ public class MultipartEntity implements HttpEntity {
 		return !isRepeatable();
 	}
 
+	@Override
 	public long getContentLength() {
 		if (this.dirty) {
 			this.length = this.multipart.getTotalLength();
@@ -145,6 +146,7 @@ public class MultipartEntity implements HttpEntity {
 		return this.length;
 	}
 
+	@Override
 	public ContentType getContentType() {
 		return ContentType.MULTIPART_FORM_DATA;
 	}
@@ -157,12 +159,14 @@ public class MultipartEntity implements HttpEntity {
 		}
 	}
 
+	@Override
 	public InputStream getContent() throws IOException,
 			UnsupportedOperationException {
 		throw new UnsupportedOperationException(
 				"Multipart form entity does not implement #getContent()");
 	}
 
+	@Override
 	public void writeTo(final OutputStream outstream) throws IOException {
 		this.multipart.writeTo(outstream);
 		outstream.flush();

@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.qy.api.TagApi;
 import com.foxinmy.weixin4j.qy.model.Contacts;
 import com.foxinmy.weixin4j.qy.model.IdParameter;
@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.qy.model.Tag;
  * 标签API测试
  * 
  * @className TagTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see
@@ -28,7 +28,7 @@ public class TagTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.tagApi = new TagApi(tokenHolder);
+		this.tagApi = new TagApi(tokenManager);
 	}
 
 	@Test
@@ -39,8 +39,8 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void update() throws WeixinException {
-		JsonResult result = tagApi.updateTag(new Tag(1, "coder456"));
-		Assert.assertEquals("updated", result.getDesc());
+		ApiResult result = tagApi.updateTag(new Tag(1, "coder456"));
+		Assert.assertEquals("updated", result.getReturnMsg());
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class TagTest extends TokenTest {
 
 	@Test
 	public void delete() throws WeixinException {
-		JsonResult result = tagApi.deleteTag(3);
-		Assert.assertEquals("deleted", result.getDesc());
+		ApiResult result = tagApi.deleteTag(3);
+		Assert.assertEquals("deleted", result.getReturnMsg());
 	}
 }

@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.payment.PayBaseInfo;
  * V2维权POST的数据
  * 
  * @className PayFeedback
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月29日
  * @since JDK 1.6
  * @see

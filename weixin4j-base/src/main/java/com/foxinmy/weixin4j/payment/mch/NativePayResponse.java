@@ -7,16 +7,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.exception.WeixinPayException;
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
  * Native支付时的回调响应
  * 
  * @className NativePayResponse
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月28日
  * @since JDK 1.6
  * @see
@@ -45,8 +45,7 @@ public class NativePayResponse extends MerchantResult {
 	 * @throws WeixinPayException
 	 */
 	public NativePayResponse(String returnMsg, String resultMsg) {
-		super.setReturnMsg(returnMsg);
-		super.setReturnCode(Consts.FAIL);
+		super(Consts.FAIL, returnMsg);
 		super.setErrCodeDes(resultMsg);
 		super.setResultCode(Consts.FAIL);
 	}
@@ -61,7 +60,7 @@ public class NativePayResponse extends MerchantResult {
 	 * @throws WeixinPayException
 	 */
 	public NativePayResponse(WeixinPayAccount weixinAccount, String prepayId) {
-		super.setReturnCode(Consts.SUCCESS);
+		super(Consts.SUCCESS, "OK");
 		this.setResultCode(Consts.SUCCESS);
 		this.setMchId(weixinAccount.getMchId());
 		this.setAppId(weixinAccount.getId());

@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.util.MapUtil;
  * APP支付
  * 
  * @className APPPayRequest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.payment.mch.PrePay
@@ -35,6 +35,7 @@ public class APPPayRequest extends AbstractPayRequest {
 	public PayRequest toRequestObject() {
 		PayRequest payRequest = new PayRequest(getPaymentAccount().getId(),
 				"Sign=WXPay");
+		payRequest.setPartnerId(getPaymentAccount().getPartnerId());
 		payRequest.setPrepayId(getPrePayId());
 		return payRequest;
 	}

@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 关注信息
  * 
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月4日
  * @since JDK 1.6
  */
@@ -80,6 +80,10 @@ public class Following implements Serializable {
 
 	public void setNextOpenId(String nextOpenId) {
 		this.nextOpenId = nextOpenId;
+	}
+
+	public boolean hasContent() {
+		return userList != null && !userList.isEmpty();
 	}
 
 	@Override

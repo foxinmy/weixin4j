@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * 接收人
  * 
  * @className ChatReceiver
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月1日
  * @since JDK 1.6
  * @see

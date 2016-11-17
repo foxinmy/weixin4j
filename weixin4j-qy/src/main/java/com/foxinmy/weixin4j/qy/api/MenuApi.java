@@ -6,33 +6,32 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPath;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.alibaba.fastjson.parser.deserializer.ParseProcess;
 import com.alibaba.fastjson.serializer.NameFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
  * 菜单相关API
  * 
  * @className MenuApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.model.Button
  */
 public class MenuApi extends QyApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public MenuApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public MenuApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -49,9 +48,9 @@ public class MenuApi extends QyApi {
 	 *      创建自定义菜单</a>
 	 * @see com.foxinmy.weixin4j.model.Button
 	 */
-	public JsonResult createMenu(int agentid, List<Button> buttons) throws WeixinException {
+	public ApiResult createMenu(int agentid, List<Button> buttons) throws WeixinException {
 		String menu_create_uri = getRequestUri("menu_create_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("button", buttons);
 		WeixinResponse response = weixinExecutor.post(String.format(menu_create_uri, token.getAccessToken(), agentid),
@@ -74,7 +73,7 @@ public class MenuApi extends QyApi {
 					}
 				}));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -91,15 +90,14 @@ public class MenuApi extends QyApi {
 	 */
 	public List<Button> getMenu(int agentid) throws WeixinException {
 		String menu_get_uri = getRequestUri("menu_get_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(menu_get_uri, token.getAccessToken(), agentid));
-
-		JSONArray buttons = response.getAsJson().getJSONObject("menu").getJSONArray("button");
+		JSONArray buttons = response.getAsJson().getJSONArray("button");
 		List<Button> buttonList = new ArrayList<Button>(buttons.size());
 		ParseProcess processor = new ExtraProcessor() {
 			@Override
 			public void processExtra(Object object, String key, Object value) {
-				JSONPath.set(object, "$.content", value);
+				((Button) object).setContent(String.valueOf(value));
 			}
 		};
 		for (int i = 0; i < buttons.size(); i++) {
@@ -119,11 +117,11 @@ public class MenuApi extends QyApi {
 	 *      删除菜单</a>
 	 * @return 处理结果
 	 */
-	public JsonResult deleteMenu(int agentid) throws WeixinException {
+	public ApiResult deleteMenu(int agentid) throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(menu_delete_uri, token.getAccessToken(), agentid));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 }

@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.model.BatchResult;
 import com.foxinmy.weixin4j.qy.model.Callback;
 import com.foxinmy.weixin4j.qy.model.IdParameter;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 批量异步任务API
@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  * </p>
  * 
  * @className BatchApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月30日
  * @since JDK 1.6
  * @see <a
@@ -25,10 +25,10 @@ import com.foxinmy.weixin4j.token.TokenHolder;
  */
 public class BatchApi extends QyApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public BatchApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public BatchApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class BatchApi extends QyApi {
 	public String inviteUser(IdParameter parameter, Callback callback,
 			String tips) throws WeixinException {
 		String batch_inviteuser_uri = getRequestUri("batch_inviteuser_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.putAll(parameter.getParameter());
 		obj.put("callback", callback);
@@ -89,7 +89,7 @@ public class BatchApi extends QyApi {
 
 	private String batch(String batchUrl, String mediaId, Callback callback)
 			throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("media_id", mediaId);
 		obj.put("callback", callback);
@@ -162,7 +162,7 @@ public class BatchApi extends QyApi {
 	 * @throws WeixinException
 	 */
 	public BatchResult getBatchResult(String jobId) throws WeixinException {
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		String batch_getresult_uri = getRequestUri("batch_getresult_uri");
 		WeixinResponse response = weixinExecutor.get(String.format(
 				batch_getresult_uri, token.getAccessToken(), jobId));

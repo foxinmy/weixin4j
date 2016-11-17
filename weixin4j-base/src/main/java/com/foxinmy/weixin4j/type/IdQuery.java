@@ -6,7 +6,7 @@ import java.io.Serializable;
  * ID查询
  * 
  * @className IdQuery
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月1日
  * @since JDK 1.6
  * @see

@@ -12,19 +12,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
-import com.foxinmy.weixin4j.model.Pageable;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.mp.api.CustomApi;
 import com.foxinmy.weixin4j.mp.model.KfAccount;
 import com.foxinmy.weixin4j.mp.model.KfChatRecord;
+import com.foxinmy.weixin4j.mp.model.KfOnlineAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter;
 
 /**
  * 客服消息测试
- * 
- * @className MessageNotifyTest
- * @author jy.hu
+ *
+ * @className CustomTest
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  * @see
@@ -35,7 +35,7 @@ public class CustomTest extends TokenTest {
 
 	@Before
 	public void init() {
-		customApi = new CustomApi(tokenHolder);
+		customApi = new CustomApi(tokenManager);
 	}
 
 	@Test
@@ -47,58 +47,61 @@ public class CustomTest extends TokenTest {
 		calendar.set(Calendar.HOUR_OF_DAY, 21);
 		Date endtime = calendar.getTime();
 		List<KfChatRecord> recordList = customApi.getKfChatRecord(starttime,
-				endtime, new Pageable(1, 70));
+				endtime, 10);
+		Assert.assertFalse(recordList.isEmpty());
 		System.out.println(recordList);
 	}
 
 	@Test
 	public void kfList() throws WeixinException {
-		List<KfAccount> kfList = customApi.listKfAccount(false);
+		List<KfAccount> kfList = customApi.listKfAccount();
+		Assert.assertFalse(kfList.isEmpty());
 		System.out.println(kfList);
-		kfList = customApi.listKfAccount(true);
-		System.out.println(kfList);
+		List<KfOnlineAccount> kfOnlineList = customApi.listOnlineKfAccount();
+		Assert.assertFalse(kfOnlineList.isEmpty());
+		System.out.println(kfOnlineList);
 	}
 
 	@Test
 	public void createKfAccount() throws WeixinException {
-		JsonResult result = customApi.createKfAccount("test@test", "test",
+		ApiResult result = customApi.createKfAccount("test@test", "test",
 				"123456");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void updateKfAccount() throws WeixinException {
-		JsonResult result = customApi.updateKfAccount("temp1@canyidianzhang",
+		ApiResult result = customApi.updateKfAccount("temp1@canyidianzhang",
 				"temp", "123456");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void uploadKfAvatar() throws WeixinException, IOException {
-		JsonResult result = customApi.uploadKfAvatar(
-				"temp1@canyidianzhang", new FileInputStream(new File(
-						"/Users/jy/Music/简谱/风动草.jpg")), "风动草.jpg");
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = customApi.uploadKfAvatar("temp1@canyidianzhang",
+				new FileInputStream(new File("/Users/jy/Music/简谱/风动草.jpg")),
+				"风动草.jpg");
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void deleteKfAccount() throws WeixinException, IOException {
-		JsonResult result = customApi.deleteKfAccount("temp@canyidianzhang");
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = customApi.deleteKfAccount("temp@canyidianzhang");
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void createSession() throws WeixinException {
-		JsonResult result = customApi.createKfSession(
+		ApiResult result = customApi.createKfSession(
 				"opKwyt6IhrqPmTTZshyqH5W9gIVo", "kfAccount", "text");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void closeSession() throws WeixinException {
-		JsonResult result = customApi.closeKfSession(
+		ApiResult result = customApi.closeKfSession(
 				"opKwyt6IhrqPmTTZshyqH5W9gIVo", "kfAccount", "text");
-		Assert.assertEquals(0, result.getCode());
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
@@ -111,6 +114,7 @@ public class CustomTest extends TokenTest {
 	@Test
 	public void getSessionList() throws WeixinException {
 		List<KfSession> sessionList = customApi.listKfSession("kfAccount");
+		Assert.assertFalse(sessionList.isEmpty());
 		System.err.println(sessionList);
 	}
 

@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.mp.type.SemCategory;
  * 语义理解参数
  * 
  * @className SemQuery
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月7日
  * @since JDK 1.6
  * @see

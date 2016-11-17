@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.qy.model;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.qy.type.BatchStatus;
 import com.foxinmy.weixin4j.qy.type.BatchType;
 
@@ -10,12 +10,12 @@ import com.foxinmy.weixin4j.qy.type.BatchType;
  * 异步任务执行结果
  * 
  * @className BatchResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月31日
  * @since JDK 1.6
  * @see
  */
-public class BatchResult extends JsonResult {
+public class BatchResult extends ApiResult {
 
 	private static final long serialVersionUID = 4985338631992208903L;
 	/**
@@ -107,8 +107,7 @@ public class BatchResult extends JsonResult {
 
 	@Override
 	public String toString() {
-		return "BatchResult [status=" + status + ", type=" + type + ", total="
-				+ total + ", percentAge=" + percentAge + ", remainTime="
-				+ remainTime + ", result=" + result + "]";
+		return "BatchResult [" + super.toString() + ", status=" + status + ", type=" + type + ", total=" + total
+				+ ", percentAge=" + percentAge + ", remainTime=" + remainTime + ", result=" + result + "]";
 	}
 }

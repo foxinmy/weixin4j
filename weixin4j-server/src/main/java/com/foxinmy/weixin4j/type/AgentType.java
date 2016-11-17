@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.type;
  * 应用类型
  * 
  * @className AgentType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月1日
  * @since JDK 1.6
  * @see

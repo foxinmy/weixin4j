@@ -1,14 +1,16 @@
 package com.foxinmy.weixin4j.api;
 
-import java.io.InputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
-import com.foxinmy.weixin4j.http.weixin.WeixinSSLRequestExecutor;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.payment.mch.MerchantResult;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.type.IdQuery;
@@ -17,9 +19,9 @@ import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 商户支付
- * 
+ *
  * @className MchApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月26日
  * @since JDK 1.6
  * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/index.html">商户支付平台</a>
@@ -35,6 +37,7 @@ public class MchApi extends BaseApi {
 
 	protected final WeixinPayAccount weixinAccount;
 	protected final WeixinSignature weixinSignature;
+	private volatile WeixinRequestExecutor weixinSSLExecutor;
 
 	public MchApi(WeixinPayAccount weixinAccount) {
 		this.weixinAccount = weixinAccount;
@@ -48,22 +51,8 @@ public class MchApi extends BaseApi {
 	}
 
 	/**
-	 * 创建 SSL支付请求
-	 * 
-	 * @param certificate
-	 *            *.p12证书文件
-	 * @return
-	 * @throws WeixinException
-	 */
-	protected WeixinRequestExecutor createSSLRequestExecutor(
-			InputStream certificate) throws WeixinException {
-		return new WeixinSSLRequestExecutor(weixinAccount.getCertificateKey(),
-				certificate);
-	}
-
-	/**
 	 * 支付接口请求基本数据
-	 * 
+	 *
 	 * @param idQuery
 	 *            ID信息 可为空
 	 * @return 基础map
@@ -86,5 +75,54 @@ public class MchApi extends BaseApi {
 			map.put(idQuery.getType().getName(), idQuery.getId());
 		}
 		return map;
+	}
+
+	/**
+	 * 微信签名类
+	 *
+	 * @return
+	 */
+	public WeixinSignature getWeixinSignature() {
+		return this.weixinSignature;
+	}
+
+	/**
+	 * 微信SSL
+	 * 
+	 * @return
+	 */
+	protected WeixinRequestExecutor getWeixinSSLExecutor()
+			throws WeixinException {
+		if (weixinSSLExecutor == null) {
+			try {
+				File certificate = new File(weixinAccount.getCertificateFile());
+				if (!certificate.exists() || !certificate.isFile()) {
+					throw new WeixinException("Invalid certificate file : "
+							+ certificate.toString());
+				}
+				this.weixinSSLExecutor = weixinExecutor
+						.createSSLRequestExecutor(
+								weixinAccount.getCertificateKey(),
+								new FileInputStream(certificate));
+			} catch (IOException e) {
+				throw new WeixinException(
+						"IO Error on createSSLRequestExecutor", e);
+			}
+		}
+		return this.weixinSSLExecutor;
+	}
+
+	/**
+	 * 设置商户信息
+	 *
+	 * @param merchant
+	 */
+	protected <T extends MerchantResult> void declareMerchant(T merchant) {
+		merchant.setAppId(weixinAccount.getId());
+		merchant.setMchId(weixinAccount.getMchId());
+		merchant.setDeviceInfo(weixinAccount.getDeviceInfo());
+		merchant.setSubAppId(weixinAccount.getSubId());
+		merchant.setSubMchId(weixinAccount.getSubMchId());
+		merchant.setNonceStr(RandomUtil.generateString(16));
 	}
 }

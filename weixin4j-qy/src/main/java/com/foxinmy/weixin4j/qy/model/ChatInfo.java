@@ -10,7 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 聊天会话信息
  * 
  * @className ChatInfo
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年7月31日
  * @since JDK 1.6
  * @see

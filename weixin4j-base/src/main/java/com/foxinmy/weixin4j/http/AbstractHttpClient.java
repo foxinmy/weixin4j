@@ -5,14 +5,9 @@ import java.util.Set;
 
 import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
-import com.foxinmy.weixin4j.logging.InternalLogger;
-import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 
 public abstract class AbstractHttpClient implements HttpClient {
 
-	protected final InternalLogger logger = InternalLoggerFactory
-			.getInstance(getClass());
-	
 	@Override
 	public HttpResponse get(String url) throws HttpClientException {
 		return execute(HttpMethod.GET, url);
@@ -121,11 +116,9 @@ public abstract class AbstractHttpClient implements HttpClient {
 			throws HttpClientException {
 		HttpStatus status = response.getStatus();
 		HttpHeaders headers = response.getHeaders();
-		String contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
-		boolean jsonResult = contentType != null
-				&& contentType.contains(ContentType.APPLICATION_JSON
-						.getMimeType());
-		if (!jsonResult && hasError(status)) {
+		MimeType resultType = MimeType.valueOf(headers
+				.getFirst(HttpHeaders.CONTENT_TYPE));
+		if (!MimeType.APPLICATION_JSON.includes(resultType) && hasError(status)) {
 			switch (status.series()) {
 			case CLIENT_ERROR:
 			case SERVER_ERROR:

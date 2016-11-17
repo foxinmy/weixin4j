@@ -13,9 +13,9 @@ import com.foxinmy.weixin4j.payment.PayRequest;
 
 /**
  * V2 Native支付时的回调响应
- * 
+ *
  * @className NativePayResponseV2
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月28日
  * @since JDK 1.6
  * @see
@@ -44,7 +44,7 @@ public class NativePayResponseV2 extends PayRequest {
 
 	/**
 	 * 响应错误信息
-	 * 
+	 *
 	 * @param errorMsg
 	 *            错误信息
 	 */
@@ -55,7 +55,7 @@ public class NativePayResponseV2 extends PayRequest {
 
 	/**
 	 * 正确响应
-	 * 
+	 *
 	 * @param weixinAccount
 	 * @param payPackage
 	 *            订单信息
@@ -65,9 +65,9 @@ public class NativePayResponseV2 extends PayRequest {
 		super(weixinAccount.getId(), null);
 		this.retCode = "0";
 		this.retMsg = "OK";
-		WeixinOldPaymentSignature weixinSignature = new WeixinOldPaymentSignature();
-		setPackageInfo(weixinSignature.sign(payPackage,
-				weixinAccount.getPartnerKey()));
+		WeixinOldPaymentSignature weixinSignature = new WeixinOldPaymentSignature(
+				weixinAccount.getPaySignKey(), weixinAccount.getPartnerKey());
+		setPackageInfo(weixinSignature.sign(payPackage));
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("appid", weixinAccount.getId());
 		map.put("appkey", weixinAccount.getPaySignKey());

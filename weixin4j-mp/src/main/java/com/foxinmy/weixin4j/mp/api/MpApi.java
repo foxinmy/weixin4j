@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.api.BaseApi;
  * 微信公众平台API
  * 
  * @className MpApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月26日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.api.BaseApi

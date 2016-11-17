@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import com.foxinmy.weixin4j.http.ContentType;
 import com.foxinmy.weixin4j.http.URLParameter;
-import com.foxinmy.weixin4j.model.Consts;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.URLEncodingUtil;
 
 public class FormUrlEntity extends StringEntity {

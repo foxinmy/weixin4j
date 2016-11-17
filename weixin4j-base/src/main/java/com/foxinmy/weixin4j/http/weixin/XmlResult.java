@@ -13,7 +13,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 调用接口返回xml格式
  * 
  * @className XmlResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月1日
  * @since JDK 1.6
  * @see
@@ -23,15 +23,15 @@ import com.alibaba.fastjson.annotation.JSONField;
 public class XmlResult implements Serializable {
 
 	private static final long serialVersionUID = -6185313616955051150L;
-
 	/**
-	 * 此字段是通信标识,非交易 标识,交易是否成功需要查 看 result_code 来判断非空
+	 * 调用接口返回码，通信标识
 	 */
 	@XmlElement(name = "return_code")
 	@JSONField(name = "return_code")
 	private String returnCode;
+
 	/**
-	 * 返回信息,如非 空,为错误原因 可能为空
+	 * 调用接口返回消息,如非 空,为错误原因 可能为空
 	 */
 	@XmlElement(name = "return_msg")
 	@JSONField(name = "return_msg")
@@ -55,20 +55,13 @@ public class XmlResult implements Serializable {
 	@JSONField(name = "err_code_des")
 	private String errCodeDes;
 
-	public XmlResult() {
+	protected XmlResult() {
+		// jaxb required
 	}
 
 	public XmlResult(String returnCode, String returnMsg) {
 		this.returnCode = returnCode;
 		this.returnMsg = returnMsg;
-	}
-
-	public String getReturnCode() {
-		return returnCode;
-	}
-
-	public String getReturnMsg() {
-		return returnMsg;
 	}
 
 	public String getResultCode() {
@@ -83,12 +76,12 @@ public class XmlResult implements Serializable {
 		return errCodeDes;
 	}
 
-	public void setReturnCode(String returnCode) {
-		this.returnCode = returnCode;
+	public String getReturnCode() {
+		return returnCode;
 	}
 
-	public void setReturnMsg(String returnMsg) {
-		this.returnMsg = returnMsg;
+	public String getReturnMsg() {
+		return returnMsg;
 	}
 
 	public void setResultCode(String resultCode) {

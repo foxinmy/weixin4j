@@ -1,18 +1,17 @@
 package com.foxinmy.weixin4j.qy.token;
 
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
-import com.foxinmy.weixin4j.token.AbstractTokenCreator;
+import com.foxinmy.weixin4j.token.TokenCreator;
 
 /**
  * 微信企业号TOKEN创建
- * 
+ *
  * @className WeixinTokenCreator
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
  * @since JDK 1.6
  * @see <a href=
@@ -20,14 +19,13 @@ import com.foxinmy.weixin4j.token.AbstractTokenCreator;
  *      微信企业号获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class WeixinTokenCreator extends AbstractTokenCreator {
+public class WeixinTokenCreator extends TokenCreator {
 
-	private final WeixinRequestExecutor weixinExecutor;
 	private final String corpid;
 	private final String corpsecret;
 
 	/**
-	 * 
+	 *
 	 * @param corpid
 	 *            企业号ID
 	 * @param corpsecret
@@ -36,23 +34,20 @@ public class WeixinTokenCreator extends AbstractTokenCreator {
 	public WeixinTokenCreator(String corpid, String corpsecret) {
 		this.corpid = corpid;
 		this.corpsecret = corpsecret;
-		this.weixinExecutor = new WeixinRequestExecutor();
 	}
 
 	@Override
-	public String getCacheKey0() {
+	public String key0() {
 		return String.format("qy_token_%s", corpid);
 	}
 
 	@Override
-	public Token createToken() throws WeixinException {
+	public Token create() throws WeixinException {
 		String tokenUrl = String.format(URLConsts.ASSESS_TOKEN_URL, corpid,
 				corpsecret);
 		WeixinResponse response = weixinExecutor.get(tokenUrl);
-		Token token = response.getAsObject(new TypeReference<Token>() {
-		});
-		token.setCreateTime(System.currentTimeMillis());
-		token.setOriginalResult(response.getAsString());
-		return token;
+		JSONObject result = response.getAsJson();
+		return new Token(result.getString("access_token"),
+				result.getLongValue("expires_in") * 1000l);
 	}
 }

@@ -4,15 +4,15 @@ import java.io.Serializable;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.model.Gender;
 import com.foxinmy.weixin4j.mp.type.ClientPlatformType;
 import com.foxinmy.weixin4j.mp.type.Lang;
+import com.foxinmy.weixin4j.type.Gender;
 
 /**
  * 个性化菜单匹配规则
  * 
  * @className MenuMatchRule
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月17日
  * @since JDK 1.6
  * @see

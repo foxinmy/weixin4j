@@ -13,7 +13,7 @@ import java.util.Map.Entry;
  * 文件工具类
  * 
  * @className FileUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月21日
  * @since JDK 1.6
  * @see

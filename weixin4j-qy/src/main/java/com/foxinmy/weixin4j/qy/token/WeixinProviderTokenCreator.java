@@ -5,13 +5,13 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.URLConsts;
-import com.foxinmy.weixin4j.token.AbstractTokenCreator;
+import com.foxinmy.weixin4j.token.TokenCreator;
 
 /**
  * 微信企业号应用提供商凭证创建
- * 
- * @className WeixinTokenCreator
- * @author jy
+ *
+ * @className WeixinProviderTokenCreator
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
  * @since JDK 1.6
  * @see <a href=
@@ -19,13 +19,13 @@ import com.foxinmy.weixin4j.token.AbstractTokenCreator;
  *      获取应用提供商凭证</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
-public class WeixinProviderTokenCreator extends AbstractTokenCreator {
+public class WeixinProviderTokenCreator extends TokenCreator {
 
 	private final String corpid;
 	private final String providersecret;
 
 	/**
-	 * 
+	 *
 	 * @param corpid
 	 *            企业号ID
 	 * @param providersecret
@@ -37,20 +37,19 @@ public class WeixinProviderTokenCreator extends AbstractTokenCreator {
 	}
 
 	@Override
-	public String getCacheKey0() {
+	public String key0() {
 		return String.format("qy_provider_token_%s", corpid);
 	}
 
 	@Override
-	public Token createToken() throws WeixinException {
+	public Token create() throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("corpid", corpid);
 		obj.put("provider_secret", providersecret);
-		WeixinResponse response = weixinExecutor.post(URLConsts.PROVIDER_TOKEN_URL, obj.toJSONString());
+		WeixinResponse response = weixinExecutor.post(
+				URLConsts.PROVIDER_TOKEN_URL, obj.toJSONString());
 		obj = response.getAsJson();
-		Token token = new Token(obj.getString("provider_access_token"));
-		token.setExpiresIn(obj.getIntValue("expires_in"));
-		token.setOriginalResult(response.getAsString());
-		return token;
+		return new Token(obj.getString("provider_access_token"),
+				obj.getLongValue("expires_in") * 1000l);
 	}
 }

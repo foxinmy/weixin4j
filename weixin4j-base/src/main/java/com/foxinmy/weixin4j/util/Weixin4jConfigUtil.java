@@ -8,9 +8,9 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 
 /**
  * 公众号配置信息 class路径下weixin4j.properties文件
- * 
+ *
  * @className Weixin4jConfigUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
  * @since JDK 1.6
  * @see
@@ -23,7 +23,7 @@ public class Weixin4jConfigUtil {
 		CLASSPATH_VALUE = Thread.currentThread().getContextClassLoader()
 				.getResource("").getPath();
 		try {
-			weixinBundle = ResourceBundle.getBundle("weixin4j");
+			weixinBundle = ResourceBundle.getBundle(Consts.WEIXIN4J);
 		} catch (MissingResourceException e) {
 			;
 		}
@@ -40,7 +40,7 @@ public class Weixin4jConfigUtil {
 
 	/**
 	 * 获取weixin4j.properties文件中的key值
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
@@ -51,7 +51,7 @@ public class Weixin4jConfigUtil {
 
 	/**
 	 * key不存在时则返回传入的默认值
-	 * 
+	 *
 	 * @param key
 	 * @param defaultValue
 	 * @return
@@ -73,25 +73,33 @@ public class Weixin4jConfigUtil {
 
 	/**
 	 * 判断属性是否存在[classpath:]如果存在则拼接项目路径后返回 一般用于文件的绝对路径获取
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
 	public static String getClassPathValue(String key) {
-		return getValue(key).replaceFirst(CLASSPATH_PREFIX, CLASSPATH_VALUE);
+		return replaceClassPathValue(getValue(key));
 	}
 
 	/**
-	 * 
+	 *
 	 * @param key
 	 * @param defaultValue
 	 * @return
 	 */
 	public static String getClassPathValue(String key, String defaultValue) {
-		return getValue(key, defaultValue).replaceFirst(CLASSPATH_PREFIX,
-				CLASSPATH_VALUE);
+		return replaceClassPathValue(getValue(key, defaultValue));
 	}
 
+	public static String replaceClassPathValue(String value) {
+		return value.replaceFirst(CLASSPATH_PREFIX, CLASSPATH_VALUE);
+	}
+
+	/**
+	 * 获取微信账号信息
+	 * 
+	 * @return 微信账号信息
+	 */
 	public static WeixinAccount getWeixinAccount() {
 		WeixinAccount account = null;
 		try {

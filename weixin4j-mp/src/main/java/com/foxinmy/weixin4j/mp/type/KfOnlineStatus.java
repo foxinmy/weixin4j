@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.mp.type;
  * 多客服在线状态
  * 
  * @className KfOnlineStatus
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月16日
  * @since JDK 1.6
  * @see

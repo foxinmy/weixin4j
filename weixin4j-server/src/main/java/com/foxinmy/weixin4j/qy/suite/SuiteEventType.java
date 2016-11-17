@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.qy.suite;
  * 应用套件回调事件
  * 
  * @className SuiteEventType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月21日
  * @since JDK 1.6
  * @see <a

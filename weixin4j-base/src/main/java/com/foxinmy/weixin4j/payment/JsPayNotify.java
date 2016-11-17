@@ -11,7 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * JSAPI支付回调时的POST信息
  * 
  * @className JsPayNotify
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年8月19日
  * @since JDK 1.6
  * @see

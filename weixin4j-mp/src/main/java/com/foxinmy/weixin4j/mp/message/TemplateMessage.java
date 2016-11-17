@@ -10,9 +10,9 @@ import com.foxinmy.weixin4j.util.NameValue;
 
 /**
  * 模板消息
- * 
+ *
  * @className TemplateMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月29日
  * @since JDK 1.6
  * @see <a
@@ -92,7 +92,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增头部字段(默认颜色为#FF0000)
-	 * 
+	 *
 	 * @param text
 	 *            字段文本
 	 * @return
@@ -103,7 +103,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增头部字段
-	 * 
+	 *
 	 * @param color
 	 *            文字颜色
 	 * @param text
@@ -118,7 +118,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增尾部字段(默认颜色为#173177)
-	 * 
+	 *
 	 * @param text
 	 *            字段文本
 	 * @return
@@ -129,7 +129,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增尾部字段
-	 * 
+	 *
 	 * @param color
 	 *            文字颜色
 	 * @param text
@@ -144,7 +144,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增字段项(默认颜色为#173177)
-	 * 
+	 *
 	 * @param key
 	 *            预留的字段名
 	 * @param text
@@ -157,7 +157,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 新增字段项
-	 * 
+	 *
 	 * @param key
 	 *            预留的字段名
 	 * @param color
@@ -173,7 +173,7 @@ public class TemplateMessage implements Serializable {
 
 	/**
 	 * 设置所有字段项
-	 * 
+	 *
 	 * @param items
 	 */
 	public void pushItems(Map<String, NameValue> items) {

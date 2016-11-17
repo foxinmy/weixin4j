@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.type.TradeType;
  * 支付请求接口
  * 
  * @className MchPayRequest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
  * @since JDK 1.6
  * @see JSAPIPayRequest JS支付

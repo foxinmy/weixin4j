@@ -10,7 +10,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -21,16 +21,16 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * </p>
  * 
  * @className DataApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月7日
  * @since JDK 1.6
  * @see
  */
 public class DataApi extends MpApi {
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public DataApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public DataApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class DataApi extends MpApi {
 	public List<?> datacube(DatacubeType datacubeType, Date beginDate,
 			Date endDate) throws WeixinException {
 		String datacube_uri = getRequestUri("datacube_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("begin_date", DateUtil.fortmat2yyyy_MM_dd(beginDate));
 		obj.put("end_date", DateUtil.fortmat2yyyy_MM_dd(endDate));

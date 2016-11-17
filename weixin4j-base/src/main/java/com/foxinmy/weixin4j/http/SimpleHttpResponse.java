@@ -10,7 +10,7 @@ import java.util.Map.Entry;
  * Simple Response
  * 
  * @className SimpleHttpResponse
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月14日
  * @since JDK 1.6
  * @see
@@ -42,7 +42,7 @@ public class SimpleHttpResponse extends AbstractHttpResponse {
 			} else {
 				String connect = connection.getHeaderField("Connection");
 				protocol = new HttpVersion(version,
-						"keep-alive".equalsIgnoreCase(connect));
+						KEEP_ALIVE.equalsIgnoreCase(connect));
 			}
 		}
 		return protocol;

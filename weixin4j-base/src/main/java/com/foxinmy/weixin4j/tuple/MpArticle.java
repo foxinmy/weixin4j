@@ -2,13 +2,13 @@ package com.foxinmy.weixin4j.tuple;
 
 import java.io.Serializable;
 
-import com.alibaba.fastjson.annotation.JSONCreator;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * 群发消息图文(消息内容存储在微信后台)
- * 
- * @author jy.hu
+ *
+ * @className MpArticle
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月26日
  * @since JDK 1.6
  */
@@ -22,7 +22,7 @@ public class MpArticle implements Serializable {
 	@JSONField(name = "thumb_media_id")
 	private String thumbMediaId;
 	/**
-	 * 图文消息的封面图片的地址，第三方开发者也可以使用这个URL下载图片到自己服务器中，然后显示在自己网站上
+	 * 图文消息的封面图片的地址(不一定有，请关注thumbMediaId)
 	 */
 	@JSONField(name = "thumb_url")
 	private String thumbUrl;
@@ -34,6 +34,10 @@ public class MpArticle implements Serializable {
 	 * 图文消息的标题 非空
 	 */
 	private String title;
+	/**
+	 * 图文页的URL 获取图文消息时，群发消息时填写无效。
+	 */
+	private String url;
 	/**
 	 * 在图文消息页面点击“阅读原文”后的页面 可为空
 	 */
@@ -52,48 +56,38 @@ public class MpArticle implements Serializable {
 	 */
 	@JSONField(name = "show_cover_pic")
 	private String showCoverPic;
-	/**
-	 * 正文的URL 可为空
-	 */
-	@JSONField(name = "content_url")
-	private String contentUrl;
-	/**
-	 * 封面图片的URL 可为空
-	 */
-	@JSONField(name = "cover_url")
-	private String coverUrl;
 
+	protected MpArticle() {
+	}
+
+	/**
+	 * @param thumbMediaId
+	 *            缩略图
+	 * @param title
+	 *            标题
+	 * @param content
+	 *            内容
+	 */
 	public MpArticle(String thumbMediaId, String title, String content) {
 		this.thumbMediaId = thumbMediaId;
 		this.title = title;
 		this.content = content;
 	}
 
-	@JSONCreator
-	public MpArticle(@JSONField(name = "thumbMediaId") String thumbMediaId,
-			@JSONField(name = "thumbUrl") String thumbUrl,
-			@JSONField(name = "author") String author,
-			@JSONField(name = "title") String title,
-			@JSONField(name = "sourceUrl") String sourceUrl,
-			@JSONField(name = "content") String content,
-			@JSONField(name = "digest") String digest,
-			@JSONField(name = "showCoverPic") String showCoverPic,
-			@JSONField(name = "contentUrl") String contentUrl,
-			@JSONField(name = "coverUrl") String coverUrl) {
-		this.thumbMediaId = thumbMediaId;
-		this.thumbUrl = thumbUrl;
-		this.author = author;
-		this.title = title;
-		this.sourceUrl = sourceUrl;
-		this.content = content;
-		this.digest = digest;
-		this.showCoverPic = showCoverPic;
-		this.contentUrl = contentUrl;
-		this.coverUrl = coverUrl;
-	}
-
 	public String getThumbMediaId() {
 		return thumbMediaId;
+	}
+
+	public void setThumbMediaId(String thumbMediaId) {
+		this.thumbMediaId = thumbMediaId;
+	}
+
+	public String getThumbUrl() {
+		return thumbUrl;
+	}
+
+	public void setThumbUrl(String thumbUrl) {
+		this.thumbUrl = thumbUrl;
 	}
 
 	public String getAuthor() {
@@ -108,6 +102,18 @@ public class MpArticle implements Serializable {
 		return title;
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public String getSourceUrl() {
 		return sourceUrl;
 	}
@@ -118,6 +124,10 @@ public class MpArticle implements Serializable {
 
 	public String getContent() {
 		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public String getDigest() {
@@ -132,36 +142,25 @@ public class MpArticle implements Serializable {
 		return showCoverPic;
 	}
 
+	public void setShowCoverPic(String showCoverPic) {
+		this.showCoverPic = showCoverPic;
+	}
+
 	public void setShowCoverPic(boolean showCoverPic) {
 		this.showCoverPic = showCoverPic ? "1" : "0";
 	}
 
-	public String getContentUrl() {
-		return contentUrl;
-	}
-
-	public void setContentUrl(String contentUrl) {
-		this.contentUrl = contentUrl;
-	}
-
-	public String getCoverUrl() {
-		return coverUrl;
-	}
-
-	public void setCoverUrl(String coverUrl) {
-		this.coverUrl = coverUrl;
-	}
-
-	public String getThumbUrl() {
-		return thumbUrl;
+	@JSONField(serialize = false)
+	public boolean getFormatShowCoverPic() {
+		return this.showCoverPic != null && this.showCoverPic.equals("1");
 	}
 
 	@Override
 	public String toString() {
-		return "MpArticle [thumbMediaId=" + thumbMediaId + ",thumbUrl="
+		return "MpArticle [thumbMediaId=" + thumbMediaId + ", thumbUrl="
 				+ thumbUrl + ", author=" + author + ", title=" + title
 				+ ", sourceUrl=" + sourceUrl + ", content=" + content
-				+ ", digest=" + digest + ", showCoverPic=" + showCoverPic
-				+ ", contentUrl=" + contentUrl + ", coverUrl=" + coverUrl + "]";
+				+ ", url=" + url + ", digest=" + digest + ", showCoverPic="
+				+ showCoverPic + "]";
 	}
 }

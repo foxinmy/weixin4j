@@ -5,7 +5,7 @@ package com.foxinmy.weixin4j.http;
  * server to client.
  * 
  * @className HttpMessage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月29日
  * @since JDK 1.6
  * @see

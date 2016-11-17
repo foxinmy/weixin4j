@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Ant远程部署脚本 -->
 <project name="weixin4j-server" default="deploy" basedir=".">
 	<property name="app.dir" value="./target" />
 	<property name="zip.name" value="zip包名称,如:weixin4j-server-bin.zip" />

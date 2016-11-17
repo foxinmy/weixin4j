@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.qy.type;
  * 成员状态
  * 
  * @className UserStatus
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月19日
  * @since JDK 1.6
  * @see

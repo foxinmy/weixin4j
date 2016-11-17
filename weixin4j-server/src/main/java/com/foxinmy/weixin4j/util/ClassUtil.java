@@ -24,7 +24,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
  * 对class的获取
  * 
  * @className ClassUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
  * @since JDK 1.6
  * @see

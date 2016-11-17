@@ -7,7 +7,7 @@ import java.util.Map;
  * 模板消息所用到的行业信息
  * 
  * @className IndustryType
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月12日
  * @since JDK 1.6
  */

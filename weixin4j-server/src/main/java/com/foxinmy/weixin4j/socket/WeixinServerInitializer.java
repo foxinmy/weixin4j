@@ -15,20 +15,25 @@ import com.foxinmy.weixin4j.util.AesToken;
  * 微信消息服务器初始化
  * 
  * @className WeixinServerInitializer
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月17日
  * @since JDK 1.6
  * @see
  */
 public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 
-	private final Map<String, AesToken> aesTokenMap;
 	private final WeixinMessageDispatcher messageDispatcher;
+
+	private WeixinMessageDecoder messageDecoder;
 
 	public WeixinServerInitializer(Map<String, AesToken> aesTokenMap,
 			WeixinMessageDispatcher messageDispatcher) {
-		this.aesTokenMap = aesTokenMap;
 		this.messageDispatcher = messageDispatcher;
+		this.messageDecoder = new WeixinMessageDecoder(aesTokenMap);
+	}
+
+	public int addAesToken(final AesToken asetoken){
+		return messageDecoder.addAesToken(asetoken);
 	}
 
 	@Override
@@ -36,7 +41,7 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 		ChannelPipeline pipeline = channel.pipeline();
 		pipeline.addLast(new HttpServerCodec());
 		pipeline.addLast(new HttpObjectAggregator(65536));
-		pipeline.addLast(new WeixinMessageDecoder(aesTokenMap));
+		pipeline.addLast(messageDecoder);
 		pipeline.addLast(new WeixinResponseEncoder());
 		pipeline.addLast(new SingleResponseEncoder());
 		pipeline.addLast(new WeixinRequestHandler(messageDispatcher));

@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.socket;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.util.internal.logging.InternalLogger;
@@ -16,11 +17,12 @@ import com.foxinmy.weixin4j.util.ServerToolkits;
  * 单一回复编码类
  * 
  * @className SingleResponseEncoder
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年08月02日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.response.SingleResponse
  */
+@ChannelHandler.Sharable
 public class SingleResponseEncoder extends
 		MessageToMessageEncoder<SingleResponse> {
 

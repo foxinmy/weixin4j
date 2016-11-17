@@ -16,7 +16,7 @@
 
 * OauthApi `oauth授权API`
 
-* Pay2Api `V2支付API`
+* Pay2Api `原V2支付API`
 
 * QrApi `二维码API`
 
@@ -25,3 +25,7 @@
 * UserApi `用户管理API`
 
 * TagApi `用户标签管理API`
+
+* ComponentApi `第三方组件API`
+
+* CardApi `卡券API`

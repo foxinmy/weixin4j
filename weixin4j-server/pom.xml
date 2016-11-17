@@ -5,10 +5,10 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j</artifactId>
-		<version>1.6.9</version>
+		<version>1.7.0</version>
 	</parent>
 	<artifactId>weixin4j-server</artifactId>
-	<version>1.1.7</version>
+	<version>1.1.8</version>
 	<name>weixin4j-server</name>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-server</url>
 	<description>微信消息netty服务器</description>
@@ -17,6 +17,11 @@
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
 			<version>4.0.23.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

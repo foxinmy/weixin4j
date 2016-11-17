@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * 消息元件
  * 
  * @className Tuple
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年4月19日
  * @since JDK 1.6
  * @see

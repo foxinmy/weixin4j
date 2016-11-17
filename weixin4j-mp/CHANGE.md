@@ -221,3 +221,35 @@
 * 2016-05-07
 
   + version upgrade to 1.6.9
+  
+* 2016-05-30
+
+  + 新增接口调用次数清零接口
+  
+* 2016-06-20
+
+  + version upgrade to 1.7.0
+  
+* 2016-07-05
+
+  + 初始化开放平台第三方组件TokenCreator
+  
+  + 新增第三方组件ComponentApi
+  
+* 2016-07-06
+
+  + 新增第三方组件WeixinComponentProxy
+  
+* 2016-08-05
+
+  + 新增CardApi:创建卡券接口
+  
+* 2016-08-09
+
+  + 新增创建卡券二维码接口
+  
+  + version upgrade to 1.7.1
+  
+* 2016-10-10
+
+  + version upgrade to 1.7.2

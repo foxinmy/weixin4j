@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * 结算资金
  * 
  * @className Settlement
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月26日
  * @since JDK 1.6
  * @see

@@ -320,6 +320,10 @@
 		<text>invalid args</text>
 	</error>
 	<error>
+		<code>40095</code>
+		<text>修改失败，并发冲突</text>
+	</error>
+	<error>
 		<code>40099</code>
 		<text>卡券已被核销。</text>
 	</error>
@@ -692,6 +696,10 @@
 		<text>用户领取次数超过限制get_limit</text>
 	</error>
 	<error>
+		<code>45046</code>
+		<text>该card_id已经设置了买单功能，不可变更为自助核销功能，设置冲突</text>
+	</error>
+	<error>
 		<code>45047</code>
 		<text>客服接口下行条数超过上限</text>
 	</error>
@@ -821,7 +829,7 @@
 	</error>
 	<error>
 		<code>60008</code>
-		<text>部门名称已存在</text>
+		<text>部门ID或者部门名称已存在</text>
 	</error>
 	<error>
 		<code>60009</code>
@@ -872,6 +880,10 @@
 		<text>主页型应用不支持的消息类型</text>
 	</error>
 	<error>
+		<code>60026</code>
+		<text>已授权的应用不允许企业管理组调用接口修改菜单</text>
+	</error>
+	<error>
 		<code>60027</code>
 		<text>不支持第三方修改主页型应用字段</text>
 	</error>
@@ -882,6 +894,10 @@
 	<error>
 		<code>60029</code>
 		<text>应用已授权予第三方，不允许通过接口修改可信域名</text>
+	</error>
+	<error>
+		<code>60031</code>
+		<text>未设置管理组的登录授权域名</text>
 	</error>
 	<error>
 		<code>60102</code>
@@ -990,6 +1006,10 @@
 	<error>
 		<code>60129</code>
 		<text>用户设置了拒绝邀请</text>
+	</error>
+	<error>
+		<code>60131</code>
+		<text>不合法的职位长度</text>
 	</error>
 	<error>
 		<code>61017</code>
@@ -1430,6 +1450,10 @@
 	<error>
 		<code>81003</code>
 		<text>邀请额度已用完</text>
+	</error>
+	<error>
+		<code>81004</code>
+		<text>部门数量超过上限</text>
 	</error>
 	<error>
 		<code>82001</code>

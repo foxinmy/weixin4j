@@ -1,7 +1,5 @@
 package com.foxinmy.weixin4j.api;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 
 import com.alibaba.fastjson.TypeReference;
@@ -18,10 +16,11 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * 代金券API
  * 
  * @className CouponApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月25日
  * @since JDK 1.6
- * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/tools/sp_coupon.php?chapter=12_1">代金券</a>
+ * @see <a
+ *      href="https://pay.weixin.qq.com/wiki/doc/api/tools/sp_coupon.php?chapter=12_1">代金券</a>
  */
 public class CouponApi extends MchApi {
 
@@ -32,8 +31,6 @@ public class CouponApi extends MchApi {
 	/**
 	 * 发放代金券(需要证书)
 	 * 
-	 * @param certificate
-	 *            后缀为*.p12的证书文件
 	 * @param couponStockId
 	 *            代金券批次id
 	 * @param partnerTradeNo
@@ -48,9 +45,8 @@ public class CouponApi extends MchApi {
 	 *      href="https://pay.weixin.qq.com/wiki/doc/api/tools/sp_coupon.php?chapter=12_3">发放代金券接口</a>
 	 * @throws WeixinException
 	 */
-	public CouponResult sendCoupon(InputStream certificate,
-			String couponStockId, String partnerTradeNo, String openId,
-			String opUserId) throws WeixinException {
+	public CouponResult sendCoupon(String couponStockId, String partnerTradeNo,
+			String openId, String opUserId) throws WeixinException {
 		Map<String, String> map = createBaseRequestMap(null);
 		map.put("coupon_stock_id", couponStockId);
 		map.put("partner_trade_no", partnerTradeNo);
@@ -66,19 +62,8 @@ public class CouponApi extends MchApi {
 		map.put("type", "XML");
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		WeixinResponse response = null;
-		try {
-			response = createSSLRequestExecutor(certificate).post(
-					getRequestUri("coupon_send_uri"), param);
-		} finally {
-			if (certificate != null) {
-				try {
-					certificate.close();
-				} catch (IOException e) {
-					;
-				}
-			}
-		}
+		WeixinResponse response = getWeixinSSLExecutor().post(
+				getRequestUri("coupon_send_uri"), param);
 		return response.getAsObject(new TypeReference<CouponResult>() {
 		});
 	}

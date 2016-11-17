@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.model.MediaDownloadResult;
-import com.foxinmy.weixin4j.model.MediaUploadResult;
+import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
+import com.foxinmy.weixin4j.model.media.MediaUploadResult;
 import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.type.MediaType;
 
@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * 媒体上传下载测试
  * 
  * @className MediaTest
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  * @see
@@ -29,7 +29,7 @@ public class MediaTest extends TokenTest {
 
 	@Before
 	public void init() {
-		mediaApi = new MediaApi(tokenHolder);
+		mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test

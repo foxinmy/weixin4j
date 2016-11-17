@@ -5,14 +5,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.foxinmy.weixin4j.http.weixin.WeixinRequestExecutor;
-import com.foxinmy.weixin4j.logging.InternalLogger;
-import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 
 /**
  * API基础
- * 
+ *
  * @className BaseApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月26日
  * @since JDK 1.6
  * @see <a href="http://mp.weixin.qq.com/wiki/index.php">微信公众平台API文档</a>
@@ -20,16 +18,13 @@ import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
  */
 public abstract class BaseApi {
 
-	protected final InternalLogger logger = InternalLoggerFactory
-			.getInstance(getClass());
-	
 	protected final WeixinRequestExecutor weixinExecutor;
-
-	protected abstract ResourceBundle weixinBundle();
 
 	public BaseApi() {
 		this.weixinExecutor = new WeixinRequestExecutor();
 	}
+
+	protected abstract ResourceBundle weixinBundle();
 
 	protected String getRequestUri(String key) {
 		String url = weixinBundle().getString(key);

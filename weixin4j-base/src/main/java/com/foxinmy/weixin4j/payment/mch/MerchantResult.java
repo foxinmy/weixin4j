@@ -7,15 +7,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.type.SignType;
-import com.foxinmy.weixin4j.util.RandomUtil;
 
 /**
  * 调用商户平台接口返回的公用字段
- * 
+ *
  * @className MerchantResult
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月21日
  * @since JDK 1.6
  * @see
@@ -41,9 +39,9 @@ public class MerchantResult extends XmlResult {
 	/**
 	 * 微信分配的子商户公众账号ID 非必须
 	 */
-	@XmlElement(name = "sub_id")
-	@JSONField(name = "sub_id")
-	private String subId;
+	@XmlElement(name = "sub_appid")
+	@JSONField(name = "sub_appid")
+	private String subAppId;
 	/**
 	 * 微信支付分配的子商户号 非必须
 	 */
@@ -101,12 +99,12 @@ public class MerchantResult extends XmlResult {
 		this.mchId = mchId;
 	}
 
-	public String getSubId() {
-		return subId;
+	public String getSubAppId() {
+		return subAppId;
 	}
 
-	public void setSubId(String subId) {
-		this.subId = subId;
+	public void setSubAppId(String subAppId) {
+		this.subAppId = subAppId;
 	}
 
 	public String getSubMchId() {
@@ -168,25 +166,9 @@ public class MerchantResult extends XmlResult {
 		return recall != null && recall.equalsIgnoreCase("y");
 	}
 
-	/**
-	 * 赋值给对应字段
-	 * 
-	 * @param weixinPayAccount
-	 *            商户信息
-	 */
-	@JSONField(deserialize = false)
-	public void declareWeixinPayAccount(WeixinPayAccount weixinPayAccount) {
-		this.appId = weixinPayAccount.getId();
-		this.mchId = weixinPayAccount.getMchId();
-		this.deviceInfo = weixinPayAccount.getDeviceInfo();
-		this.subId = weixinPayAccount.getSubId();
-		this.subMchId = weixinPayAccount.getSubMchId();
-		this.nonceStr = RandomUtil.generateString(16);
-	}
-
 	@Override
 	public String toString() {
-		return "appId=" + appId + ", mchId=" + mchId + ", subId=" + subId
+		return "appId=" + appId + ", mchId=" + mchId + ", subAppId=" + subAppId
 				+ ", subMchId=" + subMchId + ", nonceStr=" + nonceStr
 				+ ", sign=" + sign + ", deviceInfo=" + deviceInfo + ", recall="
 				+ getFormatRecall() + ", " + super.toString();

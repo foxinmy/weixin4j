@@ -9,7 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * 微信账号信息
  * 
  * @className WeixinAccount
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see
@@ -21,11 +21,11 @@ public class WeixinAccount implements Serializable {
 	/**
 	 * 唯一的身份标识
 	 */
-	private String id;
+	private final String id;
 	/**
 	 * 调用接口的密钥
 	 */
-	private String secret;
+	private final String secret;
 
 	@JSONCreator
 	public WeixinAccount(@JSONField(name = "id") String id,

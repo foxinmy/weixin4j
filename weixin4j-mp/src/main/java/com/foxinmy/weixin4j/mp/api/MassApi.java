@@ -7,10 +7,10 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpNews;
@@ -21,16 +21,16 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * 群发相关API
  * 
  * @className MassApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
  */
 public class MassApi extends MpApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public MassApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public MassApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class MassApi extends MpApi {
 	public String uploadArticle(List<MpArticle> articles)
 			throws WeixinException {
 		String article_upload_uri = getRequestUri("article_upload_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("articles", articles);
 		WeixinResponse response = weixinExecutor.post(
@@ -110,7 +110,7 @@ public class MassApi extends MpApi {
 		obj.put(msgtype, JSON.toJSON(tuple));
 		obj.put("msgtype", msgtype);
 		String mass_group_uri = getRequestUri("mass_group_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_group_uri, token.getAccessToken()),
 				obj.toJSONString());
@@ -180,7 +180,7 @@ public class MassApi extends MpApi {
 		obj.put(msgtype, JSON.toJSON(tuple));
 		obj.put("msgtype", msgtype);
 		String mass_openid_uri = getRequestUri("mass_openid_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_openid_uri, token.getAccessToken()),
 				obj.toJSONString());
@@ -224,16 +224,16 @@ public class MassApi extends MpApi {
 	 * @see {@link #massByGroupId(Tuple, int)}
 	 * @see {@link #massByOpenIds(Tuple, String...)
 	 */
-	public JsonResult deleteMassNews(String msgid) throws WeixinException {
+	public ApiResult deleteMassNews(String msgid) throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("msgid", msgid);
 		String mass_delete_uri = getRequestUri("mass_delete_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_delete_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class MassApi extends MpApi {
 	 * @see <a
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">预览群发消息</a>
 	 */
-	public JsonResult previewMassNews(String toUser, String toWxName,
+	public ApiResult previewMassNews(String toUser, String toWxName,
 			MassTuple tuple) throws WeixinException {
 		String msgtype = tuple.getMessageType();
 		JSONObject obj = new JSONObject();
@@ -260,12 +260,12 @@ public class MassApi extends MpApi {
 		obj.put(msgtype, JSON.toJSON(tuple));
 		obj.put("msgtype", msgtype);
 		String mass_preview_uri = getRequestUri("mass_preview_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_preview_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -282,7 +282,7 @@ public class MassApi extends MpApi {
 		JSONObject obj = new JSONObject();
 		obj.put("msg_id", msgId);
 		String mass_get_uri = getRequestUri("mass_get_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
 				String.format(mass_get_uri, token.getAccessToken()),
 				obj.toJSONString());

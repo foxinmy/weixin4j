@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.qy.model.Party;
  * 异步任务测试
  * 
  * @className BatchTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月31日
  * @since JDK 1.6
  * @see
@@ -27,8 +27,8 @@ public class BatchTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.batchApi = new BatchApi(tokenHolder);
-		this.mediaApi = new MediaApi(tokenHolder);
+		this.batchApi = new BatchApi(tokenManager);
+		this.mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test

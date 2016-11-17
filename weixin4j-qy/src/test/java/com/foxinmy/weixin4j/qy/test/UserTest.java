@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.qy.api.UserApi;
 import com.foxinmy.weixin4j.qy.model.User;
@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.qy.type.UserStatus;
  * 用户API测试
  * 
  * @className UserTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see
@@ -29,8 +29,8 @@ public class UserTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.userApi = new UserApi(tokenHolder);
-		this.mediaApi = new MediaApi(tokenHolder);
+		this.userApi = new UserApi(tokenManager);
+		this.mediaApi = new MediaApi(tokenManager);
 	}
 
 	@Test
@@ -38,8 +38,8 @@ public class UserTest extends TokenTest {
 		User user = new User("id", "name");
 		user.setPartyIds(1);
 		user.pushExattr("爱好", "code");
-		JsonResult result = userApi.createUser(user);
-		Assert.assertEquals("created", result.getDesc());
+		ApiResult result = userApi.createUser(user);
+		Assert.assertEquals("created", result.getReturnMsg());
 	}
 
 	@Test
@@ -55,8 +55,8 @@ public class UserTest extends TokenTest {
 		User user = new User("id", "name");
 		user.setPartyIds(1);
 		user.pushExattr("爱好", "code");
-		JsonResult result = userApi.updateUser(user);
-		Assert.assertEquals("updated", result.getDesc());
+		ApiResult result = userApi.updateUser(user);
+		Assert.assertEquals("updated", result.getReturnMsg());
 	}
 
 	@Test
@@ -75,8 +75,8 @@ public class UserTest extends TokenTest {
 
 	@Test
 	public void delete() throws WeixinException {
-		JsonResult result = userApi.deleteUser("u001");
-		Assert.assertEquals("deleted", result.getDesc());
+		ApiResult result = userApi.deleteUser("u001");
+		Assert.assertEquals("deleted", result.getReturnMsg());
 	}
 
 	@Test

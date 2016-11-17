@@ -6,34 +6,33 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPath;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.alibaba.fastjson.parser.deserializer.ParseProcess;
 import com.alibaba.fastjson.serializer.NameFilter;
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Menu;
 import com.foxinmy.weixin4j.mp.model.MenuMatchRule;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
  * 菜单相关API
  * 
  * @className MenuApi
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
  */
 public class MenuApi extends MpApi {
 
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public MenuApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public MenuApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -48,17 +47,17 @@ public class MenuApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.model.Button
 	 * @return 处理结果
 	 */
-	public JsonResult createMenu(List<Button> buttons) throws WeixinException {
+	public ApiResult createMenu(List<Button> buttons) throws WeixinException {
 		String menu_create_uri = getRequestUri("menu_create_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("button", buttons);
-		return createMenu0(menu_create_uri, obj).getAsJsonResult();
+		return createMenu0(menu_create_uri, obj).getAsResult();
 	}
 
 	private WeixinResponse createMenu0(String url, JSONObject data)
 			throws WeixinException {
 		return weixinExecutor.post(
-				String.format(url, tokenHolder.getAccessToken()),
+				String.format(url, tokenManager.getAccessToken()),
 				JSON.toJSONString(data, new NameFilter() {
 					@Override
 					public String process(Object object, String name,
@@ -98,7 +97,7 @@ public class MenuApi extends MpApi {
 
 	private JSONObject getMenu0() throws WeixinException {
 		String menu_get_uri = getRequestUri("menu_get_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				menu_get_uri, token.getAccessToken()));
 		return response.getAsJson();
@@ -148,13 +147,13 @@ public class MenuApi extends MpApi {
 	 *      删除菜单</a>
 	 * @return 处理结果
 	 */
-	public JsonResult deleteMenu() throws WeixinException {
+	public ApiResult deleteMenu() throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(
 				menu_delete_uri, token.getAccessToken()));
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -190,16 +189,16 @@ public class MenuApi extends MpApi {
 	 *      删除个性化菜单</a>
 	 * @return 处理结果
 	 */
-	public JsonResult deleteCustomMenu(String menuId) throws WeixinException {
+	public ApiResult deleteCustomMenu(String menuId) throws WeixinException {
 		String menu_delete_uri = getRequestUri("menu_delete_custom_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("menuid", menuId);
 		WeixinResponse response = weixinExecutor.post(
 				String.format(menu_delete_uri, token.getAccessToken()),
 				obj.toJSONString());
 
-		return response.getAsJsonResult();
+		return response.getAsResult();
 	}
 
 	/**
@@ -216,7 +215,7 @@ public class MenuApi extends MpApi {
 	 */
 	public List<Button> matchCustomMenu(String userId) throws WeixinException {
 		String menu_trymatch_uri = getRequestUri("menu_trymatch_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		JSONObject obj = new JSONObject();
 		obj.put("user_id", userId);
 		WeixinResponse response = weixinExecutor.post(
@@ -229,7 +228,7 @@ public class MenuApi extends MpApi {
 	private final ParseProcess buttonProcess = new ExtraProcessor() {
 		@Override
 		public void processExtra(Object object, String key, Object value) {
-			JSONPath.set(object, "$.content", value);
+			((Button) object).setContent(String.valueOf(value));
 		}
 	};
 

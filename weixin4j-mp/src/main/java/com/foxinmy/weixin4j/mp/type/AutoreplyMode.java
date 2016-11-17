@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.mp.type;
  * 自动回复模式
  * 
  * @className AutoreplyMode
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年4月15日
  * @since JDK 1.6
  * @see

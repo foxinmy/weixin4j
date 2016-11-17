@@ -12,9 +12,9 @@ import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * id参数集
- * 
+ *
  * @className IdParameter
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月30日
  * @since JDK 1.6
  * @see
@@ -25,7 +25,8 @@ public class IdParameter implements Serializable {
 
 	public static final char SEPARATOR = '|';
 
-	public static final String SEPARATORS = String.valueOf(SEPARATOR);
+	public static final String SEPARATORS = String.format("\\%s",
+			String.valueOf(SEPARATOR));
 
 	@JSONField(name = "user")
 	private List<String> userIds;
@@ -42,7 +43,7 @@ public class IdParameter implements Serializable {
 
 	/**
 	 * 增加成员ID列表，最多支持1000个
-	 * 
+	 *
 	 * @param userIds
 	 * @return
 	 */
@@ -53,7 +54,7 @@ public class IdParameter implements Serializable {
 
 	/**
 	 * 新增部门ID列表，最多支持100个
-	 * 
+	 *
 	 * @param partyIds
 	 * @return
 	 */
@@ -64,7 +65,7 @@ public class IdParameter implements Serializable {
 
 	/**
 	 * 新增标签ID列表
-	 * 
+	 *
 	 * @param tagIds
 	 * @return
 	 */
@@ -99,7 +100,7 @@ public class IdParameter implements Serializable {
 
 	/**
 	 * 生成某些接口需要的目标参数 如发送客服消息接口
-	 * 
+	 *
 	 * @return
 	 */
 	public Map<String, String> getParameter() {

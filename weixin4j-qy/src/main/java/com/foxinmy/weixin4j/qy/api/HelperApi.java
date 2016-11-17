@@ -6,22 +6,22 @@ import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.token.TokenHolder;
+import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
  * 辅助API
  * 
  * @className HelperApi
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月28日
  * @since JDK 1.6
  * @see
  */
 public class HelperApi extends QyApi {
-	private final TokenHolder tokenHolder;
+	private final TokenManager tokenManager;
 
-	public HelperApi(TokenHolder tokenHolder) {
-		this.tokenHolder = tokenHolder;
+	public HelperApi(TokenManager tokenManager) {
+		this.tokenManager = tokenManager;
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class HelperApi extends QyApi {
 	 */
 	public List<String> getWechatServerIp() throws WeixinException {
 		String getcallbackip_uri = getRequestUri("getcallbackip_uri");
-		Token token = tokenHolder.getToken();
+		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.get(String.format(getcallbackip_uri,
 				token.getAccessToken()));
 		return JSON.parseArray(response.getAsJson().getString("ip_list"),

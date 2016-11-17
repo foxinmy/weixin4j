@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.jssdk;
  * JSSDK接口列表
  * 
  * @className JSSDKAPI
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月23日
  * @since JDK 1.6
  * @see <a href=
@@ -255,10 +255,16 @@ public enum JSSDKAPI {
 	 * >企业号会话-创建企业号会话</a>
 	 */
 	openEnterpriseChat,
+	
 	/**
-	 * 企业号-选取联系人(内测)
+	 * <a href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3#.E6.89.93.E5.BC.80.E4.BC.81.E4.B8.9A.E9.80.9A.E8.AE.AF.E5.BD.95.E9.80.89.E4.BA.BA">企业号-选取联系人</a>
 	 */
-	openEnterpriseContact;
+	openEnterpriseContact,
+	/**
+	 * <a href=
+	 * "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3#.E5.90.91.E5.BD.93.E5.89.8D.E4.BC.81.E4.B8.9A.E4.BC.9A.E8.AF.9D.E5.8F.91.E9.80.81.E6.B6.88.E6.81.AF">企业号-向当前企业会话发送消息</a>
+	 */
+	sendEnterpriseChat;
 
 	/**
 	 * 分享接口集合
@@ -314,7 +320,7 @@ public enum JSSDKAPI {
 	/**
 	 * 企业号会话接口集合
 	 */
-	public final static JSSDKAPI[] CHAT_APIS = { openEnterpriseChat };
+	public final static JSSDKAPI[] CHAT_APIS = { openEnterpriseChat, sendEnterpriseChat };
 
 	/**
 	 * 公众平台全部接口集合

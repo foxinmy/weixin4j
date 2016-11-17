@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.type.CustomsCity;
  * 报关对象
  * 
  * @className CustomsOrder
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月27日
  * @since JDK 1.6
  * @see

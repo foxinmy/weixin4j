@@ -8,9 +8,9 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 
 /**
  * 微信企业号信息
- * 
+ *
  * @className WeixinQyAccount
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see <a href=
@@ -23,7 +23,7 @@ public class WeixinQyAccount extends WeixinAccount {
 	/**
 	 * 多个应用套件信息
 	 */
-	private List<WeixinAccount> suiteAccounts;
+	private List<WeixinAccount> suites;
 	/**
 	 * 第三方提供商secret(企业号登陆)
 	 */
@@ -34,9 +34,9 @@ public class WeixinQyAccount extends WeixinAccount {
 	private String chatSecret;
 
 	/**
-	 * 
+	 *
 	 * @param corpid
-	 *            企业ID 必填
+	 *            企业ID 使用普通接口(WeixinProxy对象)必须填写
 	 * @param corpsecret
 	 *            管理组的凭证密钥 使用普通接口(WeixinProxy对象)必须填写
 	 * @param suites
@@ -49,17 +49,17 @@ public class WeixinQyAccount extends WeixinAccount {
 	@JSONCreator
 	public WeixinQyAccount(@JSONField(name = "id") String corpid,
 			@JSONField(name = "secret") String corpsecret,
-			@JSONField(name = "suiteAccounts") List<WeixinAccount> suiteAccounts,
+			@JSONField(name = "suites") List<WeixinAccount> suites,
 			@JSONField(name = "providerSecret") String providerSecret,
 			@JSONField(name = "chatSecret") String chatSecret) {
 		super(corpid, corpsecret);
-		this.suiteAccounts = suiteAccounts;
+		this.suites = suites;
 		this.providerSecret = providerSecret;
 		this.chatSecret = chatSecret;
 	}
 
-	public List<WeixinAccount> getSuiteAccounts() {
-		return suiteAccounts;
+	public List<WeixinAccount> getSuites() {
+		return suites;
 	}
 
 	public String getProviderSecret() {
@@ -70,15 +70,10 @@ public class WeixinQyAccount extends WeixinAccount {
 		return chatSecret;
 	}
 
-	public WeixinAccount[] suiteAccountsToArray() {
-		return suiteAccounts != null ? suiteAccounts
-				.toArray(new WeixinAccount[suiteAccounts.size()]) : null;
-	}
-
 	@Override
 	public String toString() {
-		return "WeixinQyAccount [" + super.toString() + ", suiteAccounts="
-				+ suiteAccounts + ", providerSecret=" + providerSecret
+		return "WeixinQyAccount [" + super.toString() + ", suites="
+				+ suites + ", providerSecret=" + providerSecret
 				+ ",  chatSecret=" + chatSecret + "]";
 	}
 }

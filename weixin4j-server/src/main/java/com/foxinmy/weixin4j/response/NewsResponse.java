@@ -7,7 +7,7 @@ import java.util.List;
  * 回复图文消息
  * 
  * @className NewsResponse
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月5日
  * @since JDK 1.6
  * @see
@@ -84,7 +84,7 @@ public class NewsResponse implements WeixinResponse {
 	 * 图文消息对象
 	 * 
 	 * @className Article
-	 * @author jy
+	 * @author jinyu(foxinmy@gmail.com)
 	 * @date 2015年5月5日
 	 * @since JDK 1.6
 	 * @see

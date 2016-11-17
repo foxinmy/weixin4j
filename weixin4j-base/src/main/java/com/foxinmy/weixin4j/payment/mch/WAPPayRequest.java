@@ -1,9 +1,9 @@
 package com.foxinmy.weixin4j.payment.mch;
 
-import com.foxinmy.weixin4j.model.Consts;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.type.TradeType;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.URLEncodingUtil;
@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.util.URLEncodingUtil;
  * WAP支付
  * 
  * @className WAPPayRequest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月25日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.payment.mch.PrePay

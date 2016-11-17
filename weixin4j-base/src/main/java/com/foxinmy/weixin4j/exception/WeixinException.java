@@ -5,9 +5,9 @@ import com.foxinmy.weixin4j.util.WeixinErrorUtil;
 
 /**
  * 调用微信接口抛出的异常
- * 
+ *
  * @className WeixinException
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  * @see
@@ -41,21 +41,23 @@ public class WeixinException extends Exception {
 		return code;
 	}
 
-	public String getErrorMsg() {
+	public String getErrorDesc() {
 		return desc;
+	}
+
+	public String getErrorText() {
+		return WeixinErrorUtil.getText(code);
 	}
 
 	@Override
 	public String getMessage() {
-		StringBuilder buf = new StringBuilder();
 		if (StringUtil.isNotBlank(code)) {
-			buf.append(code);
-		}
-		if (StringUtil.isNotBlank(desc)) {
-			buf.append(" >> ").append(desc);
-		}
-		if (buf.length() > 0) {
-			buf.append(" >> ").append(WeixinErrorUtil.getText(code));
+			StringBuilder buf = new StringBuilder();
+			buf.append(code).append(" >> ").append(desc);
+			String text = getErrorText();
+			if (StringUtil.isNotBlank(text)) {
+				buf.append(" >> ").append(text);
+			}
 			return buf.toString();
 		} else {
 			return super.getMessage();

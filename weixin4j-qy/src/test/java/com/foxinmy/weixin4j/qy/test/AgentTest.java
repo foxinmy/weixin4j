@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.qy.api.AgentApi;
 import com.foxinmy.weixin4j.qy.model.AgentInfo;
 import com.foxinmy.weixin4j.qy.model.AgentOverview;
@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.qy.type.ReportLocationType;
  * 应用API测试
  * 
  * @className AgentTest
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年03月17日
  * @since JDK 1.6
  * @see
@@ -28,7 +28,7 @@ public class AgentTest extends TokenTest {
 
 	@Before
 	public void init() {
-		this.agentApi = new AgentApi(tokenHolder);
+		this.agentApi = new AgentApi(tokenManager);
 	}
 
 	@Test
@@ -44,8 +44,8 @@ public class AgentTest extends TokenTest {
 		agentSet.setDescription("test");
 		agentSet.setRedirectDomain("test.com");
 		agentSet.setReportLocationType(ReportLocationType.DIALOG);
-		JsonResult result = agentApi.setAgent(agentSet);
-		Assert.assertTrue(result.getCode() == 0);
+		ApiResult result = agentApi.setAgent(agentSet);
+		Assert.assertEquals("0",result.getReturnCode());
 	}
 	
 	@Test

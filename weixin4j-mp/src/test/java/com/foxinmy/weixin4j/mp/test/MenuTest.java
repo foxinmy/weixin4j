@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.http.weixin.JsonResult;
+import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.mp.api.MenuApi;
 import com.foxinmy.weixin4j.mp.model.Menu;
@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.type.ButtonType;
  * 自定义菜单测试
  * 
  * @className MenuTest
- * @author jy.hu
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年4月10日
  * @since JDK 1.6
  */
@@ -31,7 +31,7 @@ public class MenuTest extends TokenTest {
 
 	@Before
 	public void init() {
-		menuApi = new MenuApi(tokenHolder);
+		menuApi = new MenuApi(tokenManager);
 	}
 
 	@Test
@@ -40,7 +40,7 @@ public class MenuTest extends TokenTest {
 		String domain = "http://wx.jdxg.doubimeizhi.com";
 		buttons.add(new Button("立即下单", domain, ButtonType.view));
 
-		buttons.add(new Button("个人中心", domain + "/user", ButtonType.view));
+		//buttons.add(new Button("个人中心", domain + "/user", ButtonType.view));
 
 		Button button = new Button("小哥介绍", domain, ButtonType.view);
 		button.pushSub(new Button("小哥介绍", "http://x.eqxiu.com/s/89oy462U",
@@ -52,10 +52,10 @@ public class MenuTest extends TokenTest {
 				ButtonType.view));
 		button.pushSub(new Button("服务流程", "FLOW", ButtonType.click));
 		button.pushSub(new Button("在线客服", "KF", ButtonType.click));
-		buttons.add(button);
+		//buttons.add(button);
 
-		JsonResult result = menuApi.createMenu(buttons);
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = menuApi.createMenu(buttons);
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
@@ -69,8 +69,8 @@ public class MenuTest extends TokenTest {
 		buttons.add(b2);
 		Button b3 = new Button("最新资讯", "NEWS", ButtonType.click);
 		buttons.add(b3);
-		JsonResult result = menuApi.createMenu(buttons);
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = menuApi.createMenu(buttons);
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
@@ -92,8 +92,8 @@ public class MenuTest extends TokenTest {
 
 	@Test
 	public void delete() throws WeixinException {
-		JsonResult result = menuApi.deleteMenu();
-		Assert.assertEquals(0, result.getCode());
+		ApiResult result = menuApi.deleteMenu();
+		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test

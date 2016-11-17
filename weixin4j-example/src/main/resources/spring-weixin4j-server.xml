@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 微信被动消息服务，这里值得强调的是：
+weixin4j-serve本身是作为一个单独的服务来启动的，可以不依赖Spring容器，
+但考虑到目前都是Spring mvc的架构，这里就需要使用一个独立的线程去启动服务，其实本身没有使用spring mvc的API，
+以后会考虑支持servlet api去集成不同的web框架。 -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	<!-- 微信消息服务～start -->
+	<bean
+		class="com.foxinmy.weixin4j.example.server.Weixin4jServerStartupWithThread"
+		init-method="start" destroy-method="stop">
+		<!-- 端口号 微信暂时只支持80端口 所以需要自己把微信被动消息请求转发(nginx等)到这个端口上来 -->
+		<constructor-arg index="0" value="30000" />
+		<!-- token信息 -->
+		<constructor-arg index="1">
+			<!-- 明文模式 -->
+			<bean class="com.foxinmy.weixin4j.util.AesToken">
+				<constructor-arg index="0" value="开发者Token" />
+			</bean>
+			<!-- 加密模式 -->
+			<!-- bean class="com.foxinmy.weixin4j.util.AesToken"> <constructor-arg 
+				index="0" value="公众号的应用ID(appid/corpid)" /> <constructor-arg index="1" value="开发者Token" 
+				/> <constructor-arg index="2" value="解密的EncodingAESKey" /> </bean -->
+		</constructor-arg>
+		<!-- 处理微信消息的全限包名 -->
+		<constructor-arg index="2"
+			value="com.foxinmy.weixin4j.example.server.handler" />
+	</bean>
+	<!-- 微信消息服务～end -->
+
+	<!-- spring扫描加载消息处理类~start -->
+	<context:component-scan base-package="com.foxinmy.weixin4j.example.server.handler" />
+	<!-- spring扫描加载消息处理类~end -->
+</beans>

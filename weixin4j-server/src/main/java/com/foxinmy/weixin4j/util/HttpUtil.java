@@ -17,9 +17,9 @@ import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 
 /**
  * HTTP工具类
- * 
+ *
  * @className HttpUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月15日
  * @since JDK 1.6
  * @see
@@ -31,15 +31,11 @@ public class HttpUtil {
 
 	/**
 	 * 创建有内容的HttpResponse响应
-	 * 
+	 *
 	 * @param content
 	 *            响应内容
-	 * @param status
-	 *            响应状态
 	 * @param contentType
 	 *            响应类型
-	 * @param request
-	 *            请求对象
 	 * @return HttpResponse
 	 */
 	public static HttpResponse createHttpResponse(String content,
@@ -58,12 +54,12 @@ public class HttpUtil {
 	}
 
 	public static void resolveHeaders(FullHttpResponse httpResponse) {
-		/*if (HttpHeaders.isKeepAlive(httpRequest)) {
-			httpResponse.headers().set(CONNECTION, Values.KEEP_ALIVE);
-		}
-		if (HttpHeaders.isTransferEncodingChunked(httpRequest)) {
-			httpResponse.headers().set(TRANSFER_ENCODING, Values.CHUNKED);
-		}*/
+		/*
+		 * if (HttpHeaders.isKeepAlive(httpRequest)) {
+		 * httpResponse.headers().set(CONNECTION, Values.KEEP_ALIVE); } if
+		 * (HttpHeaders.isTransferEncodingChunked(httpRequest)) {
+		 * httpResponse.headers().set(TRANSFER_ENCODING, Values.CHUNKED); }
+		 */
 		httpResponse.headers().set(DATE, new Date());
 		httpResponse.headers().set(SERVER, SERVER);
 		httpResponse.headers()

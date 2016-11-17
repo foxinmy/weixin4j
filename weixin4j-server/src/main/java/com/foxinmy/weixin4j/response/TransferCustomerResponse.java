@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.response;
  * 消息转移到客服
  * 
  * @className TransferCustomerResponse
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月5日
  * @since JDK 1.6
  * @see <a

@@ -8,14 +8,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.CorpPaymentCheckNameType;
+import com.foxinmy.weixin4j.type.mch.CorpPaymentCheckNameType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
  * 企业付款记录
  * 
  * @className CorpPaymentRecord
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月23日
  * @since JDK 1.6
  * @see
@@ -77,7 +77,7 @@ public class CorpPaymentRecord extends MerchantResult {
 	/**
 	 * 校验用户姓名选项
 	 * 
-	 * @see com.foxinmy.weixin4j.CorpPaymentCheckNameType.type.MPPaymentCheckNameType
+	 * @see com.foxinmy.weixin4j.type.mch.CorpPaymentCheckNameType.type.MPPaymentCheckNameType
 	 */
 	@XmlElement(name = "check_name")
 	@JSONField(name = "check_name")

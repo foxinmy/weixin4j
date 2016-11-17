@@ -18,7 +18,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
  * 接口调用错误获取
  * 
  * @className WeixinErrorUtil
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月12日
  * @since JDK 1.6
  * @see

@@ -13,17 +13,16 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  * 处理关注消息
  * 
  * @className SubscribeMessageHandler
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年12月3日
- * @since JDK 1.7
- * @see
+ * @since JDK 1.6
  */
 @Component
 public class SubscribeMessageHandler extends
 		MessageHandlerAdapter<ScribeEventMessage> {
 
 	@Override
-	public WeixinResponse doHandle0(WeixinRequest arg0, ScribeEventMessage arg1)
+	public WeixinResponse doHandle0(WeixinRequest request, ScribeEventMessage message)
 			throws WeixinException {
 		return new TextResponse("欢迎关注～");
 	}

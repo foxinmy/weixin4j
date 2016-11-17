@@ -15,10 +15,9 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * 订单信息
  * 
  * @className PayPackage
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月18日
  * @since JDK 1.6
- * @see
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -45,7 +44,7 @@ public class PayPackage extends MerchantResult {
 	 */
 	@XmlElement(name = "total_fee")
 	@JSONField(name = "total_fee")
-	private String totalFee;
+	private int totalFee;
 	/**
 	 * 通知地址接收微信支付成功通知 必须
 	 */
@@ -117,7 +116,7 @@ public class PayPackage extends MerchantResult {
 		this.body = body;
 		this.detail = detail;
 		this.outTradeNo = outTradeNo;
-		this.totalFee = DateUtil.formaFee2Fen(totalFee);
+		this.totalFee = DateUtil.formatYuan2Fen(totalFee);
 		this.notifyUrl = notifyUrl;
 		this.createIp = createIp;
 		this.attach = attach;
@@ -152,8 +151,18 @@ public class PayPackage extends MerchantResult {
 		this.outTradeNo = outTradeNo;
 	}
 
-	public String getTotalFee() {
+	public int getTotalFee() {
 		return totalFee;
+	}
+	
+	/**
+	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
+	 * 
+	 * @return 元单位
+	 */
+	@JSONField(serialize = false)
+	public double getFormatTotalFee() {
+		return totalFee / 100d;
 	}
 
 	/**
@@ -163,7 +172,7 @@ public class PayPackage extends MerchantResult {
 	 *            订单总额 单位为元
 	 */
 	public void setTotalFee(double totalFee) {
-		this.totalFee = DateUtil.formaFee2Fen(totalFee);
+		this.totalFee = DateUtil.formatYuan2Fen(totalFee);
 	}
 
 	public String getNotifyUrl() {

@@ -18,9 +18,9 @@ import com.foxinmy.weixin4j.util.ServerToolkits;
 
 /**
  * 微信消息
- * 
+ *
  * @className MessageTransferHandler
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月17日
  * @since JDK 1.6
  * @see
@@ -49,18 +49,19 @@ public class MessageTransferHandler extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
-		nodeNames.add(localName.toLowerCase());
-		if (localName.equalsIgnoreCase("fromUserName")) {
+		nodeNames.add(localName);
+		localName = localName.toLowerCase();
+		if (localName.equals("fromusername")) {
 			fromUserName = content;
-		} else if (localName.equalsIgnoreCase("toUserName")) {
+		} else if (localName.equals("tousername")) {
 			toUserName = content;
-		} else if (localName.equalsIgnoreCase("msgType")) {
+		} else if (localName.equals("msgtype")) {
 			msgType = content.toLowerCase();
-		} else if (localName.equalsIgnoreCase("event")) {
+		} else if (localName.equals("event")) {
 			eventType = content.toLowerCase();
 		} else if (localName.startsWith("agent") // 应用信息
 				|| localName.startsWith("suite") // 套件信息
-				|| localName.equalsIgnoreCase("batchJob")) { // 批量任务
+				|| localName.equals("batchjob")) { // 批量任务
 			isQY = true;
 		}
 	}
@@ -75,9 +76,10 @@ public class MessageTransferHandler extends DefaultHandler {
 		if (isQY) {
 			return AccountType.QY;
 		}
-		if (ServerToolkits.isBlank(msgType) && ServerToolkits.isBlank(eventType)) {
+		if (ServerToolkits.isBlank(msgType)
+				&& ServerToolkits.isBlank(eventType)) {
 			return null;
-		} 
+		}
 		return AccountType.MP;
 	}
 

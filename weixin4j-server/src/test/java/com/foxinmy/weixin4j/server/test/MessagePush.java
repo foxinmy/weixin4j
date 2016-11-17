@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.util.ServerToolkits;
  * 发送消息请求到服务器
  * 
  * @className MessagePush
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月8日
  * @since JDK 1.6
  * @see

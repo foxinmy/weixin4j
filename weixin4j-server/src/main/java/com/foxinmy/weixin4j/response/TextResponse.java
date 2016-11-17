@@ -4,7 +4,7 @@ package com.foxinmy.weixin4j.response;
  * 回复文本消息
  * 
  * @className TextResponse
- * @author jy
+ * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月5日
  * @since JDK 1.6
  * @see
