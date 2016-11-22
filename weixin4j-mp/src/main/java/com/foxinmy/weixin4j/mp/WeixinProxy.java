@@ -213,7 +213,8 @@ public class WeixinProxy {
 	private WeixinProxy(WeixinAccount weixinAccount, TokenCreator tokenCreator,
 			CacheStorager<Token> cacheStorager) {
 		if (weixinAccount == null) {
-			throw new IllegalArgumentException("weixinAccount must not be empty");
+			throw new IllegalArgumentException(
+					"weixinAccount must not be empty");
 		}
 		if (tokenCreator == null) {
 			throw new IllegalArgumentException("tokenCreator must not be empty");
@@ -884,6 +885,58 @@ public class WeixinProxy {
 	public String[] massArticleByGroupId(List<MpArticle> articles, int groupId)
 			throws WeixinException {
 		return massApi.massArticleByGroupId(articles, groupId);
+	}
+
+	/**
+	 * 标签群发
+	 * <p>
+	 * 在返回成功时,意味着群发任务提交成功,并不意味着此时群发已经结束,所以,仍有可能在后续的发送过程中出现异常情况导致用户未收到消息,
+	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
+	 * </p>
+	 * 
+	 * @param tuple
+	 *            消息元件
+	 * @param isToAll
+	 *            用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，
+	 *            选择false可根据group_id发送给指定群组的用户
+	 * @param tagId
+	 *            标签ID
+	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现,可以用于在图文分析数据接口中
+	 * @throws WeixinException
+	 * @see Tag
+	 * @see com.foxinmy.weixin4j.tuple.Text
+	 * @see com.foxinmy.weixin4j.tuple.Image
+	 * @see com.foxinmy.weixin4j.tuple.Voice
+	 * @see com.foxinmy.weixin4j.tuple.MpVideo
+	 * @see com.foxinmy.weixin4j.tuple.MpNews
+	 * @see com.foxinmy.weixin4j.tuple.Card
+	 * @see com.foxinmy.weixin4j.tuple.MassTuple
+	 * @see {@link TagApi#listTags()}
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">根据标签群发</a>
+	 */
+	public String[] massByTagId(MassTuple tuple, boolean isToAll, int tagId)
+			throws WeixinException {
+		return massApi.massByTagId(tuple, isToAll, tagId);
+	}
+
+	/**
+	 * 标签群发图文消息
+	 * 
+	 * @param articles
+	 *            图文列表
+	 * @param tagId
+	 *            标签ID
+	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现。
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">根据标签群发</a>
+	 * @see {@link #massByTagId(Tuple,int)}
+	 * @see com.foxinmy.weixin4j.tuple.MpArticle
+	 * @throws WeixinException
+	 */
+	public String[] massArticleByTagId(List<MpArticle> articles, int tagId)
+			throws WeixinException {
+		return massApi.massArticleByTagId(articles, tagId);
 	}
 
 	/**
@@ -1889,6 +1942,43 @@ public class WeixinProxy {
 	 */
 	public Integer[] getUserTags(String openId) throws WeixinException {
 		return tagApi.getUserTags(openId);
+	}
+
+	/**
+	 * 获取公众号的黑名单列表
+	 * 
+	 * @param nextOpenId
+	 *            下一次拉取数据的openid 不填写则默认从头开始拉取
+	 * @return 拉黑用户列表 <font color="red">不包含用户的详细信息</font>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1471422259_pJMWA&token=&lang=zh_CN"
+	 *      >获取黑名单列表</a>
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see com.foxinmy.weixin4j.mp.model.Following
+	 * @throws WeixinException
+	 */
+	public Following getBalcklistOpenIds(String nextOpenId)
+			throws WeixinException {
+		return tagApi.getBalcklistOpenIds(nextOpenId);
+	}
+
+	/**
+	 * 获取公众号全部的黑名单列表 <font corlor="red">请慎重使用</font>
+	 * <p>
+	 * 当公众号关注者数量超过10000时,可通过填写next_openid的值,从而多次拉取列表的方式来满足需求,
+	 * 将上一次调用得到的返回中的next_openid值,作为下一次调用中的next_openid值
+	 * </p>
+	 * 
+	 * @return 用户openid集合
+	 * @throws WeixinException
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1471422259_pJMWA&token=&lang=zh_CN">
+	 *      获取黑名单列表</a>
+	 * @see #getFollowingOpenIds(String)
+	 */
+	public List<String> getAllBalcklistOpenIds() throws WeixinException {
+		return tagApi.getAllBalcklistOpenIds();
 	}
 
 	/**

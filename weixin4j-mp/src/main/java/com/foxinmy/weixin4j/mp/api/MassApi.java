@@ -86,6 +86,7 @@ public class MassApi extends MpApi {
 	 * @see <a
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">根据分组群发</a>
 	 */
+	@Deprecated
 	public String[] massByGroupId(MassTuple tuple, boolean isToAll, int groupId)
 			throws WeixinException {
 		if (tuple instanceof MpNews) {
@@ -134,10 +135,93 @@ public class MassApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @throws WeixinException
 	 */
+	@Deprecated
 	public String[] massArticleByGroupId(List<MpArticle> articles, int groupId)
 			throws WeixinException {
 		String mediaId = uploadArticle(articles);
 		return massByGroupId(new MpNews(mediaId), false, groupId);
+	}
+
+	/**
+	 * 标签群发
+	 * <p>
+	 * 在返回成功时,意味着群发任务提交成功,并不意味着此时群发已经结束,所以,仍有可能在后续的发送过程中出现异常情况导致用户未收到消息,
+	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
+	 * </p>
+	 * 
+	 * @param tuple
+	 *            消息元件
+	 * @param isToAll
+	 *            用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，
+	 *            选择false可根据group_id发送给指定群组的用户
+	 * @param tagId
+	 *            标签ID
+	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现,可以用于在图文分析数据接口中
+	 * @throws WeixinException
+	 * @see Tag
+	 * @see com.foxinmy.weixin4j.tuple.Text
+	 * @see com.foxinmy.weixin4j.tuple.Image
+	 * @see com.foxinmy.weixin4j.tuple.Voice
+	 * @see com.foxinmy.weixin4j.tuple.MpVideo
+	 * @see com.foxinmy.weixin4j.tuple.MpNews
+	 * @see com.foxinmy.weixin4j.tuple.Card
+	 * @see com.foxinmy.weixin4j.tuple.MassTuple
+	 * @see {@link TagApi#listTags()}
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">根据标签群发</a>
+	 */
+	public String[] massByTagId(MassTuple tuple, boolean isToAll, int tagId)
+			throws WeixinException {
+		if (tuple instanceof MpNews) {
+			MpNews _news = (MpNews) tuple;
+			List<MpArticle> _articles = _news.getArticles();
+			if (StringUtil.isBlank(_news.getMediaId())) {
+				if (_articles.isEmpty()) {
+					throw new WeixinException(
+							"mass fail:mediaId or articles is required");
+				}
+				tuple = new MpNews(uploadArticle(_articles));
+			}
+		}
+		String msgtype = tuple.getMessageType();
+		JSONObject obj = new JSONObject();
+		JSONObject item = new JSONObject();
+		item.put("is_to_all", isToAll);
+		if (!isToAll) {
+			item.put("tag_id", tagId);
+		}
+		obj.put("filter", item);
+		obj.put(msgtype, JSON.toJSON(tuple));
+		obj.put("msgtype", msgtype);
+		String mass_group_uri = getRequestUri("mass_group_uri");
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(mass_group_uri, token.getAccessToken()),
+				obj.toJSONString());
+
+		obj = response.getAsJson();
+		return new String[] { obj.getString("msg_id"),
+				obj.getString("msg_data_id") };
+	}
+
+	/**
+	 * 标签群发图文消息
+	 * 
+	 * @param articles
+	 *            图文列表
+	 * @param tagId
+	 *            标签ID
+	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现。
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">根据标签群发</a>
+	 * @see {@link #massByTagId(Tuple,int)}
+	 * @see com.foxinmy.weixin4j.tuple.MpArticle
+	 * @throws WeixinException
+	 */
+	public String[] massArticleByTagId(List<MpArticle> articles, int tagId)
+			throws WeixinException {
+		String mediaId = uploadArticle(articles);
+		return massByTagId(new MpNews(mediaId), false, tagId);
 	}
 
 	/**
@@ -221,7 +305,7 @@ public class MassApi extends MpApi {
 	 * @throws WeixinException
 	 * @see <a
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">删除群发</a>
-	 * @see {@link #massByGroupId(Tuple, int)}
+	 * @see {@link #massByTagId(Tuple, int)}
 	 * @see {@link #massByOpenIds(Tuple, String...)
 	 */
 	public ApiResult deleteMassNews(String msgid) throws WeixinException {
