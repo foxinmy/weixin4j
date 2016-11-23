@@ -48,9 +48,8 @@ public class TagApi extends MpApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(tag_create_uri, tokenManager.getAccessToken()),
 				String.format("{\"tag\":{\"name\":\"%s\"}}", name));
-
-		return JSON.parseObject(response.getAsJson().getString("tag"),
-				Tag.class);
+		JSONObject obj = response.getAsJson().getJSONObject("tag");
+		return new Tag(obj.getIntValue("id"), obj.getString("name"));
 	}
 
 	/**
