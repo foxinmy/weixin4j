@@ -105,7 +105,7 @@ public class TagApi extends MpApi {
 		String tag_delete_uri = getRequestUri("tag_delete_uri");
 		WeixinResponse response = weixinExecutor.post(
 				String.format(tag_delete_uri, tokenManager.getAccessToken()),
-				String.format("{\"tagid\":%d}", tagId));
+				String.format("{\"tag\":{\"id\":%d}}", tagId));
 		return response.getAsResult();
 	}
 
