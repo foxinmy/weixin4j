@@ -52,7 +52,7 @@ public class APPPayRequest extends AbstractPayRequest {
 		content.append(String.format("<appid><![CDATA[%s]]></appid>",
 				payRequest.getAppId()));
 		content.append(String.format("<partnerid><![CDATA[%s]]></partnerid>",
-				getPaymentAccount().getPartnerId()));
+				getPaymentAccount().getMchId()));
 		content.append(String.format("<prepayid><![CDATA[%s]]></prepayid>",
 				payRequest.getPrepayId()));
 		content.append(String.format("<package><![CDATA[%s]]></package>",
