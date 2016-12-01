@@ -29,13 +29,24 @@ public class OpenIdResult extends MerchantResult {
 	@JSONField(name = "openid")
 	private String openId;
 
+	/**
+	 * 用户在商户appid下的唯一标识
+	 */
+	@XmlElement(name = "sub_openid")
+	@JSONField(name = "sub_openid")
+	private String subOpenId;
+
 	public String getOpenId() {
 		return openId;
 	}
 
+	public String getSubOpenId() {
+		return subOpenId;
+	}
+
 	@Override
 	public String toString() {
-		return "OpenIdResult [openId=" + openId + ", "
-				+ super.toString() + "]";
+		return "OpenIdResult [openId=" + openId + ", subOpenId=" + subOpenId
+				+ ", " + super.toString() + "]";
 	}
 }

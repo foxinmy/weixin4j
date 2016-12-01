@@ -44,7 +44,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 public final class XmlStream {
 	private final static String ROOT_ELEMENT_XML = "xml";
 	private final static String XML_VERSION = "1.0";
-	private final static ConcurrentHashMap<Class<?>, JAXBContext> jaxbContexts = new ConcurrentHashMap<Class<?>, JAXBContext>();;
+	private final static ConcurrentHashMap<Class<?>, JAXBContext> jaxbContexts = new ConcurrentHashMap<Class<?>, JAXBContext>();
 
 	/**
 	 * Xml2Bean
