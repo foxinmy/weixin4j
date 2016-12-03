@@ -41,7 +41,7 @@ public class HttpComponent4Factory extends HttpClientFactory {
 	}
 
 	@Override
-	protected void resolveHttpParams(HttpParams params) {
-		httpComponentFactory.setDefaultParams(params);
+	protected void resolveHttpParams0(HttpParams params) {
+		httpComponentFactory.resolveHttpParams(params);
 	}
 }

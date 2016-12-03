@@ -18,7 +18,7 @@ public class SimpleHttpClientFactory extends HttpClientFactory {
 	private HttpParams params;
 
 	@Override
-	protected void resolveHttpParams(HttpParams params) {
+	protected void resolveHttpParams0(HttpParams params) {
 		this.params = params;
 	}
 

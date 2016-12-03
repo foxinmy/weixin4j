@@ -33,6 +33,7 @@ public abstract class HttpClientFactory {
 	 * 默认的HttpClient
 	 */
 	private static volatile HttpClientFactory defaultFactory = newDefaultFactory();
+	private static volatile HttpParams defaultParams;
 
 	/**
 	 * NettyHttpClient -> ApacheHttpClient(HttpComponent3&4) ->
@@ -85,24 +86,49 @@ public abstract class HttpClientFactory {
 	}
 
 	/**
-	 * 获取HttpClient实例
+	 * 获取默认的HttpParams
 	 * 
 	 * @return
 	 */
-	public static HttpClient getInstance() {
-		return getDefaultFactory().newInstance();
+	public static HttpParams getDefaultParams() {
+		return defaultParams;
+	}
+
+	/**
+	 * Resolve the Http Parameter
+	 * 
+	 * @param params
+	 *            请求参数
+	 */
+	public static void setDefaultParams(HttpParams params) {
+		if (params == null) {
+			throw new IllegalArgumentException("'params' must not be empty");
+		}
+		HttpClientFactory.defaultParams = params;
 	}
 
 	/**
 	 * 获取HttpClient实例
 	 * 
-	 * @param params Http参数
+	 * @return
+	 */
+	public static HttpClient getInstance() {
+		return getInstance(HttpClientFactory.defaultParams);
+	}
+
+	/**
+	 * 获取HttpClient实例
+	 * 
+	 * @param params
+	 *            Http参数
 	 * 
 	 * @return HttpClinet实例
 	 */
 	public static HttpClient getInstance(HttpParams params) {
 		HttpClientFactory clientFactory = getDefaultFactory();
-		clientFactory.setDefaultParams(params);
+		if (params != null) {
+			clientFactory.resolveHttpParams(params);
+		}
 		return clientFactory.newInstance();
 	}
 
@@ -112,20 +138,20 @@ public abstract class HttpClientFactory {
 	 * @param params
 	 *            请求参数
 	 */
-	public void setDefaultParams(HttpParams params) {
+	public void resolveHttpParams(HttpParams params){
 		if (params == null) {
 			throw new IllegalArgumentException("'params' must not be empty");
 		}
-		resolveHttpParams(params);
+		resolveHttpParams0(params);
 	}
-
+	
 	/**
 	 * Resolve the Http Parameter
 	 * 
 	 * @param params
 	 *            请求参数
 	 */
-	protected abstract void resolveHttpParams(HttpParams params);
+	protected abstract void resolveHttpParams0(HttpParams params);
 
 	/**
 	 * 获取HttpClient实例

@@ -32,7 +32,7 @@ public class OkHttpClient2Factory extends HttpClientFactory {
 	}
 
 	@Override
-	protected void resolveHttpParams(HttpParams params) {
+	protected void resolveHttpParams0(HttpParams params) {
 		okClient.setConnectTimeout(params.getConnectTimeout(),
 				TimeUnit.MILLISECONDS);
 		okClient.setReadTimeout(params.getReadTimeout(), TimeUnit.MILLISECONDS);

@@ -39,10 +39,7 @@ public class HttpComponent4_1Factory extends HttpClientFactory {
 	}
 
 	@Override
-	protected void resolveHttpParams(HttpParams params) {
-		if (params == null) {
-			throw new IllegalArgumentException("'params' must not be empty");
-		}
+	protected void resolveHttpParams0(HttpParams params) {
 		if (params.getProxy() != null) {
 			InetSocketAddress socketAddress = (InetSocketAddress) params
 					.getProxy().address();
