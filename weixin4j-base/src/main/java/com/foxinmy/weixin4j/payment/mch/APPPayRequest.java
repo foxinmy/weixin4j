@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.payment.mch;
 
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
+import com.foxinmy.weixin4j.type.SignType;
 import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
@@ -37,22 +38,24 @@ public class APPPayRequest extends AbstractPayRequest {
 				"Sign=WXPay");
 		payRequest.setPartnerId(getPaymentAccount().getPartnerId());
 		payRequest.setPrepayId(getPrePayId());
+		String sign = DigestUtil.MD5(
+				String.format("%s&key=%s",
+						MapUtil.toJoinString(payRequest, false, true),
+						getPaymentAccount().getPaySignKey())).toUpperCase();
+		payRequest.setPaySign(sign);
+		payRequest.setSignType(SignType.MD5);
 		return payRequest;
 	}
 
 	@Override
 	public String toRequestString() {
 		PayRequest payRequest = toRequestObject();
-		String sign = DigestUtil.MD5(
-				String.format("%s&key=%s",
-						MapUtil.toJoinString(payRequest, false, true),
-						getPaymentAccount().getPaySignKey())).toUpperCase();
 		StringBuilder content = new StringBuilder();
 		content.append("<xml>");
 		content.append(String.format("<appid><![CDATA[%s]]></appid>",
 				payRequest.getAppId()));
 		content.append(String.format("<partnerid><![CDATA[%s]]></partnerid>",
-				getPaymentAccount().getPartnerId()));
+				getPaymentAccount().getMchId()));
 		content.append(String.format("<prepayid><![CDATA[%s]]></prepayid>",
 				payRequest.getPrepayId()));
 		content.append(String.format("<package><![CDATA[%s]]></package>",
@@ -61,7 +64,8 @@ public class APPPayRequest extends AbstractPayRequest {
 				payRequest.getNonceStr()));
 		content.append(String.format("<timestamp><![CDATA[%s]]></timestamp>",
 				payRequest.getTimeStamp()));
-		content.append(String.format("<sign><![CDATA[%s]]></sign>", sign));
+		content.append(String.format("<sign><![CDATA[%s]]></sign>",
+				payRequest.getPaySign()));
 		content.append("</xml>");
 		return content.toString();
 	}

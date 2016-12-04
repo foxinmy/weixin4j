@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
+import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Tag;
 import com.foxinmy.weixin4j.mp.model.User;
@@ -47,9 +48,8 @@ public class TagApi extends MpApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(tag_create_uri, tokenManager.getAccessToken()),
 				String.format("{\"tag\":{\"name\":\"%s\"}}", name));
-
-		return JSON.parseObject(response.getAsJson().getString("tag"),
-				Tag.class);
+		JSONObject obj = response.getAsJson().getJSONObject("tag");
+		return new Tag(obj.getIntValue("id"), obj.getString("name"));
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class TagApi extends MpApi {
 		String tag_delete_uri = getRequestUri("tag_delete_uri");
 		WeixinResponse response = weixinExecutor.post(
 				String.format(tag_delete_uri, tokenManager.getAccessToken()),
-				String.format("{\"tagid\":%d}", tagId));
+				String.format("{\"tag\":{\"id\":%d}}", tagId));
 		return response.getAsResult();
 	}
 
@@ -126,8 +126,8 @@ public class TagApi extends MpApi {
 		return batchUsers("tag_tagging_uri", tagId, openIds);
 	}
 
-	private ApiResult batchUsers(String batchType, int tagId,
-			String... openIds) throws WeixinException {
+	private ApiResult batchUsers(String batchType, int tagId, String... openIds)
+			throws WeixinException {
 		String tag_batch_uri = getRequestUri(batchType);
 		JSONObject obj = new JSONObject();
 		obj.put("openid_list", openIds);
@@ -289,5 +289,88 @@ public class TagApi extends MpApi {
 				String.format("{\"openid\":\"%s\"}", openId));
 		return response.getAsJson().getJSONArray("tagid_list")
 				.toArray(new Integer[] {});
+	}
+
+	/**
+	 * 获取公众号的黑名单列表
+	 * 
+	 * @param nextOpenId
+	 *            下一次拉取数据的openid 不填写则默认从头开始拉取
+	 * @return 拉黑用户列表 <font color="red">不包含用户的详细信息</font>
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1471422259_pJMWA&token=&lang=zh_CN"
+	 *      >获取黑名单列表</a>
+	 * @see com.foxinmy.weixin4j.mp.model.Following
+	 * @throws WeixinException
+	 */
+	public Following getBalcklistOpenIds(String nextOpenId)
+			throws WeixinException {
+		JSONObject obj = new JSONObject();
+		obj.put("begin_openid", nextOpenId == null ? "" : nextOpenId);
+		String getblacklist_uri = getRequestUri("getblacklist_uri");
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(String.format(
+				getblacklist_uri, token.getAccessToken(), obj.toJSONString()));
+		JSONObject result = response.getAsJson();
+		Following following = JSON.toJavaObject(result, Following.class);
+		if (following.getCount() > 0) {
+			following.setOpenIds(JSON.parseArray(result.getJSONObject("data")
+					.getString("openid"), String.class));
+		}
+		return following;
+	}
+
+	/**
+	 * 获取公众号全部的黑名单列表 <font corlor="red">请慎重使用</font>
+	 * <p>
+	 * 当公众号关注者数量超过10000时,可通过填写next_openid的值,从而多次拉取列表的方式来满足需求,
+	 * 将上一次调用得到的返回中的next_openid值,作为下一次调用中的next_openid值
+	 * </p>
+	 * 
+	 * @return 用户openid集合
+	 * @throws WeixinException
+	 * @see <a href=
+	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1471422259_pJMWA&token=&lang=zh_CN">
+	 *      获取黑名单列表</a>
+	 * @see #getFollowingOpenIds(String)
+	 */
+	public List<String> getAllBalcklistOpenIds() throws WeixinException {
+		List<String> openIds = new ArrayList<String>();
+		String nextOpenId = null;
+		Following f = null;
+		for (;;) {
+			f = getBalcklistOpenIds(nextOpenId);
+			if (f.hasContent()) {
+				openIds.addAll(f.getOpenIds());
+				nextOpenId = f.getNextOpenId();
+				continue;
+			}
+			break;
+		}
+		return openIds;
+	}
+
+	/**
+	 * 黑名单操作
+	 * 
+	 * @param blacklist
+	 *            true=拉黑用户,false=取消拉黑用户
+	 * @param openIds
+	 *            用户ID列表
+	 * @return 操作结果
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1471422259_pJMWA&token=&lang=zh_CN">黑名单操作</a>
+	 * @throws WeixinException
+	 */
+	public ApiResult batchBlacklist(boolean blacklist, String... openIds)
+			throws WeixinException {
+		JSONObject obj = new JSONObject();
+		obj.put("openid_list", openIds);
+		String blacklist_url = blacklist ? getRequestUri("batchblacklist_uri")
+				: getRequestUri("batchunblacklist_uri");
+		WeixinResponse response = weixinExecutor.post(
+				String.format(blacklist_url, tokenManager.getAccessToken()),
+				obj.toJSONString());
+		return response.getAsResult();
 	}
 }

@@ -46,7 +46,7 @@ public class Netty4HttpClientFactory extends HttpClientFactory {
 	}
 
 	@Override
-	protected void resolveHttpParams(HttpParams params) {
+	protected void resolveHttpParams0(HttpParams params) {
 		this.params = params;
 	}
 

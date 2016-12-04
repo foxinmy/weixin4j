@@ -39,7 +39,7 @@ public class OkHttpClient3Factory extends HttpClientFactory {
 	 * 
 	 * */
 	@Override
-	protected void resolveHttpParams(HttpParams params) {
+	protected void resolveHttpParams0(HttpParams params) {
 		clientBuilder.connectTimeout(params.getConnectTimeout(),
 				TimeUnit.MILLISECONDS);
 		clientBuilder.readTimeout(params.getReadTimeout(),

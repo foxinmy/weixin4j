@@ -44,9 +44,9 @@ public class ProviderApi extends QyApi {
 	 * @throws WeixinException
 	 */
 	public OUserInfo getOUserInfoByCode(String authCode) throws WeixinException {
-		String oauth_logininfo_uri = getRequestUri("oauth_logininfo_uri");
+		String oauth_thirdinfo_uri = getRequestUri("oauth_logininfo_uri");
 		WeixinResponse response = weixinExecutor.post(
-				String.format(oauth_logininfo_uri,
+				String.format(oauth_thirdinfo_uri,
 						providerTokenManager.getAccessToken()),
 				String.format("{\"auth_code\":\"%s\"}", authCode));
 		JSONObject obj = response.getAsJson();

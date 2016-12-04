@@ -39,6 +39,7 @@ import com.foxinmy.weixin4j.qy.model.ChatInfo;
 import com.foxinmy.weixin4j.qy.model.ChatMute;
 import com.foxinmy.weixin4j.qy.model.Contacts;
 import com.foxinmy.weixin4j.qy.model.IdParameter;
+import com.foxinmy.weixin4j.qy.model.OUserInfo;
 import com.foxinmy.weixin4j.qy.model.Party;
 import com.foxinmy.weixin4j.qy.model.Tag;
 import com.foxinmy.weixin4j.qy.model.User;
@@ -188,7 +189,8 @@ public class WeixinProxy {
 	private WeixinProxy(WeixinAccount weixinAccount, TokenCreator tokenCreator,
 			CacheStorager<Token> cacheStorager) {
 		if (weixinAccount == null) {
-			throw new IllegalArgumentException("weixinAccount must not be empty");
+			throw new IllegalArgumentException(
+					"weixinAccount must not be empty");
 		}
 		if (tokenCreator == null) {
 			throw new IllegalArgumentException("tokenCreator must not be empty");
@@ -793,6 +795,22 @@ public class WeixinProxy {
 	 */
 	public User getUserByCode(String code) throws WeixinException {
 		return userApi.getUserByCode(code);
+	}
+
+	/**
+	 * 获取企业号管理员登录信息
+	 * 
+	 * @param authCode
+	 *            oauth2.0授权企业号管理员登录产生的code
+	 * @return 登陆信息
+	 * @see <a href=
+	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E5%91%98%E7%99%BB%E5%BD%95%E4%BF%A1%E6%81%AF">
+	 *      授权获取企业号管理员登录信息</a>
+	 * @see com.foxinmy.weixin4j.qy.model.OUserInfo
+	 * @throws WeixinException
+	 */
+	public OUserInfo getOUserInfoByCode(String authCode) throws WeixinException {
+		return userApi.getOUserInfoByCode(authCode);
 	}
 
 	/**

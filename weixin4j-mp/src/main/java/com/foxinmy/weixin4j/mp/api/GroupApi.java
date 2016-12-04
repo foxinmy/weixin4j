@@ -20,6 +20,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.mp.model.Group
  */
+@Deprecated
 public class GroupApi extends MpApi {
 
 	private final TokenManager tokenManager;

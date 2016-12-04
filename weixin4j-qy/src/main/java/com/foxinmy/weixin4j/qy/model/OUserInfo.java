@@ -6,6 +6,7 @@ import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.qy.type.AgentAuthType;
+import com.foxinmy.weixin4j.qy.type.LoginUserType;
 
 /**
  * 企业号oauth授权登陆信息&第三方应用授权信息
@@ -19,6 +20,11 @@ import com.foxinmy.weixin4j.qy.type.AgentAuthType;
 public class OUserInfo implements Serializable {
 
 	private static final long serialVersionUID = -567063562050171293L;
+	/**
+	 * 登录用户的类型：1.企业号创建者 2.企业号内部系统管理员 3.企业号外部系统管理员 4.企业号分级管理员 5. 企业号成员
+	 */
+	@JSONField(name = "usertype")
+	private int userType;
 	/**
 	 * 是否系统管理员
 	 */
@@ -85,6 +91,19 @@ public class OUserInfo implements Serializable {
 
 	// ---------- setter 应该全部去掉
 
+	public int getUserType() {
+		return userType;
+	}
+
+	@JSONField(serialize = false)
+	public LoginUserType getFormatUserType() {
+		return LoginUserType.values()[userType - 1];
+	}
+
+	public void setUserType(int userType) {
+		this.userType = userType;
+	}
+
 	public void setSysAdmin(boolean isSysAdmin) {
 		this.isSysAdmin = isSysAdmin;
 	}
@@ -115,9 +134,11 @@ public class OUserInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		return "OUserInfo [isSysAdmin=" + isSysAdmin + ", isInnerAdmin=" + isInnerAdmin + ", adminInfo=" + adminInfo
-				+ ", corpInfo=" + corpInfo + ", agentInfo=" + agentInfo + ", authInfo=" + authInfo
-				+ ", redirectLoginInfo=" + redirectLoginInfo + "]";
+		return "OUserInfo [userType=" + userType + ", isSysAdmin=" + isSysAdmin
+				+ ", isInnerAdmin=" + isInnerAdmin + ", adminInfo=" + adminInfo
+				+ ", corpInfo=" + corpInfo + ", agentInfo=" + agentInfo
+				+ ", authInfo=" + authInfo + ", redirectLoginInfo="
+				+ redirectLoginInfo + "]";
 	}
 
 	/**
@@ -176,8 +197,8 @@ public class OUserInfo implements Serializable {
 
 		@Override
 		public String toString() {
-			return "AuthInfo [isNewAuth=" + isNewAuth + ", agentItems=" + agentItems + ", departItems=" + departItems
-					+ "]";
+			return "AuthInfo [isNewAuth=" + isNewAuth + ", agentItems="
+					+ agentItems + ", departItems=" + departItems + "]";
 		}
 	}
 
@@ -204,8 +225,8 @@ public class OUserInfo implements Serializable {
 		@JSONField(name = "appid")
 		private int appId;
 		/**
-		 * 授权方应用敏感权限组，目前仅有get_location，表示是否有权限设置应用获取地理位置的开关,
-		 * <font color="red">新的权限体系将废弃</font>
+		 * 授权方应用敏感权限组，目前仅有get_location，表示是否有权限设置应用获取地理位置的开关, <font
+		 * color="red">新的权限体系将废弃</font>
 		 */
 		@JSONField(name = "api_group")
 		private List<String> apiGroup;
@@ -261,8 +282,9 @@ public class OUserInfo implements Serializable {
 
 		@Override
 		public String toString() {
-			return "AgentItem [authType=" + authType + ", appId=" + appId + ", apiGroup=" + apiGroup + ", privilege="
-					+ privilege + ", " + super.toString() + "]";
+			return "AgentItem [authType=" + authType + ", appId=" + appId
+					+ ", apiGroup=" + apiGroup + ", privilege=" + privilege
+					+ ", " + super.toString() + "]";
 		}
 	}
 
@@ -295,7 +317,8 @@ public class OUserInfo implements Serializable {
 
 		@Override
 		public String toString() {
-			return "DepartItem [writable=" + writable + ", " + super.toString() + "]";
+			return "DepartItem [writable=" + writable + ", " + super.toString()
+					+ "]";
 		}
 	}
 }
