@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.mp.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.annotation.JSONField;
@@ -87,6 +88,11 @@ public class User implements Serializable {
 	 */
 	@JSONField(name = "groupid")
 	private int groupId;
+	/**
+	 * 用户被打上的标签ID列表
+	 */
+	@JSONField(name = "tagid_list")
+	private List<Integer> tagIds;
 
 	public String getOpenId() {
 		return openId;
@@ -230,6 +236,14 @@ public class User implements Serializable {
 		this.groupId = groupId;
 	}
 
+	public List<Integer> getTagIds() {
+		return tagIds;
+	}
+
+	public void setTagIds(List<Integer> tagIds) {
+		this.tagIds = tagIds;
+	}
+
 	@Override
 	public int hashCode() {
 		return super.hashCode();
@@ -257,6 +271,6 @@ public class User implements Serializable {
 				+ ", privilege=" + privilege + ", isSubscribe=" + isSubscribe
 				+ ", subscribeTime=" + subscribeTime + ", language=" + language
 				+ ", unionId=" + unionId + ", remark=" + remark + ", groupId="
-				+ groupId + "]";
+				+ groupId + ", tagIds=" + tagIds + "]";
 	}
 }
