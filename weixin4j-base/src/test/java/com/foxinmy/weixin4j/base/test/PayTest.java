@@ -99,7 +99,7 @@ public class PayTest {
 		IdQuery idQuery = new IdQuery("TT_1427183696238", IdType.TRADENO);
 		RefundResult result = PAY.applyRefund(idQuery,
 				"TT_R" + System.currentTimeMillis(), 0.01d, 0.01d, null,
-				"10020674");
+				"10020674", null);
 		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
 		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
 		System.err.println(result);

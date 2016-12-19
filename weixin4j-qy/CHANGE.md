@@ -196,3 +196,7 @@
 * 2016-10-10
 
   + version upgrade to 1.7.2
+  
+* 2016-12-13
+
+  + version upgrade to 1.7.3

@@ -2062,5 +2062,5 @@ public class WeixinProxy {
 		return cardApi.createCardQR(expireSeconds, cardQRs);
 	}
 
-	public final static String VERSION = "1.7.2";
+	public final static String VERSION = "1.7.3";
 }

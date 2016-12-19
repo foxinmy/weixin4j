@@ -39,6 +39,7 @@ import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.SignType;
 import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.type.mch.BillType;
+import com.foxinmy.weixin4j.type.mch.RefundAccountType;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
@@ -453,6 +454,8 @@ public class PayApi extends MchApi {
 	 *            货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
 	 * @param opUserId
 	 *            操作员帐号, 默认为商户号
+	 * @param refundAccountType
+	 *            退款资金来源,默认使用未结算资金退款：REFUND_SOURCE_UNSETTLED_FUNDS
 	 * @return 退款申请结果
 	 * @see com.foxinmy.weixin4j.payment.mch.RefundResult
 	 * @see <a href=
@@ -463,7 +466,8 @@ public class PayApi extends MchApi {
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
 			double totalFee, double refundFee, CurrencyType refundFeeType,
-			String opUserId) throws WeixinException {
+			String opUserId, RefundAccountType refundAccountType)
+			throws WeixinException {
 		WeixinResponse response = null;
 		Map<String, String> map = createBaseRequestMap(idQuery);
 		map.put("out_refund_no", outRefundNo);
@@ -478,7 +482,11 @@ public class PayApi extends MchApi {
 		if (refundFeeType == null) {
 			refundFeeType = CurrencyType.CNY;
 		}
+		if (refundAccountType == null) {
+			refundAccountType = RefundAccountType.REFUND_SOURCE_UNSETTLED_FUNDS;
+		}
 		map.put("refund_fee_type", refundFeeType.name());
+		map.put("refund_account", refundAccountType.name());
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
 		response = getWeixinSSLExecutor().post(
@@ -501,7 +509,8 @@ public class PayApi extends MchApi {
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
 			double totalFee) throws WeixinException {
-		return applyRefund(idQuery, outRefundNo, totalFee, totalFee, null, null);
+		return applyRefund(idQuery, outRefundNo, totalFee, totalFee, null,
+				null, null);
 	}
 
 	/**
