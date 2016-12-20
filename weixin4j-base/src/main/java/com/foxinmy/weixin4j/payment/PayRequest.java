@@ -36,6 +36,7 @@ public class PayRequest extends PayBaseInfo {
 	@JSONField(serialize = false)
 	private String partnerId;
 
+
 	protected PayRequest() {
 		// jaxb required
 	}
@@ -68,6 +69,7 @@ public class PayRequest extends PayBaseInfo {
 	public void setPartnerId(String partnerId) {
 		this.partnerId = partnerId;
 	}
+
 
 	@Override
 	public String toString() {

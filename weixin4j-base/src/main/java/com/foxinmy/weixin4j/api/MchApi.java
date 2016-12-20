@@ -36,7 +36,7 @@ public class MchApi extends BaseApi {
 	}
 
 	protected final WeixinPayAccount weixinAccount;
-	protected final WeixinSignature weixinSignature;
+	protected final WeixinPaymentSignature weixinSignature;
 	private volatile WeixinRequestExecutor weixinSSLExecutor;
 
 	public MchApi(WeixinPayAccount weixinAccount) {
