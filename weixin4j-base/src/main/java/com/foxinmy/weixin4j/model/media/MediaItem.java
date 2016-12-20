@@ -29,8 +29,13 @@ public class MediaItem implements Serializable {
 	/**
 	 * 媒体素材名称
 	 */
-	@JSONField(name = "filename")
+	@JSONField(name = "name")
 	private String name;
+	/**
+	 * 图文页的URL，或者，当获取的列表是图片素材列表时，该字段是图片的URL
+	 */
+	@JSONField(name = "url")
+	private String url;
 	/**
 	 * 媒体素材最后更新时间
 	 */
@@ -58,6 +63,14 @@ public class MediaItem implements Serializable {
 		this.name = name;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public String getUpdateTime() {
 		return updateTime;
 	}
@@ -81,7 +94,8 @@ public class MediaItem implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MediaItem [mediaId=" + mediaId + ", name=" + name
-				+ ", updateTime=" + updateTime + ", articles=" + articles + "]";
+		return "MediaItem [mediaId=" + mediaId + ", name=" + name + ",url="
+				+ url + ", updateTime=" + updateTime + ", articles=" + articles
+				+ "]";
 	}
 }

@@ -676,6 +676,20 @@ public class WeixinPayProxy {
 	 *
 	 * @param redpacket
 	 *            红包信息
+	 * @see #sendRedpack(Redpacket,String)
+	 */
+	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+			throws WeixinException {
+		return cashApi.sendRedpack(redpacket);
+	}
+
+	/**
+	 * 发放红包 企业向微信用户个人发现金红包
+	 *
+	 * @param redpacket
+	 *            红包信息
+	 * @param appId
+	 *            应用ID 可为空 主要是针对企业号支付时传入的agentid
 	 * @return 发放结果
 	 * @see com.foxinmy.weixin4j.api.CashApi
 	 * @see com.foxinmy.weixin4j.payment.mch.Redpacket
@@ -688,9 +702,9 @@ public class WeixinPayProxy {
 	 *      发放裂变红包接口</a>
 	 * @throws WeixinException
 	 */
-	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+	public RedpacketSendResult sendRedpack(Redpacket redpacket, String appId)
 			throws WeixinException {
-		return cashApi.sendRedpack(redpacket);
+		return cashApi.sendRedpack(redpacket, appId);
 	}
 
 	/**
