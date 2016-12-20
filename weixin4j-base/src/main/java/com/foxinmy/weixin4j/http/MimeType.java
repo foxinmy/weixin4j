@@ -58,6 +58,8 @@ public class MimeType implements Serializable {
 		STREAM_MIMETYPES.add(valueOf("image/*"));
 		STREAM_MIMETYPES.add(valueOf("audio/*"));
 		STREAM_MIMETYPES.add(valueOf("video/*"));
+		STREAM_MIMETYPES.add(valueOf("application/zip"));
+		STREAM_MIMETYPES.add(valueOf("application/x-gzip"));
 	}
 
 	public MimeType(String type) {

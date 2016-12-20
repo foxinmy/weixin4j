@@ -37,12 +37,14 @@ import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.SignType;
+import com.foxinmy.weixin4j.type.TarType;
 import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.type.mch.BillType;
 import com.foxinmy.weixin4j.type.mch.RefundAccountType;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.DigestUtil;
+import com.foxinmy.weixin4j.util.IOUtil;
 import com.foxinmy.weixin4j.util.MapUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.util.StringUtil;
@@ -604,6 +606,8 @@ public class PayApi extends MchApi {
 	 *            REFUND,返回当日退款订单
 	 * @param outputStream
 	 *            输出流
+	 * @param tarType
+	 *            非必传参数，固定值：GZIP，返回格式为.gzip的压缩包账单。不传则默认为数据流形式。
 	 * @since V3
 	 * @see <a href=
 	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6">
@@ -611,7 +615,7 @@ public class PayApi extends MchApi {
 	 * @throws WeixinException
 	 */
 	public void downloadBill(Date billDate, BillType billType,
-			OutputStream outputStream) throws WeixinException {
+			OutputStream outputStream, TarType tarType) throws WeixinException {
 		if (billDate == null) {
 			Calendar now = Calendar.getInstance();
 			now.add(Calendar.DAY_OF_MONTH, -1);
@@ -624,35 +628,46 @@ public class PayApi extends MchApi {
 		Map<String, String> map = createBaseRequestMap(null);
 		map.put("bill_date", formatBillDate);
 		map.put("bill_type", billType.name());
+		if (tarType != null) {
+			map.put("tar_type", tarType.name());
+		}
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
 		WeixinResponse response = weixinExecutor.post(
 				getRequestUri("downloadbill_uri"), param);
 
-		BufferedReader reader = null;
-		BufferedWriter writer = null;
-		try {
-			writer = new BufferedWriter(new OutputStreamWriter(outputStream,
-					Consts.UTF_8));
-			reader = new BufferedReader(new InputStreamReader(
-					response.getBody(), Consts.UTF_8));
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				writer.write(line);
-				writer.newLine();
-			}
-		} catch (IOException e) {
-			throw new WeixinException(e);
-		} finally {
+		if (TarType.GZIP == tarType) {
 			try {
-				if (reader != null) {
-					reader.close();
-				}
-				if (writer != null) {
-					writer.close();
-				}
-			} catch (IOException ignore) {
+				IOUtil.copy(response.getBody(), outputStream);
+			} catch (IOException e) {
 				;
+			}
+		} else {
+			BufferedReader reader = null;
+			BufferedWriter writer = null;
+			try {
+				writer = new BufferedWriter(new OutputStreamWriter(
+						outputStream, Consts.UTF_8));
+				reader = new BufferedReader(new InputStreamReader(
+						response.getBody(), Consts.UTF_8));
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					writer.write(line);
+					writer.newLine();
+				}
+			} catch (IOException e) {
+				throw new WeixinException(e);
+			} finally {
+				try {
+					if (reader != null) {
+						reader.close();
+					}
+					if (writer != null) {
+						writer.close();
+					}
+				} catch (IOException ignore) {
+					;
+				}
 			}
 		}
 	}

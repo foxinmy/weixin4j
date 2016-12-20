@@ -39,6 +39,7 @@ import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.CustomsCity;
 import com.foxinmy.weixin4j.type.IdQuery;
+import com.foxinmy.weixin4j.type.TarType;
 import com.foxinmy.weixin4j.type.mch.BillType;
 import com.foxinmy.weixin4j.type.mch.RefundAccountType;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
@@ -511,6 +512,8 @@ public class WeixinPayProxy {
 	 *            下载对账单的类型 ALL,返回当日所有订单信息, 默认值 SUCCESS,返回当日成功支付的订单
 	 *            REFUND,返回当日退款订单
 	 * @para outputStream 输出流
+	 * @param tarType
+	 *            非必传参数，固定值：GZIP，返回格式为.gzip的压缩包账单。不传则默认为数据流形式。
 	 * @since V2 & V3
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see <a href=
@@ -519,8 +522,8 @@ public class WeixinPayProxy {
 	 * @throws WeixinException
 	 */
 	public void downloadBill(Date billDate, BillType billType,
-			OutputStream outputStream) throws WeixinException {
-		payApi.downloadBill(billDate, billType, outputStream);
+			OutputStream outputStream, TarType tarType) throws WeixinException {
+		payApi.downloadBill(billDate, billType, outputStream, tarType);
 	}
 
 	/**
