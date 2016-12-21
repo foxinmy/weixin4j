@@ -39,6 +39,7 @@ import com.foxinmy.weixin4j.sign.WeixinSignature;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.CustomsCity;
 import com.foxinmy.weixin4j.type.IdQuery;
+import com.foxinmy.weixin4j.type.TarType;
 import com.foxinmy.weixin4j.type.mch.BillType;
 import com.foxinmy.weixin4j.type.mch.RefundAccountType;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
@@ -511,6 +512,8 @@ public class WeixinPayProxy {
 	 *            下载对账单的类型 ALL,返回当日所有订单信息, 默认值 SUCCESS,返回当日成功支付的订单
 	 *            REFUND,返回当日退款订单
 	 * @para outputStream 输出流
+	 * @param tarType
+	 *            非必传参数，固定值：GZIP，返回格式为.gzip的压缩包账单。不传则默认为数据流形式。
 	 * @since V2 & V3
 	 * @see com.foxinmy.weixin4j.api.PayApi
 	 * @see <a href=
@@ -519,8 +522,8 @@ public class WeixinPayProxy {
 	 * @throws WeixinException
 	 */
 	public void downloadBill(Date billDate, BillType billType,
-			OutputStream outputStream) throws WeixinException {
-		payApi.downloadBill(billDate, billType, outputStream);
+			OutputStream outputStream, TarType tarType) throws WeixinException {
+		payApi.downloadBill(billDate, billType, outputStream, tarType);
 	}
 
 	/**
@@ -676,6 +679,20 @@ public class WeixinPayProxy {
 	 *
 	 * @param redpacket
 	 *            红包信息
+	 * @see #sendRedpack(Redpacket,String)
+	 */
+	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+			throws WeixinException {
+		return cashApi.sendRedpack(redpacket);
+	}
+
+	/**
+	 * 发放红包 企业向微信用户个人发现金红包
+	 *
+	 * @param redpacket
+	 *            红包信息
+	 * @param appId
+	 *            应用ID 可为空 主要是针对企业号支付时传入的agentid
 	 * @return 发放结果
 	 * @see com.foxinmy.weixin4j.api.CashApi
 	 * @see com.foxinmy.weixin4j.payment.mch.Redpacket
@@ -688,9 +705,9 @@ public class WeixinPayProxy {
 	 *      发放裂变红包接口</a>
 	 * @throws WeixinException
 	 */
-	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+	public RedpacketSendResult sendRedpack(Redpacket redpacket, String appId)
 			throws WeixinException {
-		return cashApi.sendRedpack(redpacket);
+		return cashApi.sendRedpack(redpacket, appId);
 	}
 
 	/**
