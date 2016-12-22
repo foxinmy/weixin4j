@@ -176,7 +176,7 @@ public class TemplateMessage implements Serializable {
 	 *
 	 * @param items
 	 */
-	public void pushItems(Map<String, NameValue> items) {
+	public void setItems(Map<String, NameValue> items) {
 		this.content = items;
 	}
 
