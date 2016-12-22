@@ -264,7 +264,7 @@
 	</error>
 	<error>
 		<code>40073</code>
-		<text>不合法的openid</text>
+		<text>不合法的cardid</text>
 	</error>
 	<error>
 		<code>40074</code>

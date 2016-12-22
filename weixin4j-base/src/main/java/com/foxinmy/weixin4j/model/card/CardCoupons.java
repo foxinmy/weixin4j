@@ -115,4 +115,11 @@ public final class CardCoupons {
 		GrouponCoupon coupon = new GrouponCoupon(couponBaseInfo, explain);
 		return coupon;
 	}
+
+
+	public static MemberCard createMemberCard(CouponBaseInfo.Builder baseBuilder, MemberCard.Builder memberCardBudiler) {
+		baseBuilder.build();
+		MemberCard memberCard = new MemberCard(baseBuilder.build(), memberCardBudiler);
+		return memberCard;
+	}
 }

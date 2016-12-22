@@ -84,6 +84,14 @@ public class MemberUserForm {
         this.optionalForm = formBudiler;
     }
 
+    public FormBudiler getRequiredForm() {
+        return requiredForm;
+    }
+
+    public FormBudiler getOptionalForm() {
+        return optionalForm;
+    }
+
     public final static class FormBudiler {
 
         /**
@@ -91,6 +99,7 @@ public class MemberUserForm {
          * 的字段是否允许用户激活后再次修改，商户设置为true
          * 时，需要接收相应事件通知处理修改事件
          */
+        @JSONField(name = "can_modify")
         private boolean   canModify;
         /**
          * 自定义富文本类型，包含以下三个字段
@@ -113,7 +122,7 @@ public class MemberUserForm {
         /**
          * 自定义富文本类型
          */
-        private FormBudiler addRichField(ActivateFormFieldType fieldType, String name, String... values) {
+        public FormBudiler addRichField(ActivateFormFieldType fieldType, String name, String... values) {
             if (richFieldList == null) {
                 richFieldList = new JSONArray();
             }
@@ -124,6 +133,12 @@ public class MemberUserForm {
             richFieldList.add(obj);
             return this;
         }
+
+        public FormBudiler canModify(boolean modify){
+            this.canModify = canModify;
+            return this;
+        }
+
 
         /**
          * 自定义公共字段
@@ -152,8 +167,21 @@ public class MemberUserForm {
             return this;
         }
 
+        public boolean isCanModify() {
+            return canModify;
+        }
 
+        public JSONArray getRichFieldList() {
+            return richFieldList;
+        }
 
+        public HashSet<ActivateCommonField> getCommonFieldIdList() {
+            return commonFieldIdList;
+        }
+
+        public HashSet<String> getCustomFieldList() {
+            return customFieldList;
+        }
     }
 
 }

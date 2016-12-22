@@ -432,9 +432,13 @@ public class CouponBaseInfo implements Serializable {
 		 */
 		private boolean canGiveFriend;
 
+		/**
+		 * 默认永久有效
+		 */
 		public Builder() {
 			this.sku = new JSONObject();
 			this.date = new JSONObject();
+			this.date.put("type",CardActiveType.DATE_TYPE_PERMANENT);
 			this.useAllLocation = true;
 			this.canShare = true;
 			this.canGiveFriend = true;
@@ -534,6 +538,7 @@ public class CouponBaseInfo implements Serializable {
 		 * @return
 		 */
 		public Builder quantity(int quantity) {
+			quantity = quantity > 100000000 ? 100000000 : quantity;
 			this.sku.put("quantity", quantity);
 			return this;
 		}
@@ -807,7 +812,10 @@ public class CouponBaseInfo implements Serializable {
 			/**
 			 * 表示固定时长 （自领取后按天算。
 			 */
-			DATE_TYPE_FIX_TERM;
+			DATE_TYPE_FIX_TERM, /**
+			 * 永久有效
+			 */
+			DATE_TYPE_PERMANENT;
 		}
 	}
 }

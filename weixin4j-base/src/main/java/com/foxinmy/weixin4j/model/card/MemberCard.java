@@ -53,7 +53,7 @@ public class MemberCard extends CardCoupon {
      * 显示余额
      */
     @JSONField(name = "supply_balance")
-    private String  supplyBalance;
+    private boolean  supplyBalance;
     /**
      * 设置跳转外链查看余额详情。仅适用于余额无法通过激活接口同步的情况下使用该字段。
      */
@@ -134,6 +134,7 @@ public class MemberCard extends CardCoupon {
         this.bonusRule = builder.bonusRule;
     }
 
+    @JSONField(serialize = false)
     @Override
     public CardType getCardType() {
         return CardType.MEMBER_CARD;
@@ -167,7 +168,7 @@ public class MemberCard extends CardCoupon {
         return bonusUrl;
     }
 
-    public String getSupplyBalance() {
+    public boolean getSupplyBalance() {
         return supplyBalance;
     }
 
@@ -248,7 +249,7 @@ public class MemberCard extends CardCoupon {
         /**
          * 显示余额
          */
-        private String             supplyBalance;
+        private boolean             supplyBalance;
         /**
          * 设置跳转外链查看余额详情。仅适用于余额无法通过激活接口同步的情况下使用该字段。
          */
@@ -291,92 +292,98 @@ public class MemberCard extends CardCoupon {
         private MemCardBonusRule   bonusRule;
 
 
-        public Builder setBackgroundPicUrl(String backgroundPicUrl) {
+        public Builder backgroundPicUrl(String backgroundPicUrl) {
             this.backgroundPicUrl = backgroundPicUrl;
             return this;
         }
 
-        public Builder setPrerogative(String prerogative) {
+        public Builder prerogative(String prerogative) {
             this.prerogative = prerogative;
             return this;
         }
 
-        public Builder setAutoActivate(boolean autoActivate) {
+        public Builder activateWithAuto(boolean autoActivate) {
             this.autoActivate = autoActivate;
+            this.activateUrl = null;
+            this.wxActivate = false;
             return this;
         }
 
-        public Builder setWxActivate(boolean wxActivate) {
+        public Builder activateWithWx(boolean wxActivate) {
             this.wxActivate = wxActivate;
+            this.autoActivate = false;
+            this.activateUrl = null;
             return this;
         }
 
-        public Builder setActivateUrl(String activateUrl) {
+        public Builder activateUrl(String activateUrl) {
             this.activateUrl = activateUrl;
+            this.autoActivate  = false;
+            this.wxActivate = false;
             return this;
         }
 
-        public Builder setSupplyBonus(boolean supplyBonus) {
+        public Builder supplyBonus(boolean supplyBonus) {
             this.supplyBonus = supplyBonus;
             return this;
         }
 
-        public Builder setBonusUrl(String bonusUrl) {
+        public Builder bonusUrl(String bonusUrl) {
             this.bonusUrl = bonusUrl;
             return this;
         }
 
-        public Builder setSupplyBalance(String supplyBalance) {
+        public Builder supplyBalance(boolean supplyBalance) {
             this.supplyBalance = supplyBalance;
             return this;
         }
 
-        public Builder setBalanceUrl(String balanceUrl) {
+        public Builder balanceUrl(String balanceUrl) {
             this.balanceUrl = balanceUrl;
             return this;
         }
 
-        public Builder setCustomField1(FieldNameType type, String name, String url) {
+        public Builder customField1(FieldNameType type, String name, String url) {
             this.customField1 = new MemCardCustomField(type, name, url);
             return this;
         }
 
-        public Builder setCustomField2(FieldNameType type, String name, String url) {
+        public Builder customField2(FieldNameType type, String name, String url) {
             this.customField2 = new MemCardCustomField(type, name, url);
             return this;
         }
 
-        public Builder setCustomField3(FieldNameType type, String name, String url) {
+        public Builder customField3(FieldNameType type, String name, String url) {
             this.customField3 = new MemCardCustomField(type, name, url);
             return this;
         }
 
-        public Builder setBonusRules(String bonusRules) {
+        public Builder bonusRules(String bonusRules) {
             this.bonusRules = bonusRules;
             return this;
         }
 
-        public Builder setBalanceRules(String balanceRules) {
+        public Builder balanceRules(String balanceRules) {
             this.balanceRules = balanceRules;
             return this;
         }
 
-        public Builder setBonusCleared(String bonusCleared) {
+        public Builder bonusCleared(String bonusCleared) {
             this.bonusCleared = bonusCleared;
             return this;
         }
 
-        public Builder setCustomCell1(String name, String url, String tips) {
+        public Builder customCell1(String name, String url, String tips) {
             this.customCell1 = new MemCardCustomField(name, url, tips);
             return this;
         }
 
-        public Builder setDiscount(int discount) {
+        public Builder discount(int discount) {
             this.discount = discount;
             return this;
         }
 
-        public Builder setBonusRule(MemCardBonusRule bonusRule) {
+        public Builder bonusRule(MemCardBonusRule bonusRule) {
             this.bonusRule = bonusRule;
             return this;
         }
