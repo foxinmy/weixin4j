@@ -35,6 +35,9 @@ public final class CardCoupons {
 		return new CouponAdvanceInfo.Builder();
 	}
 
+	public static MemberCard.Builder customMemberCard(){
+		return  new MemberCard.Builder();
+	}
 	/**
 	 * 创建代金券
 	 * 

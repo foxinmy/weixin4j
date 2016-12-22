@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.mp.api;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -15,6 +16,7 @@ import com.foxinmy.weixin4j.model.card.CardQR;
 import com.foxinmy.weixin4j.model.qr.QRParameter;
 import com.foxinmy.weixin4j.model.qr.QRResult;
 import com.foxinmy.weixin4j.token.TokenManager;
+import com.foxinmy.weixin4j.type.card.CardType;
 import com.foxinmy.weixin4j.util.IOUtil;
 
 /**
@@ -28,7 +30,7 @@ import com.foxinmy.weixin4j.util.IOUtil;
  *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025056&token=&lang=zh_CN">卡券说明</a>
  */
 public class CardApi extends MpApi {
-	private final TokenManager tokenManager;
+	protected final TokenManager tokenManager;
 
 	public CardApi(TokenManager tokenManager) {
 		this.tokenManager = tokenManager;
@@ -155,4 +157,77 @@ public class CardApi extends MpApi {
 		}
 		return result;
 	}
+
+	/**
+	 * 由于卡券有审核要求，为方便公众号调试，可以设置一些测试帐号，这些帐号可领取未通过审核的卡券，体验整个流程。
+	 * 1.同时支持“openid”、“username”两种字段设置白名单，总数上限为10个。
+	 * 2.设置测试白名单接口为全量设置，即测试名单发生变化时需调用该接口重新传入所有测试人员的ID.
+	 * 3.白名单用户领取该卡券时将无视卡券失效状态，请开发者注意。
+	 * @param openIds  the open ids
+	 * @param userNames the user names
+	 * @author fengyapeng
+	 * @since 2016 -12-20 11:22:57
+	 * @see <a href='https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062&token=&lang=zh_CN&anchor=6'>设置测试白名单</a>
+	 */
+	public void setTestWhiteList(List<String> openIds, List<String> userNames) throws WeixinException {
+		JSONObject requestObj = new JSONObject();
+		if (openIds != null && openIds.size() > 0) {
+			requestObj.put("openid", openIds);
+		}
+		if (userNames != null && userNames.size() > 0) {
+			requestObj.put("username", userNames);
+		}
+		String card_set_test_whitelist_uri = getRequestUri("card_set_test_whitelist_uri");
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_set_test_whitelist_uri, token.getAccessToken()),
+				requestObj.toJSONString());
+	}
+
+	/**
+	 * 查看获取卡券的审核状态
+	 * @see <a href='https://mp.weixin.qq.com/wiki?action=doc&id=mp1451025272&t=0.18670321276182844#3'> 查看卡券详情</a>
+	 *
+	 * @author fengyapeng
+	 * @since 2016 -12-20 11:48:23
+	 */
+	public void getCardStatus(String cardId) throws WeixinException {
+		JSONObject requestObj = new JSONObject();
+		requestObj.put("card_id",cardId);
+		String card_get_uri = getRequestUri("card_get_uri");
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(String.format(card_get_uri, token.getAccessToken()),requestObj.toJSONString());
+		JSONObject responseAsJson = response.getAsJson();
+		JSONObject card = responseAsJson.getJSONObject("card");
+		String cardType = card.getString("card_type");
+		JSONObject baseInfo = card.getJSONObject(cardType.toLowerCase()).getJSONObject("base_info");
+		baseInfo.get("status");
+	}
+
+	/**
+	 * 支持更新所有卡券类型的部分通用字段及特殊卡券（会员卡、飞机票、电影票、会议门票）中特定字段的信息。
+	 *
+	 * @param cardId the card id
+	 * @param card   the card
+	 * @return 是否提交审核，false为修改后不会重新提审，true为修改字段后重新提审，该卡券的状态变为审核中
+	 * @throws WeixinException the weixin exception
+	 * @author fengyapeng
+	 * @see
+	 * @since 2016 -12-21 15:29:10
+	 */
+	public Boolean updateCardCoupon(String cardId, CardCoupon card) throws WeixinException {
+		JSONObject request = new JSONObject();
+		request.put("card_id", cardId);
+		CardType cardType = card.getCardType();
+		request.put(cardType.name().toLowerCase(), card);
+		String card_update_uri = getRequestUri("card_update_uri");
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(String.format(card_update_uri,token.getAccessToken()),JSON.toJSONString(request));
+	    JSONObject jsonObject= 	response.getAsJson();
+	    return jsonObject.getBoolean("send_check");
+	}
+
+
+
+
 }
