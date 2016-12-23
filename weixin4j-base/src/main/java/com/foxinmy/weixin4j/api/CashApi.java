@@ -21,6 +21,7 @@ import com.foxinmy.weixin4j.payment.mch.SettlementRecord;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
+import com.foxinmy.weixin4j.util.StringUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 /**
@@ -48,6 +49,20 @@ public class CashApi extends MchApi {
 	 *
 	 * @param redpacket
 	 *            红包信息
+	 * @see #sendRedpack(Redpacket,String)
+	 */
+	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+			throws WeixinException {
+		return sendRedpack(redpacket, null);
+	}
+
+	/**
+	 * 发放红包 企业向微信用户个人发现金红包
+	 *
+	 * @param redpacket
+	 *            红包信息
+	 * @param appId
+	 *            应用ID 可为空 主要是针对企业号支付时传入的agentid
 	 * @return 发放结果
 	 * @see com.foxinmy.weixin4j.payment.mch.Redpacket
 	 * @see com.foxinmy.weixin4j.payment.mch.RedpacketSendResult
@@ -59,10 +74,13 @@ public class CashApi extends MchApi {
 	 *      发放裂变红包接口</a>
 	 * @throws WeixinException
 	 */
-	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+	public RedpacketSendResult sendRedpack(Redpacket redpacket, String appId)
 			throws WeixinException {
 		super.declareMerchant(redpacket);
 		JSONObject obj = (JSONObject) JSON.toJSON(redpacket);
+		if (StringUtil.isNotBlank(appId)) {
+			obj.put("appid", appId);
+		}
 		obj.put("wxappid", obj.remove("appid"));
 		obj.put("sign", weixinSignature.sign(obj));
 		String param = XmlStream.map2xml(obj);

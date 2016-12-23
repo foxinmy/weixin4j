@@ -1559,7 +1559,7 @@ public class WeixinProxy {
 	 *
 	 * @param tplMessage
 	 *            模板消息主体
-	 * @return 发送结果
+	 * @return 发送的消息ID
 	 * @throws WeixinException
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">

@@ -73,11 +73,14 @@ public class WeixinResponse implements HttpResponse {
 					return messageConverter.convert(clazz, response);
 				} catch (IOException e) {
 					throw new RuntimeException("IO error on convert to "
-							+ typeReference, e);
+							+ clazz, e);
 				}
 			}
 		}
-		throw new RuntimeException("cannot convert to " + typeReference);
+		if (clazz.isAssignableFrom(ApiResult.class)) {
+			return (T) new ApiResult();
+		}
+		throw new RuntimeException("cannot convert to " + clazz);
 	}
 
 	@Override
