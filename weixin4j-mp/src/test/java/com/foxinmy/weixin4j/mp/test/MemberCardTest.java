@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.mp.test;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
-import com.foxinmy.weixin4j.model.card.CardCoupon;
 import com.foxinmy.weixin4j.model.card.CardCoupons;
 import com.foxinmy.weixin4j.model.card.CardQR;
 import com.foxinmy.weixin4j.model.card.CouponBaseInfo;
@@ -13,7 +12,6 @@ import com.foxinmy.weixin4j.model.card.MemberUserForm;
 import com.foxinmy.weixin4j.model.card.MemberUserInfo;
 import com.foxinmy.weixin4j.model.qr.QRResult;
 import com.foxinmy.weixin4j.mp.api.CardApi;
-import com.foxinmy.weixin4j.mp.api.MemberCardApi;
 import com.foxinmy.weixin4j.type.card.ActivateCommonField;
 import com.foxinmy.weixin4j.type.card.ActivateFormFieldType;
 import com.foxinmy.weixin4j.type.card.CardCodeType;
@@ -31,14 +29,14 @@ import org.junit.Test;
  */
 public class MemberCardTest extends TokenTest {
 
-    private CardApi cardApi;
 
-    private MemberCardApi memberCardApi;
+
+    private CardApi cardApi;
 
     @Before
     public void init() {
+
         cardApi = new CardApi(tokenManager);
-        memberCardApi = new MemberCardApi(tokenManager);
     }
 
     /**
@@ -64,7 +62,7 @@ public class MemberCardTest extends TokenTest {
                 "https://mmbiz.qlogo.cn/mmbiz/2FyQ9TURqmdibM6nYBiagZT49lSlY9Aicw4P3vsoa7dEZIYfNkiaMyzNVYT9jmYhjBbeC8jnkibwbibB5tghC5XcgysQ/0?wx_fmt=jpeg");
 
         MemberCard memberCard = CardCoupons.createMemberCard(builder, memberCardBuilder);
-        String cardId = memberCardApi.createCardCoupon(memberCard);
+        String cardId = cardApi.createCardCoupon(memberCard);
         System.out.println(cardId);
     }
 
@@ -72,7 +70,7 @@ public class MemberCardTest extends TokenTest {
     @Test
     public void createCardQR() throws WeixinException {
         CardQR.Builder builder = new CardQR.Builder("pn-YDwk59Ft0JSFdGqObxUccUQHw");
-        QRResult qrResult = memberCardApi.createCardQR(36000, builder.build());
+        QRResult qrResult = cardApi.createCardQR(36000, builder.build());
         String showUrl = qrResult.getShowUrl();
         System.out.println(showUrl);
     }
@@ -95,13 +93,13 @@ public class MemberCardTest extends TokenTest {
                            .addRichField(ActivateFormFieldType.FORM_FIELD_CHECK_BOX, "checkBoxOPt", "value1", "value2", "value3");
         memberUserForm.setOptionalForm(optionalFormBuilder);
         memberUserForm.setServiceStatement("会员守则","https://www.baidu.com");
-        ApiResult apiResult = memberCardApi.setActivateUserForm(memberUserForm);
+        ApiResult apiResult = cardApi.setActivateUserForm(memberUserForm);
     }
 
 
     @Test
     public void getMemberUserInfo() throws WeixinException {
-       MemberUserInfo memberUserInfo =  memberCardApi.getMemberUserInfo("pn-YDwk59Ft0JSFdGqObxUccUQHw", "270869833860");
+       MemberUserInfo memberUserInfo =  cardApi.getMemberUserInfo("pn-YDwk59Ft0JSFdGqObxUccUQHw", "270869833860");
         System.out.println(memberUserInfo);
     }
 
@@ -115,7 +113,7 @@ public class MemberCardTest extends TokenTest {
         memberInitInfo.setInitBalance(2);
         memberInitInfo.setInitBonus(2);
         memberInitInfo.setInitBonusRecord("初始化积分");
-        ApiResult activate = memberCardApi.activate(memberInitInfo);
+        ApiResult activate = cardApi.activate(memberInitInfo);
         System.out.println(activate);
     }
 
@@ -128,7 +126,7 @@ public class MemberCardTest extends TokenTest {
         memberUpdateInfo.setRecordBalance("充值");
         memberUpdateInfo.setNOtify(true,true);
         memberUpdateInfo.setCustomFieldValue1("至尊铂金",true);
-        memberCardApi.updateUserInfo(memberUpdateInfo);
+        cardApi.updateUserInfo(memberUpdateInfo);
     }
 
 }

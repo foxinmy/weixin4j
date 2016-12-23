@@ -582,6 +582,23 @@ public class CouponBaseInfo implements Serializable {
 		}
 
 		/**
+		 * 设置卡券在领取多少天后有效
+		 *
+		 * @param days
+		 *            表示自领取后多少天内有效，不支持填写0。
+		 * @param beginDays
+		 *            表示自领取后多少天开始生效，领取后当天生效填写0。（单位为天）
+		 * @return
+		 */
+		public Builder activeAt(int days, int beginDays) {
+			this.date.clear();
+			this.date.put("type", CardActiveType.DATE_TYPE_FIX_TERM);
+			this.date.put("fixed_term", days);
+			this.date.put("fixed_begin_term", beginDays);
+			return this;
+		}
+
+		/**
 		 * 设置是否自定义Code码
 		 * 
 		 * @param useCustomCode

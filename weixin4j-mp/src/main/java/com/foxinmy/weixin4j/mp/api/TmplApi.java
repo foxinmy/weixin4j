@@ -157,7 +157,7 @@ public class TmplApi extends MpApi {
 	 * @see com.foxinmy.weixin4j.mp.message.TemplateMessage
 	 * @see com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 */
-	public ApiResult sendTmplMessage(TemplateMessage tplMessage)
+	public String sendTmplMessage(TemplateMessage tplMessage)
 			throws WeixinException {
 		Token token = tokenManager.getCache();
 		String template_send_uri = getRequestUri("template_send_uri");
@@ -174,6 +174,6 @@ public class TmplApi extends MpApi {
 					}
 				}));
 
-		return response.getAsResult();
+		return response.getAsJson().getString("msgid");
 	}
 }
