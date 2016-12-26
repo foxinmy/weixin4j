@@ -69,12 +69,12 @@ public class CouponBaseInfo implements Serializable {
 	 * 是否自定义Code码
 	 */
 	@JSONField(name = "use_custom_code")
-	private boolean useCustomCode;
+	private Boolean useCustomCode;
 	/**
 	 * 指定特殊用户群体
 	 */
 	@JSONField(name = "bind_openid")
-	private boolean bindOpenId;
+	private Boolean bindOpenId;
 	/**
 	 * 客服电话
 	 */
@@ -221,11 +221,11 @@ public class CouponBaseInfo implements Serializable {
 		return date;
 	}
 
-	public boolean isUseCustomCode() {
+	public Boolean isUseCustomCode() {
 		return useCustomCode;
 	}
 
-	public boolean isBindOpenId() {
+	public Boolean isBindOpenId() {
 		return bindOpenId;
 	}
 
@@ -310,6 +310,14 @@ public class CouponBaseInfo implements Serializable {
 				+ ", promotionSubTitle=" + promotionSubTitle + ", source="
 				+ source + ", limitNum=" + limitNum + ", canShare=" + canShare
 				+ ", canGiveFriend=" + canGiveFriend;
+	}
+
+	public void cleanCantUpdateField() {
+		this.brandName = null;
+		this.title = null;
+		this.sku = null;
+		this.bindOpenId = null;
+		this.useCustomCode = null;
 	}
 
 	/**

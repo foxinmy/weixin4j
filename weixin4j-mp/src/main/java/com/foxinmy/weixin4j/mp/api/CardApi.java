@@ -225,6 +225,7 @@ public class CardApi extends MpApi {
 		JSONObject request = new JSONObject();
 		request.put("card_id", cardId);
 		CardType cardType = card.getCardType();
+		card.cleanCantUpdateField();
 		request.put(cardType.name().toLowerCase(), card);
 		String card_update_uri = getRequestUri("card_update_uri");
 		Token token = tokenManager.getCache();

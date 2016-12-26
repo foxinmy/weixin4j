@@ -4,6 +4,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.card.CardCoupons;
 import com.foxinmy.weixin4j.model.card.CardQR;
+import com.foxinmy.weixin4j.model.card.CouponAdvanceInfo;
 import com.foxinmy.weixin4j.model.card.CouponBaseInfo;
 import com.foxinmy.weixin4j.model.card.MemberCard;
 import com.foxinmy.weixin4j.model.card.MemberInitInfo;
@@ -127,6 +128,35 @@ public class MemberCardTest extends TokenTest {
         memberUpdateInfo.setNOtify(true,true);
         memberUpdateInfo.setCustomFieldValue1("至尊铂金",true);
         cardApi.updateUserInfo(memberUpdateInfo);
+    }
+
+
+    @Test
+    public void update() throws WeixinException {
+        CouponBaseInfo.Builder builder = CardCoupons.customBase();
+        // 基础必填字段
+        builder.logoUrl(
+                "http://mmbiz.qpic.cn/mmbiz_jpg/LtkLicv5iclfqzGpaDqDoMibM6FcMVTrmYXjLu7bJ1tM5MzCxNONQiaZHqrYzs0fTk2T5bLAAXLpvx32hQLmJTGBxQ/0")
+               .codeType(CardCodeType.CODE_TYPE_BARCODE).brandName("***").title("***会员卡").cardColor(CardColor.Color010).notice("请出示会员卡")
+               .description("***的会员卡的描述").quantity(10000);
+        // 基础选填字段
+        builder.canShare(false).canGiveFriend(false);
+        builder.centerTitle("卡券居中按钮").centerSubTitle("显示在入口下方的提示语");
+        MemberCard.Builder memberCardBuilder = CardCoupons.customMemberCard();
+        //会员卡必填字段
+        // 会员卡选填字段
+        memberCardBuilder.prerogative("会员卡特权说明").supplyBalance(true).supplyBonus(false).activateWithWx(true);
+        memberCardBuilder.customField1(FieldNameType.FIELD_NAME_TYPE_LEVEL, "等级", null);
+        memberCardBuilder.backgroundPicUrl(
+                "https://mmbiz.qlogo.cn/mmbiz/2FyQ9TURqmdibM6nYBiagZT49lSlY9Aicw4P3vsoa7dEZIYfNkiaMyzNVYT9jmYhjBbeC8jnkibwbibB5tghC5XcgysQ/0?wx_fmt=jpeg");
+
+        MemberCard memberCard = CardCoupons.createMemberCard(builder, memberCardBuilder);
+        CouponAdvanceInfo.Builder advanceBuilder =  new CouponAdvanceInfo.Builder();
+        advanceBuilder.slideImage("此菜品精选食材，以独特的烹饪方法，最大程度地刺激食 客的味蕾","http://mmbiz.qpic.cn/mmbiz/p98FjXy8LacgHxp3sJ3vn97bGLz0ib0Sfz1bjiaoOYA027iasqSG0sjpiby4vce3AtaPu6cIhBHkt6IjlkY9YnDsfw/0");
+        memberCard.setCouponAdvanceInfo(advanceBuilder.build());
+        Boolean cardCoupon = cardApi.updateCardCoupon("pn-YDwk59Ft0JSFdGqObxUccUQHw", memberCard);
+        System.out.println(cardCoupon);
+
     }
 
 }
