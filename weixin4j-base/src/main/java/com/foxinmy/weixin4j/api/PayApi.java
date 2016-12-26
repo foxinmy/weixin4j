@@ -16,6 +16,7 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.exception.WeixinPayException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
@@ -85,8 +86,14 @@ public class PayApi extends MchApi {
 		String payJsRequestXml = XmlStream.toXML(payPackage);
 		WeixinResponse response = weixinExecutor.post(
 				getRequestUri("order_create_uri"), payJsRequestXml);
-		return response.getAsObject(new TypeReference<PrePay>() {
-		});
+        boolean validatePaySign = weixinSignature.validatePaySign(response);
+        if(validatePaySign) {
+            PrePay prePay = response.getAsObject(new TypeReference<PrePay>() {
+            });
+            prePay.setResponse(response.getAsString());
+            return prePay;
+        }
+        throw new WeixinPayException("验证签名信息失败，返回数据可能被篡改");
 	}
 
 	/**
@@ -124,19 +131,20 @@ public class PayApi extends MchApi {
 			MICROPayRequest microPayRequest = response
 					.getAsObject(new TypeReference<MICROPayRequest>() {
 					});
+			microPayRequest.setResponse(response.getAsString());
 			microPayRequest.setPaymentAccount(weixinAccount);
 			return microPayRequest;
 		}
 		PrePay prePay = createPrePay(payPackage);
 		if (TradeType.APP.name().equals(tradeType)) {
-			return new APPPayRequest(prePay.getPrepayId(), weixinAccount);
+			return new APPPayRequest(prePay, weixinAccount);
 		} else if (TradeType.JSAPI.name().equals(tradeType)) {
-			return new JSAPIPayRequest(prePay.getPrepayId(), weixinAccount);
+			return new JSAPIPayRequest(prePay, weixinAccount);
 		} else if (TradeType.NATIVE.name().equals(tradeType)) {
-			return new NATIVEPayRequest(prePay.getPrepayId(),
+			return new NATIVEPayRequest(prePay,
 					prePay.getCodeUrl(), weixinAccount);
 		} else if (TradeType.WAP.name().equals(tradeType)) {
-			return new WAPPayRequest(prePay.getPrepayId(), weixinAccount);
+			return new WAPPayRequest(prePay, weixinAccount);
 		} else {
 			throw new WeixinException("unknown tradeType:" + tradeType);
 		}
@@ -169,6 +177,36 @@ public class PayApi extends MchApi {
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
 				totalFee, notifyUrl, createIp, TradeType.JSAPI, openId, null,
 				null, attach);
+		return createPayRequest(payPackage);
+	}
+
+	/**
+	 * 创建JSAPI支付请求对象
+	 *
+	 * @param openId
+	 *            用户ID
+	 * @param body
+	 *            订单描述
+	 * @param outTradeNo
+	 *            订单号
+	 * @param totalFee
+	 *            订单总额(元)
+	 * @param notifyUrl
+	 *            支付通知地址
+	 * @param createIp
+	 *            ip地址
+	 * @param attach
+	 *            附加数据 非必填
+	 * @see com.foxinmy.weixin4j.payment.mch.JSAPIPayRequest
+	 * @return JSAPI支付对象
+	 * @throws WeixinException
+	 */
+	public MchPayRequest createJSPayRequest(String openId, String body,
+											String outTradeNo, long totalFee, String notifyUrl,
+											String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+													 totalFee, notifyUrl, createIp, TradeType.JSAPI, openId, null,
+													 null, attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -274,6 +312,43 @@ public class PayApi extends MchApi {
 	}
 
 	/**
+	 * 创建Native支付(扫码支付)回调对象【模式一】
+	 *
+	 * @param productId
+	 *            商品ID
+	 * @param body
+	 *            商品描述
+	 * @param outTradeNo
+	 *            商户内部唯一订单号
+	 * @param totalFee
+	 *            商品总额 单位元
+	 * @param notifyUrl
+	 *            支付回调URL
+	 * @param createIp
+	 *            订单生成的机器 IP
+	 * @param attach
+	 *            附加数据 非必填
+	 * @return Native回调对象
+	 * @see com.foxinmy.weixin4j.payment.mch.NativePayResponse
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1">扫码支付
+	 *      </a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_4">模式一
+	 *      </a>
+	 * @throws WeixinException
+	 */
+	public NativePayResponse createNativePayResponse(String productId,
+													 String body, String outTradeNo, long totalFee, String notifyUrl,
+													 String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+													 totalFee, notifyUrl, createIp, TradeType.NATIVE, null, null,
+													 productId, attach);
+		PrePay prePay = createPrePay(payPackage);
+		return new NativePayResponse(weixinAccount, prePay.getPrepayId());
+	}
+
+	/**
 	 * 创建Native支付(扫码支付)链接【模式二】
 	 *
 	 * @param productId
@@ -310,6 +385,42 @@ public class PayApi extends MchApi {
 	}
 
 	/**
+	 * 创建Native支付(扫码支付)链接【模式二】
+	 *
+	 * @param productId
+	 *            商品ID
+	 * @param body
+	 *            商品描述
+	 * @param outTradeNo
+	 *            商户内部唯一订单号
+	 * @param totalFee
+	 *            商品总额 单位元
+	 * @param notifyUrl
+	 *            支付回调URL
+	 * @param createIp
+	 *            订单生成的机器 IP
+	 * @param attach
+	 *            附加数据 非必填
+	 * @return Native支付对象
+	 * @see com.foxinmy.weixin4j.payment.mch.NATIVEPayRequest
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1">扫码支付
+	 *      </a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5">模式二
+	 *      </a>
+	 * @throws WeixinException
+	 */
+	public MchPayRequest createNativePayRequest(String productId, String body,
+												String outTradeNo, long totalFee, String notifyUrl,
+												String createIp, String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+													 totalFee, notifyUrl, createIp, TradeType.NATIVE, null, null,
+													 productId, attach);
+		return createPayRequest(payPackage);
+	}
+
+	/**
 	 * 创建APP支付请求对象
 	 *
 	 * @param body
@@ -337,6 +448,37 @@ public class PayApi extends MchApi {
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
 				totalFee, notifyUrl, createIp, TradeType.APP, null, null, null,
 				attach);
+		return createPayRequest(payPackage);
+	}
+
+	/**
+	 * 创建APP支付请求对象
+	 *
+	 * @param body
+	 *            商品描述
+	 * @param outTradeNo
+	 *            商户内部唯一订单号
+	 * @param totalFee
+	 *            商品总额 单位元
+	 * @param notifyUrl
+	 *            支付回调URL
+	 * @param createIp
+	 *            订单生成的机器 IP
+	 * @param attach
+	 *            附加数据 非必填
+	 * @return APP支付对象
+	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1">
+	 *      APP支付</a>
+	 * @throws WeixinException
+	 */
+	public MchPayRequest createAppPayRequest(String body, String outTradeNo,
+											 long totalFee, String notifyUrl, String createIp, String attach)
+			throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+													 totalFee, notifyUrl, createIp, TradeType.APP, null, null, null,
+													 attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -372,6 +514,37 @@ public class PayApi extends MchApi {
 	}
 
 	/**
+	 * 创建WAP支付请求对象
+	 *
+	 * @param body
+	 *            商品描述
+	 * @param outTradeNo
+	 *            商户内部唯一订单号
+	 * @param totalFee
+	 *            商品总额 单位元
+	 * @param notifyUrl
+	 *            支付回调URL
+	 * @param createIp
+	 *            订单生成的机器 IP
+	 * @param attach
+	 *            附加数据 非必填
+	 * @return WAP支付对象
+	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付
+	 *      </a>
+	 * @throws WeixinException
+	 */
+	public MchPayRequest createWapPayRequest(String body, String outTradeNo,
+											 long totalFee, String notifyUrl, String createIp, String attach)
+			throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+													 totalFee, notifyUrl, createIp, TradeType.WAP, null, null, null,
+													 attach);
+		return createPayRequest(payPackage);
+	}
+
+	/**
 	 * 提交被扫支付
 	 *
 	 * @param authCode
@@ -395,11 +568,43 @@ public class PayApi extends MchApi {
 	 * @throws WeixinException
 	 */
 	public MchPayRequest createMicroPayRequest(String authCode, String body,
-			String outTradeNo, double totalFee, String createIp, String attach)
+											   String outTradeNo, double totalFee, String createIp, String attach)
 			throws WeixinException {
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, null, createIp, TradeType.MICROPAY, null, authCode,
-				null, attach);
+													 totalFee, null, createIp, TradeType.MICROPAY, null, authCode,
+													 null, attach);
+		return createPayRequest(payPackage);
+	}
+
+	/**
+	 * 提交被扫支付
+	 *
+	 * @param authCode
+	 *            扫码支付授权码 ,设备读取用户微信中的条码或者二维码信息
+	 * @param body
+	 *            商品描述
+	 * @param outTradeNo
+	 *            商户内部唯一订单号
+	 * @param totalFee
+	 *            商品总额 单位元
+	 * @param createIp
+	 *            订单生成的机器 IP
+	 * @param attach
+	 *            附加数据 非必填
+	 * @return 支付的订单信息
+	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest
+	 * @see com.foxinmy.weixin4j.payment.mch.Order
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10">
+	 *      提交被扫支付API</a>
+	 * @throws WeixinException
+	 */
+	public MchPayRequest createMicroPayRequest(String authCode, String body,
+											   String outTradeNo, long totalFee, String createIp, String attach)
+			throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+													 totalFee, null, createIp, TradeType.MICROPAY, null, authCode,
+													 null, attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -470,13 +675,51 @@ public class PayApi extends MchApi {
 			double totalFee, double refundFee, CurrencyType refundFeeType,
 			String opUserId, RefundAccountType refundAccountType)
 			throws WeixinException {
+		return applyRefund(idQuery, outRefundNo, DateUtil.formatYuan2Fen(totalFee), DateUtil.formatYuan2Fen(refundFee), refundFeeType, opUserId,
+						   refundAccountType);
+	}
+
+	/**
+	 * 申请退款(请求需要双向证书)
+	 * <p>
+	 * 当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家，微信支付将在收到退款请求并且验证成功之后，
+	 * 按照退款规则将支付款按原路退到买家帐号上。
+	 * </p>
+	 * <p style="color:red">
+	 * 1.交易时间超过半年的订单无法提交退款；
+	 * 2.微信支付退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交
+	 * ，要采用原来的退款单号。总退款金额不能超过用户实际支付金额。
+	 * </p>
+	 *
+	 * @param idQuery
+	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
+	 *            transaction_id> out_trade_no
+	 * @param outRefundNo
+	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
+	 * @param totalFee
+	 *            订单总金额,单位为元
+	 * @param refundFee
+	 *            退款总金额,单位为元,可以做部分退款
+	 * @param refundFeeType
+	 *            货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
+	 * @param opUserId
+	 *            操作员帐号, 默认为商户号
+	 * @param refundAccountType
+	 * @return 退款申请结果
+	 * @see com.foxinmy.weixin4j.payment.mch.RefundResult
+	 * @see <a href=
+	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4">
+	 *      申请退款API</a>
+	 * @since V3
+	 * @throws WeixinException
+	 */
+	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo, long totalFee, long refundFee, CurrencyType refundFeeType,
+									String opUserId, RefundAccountType refundAccountType) throws WeixinException {
 		WeixinResponse response = null;
 		Map<String, String> map = createBaseRequestMap(idQuery);
 		map.put("out_refund_no", outRefundNo);
-		map.put("total_fee",
-				Integer.toString(DateUtil.formatYuan2Fen(totalFee)));
-		map.put("refund_fee",
-				Integer.toString(DateUtil.formatYuan2Fen(refundFee)));
+		map.put("total_fee", String.valueOf(totalFee));
+		map.put("refund_fee", String.valueOf(refundFee));
 		if (StringUtil.isBlank(opUserId)) {
 			opUserId = weixinAccount.getMchId();
 		}
@@ -507,12 +750,29 @@ public class PayApi extends MchApi {
 	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
 	 * @param totalFee
 	 *            订单总金额,单位为元
-	 * @see {@link #applyRefund(IdQuery, String, double, double,CurrencyType, String)}
+	 * @see {@link #applyRefund(IdQuery, String, double, double,CurrencyType, String,RefundAccountType)}
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
 			double totalFee) throws WeixinException {
 		return applyRefund(idQuery, outRefundNo, totalFee, totalFee, null,
 				null, null);
+	}
+
+	/**
+	 * 退款申请(全额退款)
+	 *
+	 * @param idQuery
+	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
+	 *            transaction_id> out_trade_no
+	 * @param outRefundNo
+	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
+	 * @param totalFee
+	 *            订单总金额,单位为元
+	 * @see {@link #applyRefund(IdQuery, String, double, double,CurrencyType, String,RefundAccountType)}
+	 */
+	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
+									long totalFee) throws WeixinException {
+		return applyRefund(idQuery, outRefundNo, totalFee, totalFee, null, null, null);
 	}
 
 	/**
@@ -764,4 +1024,6 @@ public class PayApi extends MchApi {
 		return response.getAsObject(new TypeReference<OpenIdResult>() {
 		});
 	}
+
+
 }

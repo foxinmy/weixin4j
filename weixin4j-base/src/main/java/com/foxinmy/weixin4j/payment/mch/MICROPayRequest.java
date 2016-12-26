@@ -27,6 +27,8 @@ public class MICROPayRequest extends Order implements MchPayRequest {
 	@JSONField(serialize = false)
 	private WeixinPayAccount paymentAccount;
 
+	private String response;
+
 	protected MICROPayRequest() {
 		// jaxb required
 	}
@@ -53,6 +55,16 @@ public class MICROPayRequest extends Order implements MchPayRequest {
 	@Override
 	public PayRequest toRequestObject() {
 		return null;
+	}
+
+
+	public void setResponse(String response) {
+		this.response = response;
+	}
+
+	@Override
+	public String getResponseString() {
+		return response;
 	}
 
 	/**

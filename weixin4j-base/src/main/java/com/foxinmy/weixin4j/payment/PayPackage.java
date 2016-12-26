@@ -127,6 +127,47 @@ public class PayPackage extends MerchantResult {
 		this.goodsTag = goodsTag;
 	}
 
+	/**
+	 * 订单对象
+	 *
+	 * @param body
+	 *            订单描述 必填
+	 * @param detail
+	 *            订单详情 非必填
+	 * @param outTradeNo
+	 *            商户内部ID 必填
+	 * @param totalFee
+	 *            订单总额 必填 <font color="red">单位为分</font>
+	 * @param notifyUrl
+	 *            回调地址 必填
+	 * @param createIp
+	 *            生成订单数据的机器IP 必填
+	 * @param attach
+	 *            附加数据 非必填
+	 * @param timeStart
+	 *            订单生成时间 非必填
+	 * @param timeExpire
+	 *            订单失效时间 非必填
+	 * @param goodsTag
+	 *            订单标记 非必填
+	 */
+	public PayPackage(String body, String detail, String outTradeNo,
+					  long totalFee, String notifyUrl, String createIp, String attach,
+					  Date timeStart, Date timeExpire, String goodsTag) {
+		this.body = body;
+		this.detail = detail;
+		this.outTradeNo = outTradeNo;
+		this.totalFee = Long.valueOf(totalFee).intValue();
+		this.notifyUrl = notifyUrl;
+		this.createIp = createIp;
+		this.attach = attach;
+		this.timeStart = timeStart != null ? DateUtil
+				.fortmat2yyyyMMddHHmmss(timeStart) : null;
+		this.timeExpire = timeExpire != null ? DateUtil
+				.fortmat2yyyyMMddHHmmss(timeExpire) : null;
+		this.goodsTag = goodsTag;
+	}
+
 	public String getBody() {
 		return body;
 	}

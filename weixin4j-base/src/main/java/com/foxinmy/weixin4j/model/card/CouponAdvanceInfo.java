@@ -60,6 +60,27 @@ public class CouponAdvanceInfo implements Serializable {
 		this.businessServices = builder.businessServices;
 	}
 
+
+	public JSONObject getUseCondition() {
+		return useCondition;
+	}
+
+	public JSONObject getAbstractConver() {
+		return abstractConver;
+	}
+
+	public List<JSONObject> getSlideImages() {
+		return slideImages;
+	}
+
+	public List<JSONObject> getTimeLimits() {
+		return timeLimits;
+	}
+
+	public List<BusinessService> getBusinessServices() {
+		return businessServices;
+	}
+
 	/**
 	 * 卡券高级信息构造器
 	 * 
@@ -91,12 +112,9 @@ public class CouponAdvanceInfo implements Serializable {
 		private List<BusinessService> businessServices;
 
 		public Builder() {
-			this.useCondition = new JSONObject();
-			this.abstractConver = new JSONObject();
-			this.slideImages = new ArrayList<JSONObject>();
-			this.timeLimits = new ArrayList<JSONObject>();
-			this.businessServices = new ArrayList<BusinessService>();
 		}
+
+
 
 		/**
 		 * 设置使用门槛（条件）字段，若不填写使用条件则在券面拼写 ：无最低消费限制，全场通用，不限品类；并在使用说明显示： 可与其他优惠共享
@@ -143,6 +161,8 @@ public class CouponAdvanceInfo implements Serializable {
 		public Builder useCondition(String acceptCategory,
 				String rejectCategory, int leastCost, String objectUseFor,
 				boolean canUseWithOtherDiscount) {
+			if(useCondition == null)
+				useCondition = new JSONObject();
 			useCondition.clear();
 			if (StringUtil.isNotBlank(acceptCategory)) {
 				useCondition.put("accept_category", acceptCategory);
@@ -171,6 +191,8 @@ public class CouponAdvanceInfo implements Serializable {
 		 * @return
 		 */
 		public Builder abstractConver(String abstracts, String... convers) {
+			if(abstractConver == null)
+				abstractConver = new JSONObject();
 			abstractConver.clear();
 			abstractConver.put("abstract", abstracts);
 			abstractConver.put("icon_url_list", convers);
@@ -185,6 +207,8 @@ public class CouponAdvanceInfo implements Serializable {
 		 * @return
 		 */
 		public Builder slideImages(NameValue... slideImages) {
+			if(this.slideImages == null)
+				this.slideImages = new ArrayList<JSONObject>();
 			this.slideImages.clear();
 			for (NameValue nv : slideImages) {
 				JSONObject slide = new JSONObject();
@@ -205,6 +229,8 @@ public class CouponAdvanceInfo implements Serializable {
 		 * @return
 		 */
 		public Builder slideImage(String title, String url) {
+			if(this.slideImages == null)
+				this.slideImages = new ArrayList<JSONObject>();
 			JSONObject slide = new JSONObject();
 			slide.put("text", title);
 			slide.put("image_url", url);
@@ -250,6 +276,8 @@ public class CouponAdvanceInfo implements Serializable {
 		 */
 		public Builder timeLimit(Week week, int beginHour, int beignMinute,
 				int endHour, int endMinute) {
+			if(this.timeLimits == null)
+				this.timeLimits = new ArrayList<JSONObject>();
 			JSONObject timeLimit = new JSONObject();
 			if (week != null) {
 				timeLimit.put("type", week.name());
@@ -262,6 +290,7 @@ public class CouponAdvanceInfo implements Serializable {
 			if (endMinute > 0) {
 				timeLimit.put("end_minute", endMinute);
 			}
+			this.timeLimits.add(timeLimit);
 			return this;
 		}
 
@@ -273,8 +302,14 @@ public class CouponAdvanceInfo implements Serializable {
 		 * @return
 		 */
 		public Builder businessServices(BusinessService... businessServices) {
+			if(this.businessServices == null)
+				this.businessServices = new ArrayList<BusinessService>();
 			this.businessServices.addAll(Arrays.asList(businessServices));
 			return this;
+		}
+
+		public CouponAdvanceInfo build(){
+			return new CouponAdvanceInfo(this);
 		}
 	}
 

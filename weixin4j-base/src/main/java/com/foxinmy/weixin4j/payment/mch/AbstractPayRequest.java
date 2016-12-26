@@ -10,10 +10,14 @@ public abstract class AbstractPayRequest implements MchPayRequest {
 	private final WeixinPayAccount paymentAccount;
 	protected final WeixinSignature weixinSignature;
 
-	public AbstractPayRequest(String prePayId, WeixinPayAccount paymentAccount) {
+	protected final String payResponse;
+
+	public AbstractPayRequest(String prePayId, String payResponse, WeixinPayAccount paymentAccount) {
 		this.prePayId = prePayId;
+		this.payResponse = payResponse;
 		this.paymentAccount = paymentAccount;
 		this.weixinSignature = new WeixinPaymentSignature(paymentAccount.getPaySignKey());
+
 	}
 
 	@Override
@@ -24,5 +28,11 @@ public abstract class AbstractPayRequest implements MchPayRequest {
 	@Override
 	public WeixinPayAccount getPaymentAccount() {
 		return this.paymentAccount;
+	}
+
+
+	@Override
+	public String getResponseString() {
+		return payResponse;
 	}
 }

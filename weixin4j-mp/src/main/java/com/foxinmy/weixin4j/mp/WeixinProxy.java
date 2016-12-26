@@ -1005,7 +1005,8 @@ public class WeixinProxy {
 	 *      删除群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see {@link #massByGroupId(Tuple, int)}
-	 * @see {@link #massByOpenIds(Tuple, String...)
+	 * @see {@link #massByOpenIds(Tuple, String...)
+
 	 *
 	 */
 	public ApiResult deleteMassNews(String msgid) throws WeixinException {

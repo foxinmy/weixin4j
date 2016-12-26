@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.cache.Cacheable;
 
 /**
@@ -25,10 +26,12 @@ public class Token implements Cacheable {
 	/**
 	 * 获取到的凭证
 	 */
+	@JSONField(name = "access_token")
 	private String accessToken;
 	/**
 	 * 凭证有效时间，单位：毫秒
 	 */
+	@JSONField(name = "expires_in")
 	private long expires;
 	/**
 	 * token创建的时间,单位：毫秒
@@ -38,6 +41,11 @@ public class Token implements Cacheable {
 	 * 扩展信息
 	 */
 	private Map<String, String> extra;
+
+	/**
+	 * 请求返回的原始结果
+	 */
+	private String originalResult;
 
 	/**
 	 * 永不过期、创建时间为当前时间戳的token对象
@@ -55,7 +63,7 @@ public class Token implements Cacheable {
 	 * @param accessToken
 	 *            凭证字符串
 	 * @param expires
-	 *            过期时间 单位毫秒
+	 *            过期时间 单位秒
 	 */
 	public Token(String accessToken, long expires) {
 		this(accessToken, expires, System.currentTimeMillis());
@@ -75,6 +83,26 @@ public class Token implements Cacheable {
 		this.expires = expires;
 		this.createTime = createTime;
 		this.extra = new HashMap<String, String>();
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public void setExpires(long expires) {
+		this.expires = expires;
+	}
+
+	public void setCreateTime(long createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getOriginalResult() {
+		return originalResult;
+	}
+
+	public void setOriginalResult(String originalResult) {
+		this.originalResult = originalResult;
 	}
 
 	public String getAccessToken() {
@@ -99,6 +127,8 @@ public class Token implements Cacheable {
 		this.extra.put(name, value);
 		return this;
 	}
+
+
 
 	@Override
 	public String toString() {
