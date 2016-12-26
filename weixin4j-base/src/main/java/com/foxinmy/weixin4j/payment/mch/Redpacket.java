@@ -138,43 +138,6 @@ public class Redpacket extends MerchantResult {
 		this.amtType = totalNum > 1 ? "ALL_RAND" : null;
 	}
 
-	/**
-	 * 红包
-	 *
-	 * @param outTradeNo
-	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
-	 * @param sendName
-	 *            红包发送者名称 必填
-	 * @param openId
-	 *            接受收红包的用户的openid 必填
-	 * @param totalAmount
-	 *            付款金额 <font color="red">单位为分,自动格式化为分</font> 必填
-	 * @param totalNum
-	 *            红包发放总人数 大于1视为裂变红包 必填
-	 * @param wishing
-	 *            红包祝福语 必填
-	 * @param clientIp
-	 *            Ip地址 必填
-	 * @param actName
-	 *            活动名称 必填
-	 * @param remark
-	 *            备注 必填
-	 */
-	public Redpacket(String outTradeNo, String sendName, String openId,
-					 int totalAmount, int totalNum, String wishing, String clientIp,
-					 String actName, String remark) {
-		this.outTradeNo = outTradeNo;
-		this.sendName = sendName;
-		this.openId = openId;
-		this.totalNum = totalNum;
-		this.wishing = wishing;
-		this.clientIp = clientIp;
-		this.actName = actName;
-		this.remark = remark;
-		this.totalAmount = totalAmount;
-		this.amtType = totalNum > 1 ? "ALL_RAND" : null;
-	}
-
 	public String getOutTradeNo() {
 		return outTradeNo;
 	}

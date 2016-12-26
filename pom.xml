@@ -44,6 +44,7 @@
 		<module>weixin4j-mp</module>
 		<module>weixin4j-qy</module>
 		<module>weixin4j-server</module>
+		<module>weixin4j-example</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -53,18 +54,6 @@
 	</properties>
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -222,8 +211,8 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
-					<include>*.xml</include>
-					<include>*.properties</include>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
 				</includes>
 			</resource>
 		</resources>
@@ -259,27 +248,14 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<distributionManagement>
-		<repository>
-			<id>Project Releases</id>
-			<name>Project Releases</name>
-			<url>http://repo.wyying.com/nexus/content/repositories/releases/</url>
-		</repository>
 		<snapshotRepository>
-			<id>Project Snapshots</id>
-			<name>Project Snapshots</name>
-			<url>http://repo.wyying.com/nexus/content/repositories/snapshots/</url>
+			<id>oss-snapshot</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</snapshotRepository>
+		<repository>
+			<id>oss-release</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
-	<!--<distributionManagement>-->
-		<!--<snapshotRepository>-->
-			<!--<id>oss-snapshot</id>-->
-			<!--<url>https://oss.sonatype.org/content/repositories/snapshots/</url>-->
-		<!--</snapshotRepository>-->
-		<!--<repository>-->
-			<!--<id>oss-release</id>-->
-			<!--<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-		<!--</repository>-->
-	<!--</distributionManagement>-->
 </project>

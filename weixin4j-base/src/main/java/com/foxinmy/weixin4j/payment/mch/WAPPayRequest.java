@@ -22,8 +22,8 @@ import com.foxinmy.weixin4j.util.URLEncodingUtil;
  */
 public class WAPPayRequest extends AbstractPayRequest {
 
-	public WAPPayRequest(PrePay prePay, WeixinPayAccount payAccount) {
-		super(prePay.getPrepayId(),prePay.getResponse(), payAccount);
+	public WAPPayRequest(String prePayId, WeixinPayAccount payAccount) {
+		super(prePayId, payAccount);
 	}
 
 	@Override

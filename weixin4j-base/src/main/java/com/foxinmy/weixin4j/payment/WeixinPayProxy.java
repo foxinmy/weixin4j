@@ -469,7 +469,7 @@ public class WeixinPayProxy {
 	 *
 	 * @throws IOException
 	 *
-	 * @see {@link #applyRefund(IdQuery, String, double, double,CurrencyType,String,RefundAccountType)}
+	 * @see {@link #applyRefund(IdQuery, String, double, double, String,CurrencyType)}
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
 			double totalFee) throws WeixinException {
