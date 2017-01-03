@@ -20,6 +20,8 @@ public abstract class BaseApi {
 
 	protected final WeixinRequestExecutor weixinExecutor;
 
+	private final  Pattern uriPattern = Pattern.compile("(\\{[^\\}]*\\})");
+
 	public BaseApi() {
 		this.weixinExecutor = new WeixinRequestExecutor();
 	}
@@ -28,8 +30,7 @@ public abstract class BaseApi {
 
 	protected String getRequestUri(String key) {
 		String url = weixinBundle().getString(key);
-		Pattern p = Pattern.compile("(\\{[^\\}]*\\})");
-		Matcher m = p.matcher(url);
+		Matcher m = uriPattern.matcher(url);
 		StringBuffer sb = new StringBuffer();
 		String sub = null;
 		while (m.find()) {

@@ -55,6 +55,10 @@ public class Pagedata<T> implements Serializable, Iterable<T> {
 		return pageable == null ? null : pageable.getSort();
 	}
 
+	public List<T> getContent() {
+		return content;
+	}
+
 	@Override
 	public Iterator<T> iterator() {
 		return hasContent() ? content.iterator() : null;

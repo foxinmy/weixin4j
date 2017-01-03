@@ -91,7 +91,7 @@ public class PayTest {
 		c.set(Calendar.DAY_OF_MONTH, 4);
 		System.err.println(c.getTime());
 		OutputStream os = new FileOutputStream("/tmp/bill20160813.txt");
-		PAY.downloadBill(c.getTime(), BillType.ALL, os);
+		PAY.downloadBill(c.getTime(), BillType.ALL, os,null);
 	}
 
 	@Test

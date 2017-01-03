@@ -29,5 +29,10 @@ public enum CardType {
 	/**
 	 * 优惠券
 	 */
-	GENERAL_COUPON;
+	GENERAL_COUPON,
+
+	/**
+	 * 会员卡
+	 */
+	MEMBER_CARD;
 }

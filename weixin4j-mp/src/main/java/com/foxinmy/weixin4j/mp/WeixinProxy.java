@@ -1005,7 +1005,8 @@ public class WeixinProxy {
 	 *      删除群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see {@link #massByGroupId(Tuple, int)}
-	 * @see {@link #massByOpenIds(Tuple, String...)
+	 * @see {@link #massByOpenIds(Tuple, String...)
+
 	 *
 	 */
 	public ApiResult deleteMassNews(String msgid) throws WeixinException {
@@ -1558,7 +1559,7 @@ public class WeixinProxy {
 	 *
 	 * @param tplMessage
 	 *            模板消息主体
-	 * @return 发送结果
+	 * @return 发送的消息ID
 	 * @throws WeixinException
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433751277&token=&lang=zh_CN">
@@ -1570,7 +1571,7 @@ public class WeixinProxy {
 	 * @seee com.foxinmy.weixin4j.msg.event.TemplatesendjobfinishMessage
 	 * @see com.foxinmy.weixin4j.mp.api.TmplApi
 	 */
-	public ApiResult sendTmplMessage(TemplateMessage tplMessage)
+	public String sendTmplMessage(TemplateMessage tplMessage)
 			throws WeixinException {
 		return tmplApi.sendTmplMessage(tplMessage);
 	}

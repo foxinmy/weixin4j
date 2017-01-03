@@ -35,6 +35,9 @@ public final class CardCoupons {
 		return new CouponAdvanceInfo.Builder();
 	}
 
+	public static MemberCard.Builder customMemberCard(){
+		return  new MemberCard.Builder();
+	}
 	/**
 	 * 创建代金券
 	 * 
@@ -111,5 +114,12 @@ public final class CardCoupons {
 		CouponBaseInfo couponBaseInfo = builder.build();
 		GrouponCoupon coupon = new GrouponCoupon(couponBaseInfo, explain);
 		return coupon;
+	}
+
+
+	public static MemberCard createMemberCard(CouponBaseInfo.Builder baseBuilder, MemberCard.Builder memberCardBudiler) {
+		baseBuilder.build();
+		MemberCard memberCard = new MemberCard(baseBuilder.build(), memberCardBudiler);
+		return memberCard;
 	}
 }

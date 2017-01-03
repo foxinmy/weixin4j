@@ -306,7 +306,8 @@ public class MassApi extends MpApi {
 	 * @see <a
 	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">删除群发</a>
 	 * @see {@link #massByTagId(Tuple, int)}
-	 * @see {@link #massByOpenIds(Tuple, String...)
+	 * @see {@link #massByOpenIds(Tuple, String...)
+
 	 */
 	public ApiResult deleteMassNews(String msgid) throws WeixinException {
 		JSONObject obj = new JSONObject();

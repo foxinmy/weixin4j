@@ -33,6 +33,9 @@ public abstract class CardCoupon {
 		this.couponBaseInfo = couponBaseInfo;
 	}
 
+	public  void cleanCantUpdateField(){
+		this.couponBaseInfo.cleanCantUpdateField();
+	}
 	/**
 	 * 卡券类型
 	 *

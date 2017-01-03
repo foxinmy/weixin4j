@@ -6,9 +6,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.foxinmy.weixin4j.http.ContentType;
+import com.foxinmy.weixin4j.util.Consts;
 
 public class StringEntity implements HttpEntity {
-	private final byte[] content;
+
+	private final byte[]      content;
 	private final ContentType contentType;
 
 	public StringEntity(String body) {
@@ -40,4 +42,10 @@ public class StringEntity implements HttpEntity {
 		outstream.write(this.content);
 		outstream.flush();
 	}
+
+
+	public String getContentString() {
+		return new String(this.content, Consts.UTF_8);
+	}
+
 }

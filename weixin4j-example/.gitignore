@@ -31,3 +31,5 @@ Thumbs.db
 /target/
 .DS_Store
 bin
+/target/
+/target/
