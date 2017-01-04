@@ -114,7 +114,7 @@ public class MemberCardTest extends TokenTest {
         memberInitInfo.setInitBalance(2);
         memberInitInfo.setInitBonus(2);
         memberInitInfo.setInitBonusRecord("初始化积分");
-        ApiResult activate = cardApi.activate(memberInitInfo);
+        ApiResult activate = cardApi.activateMemberCard(memberInitInfo);
         System.out.println(activate);
     }
 
@@ -127,7 +127,7 @@ public class MemberCardTest extends TokenTest {
         memberUpdateInfo.setRecordBalance("充值");
         memberUpdateInfo.setNOtify(true,true);
         memberUpdateInfo.setCustomFieldValue1("至尊铂金",true);
-        cardApi.updateUserInfo(memberUpdateInfo);
+        cardApi.updateMemberUserInfo(memberUpdateInfo);
     }
 
 
@@ -145,7 +145,7 @@ public class MemberCardTest extends TokenTest {
         MemberCard.Builder memberCardBuilder = CardCoupons.customMemberCard();
         //会员卡必填字段
         // 会员卡选填字段
-        memberCardBuilder.prerogative("会员卡特权说明").supplyBalance(true).supplyBonus(false).activateWithWx(true);
+        memberCardBuilder.prerogative("会员卡特权说明").supplyBalance(false).supplyBonus(false).activateWithWx(true);
         memberCardBuilder.customField1(FieldNameType.FIELD_NAME_TYPE_LEVEL, "等级", null);
         memberCardBuilder.backgroundPicUrl(
                 "https://mmbiz.qlogo.cn/mmbiz/2FyQ9TURqmdibM6nYBiagZT49lSlY9Aicw4P3vsoa7dEZIYfNkiaMyzNVYT9jmYhjBbeC8jnkibwbibB5tghC5XcgysQ/0?wx_fmt=jpeg");

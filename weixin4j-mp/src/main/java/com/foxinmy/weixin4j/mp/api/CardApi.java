@@ -246,7 +246,7 @@ public class CardApi extends MpApi {
 	 *
 	 * @see <a href='https://mp.weixin.qq.com/wiki?action=doc&id=mp1451025283&t=0.8029895777585161#6.1'>接口激活</a>
 	 */
-	public ApiResult activate(MemberInitInfo memberInitInfo) throws WeixinException {
+	public ApiResult activateMemberCard(MemberInitInfo memberInitInfo) throws WeixinException {
 		String card_member_card_activate_uri = getRequestUri("card_member_card_activate_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor
@@ -290,11 +290,14 @@ public class CardApi extends MpApi {
 
 	/**
 	 * 更新会员
+	 * result_bonus            	当前用户积分总额
+	 * result_balance            	当前用户预存总金额
+	 * openid            	用户openid
 	 * @param updateInfo
 	 * @return
 	 * @throws WeixinException
 	 */
-	public JSONObject updateUserInfo(MemberUpdateInfo updateInfo) throws WeixinException {
+	public JSONObject updateMemberUserInfo(MemberUpdateInfo updateInfo) throws WeixinException {
 		String card_member_card_update_user_uri = getRequestUri("card_member_card_update_user_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor
