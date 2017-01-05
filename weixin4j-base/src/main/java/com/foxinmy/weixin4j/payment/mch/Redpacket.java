@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.type.mch.RedpacketSceneType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -38,12 +39,6 @@ public class Redpacket extends MerchantResult {
 	@XmlElement(name = "send_name")
 	@JSONField(name = "send_name")
 	private String sendName;
-	/**
-	 * 接收红包的用户的openid
-	 */
-	@XmlElement(name = "re_openid")
-	@JSONField(name = "re_openid")
-	private String openId;
 	/**
 	 * 付款金额，单位分
 	 */
@@ -96,6 +91,18 @@ public class Redpacket extends MerchantResult {
 	@XmlElement(name = "consume_mch_id")
 	@JSONField(name = "consume_mch_id")
 	private String consumeMchId;
+	/**
+	 * 发放红包使用场景，红包金额大于200时必传
+	 */
+	@XmlElement(name = "scene_id")
+	@JSONField(name = "scene_id")
+	private RedpacketSceneType sceneType;
+	/**
+	 * 活动信息
+	 */
+	@XmlElement(name = "risk_info")
+	@JSONField(name = "risk_info")
+	private String risk;
 
 	protected Redpacket() {
 		// jaxb required
@@ -108,8 +115,6 @@ public class Redpacket extends MerchantResult {
 	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
 	 * @param sendName
 	 *            红包发送者名称 必填
-	 * @param openId
-	 *            接受收红包的用户的openid 必填
 	 * @param totalAmount
 	 *            付款金额 <font color="red">单位为元,自动格式化为分</font> 必填
 	 * @param totalNum
@@ -123,12 +128,11 @@ public class Redpacket extends MerchantResult {
 	 * @param remark
 	 *            备注 必填
 	 */
-	public Redpacket(String outTradeNo, String sendName, String openId,
-			double totalAmount, int totalNum, String wishing, String clientIp,
-			String actName, String remark) {
+	public Redpacket(String outTradeNo, String sendName, double totalAmount,
+			int totalNum, String wishing, String clientIp, String actName,
+			String remark) {
 		this.outTradeNo = outTradeNo;
 		this.sendName = sendName;
-		this.openId = openId;
 		this.totalNum = totalNum;
 		this.wishing = wishing;
 		this.clientIp = clientIp;
@@ -146,14 +150,10 @@ public class Redpacket extends MerchantResult {
 		return sendName;
 	}
 
-	public String getOpenId() {
-		return openId;
-	}
-
 	public int getTotalAmount() {
 		return totalAmount;
 	}
-	
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
@@ -204,14 +204,34 @@ public class Redpacket extends MerchantResult {
 		this.consumeMchId = consumeMchId;
 	}
 
+	public RedpacketSceneType getSceneType() {
+		return sceneType;
+	}
+
+	public void setSceneType(RedpacketSceneType sceneType) {
+		this.sceneType = sceneType;
+	}
+
+	public String getRisk() {
+		return risk;
+	}
+
+	public void setRisk(String risk) {
+		this.risk = risk;
+	}
+
+	public void setRisk(RedpacketRisk risk) {
+		this.risk = risk.toContent();
+	}
+
 	@Override
 	public String toString() {
-		return "Redpacket [msgAppId=" + msgAppId + ", consumeMchId="
-				+ consumeMchId + ", outTradeNo=" + outTradeNo + ", sendName="
-				+ sendName + ", openId=" + openId + ", totalAmount="
-				+ totalAmount + ", totalNum=" + totalNum + ", amtType="
-				+ amtType + ", wishing=" + wishing + ", clientIp=" + clientIp
-				+ ", actName=" + actName + ", remark=" + remark + ", "
-				+ super.toString() + "]";
+		return "Redpacket [outTradeNo=" + outTradeNo + ", sendName=" + sendName
+				+ ", totalAmount=" + totalAmount + ", totalNum=" + totalNum
+				+ ", amtType=" + amtType + ", wishing=" + wishing
+				+ ", clientIp=" + clientIp + ", actName=" + actName
+				+ ", remark=" + remark + ", msgAppId=" + msgAppId
+				+ ", consumeMchId=" + consumeMchId + ", sceneType=" + sceneType
+				+ ", risk=" + risk + ", " + super.toString() + "]";
 	}
 }

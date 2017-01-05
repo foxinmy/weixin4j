@@ -168,13 +168,19 @@ public class CardApi extends MpApi {
 	 * 1.同时支持“openid”、“username”两种字段设置白名单，总数上限为10个。
 	 * 2.设置测试白名单接口为全量设置，即测试名单发生变化时需调用该接口重新传入所有测试人员的ID.
 	 * 3.白名单用户领取该卡券时将无视卡券失效状态，请开发者注意。
-	 * @param openIds  the open ids
-	 * @param userNames the user names
+	 * 
+	 * @param openIds
+	 *            the open ids
+	 * @param userNames
+	 *            the user names
 	 * @author fengyapeng
 	 * @since 2016 -12-20 11:22:57
-	 * @see <a href='https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062&token=&lang=zh_CN&anchor=6'>设置测试白名单</a>
+	 * @see <a href=
+	 *      'https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1451025062&token=&lang=zh_CN&anchor=6'>设置测试白名单</
+	 *      a >
 	 */
-	public void setTestWhiteList(List<String> openIds, List<String> userNames) throws WeixinException {
+	public ApiResult setTestWhiteList(List<String> openIds,
+			List<String> userNames) throws WeixinException {
 		JSONObject requestObj = new JSONObject();
 		if (openIds != null && openIds.size() > 0) {
 			requestObj.put("openid", openIds);
@@ -185,27 +191,34 @@ public class CardApi extends MpApi {
 		String card_set_test_whitelist_uri = getRequestUri("card_set_test_whitelist_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
-				String.format(card_set_test_whitelist_uri, token.getAccessToken()),
-				requestObj.toJSONString());
+				String.format(card_set_test_whitelist_uri,
+						token.getAccessToken()), requestObj.toJSONString());
+		return response.getAsResult();
 	}
 
 	/**
 	 * 查看获取卡券的审核状态
-	 * @see <a href='https://mp.weixin.qq.com/wiki?action=doc&id=mp1451025272&t=0.18670321276182844#3'> 查看卡券详情</a>
+	 * 
+	 * @see <a href=
+	 *      'https://mp.weixin.qq.com/wiki?action=doc&id=mp1451025272&t=0.18670321276182844#3'
+	 *      > 查看卡券详情</a>
 	 *
 	 * @author fengyapeng
 	 * @since 2016 -12-20 11:48:23
 	 */
 	public CardStatus queryCardStatus(String cardId) throws WeixinException {
 		JSONObject requestObj = new JSONObject();
-		requestObj.put("card_id",cardId);
+		requestObj.put("card_id", cardId);
 		String card_get_uri = getRequestUri("card_get_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor.post(String.format(card_get_uri, token.getAccessToken()),requestObj.toJSONString());
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_get_uri, token.getAccessToken()),
+				requestObj.toJSONString());
 		JSONObject responseAsJson = response.getAsJson();
 		JSONObject card = responseAsJson.getJSONObject("card");
 		String cardType = card.getString("card_type");
-		JSONObject baseInfo = card.getJSONObject(cardType.toLowerCase()).getJSONObject("base_info");
+		JSONObject baseInfo = card.getJSONObject(cardType.toLowerCase())
+				.getJSONObject("base_info");
 		String status = baseInfo.getString("status");
 		return CardStatus.valueOf(status);
 	}
@@ -213,15 +226,19 @@ public class CardApi extends MpApi {
 	/**
 	 * 支持更新所有卡券类型的部分通用字段及特殊卡券（会员卡、飞机票、电影票、会议门票）中特定字段的信息。
 	 *
-	 * @param cardId the card id
-	 * @param card   the card
+	 * @param cardId
+	 *            the card id
+	 * @param card
+	 *            the card
 	 * @return 是否提交审核，false为修改后不会重新提审，true为修改字段后重新提审，该卡券的状态变为审核中
-	 * @throws WeixinException the weixin exception
+	 * @throws WeixinException
+	 *             the weixin exception
 	 * @author fengyapeng
 	 * @see
 	 * @since 2016 -12-21 15:29:10
 	 */
-	public Boolean updateCardCoupon(String cardId, CardCoupon card) throws WeixinException {
+	public Boolean updateCardCoupon(String cardId, CardCoupon card)
+			throws WeixinException {
 		JSONObject request = new JSONObject();
 		request.put("card_id", cardId);
 		CardType cardType = card.getCardType();
@@ -229,84 +246,88 @@ public class CardApi extends MpApi {
 		request.put(cardType.name().toLowerCase(), card);
 		String card_update_uri = getRequestUri("card_update_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor.post(String.format(card_update_uri,token.getAccessToken()),JSON.toJSONString(request));
-	    JSONObject jsonObject= 	response.getAsJson();
-	    return jsonObject.getBoolean("send_check");
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_update_uri, token.getAccessToken()),
+				JSON.toJSONString(request));
+		JSONObject jsonObject = response.getAsJson();
+		return jsonObject.getBoolean("send_check");
 	}
 
-
-
-
-
 	/**
-	 * 激活方式说明
-	 * 接口激活通常需要开发者开发用户填写资料的网页。通常有两种激活流程：
-	 * 1. 用户必须在填写资料后才能领卡，领卡后开发者调用激活接口为用户激活会员卡；
-	 * 2. 是用户可以先领取会员卡，点击激活会员卡跳转至开发者设置的资料填写页面，填写完成后开发者调用激活接口为用户激活会员卡。
+	 * 激活方式说明 接口激活通常需要开发者开发用户填写资料的网页。通常有两种激活流程： 1.
+	 * 用户必须在填写资料后才能领卡，领卡后开发者调用激活接口为用户激活会员卡； 2.
+	 * 是用户可以先领取会员卡，点击激活会员卡跳转至开发者设置的资料填写页面，填写完成后开发者调用激活接口为用户激活会员卡。
 	 *
-	 * @see <a href='https://mp.weixin.qq.com/wiki?action=doc&id=mp1451025283&t=0.8029895777585161#6.1'>接口激活</a>
+	 * @see <a href=
+	 *      'https://mp.weixin.qq.com/wiki?action=doc&id=mp1451025283&t=0.8029895777585161#6.1'>接口激活</
+	 *      a >
 	 */
-	public ApiResult activateMemberCard(MemberInitInfo memberInitInfo) throws WeixinException {
+	public ApiResult activateMemberCard(MemberInitInfo memberInitInfo)
+			throws WeixinException {
 		String card_member_card_activate_uri = getRequestUri("card_member_card_activate_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor
-				.post(String.format(card_member_card_activate_uri, token.getAccessToken()), JSON.toJSONString(memberInitInfo));
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_member_card_activate_uri,
+						token.getAccessToken()),
+				JSON.toJSONString(memberInitInfo));
 		return response.getAsResult();
 	}
 
 	/**
-	 * 设置开卡字段接口
-	 * 开发者在创建时填入wx_activate字段后，
-	 * 需要调用该接口设置用户激活时需要填写的选项，否则一键开卡设置不生效。
+	 * 设置开卡字段接口 开发者在创建时填入wx_activate字段后， 需要调用该接口设置用户激活时需要填写的选项，否则一键开卡设置不生效。
 	 *
-	 * @see <a href='https://mp.weixin.qq.com/wiki?action=doc&id=mp1451025283&t=0.8029895777585161#6.2'>一键激活</a>
+	 * @see <a href=
+	 *      'https://mp.weixin.qq.com/wiki?action=doc&id=mp1451025283&t=0.8029895777585161#6.2'>一键激活</
+	 *      a >
 	 */
-	public ApiResult setActivateUserForm(MemberUserForm memberUserForm) throws WeixinException {
+	public ApiResult setActivateUserForm(MemberUserForm memberUserForm)
+			throws WeixinException {
 		String user_form_uri = getRequestUri("card_member_card_activate_user_form_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor
-				.post(String.format(user_form_uri, token.getAccessToken()), JSON.toJSONString(memberUserForm));
+		WeixinResponse response = weixinExecutor.post(
+				String.format(user_form_uri, token.getAccessToken()),
+				JSON.toJSONString(memberUserForm));
 		return response.getAsResult();
 	}
 
 	/**
 	 * 拉取会员信息接口。
 	 *
-	 * @param cardId the card id
-	 * @param code   the code
+	 * @param cardId
+	 *            the card id
+	 * @param code
+	 *            the code
 	 * @author fengyapeng
 	 * @since 2016 -12-21 11:28:45
 	 */
-	public MemberUserInfo getMemberUserInfo(String cardId, String code) throws WeixinException {
+	public MemberUserInfo getMemberUserInfo(String cardId, String code)
+			throws WeixinException {
 		String user_info_uri = getRequestUri("card_member_card_user_info_uri");
 		Token token = tokenManager.getCache();
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("card_id", cardId);
 		jsonObject.put("code", code);
-		WeixinResponse response = weixinExecutor.post(String.format(user_info_uri, token.getAccessToken()), JSON.toJSONString(jsonObject));
+		WeixinResponse response = weixinExecutor.post(
+				String.format(user_info_uri, token.getAccessToken()),
+				JSON.toJSONString(jsonObject));
 		return response.getAsObject(new TypeReference<MemberUserInfo>() {
 		});
 	}
 
 	/**
-	 * 更新会员
-	 * result_bonus            	当前用户积分总额
-	 * result_balance            	当前用户预存总金额
-	 * openid            	用户openid
+	 * 更新会员 result_bonus 当前用户积分总额 result_balance 当前用户预存总金额 openid 用户openid
+	 * 
 	 * @param updateInfo
 	 * @return
 	 * @throws WeixinException
 	 */
-	public JSONObject updateMemberUserInfo(MemberUpdateInfo updateInfo) throws WeixinException {
+	public JSONObject updateMemberUserInfo(MemberUpdateInfo updateInfo)
+			throws WeixinException {
 		String card_member_card_update_user_uri = getRequestUri("card_member_card_update_user_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor
-				.post(String.format(card_member_card_update_user_uri, token.getAccessToken()), JSON.toJSONString(updateInfo));
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_member_card_update_user_uri,
+						token.getAccessToken()), JSON.toJSONString(updateInfo));
 		return response.getAsJson();
 	}
-
-
-
-
-
 }

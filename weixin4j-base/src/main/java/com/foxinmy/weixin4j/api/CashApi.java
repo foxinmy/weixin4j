@@ -1,8 +1,15 @@
 package com.foxinmy.weixin4j.api;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -49,11 +56,19 @@ public class CashApi extends MchApi {
 	 *
 	 * @param redpacket
 	 *            红包信息
-	 * @see #sendRedpack(Redpacket,String)
+	 * @param openId
+	 *            接受收红包的用户的openid 必填
+	 * @see #sendRedpacks(Redpacket, String...)
 	 */
-	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+	public RedpacketSendResult sendRedpack(Redpacket redpacket, String openId)
 			throws WeixinException {
-		return sendRedpack(redpacket, null);
+		try {
+			return sendRedpacks(redpacket, openId).get(0).get();
+		} catch (InterruptedException e) {
+			throw new WeixinException("send redpack error", e);
+		} catch (ExecutionException e) {
+			throw new WeixinException("send redpack error", e);
+		}
 	}
 
 	/**
@@ -61,8 +76,8 @@ public class CashApi extends MchApi {
 	 *
 	 * @param redpacket
 	 *            红包信息
-	 * @param appId
-	 *            应用ID 可为空 主要是针对企业号支付时传入的agentid
+	 * @param openIds
+	 *            接受收红包的用户的openid 必填
 	 * @return 发放结果
 	 * @see com.foxinmy.weixin4j.payment.mch.Redpacket
 	 * @see com.foxinmy.weixin4j.payment.mch.RedpacketSendResult
@@ -74,23 +89,44 @@ public class CashApi extends MchApi {
 	 *      发放裂变红包接口</a>
 	 * @throws WeixinException
 	 */
-	public RedpacketSendResult sendRedpack(Redpacket redpacket, String appId)
-			throws WeixinException {
+	public List<Future<RedpacketSendResult>> sendRedpacks(Redpacket redpacket,
+			String... openIds) {
+		String appId = redpacket.getAppId();
 		super.declareMerchant(redpacket);
-		JSONObject obj = (JSONObject) JSON.toJSON(redpacket);
+		final JSONObject obj = (JSONObject) JSON.toJSON(redpacket);
 		if (StringUtil.isNotBlank(appId)) {
 			obj.put("appid", appId);
 		}
 		obj.put("wxappid", obj.remove("appid"));
-		obj.put("sign", weixinSignature.sign(obj));
-		String param = XmlStream.map2xml(obj);
-		WeixinResponse response = getWeixinSSLExecutor()
-				.post(redpacket.getTotalNum() > 1 ? getRequestUri("groupredpack_send_uri")
-						: getRequestUri("redpack_send_uri"), param);
-		String text = response.getAsString()
-				.replaceFirst("<wxappid>", "<appid>")
-				.replaceFirst("</wxappid>", "</appid>");
-		return XmlStream.fromXML(text, RedpacketSendResult.class);
+		final String redpack_uri = redpacket.getTotalNum() > 1 ? getRequestUri("groupredpack_send_uri")
+				: getRequestUri("redpack_send_uri");
+		int sendLength = openIds.length;
+		ExecutorService sendExecutor = Executors.newFixedThreadPool(Math.max(1,
+				sendLength / 10)); // 十分之一?
+		List<Future<RedpacketSendResult>> callSendList = new ArrayList<Future<RedpacketSendResult>>(
+				sendLength);
+		for (final String openId : openIds) {
+			Future<RedpacketSendResult> futureSend = sendExecutor
+					.submit(new Callable<RedpacketSendResult>() {
+						@Override
+						public RedpacketSendResult call() throws Exception {
+							obj.put("re_openid", openId);
+							obj.put("sign", weixinSignature.sign(obj));
+							String param = XmlStream.map2xml(obj);
+							WeixinResponse response = getWeixinSSLExecutor()
+									.post(redpack_uri, param);
+							String text = response.getAsString()
+									.replaceFirst("<wxappid>", "<appid>")
+									.replaceFirst("</wxappid>", "</appid>");
+							return XmlStream.fromXML(text,
+									RedpacketSendResult.class);
+						}
+					});
+			callSendList.add(futureSend);
+		}
+		// 关闭启动线程,不再接受新的任务
+		sendExecutor.shutdown();
+		return callSendList;
 	}
 
 	/**
