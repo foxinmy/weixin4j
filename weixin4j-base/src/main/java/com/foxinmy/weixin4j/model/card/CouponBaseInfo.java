@@ -155,6 +155,9 @@ public class CouponBaseInfo implements Serializable {
 	@JSONField(name = "can_give_friend")
 	private boolean canGiveFriend;
 
+	@JSONField(name = "need_push_on_view")
+	private Boolean needPushOnView;
+
 	private CouponBaseInfo(Builder builder) {
 		this.logoUrl = builder.logoUrl;
 		this.brandName = builder.brandName;
@@ -183,6 +186,7 @@ public class CouponBaseInfo implements Serializable {
 		this.limitNum = builder.limitNum;
 		this.canShare = builder.canShare;
 		this.canGiveFriend = builder.canGiveFriend;
+		this.needPushOnView = builder.needPushOnView;
 	};
 
 	public String getLogoUrl() {
@@ -291,6 +295,10 @@ public class CouponBaseInfo implements Serializable {
 
 	public boolean isCanGiveFriend() {
 		return canGiveFriend;
+	}
+
+	public Boolean getNeedPushOnView() {
+		return needPushOnView;
 	}
 
 	@Override
@@ -439,6 +447,11 @@ public class CouponBaseInfo implements Serializable {
 		 * 卡券是否可转赠,不填写默认true
 		 */
 		private boolean canGiveFriend;
+
+		/**
+		 * 用户点击进入卡券时推送事件
+		 */
+		private boolean needPushOnView;
 
 		/**
 		 * 默认永久有效
@@ -808,6 +821,11 @@ public class CouponBaseInfo implements Serializable {
 		 */
 		public Builder canGiveFriend(boolean canGiveFriend) {
 			this.canGiveFriend = canGiveFriend;
+			return this;
+		}
+
+		public Builder needPushOnView(boolean needPushOnView){
+			this.needPushOnView = needPushOnView;
 			return this;
 		}
 
