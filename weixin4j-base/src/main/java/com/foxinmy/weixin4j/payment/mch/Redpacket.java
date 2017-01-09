@@ -34,6 +34,12 @@ public class Redpacket extends MerchantResult {
 	@JSONField(name = "mch_billno")
 	private String outTradeNo;
 	/**
+	 * 接受收红包的用户的openid 必填
+	 */
+	@XmlElement(name = "re_openid")
+	@JSONField(name = "re_openid")
+	private String openId;
+	/**
 	 * 红包发送者名称 必填
 	 */
 	@XmlElement(name = "send_name")
@@ -113,6 +119,8 @@ public class Redpacket extends MerchantResult {
 	 *
 	 * @param outTradeNo
 	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
+	 * @param openId
+	 *            接受收红包的用户的openid 必填
 	 * @param sendName
 	 *            红包发送者名称 必填
 	 * @param totalAmount
@@ -128,22 +136,46 @@ public class Redpacket extends MerchantResult {
 	 * @param remark
 	 *            备注 必填
 	 */
-	public Redpacket(String outTradeNo, String sendName, double totalAmount,
-			int totalNum, String wishing, String clientIp, String actName,
-			String remark) {
+	public Redpacket(String outTradeNo, String openId, String sendName,
+			double totalAmount, int totalNum, String wishing, String clientIp,
+			String actName, String remark) {
 		this.outTradeNo = outTradeNo;
+		this.openId = openId;
 		this.sendName = sendName;
+		this.totalAmount = DateUtil.formatYuan2Fen(totalAmount);
 		this.totalNum = totalNum;
 		this.wishing = wishing;
 		this.clientIp = clientIp;
 		this.actName = actName;
 		this.remark = remark;
-		this.totalAmount = DateUtil.formatYuan2Fen(totalAmount);
 		this.amtType = totalNum > 1 ? "ALL_RAND" : null;
+	}
+
+	/**
+	 * 批量发送时可能需要
+	 * 
+	 * @param outTradeNo
+	 *            订单号
+	 * @param openId
+	 *            用户ID
+	 * @return 红包实体
+	 */
+	public Redpacket copy(String outTradeNo, String openId) {
+		Redpacket readpacket = new Redpacket(outTradeNo, openId, sendName,
+				totalAmount, totalNum, wishing, clientIp, actName, remark);
+		readpacket.setMsgAppId(msgAppId);
+		readpacket.setConsumeMchId(consumeMchId);
+		readpacket.setSceneType(sceneType);
+		readpacket.setRisk(risk);
+		return readpacket;
 	}
 
 	public String getOutTradeNo() {
 		return outTradeNo;
+	}
+
+	public String getOpenId() {
+		return openId;
 	}
 
 	public String getSendName() {
@@ -226,12 +258,12 @@ public class Redpacket extends MerchantResult {
 
 	@Override
 	public String toString() {
-		return "Redpacket [outTradeNo=" + outTradeNo + ", sendName=" + sendName
-				+ ", totalAmount=" + totalAmount + ", totalNum=" + totalNum
-				+ ", amtType=" + amtType + ", wishing=" + wishing
-				+ ", clientIp=" + clientIp + ", actName=" + actName
-				+ ", remark=" + remark + ", msgAppId=" + msgAppId
-				+ ", consumeMchId=" + consumeMchId + ", sceneType=" + sceneType
-				+ ", risk=" + risk + ", " + super.toString() + "]";
+		return "Redpacket [outTradeNo=" + outTradeNo + ", openId=" + openId
+				+ ", sendName=" + sendName + ", totalAmount=" + totalAmount
+				+ ", totalNum=" + totalNum + ", amtType=" + amtType
+				+ ", wishing=" + wishing + ", clientIp=" + clientIp
+				+ ", actName=" + actName + ", remark=" + remark + ", msgAppId="
+				+ msgAppId + ", consumeMchId=" + consumeMchId + ", sceneType="
+				+ sceneType + ", risk=" + risk + ", " + super.toString() + "]";
 	}
 }

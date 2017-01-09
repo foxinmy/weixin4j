@@ -681,24 +681,6 @@ public class WeixinPayProxy {
 	 *
 	 * @param redpacket
 	 *            红包信息
-	 * @param openId
-	 *            接受收红包的用户的openid 必填
-	 * @see com.foxinmy.weixin4j.api.CashApi
-	 * @throws WeixinException
-	 * @see #sendRedpacks(Redpacket, String...)
-	 */
-	public RedpacketSendResult sendRedpack(Redpacket redpacket, String openId)
-			throws WeixinException {
-		return cashApi.sendRedpack(redpacket, openId);
-	}
-
-	/**
-	 * 发放红包 企业向微信用户个人发现金红包
-	 *
-	 * @param redpacket
-	 *            红包信息
-	 * @param openIds
-	 *            接受收红包的用户的openid 必填
 	 * @return 发放结果
 	 * @see com.foxinmy.weixin4j.api.CashApi
 	 * @see com.foxinmy.weixin4j.payment.mch.Redpacket
@@ -711,9 +693,24 @@ public class WeixinPayProxy {
 	 *      发放裂变红包接口</a>
 	 * @throws WeixinException
 	 */
-	public List<Future<RedpacketSendResult>> sendRedpacks(Redpacket redpacket,
-			String... openIds) {
-		return cashApi.sendRedpacks(redpacket, openIds);
+	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+			throws WeixinException {
+		return cashApi.sendRedpack(redpacket);
+	}
+
+	/**
+	 * 批量发放红包 企业向微信用户个人发现金红包
+	 *
+	 * @param redpacket
+	 *            多个红包信息
+	 * @return 发放结果
+	 * @see com.foxinmy.weixin4j.api.CashApi
+	 * @see #sendRedpacks(Redpacket...)
+	 * @throws WeixinException
+	 */
+	public List<Future<RedpacketSendResult>> sendRedpacks(
+			Redpacket... redpackets) {
+		return cashApi.sendRedpacks(redpackets);
 	}
 
 	/**
@@ -882,5 +879,5 @@ public class WeixinPayProxy {
 		return customsApi.queryCustomsOrder(idQuery, customsCity);
 	}
 
-	public final static String VERSION = "1.7.3";
+	public final static String VERSION = "1.7.4";
 }

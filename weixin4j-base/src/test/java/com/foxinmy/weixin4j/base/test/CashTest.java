@@ -26,10 +26,10 @@ public class CashTest extends PayTest {
 
 	@Test
 	public void sendRedpacket() throws WeixinException {
-		Redpacket redpacket = new Redpacket("HB001", "无忧钱庄", 1d, 1, "红包测试",
+		Redpacket redpacket = new Redpacket("HB001",
+				"oyFLst1bqtuTcxK-ojF8hOGtLQao", "无忧钱庄", 1d, 1, "红包测试",
 				"127.0.0.1", "快来领取红包吧！", "来就送钱");
-		RedpacketSendResult result = PAY.sendRedpack(redpacket,
-				"oyFLst1bqtuTcxK-ojF8hOGtLQao");
+		RedpacketSendResult result = PAY.sendRedpack(redpacket);
 		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
 		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
 		System.err.println(result);

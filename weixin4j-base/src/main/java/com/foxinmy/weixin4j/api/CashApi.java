@@ -6,7 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -56,28 +57,6 @@ public class CashApi extends MchApi {
 	 *
 	 * @param redpacket
 	 *            红包信息
-	 * @param openId
-	 *            接受收红包的用户的openid 必填
-	 * @see #sendRedpacks(Redpacket, String...)
-	 */
-	public RedpacketSendResult sendRedpack(Redpacket redpacket, String openId)
-			throws WeixinException {
-		try {
-			return sendRedpacks(redpacket, openId).get(0).get();
-		} catch (InterruptedException e) {
-			throw new WeixinException("send redpack error", e);
-		} catch (ExecutionException e) {
-			throw new WeixinException("send redpack error", e);
-		}
-	}
-
-	/**
-	 * 发放红包 企业向微信用户个人发现金红包
-	 *
-	 * @param redpacket
-	 *            红包信息
-	 * @param openIds
-	 *            接受收红包的用户的openid 必填
 	 * @return 发放结果
 	 * @see com.foxinmy.weixin4j.payment.mch.Redpacket
 	 * @see com.foxinmy.weixin4j.payment.mch.RedpacketSendResult
@@ -89,8 +68,8 @@ public class CashApi extends MchApi {
 	 *      发放裂变红包接口</a>
 	 * @throws WeixinException
 	 */
-	public List<Future<RedpacketSendResult>> sendRedpacks(Redpacket redpacket,
-			String... openIds) {
+	public RedpacketSendResult sendRedpack(Redpacket redpacket)
+			throws WeixinException {
 		String appId = redpacket.getAppId();
 		super.declareMerchant(redpacket);
 		final JSONObject obj = (JSONObject) JSON.toJSON(redpacket);
@@ -100,26 +79,39 @@ public class CashApi extends MchApi {
 		obj.put("wxappid", obj.remove("appid"));
 		final String redpack_uri = redpacket.getTotalNum() > 1 ? getRequestUri("groupredpack_send_uri")
 				: getRequestUri("redpack_send_uri");
-		int sendLength = openIds.length;
+		obj.put("sign", weixinSignature.sign(obj));
+		String param = XmlStream.map2xml(obj);
+		WeixinResponse response = getWeixinSSLExecutor().post(redpack_uri,
+				param);
+		String text = response.getAsString()
+				.replaceFirst("<wxappid>", "<appid>")
+				.replaceFirst("</wxappid>", "</appid>");
+		return XmlStream.fromXML(text, RedpacketSendResult.class);
+	}
+
+	/**
+	 * 批量发放红包 企业向微信用户个人发现金红包
+	 *
+	 * @param redpacket
+	 *            多个红包信息
+	 * @return 发放结果
+	 * @see #sendRedpacks(Redpacket...)
+	 * @throws WeixinException
+	 */
+	public List<Future<RedpacketSendResult>> sendRedpacks(
+			Redpacket... redpackets) {
 		ExecutorService sendExecutor = Executors.newFixedThreadPool(Math.max(1,
-				sendLength / 10)); // 十分之一?
+				redpackets.length / 10)); // 十分之一?
+		CompletionService<RedpacketSendResult> completion = new ExecutorCompletionService<RedpacketSendResult>(
+				sendExecutor);
 		List<Future<RedpacketSendResult>> callSendList = new ArrayList<Future<RedpacketSendResult>>(
-				sendLength);
-		for (final String openId : openIds) {
-			Future<RedpacketSendResult> futureSend = sendExecutor
+				redpackets.length);
+		for (final Redpacket redpacket : redpackets) {
+			Future<RedpacketSendResult> futureSend = completion
 					.submit(new Callable<RedpacketSendResult>() {
 						@Override
 						public RedpacketSendResult call() throws Exception {
-							obj.put("re_openid", openId);
-							obj.put("sign", weixinSignature.sign(obj));
-							String param = XmlStream.map2xml(obj);
-							WeixinResponse response = getWeixinSSLExecutor()
-									.post(redpack_uri, param);
-							String text = response.getAsString()
-									.replaceFirst("<wxappid>", "<appid>")
-									.replaceFirst("</wxappid>", "</appid>");
-							return XmlStream.fromXML(text,
-									RedpacketSendResult.class);
+							return sendRedpack(redpacket);
 						}
 					});
 			callSendList.add(futureSend);
