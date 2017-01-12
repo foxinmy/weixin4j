@@ -322,7 +322,7 @@ public class CouponBaseInfo implements Serializable {
 
 	public void cleanCantUpdateField() {
 		this.brandName = null;
-		this.title = null;
+//		this.title = null;
 		this.sku = null;
 		this.bindOpenId = null;
 		this.useCustomCode = null;
