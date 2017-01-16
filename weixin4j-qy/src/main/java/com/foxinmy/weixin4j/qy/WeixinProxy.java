@@ -947,7 +947,7 @@ public class WeixinProxy {
 	 *      二次验证说明</a>
 	 * @throws WeixinException
 	 */
-	public ApiResult authsucc(String userId) throws WeixinException {
+	public ApiResult userAuthsucc(String userId) throws WeixinException {
 		return userApi.authsucc(userId);
 	}
 
