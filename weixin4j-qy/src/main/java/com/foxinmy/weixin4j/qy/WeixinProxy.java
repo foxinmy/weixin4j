@@ -936,6 +936,22 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 开启二次验证成功时调用(管理员须拥有userid对应员工的管理权限)
+	 * 
+	 * @param userid
+	 *            成员ID
+	 * @return 调用结果
+	 * @see com.foxinmy.weixin4j.qy.api.UserApi
+	 * @see <a href=
+	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%85%B3%E6%B3%A8%E4%B8%8E%E5%8F%96%E6%B6%88%E5%85%B3%E6%B3%A8">
+	 *      二次验证说明</a>
+	 * @throws WeixinException
+	 */
+	public ApiResult authsucc(String userId) throws WeixinException {
+		return userApi.authsucc(userId);
+	}
+
+	/**
 	 * 创建标签(创建的标签属于管理组;默认为未加锁状态)
 	 *
 	 * @param tag
