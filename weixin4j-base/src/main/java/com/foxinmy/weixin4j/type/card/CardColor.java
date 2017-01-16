@@ -57,15 +57,15 @@ public enum CardColor {
 	/**
 	 * <font Color="#cc463d">Color0100</font>
 	 */
-	Color0100(204, 70, 61, "#cc463d"),
+	Color100(204, 70, 61, "#cc463d"),
 	/**
 	 * <font Color="#cf3e36">Color0101</font>
 	 */
-	Color0101(207, 62, 54, "#cf3e36"),
+	Color101(207, 62, 54, "#cf3e36"),
 	/**
 	 * <font Color="#5E6671">Color0102</font>
 	 */
-	Color0102(94, 102, 113, "#5E6671");
+	Color102(94, 102, 113, "#5E6671");
 	private int r;
 	private int g;
 	private int b;

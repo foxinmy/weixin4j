@@ -135,7 +135,7 @@ public class MemberUserForm {
         }
 
         public FormBudiler canModify(boolean modify){
-            this.canModify = canModify;
+            this.canModify = modify;
             return this;
         }
 
