@@ -87,6 +87,9 @@ public class IOUtil {
 
     public static void close(Closeable stream) {
         try {
+            if(stream == null){
+                return ;
+            }
             stream.close();
         } catch (IOException e) {
             e.printStackTrace();
