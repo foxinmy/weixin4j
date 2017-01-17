@@ -138,7 +138,7 @@ public class TmplApi extends MpApi {
 		String template_del_uri = getRequestUri("template_del_uri");
 		WeixinResponse response = weixinExecutor.post(
 				String.format(template_del_uri, token.getAccessToken()),
-				String.format("{\"template_id\"=\"%s\"}", templateId));
+				String.format("{\"template_id\":\"%s\"}", templateId));
 		return response.getAsResult();
 	}
 

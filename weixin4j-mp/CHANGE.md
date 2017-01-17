@@ -261,3 +261,9 @@
 * 2016-12-13
 
   + version upgrade to 1.7.3
+  
+* 2017-01-09
+
+  + 新增批量发红包接口
+  
+  + version upgrade to 1.7.4

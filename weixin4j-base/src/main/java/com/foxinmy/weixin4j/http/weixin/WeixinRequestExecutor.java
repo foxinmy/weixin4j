@@ -108,9 +108,9 @@ public class WeixinRequestExecutor {
 	public WeixinResponse get(String url, URLParameter... parameters)
 			throws WeixinException {
 		// always contain the question mark
-		StringBuilder buf = new StringBuilder(url).append("&");
+		StringBuilder buf = new StringBuilder(url);
 		if (parameters != null && parameters.length > 0) {
-			buf.append(FormUrlEntity.formatParameters(Arrays.asList(parameters)));
+			buf.append("&").append(FormUrlEntity.formatParameters(Arrays.asList(parameters)));
 		}
 		HttpRequest request = new HttpRequest(HttpMethod.GET, buf.toString());
 		return doRequest(request);

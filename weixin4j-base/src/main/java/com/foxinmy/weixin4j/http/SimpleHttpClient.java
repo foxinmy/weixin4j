@@ -28,7 +28,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @since JDK 1.6
  * @see
  */
-public class SimpleHttpClient extends AbstractHttpClient implements HttpClient {
+public class SimpleHttpClient extends AbstractHttpClient {
 
 	private final HttpParams params;
 
