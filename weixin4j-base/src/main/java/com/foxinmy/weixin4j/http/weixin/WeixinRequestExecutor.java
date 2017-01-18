@@ -28,24 +28,21 @@ import com.foxinmy.weixin4j.http.message.XmlMessageConverter;
 import com.foxinmy.weixin4j.logging.InternalLogLevel;
 import com.foxinmy.weixin4j.logging.InternalLogger;
 import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
-
-
 import com.foxinmy.weixin4j.util.Consts;
-import com.foxinmy.weixin4j.util.WeixinErrorUtil2;
 
 /**
  * 负责微信请求的执行
  *
- * @author jy
  * @className WeixinRequestExecutor
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年8月15日
- * @see
  * @since JDK 1.6
+ * @see
  */
 public class WeixinRequestExecutor {
 
-	protected final InternalLogger logger = InternalLoggerFactory.getInstance(getClass());
+	protected final InternalLogger logger = InternalLoggerFactory
+			.getInstance(getClass());
 
 	private static final String SUCCESS_CODE = ",0,success,";
 
@@ -61,7 +58,7 @@ public class WeixinRequestExecutor {
 
 	/**
 	 * Post方法执行微信请求
-	 *
+	 * 
 	 * @param url
 	 *            请求URL
 	 * @param body
@@ -78,7 +75,7 @@ public class WeixinRequestExecutor {
 
 	/**
 	 * Post方法执行微信请求，用于文件上传
-	 *
+	 * 
 	 * @param url
 	 *            请求URL
 	 * @param bodyParts
@@ -100,7 +97,7 @@ public class WeixinRequestExecutor {
 
 	/**
 	 * Get方法执行微信请求
-	 *
+	 * 
 	 * @param url
 	 *            请求URL，如：https://api.weixin.qq.com/cgi-bin/token
 	 * @param parameters
@@ -111,9 +108,9 @@ public class WeixinRequestExecutor {
 	public WeixinResponse get(String url, URLParameter... parameters)
 			throws WeixinException {
 		// always contain the question mark
-		StringBuilder buf = new StringBuilder(url).append("&");
+		StringBuilder buf = new StringBuilder(url);
 		if (parameters != null && parameters.length > 0) {
-			buf.append(FormUrlEntity.formatParameters(Arrays.asList(parameters)));
+			buf.append("&").append(FormUrlEntity.formatParameters(Arrays.asList(parameters)));
 		}
 		HttpRequest request = new HttpRequest(HttpMethod.GET, buf.toString());
 		return doRequest(request);
@@ -121,7 +118,7 @@ public class WeixinRequestExecutor {
 
 	/**
 	 * 执行微信请求
-	 *
+	 * 
 	 * @param request
 	 *            微信请求
 	 * @return 微信响应
@@ -145,7 +142,7 @@ public class WeixinRequestExecutor {
 
 	/**
 	 * 响应内容是否为流
-	 *
+	 * 
 	 * @param response
 	 *            微信响应
 	 * @return true/false
@@ -163,7 +160,7 @@ public class WeixinRequestExecutor {
 
 	/**
 	 * handle the weixin response
-	 *
+	 * 
 	 * @param response
 	 *            微信请求响应
 	 * @throws WeixinException
@@ -187,7 +184,7 @@ public class WeixinRequestExecutor {
 				.toLowerCase()))) {
 			printHttpRequest(request,InternalLogLevel.WARN);
 			throw new WeixinException(result.getReturnCode(),
-					result.getReturnMsg(),WeixinErrorUtil2.getText(result.getReturnCode()));
+					result.getReturnMsg());
 		}
 		if (XmlMessageConverter.GLOBAL.canConvert(XmlResult.class, response)) {
 			try {
@@ -197,7 +194,7 @@ public class WeixinRequestExecutor {
 						.getResultCode().toLowerCase()))) {
 					printHttpRequest(request,InternalLogLevel.WARN);
 					throw new WeixinException(xmlResult.getErrCode(),
-							xmlResult.getErrCodeDes(),WeixinErrorUtil2.getText(xmlResult.getErrCode()));
+							xmlResult.getErrCodeDes());
 				}
 			} catch (IOException e) {
 				;
@@ -223,7 +220,7 @@ public class WeixinRequestExecutor {
 
 	/**
 	 * 创建 SSL微信请求对象
-	 *
+	 * 
 	 * @param password
 	 *            加载密钥
 	 * @param inputStream

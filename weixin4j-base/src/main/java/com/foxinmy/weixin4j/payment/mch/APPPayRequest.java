@@ -20,8 +20,8 @@ import com.foxinmy.weixin4j.util.MapUtil;
  *      href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1">APP支付</a>
  */
 public class APPPayRequest extends AbstractPayRequest {
-	public APPPayRequest(PrePay prePay, WeixinPayAccount payAccount) {
-		super(prePay.getPrepayId(),prePay.getResponse(), payAccount);
+	public APPPayRequest(String prePayId, WeixinPayAccount payAccount) {
+		super(prePayId, payAccount);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class APPPayRequest extends AbstractPayRequest {
 	public PayRequest toRequestObject() {
 		PayRequest payRequest = new PayRequest(getPaymentAccount().getId(),
 				"Sign=WXPay");
-		payRequest.setPartnerId(getPaymentAccount().getPartnerId());
+		payRequest.setPartnerId(getPaymentAccount().getMchId());
 		payRequest.setPrepayId(getPrePayId());
 		String sign = DigestUtil.MD5(
 				String.format("%s&key=%s",
@@ -55,7 +55,7 @@ public class APPPayRequest extends AbstractPayRequest {
 		content.append(String.format("<appid><![CDATA[%s]]></appid>",
 				payRequest.getAppId()));
 		content.append(String.format("<partnerid><![CDATA[%s]]></partnerid>",
-				getPaymentAccount().getMchId()));
+				getPaymentAccount().getPartnerId()));
 		content.append(String.format("<prepayid><![CDATA[%s]]></prepayid>",
 				payRequest.getPrepayId()));
 		content.append(String.format("<package><![CDATA[%s]]></package>",

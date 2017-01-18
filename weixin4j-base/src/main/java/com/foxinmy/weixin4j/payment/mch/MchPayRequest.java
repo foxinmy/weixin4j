@@ -52,10 +52,4 @@ public interface MchPayRequest {
 	 * @return
 	 */
 	public PayRequest toRequestObject();
-
-	/**
-	 * 支付请求返回的结果
-	 * @return
-	 */
-	public String getResponseString();
 }

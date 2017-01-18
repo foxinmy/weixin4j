@@ -1,21 +1,19 @@
 package com.foxinmy.weixin4j.mp.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.paging.Pageable;
 import com.foxinmy.weixin4j.model.paging.Pagedata;
 import com.foxinmy.weixin4j.mp.model.shakearound.Device;
 import com.foxinmy.weixin4j.mp.model.shakearound.DeviceAuditState;
 import com.foxinmy.weixin4j.mp.model.shakearound.ShakeUserInfo;
 import com.foxinmy.weixin4j.token.TokenManager;
-import com.sun.javafx.binding.StringFormatter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 摇一摇周边

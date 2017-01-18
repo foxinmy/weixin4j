@@ -72,7 +72,7 @@ public class Button implements Serializable {
 	 */
 	public Button(String name, Button... subButtons) {
 		this.name = name;
-		this.subs = Arrays.asList(subButtons);
+		this.subs = new ArrayList<Button>(Arrays.asList(subButtons));
 	}
 
 	/**

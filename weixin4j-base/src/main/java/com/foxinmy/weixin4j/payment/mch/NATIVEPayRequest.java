@@ -20,9 +20,9 @@ public class NATIVEPayRequest extends AbstractPayRequest {
 
 	private final String codeUrl;
 
-	public NATIVEPayRequest(PrePay prePay, String codeUrl,
+	public NATIVEPayRequest(String prePayId, String codeUrl,
 			WeixinPayAccount payAccount) {
-		super(prePay.getPrepayId(), prePay.getResponse(), payAccount);
+		super(prePayId, payAccount);
 		this.codeUrl = codeUrl;
 	}
 

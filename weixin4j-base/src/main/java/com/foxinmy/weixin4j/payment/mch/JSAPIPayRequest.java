@@ -25,8 +25,8 @@ import com.foxinmy.weixin4j.type.TradeType;
  */
 public class JSAPIPayRequest extends AbstractPayRequest {
 
-	public JSAPIPayRequest(PrePay prePay, WeixinPayAccount payAccount) {
-		super(prePay.getPrepayId(), prePay.getResponse(), payAccount);
+	public JSAPIPayRequest(String prePayId, WeixinPayAccount payAccount) {
+		super(prePayId, payAccount);
 	}
 
 	@Override

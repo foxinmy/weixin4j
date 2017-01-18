@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.foxinmy.weixin4j.type.mch.RedpacketSceneType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
@@ -33,17 +34,17 @@ public class Redpacket extends MerchantResult {
 	@JSONField(name = "mch_billno")
 	private String outTradeNo;
 	/**
+	 * 接受收红包的用户的openid 必填
+	 */
+	@XmlElement(name = "re_openid")
+	@JSONField(name = "re_openid")
+	private String openId;
+	/**
 	 * 红包发送者名称 必填
 	 */
 	@XmlElement(name = "send_name")
 	@JSONField(name = "send_name")
 	private String sendName;
-	/**
-	 * 接收红包的用户的openid
-	 */
-	@XmlElement(name = "re_openid")
-	@JSONField(name = "re_openid")
-	private String openId;
 	/**
 	 * 付款金额，单位分
 	 */
@@ -96,6 +97,18 @@ public class Redpacket extends MerchantResult {
 	@XmlElement(name = "consume_mch_id")
 	@JSONField(name = "consume_mch_id")
 	private String consumeMchId;
+	/**
+	 * 发放红包使用场景，红包金额大于200时必传
+	 */
+	@XmlElement(name = "scene_id")
+	@JSONField(name = "scene_id")
+	private RedpacketSceneType sceneType;
+	/**
+	 * 活动信息
+	 */
+	@XmlElement(name = "risk_info")
+	@JSONField(name = "risk_info")
+	private String risk;
 
 	protected Redpacket() {
 		// jaxb required
@@ -106,10 +119,10 @@ public class Redpacket extends MerchantResult {
 	 *
 	 * @param outTradeNo
 	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
-	 * @param sendName
-	 *            红包发送者名称 必填
 	 * @param openId
 	 *            接受收红包的用户的openid 必填
+	 * @param sendName
+	 *            红包发送者名称 必填
 	 * @param totalAmount
 	 *            付款金额 <font color="red">单位为元,自动格式化为分</font> 必填
 	 * @param totalNum
@@ -123,74 +136,56 @@ public class Redpacket extends MerchantResult {
 	 * @param remark
 	 *            备注 必填
 	 */
-	public Redpacket(String outTradeNo, String sendName, String openId,
+	public Redpacket(String outTradeNo, String openId, String sendName,
 			double totalAmount, int totalNum, String wishing, String clientIp,
 			String actName, String remark) {
 		this.outTradeNo = outTradeNo;
-		this.sendName = sendName;
 		this.openId = openId;
+		this.sendName = sendName;
+		this.totalAmount = DateUtil.formatYuan2Fen(totalAmount);
 		this.totalNum = totalNum;
 		this.wishing = wishing;
 		this.clientIp = clientIp;
 		this.actName = actName;
 		this.remark = remark;
-		this.totalAmount = DateUtil.formatYuan2Fen(totalAmount);
 		this.amtType = totalNum > 1 ? "ALL_RAND" : null;
 	}
 
 	/**
-	 * 红包
-	 *
+	 * 批量发送时可能需要
+	 * 
 	 * @param outTradeNo
-	 *            商户侧一天内不可重复的订单号 接口根据商户订单号支持重入 如出现超时可再调用 必填
-	 * @param sendName
-	 *            红包发送者名称 必填
+	 *            订单号
 	 * @param openId
-	 *            接受收红包的用户的openid 必填
-	 * @param totalAmount
-	 *            付款金额 <font color="red">单位为分,自动格式化为分</font> 必填
-	 * @param totalNum
-	 *            红包发放总人数 大于1视为裂变红包 必填
-	 * @param wishing
-	 *            红包祝福语 必填
-	 * @param clientIp
-	 *            Ip地址 必填
-	 * @param actName
-	 *            活动名称 必填
-	 * @param remark
-	 *            备注 必填
+	 *            用户ID
+	 * @return 红包实体
 	 */
-	public Redpacket(String outTradeNo, String sendName, String openId,
-					 int totalAmount, int totalNum, String wishing, String clientIp,
-					 String actName, String remark) {
-		this.outTradeNo = outTradeNo;
-		this.sendName = sendName;
-		this.openId = openId;
-		this.totalNum = totalNum;
-		this.wishing = wishing;
-		this.clientIp = clientIp;
-		this.actName = actName;
-		this.remark = remark;
-		this.totalAmount = totalAmount;
-		this.amtType = totalNum > 1 ? "ALL_RAND" : null;
+	public Redpacket copy(String outTradeNo, String openId) {
+		Redpacket readpacket = new Redpacket(outTradeNo, openId, sendName,
+				totalAmount, totalNum, wishing, clientIp, actName, remark);
+		readpacket.setMsgAppId(msgAppId);
+		readpacket.setConsumeMchId(consumeMchId);
+		readpacket.setSceneType(sceneType);
+		readpacket.setRisk(risk);
+		return readpacket;
 	}
 
 	public String getOutTradeNo() {
 		return outTradeNo;
 	}
 
-	public String getSendName() {
-		return sendName;
-	}
-
 	public String getOpenId() {
 		return openId;
+	}
+
+	public String getSendName() {
+		return sendName;
 	}
 
 	public int getTotalAmount() {
 		return totalAmount;
 	}
-	
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
@@ -241,14 +236,34 @@ public class Redpacket extends MerchantResult {
 		this.consumeMchId = consumeMchId;
 	}
 
+	public RedpacketSceneType getSceneType() {
+		return sceneType;
+	}
+
+	public void setSceneType(RedpacketSceneType sceneType) {
+		this.sceneType = sceneType;
+	}
+
+	public String getRisk() {
+		return risk;
+	}
+
+	public void setRisk(String risk) {
+		this.risk = risk;
+	}
+
+	public void setRisk(RedpacketRisk risk) {
+		this.risk = risk.toContent();
+	}
+
 	@Override
 	public String toString() {
-		return "Redpacket [msgAppId=" + msgAppId + ", consumeMchId="
-				+ consumeMchId + ", outTradeNo=" + outTradeNo + ", sendName="
-				+ sendName + ", openId=" + openId + ", totalAmount="
-				+ totalAmount + ", totalNum=" + totalNum + ", amtType="
-				+ amtType + ", wishing=" + wishing + ", clientIp=" + clientIp
-				+ ", actName=" + actName + ", remark=" + remark + ", "
-				+ super.toString() + "]";
+		return "Redpacket [outTradeNo=" + outTradeNo + ", openId=" + openId
+				+ ", sendName=" + sendName + ", totalAmount=" + totalAmount
+				+ ", totalNum=" + totalNum + ", amtType=" + amtType
+				+ ", wishing=" + wishing + ", clientIp=" + clientIp
+				+ ", actName=" + actName + ", remark=" + remark + ", msgAppId="
+				+ msgAppId + ", consumeMchId=" + consumeMchId + ", sceneType="
+				+ sceneType + ", risk=" + risk + ", " + super.toString() + "]";
 	}
 }
