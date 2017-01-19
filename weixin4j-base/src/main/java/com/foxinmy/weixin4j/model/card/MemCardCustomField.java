@@ -70,4 +70,12 @@ public class MemCardCustomField {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public String getTips() {
+        return tips;
+    }
+
+    public void setTips(String tips) {
+        this.tips = tips;
+    }
 }

@@ -129,10 +129,11 @@ public class WeixinRequestExecutor {
 			if (logger.isEnabled(InternalLogLevel.DEBUG)) {
 				logger.debug("weixin request >> " + request.getMethod() + " "
 						+ request.getURI().toString());
+				printHttpRequest(request,InternalLogLevel.DEBUG);
 			}
 			HttpResponse httpResponse = httpClient.execute(request);
 			WeixinResponse response = new WeixinResponse(httpResponse);
-			handleResponse(response);
+			handleResponse(request,response);
 			return response;
 		} catch (HttpClientException e) {
 			throw new WeixinException(e);
@@ -164,7 +165,7 @@ public class WeixinRequestExecutor {
 	 *            微信请求响应
 	 * @throws WeixinException
 	 */
-	protected void handleResponse(WeixinResponse response)
+	protected void handleResponse(HttpRequest request,WeixinResponse response)
 			throws WeixinException {
 		boolean hasStreamMimeType = hasStreamMimeType(response);
 		if (logger.isEnabled(InternalLogLevel.DEBUG)) {
@@ -181,6 +182,7 @@ public class WeixinRequestExecutor {
 		ApiResult result = response.getAsResult();
 		if (!SUCCESS_CODE.contains(String.format(",%s,", result.getReturnCode()
 				.toLowerCase()))) {
+			printHttpRequest(request,InternalLogLevel.WARN);
 			throw new WeixinException(result.getReturnCode(),
 					result.getReturnMsg());
 		}
@@ -190,11 +192,24 @@ public class WeixinRequestExecutor {
 						XmlResult.class, response);
 				if (!SUCCESS_CODE.contains(String.format(",%s,", xmlResult
 						.getResultCode().toLowerCase()))) {
+					printHttpRequest(request,InternalLogLevel.WARN);
 					throw new WeixinException(xmlResult.getErrCode(),
 							xmlResult.getErrCodeDes());
 				}
 			} catch (IOException e) {
 				;
+			}
+		}
+	}
+
+	private  void printHttpRequest(HttpRequest request,InternalLogLevel level){
+		if(request.getEntity() instanceof  StringEntity){
+			if(level.equals(InternalLogLevel.DEBUG)) {
+				logger.debug("weixin request  body >> " + ((StringEntity) request.getEntity()).getContentString());
+			}else if(level.equals(InternalLogLevel.INFO)){
+				logger.info("weixin request  body >> " + ((StringEntity) request.getEntity()).getContentString());
+			}else if(level.equals(InternalLogLevel.WARN)){
+				logger.warn("weixin request  body >> " + ((StringEntity) request.getEntity()).getContentString());
 			}
 		}
 	}
