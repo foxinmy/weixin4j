@@ -3,11 +3,13 @@ package com.foxinmy.weixin4j.http.support.apache4;
 import java.net.InetSocketAddress;
 
 import org.apache.http.HttpHost;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 
@@ -30,8 +32,16 @@ public class HttpComponent4_1Factory extends HttpClientFactory {
 
 	private final org.apache.http.client.HttpClient httpClient;
 
+	/**
+	 * 默认httpclient
+	 * @see <a href="https://issues.apache.org/jira/browse/HTTPCLIENT-1193">HTTPCLIENT-1193</a>
+	 * @param clientConnectionManager
+	 */
 	public HttpComponent4_1Factory() {
-		this(new DefaultHttpClient());
+		PoolingClientConnectionManager clientConnectionManager = new PoolingClientConnectionManager();
+		clientConnectionManager.setMaxTotal(30);
+		clientConnectionManager.setDefaultMaxPerRoute(clientConnectionManager.getMaxTotal());
+		this.httpClient = new DefaultHttpClient(clientConnectionManager);
 	}
 
 	public HttpComponent4_1Factory(org.apache.http.client.HttpClient httpClient) {

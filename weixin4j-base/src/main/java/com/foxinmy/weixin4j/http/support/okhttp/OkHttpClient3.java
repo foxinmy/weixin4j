@@ -39,15 +39,14 @@ public class OkHttpClient3 extends AbstractHttpClient {
 		HttpResponse response = null;
 		try {
 			okhttp3.Request okRequest = createRequest(request);
-			okhttp3.Response okResponse = okClient.newCall(okRequest)
-					.execute();
+			okhttp3.Response okResponse = okClient.newCall(okRequest).execute();
 			response = new OkHttpResponse3(okResponse, okResponse.body()
 					.bytes());
 			handleResponse(response);
 		} catch (IOException e) {
 			throw new HttpClientException("I/O error on "
 					+ request.getMethod().name() + " request for \""
-					+ request.getURI().toString() + "\":" + e.getMessage(), e);
+					+ request.getURI().toString(), e);
 		} finally {
 			if (response != null) {
 				response.close();
