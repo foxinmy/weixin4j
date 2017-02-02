@@ -103,15 +103,15 @@ public class Netty4HttpClient extends AbstractHttpClient {
 		} catch (IOException e) {
 			throw new HttpClientException("I/O error on "
 					+ request.getMethod().name() + " request for \""
-					+ request.getURI().toString() + "\":" + e.getMessage(), e);
+					+ request.getURI().toString(), e);
 		} catch (InterruptedException e) {
 			throw new HttpClientException("Execute error on "
 					+ request.getMethod().name() + " request for \""
-					+ request.getURI().toString() + "\":" + e.getMessage(), e);
+					+ request.getURI().toString(), e);
 		} catch (ExecutionException e) {
 			throw new HttpClientException("Execute error on "
 					+ request.getMethod().name() + " request for \""
-					+ request.getURI().toString() + "\":" + e.getMessage(), e);
+					+ request.getURI().toString(), e);
 		} finally {
 			if (response != null) {
 				response.close();

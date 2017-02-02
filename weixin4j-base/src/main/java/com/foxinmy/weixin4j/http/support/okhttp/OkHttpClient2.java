@@ -48,7 +48,7 @@ public class OkHttpClient2 extends AbstractHttpClient {
 		} catch (IOException e) {
 			throw new HttpClientException("I/O error on "
 					+ request.getMethod().name() + " request for \""
-					+ request.getURI().toString() + "\":" + e.getMessage(), e);
+					+ request.getURI().toString(), e);
 		} finally {
 			if (response != null) {
 				response.close();
