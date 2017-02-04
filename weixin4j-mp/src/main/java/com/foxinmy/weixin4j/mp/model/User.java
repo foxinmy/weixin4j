@@ -160,8 +160,8 @@ public class User implements Serializable {
 	public String getHeadimgurl(FaceSize size) {
 		if (StringUtil.isNotBlank(headimgurl)) {
 			StringBuilder sb = new StringBuilder(headimgurl);
-			return sb.replace(0, (headimgurl.length() - 1), size.getInt() + "")
-					.toString();
+			return sb.substring(0, headimgurl.lastIndexOf('/') + 1)
+					+ size.getInt();
 		}
 		return "";
 	}
