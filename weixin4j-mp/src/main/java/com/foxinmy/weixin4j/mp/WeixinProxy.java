@@ -1005,8 +1005,8 @@ public class WeixinProxy {
 	 *      删除群发</a>
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @see {@link #massByGroupId(Tuple, int)}
-	 * @see {@link #massByOpenIds(Tuple, String...)
-
+	 * @see {@link #massByOpenIds(Tuple, String...)
+	 * 
 	 *
 	 */
 	public ApiResult deleteMassNews(String msgid) throws WeixinException {
@@ -1980,6 +1980,24 @@ public class WeixinProxy {
 	 */
 	public List<String> getAllBalcklistOpenIds() throws WeixinException {
 		return tagApi.getAllBalcklistOpenIds();
+	}
+
+	/**
+	 * 黑名单操作
+	 * 
+	 * @param blacklist
+	 *            true=拉黑用户,false=取消拉黑用户
+	 * @param openIds
+	 *            用户ID列表
+	 * @return 操作结果
+	 * @see com.foxinmy.weixin4j.mp.api.TagApi
+	 * @see <a
+	 *      href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1471422259_pJMWA&token=&lang=zh_CN">黑名单操作</a>
+	 * @throws WeixinException
+	 */
+	public ApiResult batchBlacklist(boolean blacklist, String... openIds)
+			throws WeixinException {
+		return tagApi.batchBlacklist(blacklist, openIds);
 	}
 
 	/**
