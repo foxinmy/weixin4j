@@ -43,26 +43,22 @@ public class SimpleHttpClient extends AbstractHttpClient {
 		URLConnection urlConnection = proxy != null ? uri.toURL()
 				.openConnection(proxy) : uri.toURL().openConnection();
 		if (uri.getScheme().equals("https")) {
-			try {
-				SSLContext sslContext = null;
-				HostnameVerifier hostnameVerifier = null;
-				if (params != null) {
-					sslContext = params.getSSLContext();
-					hostnameVerifier = params.getHostnameVerifier();
-				}
-				if (sslContext == null) {
-					sslContext = HttpClientFactory.allowSSLContext();
-				}
-				if (hostnameVerifier == null) {
-					hostnameVerifier = HttpClientFactory.AllowHostnameVerifier.GLOBAL;
-				}
-				HttpsURLConnection connection = (HttpsURLConnection) urlConnection;
-				connection.setSSLSocketFactory(sslContext.getSocketFactory());
-				connection.setHostnameVerifier(hostnameVerifier);
-				return connection;
-			} catch (HttpClientException e) {
-				throw new IOException(e);
+			SSLContext sslContext = null;
+			HostnameVerifier hostnameVerifier = null;
+			if (params != null) {
+				sslContext = params.getSSLContext();
+				hostnameVerifier = params.getHostnameVerifier();
 			}
+			if (sslContext == null) {
+				sslContext = HttpClientFactory.allowSSLContext();
+			}
+			if (hostnameVerifier == null) {
+				hostnameVerifier = HttpClientFactory.AllowHostnameVerifier.GLOBAL;
+			}
+			HttpsURLConnection connection = (HttpsURLConnection) urlConnection;
+			connection.setSSLSocketFactory(sslContext.getSocketFactory());
+			connection.setHostnameVerifier(hostnameVerifier);
+			return connection;
 		} else {
 			return (HttpURLConnection) urlConnection;
 		}

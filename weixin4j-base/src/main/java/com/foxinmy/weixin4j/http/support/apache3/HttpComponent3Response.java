@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.protocol.Protocol;
 
 import com.foxinmy.weixin4j.http.AbstractHttpResponse;
 import com.foxinmy.weixin4j.http.HttpHeaders;
@@ -74,6 +73,6 @@ public class HttpComponent3Response extends AbstractHttpResponse {
 	@Override
 	public void close() {
 		httpMethod.releaseConnection();
-		Protocol.unregisterProtocol("https");
+		//Protocol.unregisterProtocol("https");
 	}
 }

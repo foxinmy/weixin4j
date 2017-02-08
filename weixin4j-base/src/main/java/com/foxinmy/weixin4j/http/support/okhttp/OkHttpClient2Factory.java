@@ -24,7 +24,11 @@ public class OkHttpClient2Factory extends HttpClientFactory {
 	private final OkHttpClient okClient;
 
 	public OkHttpClient2Factory() {
-		this(new OkHttpClient());
+		okClient = new OkHttpClient();
+		okClient.setHostnameVerifier(HttpClientFactory.AllowHostnameVerifier.GLOBAL);
+		okClient.setSslSocketFactory(HttpClientFactory.allowSSLContext()
+				.getSocketFactory());
+
 	}
 
 	public OkHttpClient2Factory(OkHttpClient okClient) {
@@ -39,12 +43,12 @@ public class OkHttpClient2Factory extends HttpClientFactory {
 		if (params.getProxy() != null) {
 			okClient.setProxy(params.getProxy());
 		}
-		if (params.getHostnameVerifier() != null) {
-			okClient.setHostnameVerifier(params.getHostnameVerifier());
-		}
 		if (params.getSSLContext() != null) {
 			okClient.setSslSocketFactory(params.getSSLContext()
 					.getSocketFactory());
+		}
+		if (params.getHostnameVerifier() != null) {
+			okClient.setHostnameVerifier(params.getHostnameVerifier());
 		}
 	}
 

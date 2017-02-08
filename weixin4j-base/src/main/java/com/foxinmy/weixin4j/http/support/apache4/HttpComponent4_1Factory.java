@@ -2,6 +2,8 @@ package com.foxinmy.weixin4j.http.support.apache4;
 
 import java.net.InetSocketAddress;
 
+import javax.net.ssl.SSLContext;
+
 import org.apache.http.HttpHost;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnRoutePNames;
@@ -14,6 +16,7 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 
 import com.foxinmy.weixin4j.http.HttpClient;
+import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.factory.HttpClientFactory;
@@ -34,14 +37,33 @@ public class HttpComponent4_1Factory extends HttpClientFactory {
 
 	/**
 	 * 默认httpclient
-	 * @see <a href="https://issues.apache.org/jira/browse/HTTPCLIENT-1193">HTTPCLIENT-1193</a>
+	 * 
+	 * @see <a
+	 *      href="https://issues.apache.org/jira/browse/HTTPCLIENT-1193">HTTPCLIENT-1193</a>
 	 * @param clientConnectionManager
 	 */
 	public HttpComponent4_1Factory() {
 		PoolingClientConnectionManager clientConnectionManager = new PoolingClientConnectionManager();
 		clientConnectionManager.setMaxTotal(30);
-		clientConnectionManager.setDefaultMaxPerRoute(clientConnectionManager.getMaxTotal());
-		this.httpClient = new DefaultHttpClient(clientConnectionManager);
+		clientConnectionManager.setDefaultMaxPerRoute(clientConnectionManager
+				.getMaxTotal());
+		httpClient = new DefaultHttpClient(clientConnectionManager);
+		httpClient.getParams().setParameter(
+				CoreProtocolPNames.HTTP_CONTENT_CHARSET, Consts.UTF_8);
+		httpClient.getParams().setParameter(
+				CoreProtocolPNames.HTTP_ELEMENT_CHARSET, Consts.UTF_8.name());
+		httpClient.getParams().setParameter(
+				CoreProtocolPNames.STRICT_TRANSFER_ENCODING, Consts.UTF_8);
+		httpClient.getParams().setParameter(HttpHeaders.CONTENT_ENCODING,
+				Consts.UTF_8);
+		httpClient.getParams().setParameter(HttpHeaders.ACCEPT_CHARSET,
+				Consts.UTF_8);
+		SSLSocketFactory socketFactory = new SSLSocketFactory(
+				HttpClientFactory.allowSSLContext());
+		socketFactory
+				.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+		Scheme scheme = new Scheme("https", socketFactory, 443);
+		httpClient.getConnectionManager().getSchemeRegistry().register(scheme);
 	}
 
 	public HttpComponent4_1Factory(org.apache.http.client.HttpClient httpClient) {
@@ -61,31 +83,15 @@ public class HttpComponent4_1Factory extends HttpClientFactory {
 		httpClient.getParams().setIntParameter(
 				CoreConnectionPNames.CONNECTION_TIMEOUT,
 				params.getConnectTimeout());
-		httpClient.getParams().setIntParameter(
-				CoreConnectionPNames.SO_TIMEOUT,
+		httpClient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT,
 				params.getReadTimeout());
-		httpClient.getParams().setParameter(
-				CoreProtocolPNames.HTTP_CONTENT_CHARSET, Consts.UTF_8);
-		httpClient.getParams().setParameter(
-				CoreProtocolPNames.HTTP_ELEMENT_CHARSET, Consts.UTF_8.name());
-		httpClient.getParams().setParameter(
-				CoreProtocolPNames.STRICT_TRANSFER_ENCODING, Consts.UTF_8);
-		httpClient.getParams().setParameter(HttpHeaders.CONTENT_ENCODING,
-				Consts.UTF_8);
-		httpClient.getParams().setParameter(HttpHeaders.ACCEPT_CHARSET,
-				Consts.UTF_8);
 		if (params.getSSLContext() != null) {
-			X509HostnameVerifier hostnameVerifier = null;
-			if (params.getHostnameVerifier() != null) {
-				hostnameVerifier = new CustomHostnameVerifier(
-						params.getHostnameVerifier());
-			}
-			if (hostnameVerifier == null) {
-				hostnameVerifier = SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
-			}
 			SSLSocketFactory socketFactory = new SSLSocketFactory(
 					params.getSSLContext());
-			socketFactory.setHostnameVerifier(hostnameVerifier);
+			if (params.getHostnameVerifier() != null) {
+				socketFactory.setHostnameVerifier(new CustomHostnameVerifier(
+						params.getHostnameVerifier()));
+			}
 			Scheme scheme = new Scheme("https", socketFactory, 443);
 			httpClient.getConnectionManager().getSchemeRegistry()
 					.register(scheme);

@@ -79,7 +79,7 @@ public final class WeixinServerBootstrap {
 	 */
 	private final Map<String, AesToken> aesTokenMap;
 
-	WeixinServerInitializer wechatInitializer;
+	private WeixinServerInitializer wechatInitializer;
 
 	static {
 		DEFAULT_BOSSTHREADS = Runtime.getRuntime().availableProcessors();

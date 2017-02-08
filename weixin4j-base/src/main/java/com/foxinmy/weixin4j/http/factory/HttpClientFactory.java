@@ -11,7 +11,6 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
 import com.foxinmy.weixin4j.http.HttpClient;
-import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpParams;
 import com.foxinmy.weixin4j.http.support.apache3.HttpComponent3Factory;
 import com.foxinmy.weixin4j.http.support.apache4.HttpComponent4Factory;
@@ -160,7 +159,7 @@ public abstract class HttpClientFactory {
 	 */
 	public abstract HttpClient newInstance();
 
-	public static SSLContext allowSSLContext() throws HttpClientException {
+	public static SSLContext allowSSLContext() {
 		try {
 			SSLContext sslContext = SSLContext.getInstance("TLS");
 			sslContext.init(null,
@@ -168,10 +167,10 @@ public abstract class HttpClientFactory {
 					new java.security.SecureRandom());
 			return sslContext;
 		} catch (NoSuchAlgorithmException e) {
-			throw new HttpClientException(
+			throw new RuntimeException(
 					"Create SSLContext NoSuchAlgorithmException:", e);
 		} catch (KeyManagementException e) {
-			throw new HttpClientException(
+			throw new RuntimeException(
 					"Create SSLContext KeyManagementException:", e);
 		}
 	}

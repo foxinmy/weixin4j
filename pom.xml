@@ -206,6 +206,7 @@
 					<include>**/*.pem</include>
 					<include>**/*.p12</include>
 					<include>**/*.pfx</include>
+					<include>**/*.jks</include>
 				</includes>
 			</resource>
 			<resource>

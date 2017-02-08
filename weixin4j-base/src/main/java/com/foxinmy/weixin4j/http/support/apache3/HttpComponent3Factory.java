@@ -25,16 +25,19 @@ public class HttpComponent3Factory extends HttpClientFactory {
 	private final HttpClient httpClient;
 
 	public HttpComponent3Factory() {
-		this(new HttpClient());
+		httpClient = new HttpClient();
+		httpClient.getParams().setHttpElementCharset(Consts.UTF_8.name());
+		httpClient.getParams().setParameter("http.protocol.uri-charset",
+				Consts.UTF_8.name());
+		// httpMethod.getParams().setUriCharset(Consts.UTF_8.name());
+		httpClient.getParams().setContentCharset(Consts.UTF_8.name());
+		Protocol.registerProtocol("https",
+				new Protocol("https", new SSLProtocolSocketFactory(
+						HttpClientFactory.allowSSLContext()), 443));
 	}
 
 	public HttpComponent3Factory(HttpClient httpClient) {
 		this.httpClient = httpClient;
-		this.httpClient.getParams().setHttpElementCharset(Consts.UTF_8.name());
-		this.httpClient.getParams().setParameter("http.protocol.uri-charset",
-				Consts.UTF_8.name());
-		// httpMethod.getParams().setUriCharset(Consts.UTF_8.name());
-		this.httpClient.getParams().setContentCharset(Consts.UTF_8.name());
 	}
 
 	/**

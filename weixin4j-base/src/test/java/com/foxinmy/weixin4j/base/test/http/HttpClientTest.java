@@ -43,15 +43,14 @@ public abstract class HttpClientTest {
 		return createHttpClient(params);
 	}
 
-	protected HttpClient createSSLHttpClient() throws HttpClientException {
+	protected HttpClient createSSLHttpClient() {
 		HttpParams params = new HttpParams();
 		params.setHostnameVerifier(HttpClientFactory.AllowHostnameVerifier.GLOBAL);
 		params.setSSLContext(HttpClientFactory.allowSSLContext());
 		return createHttpClient(params);
 	}
 
-	protected HttpClient createProxyAndSSLHttpClient()
-			throws HttpClientException {
+	protected HttpClient createProxyAndSSLHttpClient() {
 		HttpParams params = new HttpParams();
 		params.setHostnameVerifier(HttpClientFactory.AllowHostnameVerifier.GLOBAL);
 		params.setSSLContext(HttpClientFactory.allowSSLContext());

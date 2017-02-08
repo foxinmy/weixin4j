@@ -52,7 +52,7 @@ public class MessageServerStartup {
 				.startup();
 		// 密文模式
 		// new WeixinServerBootstrap(weixinId, token, aesKey).addHandler(
-			//	DebugMessageHandler.global).startup();
+		// DebugMessageHandler.global).startup();
 	}
 
 	/**

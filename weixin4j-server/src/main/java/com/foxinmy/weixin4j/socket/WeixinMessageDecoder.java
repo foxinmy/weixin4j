@@ -60,10 +60,10 @@ public class WeixinMessageDecoder extends
 	protected void decode(ChannelHandlerContext ctx, FullHttpRequest req,
 			List<Object> out) throws WeixinException {
 		String messageContent = req.content().toString(ServerToolkits.UTF_8);
-		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.getUri(),
+		QueryStringDecoder queryDecoder = new QueryStringDecoder(req.uri(),
 				true);
-		HttpMethod method = req.getMethod();
-		logger.info("decode request:{} use {} method invoking", req.getUri(),
+		HttpMethod method = req.method();
+		logger.info("decode request:{} use {} method invoking", req.uri(),
 				method);
 		Map<String, List<String>> parameters = queryDecoder.parameters();
 		EncryptType encryptType = parameters.containsKey("encrypt_type") ? EncryptType
@@ -104,11 +104,11 @@ public class WeixinMessageDecoder extends
 		}
 		logger.info("read original message {}", messageContent);
 		WeixinRequest request = new WeixinRequest(req.headers(), method,
-				req.getUri(), encryptType, echoStr, timeStamp, nonce,
+				req.uri(), encryptType, echoStr, timeStamp, nonce,
 				signature, msgSignature, messageContent, encryptContent,
 				aesToken);
-		request.setDecoderResult(req.getDecoderResult());
-		request.setProtocolVersion(req.getProtocolVersion());
+		request.setDecoderResult(req.decoderResult());
+		request.setProtocolVersion(req.protocolVersion());
 		out.add(request);
 	}
 }
