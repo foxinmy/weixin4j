@@ -624,8 +624,6 @@ public class WeixinProxy {
 	 *            请前往微信公众平台设置。
 	 * @param name
 	 *            客服昵称，最长6个汉字或12个英文字符
-	 * @param pwd
-	 *            客服账号登录密码
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi 客服管理接口返回码</a>
@@ -633,9 +631,9 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      新增客服账号</a>
 	 */
-	public ApiResult createKfAccount(String id, String name, String pwd)
+	public ApiResult createKfAccount(String id, String name)
 			throws WeixinException {
-		return customApi.createKfAccount(id, name, pwd);
+		return customApi.createKfAccount(id, name);
 	}
 
 	/**
@@ -646,8 +644,6 @@ public class WeixinProxy {
 	 *            请前往微信公众平台设置。
 	 * @param name
 	 *            客服昵称，最长6个汉字或12个英文字符
-	 * @param pwd
-	 *            客服账号登录密码
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
@@ -655,9 +651,9 @@ public class WeixinProxy {
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      更新客服账号</a>
 	 */
-	public ApiResult updateKfAccount(String id, String name, String pwd)
+	public ApiResult updateKfAccount(String id, String name)
 			throws WeixinException {
-		return customApi.updateKfAccount(id, name, pwd);
+		return customApi.updateKfAccount(id, name);
 	}
 
 	/**

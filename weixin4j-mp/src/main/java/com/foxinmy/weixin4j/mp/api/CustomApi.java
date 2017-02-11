@@ -21,7 +21,6 @@ import com.foxinmy.weixin4j.mp.model.KfOnlineAccount;
 import com.foxinmy.weixin4j.mp.model.KfSession;
 import com.foxinmy.weixin4j.mp.model.KfSession.KfSessionCounter;
 import com.foxinmy.weixin4j.token.TokenManager;
-import com.foxinmy.weixin4j.util.DigestUtil;
 import com.foxinmy.weixin4j.util.FileUtil;
 import com.foxinmy.weixin4j.util.ObjectId;
 import com.foxinmy.weixin4j.util.StringUtil;
@@ -131,20 +130,17 @@ public class CustomApi extends MpApi {
 	 *            请前往微信公众平台设置。
 	 * @param name
 	 *            客服昵称，最长6个汉字或12个英文字符
-	 * @param pwd
-	 *            客服账号登录密码
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      新增客服账号</a>
 	 */
-	public ApiResult createKfAccount(String id, String name, String pwd)
+	public ApiResult createKfAccount(String id, String name)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("kf_account", id);
 		obj.put("nickname", name);
-		obj.put("password", DigestUtil.MD5(pwd));
 		String kf_create_uri = getRequestUri("kf_create_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
@@ -161,20 +157,17 @@ public class CustomApi extends MpApi {
 	 *            请前往微信公众平台设置。
 	 * @param name
 	 *            客服昵称，最长6个汉字或12个英文字符
-	 * @param pwd
-	 *            客服账号登录密码
 	 * @return 处理结果
 	 * @throws WeixinException
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1458044813&token=&lang=zh_CN">
 	 *      新增客服账号</a>
 	 */
-	public ApiResult updateKfAccount(String id, String name, String pwd)
+	public ApiResult updateKfAccount(String id, String name)
 			throws WeixinException {
 		JSONObject obj = new JSONObject();
 		obj.put("kf_account", id);
 		obj.put("nickname", name);
-		obj.put("password", DigestUtil.MD5(pwd));
 		String kf_update_uri = getRequestUri("kf_update_uri");
 		Token token = tokenManager.getCache();
 		WeixinResponse response = weixinExecutor.post(
