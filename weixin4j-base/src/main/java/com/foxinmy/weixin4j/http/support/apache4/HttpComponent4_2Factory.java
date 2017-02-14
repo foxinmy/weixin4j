@@ -9,7 +9,6 @@ import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.HttpProcessor;
@@ -33,8 +32,13 @@ public class HttpComponent4_2Factory extends HttpClientFactory {
 	private final HttpClientBuilder clientBuilder;
 
 	public HttpComponent4_2Factory() {
-		this(HttpClients.custom().setDefaultConnectionConfig(
-				ConnectionConfig.custom().setCharset(Consts.UTF_8).build()));
+		clientBuilder = HttpClients.custom().setDefaultConnectionConfig(
+				ConnectionConfig.custom().setCharset(Consts.UTF_8).build());
+		clientBuilder
+				.setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+		clientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(
+				HttpClientFactory.allowSSLContext(),
+				SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER));
 	}
 
 	public HttpComponent4_2Factory(HttpClientBuilder clientBuilder) {
@@ -54,16 +58,16 @@ public class HttpComponent4_2Factory extends HttpClientFactory {
 			clientBuilder.setProxy(proxy);
 		}
 		if (params.getSSLContext() != null) {
-			X509HostnameVerifier hostnameVerifier;
-			if (params.getHostnameVerifier() != null) {
-				hostnameVerifier = new CustomHostnameVerifier(
-						params.getHostnameVerifier());
-			} else {
-				hostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
-			}
-			clientBuilder.setHostnameVerifier(hostnameVerifier);
-			clientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(
-					params.getSSLContext(), hostnameVerifier));
+			clientBuilder
+					.setSSLSocketFactory(new SSLConnectionSocketFactory(
+							params.getSSLContext(),
+							params.getHostnameVerifier() != null ? new CustomHostnameVerifier(
+									params.getHostnameVerifier())
+									: SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER));
+		}
+		if (params.getHostnameVerifier() != null) {
+			clientBuilder.setHostnameVerifier(new CustomHostnameVerifier(params
+					.getHostnameVerifier()));
 		}
 	}
 

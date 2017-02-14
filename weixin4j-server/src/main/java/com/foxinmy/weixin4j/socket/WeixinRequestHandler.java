@@ -50,7 +50,7 @@ public class WeixinRequestHandler extends
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		ctx.close();
-		logger.error("catch the exception:", cause);
+		logger.error(cause);
 	}
 
 	@Override

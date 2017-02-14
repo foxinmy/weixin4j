@@ -23,8 +23,7 @@ import com.foxinmy.weixin4j.util.AesToken;
 public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 
 	private final WeixinMessageDispatcher messageDispatcher;
-
-	private WeixinMessageDecoder messageDecoder;
+	private final WeixinMessageDecoder messageDecoder;
 
 	public WeixinServerInitializer(Map<String, AesToken> aesTokenMap,
 			WeixinMessageDispatcher messageDispatcher) {
@@ -32,7 +31,7 @@ public class WeixinServerInitializer extends ChannelInitializer<SocketChannel> {
 		this.messageDecoder = new WeixinMessageDecoder(aesTokenMap);
 	}
 
-	public int addAesToken(final AesToken asetoken){
+	public int addAesToken(final AesToken asetoken) {
 		return messageDecoder.addAesToken(asetoken);
 	}
 

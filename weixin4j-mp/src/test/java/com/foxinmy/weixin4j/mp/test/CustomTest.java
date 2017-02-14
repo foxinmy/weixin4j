@@ -64,15 +64,14 @@ public class CustomTest extends TokenTest {
 
 	@Test
 	public void createKfAccount() throws WeixinException {
-		ApiResult result = customApi.createKfAccount("test@test", "test",
-				"123456");
+		ApiResult result = customApi.createKfAccount("test@test", "test");
 		Assert.assertEquals("0", result.getReturnCode());
 	}
 
 	@Test
 	public void updateKfAccount() throws WeixinException {
 		ApiResult result = customApi.updateKfAccount("temp1@canyidianzhang",
-				"temp", "123456");
+				"temp");
 		Assert.assertEquals("0", result.getReturnCode());
 	}
 

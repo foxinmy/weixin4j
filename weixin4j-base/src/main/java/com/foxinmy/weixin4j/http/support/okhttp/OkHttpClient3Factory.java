@@ -27,7 +27,12 @@ public class OkHttpClient3Factory extends HttpClientFactory {
 	private final OkHttpClient.Builder clientBuilder;
 
 	public OkHttpClient3Factory() {
-		this(new OkHttpClient.Builder());
+		clientBuilder = new OkHttpClient.Builder();
+		clientBuilder
+				.hostnameVerifier(HttpClientFactory.AllowHostnameVerifier.GLOBAL);
+		clientBuilder.sslSocketFactory(HttpClientFactory.allowSSLContext()
+				.getSocketFactory(),
+				HttpClientFactory.AllowX509TrustManager.GLOBAL);
 	}
 
 	public OkHttpClient3Factory(OkHttpClient.Builder clientBuilder) {
@@ -47,13 +52,13 @@ public class OkHttpClient3Factory extends HttpClientFactory {
 		if (params.getProxy() != null) {
 			clientBuilder.proxy(params.getProxy());
 		}
-		if (params.getHostnameVerifier() != null) {
-			clientBuilder.hostnameVerifier(params.getHostnameVerifier());
-		}
 		if (params.getSSLContext() != null) {
 			clientBuilder.sslSocketFactory(params.getSSLContext()
 					.getSocketFactory(),
 					HttpClientFactory.AllowX509TrustManager.GLOBAL);
+		}
+		if (params.getHostnameVerifier() != null) {
+			clientBuilder.hostnameVerifier(params.getHostnameVerifier());
 		}
 	}
 
@@ -101,7 +106,7 @@ public class OkHttpClient3Factory extends HttpClientFactory {
 	@Override
 	public HttpClient newInstance() {
 		if (okClient == null) {
-			this.okClient = clientBuilder.build();
+			okClient = clientBuilder.build();
 		}
 		return new OkHttpClient3(okClient);
 	}
