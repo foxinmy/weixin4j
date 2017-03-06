@@ -1,18 +1,13 @@
-# Jar执行脚本
-
-ulimit -n 110000
 #Jdk home
-JAVA_HOME="/usr/local/java"
- 
-#Executing user
-RUNNING_USER=root
- 
-#App home
-APP_HOME="/usr/local/weixin4j/weixin4j-server"
- 
+if [ ! -n "$JAVA_HOME" ]; then
+	export JAVA_HOME="/usr/local/java"
+fi
+
+APP_HOME=$(cd "$(dirname "$0")"; pwd)
+
 #Main class
 APP_MAINCLASS=com.foxinmy.weixin4j.example.server.Weixin4jServerStartup
- 
+
 #classpath
 CLASSPATH=$APP_HOME/classes
 for i in "$APP_HOME"/lib/*.jar; do
@@ -20,38 +15,36 @@ for i in "$APP_HOME"/lib/*.jar; do
 done
 
 CLASSPATH="$CLASSPATH":"$APP_HOME"/conf
- 
+
 #jvm options
 JAVA_OPTS="-Xms256m -Xmx512m -Djava.awt.headless=true -XX:MaxPermSize=128m -server -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=85 -XX:+DisableExplicitGC -Xnoclassgc -Xverify:none"
- 
+
 #psid
 psid=0
- 
+
 checkpid() {
    javaps=`$JAVA_HOME/bin/jps -l | grep $APP_MAINCLASS`
- 
+
    if [ -n "$javaps" ]; then
       psid=`echo $javaps | awk '{print $1}'`
    else
       psid=0
    fi
 }
- 
+
 ###################################
 #startup
 ###################################
 start() {
    checkpid
- 
+
    if [ $psid -ne 0 ]; then
       echo "================================"
       echo "warn: $APP_MAINCLASS already started! (pid=$psid)"
       echo "================================"
    else
       echo -n "Starting $APP_MAINCLASS ..."
-#      JAVA_CMD="nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS >/dev/null 2>&1 &"
-          JAVA_CMD="$JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS &"
-      su - $RUNNING_USER -c "$JAVA_CMD"
+          nohup ${JAVA_HOME}/bin/java ${JAVA_OPTS} -classpath ${CLASSPATH} ${APP_MAINCLASS} > ${APP_HOME}/nohup.log 2>&1 &
       checkpid
       if [ $psid -ne 0 ]; then
          echo "(pid=$psid) [OK]"
@@ -60,13 +53,13 @@ start() {
       fi
    fi
 }
- 
+
 ###################################
 #stop
 ###################################
 stop() {
    checkpid
- 
+
    if [ $psid -ne 0 ]; then
       echo -n "Stopping $APP_MAINCLASS ...(pid=$psid) "
       su - $RUNNING_USER -c "kill -9 $psid"
@@ -75,7 +68,7 @@ stop() {
       else
          echo "[Failed]"
       fi
- 
+
       checkpid
       if [ $psid -ne 0 ]; then
          stop
@@ -86,20 +79,20 @@ stop() {
       echo "================================"
    fi
 }
- 
+
 ###################################
 #status
 ###################################
 status() {
    checkpid
- 
+
    if [ $psid -ne 0 ];  then
       echo "$APP_MAINCLASS is running! (pid=$psid)"
    else
       echo "$APP_MAINCLASS is not running"
    fi
 }
- 
+
 ###################################
 #info
 ###################################
@@ -116,7 +109,7 @@ info() {
    echo "APP_MAINCLASS=$APP_MAINCLASS"
    echo "****************************"
 }
- 
+
 ###################################
 #access only 1 argument:{start|stop|restart|status|info}
 ###################################
