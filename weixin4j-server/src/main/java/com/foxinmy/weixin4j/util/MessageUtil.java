@@ -6,6 +6,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.foxinmy.weixin4j.base64.Base64;
 import com.foxinmy.weixin4j.exception.WeixinException;
 
 /**
@@ -89,7 +90,7 @@ public final class MessageUtil {
 		byteLength += appidBytes.length;
 		System.arraycopy(padBytes, 0, unencrypted, byteLength, padBytes.length);
 		try {
-			byte[] aesKey = NettyBase64.decodeBase64(encodingAesKey + "=");
+			byte[] aesKey = Base64.decodeBase64(encodingAesKey + "=");
 			// 设置加密模式为AES的CBC模式
 			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
 			SecretKeySpec keySpec = new SecretKeySpec(aesKey, ServerToolkits.AES);
@@ -99,7 +100,7 @@ public final class MessageUtil {
 			byte[] encrypted = cipher.doFinal(unencrypted);
 			// 使用BASE64对加密后的字符串进行编码
 			// return Base64.encodeBase64String(encrypted);
-			return com.foxinmy.weixin4j.base64.Base64
+			return Base64
 					.encodeBase64String(encrypted);
 		} catch (Exception e) {
 			throw new WeixinException("-40006", "AES加密失败:" + e.getMessage());
@@ -119,7 +120,7 @@ public final class MessageUtil {
 	 */
 	public static String aesDecrypt(String appId, String encodingAesKey,
 			String encryptContent) throws WeixinException {
-		byte[] aesKey = NettyBase64.decodeBase64(encodingAesKey + "=");
+		byte[] aesKey = Base64.decodeBase64(encodingAesKey + "=");
 		byte[] original;
 		try {
 			// 设置解密模式为AES的CBC模式
@@ -129,7 +130,7 @@ public final class MessageUtil {
 					0, 16));
 			cipher.init(Cipher.DECRYPT_MODE, key_spec, iv);
 			// 使用BASE64对密文进行解码
-			byte[] encrypted = NettyBase64.decodeBase64(encryptContent);
+			byte[] encrypted = Base64.decodeBase64(encryptContent);
 			// 解密
 			original = cipher.doFinal(encrypted);
 		} catch (Exception e) {
