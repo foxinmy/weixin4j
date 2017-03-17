@@ -85,9 +85,7 @@ public class JSSDKConfigurator {
 	 */
 	public JSSDKConfigurator apis(JSSDKAPI[]... apis) {
 		for (JSSDKAPI[] api : apis) {
-			for (JSSDKAPI apii : api) {
-				this.apis.add(apii);
-			}
+			apis(api);
 		}
 		return this;
 	}

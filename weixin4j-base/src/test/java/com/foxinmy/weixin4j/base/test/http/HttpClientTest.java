@@ -34,7 +34,7 @@ public abstract class HttpClientTest {
 	protected abstract HttpClientFactory createHttpFactory();
 
 	protected HttpClient createHttpClient() {
-		return createHttpFactory().newInstance();
+		return createHttpFactory().newInstance(null);
 	}
 
 	protected HttpClient createProxyHttpClient() {
@@ -60,8 +60,8 @@ public abstract class HttpClientTest {
 
 	protected HttpClient createHttpClient(HttpParams params) {
 		HttpClientFactory httpClientFactory = createHttpFactory();
-		httpClientFactory.setDefaultParams(params);
-		return httpClientFactory.newInstance();
+		HttpClientFactory.setDefaultParams(params);
+		return httpClientFactory.newInstance(null);
 	}
 
 	@Test

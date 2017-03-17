@@ -34,7 +34,6 @@ public class Netty4HttpClientFactory extends HttpClientFactory {
 	private volatile Bootstrap bootstrap;
 	private EventLoopGroup eventLoopGroup;
 	private Map<ChannelOption<?>, ?> options;
-	private HttpParams params;
 
 	public Netty4HttpClientFactory() {
 		this(new NioEventLoopGroup(
@@ -45,11 +44,6 @@ public class Netty4HttpClientFactory extends HttpClientFactory {
 		this.eventLoopGroup = eventLoopGroup;
 	}
 
-	@Override
-	protected void resolveHttpParams0(HttpParams params) {
-		this.params = params;
-	}
-
 	public Netty4HttpClientFactory setOptions(Map<ChannelOption<?>, ?> options) {
 		if (options == null) {
 			throw new IllegalArgumentException("'options' must not be empty");
@@ -58,7 +52,7 @@ public class Netty4HttpClientFactory extends HttpClientFactory {
 		return this;
 	}
 
-	private Bootstrap getBootstrap() {
+	private Bootstrap getBootstrap(final HttpParams params) {
 		if (bootstrap == null) {
 			bootstrap = new Bootstrap();
 			bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
@@ -90,7 +84,7 @@ public class Netty4HttpClientFactory extends HttpClientFactory {
 	}
 
 	@Override
-	public HttpClient newInstance() {
-		return new Netty4HttpClient(getBootstrap(), params);
+	public HttpClient newInstance(HttpParams params) {
+		return new Netty4HttpClient(getBootstrap(params), params);
 	}
 }

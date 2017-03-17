@@ -43,22 +43,23 @@ public class OkHttpClient3Factory extends HttpClientFactory {
 	 * resolve Request.Parameter
 	 * 
 	 * */
-	@Override
-	protected void resolveHttpParams0(HttpParams params) {
-		clientBuilder.connectTimeout(params.getConnectTimeout(),
-				TimeUnit.MILLISECONDS);
-		clientBuilder.readTimeout(params.getReadTimeout(),
-				TimeUnit.MILLISECONDS);
-		if (params.getProxy() != null) {
-			clientBuilder.proxy(params.getProxy());
-		}
-		if (params.getSSLContext() != null) {
-			clientBuilder.sslSocketFactory(params.getSSLContext()
-					.getSocketFactory(),
-					HttpClientFactory.AllowX509TrustManager.GLOBAL);
-		}
-		if (params.getHostnameVerifier() != null) {
-			clientBuilder.hostnameVerifier(params.getHostnameVerifier());
+	private void resolveHttpParams(HttpParams params) {
+		if (params != null) {
+			clientBuilder.connectTimeout(params.getConnectTimeout(),
+					TimeUnit.MILLISECONDS);
+			clientBuilder.readTimeout(params.getReadTimeout(),
+					TimeUnit.MILLISECONDS);
+			if (params.getProxy() != null) {
+				clientBuilder.proxy(params.getProxy());
+			}
+			if (params.getSSLContext() != null) {
+				clientBuilder.sslSocketFactory(params.getSSLContext()
+						.getSocketFactory(),
+						HttpClientFactory.AllowX509TrustManager.GLOBAL);
+			}
+			if (params.getHostnameVerifier() != null) {
+				clientBuilder.hostnameVerifier(params.getHostnameVerifier());
+			}
 		}
 	}
 
@@ -104,7 +105,8 @@ public class OkHttpClient3Factory extends HttpClientFactory {
 	}
 
 	@Override
-	public HttpClient newInstance() {
+	public HttpClient newInstance(HttpParams params) {
+		resolveHttpParams(params);
 		if (okClient == null) {
 			okClient = clientBuilder.build();
 		}
