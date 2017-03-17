@@ -70,34 +70,6 @@ public class HttpComponent4_1Factory extends HttpClientFactory {
 		this.httpClient = httpClient;
 	}
 
-	@Override
-	protected void resolveHttpParams0(HttpParams params) {
-		if (params.getProxy() != null) {
-			InetSocketAddress socketAddress = (InetSocketAddress) params
-					.getProxy().address();
-			HttpHost proxy = new HttpHost(socketAddress.getHostName(),
-					socketAddress.getPort());
-			httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
-					proxy);
-		}
-		httpClient.getParams().setIntParameter(
-				CoreConnectionPNames.CONNECTION_TIMEOUT,
-				params.getConnectTimeout());
-		httpClient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT,
-				params.getReadTimeout());
-		if (params.getSSLContext() != null) {
-			SSLSocketFactory socketFactory = new SSLSocketFactory(
-					params.getSSLContext());
-			if (params.getHostnameVerifier() != null) {
-				socketFactory.setHostnameVerifier(new CustomHostnameVerifier(
-						params.getHostnameVerifier()));
-			}
-			Scheme scheme = new Scheme("https", socketFactory, 443);
-			httpClient.getConnectionManager().getSchemeRegistry()
-					.register(scheme);
-		}
-	}
-
 	/**
 	 * 设置Http参数
 	 * 
@@ -111,8 +83,39 @@ public class HttpComponent4_1Factory extends HttpClientFactory {
 		httpClient.getParams().setParameter(name, value);
 	}
 
+	private void resolveHttpParams(HttpParams params) {
+		if (params != null) {
+			if (params.getProxy() != null) {
+				InetSocketAddress socketAddress = (InetSocketAddress) params
+						.getProxy().address();
+				HttpHost proxy = new HttpHost(socketAddress.getHostName(),
+						socketAddress.getPort());
+				httpClient.getParams().setParameter(
+						ConnRoutePNames.DEFAULT_PROXY, proxy);
+			}
+			httpClient.getParams().setIntParameter(
+					CoreConnectionPNames.CONNECTION_TIMEOUT,
+					params.getConnectTimeout());
+			httpClient.getParams().setIntParameter(
+					CoreConnectionPNames.SO_TIMEOUT, params.getReadTimeout());
+			if (params.getSSLContext() != null) {
+				SSLSocketFactory socketFactory = new SSLSocketFactory(
+						params.getSSLContext());
+				if (params.getHostnameVerifier() != null) {
+					socketFactory
+							.setHostnameVerifier(new CustomHostnameVerifier(
+									params.getHostnameVerifier()));
+				}
+				Scheme scheme = new Scheme("https", socketFactory, 443);
+				httpClient.getConnectionManager().getSchemeRegistry()
+						.register(scheme);
+			}
+		}
+	}
+
 	@Override
-	public HttpClient newInstance() {
+	public HttpClient newInstance(HttpParams params) {
+		resolveHttpParams(params);
 		return new HttpComponent4_1(httpClient);
 	}
 }

@@ -12,7 +12,7 @@ import java.util.Map;
  * @since JDK 1.6
  */
 public enum IndustryType {
-	ITKEJI_HULIANWANG$DIANZISHANGWU("IT科技", "互联网/电子商务", 1), ITKEJI_ITRUANJIANYUFUWU(
+	ITKEJI_HULIANWANG$DIANZISHANGWU("IT科技", "互联网|电子商务", 1), ITKEJI_ITRUANJIANYUFUWU(
 			"IT科技", "IT软件与服务", 2), ITKEJI_ITYINGJIANYUSHEBEI("IT科技", "IT硬件与设备",
 			3), ITKEJI_DIANZIJISHU("IT科技", "电子技术", 4), ITKEJI_TONGXINYUYUNYINGSHANG(
 			"IT科技", "通信与运营商", 5), ITKEJI_WANGLUOYOUXI("IT科技", "网络游戏", 6), JINRONGYE_YINXING(

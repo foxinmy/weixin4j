@@ -1,17 +1,12 @@
-# Jar包服务执行脚本
-
-ulimit -n 110000
 #Jdk home
-JAVA_HOME="/path/to/java"
+if [ ! -n "$JAVA_HOME" ]; then
+	export JAVA_HOME="/usr/local/java"
+fi
 
-#Executing user
-RUNNING_USER=root
-
-#App home
-APP_HOME="/path/to/weixin4j/service"
+APP_HOME=$(cd "$(dirname "$0")"; pwd)
 
 #Main class
-APP_MAINCLASS=xx.xxx.mainClass
+APP_MAINCLASS=com.foxinmy.weixin4j.example.server.Weixin4jServerStartup
 
 #classpath
 CLASSPATH=$APP_HOME/classes
@@ -49,9 +44,7 @@ start() {
       echo "================================"
    else
       echo -n "Starting $APP_MAINCLASS ..."
-#      JAVA_CMD="nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS >/dev/null 2>&1 &"
-          JAVA_CMD="$JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS &"
-      su - $RUNNING_USER -c "$JAVA_CMD"
+          nohup ${JAVA_HOME}/bin/java ${JAVA_OPTS} -classpath ${CLASSPATH} ${APP_MAINCLASS} > ${APP_HOME}/nohup.log 2>&1 &
       checkpid
       if [ $psid -ne 0 ]; then
          echo "(pid=$psid) [OK]"

@@ -29,4 +29,5 @@ target/*
 *.tmp
 Thumbs.db
 /target/
+weixin4j-future
 .DS_Store

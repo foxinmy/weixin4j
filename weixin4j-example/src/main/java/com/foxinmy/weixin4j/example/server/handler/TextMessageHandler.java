@@ -19,7 +19,6 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  */
 @Component
 public class TextMessageHandler extends MessageHandlerAdapter<TextMessage> {
-
 	@Override
 	public WeixinResponse doHandle0(WeixinRequest request, TextMessage message)
 			throws WeixinException {

@@ -35,20 +35,22 @@ public class OkHttpClient2Factory extends HttpClientFactory {
 		this.okClient = okClient;
 	}
 
-	@Override
-	protected void resolveHttpParams0(HttpParams params) {
-		okClient.setConnectTimeout(params.getConnectTimeout(),
-				TimeUnit.MILLISECONDS);
-		okClient.setReadTimeout(params.getReadTimeout(), TimeUnit.MILLISECONDS);
-		if (params.getProxy() != null) {
-			okClient.setProxy(params.getProxy());
-		}
-		if (params.getSSLContext() != null) {
-			okClient.setSslSocketFactory(params.getSSLContext()
-					.getSocketFactory());
-		}
-		if (params.getHostnameVerifier() != null) {
-			okClient.setHostnameVerifier(params.getHostnameVerifier());
+	private void resolveHttpParams(HttpParams params) {
+		if (params != null) {
+			okClient.setConnectTimeout(params.getConnectTimeout(),
+					TimeUnit.MILLISECONDS);
+			okClient.setReadTimeout(params.getReadTimeout(),
+					TimeUnit.MILLISECONDS);
+			if (params.getProxy() != null) {
+				okClient.setProxy(params.getProxy());
+			}
+			if (params.getSSLContext() != null) {
+				okClient.setSslSocketFactory(params.getSSLContext()
+						.getSocketFactory());
+			}
+			if (params.getHostnameVerifier() != null) {
+				okClient.setHostnameVerifier(params.getHostnameVerifier());
+			}
 		}
 	}
 
@@ -83,7 +85,8 @@ public class OkHttpClient2Factory extends HttpClientFactory {
 	}
 
 	@Override
-	public HttpClient newInstance() {
+	public HttpClient newInstance(HttpParams params) {
+		resolveHttpParams(params);
 		return new OkHttpClient2(okClient);
 	}
 }
