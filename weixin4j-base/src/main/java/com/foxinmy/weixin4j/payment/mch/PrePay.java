@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.payment.mch;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.foxinmy.weixin4j.type.TradeType;
@@ -35,10 +36,12 @@ public class PrePay extends MerchantResult {
 	@XmlElement(name = "prepay_id")
 	private String prepayId;
 	/**
-	 * trade_type 为 NATIVE 是有 返回,此参数可直接生成二 维码展示出来进行扫码支付 可能为空
+	 * 对于trade_type 为 NATIVE 或者 MWEB 是有 返回</br> NATVIE支付：可直接生成二维码展示出来进行扫码支付可能为空</br>
+	 * MWEB支付：可直接作为跳转支付的URL
 	 */
-	@XmlElement(name = "code_url")
-	private String codeUrl;
+	@XmlElements({ @XmlElement(name = "code_url"),
+			@XmlElement(name = "mweb_url") })
+	private String payUrl;
 
 	protected PrePay() {
 		// jaxb required
@@ -64,17 +67,17 @@ public class PrePay extends MerchantResult {
 		this.prepayId = prepayId;
 	}
 
-	public String getCodeUrl() {
-		return codeUrl;
+	public String getPayUrl() {
+		return payUrl;
 	}
 
-	public void setCodeUrl(String codeUrl) {
-		this.codeUrl = codeUrl;
+	public void setPayUrl(String payUrl) {
+		this.payUrl = payUrl;
 	}
 
 	@Override
 	public String toString() {
 		return "PrePay [tradeType=" + tradeType + ", prepayId=" + prepayId
-				+ ", codeUrl=" + codeUrl + ", " + super.toString() + "]";
+				+ ", payUrl=" + payUrl + ", " + super.toString() + "]";
 	}
 }

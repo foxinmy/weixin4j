@@ -29,5 +29,5 @@ public enum TradeType {
     /**
      * WAP支付
      */
-    WAP;
+    MWEB;
 }

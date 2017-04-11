@@ -134,9 +134,10 @@ public class PayApi extends MchApi {
 			return new JSAPIPayRequest(prePay.getPrepayId(), weixinAccount);
 		} else if (TradeType.NATIVE.name().equals(tradeType)) {
 			return new NATIVEPayRequest(prePay.getPrepayId(),
-					prePay.getCodeUrl(), weixinAccount);
-		} else if (TradeType.WAP.name().equals(tradeType)) {
-			return new WAPPayRequest(prePay.getPrepayId(), weixinAccount);
+					prePay.getPayUrl(), weixinAccount);
+		} else if (TradeType.MWEB.name().equals(tradeType)) {
+			return new WAPPayRequest(prePay.getPrepayId(), prePay.getPayUrl(),
+					weixinAccount);
 		} else {
 			throw new WeixinException("unknown tradeType:" + tradeType);
 		}
@@ -341,7 +342,8 @@ public class PayApi extends MchApi {
 	}
 
 	/**
-	 * 创建WAP支付请求对象
+	 * 创建WAP支付请求对象：正常流程用户支付完成后会返回至发起支付的页面，如需返回至指定页面，
+	 * 则可以在MWEB_URL后拼接上redirect_url参数，来指定回调页面
 	 *
 	 * @param body
 	 *            商品描述
@@ -366,8 +368,8 @@ public class PayApi extends MchApi {
 			double totalFee, String notifyUrl, String createIp, String attach)
 			throws WeixinException {
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, notifyUrl, createIp, TradeType.WAP, null, null, null,
-				attach);
+				totalFee, notifyUrl, createIp, TradeType.MWEB, null, null,
+				null, attach);
 		return createPayRequest(payPackage);
 	}
 
@@ -470,7 +472,6 @@ public class PayApi extends MchApi {
 			double totalFee, double refundFee, CurrencyType refundFeeType,
 			String opUserId, RefundAccountType refundAccountType)
 			throws WeixinException {
-		WeixinResponse response = null;
 		Map<String, String> map = createBaseRequestMap(idQuery);
 		map.put("out_refund_no", outRefundNo);
 		map.put("total_fee",
@@ -491,7 +492,7 @@ public class PayApi extends MchApi {
 		map.put("refund_account", refundAccountType.name());
 		map.put("sign", weixinSignature.sign(map));
 		String param = XmlStream.map2xml(map);
-		response = getWeixinSSLExecutor().post(
+		WeixinResponse response = getWeixinSSLExecutor().post(
 				getRequestUri("refund_apply_uri"), param);
 		return response.getAsObject(new TypeReference<RefundResult>() {
 		});
