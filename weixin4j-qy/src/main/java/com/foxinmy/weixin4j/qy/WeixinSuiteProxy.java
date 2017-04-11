@@ -285,5 +285,5 @@ public class WeixinSuiteProxy {
 				suite(suiteId).getTokenManager());
 	}
 
-	public final static String VERSION = "1.7.4";
+	public final static String VERSION = "1.7.5";
 }
