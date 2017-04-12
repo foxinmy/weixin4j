@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j</artifactId>
-		<version>1.7.4</version>
+		<version>1.7.5</version>
 	</parent>
 	<artifactId>weixin4j-server</artifactId>
 	<version>1.1.8</version>
@@ -13,10 +13,16 @@
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-server</url>
 	<description>微信消息netty服务器</description>
 	<dependencies>
-	<dependency>
+		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
 			<version>4.1.8.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>

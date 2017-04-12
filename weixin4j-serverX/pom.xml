@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.foxinmy</groupId>
+		<artifactId>weixin4j</artifactId>
+		<version>1.7.5</version>
+	</parent>
+	<artifactId>weixin4j-serverX</artifactId>
+	<version>0.0.1</version>
+	<name>weixin4j-serverX</name>
+	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-serverX</url>
+	<description>微信消息接入服务(spring mvc实现)</description>
+	<properties>
+		<spring.version>4.2.0.RELEASE</spring.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<scope>provided</scope>
+			<version>2.1</version>
+		</dependency>
+	</dependencies>
+	<developers>
+		<developer>
+			<email>174975857@qq.com</email>
+			<name>Yz</name>
+		</developer>
+	</developers>
+</project>
