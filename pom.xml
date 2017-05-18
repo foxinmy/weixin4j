@@ -10,8 +10,8 @@
 	<url>https://github.com/foxinmy/weixin4j</url>
 	<description>微信开发工具包</description>
 	<inceptionYear>2014</inceptionYear>
-	<licenses>
-		<license>
+	<licenses>xzc
+		<license>zcx
 			<name>Apache License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>

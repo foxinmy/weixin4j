@@ -1,11 +1,11 @@
 * 2014-10-27
 
   + maven多模块分离
-
+zxc
   + **weixin4j-mp**: 用netty构建http服务器并支持消息分发
-
+zxc
 * 2014-10-28
-
+zxc
   + **weixin4j-mp**: 调整`ActionMapping`抽象化
 
 * 2014-10-31
