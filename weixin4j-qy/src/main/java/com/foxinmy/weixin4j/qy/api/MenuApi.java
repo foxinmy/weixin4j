@@ -19,7 +19,7 @@ import com.foxinmy.weixin4j.type.ButtonType;
 
 /**
  * 菜单相关API
- * 
+ *
  * @className MenuApi
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
@@ -36,10 +36,10 @@ public class MenuApi extends QyApi {
 
 	/**
 	 * 自定义菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
-	 * 
+	 *
 	 * @param agentid
 	 *            应用ID
-	 * 
+	 *
 	 * @param buttons
 	 *            菜单列表
 	 * @throws WeixinException
@@ -58,7 +58,7 @@ public class MenuApi extends QyApi {
 					@Override
 					public String process(Object object, String name, Object value) {
 						if (object instanceof Button && name.equals("content")) {
-							ButtonType buttonType = ((Button) object).getType();
+							ButtonType buttonType = ButtonType.valueOf(((Button) object).getType());
 							if (buttonType != null) {
 								if (ButtonType.view == buttonType) {
 									return "url";
@@ -78,7 +78,7 @@ public class MenuApi extends QyApi {
 
 	/**
 	 * 查询菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式。)
-	 * 
+	 *
 	 * @param agentid
 	 *            应用ID
 	 * @return 菜单集合
@@ -108,7 +108,7 @@ public class MenuApi extends QyApi {
 
 	/**
 	 * 删除菜单(管理员须拥有应用的管理权限 并且应用必须设置在回调模式)
-	 * 
+	 *
 	 * @param agentid
 	 *            应用ID
 	 * @throws WeixinException
