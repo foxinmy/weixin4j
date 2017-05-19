@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.payment.mch;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,6 +14,7 @@ import com.foxinmy.weixin4j.payment.coupon.RefundCouponInfo;
 import com.foxinmy.weixin4j.type.mch.CouponType;
 import com.foxinmy.weixin4j.type.mch.RefundChannel;
 import com.foxinmy.weixin4j.type.mch.RefundStatus;
+import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
 /**
@@ -94,6 +96,12 @@ public class RefundDetail implements Serializable {
 	@XmlElement(name = "refund_recv_accout")
 	@JSONField(name = "refund_recv_accout")
 	private String refundRecvAccout;
+	/**
+	 * 退款成功时间，当退款状态为退款成功时有返回
+	 */
+	@XmlElement(name = "refund_success_time")
+	@JSONField(name = "refund_success_time")
+	private String refundSuccessTime;
 	/**
 	 * 退款代金券信息
 	 * 
@@ -186,6 +194,15 @@ public class RefundDetail implements Serializable {
 
 	public String getRefundRecvAccout() {
 		return refundRecvAccout;
+	}
+
+	public String getRefundSuccessTime() {
+		return refundSuccessTime;
+	}
+	
+	@JSONField(serialize = false)
+	public Date getFormatRefundSuccessTime() {
+		return refundSuccessTime != null ? DateUtil.parse2yyyyMMddHHmmss(refundSuccessTime) : null;
 	}
 
 	@Override

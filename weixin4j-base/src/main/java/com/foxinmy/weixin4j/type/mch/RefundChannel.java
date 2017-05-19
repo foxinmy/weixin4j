@@ -25,5 +25,13 @@ public enum RefundChannel {
 	/**
 	 * 银行
 	 */
-	BANK;
+	BANK,
+	/**
+	 * 原账户异常退到其他余额账户
+	 */
+	OTHER_BALANCE,
+	/**
+	 * 原银行卡异常退到其他银行卡
+	 */
+	OTHER_BANKCARD
 }
