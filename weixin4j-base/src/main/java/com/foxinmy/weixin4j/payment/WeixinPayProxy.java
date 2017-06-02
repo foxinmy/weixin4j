@@ -88,7 +88,7 @@ public class WeixinPayProxy {
 
 	/**
 	 * 微信支付接口实现
-	 * 
+	 *
 	 * @param weixinPayAccount
 	 *            微信商户信息
 	 */
@@ -879,5 +879,5 @@ public class WeixinPayProxy {
 		return customsApi.queryCustomsOrder(idQuery, customsCity);
 	}
 
-	public final static String VERSION = "1.7.5";
+	public final static String VERSION = "1.7.6";
 }

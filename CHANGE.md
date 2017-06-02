@@ -784,6 +784,14 @@
 
   + version upgrade to 1.7.4
 
+* 2017-04-11
+
+  + version upgrade to 1.7.5
+
 * 2017-05-19
 
   + weixin4j-mp:新增评论管理接口
+
+* 2017-06-02
+
+  + version upgrade to 1.7.6
