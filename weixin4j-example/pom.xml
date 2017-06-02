@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j</artifactId>
-		<version>1.7.5</version>
+		<version>1.7.6</version>
 	</parent>
 	<artifactId>weixin4j-example</artifactId>
 	<version>1.0</version>
@@ -47,13 +47,13 @@
 		<dependency>
 			<groupId>com.foxinmy</groupId>
 			<artifactId>weixin4j-mp</artifactId>
-			<version>1.7.5</version>
+			<version>1.7.6</version>
 		</dependency>
 		<!-- 微信企业号 -->
 		<dependency>
 			<groupId>com.foxinmy</groupId>
 			<artifactId>weixin4j-qy</artifactId>
-			<version>1.7.5</version>
+			<version>1.7.6</version>
 		</dependency>
 		<!-- 微信被动消息(回调模式) -->
 		<dependency>
