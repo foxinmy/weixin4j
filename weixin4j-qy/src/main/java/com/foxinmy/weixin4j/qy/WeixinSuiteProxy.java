@@ -62,7 +62,7 @@ public class WeixinSuiteProxy {
 
 	/**
 	 * 微信第三方套件接口实现(使用weixin4j.properties配置的account账号信息)
-	 * 
+	 *
 	 * @param cacheStorager
 	 *            token管理
 	 */
@@ -73,7 +73,7 @@ public class WeixinSuiteProxy {
 
 	/**
 	 * 微信第三方套件接口实现
-	 * 
+	 *
 	 * @param weixinQyAccount
 	 *            账号信息
 	 * @param cacheStorager
@@ -143,7 +143,7 @@ public class WeixinSuiteProxy {
 
 	/**
 	 * 获取套件的预授权码 <font color="red">需先缓存ticket</font>
-	 * 
+	 *
 	 * @param suiteId
 	 *            套件ID
 	 * @return 预授权码
@@ -183,7 +183,7 @@ public class WeixinSuiteProxy {
 	 * 应用套件授权 <font color="red">需先缓存ticket</font> <li>
 	 * redirectUri默认填写weixin4j.properties#suite.oauth.redirect.uri <li>
 	 * state默认填写state
-	 * 
+	 *
 	 * @param suiteId
 	 *            套件ID
 	 * @see {@link #getSuiteAuthorizationURL(String, String,String)}
@@ -285,5 +285,5 @@ public class WeixinSuiteProxy {
 				suite(suiteId).getTokenManager());
 	}
 
-	public final static String VERSION = "1.7.5";
+	public final static String VERSION = "1.7.6";
 }

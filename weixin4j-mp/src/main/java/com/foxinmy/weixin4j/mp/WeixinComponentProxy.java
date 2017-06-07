@@ -52,7 +52,7 @@ public class WeixinComponentProxy {
 
 	/**
 	 * 微信第三方组件接口实现(使用weixin4j.properties配置的account#components账号信息)
-	 * 
+	 *
 	 * @param cacheStorager
 	 *            token管理
 	 */
@@ -63,7 +63,7 @@ public class WeixinComponentProxy {
 
 	/**
 	 * 微信第三方组件接口实现
-	 * 
+	 *
 	 * @param weixinMpAccount
 	 *            账号信息
 	 * @param cacheStorager
@@ -124,7 +124,7 @@ public class WeixinComponentProxy {
 
 	/**
 	 * 获取组件的预授权码 <font color="red">需先缓存ticket</font>
-	 * 
+	 *
 	 * @param componentId
 	 *            组件ID
 	 * @return 预授权码
@@ -163,7 +163,7 @@ public class WeixinComponentProxy {
 	 * 应用组件授权 <font color="red">需先缓存ticket</font> <li>
 	 * redirectUri默认填写weixin4j.properties#component.oauth.redirect.uri <li>
 	 * state默认填写state
-	 * 
+	 *
 	 * @param componentId
 	 *            组件ID
 	 * @see {@link #getComponentAuthorizationURL(String, String,String)}
@@ -225,5 +225,5 @@ public class WeixinComponentProxy {
 				authAppId), component(componentId).getTokenManager());
 	}
 
-	public final static String VERSION = "1.7.5";
+	public final static String VERSION = "1.7.6";
 }
