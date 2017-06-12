@@ -29,3 +29,5 @@
 * ComponentApi `第三方组件API`
 
 * CardApi `卡券API`
+
+* CommentApi `评论API`

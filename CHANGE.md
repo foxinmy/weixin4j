@@ -714,72 +714,84 @@
   + 优化PayOldApi
 
   + weixin4j-mp:新增接口调用次数清零接口
-  
+
 * 2016-06-20
 
   + version upgrade to 1.7.0
-  
+
 * 2016-07-05
 
   + weixin4j-mp:初始化开放平台第三方组件TokenCreator
-  
+
   + weixin4j-mp:新增第三方组件ComponentApi
-  
+
 * 2016-07-06
 
   + weixin4j-mp:新增第三方组件WeixinComponentProxy
-  
+
 * 2016-07-21
 
   + weixin4j-base:新增MessageConverter
-  
+
 * 2016-07-22
 
   + weixin4j-base:主要调整退款相关类与官网一致
-  
+
   + weixin4j-base:获取cache时加锁处理(via 风车车)
-  
+
 * 2016-08-05
 
   + weixin4j-base:model包拆分media/paging
-  
+
   + weixin4j-base:type包拆分card/mch
-  
+
   + weixin4j-base:新增card卡券相关类
-  
+
   + weixin4j-mp:新增CardApi:创建卡券接口
-  
+
 * 2016-08-09
 
   + weixin4j-base:修复媒体消息转换错误bug
-  
+
   + weixin4j-mp:新增创建卡券二维码接口
-  
+
   + version upgrade to 1.7.1
-  
+
   + LOGGER级别优化
-  
-  
+
+
 * 2016-08-22
 
   + weixin4j-base:删除`Weixin4jSettings`配置类
-  
+
 * 2016-10-10
 
   + version upgrade to 1.7.2
-  
+
 * 2016-11-22
 
   + weixin4j-mp:新增黑名单接口
-  
+
 * 2016-12-13
 
   + version upgrade to 1.7.3
-  
+
 * 2017-01-09
 
   + 新增批量发红包接口
-  
+
   + 新增摇一摇周边接口
-  
+
   + version upgrade to 1.7.4
+
+* 2017-04-11
+
+  + version upgrade to 1.7.5
+
+* 2017-05-19
+
+  + weixin4j-mp:新增评论管理接口
+
+* 2017-06-02
+
+  + version upgrade to 1.7.6

@@ -135,7 +135,7 @@ public class WeixinProxy {
 
 	/**
 	 * 微信接口实现(使用weixin4j.properties配置的account账号信息)
-	 * 
+	 *
 	 * @param cacheStorager
 	 *            token管理
 	 */
@@ -145,7 +145,7 @@ public class WeixinProxy {
 
 	/**
 	 * 微信接口实现
-	 * 
+	 *
 	 * @param weixinAccount
 	 *            账号信息
 	 * @param cacheStorager
@@ -180,7 +180,7 @@ public class WeixinProxy {
 
 	/**
 	 * 微信接口实现
-	 * 
+	 *
 	 * @param settings
 	 *            配置信息
 	 * @param tokenManager
@@ -226,7 +226,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取oauth授权API
-	 * 
+	 *
 	 * @see com.foxinmy.weixin4j.qy.api.OauthApi
 	 * @return
 	 */
@@ -799,7 +799,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取企业号管理员登录信息
-	 * 
+	 *
 	 * @param authCode
 	 *            oauth2.0授权企业号管理员登录产生的code
 	 * @return 登陆信息
@@ -856,7 +856,7 @@ public class WeixinProxy {
 
 	/**
 	 * 获取权限范围内的所有成员列表
-	 * 
+	 *
 	 * @param userStatus
 	 *            成员状态 未填写则默认为全部状态下的成员
 	 * @return 成员列表
@@ -937,7 +937,7 @@ public class WeixinProxy {
 
 	/**
 	 * 开启二次验证成功时调用(管理员须拥有userid对应员工的管理权限)
-	 * 
+	 *
 	 * @param userid
 	 *            成员ID
 	 * @return 调用结果
@@ -1449,5 +1449,5 @@ public class WeixinProxy {
 		return chatApi.sendChatMessage(message);
 	}
 
-	public final static String VERSION = "1.7.5";
+	public final static String VERSION = "1.7.6";
 }

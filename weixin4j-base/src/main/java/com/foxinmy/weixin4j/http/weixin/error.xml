@@ -720,6 +720,18 @@
 		<text>有粉丝身上的标签数已经超过限制</text>
 	</error>
 	<error>
+		<code>45065</code>
+		<text>相同 clientmsgid 已存在群发记录，返回数据中带有已存在的群发任务的 msgid</text>
+	</error>
+	<error>
+		<code>45066</code>
+		<text>相同 clientmsgid 重试速度过快，请间隔1分钟重试</text>
+	</error>
+	<error>
+		<code>45067</code>
+		<text>clientmsgid 长度超过限制</text>
+	</error>
+	<error>
 		<code>45157</code>
 		<text>标签名非法，请注意不能和其他标签重名</text>
 	</error>
@@ -1654,6 +1666,61 @@
 	<error>
 		<code>86320</code>
 		<text>不合法的客服类型</text>
+	</error>
+	<error>
+		<code>45009</code>
+		<msg>reach max api daily quota limit</msg>
+		<text>没有剩余的调用次数</text>
+	</error>
+	<error>
+		<code>88000</code>
+		<msg>without comment privilege</msg>
+		<text>没有留言权限</text>
+	</error>
+	<error>
+		<code>88001</code>
+		<msg>msg_data is not exists</msg>
+		<text>该图文不存在</text>
+	</error>
+	<error>
+		<code>88002</code>
+		<msg>the article is limit for safety</msg>
+		<text>文章存在敏感信息</text>
+	</error>
+	<error>
+		<code>88003</code>
+		<msg>elected comment upper limit</msg>
+		<text>精选评论数已达上限</text>
+	</error>
+	<error>
+		<code>88004</code>
+		<msg>comment was deleted by user</msg>
+		<text>已被用户删除，无法精选</text>
+	</error>
+	<error>
+		<code>88005</code>
+		<msg>already reply</msg>
+		<text>该评论已回复</text>
+	</error>
+	<error>
+		<code>88007</code>
+		<msg>reply content beyond max len or content len is zero</msg>
+		<text>回复超过长度限制或为0</text>
+	</error>
+	<error>
+		<code>88008</code>
+		<msg>comment is not exists</msg>
+		<text>该评论不存在</text>
+	</error>
+	<error>
+		<code>88009</code>
+		<msg>reply is not exists</msg>
+		<text>该回复不存在</text>
+	</error>
+	<error>
+		<code>88010</code>
+		<msg>count range error. cout <= 0 or count > 50</msg>
+		<text>获取评论数目不合法</text>
 	</error>
 	<error>
 		<code>90001</code>

@@ -76,7 +76,7 @@ public class HttpComponent3 extends AbstractHttpClient {
 	}
 
 	/**
-	 * Create HttpMethod
+	 * Create HttpRequest
 	 */
 	protected org.apache.commons.httpclient.HttpMethod createRequest(
 			HttpRequest request) throws HttpClientException, IOException {
