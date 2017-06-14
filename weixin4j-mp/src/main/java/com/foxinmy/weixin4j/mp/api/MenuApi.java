@@ -18,6 +18,7 @@ import com.foxinmy.weixin4j.mp.model.Menu;
 import com.foxinmy.weixin4j.mp.model.MenuMatchRule;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.type.ButtonType;
+import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * 菜单相关API
@@ -59,16 +60,15 @@ public class MenuApi extends MpApi {
                 JSON.toJSONString(data, new NameFilter() {
                     @Override
                     public String process(Object object, String name, Object value) {
-                        if (object instanceof Button && name.equals("content")) {
+                        if (object instanceof Button && name.equals("content")
+                                && StringUtil.isNotBlank(((Button) object).getType())) {
                             ButtonType buttonType = ButtonType.valueOf(((Button) object).getType());
-                            if (buttonType != null) {
-                                if (ButtonType.view == buttonType || ButtonType.miniprogram == buttonType) {
-                                    return "url";
-                                } else if (ButtonType.media_id == buttonType || ButtonType.view_limited == buttonType) {
-                                    return "media_id";
-                                } else {
-                                    return "key";
-                                }
+                            if (ButtonType.view == buttonType || ButtonType.miniprogram == buttonType) {
+                                return "url";
+                            } else if (ButtonType.media_id == buttonType || ButtonType.view_limited == buttonType) {
+                                return "media_id";
+                            } else {
+                                return "key";
                             }
                         }
                         return name;
