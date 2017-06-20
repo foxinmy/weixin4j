@@ -53,7 +53,7 @@ public final class WeixinServerBootstrap {
 	 */
 	public final static int DEFAULT_BOSSTHREADS;
 	/**
-	 * worker线程数,默认设置为DEFAULT_BOSSTHREADS * 4
+	 * worker线程数,默认设置为DEFAULT_BOSSTHREADS * 2
 	 */
 	public final static int DEFAULT_WORKERTHREADS;
 	/**
@@ -83,7 +83,7 @@ public final class WeixinServerBootstrap {
 
 	static {
 		DEFAULT_BOSSTHREADS = Runtime.getRuntime().availableProcessors();
-		DEFAULT_WORKERTHREADS = DEFAULT_BOSSTHREADS * 4;
+		DEFAULT_WORKERTHREADS = DEFAULT_BOSSTHREADS * 2;
 	}
 
 	/**

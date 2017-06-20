@@ -39,7 +39,7 @@ public final class Weixin4jServerStartup {
 	 * @throws WeixinException
 	 */
 	public static void main(String[] args) throws WeixinException {
-		new WeixinServerBootstrap(new AesToken("wxa652fc930afe9b22", "weixin4j", "iFv2hlZm56rkwv5oC45UoIfvPJVHp2ngocBMbt5FP9C")) // 指定开发者token信息。
+		new WeixinServerBootstrap(new AesToken("wxa652fc930afe9b22", "weixin4j", "3XItJRSSkTqH7etjBUbLfLBecLdFfGjbGPfmIHuGftD")) // 指定开发者token信息。
 				.handlerPackagesToScan(handlerPackage) // 扫描处理消息的包。
 				.addHandler(DebugMessageHandler.global) // 当没有匹配到消息处理时输出调试信息，开发环境打开。
 				.openAlwaysResponse() // 当没有匹配到消息处理时输出空白回复(公众号不会出现「该公众号无法提供服务的提示」)，正式环境打开。
