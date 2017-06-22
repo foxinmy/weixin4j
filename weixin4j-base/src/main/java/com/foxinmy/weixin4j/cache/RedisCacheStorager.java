@@ -37,13 +37,23 @@ public class RedisCacheStorager<T extends Cacheable> implements
 	}
 
 	public RedisCacheStorager(String host, int port, int timeout) {
+		JedisPoolConfig jedisPoolConfig = defaultConfig();
+		this.jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
+	}
+	
+	public RedisCacheStorager(String host, int port, int timeout, String password) {
+		JedisPoolConfig jedisPoolConfig = defaultConfig();
+		this.jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout, password);
+	}
+	
+	private JedisPoolConfig defaultConfig(){
 		JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
 		jedisPoolConfig.setMaxTotal(MAX_TOTAL);
 		jedisPoolConfig.setMaxIdle(MAX_IDLE);
 		jedisPoolConfig.setMaxWaitMillis(MAX_WAIT_MILLIS);
 		jedisPoolConfig.setTestOnBorrow(TEST_ON_BORROW);
 		jedisPoolConfig.setTestOnReturn(TEST_ON_RETURN);
-		this.jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
+		return jedisPoolConfig;
 	}
 
 	public RedisCacheStorager(JedisPoolConfig jedisPoolConfig) {
