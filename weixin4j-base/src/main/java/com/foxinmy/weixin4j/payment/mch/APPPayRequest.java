@@ -41,9 +41,10 @@ public class APPPayRequest extends AbstractPayRequest {
         payRequest.setPartnerId(getPaymentAccount().getMchId());
         payRequest.setPrepayId(getPrePayId());
         Map<String, String> map = new HashMap<String, String>();
-        map.put("appid", getPaymentAccount().getId());
-        map.put("partnerid", getPaymentAccount().getMchId());
-        map.put("prepayid", getPrePayId());
+        map.put("appid", payRequest.getAppId());
+        // 因为partnerid和prepayid在PayRequest类中是不进行序列化的
+        map.put("partnerid", payRequest.getPartnerId());
+        map.put("prepayid", payRequest.getPrepayId());
         map.put("package", payRequest.getPackageInfo());
         map.put("timestamp", payRequest.getTimeStamp());
         map.put("noncestr", payRequest.getNonceStr());
