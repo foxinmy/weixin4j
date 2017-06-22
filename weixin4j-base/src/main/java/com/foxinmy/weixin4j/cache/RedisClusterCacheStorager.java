@@ -30,14 +30,14 @@ public class RedisClusterCacheStorager<T extends Cacheable> implements
 	private final JedisCluster jedisCluster;
 
 	public RedisClusterCacheStorager(Set<HostAndPort> nodes) {
-		JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-		jedisPoolConfig.setMaxTotal(MAX_TOTAL);
-		jedisPoolConfig.setMaxIdle(MAX_IDLE);
-		jedisPoolConfig.setMaxWaitMillis(MAX_WAIT_MILLIS);
-		jedisPoolConfig.setTestOnBorrow(TEST_ON_BORROW);
-		jedisPoolConfig.setTestOnReturn(TEST_ON_RETURN);
+		JedisPoolConfig poolConfig = new JedisPoolConfig();
+		poolConfig.setMaxTotal(MAX_TOTAL);
+		poolConfig.setMaxIdle(MAX_IDLE);
+		poolConfig.setMaxWaitMillis(MAX_WAIT_MILLIS);
+		poolConfig.setTestOnBorrow(TEST_ON_BORROW);
+		poolConfig.setTestOnReturn(TEST_ON_RETURN);
 		this.jedisCluster = new JedisCluster(nodes, CONNECTION_TIMEOUT,
-				SO_TIMEOUT, MAX_REDIRECTIONS, jedisPoolConfig);
+				SO_TIMEOUT, MAX_REDIRECTIONS, poolConfig);
 	}
 
 	public RedisClusterCacheStorager(Set<HostAndPort> nodes,
