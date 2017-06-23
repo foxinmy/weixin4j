@@ -7,6 +7,7 @@
 		<artifactId>weixin4j</artifactId>
 		<version>1.7.6</version>
 	</parent>
+	<packaging>war</packaging>
 	<artifactId>weixin4j-example</artifactId>
 	<version>1.0</version>
 	<name>weixin4j-example</name>
