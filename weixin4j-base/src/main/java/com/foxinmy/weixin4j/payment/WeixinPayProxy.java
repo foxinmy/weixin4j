@@ -883,5 +883,5 @@ public class WeixinPayProxy {
 		return customsApi.queryCustomsOrder(idQuery, customsCity);
 	}
 
-	public final static String VERSION = "1.7.6";
+	public final static String VERSION = "1.7.7";
 }
