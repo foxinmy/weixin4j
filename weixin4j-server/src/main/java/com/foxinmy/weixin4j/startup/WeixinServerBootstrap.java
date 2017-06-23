@@ -11,7 +11,6 @@ import com.foxinmy.weixin4j.dispatcher.DefaultMessageMatcher;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageDispatcher;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageKey;
 import com.foxinmy.weixin4j.dispatcher.WeixinMessageMatcher;
-import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.request.WeixinMessage;
@@ -173,7 +172,7 @@ public final class WeixinServerBootstrap {
      * 默认端口(30000)启动服务
      *
      */
-    public void startup() throws WeixinException {
+    public void startup() {
         startup(DEFAULT_SERVERPORT);
     }
 
@@ -181,7 +180,7 @@ public final class WeixinServerBootstrap {
      * 指定端口启动服务
      *
      */
-    public void startup(int serverPort) throws WeixinException {
+    public void startup(int serverPort) {
         startup(DEFAULT_BOSSTHREADS, DEFAULT_WORKERTHREADS, serverPort);
     }
 
@@ -197,7 +196,7 @@ public final class WeixinServerBootstrap {
      * @return
      * @throws WeixinException
      */
-    public void startup(int bossThreads, int workerThreads, final int serverPort) throws WeixinException {
+    public void startup(int bossThreads, int workerThreads, final int serverPort) {
         messageDispatcher.setMessageHandlerList(messageHandlerList);
         messageDispatcher.setMessageInterceptorList(messageInterceptorList);
         try {
@@ -218,7 +217,7 @@ public final class WeixinServerBootstrap {
             }).sync().channel();
             ch.closeFuture().sync();
         } catch (InterruptedException e) {
-            throw new WeixinException("netty server startup FAIL", e);
+            throw new RuntimeException(e);
         } finally {
             shutdown();
         }

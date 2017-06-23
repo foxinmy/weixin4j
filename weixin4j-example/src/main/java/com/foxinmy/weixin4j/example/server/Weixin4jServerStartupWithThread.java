@@ -66,16 +66,12 @@ public class Weixin4jServerStartupWithThread implements ApplicationContextAware 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    bootstrap = new WeixinServerBootstrap(aesToken) // 指定开发者token信息。
-                            .handlerPackagesToScan(handlerPackage) // 扫描处理消息的包。
-                            .resolveBeanFactory(new SpringBeanFactory(applicationContext)) // 声明处理消息类由Spring容器去实例化。
-                            .addHandler(DebugMessageHandler.global) // 当没有匹配到消息处理时输出调试信息，开发环境打开。
-                            .openAlwaysResponse(); // 当没有匹配到消息处理时输出空白回复(公众号不会出现「该公众号无法提供服务的提示」)，正式环境打开。
-                    bootstrap.startup(port); // 绑定服务的端口号，即对外暴露(微信服务器URL地址)的服务端口。
-                } catch (WeixinException e) {
-                    InternalLoggerFactory.getInstance(getClass()).error("weixin4j server startup:FAIL", e);
-                }
+                bootstrap = new WeixinServerBootstrap(aesToken) // 指定开发者token信息。
+                        .handlerPackagesToScan(handlerPackage) // 扫描处理消息的包。
+                        .resolveBeanFactory(new SpringBeanFactory(applicationContext)) // 声明处理消息类由Spring容器去实例化。
+                        .addHandler(DebugMessageHandler.global) // 当没有匹配到消息处理时输出调试信息，开发环境打开。
+                        .openAlwaysResponse(); // 当没有匹配到消息处理时输出空白回复(公众号不会出现「该公众号无法提供服务的提示」)，正式环境打开。
+                bootstrap.startup(port); // 绑定服务的端口号，即对外暴露(微信服务器URL地址)的服务端口。
             }
         }).start();
     }

@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.type.EncryptType;
 import com.foxinmy.weixin4j.util.AesToken;
@@ -50,7 +49,7 @@ public class WeixinMessageDecoder extends MessageToMessageDecoder<FullHttpReques
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, FullHttpRequest req, List<Object> out) throws WeixinException {
+    protected void decode(ChannelHandlerContext ctx, FullHttpRequest req, List<Object> out) {
         String messageContent = req.content().toString(ServerToolkits.UTF_8);
         QueryStringDecoder queryDecoder = new QueryStringDecoder(req.uri(), true);
         HttpMethod method = req.method();
@@ -68,7 +67,7 @@ public class WeixinMessageDecoder extends MessageToMessageDecoder<FullHttpReques
         String encryptContent = null;
         if (!ServerToolkits.isBlank(messageContent) && encryptType == EncryptType.AES) {
             if (ServerToolkits.isBlank(aesToken.getAesKey())) {
-                throw new WeixinException("EncodingAESKey not be empty in safety(AES) mode");
+                throw new RuntimeException("EncodingAESKey not be empty in safety(AES) mode");
             }
             EncryptMessageHandler encryptHandler = EncryptMessageHandler.parser(messageContent);
             encryptContent = encryptHandler.getEncryptContent();
