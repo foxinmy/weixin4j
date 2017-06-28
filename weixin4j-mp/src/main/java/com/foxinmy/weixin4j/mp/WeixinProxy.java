@@ -2182,5 +2182,5 @@ public class WeixinProxy {
         return commentApi.deleteCommentReply(msgid, index, commentId);
     }
 
-    public final static String VERSION = "1.7.6";
+    public final static String VERSION = "1.7.7";
 }
