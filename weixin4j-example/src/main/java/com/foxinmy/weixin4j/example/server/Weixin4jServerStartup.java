@@ -36,9 +36,8 @@ public final class Weixin4jServerStartup {
 	 * assembly%E6%89%93%E5%8C%85
 	 *
 	 * @param args
-	 * @throws WeixinException
 	 */
-	public static void main(String[] args) throws WeixinException {
+	public static void main(String[] args){
 		new WeixinServerBootstrap(new AesToken("wxa652fc930afe9b22", "weixin4j", "3XItJRSSkTqH7etjBUbLfLBecLdFfGjbGPfmIHuGftD")) // 指定开发者token信息。
 				.handlerPackagesToScan(handlerPackage) // 扫描处理消息的包。
 				.addHandler(DebugMessageHandler.global) // 当没有匹配到消息处理时输出调试信息，开发环境打开。

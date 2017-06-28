@@ -1,16 +1,15 @@
 package com.foxinmy.weixin4j.example.server;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.foxinmy.weixin4j.handler.DebugMessageHandler;
 import com.foxinmy.weixin4j.spring.SpringBeanFactory;
 import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
 import com.foxinmy.weixin4j.util.AesToken;
-
-import io.netty.util.internal.logging.InternalLoggerFactory;
 
 /**
  * 微信消息服务:需要另外开启一个线程去启动服务,这里值得注意的时：weixin4j-serve本身是作为一个单独的服务来启动的，可以不依赖Spring容器，
@@ -22,7 +21,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
  * @date 2015年5月7日
  * @since JDK 1.6
  */
-public class Weixin4jServerStartupWithThread implements ApplicationContextAware {
+public class Weixin4jServerStartupListener implements ServletContextListener {
     /**
      * 服务监听的端口号,目前微信只支持80端口,可以考虑用nginx做转发到此端口
      */
@@ -39,30 +38,22 @@ public class Weixin4jServerStartupWithThread implements ApplicationContextAware 
      * 处理微信消息的全限包名(也可通过addHandler方式一个一个添加)
      */
     private final String handlerPackage;
-    /**
-     * 用spring去获取bean
-     */
-    private ApplicationContext applicationContext;
 
-    private Weixin4jServerStartupWithThread(int port, AesToken aesToken, String handlerPackage) {
-        this.port = port;
-        this.aesToken = aesToken;
-        this.handlerPackage = handlerPackage;
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    public Weixin4jServerStartupListener() {
+        // 可以考虑通过参数获取
+        this.port = 30000;
+        this.aesToken = new AesToken("weixin4j");
+        this.handlerPackage = "com.foxinmy.weixin4j.example.server.handler";
     }
 
     private WeixinServerBootstrap bootstrap;
 
     /**
-     * 启动函数
+     * 启动服务
      *
-     * @throws WeixinException
+     * @param applicationContext
      */
-    public void start() {
+    public void start(final ApplicationContext applicationContext) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -76,7 +67,20 @@ public class Weixin4jServerStartupWithThread implements ApplicationContextAware 
         }).start();
     }
 
+    /**
+     * 关闭服务
+     */
     public void stop() {
-        bootstrap.shutdown();
+        bootstrap.shutdown(true);
+    }
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        start(WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext()));
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        stop();
     }
 }

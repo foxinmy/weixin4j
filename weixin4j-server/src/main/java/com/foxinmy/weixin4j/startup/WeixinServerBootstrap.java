@@ -219,17 +219,28 @@ public final class WeixinServerBootstrap {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
-            shutdown();
+            shutdown(false);
         }
     }
 
-    public boolean shutdown() {
+    /**
+     * 关闭微信服务
+     *
+     * @param blocking
+     *            阻塞关闭
+     * @return
+     */
+    public boolean shutdown(boolean blocking) {
         if (bootstrap == null) {
             return false;
         }
         ServerBootstrapConfig c = bootstrap.config();
-        c.group().shutdownGracefully();
-        c.childGroup().shutdownGracefully();
+        Future<?> bossF = c.group().shutdownGracefully();
+        Future<?> workerF = c.childGroup().shutdownGracefully();
+        if (blocking) {
+            bossF.awaitUninterruptibly();
+            workerF.awaitUninterruptibly();
+        }
         messageHandlerList = null;
         messageInterceptorList = null;
         messageDispatcher = null;
