@@ -40,7 +40,9 @@ public class CacheManager<T extends Cacheable> {
 					cache = cacheStorager.lookup(cacheKey);
 					if (cache == null) {
 						cache = cacheCreator.create();
-						cacheStorager.caching(cacheKey, cache);
+						if (cache != null) {
+							cacheStorager.caching(cacheKey, cache);
+						}
 					}
 				} finally {
 					lock.unlock();
