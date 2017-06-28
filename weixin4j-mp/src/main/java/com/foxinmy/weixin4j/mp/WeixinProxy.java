@@ -496,7 +496,7 @@ public class WeixinProxy {
      * @return 媒体素材的记录对象
      * @throws WeixinException
      * @see com.foxinmy.weixin4j.mp.api.MediaApi
-     * @see com.com.foxinmy.weixin4j.model.media.MediaRecord
+     * @see com.foxinmy.weixin4j.model.media.MediaRecord
      * @see com.foxinmy.weixin4j.type.MediaType
      * @see com.foxinmy.weixin4j.model.media.MediaItem
      * @see com.foxinmy.weixin4j.model.paging.Pageable
