@@ -200,7 +200,7 @@ public class TagApi extends QyApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(uri, token.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
-		IdParameter idParameter = new IdParameter();
+		IdParameter idParameter = IdParameter.get();
 		if (obj.containsKey("invalidlist")) {
 			idParameter.setUserIds(Arrays.asList(obj.getString("invalidlist")
 					.split(IdParameter.SEPARATORS)));

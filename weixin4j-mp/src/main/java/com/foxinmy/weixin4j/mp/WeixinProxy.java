@@ -281,7 +281,7 @@ public class WeixinProxy {
      * @return
      */
     public TokenManager getTicketManager(TicketType ticketType) {
-        return new TokenManager(new WeixinTicketCreator(weixinAccount.getId(), ticketType, this.tokenManager),
+        return new TokenManager(new WeixinTicketCreator(ticketType, this.tokenManager),
                 this.cacheStorager);
     }
 

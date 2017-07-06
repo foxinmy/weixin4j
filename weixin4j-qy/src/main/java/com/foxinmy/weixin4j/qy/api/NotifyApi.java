@@ -98,7 +98,7 @@ public class NotifyApi extends QyApi {
 				String.format(message_send_uri, token.getAccessToken()),
 				obj.toJSONString());
 		obj = response.getAsJson();
-		IdParameter idParameter = new IdParameter();
+		IdParameter idParameter = IdParameter.get();
 		if (obj.containsKey("invaliduser")) {
 			idParameter.setUserIds(Arrays.asList(obj.getString("invaliduser")
 					.split(IdParameter.SEPARATORS)));

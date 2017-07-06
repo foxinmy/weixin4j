@@ -23,39 +23,40 @@ import com.foxinmy.weixin4j.token.TokenManager;
  */
 public class WeixinTokenSuiteCreator extends TokenCreator {
 
-	private final PerTicketManager perTicketManager;
-	private final TokenManager suiteTokenManager;
+    private final PerTicketManager perTicketManager;
+    private final TokenManager suiteTokenManager;
 
-	/**
-	 *
-	 * @param perTicketManager
-	 *            第三方套件永久授权码
-	 * @param suiteTokenManager
-	 *            第三方套件凭证token
-	 */
-	public WeixinTokenSuiteCreator(PerTicketManager perTicketManager,
-			TokenManager suiteTokenManager) {
-		this.perTicketManager = perTicketManager;
-		this.suiteTokenManager = suiteTokenManager;
-	}
+    /**
+     *
+     * @param perTicketManager
+     *            第三方套件永久授权码
+     * @param suiteTokenManager
+     *            第三方套件凭证token
+     */
+    public WeixinTokenSuiteCreator(PerTicketManager perTicketManager, TokenManager suiteTokenManager) {
+        this.perTicketManager = perTicketManager;
+        this.suiteTokenManager = suiteTokenManager;
+    }
 
-	@Override
-	public String key0() {
-		return String.format("qy_token_suite_%s_%s",
-				perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
-	}
+    @Override
+    public String name() {
+        return String.format("qy_token_suite_%s_%s", perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
+    }
 
-	@Override
-	public Token create() throws WeixinException {
-		JSONObject obj = new JSONObject();
-		obj.put("suite_id", perTicketManager.getThirdId());
-		obj.put("auth_corpid", perTicketManager.getAuthAppId());
-		obj.put("permanent_code", perTicketManager.getAccessTicket());
-		WeixinResponse response = weixinExecutor.post(
-				String.format(URLConsts.TOKEN_SUITE_URL,
-						suiteTokenManager.getAccessToken()), obj.toJSONString());
-		obj = response.getAsJson();
-		return new Token(obj.getString("access_token"),
-				obj.getLongValue("expires_in") * 1000l);
-	}
+    @Override
+    public String uniqueid() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Token create() throws WeixinException {
+        JSONObject obj = new JSONObject();
+        obj.put("suite_id", perTicketManager.getThirdId());
+        obj.put("auth_corpid", perTicketManager.getAuthAppId());
+        obj.put("permanent_code", perTicketManager.getAccessTicket());
+        WeixinResponse response = weixinExecutor
+                .post(String.format(URLConsts.TOKEN_SUITE_URL, suiteTokenManager.getAccessToken()), obj.toJSONString());
+        obj = response.getAsJson();
+        return new Token(obj.getString("access_token"), obj.getLongValue("expires_in") * 1000l);
+    }
 }
