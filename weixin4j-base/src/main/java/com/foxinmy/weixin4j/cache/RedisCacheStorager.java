@@ -10,7 +10,6 @@ import redis.clients.util.Pool;
 
 import java.util.Set;
 
-
 /**
  * 用Redis保存缓存对象(推荐使用)
  *
@@ -19,9 +18,7 @@ import java.util.Set;
  * @date 2015年1月9日
  * @since JDK 1.6
  */
-
-public class RedisCacheStorager<T extends Cacheable> implements
-		CacheStorager<T> {
+public class RedisCacheStorager<T extends Cacheable> implements CacheStorager<T> {
 
 	private Pool<Jedis> jedisPool;
 
@@ -33,28 +30,34 @@ public class RedisCacheStorager<T extends Cacheable> implements
 	private final static int MAX_WAIT_MILLIS = 5000;
 	private final static boolean TEST_ON_BORROW = false;
 	private final static boolean TEST_ON_RETURN = true;
+	private final static JedisPoolConfig POOLCONFIG;
+	static {
+		POOLCONFIG = new JedisPoolConfig();
+		POOLCONFIG.setMaxTotal(MAX_TOTAL);
+		POOLCONFIG.setMaxIdle(MAX_IDLE);
+		POOLCONFIG.setMaxWaitMillis(MAX_WAIT_MILLIS);
+		POOLCONFIG.setTestOnBorrow(TEST_ON_BORROW);
+		POOLCONFIG.setTestOnReturn(TEST_ON_RETURN);
+	}
 
 	public RedisCacheStorager() {
 		this(HOST, PORT, TIMEOUT);
 	}
 
 	public RedisCacheStorager(String host, int port, int timeout) {
-		JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-		jedisPoolConfig.setMaxTotal(MAX_TOTAL);
-		jedisPoolConfig.setMaxIdle(MAX_IDLE);
-		jedisPoolConfig.setMaxWaitMillis(MAX_WAIT_MILLIS);
-		jedisPoolConfig.setTestOnBorrow(TEST_ON_BORROW);
-		jedisPoolConfig.setTestOnReturn(TEST_ON_RETURN);
-		this.jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
+		this(host, port, timeout, null, POOLCONFIG);
 	}
 
-	public RedisCacheStorager(JedisPoolConfig jedisPoolConfig) {
-		this(new JedisPool(jedisPoolConfig, HOST, PORT, TIMEOUT));
+	public RedisCacheStorager(String host, int port, int timeout, String password) {
+		this(host, port, timeout, password, POOLCONFIG);
 	}
 
-	public RedisCacheStorager(String host, int port, int timeout,
-			JedisPoolConfig jedisPoolConfig) {
-		this(new JedisPool(jedisPoolConfig, host, port, timeout));
+	public RedisCacheStorager(JedisPoolConfig poolConfig) {
+		this(new JedisPool(poolConfig, HOST, PORT, TIMEOUT));
+	}
+
+	public RedisCacheStorager(String host, int port, int timeout, String password, JedisPoolConfig poolConfig) {
+		this(new JedisPool(poolConfig, host, port, timeout, password));
 	}
 
 	public RedisCacheStorager(Pool<Jedis> jedisPool) {
@@ -68,9 +71,7 @@ public class RedisCacheStorager<T extends Cacheable> implements
 		try {
 			jedis = jedisPool.getResource();
 			byte[] value = jedis.get(key.getBytes(Consts.UTF_8));
-
 			return value != null ?(T) HessianCodecUtil.decode(value):null;
-
 		} finally {
 			if (jedis != null) {
 				jedis.close();
@@ -86,8 +87,7 @@ public class RedisCacheStorager<T extends Cacheable> implements
 			byte[] cacheKey = key.getBytes(Consts.UTF_8);
 			final byte[] valueBytes = HessianCodecUtil.encode(cache);
 			if (cache.getExpires() > 0) {
-				jedis.setex(cacheKey,
-						(int) (cache.getExpires() - CUTMS) / 1000, valueBytes);
+				jedis.setex(cacheKey, (int) (cache.getExpires() - CUTMS) / 1000, valueBytes);
 			} else {
 				jedis.set(cacheKey, valueBytes);
 			}
