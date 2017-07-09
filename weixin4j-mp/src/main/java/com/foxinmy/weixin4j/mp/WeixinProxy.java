@@ -42,6 +42,7 @@ import com.foxinmy.weixin4j.mp.component.WeixinTokenComponentCreator;
 import com.foxinmy.weixin4j.mp.message.NotifyMessage;
 import com.foxinmy.weixin4j.mp.message.TemplateMessage;
 import com.foxinmy.weixin4j.mp.model.ArticleComment;
+import com.foxinmy.weixin4j.mp.model.ArticleComment.ArticleCommentType;
 import com.foxinmy.weixin4j.mp.model.AutoReplySetting;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.Group;
@@ -58,7 +59,6 @@ import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.Tag;
 import com.foxinmy.weixin4j.mp.model.TemplateMessageInfo;
 import com.foxinmy.weixin4j.mp.model.User;
-import com.foxinmy.weixin4j.mp.model.ArticleComment.ArticleCommentType;
 import com.foxinmy.weixin4j.mp.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
@@ -208,10 +208,12 @@ public class WeixinProxy {
     /**
      * 微信接口实现
      *
-     * @param settings
-     *            配置信息
-     * @param tokenManager
-     *            token管理
+     * @param weixinAccount
+     *            微信账号
+     * @param tokenCreator
+     *            token的创建
+     * @param cacheStorager
+     *            token的存储
      */
     private WeixinProxy(WeixinAccount weixinAccount, TokenCreator tokenCreator, CacheStorager<Token> cacheStorager) {
         if (weixinAccount == null) {
@@ -279,7 +281,7 @@ public class WeixinProxy {
      * @return
      */
     public TokenManager getTicketManager(TicketType ticketType) {
-        return new TokenManager(new WeixinTicketCreator(weixinAccount.getId(), ticketType, this.tokenManager),
+        return new TokenManager(new WeixinTicketCreator(ticketType, this.tokenManager),
                 this.cacheStorager);
     }
 
@@ -494,7 +496,7 @@ public class WeixinProxy {
      * @return 媒体素材的记录对象
      * @throws WeixinException
      * @see com.foxinmy.weixin4j.mp.api.MediaApi
-     * @see com.com.foxinmy.weixin4j.model.media.MediaRecord
+     * @see com.foxinmy.weixin4j.model.media.MediaRecord
      * @see com.foxinmy.weixin4j.type.MediaType
      * @see com.foxinmy.weixin4j.model.media.MediaItem
      * @see com.foxinmy.weixin4j.model.paging.Pageable
@@ -2180,5 +2182,5 @@ public class WeixinProxy {
         return commentApi.deleteCommentReply(msgid, index, commentId);
     }
 
-    public final static String VERSION = "1.7.6";
+    public final static String VERSION = "1.7.7";
 }

@@ -7,19 +7,19 @@ weixin4j
 
 模块说明
 -------
-* **weixin4j-base**
+* **weixin4j-base[1.7.7]**
 
   `Http Client实现&token实现&微信支付实现(刷卡/扫码/JS/APP/WAP/现金红包/企业付款)`,如果只使用`微信支付`功能可只引用此工程
 
-* **weixin4j-mp**
+* **weixin4j-mp[1.7.7]**
 
   `公众平台API封装`
 	
-* **weixin4j-qy**
+* **weixin4j-qy[1.7.7]**
 
   `企业号API封装`
   
-* **weixin4j-server**
+* **weixin4j-server[1.1.8]**
   
   `netty服务器&消息分发`
   

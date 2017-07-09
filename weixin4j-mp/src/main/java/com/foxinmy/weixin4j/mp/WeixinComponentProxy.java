@@ -225,5 +225,5 @@ public class WeixinComponentProxy {
 				authAppId), component(componentId).getTokenManager());
 	}
 
-	public final static String VERSION = "1.7.6";
+	public final static String VERSION = "1.7.7";
 }

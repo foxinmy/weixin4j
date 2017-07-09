@@ -22,35 +22,37 @@ import com.foxinmy.weixin4j.token.TokenManager;
  */
 public class WeixinSuitePreCodeCreator extends TokenCreator {
 
-	private final TokenManager suiteTokenManager;
-	private final String suiteId;
+    private final TokenManager suiteTokenManager;
+    private final String suiteId;
 
-	/**
-	 *
-	 * @param suiteTokenManager
-	 *            应用套件的token
-	 * @param suiteId
-	 *            应用套件ID
-	 */
-	public WeixinSuitePreCodeCreator(TokenManager suiteTokenManager,
-			String suiteId) {
-		this.suiteTokenManager = suiteTokenManager;
-		this.suiteId = suiteId;
-	}
+    /**
+     *
+     * @param suiteTokenManager
+     *            应用套件的token
+     * @param suiteId
+     *            应用套件ID
+     */
+    public WeixinSuitePreCodeCreator(TokenManager suiteTokenManager, String suiteId) {
+        this.suiteTokenManager = suiteTokenManager;
+        this.suiteId = suiteId;
+    }
 
-	@Override
-	public String key0() {
-		return String.format("qy_suite_precode_%s", suiteId);
-	}
+    @Override
+    public String name() {
+        return "qy_suite_precode";
+    }
 
-	@Override
-	public Token create() throws WeixinException {
-		WeixinResponse response = weixinExecutor.post(
-				String.format(URLConsts.SUITE_PRE_CODE_URL,
-						suiteTokenManager.getAccessToken()),
-				String.format("{\"suite_id\":\"%s\"}", suiteId));
-		JSONObject result = response.getAsJson();
-		return new Token(result.getString("pre_auth_code"),
-				result.getLongValue("expires_in") * 1000l);
-	}
+    @Override
+    public String uniqueid() {
+        return suiteId;
+    }
+
+    @Override
+    public Token create() throws WeixinException {
+        WeixinResponse response = weixinExecutor.post(
+                String.format(URLConsts.SUITE_PRE_CODE_URL, suiteTokenManager.getAccessToken()),
+                String.format("{\"suite_id\":\"%s\"}", suiteId));
+        JSONObject result = response.getAsJson();
+        return new Token(result.getString("pre_auth_code"), result.getLongValue("expires_in") * 1000l);
+    }
 }

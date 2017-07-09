@@ -15,31 +15,38 @@ import com.foxinmy.weixin4j.model.Token;
  */
 public abstract class TokenCreator implements CacheCreator<Token> {
 
-	/**
-	 * 缓存KEY前缀
-	 */
-	public final static String CACHEKEY_PREFIX = "weixin4j_";
+    /**
+     * 缓存KEY前缀
+     */
+    public final static String CACHEKEY_PREFIX = "weixin4j_";
 
-	protected final WeixinRequestExecutor weixinExecutor;
+    protected final WeixinRequestExecutor weixinExecutor;
 
-	public TokenCreator() {
-		this.weixinExecutor = new WeixinRequestExecutor();
-	}
+    public TokenCreator() {
+        this.weixinExecutor = new WeixinRequestExecutor();
+    }
 
-	/**
-	 * 缓存key:附加key前缀
-	 *
-	 * @return
-	 */
-	@Override
-	public String key() {
-		return String.format("%s%s", CACHEKEY_PREFIX, key0());
-	}
+    /**
+     * 缓存key:附加key前缀
+     *
+     * @return
+     */
+    @Override
+    public String key() {
+        return String.format("%s%s_%s", CACHEKEY_PREFIX, name(), uniqueid());
+    }
 
-	/**
-	 * 返回缓存KEY的名称:建议接口类型命名 如 mp_token_{appid}
-	 *
-	 * @return
-	 */
-	public abstract String key0();
+    /**
+     * 返回缓存类型命名，如mp_token
+     *
+     * @return
+     */
+    public abstract String name();
+
+    /**
+     * 返回缓存唯一标识，如appid
+     *
+     * @return
+     */
+    public abstract String uniqueid();
 }

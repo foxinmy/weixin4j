@@ -1,16 +1,15 @@
 package com.foxinmy.weixin4j.interceptor;
 
-import io.netty.channel.ChannelHandlerContext;
-
-import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 
+import io.netty.channel.ChannelHandlerContext;
+
 /**
  * 微信消息拦截器
- * 
+ *
  * @className WeixinMessageInterceptor
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
@@ -21,7 +20,7 @@ public interface WeixinMessageInterceptor {
 
 	/**
 	 * 执行handler前
-	 * 
+	 *
 	 * @param context
 	 *            通道环境
 	 * @param request
@@ -34,12 +33,11 @@ public interface WeixinMessageInterceptor {
 	 * @throws WeixinException
 	 */
 	boolean preHandle(ChannelHandlerContext context, WeixinRequest request,
-			WeixinMessage message, WeixinMessageHandler handler)
-			throws WeixinException;
+			WeixinMessage message, WeixinMessageHandler handler);
 
 	/**
 	 * 执行handler后
-	 * 
+	 *
 	 * @param context
 	 *            通道环境
 	 * @param request
@@ -54,11 +52,11 @@ public interface WeixinMessageInterceptor {
 	 */
 	void postHandle(ChannelHandlerContext context, WeixinRequest request,
 			WeixinResponse response, WeixinMessage message,
-			WeixinMessageHandler handler) throws WeixinException;
+			WeixinMessageHandler handler);
 
 	/**
 	 * 全部执行后
-	 * 
+	 *
 	 * @param context
 	 *            通道环境
 	 * @param request
@@ -73,12 +71,11 @@ public interface WeixinMessageInterceptor {
 	 */
 	void afterCompletion(ChannelHandlerContext context, WeixinRequest request,
 			WeixinResponse response, WeixinMessage message,
-			WeixinMessageHandler handler, Exception exception)
-			throws WeixinException;
+			WeixinMessageHandler handler, Exception exception);
 
 	/**
 	 * 用于匹配到多个MessageHandler时权重降序排列,数字越大优先级越高
-	 * 
+	 *
 	 * @return 权重
 	 */
 	int weight();

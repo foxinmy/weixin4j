@@ -2,11 +2,9 @@ package com.foxinmy.weixin4j.dispatcher;
 
 import java.util.Map;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
-
 /**
  * Bean构造
- * 
+ *
  * @className BeanFactory
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
@@ -14,11 +12,11 @@ import com.foxinmy.weixin4j.exception.WeixinException;
  * @see
  */
 public interface BeanFactory {
-	Object getBean(String name) throws WeixinException;
+	Object getBean(String name);
 
-	<T> T getBean(Class<T> clazz) throws WeixinException;
+	<T> T getBean(Class<T> clazz);
 
-	<T> T getBean(String name, Class<T> clazz) throws WeixinException;
+	<T> T getBean(String name, Class<T> clazz);
 
-	<T> Map<String, T> getBeans(Class<T> clazz) throws WeixinException;
+	<T> Map<String, T> getBeans(Class<T> clazz);
 }

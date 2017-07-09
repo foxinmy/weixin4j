@@ -22,45 +22,42 @@ import com.foxinmy.weixin4j.type.TicketType;
  */
 public class WeixinTicketCreator extends TokenCreator {
 
-	private final String corpid;
-	private final TicketType ticketType;
-	private final TokenManager weixinTokenManager;
+    private final TicketType ticketType;
+    private final TokenManager weixinTokenManager;
 
-	/**
-	 * @param corpid
-	 *            企业号ID
-	 * @param ticketType
-	 *            票据类型
-	 * @param weixinTokenManager
-	 *            <font color="red">企业号的access_token</font>
-	 */
-	public WeixinTicketCreator(String corpid, TicketType ticketType,
-			TokenManager weixinTokenManager) {
-		this.corpid = corpid;
-		this.ticketType = ticketType;
-		this.weixinTokenManager = weixinTokenManager;
-	}
+    /**
+     * @param ticketType
+     *            票据类型
+     * @param weixinTokenManager
+     *            <font color="red">企业号的access_token</font>
+     */
+    public WeixinTicketCreator(TicketType ticketType, TokenManager weixinTokenManager) {
+        this.ticketType = ticketType;
+        this.weixinTokenManager = weixinTokenManager;
+    }
 
-	@Override
-	public String key0() {
-		return String.format("qy_ticket_%s_%s", ticketType.name(), corpid);
-	}
+    @Override
+    public String name() {
+        return String.format("qy_ticket_%s", ticketType.name());
+    }
 
-	@Override
-	public Token create() throws WeixinException {
-		WeixinResponse response = null;
-		if (ticketType == TicketType.jsapi) {
-			response = weixinExecutor.get(String.format(
-					URLConsts.JS_TICKET_URL, weixinTokenManager.getCache()
-							.getAccessToken()));
-		} else {
-			response = weixinExecutor.get(String.format(
-					URLConsts.SUITE_TICKET_URL, weixinTokenManager.getCache()
-							.getAccessToken(), ticketType.name()));
-		}
-		JSONObject result = response.getAsJson();
-		return new Token(result.getString("ticket"),
-				result.getLong("expires_in") * 1000l).pushExtra("group_id",
-				result.getString("group_id"));
-	}
+    @Override
+    public String uniqueid() {
+        return weixinTokenManager.getWeixinId();
+    }
+
+    @Override
+    public Token create() throws WeixinException {
+        WeixinResponse response = null;
+        if (ticketType == TicketType.jsapi) {
+            response = weixinExecutor
+                    .get(String.format(URLConsts.JS_TICKET_URL, weixinTokenManager.getCache().getAccessToken()));
+        } else {
+            response = weixinExecutor.get(String.format(URLConsts.SUITE_TICKET_URL,
+                    weixinTokenManager.getCache().getAccessToken(), ticketType.name()));
+        }
+        JSONObject result = response.getAsJson();
+        return new Token(result.getString("ticket"), result.getLong("expires_in") * 1000l).pushExtra("group_id",
+                result.getString("group_id"));
+    }
 }
