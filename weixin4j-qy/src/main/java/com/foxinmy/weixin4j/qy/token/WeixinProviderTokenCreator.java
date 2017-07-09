@@ -21,35 +21,38 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  */
 public class WeixinProviderTokenCreator extends TokenCreator {
 
-	private final String corpid;
-	private final String providersecret;
+    private final String corpid;
+    private final String providersecret;
 
-	/**
-	 *
-	 * @param corpid
-	 *            企业号ID
-	 * @param providersecret
-	 *            企业号提供商的secret
-	 */
-	public WeixinProviderTokenCreator(String corpid, String providersecret) {
-		this.corpid = corpid;
-		this.providersecret = providersecret;
-	}
+    /**
+     *
+     * @param corpid
+     *            企业号ID
+     * @param providersecret
+     *            企业号提供商的secret
+     */
+    public WeixinProviderTokenCreator(String corpid, String providersecret) {
+        this.corpid = corpid;
+        this.providersecret = providersecret;
+    }
 
-	@Override
-	public String key0() {
-		return String.format("qy_provider_token_%s", corpid);
-	}
+    @Override
+    public String name() {
+        return "qy_provider_token";
+    }
 
-	@Override
-	public Token create() throws WeixinException {
-		JSONObject obj = new JSONObject();
-		obj.put("corpid", corpid);
-		obj.put("provider_secret", providersecret);
-		WeixinResponse response = weixinExecutor.post(
-				URLConsts.PROVIDER_TOKEN_URL, obj.toJSONString());
-		obj = response.getAsJson();
-		return new Token(obj.getString("provider_access_token"),
-				obj.getLongValue("expires_in") * 1000l);
-	}
+    @Override
+    public String uniqueid() {
+        return corpid;
+    }
+
+    @Override
+    public Token create() throws WeixinException {
+        JSONObject obj = new JSONObject();
+        obj.put("corpid", corpid);
+        obj.put("provider_secret", providersecret);
+        WeixinResponse response = weixinExecutor.post(URLConsts.PROVIDER_TOKEN_URL, obj.toJSONString());
+        obj = response.getAsJson();
+        return new Token(obj.getString("provider_access_token"), obj.getLongValue("expires_in") * 1000l);
+    }
 }

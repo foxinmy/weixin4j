@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
 
 /**
  * 文本消息处理
- * 
+ *
  * @className TextMessageHandler
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年11月18日
@@ -19,9 +19,8 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  */
 @Component
 public class TextMessageHandler extends MessageHandlerAdapter<TextMessage> {
-	@Override
-	public WeixinResponse doHandle0(WeixinRequest request, TextMessage message)
-			throws WeixinException {
-		return new TextResponse("收到了文本消息");
-	}
+    @Override
+    public WeixinResponse doHandle0(WeixinRequest request, TextMessage message) {
+        return new TextResponse("收到了文本消息");
+    }
 }

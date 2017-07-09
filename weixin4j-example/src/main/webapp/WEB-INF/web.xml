@@ -42,4 +42,7 @@
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
+	<listener>
+		<listener-class>com.foxinmy.weixin4j.example.server.Weixin4jServerStartupListener</listener-class>
+	</listener>
 </web-app>

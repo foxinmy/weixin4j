@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
 
 /**
  * 消息提醒对象
- * 
+ *
  * @className NotifyMessage
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月22日
@@ -48,7 +48,7 @@ public class NotifyMessage implements Serializable {
 	private IdParameter target;
 
 	public NotifyMessage(int agentid, NotifyTuple tuple) {
-		this(agentid, tuple, new IdParameter(), false);
+		this(agentid, tuple, IdParameter.get(), false);
 	}
 
 	public NotifyMessage(int agentId, NotifyTuple tuple, IdParameter target, boolean isSafe) {

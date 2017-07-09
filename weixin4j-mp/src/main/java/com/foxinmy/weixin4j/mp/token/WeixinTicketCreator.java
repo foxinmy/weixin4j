@@ -22,39 +22,37 @@ import com.foxinmy.weixin4j.type.TicketType;
  */
 public class WeixinTicketCreator extends TokenCreator {
 
-	private final String appid;
-	private final TicketType ticketType;
-	private final TokenManager weixinTokenManager;
+    private final TicketType ticketType;
+    private final TokenManager weixinTokenManager;
 
-	/**
-	 * jssdk
-	 *
-	 * @param appid
-	 *            公众号的appid
-	 * @param ticketType
-	 *            票据类型
-	 * @param weixinTokenManager
-	 *            <font color="red">公众平台的access_token</font>
-	 */
-	public WeixinTicketCreator(String appid, TicketType ticketType,
-			TokenManager weixinTokenManager) {
-		this.appid = appid;
-		this.ticketType = ticketType;
-		this.weixinTokenManager = weixinTokenManager;
-	}
+    /**
+     * jssdk
+     *
+     * @param ticketType
+     *            票据类型
+     * @param weixinTokenManager
+     *            <font color="red">公众平台的access_token</font>
+     */
+    public WeixinTicketCreator(TicketType ticketType, TokenManager weixinTokenManager) {
+        this.ticketType = ticketType;
+        this.weixinTokenManager = weixinTokenManager;
+    }
 
-	@Override
-	public String key0() {
-		return String.format("mp_ticket_%s_%s", ticketType.name(), appid);
-	}
+    @Override
+    public String name() {
+        return String.format("mp_ticket_%s", ticketType.name());
+    }
 
-	@Override
-	public Token create() throws WeixinException {
-		WeixinResponse response = weixinExecutor.get(String.format(
-				URLConsts.JS_TICKET_URL, weixinTokenManager.getAccessToken(),
-				ticketType.name()));
-		JSONObject result = response.getAsJson();
-		return new Token(result.getString("ticket"),
-				result.getLongValue("expires_in") * 1000l);
-	}
+    @Override
+    public String uniqueid() {
+        return weixinTokenManager.getWeixinId();
+    }
+
+    @Override
+    public Token create() throws WeixinException {
+        WeixinResponse response = weixinExecutor
+                .get(String.format(URLConsts.JS_TICKET_URL, weixinTokenManager.getAccessToken(), ticketType.name()));
+        JSONObject result = response.getAsJson();
+        return new Token(result.getString("ticket"), result.getLongValue("expires_in") * 1000l);
+    }
 }

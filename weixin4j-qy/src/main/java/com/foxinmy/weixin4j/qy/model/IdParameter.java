@@ -35,10 +35,14 @@ public class IdParameter implements Serializable {
 	@JSONField(name = "tag")
 	private List<Integer> tagIds;
 
-	public IdParameter() {
+	protected IdParameter() {
 		this.userIds = new ArrayList<String>();
 		this.partyIds = new ArrayList<Integer>();
 		this.tagIds = new ArrayList<Integer>();
+	}
+
+	public static IdParameter get(){
+	    return new IdParameter();
 	}
 
 	/**

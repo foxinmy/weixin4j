@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.cache;
 
+
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.HessianCodecUtil;
 import redis.clients.jedis.Jedis;
@@ -9,6 +10,7 @@ import redis.clients.util.Pool;
 
 import java.util.Set;
 
+
 /**
  * 用Redis保存缓存对象(推荐使用)
  *
@@ -17,6 +19,7 @@ import java.util.Set;
  * @date 2015年1月9日
  * @since JDK 1.6
  */
+
 public class RedisCacheStorager<T extends Cacheable> implements
 		CacheStorager<T> {
 
@@ -66,7 +69,7 @@ public class RedisCacheStorager<T extends Cacheable> implements
 			jedis = jedisPool.getResource();
 			byte[] value = jedis.get(key.getBytes(Consts.UTF_8));
 
-			return value != null ?(T)HessianCodecUtil.decode(value):null;
+			return value != null ?(T) HessianCodecUtil.decode(value):null;
 
 		} finally {
 			if (jedis != null) {

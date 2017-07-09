@@ -21,33 +21,36 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  */
 public class WeixinTokenCreator extends TokenCreator {
 
-	private final String corpid;
-	private final String corpsecret;
+    private final String corpid;
+    private final String corpsecret;
 
-	/**
-	 *
-	 * @param corpid
-	 *            企业号ID
-	 * @param corpsecret
-	 *            企业号secret
-	 */
-	public WeixinTokenCreator(String corpid, String corpsecret) {
-		this.corpid = corpid;
-		this.corpsecret = corpsecret;
-	}
+    /**
+     *
+     * @param corpid
+     *            企业号ID
+     * @param corpsecret
+     *            企业号secret
+     */
+    public WeixinTokenCreator(String corpid, String corpsecret) {
+        this.corpid = corpid;
+        this.corpsecret = corpsecret;
+    }
 
-	@Override
-	public String key0() {
-		return String.format("qy_token_%s", corpid);
-	}
+    @Override
+    public String name() {
+        return "qy_token";
+    }
 
-	@Override
-	public Token create() throws WeixinException {
-		String tokenUrl = String.format(URLConsts.ASSESS_TOKEN_URL, corpid,
-				corpsecret);
-		WeixinResponse response = weixinExecutor.get(tokenUrl);
-		JSONObject result = response.getAsJson();
-		return new Token(result.getString("access_token"),
-				result.getLongValue("expires_in") * 1000l);
-	}
+    @Override
+    public String uniqueid() {
+        return corpid;
+    }
+
+    @Override
+    public Token create() throws WeixinException {
+        String tokenUrl = String.format(URLConsts.ASSESS_TOKEN_URL, corpid, corpsecret);
+        WeixinResponse response = weixinExecutor.get(tokenUrl);
+        JSONObject result = response.getAsJson();
+        return new Token(result.getString("access_token"), result.getLongValue("expires_in") * 1000l);
+    }
 }

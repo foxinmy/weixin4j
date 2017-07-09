@@ -23,28 +23,31 @@ import com.foxinmy.weixin4j.util.DateUtil;
  */
 public class CouponTest extends PayTest {
 
-    @Test
-    public void sendCoupon() throws WeixinException {
-        String partnerTradeNo = String.format("%s%s%s", ACCOUNT.getMchId(), DateUtil.fortmat2yyyyMMdd(new Date()), "1");
-        CouponResult result = PAY.sendCoupon("123", partnerTradeNo, "oyFLst1bqtuTcxK-ojF8hOGtLQao", null);
-        Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
-        Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
-        System.err.println(result);
-    }
+	@Test
+	public void sendCoupon() throws WeixinException {
+		String partnerTradeNo = String.format("%s%s%s", ACCOUNT.getMchId(),
+				DateUtil.fortmat2yyyyMMdd(new Date()), "1");
+		CouponResult result = PAY.sendCoupon("123", partnerTradeNo,
+				"oyFLst1bqtuTcxK-ojF8hOGtLQao", null);
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+		System.err.println(result);
+	}
 
-    @Test
-    public void queryCouponStock() throws WeixinException {
-        CouponStock result = PAY.queryCouponStock("couponStockId");
-        Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
-        Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
-        System.err.println(result);
-    }
+	@Test
+	public void queryCouponStock() throws WeixinException {
+		CouponStock result = PAY.queryCouponStock("couponStockId");
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+		System.err.println(result);
+	}
 
-    @Test
-    public void queryCouponDetail() throws WeixinException {
-        CouponDetail result = PAY.queryCouponDetail("openId", "couponId");
-        Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
-        Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
-        System.err.println(result);
-    }
+	@Test
+	public void queryCouponDetail() throws WeixinException {
+		CouponDetail result = PAY.queryCouponDetail("openId", "couponId",
+				"stockId");
+		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+		System.err.println(result);
+	}
 }

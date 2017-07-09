@@ -11,28 +11,7 @@ weixin4j-serve本身是作为一个单独的服务来启动的，可以不依赖
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
 
-	<!-- 微信消息服务～start -->
-	<bean
-		class="com.foxinmy.weixin4j.example.server.Weixin4jServerStartupWithThread"
-		init-method="start" destroy-method="stop">
-		<!-- 端口号 微信暂时只支持80端口 所以需要自己把微信被动消息请求转发(nginx等)到这个端口上来 -->
-		<constructor-arg index="0" value="30000" />
-		<!-- token信息 -->
-		<constructor-arg index="1">
-			<!-- 明文模式 -->
-			<bean class="com.foxinmy.weixin4j.util.AesToken">
-				<constructor-arg index="0" value="开发者Token" />
-			</bean>
-			<!-- 加密模式 -->
-			<!-- bean class="com.foxinmy.weixin4j.util.AesToken"> <constructor-arg 
-				index="0" value="公众号的应用ID(appid/corpid)" /> <constructor-arg index="1" value="开发者Token" 
-				/> <constructor-arg index="2" value="解密的EncodingAESKey" /> </bean -->
-		</constructor-arg>
-		<!-- 处理微信消息的全限包名 -->
-		<constructor-arg index="2"
-			value="com.foxinmy.weixin4j.example.server.handler" />
-	</bean>
-	<!-- 微信消息服务～end -->
+	<!-- 详见：com.foxinmy.weixin4j.example.server.Weixin4jServerStartupListener和web.xml配置 -->
 
 	<!-- spring扫描加载消息处理类~start -->
 	<context:component-scan base-package="com.foxinmy.weixin4j.example.server.handler" />

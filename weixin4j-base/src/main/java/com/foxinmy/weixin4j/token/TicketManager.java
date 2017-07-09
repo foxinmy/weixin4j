@@ -29,7 +29,7 @@ public class TicketManager {
 	private final CacheStorager<Token> cacheStorager;
 
 	/**
-	 * 
+	 *
 	 * @param thirdId
 	 *            第三方ID suiteId/componentId
 	 * @param thirdSecret
@@ -95,6 +95,6 @@ public class TicketManager {
 	}
 
 	public CacheStorager<Token> getCacheStorager() {
-		return this.cacheStorager;
+		return cacheStorager;
 	}
 }
