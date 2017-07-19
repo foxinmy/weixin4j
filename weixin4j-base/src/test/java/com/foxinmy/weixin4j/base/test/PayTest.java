@@ -26,6 +26,7 @@ import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.type.mch.BillType;
+import com.foxinmy.weixin4j.type.mch.RefundAccountType;
 import com.foxinmy.weixin4j.util.Consts;
 
 /**
@@ -38,136 +39,120 @@ import com.foxinmy.weixin4j.util.Consts;
  * @see
  */
 public class PayTest {
-	protected final static WeixinPayAccount ACCOUNT;
-	protected final static WeixinSignature SIGNATURE;
-	protected final static WeixinPayProxy PAY;
+    protected final static WeixinPayAccount ACCOUNT;
+    protected final static WeixinSignature SIGNATURE;
+    protected final static WeixinPayProxy PAY;
 
-	static {
-		ACCOUNT = new WeixinPayAccount(
-				"appid",
-				"paysignKey",
-				"mchId",
-				"证书密码,为空取mchid",
-				"证书路径,绝对路径&classpath路径：/path/to/certificate.p12,或者填写classpath:path/to/certificate.p12");
-		SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
-		PAY = new WeixinPayProxy(ACCOUNT);
-	}
+    static {
+        ACCOUNT = new WeixinPayAccount("wx7ca5ae77b3b4bc81", "GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ", "1290664601",
+                "1290664601", "/Users/jy/workspaces/jdxg-parent/ixi-service/src/main/resources/1290664601.p12");
+        SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
+        PAY = new WeixinPayProxy(ACCOUNT);
+    }
 
-	@Test
-	public void queryOrder() throws WeixinException {
-		Order order = PAY.queryOrder(new IdQuery("BY2016010800025",
-				IdType.TRADENO));
-		Assert.assertEquals(Consts.SUCCESS, order.getReturnCode());
-		Assert.assertEquals(Consts.SUCCESS, order.getResultCode());
-		System.err.println(order);
-		String sign = order.getSign();
-		order.setSign(null);
-		String valiSign = SIGNATURE.sign(order);
-		System.err
-				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
-		Assert.assertEquals(valiSign, sign);
-	}
+    @Test
+    public void queryOrder() throws WeixinException {
+        Order order = PAY.queryOrder(new IdQuery("BY2016010800025", IdType.TRADENO));
+        Assert.assertEquals(Consts.SUCCESS, order.getReturnCode());
+        Assert.assertEquals(Consts.SUCCESS, order.getResultCode());
+        System.err.println(order);
+        String sign = order.getSign();
+        order.setSign(null);
+        String valiSign = SIGNATURE.sign(order);
+        System.err.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
+        Assert.assertEquals(valiSign, sign);
+    }
 
-	@Test
-	public void queryRefund() throws WeixinException {
-		RefundRecord record = PAY.queryRefund(new IdQuery("TT_1427183696238",
-				IdType.TRADENO));
-		Assert.assertEquals(Consts.SUCCESS, record.getReturnCode());
-		Assert.assertEquals(Consts.SUCCESS, record.getResultCode());
-		System.err.println(record);
-		String sign = record.getSign();
-		record.setSign(null);
-		String valiSign = SIGNATURE.sign(record);
-		System.err
-				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
-		Assert.assertEquals(valiSign, sign);
-	}
+    @Test
+    public void queryRefund() throws WeixinException {
+        RefundRecord record = PAY.queryRefund(new IdQuery("TT_1427183696238", IdType.TRADENO));
+        Assert.assertEquals(Consts.SUCCESS, record.getReturnCode());
+        Assert.assertEquals(Consts.SUCCESS, record.getResultCode());
+        System.err.println(record);
+        String sign = record.getSign();
+        record.setSign(null);
+        String valiSign = SIGNATURE.sign(record);
+        System.err.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
+        Assert.assertEquals(valiSign, sign);
+    }
 
-	@Test
-	public void downbill() throws WeixinException, IOException {
-		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, 2016);
-		c.set(Calendar.MONTH, 3);
-		c.set(Calendar.DAY_OF_MONTH, 4);
-		System.err.println(c.getTime());
-		OutputStream os = new FileOutputStream("/tmp/bill20160813.txt");
-		PAY.downloadBill(c.getTime(), BillType.ALL, os, null);
-	}
+    @Test
+    public void downbill() throws WeixinException, IOException {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MONTH, 0); // 4月份 正常
+        // c.set(Calendar.MONTH, 0); // 3月份 异常
+        OutputStream os = new FileOutputStream("/tmp/bill.txt");
+        PAY.downloadBill(c.getTime(), BillType.ALL, os, null);
+    }
 
-	@Test
-	public void refund() throws WeixinException, IOException {
-		IdQuery idQuery = new IdQuery("TT_1427183696238", IdType.TRADENO);
-		RefundResult result = PAY.applyRefund(idQuery,
-				"TT_R" + System.currentTimeMillis(), 0.01d, 0.01d, null,
-				"10020674", null);
-		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
-		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
-		System.err.println(result);
-		String sign = result.getSign();
-		result.setSign(null);
-		String valiSign = SIGNATURE.sign(result);
-		System.err
-				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
-		Assert.assertEquals(valiSign, sign);
-	}
+    @Test
+    public void refund() throws WeixinException, IOException {
+        IdQuery idQuery = new IdQuery("TT_1427183696238", IdType.TRADENO);
+        RefundResult result = PAY.applyRefund(idQuery, "TT_R" + System.currentTimeMillis(), 0.01d, 0.01d, null,
+                "10020674", "退款描述(原因)", RefundAccountType.REFUND_SOURCE_RECHARGE_FUNDS);
+        Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+        Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+        System.err.println(result);
+        String sign = result.getSign();
+        result.setSign(null);
+        String valiSign = SIGNATURE.sign(result);
+        System.err.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
+        Assert.assertEquals(valiSign, sign);
+    }
 
-	@Test
-	public void nativePay() throws WeixinException {
-		MchPayPackage payPackageV3 = new MchPayPackage("native测试", "T0001",
-				0.1d, "notify_url", "127.0.0.1", TradeType.NATIVE, null, null,
-				"productId", null);
-		PrePay result = PAY.createPrePay(payPackageV3);
-		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
-		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
-		System.err.println(result);
-	}
+    @Test
+    public void nativePay() throws WeixinException {
+        MchPayPackage payPackageV3 = new MchPayPackage("native测试", "T0001", 0.1d, "notify_url", "127.0.0.1",
+                TradeType.NATIVE, null, null, "productId", null);
+        PrePay result = PAY.createPrePay(payPackageV3);
+        Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+        Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+        System.err.println(result);
+    }
 
-	@Test
-	public void closeOrder() throws WeixinException {
-		MerchantResult result = PAY.closeOrder("D111");
-		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
-		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
-		System.err.println(result);
-		String sign = result.getSign();
-		result.setSign(null);
-		String valiSign = SIGNATURE.sign(result);
-		System.err
-				.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
-		Assert.assertEquals(valiSign, sign);
-	}
+    @Test
+    public void closeOrder() throws WeixinException {
+        MerchantResult result = PAY.closeOrder("D111");
+        Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
+        Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
+        System.err.println(result);
+        String sign = result.getSign();
+        result.setSign(null);
+        String valiSign = SIGNATURE.sign(result);
+        System.err.println(String.format("sign=%s,valiSign=%s", sign, valiSign));
+        Assert.assertEquals(valiSign, sign);
+    }
 
-	@Test
-	public void shortUrl() throws WeixinException {
-		String url = "weixin://wxpay/bizpayurl?xxxxxx";
-		String shortUrl = PAY.getPayShorturl(url);
-		System.err.println(shortUrl);
-	}
+    @Test
+    public void shortUrl() throws WeixinException {
+        String url = "weixin://wxpay/bizpayurl?xxxxxx";
+        String shortUrl = PAY.getPayShorturl(url);
+        System.err.println(shortUrl);
+    }
 
-	@Test
-	public void interfaceReport() throws WeixinException {
-		String interfaceUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-		int executeTime = 2500;
-		String outTradeNo = null;
-		String ip = "127.0.0.1";
-		Date time = new Date();
-		XmlResult returnXml = new XmlResult("SUCCESS", "");
-		returnXml.setResultCode("SUCCESS");
-		returnXml = PAY.reportInterface(interfaceUrl, executeTime, outTradeNo,
-				ip, time, returnXml);
-		Assert.assertEquals(Consts.SUCCESS, returnXml.getReturnCode());
-		Assert.assertEquals(Consts.SUCCESS, returnXml.getResultCode());
-		System.err.println(returnXml);
-	}
+    @Test
+    public void interfaceReport() throws WeixinException {
+        String interfaceUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+        int executeTime = 2500;
+        String outTradeNo = null;
+        String ip = "127.0.0.1";
+        Date time = new Date();
+        XmlResult returnXml = new XmlResult("SUCCESS", "");
+        returnXml.setResultCode("SUCCESS");
+        returnXml = PAY.reportInterface(interfaceUrl, executeTime, outTradeNo, ip, time, returnXml);
+        Assert.assertEquals(Consts.SUCCESS, returnXml.getReturnCode());
+        Assert.assertEquals(Consts.SUCCESS, returnXml.getResultCode());
+        System.err.println(returnXml);
+    }
 
-	@Test
-	public void testMicroPay() throws WeixinException {
-		String authCode = "扫描码";
-		String body = "商品描述";
-		String outTradeNo = "M001";
-		double totalFee = 1d;
-		String createIp = "127.0.0.1";
-		MchPayRequest request = PAY.createMicroPayRequest(authCode, body,
-				outTradeNo, totalFee, createIp, null);
-		System.err.println(request);
-	}
+    @Test
+    public void testMicroPay() throws WeixinException {
+        String authCode = "扫描码";
+        String body = "商品描述";
+        String outTradeNo = "M001";
+        double totalFee = 1d;
+        String createIp = "127.0.0.1";
+        MchPayRequest request = PAY.createMicroPayRequest(authCode, body, outTradeNo, totalFee, createIp, null);
+        System.err.println(request);
+    }
 }
