@@ -11,17 +11,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
-import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.component.WeixinComponentPreCodeCreator;
 import com.foxinmy.weixin4j.mp.component.WeixinComponentTokenCreator;
-import com.foxinmy.weixin4j.mp.component.WeixinTokenComponentCreator;
 import com.foxinmy.weixin4j.mp.model.AuthorizerOption;
-import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.mp.model.AuthorizerOption.AuthorizerOptionName;
-import com.foxinmy.weixin4j.mp.model.ComponentAuthInfo;
+import com.foxinmy.weixin4j.mp.model.ComponentAuthorizer;
+import com.foxinmy.weixin4j.mp.model.ComponentAuthorizerToken;
+import com.foxinmy.weixin4j.mp.model.OauthToken;
 import com.foxinmy.weixin4j.token.PerTicketManager;
 import com.foxinmy.weixin4j.token.TicketManager;
-import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
@@ -221,12 +219,12 @@ public class ComponentApi extends MpApi {
 	 *            授权code
 	 * @return 第三方组件授权信息
 	 * @see {@link com.foxinmy.weixin4j.mp.WeixinComponentProxy#getComponentAuthorizeURL(String, String, String)}
-	 * @see com.foxinmy.weixin4j.mp.model.ComponentAuthInfo
+	 * @see com.foxinmy.weixin4j.mp.model.ComponentAuthorizerToken
 	 * @throws WeixinException
 	 */
-	public ComponentAuthInfo exchangeAuthInfo(String authCode)
+	public ComponentAuthorizerToken exchangeAuthorizerToken(String authCode)
 			throws WeixinException {
-		String component_exchange_authorizer_uri = getRequestUri("component_exchange_authorizer_uri");
+		String component_exchange_authorizer_uri = getRequestUri("component_query_authorization_uri");
 		JSONObject obj = new JSONObject();
 		obj.put("component_appid", ticketManager.getThirdId());
 		obj.put("authorization_code", authCode);
@@ -241,22 +239,45 @@ public class ComponentApi extends MpApi {
 			privileges.add(privilegesObj.getJSONObject(i)
 					.getJSONObject("funcscope_category").getInteger("id"));
 		}
-		ComponentAuthInfo info = new ComponentAuthInfo();
-		info.setPrivileges(privileges);
-		info.setAppId(authObj.getString("authorizer_appid"));
-		// 微信授权公众号的永久刷新令牌
-		PerTicketManager perTicketManager = getRefreshTokenManager(info
-				.getAppId());
-		// 缓存微信公众号的access_token
-		TokenCreator tokenCreator = new WeixinTokenComponentCreator(
-				perTicketManager, tokenManager);
-		Token token = new Token(authObj.getString("authorizer_access_token"),
-				authObj.getLongValue("expires_in") * 1000l);
-		ticketManager.getCacheStorager().caching(tokenCreator.key(), token);
-		// 缓存微信公众号的永久授权码(refresh_token)
-		perTicketManager.cachingTicket(authObj
-				.getString("authorizer_refresh_token"));
-		return info;
+		ComponentAuthorizerToken token = new ComponentAuthorizerToken(
+				authObj.getString("authorizer_access_token"),
+				authObj.getLongValue("expires_in"));
+		token.setRefreshToken(authObj.getString("authorizer_refresh_token"));
+		token.setPrivileges(privileges);
+		token.setAppId(authObj.getString("authorizer_appid"));
+		return token;
+	}
+
+	/**
+	 * 获取（刷新）授权公众号或小程序的接口调用凭据（令牌）
+	 * 
+	 * @param authAppId
+	 *            授权方appid
+	 * @param authRefreshToken
+	 *            授权方的刷新令牌，刷新令牌主要用于第三方平台获取和刷新已授权用户的access_token，只会在授权时刻提供，请妥善保存。
+	 *            一旦丢失，只能让用户重新授权，才能再次拿到新的刷新令牌
+	 * @return 第三方组件授权信息
+	 * @see {@link exchangeAuthInfo(String)}
+	 * @see com.foxinmy.weixin4j.mp.model.ComponentAuthorizerToken
+	 * @throws WeixinException
+	 */
+	public ComponentAuthorizerToken refreshAuthorizerToken(String authAppId,
+			String authRefreshToken) throws WeixinException {
+		String component_refresh_authorizer_token_uri = getRequestUri("component_refresh_authorizer_token_uri");
+		JSONObject obj = new JSONObject();
+		obj.put("component_appid", ticketManager.getThirdId());
+		obj.put("authorizer_appid", authAppId);
+		obj.put("authorizer_refresh_token", authRefreshToken);
+		WeixinResponse response = weixinExecutor.post(String.format(
+				component_refresh_authorizer_token_uri,
+				tokenManager.getAccessToken()), obj.toJSONString());
+		obj = response.getAsJson();
+		ComponentAuthorizerToken token = new ComponentAuthorizerToken(
+				obj.getString("authorizer_access_token"),
+				obj.getLongValue("expires_in"));
+		token.setRefreshToken(obj.getString("authorizer_refresh_token"));
+		token.setAppId(authAppId);
+		return token;
 	}
 
 	/**
@@ -267,10 +288,10 @@ public class ComponentApi extends MpApi {
 	 * @param authAppId
 	 *            授权方appid
 	 * @return 第三方组件授权信息
-	 * @see com.foxinmy.weixin4j.mp.model.ComponentAuthInfo
+	 * @see com.foxinmy.weixin4j.mp.model.ComponentAuthorizer
 	 * @throws WeixinException
 	 */
-	public ComponentAuthInfo getAuthInfo(String authAppId)
+	public ComponentAuthorizer getAuthorizerInfo(String authAppId)
 			throws WeixinException {
 		String component_get_authorizer_uri = getRequestUri("component_get_authorizer_uri");
 		JSONObject obj = new JSONObject();
@@ -281,12 +302,12 @@ public class ComponentApi extends MpApi {
 						tokenManager.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
 		JSONObject auth = obj.getJSONObject("authorizer_info");
-		ComponentAuthInfo info = JSON.toJavaObject(auth,
-				ComponentAuthInfo.class);
-		info.setServiceType(auth.getJSONObject("service_type_info")
+		ComponentAuthorizer authorizer = JSON.toJavaObject(auth,
+				ComponentAuthorizer.class);
+		authorizer.setServiceType(auth.getJSONObject("service_type_info")
 				.getIntValue("id"));
-		info.setVerifyType(auth.getJSONObject("verify_type_info").getIntValue(
-				"id"));
+		authorizer.setVerifyType(auth.getJSONObject("verify_type_info")
+				.getIntValue("id"));
 		auth = obj.getJSONObject("authorization_info");
 		JSONArray privilegesObj = auth.getJSONArray("func_info");
 		List<Integer> privileges = new ArrayList<Integer>(privilegesObj.size());
@@ -294,9 +315,9 @@ public class ComponentApi extends MpApi {
 			privileges.add(privilegesObj.getJSONObject(i)
 					.getJSONObject("funcscope_category").getInteger("id"));
 		}
-		info.setPrivileges(privileges);
-		info.setAppId(auth.getString("appid"));
-		return info;
+		authorizer.setPrivileges(privileges);
+		authorizer.setAppId(auth.getString("appid"));
+		return authorizer;
 	}
 
 	/**

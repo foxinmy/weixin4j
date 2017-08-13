@@ -26,6 +26,7 @@ import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.TradeType;
 import com.foxinmy.weixin4j.type.mch.BillType;
+import com.foxinmy.weixin4j.type.mch.RefundAccountType;
 import com.foxinmy.weixin4j.util.Consts;
 
 /**
@@ -44,11 +45,11 @@ public class PayTest {
 
 	static {
 		ACCOUNT = new WeixinPayAccount(
-				"appid",
-				"paysignKey",
-				"mchId",
-				"证书密码,为空取mchid",
-				"证书路径,绝对路径&classpath路径：/path/to/certificate.p12,或者填写classpath:path/to/certificate.p12");
+				"wx7ca5ae77b3b4bc81",
+				"GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ",
+				"1290664601",
+				"1290664601",
+				"/Users/jy/workspaces/jdxg-parent/ixi-service/src/main/resources/1290664601.p12");
 		SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
 		PAY = new WeixinPayProxy(ACCOUNT);
 	}
@@ -86,12 +87,12 @@ public class PayTest {
 	@Test
 	public void downbill() throws WeixinException, IOException {
 		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, 2016);
+		c.set(Calendar.YEAR, 2012);
 		c.set(Calendar.MONTH, 3);
 		c.set(Calendar.DAY_OF_MONTH, 4);
 		System.err.println(c.getTime());
 		OutputStream os = new FileOutputStream("/tmp/bill20160813.txt");
-		PAY.downloadBill(c.getTime(), BillType.ALL, os, null);
+		PAY.downloadBill(c.getTime(), BillType.ALL, os,null);
 	}
 
 	@Test
@@ -99,7 +100,7 @@ public class PayTest {
 		IdQuery idQuery = new IdQuery("TT_1427183696238", IdType.TRADENO);
 		RefundResult result = PAY.applyRefund(idQuery,
 				"TT_R" + System.currentTimeMillis(), 0.01d, 0.01d, null,
-				"10020674", null);
+				"10020674", RefundAccountType.REFUND_SOURCE_RECHARGE_FUNDS);
 		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
 		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
 		System.err.println(result);

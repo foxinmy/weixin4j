@@ -210,20 +210,5 @@ public class WeixinComponentProxy {
 		return "";
 	}
 
-	/**
-	 * 创建WeixinProxy对象
-	 *
-	 * @param componentId
-	 *            组件ID
-	 * @param authAppId
-	 *            已授权的appid
-	 * @see com.foxinmy.weixin4j.mp.WeixinProxy
-	 * @return
-	 */
-	public WeixinProxy getWeixinProxy(String componentId, String authAppId) {
-		return new WeixinProxy(component(componentId).getRefreshTokenManager(
-				authAppId), component(componentId).getTokenManager());
-	}
-
 	public final static String VERSION = "1.7.7";
 }

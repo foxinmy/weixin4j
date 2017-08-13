@@ -189,23 +189,6 @@ public class WeixinProxy {
     }
 
     /**
-     * 第三方组件方式创建微信接口实现(永久刷新令牌机制)
-     *
-     * @param perTicketManager
-     *            第三方组件永久刷新token
-     * @param componentTokenManager
-     *            第三方组件凭证token
-     * @see com.foxinmy.weixin4j.mp.api.ComponentApi
-     * @see com.foxinmy.weixin4j.mp.api.ComponentApi#getPerCodeManager(String)
-     * @see com.foxinmy.weixin4j.mp.api.ComponentApi#getTokenManager
-     */
-    public WeixinProxy(PerTicketManager perTicketManager, TokenManager componentTokenManager) {
-        this(new WeixinAccount(perTicketManager.getThirdId(), perTicketManager.getThirdSecret()),
-                new WeixinTokenComponentCreator(perTicketManager, componentTokenManager),
-                perTicketManager.getCacheStorager());
-    }
-
-    /**
      * 微信接口实现
      *
      * @param weixinAccount
