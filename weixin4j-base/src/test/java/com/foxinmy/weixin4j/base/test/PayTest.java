@@ -22,6 +22,7 @@ import com.foxinmy.weixin4j.payment.mch.RefundRecord;
 import com.foxinmy.weixin4j.payment.mch.RefundResult;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
+import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.IdType;
 import com.foxinmy.weixin4j.type.TradeType;
@@ -87,20 +88,22 @@ public class PayTest {
 	@Test
 	public void downbill() throws WeixinException, IOException {
 		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, 2012);
-		c.set(Calendar.MONTH, 3);
-		c.set(Calendar.DAY_OF_MONTH, 4);
+		// c.set(Calendar.YEAR, 2016);
+		// c.set(Calendar.MONTH, 3);
+		// c.set(Calendar.DAY_OF_MONTH, 4);
+		c.add(Calendar.DAY_OF_MONTH, -1);
 		System.err.println(c.getTime());
 		OutputStream os = new FileOutputStream("/tmp/bill20160813.txt");
-		PAY.downloadBill(c.getTime(), BillType.ALL, os,null);
+		PAY.downloadBill(c.getTime(), BillType.ALL, os, null);
 	}
 
 	@Test
 	public void refund() throws WeixinException, IOException {
 		IdQuery idQuery = new IdQuery("TT_1427183696238", IdType.TRADENO);
 		RefundResult result = PAY.applyRefund(idQuery,
-				"TT_R" + System.currentTimeMillis(), 0.01d, 0.01d, null,
-				"10020674", RefundAccountType.REFUND_SOURCE_RECHARGE_FUNDS);
+				"TT_R" + System.currentTimeMillis(), 0.01d, 0.01d,
+				CurrencyType.CNY, "10020674", "退款描述",
+				RefundAccountType.REFUND_SOURCE_RECHARGE_FUNDS);
 		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
 		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
 		System.err.println(result);
