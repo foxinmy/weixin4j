@@ -45,7 +45,8 @@ public class WeixinMessageDecoder extends MessageToMessageDecoder<FullHttpReques
     }
 
     public void addAesToken(final AesToken asetoken) {
-        aesTokenMap.put(asetoken.getWeixinId(), asetoken);
+        aesTokenMap.remove(asetoken.getWeixinId());
+        aesTokenMap.putIfAbsent(asetoken.getWeixinId(), asetoken);
     }
 
     @Override
