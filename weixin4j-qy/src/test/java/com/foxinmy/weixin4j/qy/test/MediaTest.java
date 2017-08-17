@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.qy.test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.Assert;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
 import com.foxinmy.weixin4j.model.media.MediaUploadResult;
+import com.foxinmy.weixin4j.qy.WeixinProxy;
 import com.foxinmy.weixin4j.qy.api.MediaApi;
 import com.foxinmy.weixin4j.type.MediaType;
 
@@ -72,5 +74,13 @@ public class MediaTest extends TokenTest {
 						0,
 						"19pXNIq8cd69QLwfsLaoZFfS2K82WCHNGPREO--o1rEMlNIOf0N9IDDQdler08S7fNAFsG-5XYwxf1gzORxDnlQ");
 		System.err.println(result);
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException, WeixinException{
+		WeixinProxy proxy = new WeixinProxy();
+		File file = new File("/Users/jy/Downloads/weixin4j.png");
+		String mediaResult = proxy.uploadImage(
+				new FileInputStream(file), file.getName());
+		System.out.println(mediaResult);
 	}
 }

@@ -2,7 +2,6 @@ package com.foxinmy.weixin4j.example.server.handler;
 
 import org.springframework.stereotype.Component;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.MessageHandlerAdapter;
 import com.foxinmy.weixin4j.message.TextMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
