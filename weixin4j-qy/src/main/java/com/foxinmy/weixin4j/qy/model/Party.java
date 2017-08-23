@@ -31,7 +31,7 @@ public class Party implements Serializable {
 	@JSONField(name = "parentid")
 	private int parentId;
 	/**
-	 * 在父部门中的次序。从1开始，数字越大排序越靠后
+	 * 	在父部门中的次序值。order值大的排序靠前。有效的值范围是[0, 2^32)
 	 */
 	private int order;
 

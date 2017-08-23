@@ -57,11 +57,6 @@ public class User implements Serializable {
 	 */
 	private String email;
 	/**
-	 * 非必须 微信号。企业内必须唯一
-	 */
-	@JSONField(name = "weixinid")
-	private String weixinId;
-	/**
 	 * 头像url。注：如果要获取小图将url最后的"/0"改成"/64"即可
 	 */
 	private String avatar;
@@ -73,6 +68,25 @@ public class User implements Serializable {
 	 * 非必须 扩展属性。扩展属性需要在WEB管理端创建后才生效，否则忽略未知属性的赋值
 	 */
 	private List<NameValue> extattr;
+
+	/**
+	 * 英文名。长度为1-64个字节。
+	 */
+	@JSONField(name = "english_name")
+	private String englishName;
+	/**
+	 * 座机。长度0-64个字节。
+	 */
+	private String telephone;
+	/**
+	 * 上级字段，标识是否为上级。
+	 */
+	@JSONField(name = "isleader")
+	private Boolean isLeader;
+	/**
+	 * 启用/禁用成员。1表示启用成员，0表示禁用成员
+	 */
+	private Boolean enable;
 
 	protected User() {
 	}
@@ -130,10 +144,6 @@ public class User implements Serializable {
 
 	public String getEmail() {
 		return email;
-	}
-
-	public String getWeixinId() {
-		return weixinId;
 	}
 
 	public String getAvatar() {
@@ -218,16 +228,44 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public void setWeixinId(String weixinId) {
-		this.weixinId = weixinId;
-	}
-
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getEnglishName() {
+		return englishName;
+	}
+
+	public void setEnglishName(String englishName) {
+		this.englishName = englishName;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public Boolean getIsLeader() {
+		return isLeader;
+	}
+
+	public void setIsLeader(Boolean isLeader) {
+		this.isLeader = isLeader;
+	}
+
+	public Boolean getEnable() {
+		return enable;
+	}
+
+	public void setEnable(Boolean enable) {
+		this.enable = enable;
 	}
 
 	@Override
@@ -260,7 +298,9 @@ public class User implements Serializable {
 		return "User [userId=" + userId + ", name=" + name + ", partyIds="
 				+ partyIds + ", position=" + position + ", mobile=" + mobile
 				+ ", gender=" + gender + ", tel=" + tel + ", email=" + email
-				+ ", weixinId=" + weixinId + ", avatar=" + avatar + ", status="
-				+ status + ", extattr=" + extattr + "]";
+				+ ", avatar=" + avatar + ", status=" + status + ", extattr="
+				+ extattr + ", englishName=" + englishName + ", telephone="
+				+ telephone + ", isLeader=" + isLeader + ", enable=" + enable
+				+ "]";
 	}
 }
