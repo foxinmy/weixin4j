@@ -12,7 +12,7 @@ import com.foxinmy.weixin4j.api.BaseApi;
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.api.BaseApi
- * @see <a href="http://qydev.weixin.qq.com/wiki/index.php">api文档</a>
+ * @see <a href="http://work.weixin.qq.com/api/doc#10012">api文档</a>
  */
 public class QyApi extends BaseApi {
 

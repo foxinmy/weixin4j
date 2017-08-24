@@ -17,8 +17,6 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
  * @see com.foxinmy.weixin4j.tuple.Voice
  * @see com.foxinmy.weixin4j.tuple.Video
  * @see com.foxinmy.weixin4j.tuple.File
- * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E4%BC%81%E4%B8%9A%E5%AE%A2%E6%9C%8D%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E">客服消息</a>
  */
 public class CustomeMessage implements Serializable {
 

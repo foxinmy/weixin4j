@@ -19,8 +19,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
  * @date 2014年11月18日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.qy.model.Party
- * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8">管理部门说明</a>
+ * @see <a href="https://work.weixin.qq.com/api/doc#10076">管理部门说明</a>
  */
 public class PartyApi extends QyApi {
 	private final TokenManager tokenManager;
@@ -35,8 +34,7 @@ public class PartyApi extends QyApi {
 	 * @param party
 	 *            部门对象
 	 * @see com.foxinmy.weixin4j.qy.model.Party
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E5.88.9B.E5.BB.BA.E9.83.A8.E9.97.A8">创建部门说明</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#10076">创建部门说明</a>
 	 * @return 部门ID
 	 * @throws WeixinException
 	 */
@@ -62,8 +60,7 @@ public class PartyApi extends QyApi {
 	 * @param party
 	 *            部门对象
 	 * @see com.foxinmy.weixin4j.qy.model.Party
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E6.9B.B4.E6.96.B0.E9.83.A8.E9.97.A8">更新部门说明</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#10077">更新部门说明</a>
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
@@ -92,8 +89,7 @@ public class PartyApi extends QyApi {
 	 * @param partId
 	 *            部门ID。获取指定部门ID下的子部门 传入0表示获取全部子部门
 	 * @see com.foxinmy.weixin4j.qy.model.Party
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E8.8E.B7.E5.8F.96.E9.83.A8.E9.97.A8.E5.88.97.E8.A1.A8">获取部门列表</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#10093">获取部门列表</a>
 	 * @return 部门列表
 	 * @throws WeixinException
 	 */
@@ -114,8 +110,7 @@ public class PartyApi extends QyApi {
 	 *
 	 * @param partId
 	 *            部门ID
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8#.E5.88.A0.E9.99.A4.E9.83.A8.E9.97.A8">删除部门说明</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#10079">删除部门说明</a>
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */

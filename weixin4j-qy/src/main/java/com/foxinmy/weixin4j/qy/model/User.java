@@ -16,8 +16,6 @@ import com.foxinmy.weixin4j.util.NameValue;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月19日
  * @since JDK 1.6
- * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98">管理成员说明</a>
  */
 public class User implements Serializable {
 

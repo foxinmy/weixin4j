@@ -29,7 +29,7 @@ public final class URLConsts {
 	/**
 	 * 应用套件oauth授权
 	 */
-	public static final String SUITE_OAUTH_URL = "https://qy.weixin.qq.com/cgi-bin/loginpage?suite_id=%s&pre_auth_code=%s&redirect_uri=%s&state=%s";
+	public static final String SUITE_OAUTH_URL = "https://open.work.weixin.qq.com/3rdapp/install?suite_id=%s&pre_auth_code=%s&redirect_uri=%s&state=%s";
 	/**
 	 * 企业号获取ticket的url
 	 */
