@@ -91,14 +91,14 @@ public class MchApi extends BaseApi {
      *
      * @return
      */
-    protected WeixinRequestExecutor getWeixinSSLExecutor() throws WeixinException {
+	protected WeixinRequestExecutor getWeixinSSLExecutor() throws WeixinException {
         if (weixinSSLExecutor == null) {
             try {
                 InputStream is = null;
                 File certificate = new File(
                         Weixin4jConfigUtil.replaceClassPathValue(weixinAccount.getCertificateFile()));
                 if (!certificate.exists() || !certificate.isFile()) {
-                    is = Weixin4jConfigUtil.CLASSLOADER.getResourceAsStream(weixinAccount.getCertificateFile());
+					is = Weixin4jConfigUtil.CLASSLOADER.getResourceAsStream(certificate.getName());
                 } else {
                     is = new FileInputStream(certificate);
                 }
