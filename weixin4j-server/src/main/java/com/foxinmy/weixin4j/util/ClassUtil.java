@@ -42,8 +42,7 @@ public final class ClassUtil {
 		String packageFileName = packageName.replace(POINT, File.separator);
 		URL fullPath = getDefaultClassLoader().getResource(packageFileName);
 		if (fullPath == null) {
-			fullPath = ClassUtil.class.getClassLoader().getResource(
-					packageFileName);
+			fullPath = ClassUtil.class.getProtectionDomain().getCodeSource().getLocation();
 		}
 		String protocol = fullPath.getProtocol();
 		if (protocol.equals(ServerToolkits.PROTOCOL_FILE)) {
@@ -55,15 +54,12 @@ public final class ClassUtil {
 			}
 		} else if (protocol.equals(ServerToolkits.PROTOCOL_JAR)) {
 			try {
-				return findClassesByJar(
-						((JarURLConnection) fullPath.openConnection())
-								.getJarFile(),
-						packageName);
+				return findClassesByJar(((JarURLConnection) fullPath.openConnection()).getJarFile(), packageName);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
-		return null;
+		throw new RuntimeException("the " + packageName + " not found classes.");
 	}
 
 	/**
@@ -86,12 +82,10 @@ public final class ClassUtil {
 		if (files != null) {
 			for (File file : files) {
 				if (file.isDirectory()) {
-					classes.addAll(findClassesByFile(file, packageName + POINT
-							+ file.getName()));
+					classes.addAll(findClassesByFile(file, packageName + POINT + file.getName()));
 				} else {
 					try {
-						classes.add(Class.forName(packageName + POINT
-								+ file.getName().replace(CLASS, "")));
+						classes.add(Class.forName(packageName + POINT + file.getName().replace(CLASS, "")));
 					} catch (ClassNotFoundException e) {
 						;
 					}
@@ -110,8 +104,7 @@ public final class ClassUtil {
 	 *            包的全限类名
 	 * @return
 	 */
-	private static List<Class<?>> findClassesByJar(JarFile jar,
-			String packageName) {
+	private static List<Class<?>> findClassesByJar(JarFile jar, String packageName) {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		Enumeration<JarEntry> jarEntries = jar.entries();
 		while (jarEntries.hasMoreElements()) {
@@ -119,10 +112,8 @@ public final class ClassUtil {
 			if (jarEntry.isDirectory()) {
 				continue;
 			}
-			String className = jarEntry.getName()
-					.replace(File.separator, POINT);
-			if (!className.startsWith(packageName)
-					|| !className.endsWith(CLASS)) {
+			String className = jarEntry.getName().replace(File.separator, POINT);
+			if (!className.startsWith(packageName) || !className.endsWith(CLASS)) {
 				continue;
 			}
 			try {
