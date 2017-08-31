@@ -42,7 +42,7 @@ public class WeixinTokenComponentCreator extends TokenCreator {
 
 	@Override
 	public String uniqueid() {
-		throw new UnsupportedOperationException();
+		return String.format("%s,%s", perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
 	}
 
 	@Override
