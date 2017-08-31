@@ -1719,7 +1719,7 @@
 	</error>
 	<error>
 		<code>88010</code>
-		<msg>count range error. cout <= 0 or count > 50</msg>
+		<msg>count range error. cout &lt;= 0 or count &gt; 50</msg>
 		<text>获取评论数目不合法</text>
 	</error>
 	<error>
