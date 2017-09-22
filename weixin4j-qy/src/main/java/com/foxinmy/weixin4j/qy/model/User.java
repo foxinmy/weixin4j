@@ -35,6 +35,10 @@ public class User implements Serializable {
 	@JSONField(name = "department")
 	private List<Integer> partyIds;
 	/**
+	 * 部门内的排序值，默认为0。数量必须和department一致，数值越大排序越前面。有效的值范围是[0, 2^32)
+	 */
+	private int order;
+	/**
 	 * 非必须 职位信息。长度为0~64个字符
 	 */
 	private String position;
@@ -46,10 +50,6 @@ public class User implements Serializable {
 	 * 非必须 性别。gender=0表示男，=1表示女。默认gender=0
 	 */
 	private Integer gender;
-	/**
-	 * 非必须 办公电话。长度为0~64个字符
-	 */
-	private String tel;
 	/**
 	 * 非必须 邮箱。长度为0~64个字符。企业内必须唯一
 	 */
@@ -136,10 +136,6 @@ public class User implements Serializable {
 		return null;
 	}
 
-	public String getTel() {
-		return tel;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -218,10 +214,6 @@ public class User implements Serializable {
 		this.gender = gender;
 	}
 
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -266,6 +258,14 @@ public class User implements Serializable {
 		this.enable = enable;
 	}
 
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -293,12 +293,9 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", name=" + name + ", partyIds="
-				+ partyIds + ", position=" + position + ", mobile=" + mobile
-				+ ", gender=" + gender + ", tel=" + tel + ", email=" + email
-				+ ", avatar=" + avatar + ", status=" + status + ", extattr="
-				+ extattr + ", englishName=" + englishName + ", telephone="
-				+ telephone + ", isLeader=" + isLeader + ", enable=" + enable
-				+ "]";
+		return "User [userId=" + userId + ", name=" + name + ", partyIds=" + partyIds + ", position=" + position
+				+ ", mobile=" + mobile + ", gender=" + gender + ", email=" + email + ", avatar=" + avatar + ", status="
+				+ status + ", extattr=" + extattr + ", englishName=" + englishName + ", telephone=" + telephone
+				+ ", isLeader=" + isLeader + ", enable=" + enable + ", order=" + order + "]";
 	}
 }
