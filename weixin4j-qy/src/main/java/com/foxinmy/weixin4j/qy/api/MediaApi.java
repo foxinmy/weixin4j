@@ -54,8 +54,6 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年9月25日
  * @since JDK 1.6
- * @see <a href=
- *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">管理素材文件</a>
  * @see com.foxinmy.weixin4j.type.MediaType
  */
 public class MediaApi extends QyApi {
@@ -113,8 +111,7 @@ public class MediaApi extends QyApi {
 	 *            文件名
 	 * @return 上传到微信服务器返回的媒体标识
 	 * @see com.foxinmy.weixin4j.model.media.MediaUploadResult
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E4%B8%B4%E6%97%B6%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">上传临时素材文件说明</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10112">上传临时素材文件说明</a>
 	 * @see <a href=
 	 *      "http://http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%8A%E4%BC%A0%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">上传永久素材文件说明</a>
 	 * @throws WeixinException
@@ -192,8 +189,7 @@ public class MediaApi extends QyApi {
 	 *            媒体ID
 	 * @return 媒体下载结果
 	 * @see com.foxinmy.weixin4j.model.media.MediaDownloadResult
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E4%B8%B4%E6%97%B6%E7%B4%A0%E6%9D%90%E6%96%87%E4%BB%B6">获取临时媒体说明</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10115">获取临时媒体说明</a>
 	 * @see <a href=
 	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E6%B0%B8%E4%B9%85%E7%B4%A0%E6%9D%90">获取永久媒体说明</a>
 	 * @throws WeixinException
@@ -436,8 +432,7 @@ public class MediaApi extends QyApi {
 	 *            成员列表
 	 * @see {@link BatchApi#syncUser(String,Callback)}
 	 * @see {@link BatchApi#replaceUser(String,Callback)}
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10138">批量任务</a>
 	 * @return 上传后的mediaId
 	 * @throws WeixinException
 	 */
@@ -451,8 +446,7 @@ public class MediaApi extends QyApi {
 	 * @param parties
 	 *            部门列表
 	 * @see {@link BatchApi#replaceParty(String,Callback)}
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E9.80.9A.E8.AE.AF.E5.BD.95.E6.9B.B4.E6.96.B0">批量任务</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10138">批量任务</a>
 	 * @return 上传后的mediaId
 	 * @throws WeixinException
 	 */

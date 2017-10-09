@@ -11,8 +11,6 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
- * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8">管理部门说明</a>
  */
 public class Party implements Serializable {
 
@@ -31,7 +29,7 @@ public class Party implements Serializable {
 	@JSONField(name = "parentid")
 	private int parentId;
 	/**
-	 * 在父部门中的次序。从1开始，数字越大排序越靠后
+	 * 在父部门中的次序值。order值大的排序靠前。有效的值范围是[0, 2^32)
 	 */
 	private int order;
 

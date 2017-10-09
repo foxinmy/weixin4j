@@ -46,11 +46,11 @@ public class PayTest {
 
 	static {
 		ACCOUNT = new WeixinPayAccount(
-				"wx7ca5ae77b3b4bc81",
-				"GATFzDwbQdbbci3QEQxX2rUBvwTrsMiZ",
-				"1290664601",
-				"1290664601",
-				"/Users/jy/workspaces/jdxg-parent/ixi-service/src/main/resources/1290664601.p12");
+				"id",
+				"支付秘钥",
+				"商户号",
+				"加载证书的密码，默认为商户号",
+				"证书文件路径");
 		SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
 		PAY = new WeixinPayProxy(ACCOUNT);
 	}

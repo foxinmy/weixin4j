@@ -3,7 +3,7 @@ package com.foxinmy.weixin4j.qy.model;
 /**
  * 权限级别
  * 
- * @className Privilege
+ * @className PrivilegeLevel
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月28日
  * @since JDK 1.6

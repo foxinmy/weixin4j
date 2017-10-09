@@ -20,8 +20,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月30日
  * @since JDK 1.6
- * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3">批量任务</a>
+ * @see <a href="https://work.weixin.qq.com/api/doc#10138">批量任务</a>
  */
 public class BatchApi extends QyApi {
 
@@ -77,8 +76,7 @@ public class BatchApi extends QyApi {
 	 * @return 异步任务id，最大长度为64字符
 	 * @see {@link MediaApi#batchUploadUsers(java.util.List)}
 	 * @see com.foxinmy.weixin4j.qy.model.Callback
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.A2.9E.E9.87.8F.E6.9B.B4.E6.96.B0.E6.88.90.E5.91.98">批量更新成员</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#10138/增量更新成员">批量更新成员</a>
 	 * @throws WeixinException
 	 */
 	public String syncUser(String mediaId, Callback callback)
@@ -115,8 +113,7 @@ public class BatchApi extends QyApi {
 	 * @return 异步任务id，最大长度为64字符
 	 * @see {@link MediaApi#batchUploadUsers(java.util.List)}
 	 * @see com.foxinmy.weixin4j.qy.model.Callback
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E6.88.90.E5.91.98">批量覆盖成员</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#10138/全量覆盖成员">批量覆盖成员</a>
 	 * @throws WeixinException
 	 */
 	public String replaceUser(String mediaId, Callback callback)
@@ -140,8 +137,7 @@ public class BatchApi extends QyApi {
 	 * @return 异步任务id，最大长度为64字符
 	 * @see {@link MediaApi#batchUploadParties(java.util.List)}
 	 * @see com.foxinmy.weixin4j.qy.model.Callback
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3#.E5.85.A8.E9.87.8F.E8.A6.86.E7.9B.96.E9.83.A8.E9.97.A8">批量覆盖部门</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#10138/全量覆盖部门">批量覆盖部门</a>
 	 * @throws WeixinException
 	 */
 	public String replaceParty(String mediaId, Callback callback)

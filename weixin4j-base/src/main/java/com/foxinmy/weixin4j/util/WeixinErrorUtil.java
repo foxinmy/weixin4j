@@ -104,6 +104,6 @@ public final class WeixinErrorUtil {
 	public static void main(String[] args) {
 		System.out.println(getText("30002"));
 		System.out.println(getText("30002"));
-		System.out.println(getText("1234"));
+		System.out.println(getText("88010"));
 	}
 }

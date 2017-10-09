@@ -33,9 +33,7 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @date 2015年6月22日
  * @since JDK 1.6
  * @see com.foxinmy.weixin4j.qy.api.SuiteApi
- * @see <a href=
- *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%94%E7%94%A8%E6%8E%88%E6%9D%83">
- *      企业号第三方应用</a>
+ * @see <a href= "http://work.weixin.qq.com/api/doc#10968"> 企业号第三方应用</a>
  */
 public class WeixinSuiteProxy {
 
@@ -169,8 +167,7 @@ public class WeixinSuiteProxy {
 	 *            套件ID
 	 * @param suiteTicket
 	 *            套件ticket内容
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AC%AC%E4%B8%89%E6%96%B9%E5%9B%9E%E8%B0%83%E5%8D%8F%E8%AE%AE#.E6.8E.A8.E9.80.81suite_ticket.E5.8D.8F.E8.AE.AE">
+	 * @see <a href= "http://work.weixin.qq.com/api/doc#10982/推送suite_ticket">
 	 *      推送suite_ticket协议</a>
 	 * @throws WeixinException
 	 */
@@ -213,9 +210,7 @@ public class WeixinSuiteProxy {
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi#getTicketManager()
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi#getPreCodeManager()
 	 * @see com.foxinmy.weixin4j.qy.api.SuiteApi#exchangeAuthInfo(String)
-	 * @see <a href="http://qydev.weixin.qq.com/wiki/index.php?title
-	 *      =%E4%BC%81%E4%B8%9A%E5%8F%B7%E7%AE%A1%E7%90%86%E5%91%98%E6%
-	 *      8E%88%E6%9D%83%E5%BA%94%E7%94%A8">企业号第三方应用套件授权</a>
+	 * @see <a href="http://work.weixin.qq.com/api/doc#10974">企业号第三方应用套件授权</a>
 	 * @return 请求授权的URL
 	 * @throws WeixinException
 	 */
@@ -285,5 +280,5 @@ public class WeixinSuiteProxy {
 				suite(suiteId).getTokenManager());
 	}
 
-	public final static String VERSION = "1.7.7";
+	public final static String VERSION = "1.7.8";
 }

@@ -28,14 +28,14 @@ public class MenuMatchRule implements Serializable {
 	}
 
 	/**
-	 * 用户分组id，可通过用户分组管理接口获取
+	 * 用户标签id，可通过用户表情管理接口获取
 	 */
-	private Integer groupId;
+	private Integer tagId;
 
-	@JSONField(name = "group_id")
-	public MenuMatchRule group(int groupId) {
-		matchRule.put("group_id", groupId);
-		this.groupId = groupId;
+	@JSONField(name = "tag_id")
+	public MenuMatchRule group(int tagId) {
+		matchRule.put("tag_id", tagId);
+		this.tagId = tagId;
 		return this;
 	}
 
@@ -165,8 +165,8 @@ public class MenuMatchRule implements Serializable {
 		return platformType;
 	}
 
-	public Integer getGroupId() {
-		return groupId;
+	public Integer getTagId() {
+		return tagId;
 	}
 
 	public Gender getGender() {
@@ -199,7 +199,7 @@ public class MenuMatchRule implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MenuMatchRule [groupId=" + groupId + ", gender=" + gender
+		return "MenuMatchRule [tagId=" + tagId + ", gender=" + gender
 				+ ", platformType=" + platformType + ", country=" + country
 				+ ", province=" + province + ", city=" + city + ", language="
 				+ language + "]";

@@ -22,8 +22,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月16日
  * @since JDK 1.6
- * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%BA%94%E7%94%A8">管理应用接口说明</a>
+ * @see <a href="https://work.weixin.qq.com/api/doc#10025">管理应用接口说明</a>
  */
 public class AgentApi extends QyApi {
 	private final TokenManager tokenManager;
@@ -39,15 +38,14 @@ public class AgentApi extends QyApi {
 	 *            授权方应用id
 	 * @return 应用信息
 	 * @see com.foxinmy.weixin4j.qy.model.AgentInfo
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%BA%94%E7%94%A8">企业号应用的信息</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#10087">企业号应用的信息</a>
 	 * @throws WeixinException
 	 */
 	public AgentInfo getAgent(int agentid) throws WeixinException {
 		String agent_get_uri = getRequestUri("agent_get_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor.get(String.format(agent_get_uri,
-				token.getAccessToken(), agentid));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				agent_get_uri, token.getAccessToken(), agentid));
 		JSONObject jsonObj = response.getAsJson();
 		AgentInfo agent = JSON.toJavaObject(jsonObj, AgentInfo.class);
 		agent.setAllowUsers(JSON.parseArray(
@@ -67,8 +65,7 @@ public class AgentApi extends QyApi {
 	 * @param agentSet
 	 *            设置信息
 	 * @see com.foxinmy.weixin4j.qy.model.AgentSetter
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%AE%BE%E7%BD%AE%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%BA%94%E7%94%A8">设置企业号信息</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#10088">设置企业号信息</a>
 	 * @return 处理结果
 	 * @throws WeixinException
 	 */
@@ -101,16 +98,15 @@ public class AgentApi extends QyApi {
 	 * 获取应用概况列表
 	 * 
 	 * @see com.foxinmy.weixin4j.qy.model.AgentOverview
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96%E5%BA%94%E7%94%A8%E6%A6%82%E5%86%B5%E5%88%97%E8%A1%A8">获取应用概况</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#11214">获取应用概况</a>
 	 * @return 应用概况列表
 	 * @throws WeixinException
 	 */
 	public List<AgentOverview> listAgentOverview() throws WeixinException {
 		String agent_list_uri = getRequestUri("agent_list_uri");
 		Token token = tokenManager.getCache();
-		WeixinResponse response = weixinExecutor.get(String.format(agent_list_uri,
-				token.getAccessToken()));
+		WeixinResponse response = weixinExecutor.get(String.format(
+				agent_list_uri, token.getAccessToken()));
 
 		return JSON.parseArray(response.getAsJson().getString("agentlist"),
 				AgentOverview.class);

@@ -799,3 +799,7 @@
 * 2017-06-23
 
   + version upgrade to 1.7.7
+  
+* 2017-08-25
+
+  + version upgrade to 1.7.8

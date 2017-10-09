@@ -13,9 +13,6 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月18日
  * @since JDK 1.6
- * @see <a href=
- *      "https://qy.weixin.qq.com/cgi-bin/home?lang=zh_CN&token=685923034#setting"
- *      >企业号设置</a>
  */
 public class WeixinQyAccount extends WeixinAccount {
 
@@ -72,8 +69,8 @@ public class WeixinQyAccount extends WeixinAccount {
 
 	@Override
 	public String toString() {
-		return "WeixinQyAccount [" + super.toString() + ", suites="
-				+ suites + ", providerSecret=" + providerSecret
-				+ ",  chatSecret=" + chatSecret + "]";
+		return "WeixinQyAccount [" + super.toString() + ", suites=" + suites
+				+ ", providerSecret=" + providerSecret + ",  chatSecret="
+				+ chatSecret + "]";
 	}
 }

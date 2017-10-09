@@ -26,10 +26,7 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月21日
  * @since JDK 1.6
- * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%8F%91%E9%80%81%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E">发送接口说明</a>
- * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F">发送格式说明</a>
+ * @see <a href="https://work.weixin.qq.com/api/doc#10167">发送接口说明</a>
  * @see com.foxinmy.weixin4j.tuple.Text
  * @see com.foxinmy.weixin4j.tuple.Image
  * @see com.foxinmy.weixin4j.tuple.Voice
@@ -56,14 +53,11 @@ public class NotifyApi extends QyApi {
 	 *
 	 * @param message
 	 *            消息对象
-	 * @return 如果无权限或收件人不存在，则本次发送失败；如果未关注，发送仍然执行。两种情况下均返回无效的部分（注：由于userid不区分大小写，返回的列表都统一转为小写</br> { "errcode":
-	 *         0, "errmsg": "ok", "invaliduser": "UserID1",
-	 *         "invalidparty":"PartyID1", "invalidtag":"TagID1" }
+	 * @return 如果无权限或收件人不存在，则本次发送失败；如果未关注，发送仍然执行。两种情况下均返回无效的部分（注：由于userid不区分大小写，
+	 *         返回的列表都统一转为小写</br> { "errcode": 0, "errmsg": "ok", "invaliduser":
+	 *         "UserID1", "invalidparty":"PartyID1", "invalidtag":"TagID1" }
 	 * @throws WeixinException
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%8F%91%E9%80%81%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E">发送接口说明</a>
-	 * @see <a
-	 *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F">发送格式说明</a>
+	 * @see <a href="https://work.weixin.qq.com/api/doc#10167">发送接口说明</a>
 	 * @see com.foxinmy.weixin4j.tuple.Text
 	 * @see com.foxinmy.weixin4j.tuple.Image
 	 * @see com.foxinmy.weixin4j.tuple.Voice

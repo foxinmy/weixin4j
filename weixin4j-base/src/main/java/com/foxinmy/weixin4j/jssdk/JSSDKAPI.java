@@ -260,6 +260,7 @@ public enum JSSDKAPI {
 	 * <a href="http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3#.E6.89.93.E5.BC.80.E4.BC.81.E4.B8.9A.E9.80.9A.E8.AE.AF.E5.BD.95.E9.80.89.E4.BA.BA">企业号-选取联系人</a>
 	 */
 	openEnterpriseContact,
+	selectEnterpriseContact,
 	/**
 	 * <a href=
 	 * "http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3#.E5.90.91.E5.BD.93.E5.89.8D.E4.BC.81.E4.B8.9A.E4.BC.9A.E8.AF.9D.E5.8F.91.E9.80.81.E6.B6.88.E6.81.AF">企业号-向当前企业会话发送消息</a>

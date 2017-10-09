@@ -23,11 +23,6 @@ public class AgentInfo extends AgentSetter {
 	@JSONField(name = "square_logo_url")
 	private String squareLogoUrl;
 	/**
-	 * 企业应用圆形头像
-	 */
-	@JSONField(name = "round_logo_url")
-	private String roundLogoUrl;
-	/**
 	 * 企业应用可见范围（人员），其中包括userid和关注状态state
 	 */
 	@JSONField(deserialize = false)
@@ -46,21 +41,9 @@ public class AgentInfo extends AgentSetter {
 	 * 企业应用是否被禁用
 	 */
 	private boolean close;
-	/**
-	 * 应用类型。1：消息型；2：主页型
-	 */
-	private int type;
 
 	public AgentInfo() {
 		super(0);
-	}
-
-	public String getSquareLogoUrl() {
-		return squareLogoUrl;
-	}
-
-	public String getRoundLogoUrl() {
-		return roundLogoUrl;
 	}
 
 	public List<User> getAllowUsers() {
@@ -97,26 +80,15 @@ public class AgentInfo extends AgentSetter {
 		this.squareLogoUrl = squareLogoUrl;
 	}
 
-	public void setRoundLogoUrl(String roundLogoUrl) {
-		this.roundLogoUrl = roundLogoUrl;
-	}
-
 	public void setClose(boolean close) {
 		this.close = close;
 	}
 
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
 	@Override
 	public String toString() {
-		return "AgentInfo [type=" + type + ", squareLogoUrl=" + squareLogoUrl + ", roundLogoUrl=" + roundLogoUrl
-				+ ", allowUsers=" + allowUsers + ", allowPartys=" + allowPartys + ", allowTags=" + allowTags
-				+ ", close=" + close + ", " + super.toString() + "]";
+		return "AgentInfo [squareLogoUrl=" + squareLogoUrl + ", allowUsers="
+				+ allowUsers + ", allowPartys=" + allowPartys + ", allowTags="
+				+ allowTags + ", close=" + close + ", " + super.toString()
+				+ "]";
 	}
 }

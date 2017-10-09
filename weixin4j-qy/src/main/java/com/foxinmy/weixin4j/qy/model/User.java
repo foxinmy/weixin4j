@@ -16,8 +16,6 @@ import com.foxinmy.weixin4j.util.NameValue;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月19日
  * @since JDK 1.6
- * @see <a
- *      href="http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%88%90%E5%91%98">管理成员说明</a>
  */
 public class User implements Serializable {
 
@@ -37,6 +35,10 @@ public class User implements Serializable {
 	@JSONField(name = "department")
 	private List<Integer> partyIds;
 	/**
+	 * 部门内的排序值，默认为0。数量必须和department一致，数值越大排序越前面。有效的值范围是[0, 2^32)
+	 */
+	private int order;
+	/**
 	 * 非必须 职位信息。长度为0~64个字符
 	 */
 	private String position;
@@ -49,18 +51,9 @@ public class User implements Serializable {
 	 */
 	private Integer gender;
 	/**
-	 * 非必须 办公电话。长度为0~64个字符
-	 */
-	private String tel;
-	/**
 	 * 非必须 邮箱。长度为0~64个字符。企业内必须唯一
 	 */
 	private String email;
-	/**
-	 * 非必须 微信号。企业内必须唯一
-	 */
-	@JSONField(name = "weixinid")
-	private String weixinId;
 	/**
 	 * 头像url。注：如果要获取小图将url最后的"/0"改成"/64"即可
 	 */
@@ -73,6 +66,25 @@ public class User implements Serializable {
 	 * 非必须 扩展属性。扩展属性需要在WEB管理端创建后才生效，否则忽略未知属性的赋值
 	 */
 	private List<NameValue> extattr;
+
+	/**
+	 * 英文名。长度为1-64个字节。
+	 */
+	@JSONField(name = "english_name")
+	private String englishName;
+	/**
+	 * 座机。长度0-64个字节。
+	 */
+	private String telephone;
+	/**
+	 * 上级字段，标识是否为上级。
+	 */
+	@JSONField(name = "isleader")
+	private Boolean isLeader;
+	/**
+	 * 启用/禁用成员。1表示启用成员，0表示禁用成员
+	 */
+	private Boolean enable;
 
 	protected User() {
 	}
@@ -124,16 +136,8 @@ public class User implements Serializable {
 		return null;
 	}
 
-	public String getTel() {
-		return tel;
-	}
-
 	public String getEmail() {
 		return email;
-	}
-
-	public String getWeixinId() {
-		return weixinId;
 	}
 
 	public String getAvatar() {
@@ -210,16 +214,8 @@ public class User implements Serializable {
 		this.gender = gender;
 	}
 
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public void setWeixinId(String weixinId) {
-		this.weixinId = weixinId;
 	}
 
 	public void setAvatar(String avatar) {
@@ -228,6 +224,46 @@ public class User implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getEnglishName() {
+		return englishName;
+	}
+
+	public void setEnglishName(String englishName) {
+		this.englishName = englishName;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public Boolean getIsLeader() {
+		return isLeader;
+	}
+
+	public void setIsLeader(Boolean isLeader) {
+		this.isLeader = isLeader;
+	}
+
+	public Boolean getEnable() {
+		return enable;
+	}
+
+	public void setEnable(Boolean enable) {
+		this.enable = enable;
+	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 	@Override
@@ -257,10 +293,9 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", name=" + name + ", partyIds="
-				+ partyIds + ", position=" + position + ", mobile=" + mobile
-				+ ", gender=" + gender + ", tel=" + tel + ", email=" + email
-				+ ", weixinId=" + weixinId + ", avatar=" + avatar + ", status="
-				+ status + ", extattr=" + extattr + "]";
+		return "User [userId=" + userId + ", name=" + name + ", partyIds=" + partyIds + ", position=" + position
+				+ ", mobile=" + mobile + ", gender=" + gender + ", email=" + email + ", avatar=" + avatar + ", status="
+				+ status + ", extattr=" + extattr + ", englishName=" + englishName + ", telephone=" + telephone
+				+ ", isLeader=" + isLeader + ", enable=" + enable + ", order=" + order + "]";
 	}
 }
