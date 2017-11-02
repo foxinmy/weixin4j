@@ -8,12 +8,12 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 第三方组件授权信息
  * 
- * @className ComponentAuthInfo
+ * @className ComponentAuthorizer
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年7月5日
  * @since JDK 1.6
  */
-public class ComponentAuthInfo implements Serializable {
+public class ComponentAuthorizer implements Serializable {
 	private static final long serialVersionUID = -3610172415045923599L;
 	/**
 	 * 授权方appId
@@ -67,6 +67,12 @@ public class ComponentAuthInfo implements Serializable {
 	 */
 	@JSONField(deserialize = false)
 	private List<Integer> privileges;
+
+	/**
+	 * 公众号的主体名称
+	 */
+	@JSONField(name = "principal_name")
+	private String principalName;
 
 	public String getAppId() {
 		return appId;
@@ -148,13 +154,22 @@ public class ComponentAuthInfo implements Serializable {
 		this.privileges = privileges;
 	}
 
+	public String getPrincipalName() {
+		return principalName;
+	}
+
+	public void setPrincipalName(String principalName) {
+		this.principalName = principalName;
+	}
+
 	@Override
 	public String toString() {
-		return "ComponentAuthInfo [nickName=" + nickName + ", headImg="
-				+ headImg + ", serviceType=" + serviceType + ", verifyType="
-				+ verifyType + ", userName=" + userName + ", alias=" + alias
-				+ ", qrcodeUrl=" + qrcodeUrl + ", businessInfo=" + businessInfo
-				+ ", privileges=" + privileges + "]";
+		return "ComponentAuthInfo [nickName=" + nickName + ", principalName="
+				+ principalName + ", headImg=" + headImg + ", serviceType="
+				+ serviceType + ", verifyType=" + verifyType + ", userName="
+				+ userName + ", alias=" + alias + ", qrcodeUrl=" + qrcodeUrl
+				+ ", businessInfo=" + businessInfo + ", privileges="
+				+ privileges + "]";
 	}
 
 	public static class BusinessInfo implements Serializable {

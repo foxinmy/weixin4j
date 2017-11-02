@@ -15,7 +15,7 @@ public enum IndustryType {
 	ITKEJI_HULIANWANG$DIANZISHANGWU("IT科技", "互联网|电子商务", 1), ITKEJI_ITRUANJIANYUFUWU(
 			"IT科技", "IT软件与服务", 2), ITKEJI_ITYINGJIANYUSHEBEI("IT科技", "IT硬件与设备",
 			3), ITKEJI_DIANZIJISHU("IT科技", "电子技术", 4), ITKEJI_TONGXINYUYUNYINGSHANG(
-			"IT科技", "通信与运营商", 5), ITKEJI_WANGLUOYOUXI("IT科技", "网络游戏", 6), JINRONGYE_YINXING(
+			"IT科技", "通信与运营商", 5), ITKEJI_WANGLUOYOUXI("IT科技", "网络游戏", 6), JINRONGYE_YINHANG(
 			"金融业", "银行", 7), JINRONGYE_JIJIN$LICAI$XINTUO("金融业", "基金|理财|信托", 8), JINRONGYE_BAOXIAN(
 			"金融业", "保险", 9), CANYIN_CANYIN("餐饮", "餐饮", 10), JIUDIANLUYOU_JIUDIAN(
 			"酒店旅游", "酒店", 11), JIUDIANLUYOU_LUYOU("酒店旅游", "旅游", 12), YUNSHUYUCANGCHU_KUAIDI(

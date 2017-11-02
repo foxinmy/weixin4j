@@ -29,16 +29,20 @@ public class WeixinTokenComponentCreator extends TokenCreator {
 	 * @param componentTokenManager
 	 *            第三方套件凭证token
 	 */
-	public WeixinTokenComponentCreator(PerTicketManager perTicketManager,
-			TokenManager componentTokenManager) {
+	public WeixinTokenComponentCreator(PerTicketManager perTicketManager, TokenManager componentTokenManager) {
 		this.perTicketManager = perTicketManager;
 		this.componentTokenManager = componentTokenManager;
 	}
 
 	@Override
-	public String key0() {
-		return String.format("mp_token_component_%s_%s",
-				perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
+	public String name() {
+		return String.format("mp_token_component_%s_%s", perTicketManager.getThirdId(),
+				perTicketManager.getAuthAppId());
+	}
+
+	@Override
+	public String uniqueid() {
+		return String.format("%s,%s", perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
 	}
 
 	@Override
@@ -48,10 +52,10 @@ public class WeixinTokenComponentCreator extends TokenCreator {
 		obj.put("authorizer_appid", perTicketManager.getAuthAppId());
 		obj.put("authorizer_refresh_token", perTicketManager.getAccessTicket());
 		WeixinResponse response = weixinExecutor.post(
-				String.format(URLConsts.TOKEN_COMPONENT_URL,
-						componentTokenManager.getAccessToken()), obj.toJSONString());
+				String.format(URLConsts.TOKEN_COMPONENT_URL, componentTokenManager.getAccessToken()),
+				obj.toJSONString());
 		obj = response.getAsJson();
-		return new Token(obj.getString("access_token"),
-				obj.getLongValue("expires_in") * 1000l);
+		perTicketManager.cachingTicket(obj.getString("authorizer_refresh_token"));
+		return new Token(obj.getString("authorizer_access_token"), obj.getLongValue("expires_in") * 1000l);
 	}
 }

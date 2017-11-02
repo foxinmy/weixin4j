@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.foxinmy.weixin4j.type.MessageType;
@@ -65,12 +66,12 @@ public class WeixinMessage implements Serializable {
 	/**
 	 * 消息ID 可用于排重
 	 */
-	@XmlElement(name = "MsgId")
+	@XmlElements({ @XmlElement(name = "MsgId"), @XmlElement(name = "MsgID") })
 	private long msgId;
 	/**
 	 * 企业号独有的应用ID
 	 */
-	@XmlElement(name = "AgentID")
+	@XmlElements({ @XmlElement(name = "AgentId"), @XmlElement(name = "AgentID") })
 	private String agentId;
 
 	public WeixinMessage() {

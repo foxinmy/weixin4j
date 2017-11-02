@@ -71,11 +71,6 @@ public class SimpleHttpClient extends AbstractHttpClient {
 			// create connection object
 			HttpURLConnection connection = createHttpConnection(request);
 			String method = request.getMethod().name();
-			// set parameters
-			if (params != null) {
-				connection.setConnectTimeout(params.getConnectTimeout());
-				connection.setReadTimeout(params.getReadTimeout());
-			}
 			connection.setRequestMethod(method);
 			connection.setDoInput(true);
 			connection.setInstanceFollowRedirects("GET".equals(method));

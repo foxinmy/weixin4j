@@ -3,10 +3,6 @@ package com.foxinmy.weixin4j.payment.mch;
 import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.payment.PayRequest;
 import com.foxinmy.weixin4j.type.TradeType;
-import com.foxinmy.weixin4j.util.Consts;
-import com.foxinmy.weixin4j.util.DigestUtil;
-import com.foxinmy.weixin4j.util.MapUtil;
-import com.foxinmy.weixin4j.util.URLEncodingUtil;
 
 /**
  * WAP支付
@@ -21,14 +17,21 @@ import com.foxinmy.weixin4j.util.URLEncodingUtil;
  *      href="https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付</a>
  */
 public class WAPPayRequest extends AbstractPayRequest {
+	/**
+	 * 微信支付URL
+	 */
+	private final String payUrl;
 
-	public WAPPayRequest(String prePayId, WeixinPayAccount payAccount) {
+	public WAPPayRequest(String prePayId, String payUrl,
+			WeixinPayAccount payAccount) {
 		super(prePayId, payAccount);
+		this.payUrl = payUrl;
+
 	}
 
 	@Override
 	public TradeType getPaymentType() {
-		return TradeType.WAP;
+		return TradeType.MWEB;
 	}
 
 	/**
@@ -44,14 +47,15 @@ public class WAPPayRequest extends AbstractPayRequest {
 
 	@Override
 	public String toRequestString() {
-		PayRequest payRequest = toRequestObject();
-		String original = MapUtil.toJoinString(payRequest, true, true);
-		String sign = DigestUtil.MD5(
-				String.format("%s&key=%s", original, getPaymentAccount()
-						.getPaySignKey())).toUpperCase();
-		return String.format("weixin://wap/pay?%s",
-				URLEncodingUtil.encoding(
-						String.format("%s&sign=%s", original, sign),
-						Consts.UTF_8, true));
+		// PayRequest payRequest = toRequestObject();
+		// String original = MapUtil.toJoinString(payRequest, true, true);
+		// String sign = DigestUtil.MD5(
+		// String.format("%s&key=%s", original, getPaymentAccount()
+		// .getPaySignKey())).toUpperCase();
+		// return String.format("weixin://wap/pay?%s",
+		// URLEncodingUtil.encoding(
+		// String.format("%s&sign=%s", original, sign),
+		// Consts.UTF_8, true));
+		return this.payUrl;
 	}
 }

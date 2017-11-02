@@ -27,6 +27,10 @@ public enum QRType {
 	 */
 	QR_CARD,
 	/**
+	 * 临时的字符串参数值
+	 */
+	QR_STR_SCENE,
+	/**
 	 * 卡券二维码：多个卡券
 	 */
 	QR_MULTIPLE_CARD;

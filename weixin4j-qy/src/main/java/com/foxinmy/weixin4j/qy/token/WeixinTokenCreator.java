@@ -14,9 +14,7 @@ import com.foxinmy.weixin4j.token.TokenCreator;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年1月10日
  * @since JDK 1.6
- * @see <a href=
- *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E4%B8%BB%E5%8A%A8%E8%B0%83%E7%94%A8">
- *      微信企业号获取token说明</a>
+ * @see <a href= "https://work.weixin.qq.com/api/doc#10013"> 微信企业号获取token说明</a>
  * @see com.foxinmy.weixin4j.model.Token
  */
 public class WeixinTokenCreator extends TokenCreator {
@@ -37,8 +35,13 @@ public class WeixinTokenCreator extends TokenCreator {
 	}
 
 	@Override
-	public String key0() {
-		return String.format("qy_token_%s", corpid);
+	public String name() {
+		return "qy_token";
+	}
+
+	@Override
+	public String uniqueid() {
+		return corpid;
 	}
 
 	@Override

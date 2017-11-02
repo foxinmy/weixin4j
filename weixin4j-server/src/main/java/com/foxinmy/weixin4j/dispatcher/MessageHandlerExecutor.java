@@ -1,19 +1,18 @@
 package com.foxinmy.weixin4j.dispatcher;
 
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.internal.logging.InternalLogger;
-import io.netty.util.internal.logging.InternalLoggerFactory;
-
-import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.handler.WeixinMessageHandler;
 import com.foxinmy.weixin4j.interceptor.WeixinMessageInterceptor;
 import com.foxinmy.weixin4j.request.WeixinMessage;
 import com.foxinmy.weixin4j.request.WeixinRequest;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+
 /**
  * 微信消息的处理执行
- * 
+ *
  * @className MessageHandlerExecutor
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年5月7日
@@ -55,7 +54,7 @@ public class MessageHandlerExecutor {
 
 	/**
 	 * 执行预拦截动作
-	 * 
+	 *
 	 * @param request
 	 *            微信请求信息
 	 * @param message
@@ -63,8 +62,7 @@ public class MessageHandlerExecutor {
 	 * @return true则继续执行往下执行
 	 * @throws WeixinException
 	 */
-	public boolean applyPreHandle(WeixinRequest request, WeixinMessage message)
-			throws WeixinException {
+	public boolean applyPreHandle(WeixinRequest request, WeixinMessage message){
 		if (messageInterceptors != null) {
 			for (int i = 0; i < messageInterceptors.length; i++) {
 				WeixinMessageInterceptor interceptor = messageInterceptors[i];
@@ -81,7 +79,7 @@ public class MessageHandlerExecutor {
 
 	/**
 	 * MessageHandler处理玩请求后的动作
-	 * 
+	 *
 	 * @param request
 	 *            微信请求
 	 * @param response
@@ -91,7 +89,7 @@ public class MessageHandlerExecutor {
 	 * @throws WeixinException
 	 */
 	public void applyPostHandle(WeixinRequest request, WeixinResponse response,
-			WeixinMessage message) throws WeixinException {
+			WeixinMessage message){
 		if (messageInterceptors == null) {
 			return;
 		}
@@ -104,7 +102,7 @@ public class MessageHandlerExecutor {
 
 	/**
 	 * 全部执行完毕后触发
-	 * 
+	 *
 	 * @param request
 	 *            微信请求
 	 * @param response
@@ -117,7 +115,7 @@ public class MessageHandlerExecutor {
 	 */
 	public void triggerAfterCompletion(WeixinRequest request,
 			WeixinResponse response, WeixinMessage message, Exception exception)
-			throws WeixinException {
+		 {
 		if (messageInterceptors == null) {
 			return;
 		}
@@ -126,7 +124,7 @@ public class MessageHandlerExecutor {
 			try {
 				interceptor.afterCompletion(context, request, response,
 						message, messageHandler, exception);
-			} catch (WeixinException e) {
+			} catch (Exception e) {
 				logger.error(
 						"MessageInterceptor.afterCompletion threw exception", e);
 			}

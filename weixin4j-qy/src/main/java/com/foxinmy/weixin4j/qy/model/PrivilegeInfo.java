@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 权限信息
  * 
- * @className Privilege
+ * @className PrivilegeInfo
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年3月28日
  * @since JDK 1.6

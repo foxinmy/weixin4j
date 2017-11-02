@@ -8,7 +8,7 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
 
 /**
  * 消息提醒对象
- * 
+ *
  * @className NotifyMessage
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月22日
@@ -20,8 +20,6 @@ import com.foxinmy.weixin4j.tuple.NotifyTuple;
  * @see com.foxinmy.weixin4j.tuple.File
  * @see com.foxinmy.weixin4j.tuple.News
  * @see com.foxinmy.weixin4j.tuple.MpNews
- * @see <a href=
- *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F">消息说明</a>
  */
 public class NotifyMessage implements Serializable {
 
@@ -48,10 +46,11 @@ public class NotifyMessage implements Serializable {
 	private IdParameter target;
 
 	public NotifyMessage(int agentid, NotifyTuple tuple) {
-		this(agentid, tuple, new IdParameter(), false);
+		this(agentid, tuple, IdParameter.get(), false);
 	}
 
-	public NotifyMessage(int agentId, NotifyTuple tuple, IdParameter target, boolean isSafe) {
+	public NotifyMessage(int agentId, NotifyTuple tuple, IdParameter target,
+			boolean isSafe) {
 		this.agentId = agentId;
 		this.safe = isSafe ? 1 : 0;
 		this.tuple = tuple;
@@ -84,6 +83,7 @@ public class NotifyMessage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "NotifyMessage [agentId=" + agentId + ", safe=" + safe + ", tuple=" + tuple + ", target=" + target + "]";
+		return "NotifyMessage [agentId=" + agentId + ", safe=" + safe
+				+ ", tuple=" + tuple + ", target=" + target + "]";
 	}
 }

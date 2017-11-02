@@ -22,9 +22,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月19日
  * @since JDK 1.6
- * @see <a href=
- *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE">
- *      管理标签</a>
+ * @see <a href="http://work.weixin.qq.com/api/doc#10915">管理标签</a>
  */
 public class TagApi extends QyApi {
 	private final TokenManager tokenManager;
@@ -39,9 +37,7 @@ public class TagApi extends QyApi {
 	 * @param tag
 	 *            标签对象；</br> 标签名称，长度限制为32个字（汉字或英文字母），标签名不可与其他标签重名。</br> 标签id，整型，
 	 *            指定此参数时新增的标签会生成对应的标签id，不指定时则以目前最大的id自增。
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.9B.E5.BB.BA.E6.A0.87.E7.AD.BE">
-	 *      创建标签说明</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10915"> 创建标签说明</a>
 	 * @return 标签ID
 	 * @throws WeixinException
 	 */
@@ -63,9 +59,7 @@ public class TagApi extends QyApi {
 	 *
 	 * @param tag
 	 *            标签信息
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E6.9B.B4.E6.96.B0.E6.A0.87.E7.AD.BE.E5.90.8D.E5.AD.97"
-	 *      >更新标签说明</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10919" >更新标签说明</a>
 	 * @return 处理结果
 	 * @see com.foxinmy.weixin4j.qy.model.Tag
 	 * @throws WeixinException
@@ -85,9 +79,7 @@ public class TagApi extends QyApi {
 	 * @param tagId
 	 *            标签ID
 	 * @return 处理结果
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.A0.E9.99.A4.E6.A0.87.E7.AD.BE">
-	 *      删除标签说明</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10920"> 删除标签说明</a>
 	 * @throws WeixinException
 	 */
 	public ApiResult deleteTag(int tagId) throws WeixinException {
@@ -101,9 +93,7 @@ public class TagApi extends QyApi {
 	/**
 	 * 获取标签列表
 	 *
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E8.8E.B7.E5.8F.96.E6.A0.87.E7.AD.BE.E5.88.97.E8.A1.A8">
-	 *      获取标签列表说明</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10926"> 获取标签列表说明</a>
 	 * @return 标签列表
 	 * @see com.foxinmy.weixin4j.qy.model.Tag
 	 * @throws WeixinException
@@ -124,9 +114,7 @@ public class TagApi extends QyApi {
 	 *            标签ID
 	 * @see com.foxinmy.weixin4j.qy.model.Contacts
 	 * @see com.foxinmy.weixin4j.qy.model.User
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E8.8E.B7.E5.8F.96.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
-	 *      获取标签成员说明</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10921"> 获取标签成员说明</a>
 	 * @return 成员列表<font color="red">Contacts#getUsers</font>和部门列表<font
 	 *         color="red">Contacts#getPartyIds</font>
 	 * @throws WeixinException
@@ -154,9 +142,7 @@ public class TagApi extends QyApi {
 	 *            企业成员ID列表，注意：userlist、partylist不能同时为空，单次请求长度不超过1000
 	 * @param partyIds
 	 *            企业部门ID列表，注意：userlist、partylist不能同时为空，单次请求长度不超过100
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.A2.9E.E5.8A.A0.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
-	 *      新增标签成员说明</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10923"> 新增标签成员说明</a>
 	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 * @return 非法的userIds和partyIds
 	 * @throws WeixinException
@@ -176,9 +162,7 @@ public class TagApi extends QyApi {
 	 *            企业成员ID列表，注意：userlist、partylist不能同时为空
 	 * @param partyIds
 	 *            企业部门ID列表，注意：userlist、partylist不能同时为空
-	 * @see <a href=
-	 *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E7%AE%A1%E7%90%86%E6%A0%87%E7%AD%BE#.E5.88.A0.E9.99.A4.E6.A0.87.E7.AD.BE.E6.88.90.E5.91.98">
-	 *      删除标签成员说明</a>
+	 * @see <a href= "https://work.weixin.qq.com/api/doc#10925"> 删除标签成员说明</a>
 	 * @see com.foxinmy.weixin4j.qy.model.IdParameter
 	 * @return 非法的userIds和partyIds
 	 * @throws WeixinException
@@ -200,7 +184,7 @@ public class TagApi extends QyApi {
 		WeixinResponse response = weixinExecutor.post(
 				String.format(uri, token.getAccessToken()), obj.toJSONString());
 		obj = response.getAsJson();
-		IdParameter idParameter = new IdParameter();
+		IdParameter idParameter = IdParameter.get();
 		if (obj.containsKey("invalidlist")) {
 			idParameter.setUserIds(Arrays.asList(obj.getString("invalidlist")
 					.split(IdParameter.SEPARATORS)));

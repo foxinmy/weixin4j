@@ -18,11 +18,9 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
-
 /**
  * 对class的获取
- * 
+ *
  * @className ClassUtil
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月31日
@@ -35,39 +33,38 @@ public final class ClassUtil {
 
 	/**
 	 * 获取某个包下所有的class信息
-	 * 
+	 *
 	 * @param packageName
 	 *            包名
 	 * @return
 	 */
-	public static List<Class<?>> getClasses(String packageName)
-			throws WeixinException {
+	public static List<Class<?>> getClasses(String packageName) {
 		String packageFileName = packageName.replace(POINT, File.separator);
 		URL fullPath = getDefaultClassLoader().getResource(packageFileName);
+		if (fullPath == null) {
+			fullPath = ClassUtil.class.getProtectionDomain().getCodeSource().getLocation();
+		}
 		String protocol = fullPath.getProtocol();
 		if (protocol.equals(ServerToolkits.PROTOCOL_FILE)) {
 			try {
 				File dir = new File(fullPath.toURI());
 				return findClassesByFile(dir, packageName);
 			} catch (URISyntaxException e) {
-				throw new WeixinException(e);
+				throw new RuntimeException(e);
 			}
 		} else if (protocol.equals(ServerToolkits.PROTOCOL_JAR)) {
 			try {
-				return findClassesByJar(
-						((JarURLConnection) fullPath.openConnection())
-								.getJarFile(),
-						packageName);
+				return findClassesByJar(((JarURLConnection) fullPath.openConnection()).getJarFile(), packageName);
 			} catch (IOException e) {
-				throw new WeixinException(e);
+				throw new RuntimeException(e);
 			}
 		}
-		return null;
+		throw new RuntimeException("the " + packageName + " not found classes.");
 	}
 
 	/**
 	 * 扫描目录下所有的class对象
-	 * 
+	 *
 	 * @param dir
 	 *            文件目录
 	 * @param packageName
@@ -85,12 +82,10 @@ public final class ClassUtil {
 		if (files != null) {
 			for (File file : files) {
 				if (file.isDirectory()) {
-					classes.addAll(findClassesByFile(file, packageName + POINT
-							+ file.getName()));
+					classes.addAll(findClassesByFile(file, packageName + POINT + file.getName()));
 				} else {
 					try {
-						classes.add(Class.forName(packageName + POINT
-								+ file.getName().replace(CLASS, "")));
+						classes.add(Class.forName(packageName + POINT + file.getName().replace(CLASS, "")));
 					} catch (ClassNotFoundException e) {
 						;
 					}
@@ -102,15 +97,14 @@ public final class ClassUtil {
 
 	/**
 	 * 扫描jar包下所有的class对象
-	 * 
+	 *
 	 * @param jar
 	 *            jar包对象
 	 * @param packageName
 	 *            包的全限类名
 	 * @return
 	 */
-	private static List<Class<?>> findClassesByJar(JarFile jar,
-			String packageName) {
+	private static List<Class<?>> findClassesByJar(JarFile jar, String packageName) {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		Enumeration<JarEntry> jarEntries = jar.entries();
 		while (jarEntries.hasMoreElements()) {
@@ -118,10 +112,8 @@ public final class ClassUtil {
 			if (jarEntry.isDirectory()) {
 				continue;
 			}
-			String className = jarEntry.getName()
-					.replace(File.separator, POINT);
-			if (!className.startsWith(packageName)
-					|| !className.endsWith(CLASS)) {
+			String className = jarEntry.getName().replace(File.separator, POINT);
+			if (!className.startsWith(packageName) || !className.endsWith(CLASS)) {
 				continue;
 			}
 			try {
@@ -133,7 +125,7 @@ public final class ClassUtil {
 		return classes;
 	}
 
-	public static Object deepClone(Object obj) throws WeixinException {
+	public static Object deepClone(Object obj) {
 		ByteArrayOutputStream bos = null;
 		ObjectOutputStream oos = null;
 		ByteArrayInputStream bis = null;
@@ -146,9 +138,9 @@ public final class ClassUtil {
 			ois = new ObjectInputStream(bis);
 			return ois.readObject();
 		} catch (IOException e) {
-			throw new WeixinException(e);
+			throw new RuntimeException(e);
 		} catch (ClassNotFoundException e) {
-			throw new WeixinException(e);
+			throw new RuntimeException(e);
 		} finally {
 			try {
 				if (bos != null) {
@@ -171,12 +163,12 @@ public final class ClassUtil {
 
 	/**
 	 * 获得泛型类型
-	 * 
+	 *
 	 * @param object
 	 * @return
 	 */
 	public static Class<?> getGenericType(Class<?> clazz) {
-		if(clazz == Object.class){
+		if (clazz == Object.class) {
 			return null;
 		}
 		Type type = clazz.getGenericSuperclass();
@@ -212,7 +204,7 @@ public final class ClassUtil {
 		return cl;
 	}
 
-	public static void main(String[] args) throws WeixinException {
+	public static void main(String[] args) {
 		System.err.println(getClasses("com.foxinmy.weixin4j.qy.event"));
 	}
 }

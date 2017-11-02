@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.foxinmy</groupId>
 	<artifactId>weixin4j</artifactId>
-	<version>1.7.4</version>
+	<version>1.7.8</version>
 	<packaging>pom</packaging>
 	<name>weixin4j</name>
 	<url>https://github.com/foxinmy/weixin4j</url>
@@ -45,12 +45,13 @@
 		<module>weixin4j-qy</module>
 		<module>weixin4j-server</module>
 		<module>weixin4j-example</module>
+		<module>weixin4j-serverX</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
-		<fastjson.version>1.2.3</fastjson.version>
+		<fastjson.version>1.2.31</fastjson.version>
 	</properties>
 	<build>
 		<plugins>

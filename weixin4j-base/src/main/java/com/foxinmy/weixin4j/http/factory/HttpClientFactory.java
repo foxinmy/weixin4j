@@ -125,39 +125,17 @@ public abstract class HttpClientFactory {
 	 */
 	public static HttpClient getInstance(HttpParams params) {
 		HttpClientFactory clientFactory = getDefaultFactory();
-		if (params != null) {
-			clientFactory.resolveHttpParams(params);
-		}
-		return clientFactory.newInstance();
+		return clientFactory.newInstance(params);
 	}
-
-	/**
-	 * Resolve the Http Parameter
-	 * 
-	 * @param params
-	 *            请求参数
-	 */
-	public void resolveHttpParams(HttpParams params){
-		if (params == null) {
-			throw new IllegalArgumentException("'params' must not be empty");
-		}
-		resolveHttpParams0(params);
-	}
-	
-	/**
-	 * Resolve the Http Parameter
-	 * 
-	 * @param params
-	 *            请求参数
-	 */
-	protected abstract void resolveHttpParams0(HttpParams params);
 
 	/**
 	 * 获取HttpClient实例
 	 * 
+	 * @param params
+	 *            http参数 可为空
 	 * @return
 	 */
-	public abstract HttpClient newInstance();
+	public abstract HttpClient newInstance(HttpParams params);
 
 	public static SSLContext allowSSLContext() {
 		try {

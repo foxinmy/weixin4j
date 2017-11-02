@@ -45,32 +45,6 @@ public class HttpComponent4_2Factory extends HttpClientFactory {
 		this.clientBuilder = clientBuilder;
 	}
 
-	@Override
-	protected void resolveHttpParams0(HttpParams params) {
-		clientBuilder.setDefaultRequestConfig(RequestConfig.custom()
-				.setConnectTimeout(params.getConnectTimeout())
-				.setConnectionRequestTimeout(params.getReadTimeout()).build());
-		if (params.getProxy() != null) {
-			InetSocketAddress socketAddress = (InetSocketAddress) params
-					.getProxy().address();
-			HttpHost proxy = new HttpHost(socketAddress.getHostName(),
-					socketAddress.getPort());
-			clientBuilder.setProxy(proxy);
-		}
-		if (params.getSSLContext() != null) {
-			clientBuilder
-					.setSSLSocketFactory(new SSLConnectionSocketFactory(
-							params.getSSLContext(),
-							params.getHostnameVerifier() != null ? new CustomHostnameVerifier(
-									params.getHostnameVerifier())
-									: SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER));
-		}
-		if (params.getHostnameVerifier() != null) {
-			clientBuilder.setHostnameVerifier(new CustomHostnameVerifier(params
-					.getHostnameVerifier()));
-		}
-	}
-
 	public HttpComponent4_2Factory setDefaultConnectionConfig(
 			ConnectionConfig connectionConfig) {
 		clientBuilder.setDefaultConnectionConfig(connectionConfig);
@@ -100,8 +74,37 @@ public class HttpComponent4_2Factory extends HttpClientFactory {
 		return this;
 	}
 
+	private void resolveHttpParams(HttpParams params) {
+		if (params != null) {
+			clientBuilder.setDefaultRequestConfig(RequestConfig.custom()
+					.setConnectTimeout(params.getConnectTimeout())
+					.setConnectionRequestTimeout(params.getReadTimeout())
+					.build());
+			if (params.getProxy() != null) {
+				InetSocketAddress socketAddress = (InetSocketAddress) params
+						.getProxy().address();
+				HttpHost proxy = new HttpHost(socketAddress.getHostName(),
+						socketAddress.getPort());
+				clientBuilder.setProxy(proxy);
+			}
+			if (params.getSSLContext() != null) {
+				clientBuilder
+						.setSSLSocketFactory(new SSLConnectionSocketFactory(
+								params.getSSLContext(),
+								params.getHostnameVerifier() != null ? new CustomHostnameVerifier(
+										params.getHostnameVerifier())
+										: SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER));
+			}
+			if (params.getHostnameVerifier() != null) {
+				clientBuilder.setHostnameVerifier(new CustomHostnameVerifier(
+						params.getHostnameVerifier()));
+			}
+		}
+	}
+
 	@Override
-	public HttpClient newInstance() {
+	public HttpClient newInstance(HttpParams params) {
+		resolveHttpParams(params);
 		return new HttpComponent4_2(clientBuilder.build());
 	}
 }

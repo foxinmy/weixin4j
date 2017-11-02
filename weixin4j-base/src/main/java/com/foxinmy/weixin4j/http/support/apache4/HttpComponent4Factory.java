@@ -36,12 +36,7 @@ public class HttpComponent4Factory extends HttpClientFactory {
 	}
 
 	@Override
-	public HttpClient newInstance() {
-		return httpComponentFactory.newInstance();
-	}
-
-	@Override
-	protected void resolveHttpParams0(HttpParams params) {
-		httpComponentFactory.resolveHttpParams(params);
+	public HttpClient newInstance(HttpParams params) {
+		return httpComponentFactory.newInstance(params);
 	}
 }

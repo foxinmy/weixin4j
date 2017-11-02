@@ -10,7 +10,8 @@ import com.foxinmy.weixin4j.response.TextResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 
 /**
- *  自定义处理消息
+ * 自定义处理消息
+ *
  * @className CustomMessageHandler
  * @author jinyu(foxinmy@gmail.com)
  * @date 2017年1月19日
@@ -19,22 +20,19 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
  */
 public class CustomMessageHandler implements WeixinMessageHandler {
 
-	@Override
-	public boolean canHandle(WeixinRequest request, WeixinMessage message,
-			Set<String> nodeNames) throws WeixinException {
-		// 消息来源某个用户
-		return message.getFromUserName().equals("xxx");
-	}
+    @Override
+    public boolean canHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames) {
+        // 消息来源某个用户
+        return message.getFromUserName().equals("xxx");
+    }
 
-	@Override
-	public WeixinResponse doHandle(WeixinRequest request,
-			WeixinMessage message, Set<String> nodeNames)
-			throws WeixinException {
-		return new TextResponse("是你，是你，还是你。");
-	}
+    @Override
+    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames) {
+        return new TextResponse("是你，是你，还是你。");
+    }
 
-	@Override
-	public int weight() {
-		return 0;
-	}
+    @Override
+    public int weight() {
+        return 0;
+    }
 }

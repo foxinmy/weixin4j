@@ -30,11 +30,6 @@ public class AgentOverview implements Serializable {
 	 */
 	@JSONField(name = "square_logo_url")
 	private String squareLogoUrl;
-	/**
-	 * 企业应用圆形头像
-	 */
-	@JSONField(name = "round_logo_url")
-	private String roundLogoUrl;
 
 	public int getAgentId() {
 		return agentId;
@@ -46,10 +41,6 @@ public class AgentOverview implements Serializable {
 
 	public String getSquareLogoUrl() {
 		return squareLogoUrl;
-	}
-
-	public String getRoundLogoUrl() {
-		return roundLogoUrl;
 	}
 
 	// ---------- setter 应该全部去掉
@@ -65,14 +56,9 @@ public class AgentOverview implements Serializable {
 		this.squareLogoUrl = squareLogoUrl;
 	}
 
-	public void setRoundLogoUrl(String roundLogoUrl) {
-		this.roundLogoUrl = roundLogoUrl;
-	}
-
 	@Override
 	public String toString() {
 		return "AgentOverview [agentId=" + agentId + ", name=" + name
-				+ ", squareLogoUrl=" + squareLogoUrl + ", roundLogoUrl="
-				+ roundLogoUrl + "]";
+				+ ", squareLogoUrl=" + squareLogoUrl + "]";
 	}
 }

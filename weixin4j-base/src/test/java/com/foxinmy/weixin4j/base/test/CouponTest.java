@@ -14,7 +14,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
 
 /**
  * 代金券测试
- * 
+ *
  * @className CouponTest
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月25日
@@ -44,7 +44,8 @@ public class CouponTest extends PayTest {
 
 	@Test
 	public void queryCouponDetail() throws WeixinException {
-		CouponDetail result = PAY.queryCouponDetail("couponId");
+		CouponDetail result = PAY.queryCouponDetail("openId", "couponId",
+				"stockId");
 		Assert.assertEquals(Consts.SUCCESS, result.getReturnCode());
 		Assert.assertEquals(Consts.SUCCESS, result.getResultCode());
 		System.err.println(result);

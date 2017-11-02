@@ -12,8 +12,6 @@ import com.foxinmy.weixin4j.qy.type.ReportLocationType;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年3月16日
  * @since JDK 1.6
- * @see <a href=
- *      "http://qydev.weixin.qq.com/wiki/index.php?title=%E8%AE%BE%E7%BD%AE%E4%BC%81%E4%B8%9A%E5%8F%B7%E5%BA%94%E7%94%A8">设置企业号应用</a>
  */
 public class AgentSetter implements Serializable {
 	private static final long serialVersionUID = 5420335232308079801L;
@@ -47,25 +45,15 @@ public class AgentSetter implements Serializable {
 	@JSONField(name = "redirect_domain")
 	private String redirectDomain;
 	/**
-	 * 是否接收用户变更通知。0：不接收；1：接收。主页型应用无需该参数
-	 */
-	@JSONField(name = "isreportuser")
-	private boolean isReportUser;
-	/**
 	 * 是否上报用户进入应用事件。0：不接收；1：接收。主页型应用无需该参数
 	 */
 	@JSONField(name = "isreportenter")
 	private boolean isReportEnter;
 	/**
-	 * 主页型应用url。url必须以http或者https开头。消息型应用无需该参数
+	 * 应用主页url。url必须以http或者https开头。消息型应用无需该参数
 	 */
 	@JSONField(name = "home_url")
 	private String homeUrl;
-	/**
-	 * 关联会话url
-	 */
-	@JSONField(name = "chat_extension_url")
-	private String chatExtensionUrl;
 
 	public AgentSetter(int agentId) {
 		this.agentId = agentId;
@@ -93,10 +81,6 @@ public class AgentSetter implements Serializable {
 
 	public String getRedirectDomain() {
 		return redirectDomain;
-	}
-
-	public boolean isReportUser() {
-		return isReportUser;
 	}
 
 	public boolean isReportEnter() {
@@ -137,10 +121,6 @@ public class AgentSetter implements Serializable {
 		this.logoMediaId = logoMediaId;
 	}
 
-	public void setReportUser(boolean isReportUser) {
-		this.isReportUser = isReportUser;
-	}
-
 	public void setReportEnter(boolean isReportEnter) {
 		this.isReportEnter = isReportEnter;
 	}
@@ -149,22 +129,12 @@ public class AgentSetter implements Serializable {
 		this.homeUrl = homeUrl;
 	}
 
-	public String getChatExtensionUrl() {
-		return chatExtensionUrl;
-	}
-
-	public void setChatExtensionUrl(String chatExtensionUrl) {
-		this.chatExtensionUrl = chatExtensionUrl;
-	}
-
 	@Override
 	public String toString() {
 		return "agentId=" + agentId + ", reportLocationType="
 				+ reportLocationType + ", logoMediaId=" + logoMediaId
 				+ ", name=" + name + ", description=" + description
-				+ ", redirectDomain=" + redirectDomain + ", isReportUser="
-				+ isReportUser + ", isReportEnter=" + isReportEnter
-				+ ", homeUrl=" + homeUrl + ", chatExtensionUrl="
-				+ chatExtensionUrl;
+				+ ", redirectDomain=" + redirectDomain + ", isReportEnter="
+				+ isReportEnter + ", homeUrl=" + homeUrl;
 	}
 }

@@ -18,32 +18,38 @@ import com.foxinmy.weixin4j.token.TokenManager;
  */
 public class WeixinComponentPreCodeCreator extends TokenCreator {
 
-	private final TokenManager componentTokenManager;
-	private final String componentId;
+    private final TokenManager componentTokenManager;
+    private final String componentId;
 
-	/**
-	 *
-	 * @param componentTokenManager
-	 *            应用套件的token
-	 * @param componentId
-	 *            应用组件ID
-	 */
-	public WeixinComponentPreCodeCreator(TokenManager componentTokenManager, String componentId) {
-		this.componentTokenManager = componentTokenManager;
-		this.componentId = componentId;
-	}
+    /**
+     *
+     * @param componentTokenManager
+     *            应用套件的token
+     * @param componentId
+     *            应用组件ID
+     */
+    public WeixinComponentPreCodeCreator(TokenManager componentTokenManager, String componentId) {
+        this.componentTokenManager = componentTokenManager;
+        this.componentId = componentId;
+    }
 
-	@Override
-	public String key0() {
-		return String.format("mp_component_precode_%s", componentId);
-	}
+    @Override
+    public String name() {
+        return "mp_component_precode";
+    }
 
-	@Override
-	public Token create() throws WeixinException {
-		WeixinResponse response = weixinExecutor.post(
-				String.format(URLConsts.COMPONENET_PRE_CODE_URL, componentTokenManager.getAccessToken()),
-				String.format("{\"component_appid\":\"%s\"}", componentId));
-		JSONObject result = response.getAsJson();
-		return new Token(result.getString("pre_auth_code"), result.getLongValue("expires_in") * 1000l);
-	}
+    @Override
+    public String uniqueid() {
+        return componentId;
+    }
+
+    @Override
+    public Token create() throws WeixinException {
+        WeixinResponse response = weixinExecutor.post(
+                String.format(URLConsts.COMPONENET_PRE_CODE_URL, componentTokenManager.getAccessToken()),
+                String.format("{\"component_appid\":\"%s\"}", componentId));
+        JSONObject result = response.getAsJson();
+        return new Token(result.getString("pre_auth_code"), result.getLongValue("expires_in") * 1000l);
+    }
+
 }
