@@ -42,7 +42,7 @@ public class WeixinTokenComponentCreator extends TokenCreator {
 
 	@Override
 	public String uniqueid() {
-		return String.format("%s,%s", perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
+		return String.format("%s_%s", perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
 	}
 
 	@Override
