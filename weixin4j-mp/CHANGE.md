@@ -291,3 +291,7 @@
   + 第三方开放平台调整
   
   + version upgrade to 1.7.8
+  
+* 2017-11-09
+
+  + version upgrade to 1.7.9

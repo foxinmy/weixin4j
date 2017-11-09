@@ -803,3 +803,7 @@
 * 2017-08-25
 
   + version upgrade to 1.7.8
+  
+* 2017-11-09
+
+  + version upgrade to 1.7.9
