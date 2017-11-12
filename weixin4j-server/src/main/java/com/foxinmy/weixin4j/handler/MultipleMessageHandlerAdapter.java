@@ -32,18 +32,20 @@ public abstract class MultipleMessageHandlerAdapter implements WeixinMessageHand
 
     @Override
     public boolean canHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames) {
-        return message != null && messageClasses.contains(message.getClass()) && canHandle0(message);
+        return message != null && messageClasses.contains(message.getClass()) && canHandle0(request, message);
     }
 
     /**
      * 能否处理请求
      *
+     * @param request
+     *            微信请求
      * @param message
      *            微信消息
      * @return true则执行doHandler
      * @throws WeixinException
      */
-    protected boolean canHandle0(WeixinMessage message) {
+    protected boolean canHandle0(WeixinRequest request, WeixinMessage message) {
         return true;
     }
 

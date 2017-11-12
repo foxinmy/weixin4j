@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
 public class SubscribeMessageHandler extends MessageHandlerAdapter<ScribeEventMessage> {
 
     @Override
-    public WeixinResponse doHandle0(WeixinRequest request, ScribeEventMessage message) {
+    public WeixinResponse doHandle0(ScribeEventMessage message) {
         return new TextResponse("欢迎关注～");
     }
 }

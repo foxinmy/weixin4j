@@ -20,7 +20,7 @@ import com.foxinmy.weixin4j.response.WeixinResponse;
 public class VoiceMessageHandler extends MessageHandlerAdapter<VoiceMessage> {
 
     @Override
-    public WeixinResponse doHandle0(WeixinRequest request, VoiceMessage message) {
+    public WeixinResponse doHandle0(VoiceMessage message) {
         /**
          * 返回一段文字给用户
          */
