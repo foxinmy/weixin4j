@@ -226,3 +226,7 @@
   + 企业号调整为企业微信
   
   + version upgrade to 1.7.8
+  
+* 2017-11-09
+
+  + version upgrade to 1.7.9

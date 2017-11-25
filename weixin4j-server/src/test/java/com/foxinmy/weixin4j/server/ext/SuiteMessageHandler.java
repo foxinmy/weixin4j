@@ -26,7 +26,7 @@ public class SuiteMessageHandler implements WeixinMessageHandler {
     }
 
     @Override
-    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames) {
+    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message) {
         SuiteMessage suiteMessage = null; // 转换为 SuiteMessage
         SuiteEventType eventType = suiteMessage.getFormatEventType();
         if (eventType == SuiteEventType.suite_ticket) {

@@ -1,6 +1,6 @@
 package com.foxinmy.weixin4j.server.test;
 
-import java.util.Set;
+import io.netty.channel.ChannelHandlerContext;
 
 import org.springframework.context.ApplicationContext;
 
@@ -19,8 +19,6 @@ import com.foxinmy.weixin4j.response.TextResponse;
 import com.foxinmy.weixin4j.response.WeixinResponse;
 import com.foxinmy.weixin4j.spring.SpringBeanFactory;
 import com.foxinmy.weixin4j.startup.WeixinServerBootstrap;
-
-import io.netty.channel.ChannelHandlerContext;
 
 /**
  * 服务启动测试类
@@ -60,14 +58,14 @@ public class MessageServerStartup {
         // 针对文本消息回复
         WeixinMessageHandler textMessageHandler = new MessageHandlerAdapter<TextMessage>() {
             @Override
-            public WeixinResponse doHandle0(WeixinRequest request, TextMessage message) {
+            protected WeixinResponse doHandle0(TextMessage message) {
                 return new TextResponse("HelloWorld!");
             }
         };
         // 针对语音消息回复
         WeixinMessageHandler voiceMessageHandler = new MessageHandlerAdapter<VoiceMessage>() {
             @Override
-            public WeixinResponse doHandle0(WeixinRequest request, VoiceMessage message) {
+            protected WeixinResponse doHandle0(VoiceMessage message) {
                 return new TextResponse("HelloWorld!");
             }
         };
@@ -84,10 +82,11 @@ public class MessageServerStartup {
         @SuppressWarnings("unchecked")
         MultipleMessageHandlerAdapter messageHandler = new MultipleMessageHandlerAdapter(ScanEventMessage.class,
                 TextMessage.class) {
-            @Override
-            public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames) {
-                return new TextResponse("处理了扫描和文字消息");
-            }
+			@Override
+			public WeixinResponse doHandle(WeixinRequest request,
+					WeixinMessage message) {
+				 return new TextResponse("处理了扫描和文字消息");
+			}
         };
         new WeixinServerBootstrap(token).addHandler(messageHandler, DebugMessageHandler.global).startup();
     }

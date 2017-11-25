@@ -27,7 +27,7 @@ public class HelloMessageHandler extends TextMessageHandler {
     }
 
     @Override
-    public WeixinResponse doHandle0(WeixinRequest request, TextMessage message) {
+    public WeixinResponse doHandle0(TextMessage message) {
         /**
          * 返回用户「world」文本
          */

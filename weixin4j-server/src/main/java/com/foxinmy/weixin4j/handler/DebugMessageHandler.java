@@ -30,7 +30,7 @@ public class DebugMessageHandler implements WeixinMessageHandler {
     }
 
     @Override
-    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames) {
+    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message) {
         String content = message == null
                 ? request.getOriginalContent().replaceAll("\\!\\[CDATA\\[", "").replaceAll("\\]\\]", "")
                 : message.toString();

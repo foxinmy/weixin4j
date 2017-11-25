@@ -27,7 +27,7 @@ public class CustomMessageHandler implements WeixinMessageHandler {
     }
 
     @Override
-    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames) {
+    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage messager) {
         return new TextResponse("是你，是你，还是你。");
     }
 

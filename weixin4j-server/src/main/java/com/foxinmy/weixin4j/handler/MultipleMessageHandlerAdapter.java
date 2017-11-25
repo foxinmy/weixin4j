@@ -45,7 +45,7 @@ public abstract class MultipleMessageHandlerAdapter implements WeixinMessageHand
      * @return true则执行doHandler
      * @throws WeixinException
      */
-    public boolean canHandle0(WeixinRequest request, WeixinMessage message) {
+    protected boolean canHandle0(WeixinRequest request, WeixinMessage message) {
         return true;
     }
 
