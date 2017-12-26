@@ -37,7 +37,7 @@ public class User implements Serializable {
 	/**
 	 * 部门内的排序值，默认为0。数量必须和department一致，数值越大排序越前面。有效的值范围是[0, 2^32)
 	 */
-	private List<Integer> order;
+	private List<Long> order;
 	/**
 	 * 非必须 职位信息。长度为0~64个字符
 	 */
@@ -258,11 +258,11 @@ public class User implements Serializable {
 		this.enable = enable;
 	}
 
-	public List<Integer> getOrder() {
+	public List<Long> getOrder() {
 		return order;
 	}
 
-	public void setOrder(List<Integer> order) {
+	public void setOrder(List<Long> order) {
 		this.order = order;
 	}
 
