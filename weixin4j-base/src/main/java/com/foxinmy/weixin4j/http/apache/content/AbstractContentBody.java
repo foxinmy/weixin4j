@@ -25,19 +25,44 @@
  *
  */
 
-package com.foxinmy.weixin4j.http.apache;
+package com.foxinmy.weixin4j.http.apache.content;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.nio.charset.Charset;
+
+import com.foxinmy.weixin4j.http.ContentType;
+import com.foxinmy.weixin4j.http.MimeType;
 
 /**
  *
  * @since 4.0
  */
-public interface ContentBody extends ContentDescriptor {
+public abstract class AbstractContentBody implements ContentBody {
 
-    String getFilename();
+	private final ContentType contentType;
 
-    void writeTo(OutputStream out) throws IOException;
+	/**
+	 * @since 4.3
+	 */
+	public AbstractContentBody(final ContentType contentType) {
+		super();
+		this.contentType = contentType;
+	}
 
+	/**
+	 * @since 4.3
+	 */
+	public ContentType getContentType() {
+		return this.contentType;
+	}
+
+	@Override
+	public MimeType getMimeType() {
+		return this.contentType.getMimeType();
+	}
+
+	@Override
+	public String getCharset() {
+		final Charset charset = this.contentType.getCharset();
+		return charset != null ? charset.name() : null;
+	}
 }

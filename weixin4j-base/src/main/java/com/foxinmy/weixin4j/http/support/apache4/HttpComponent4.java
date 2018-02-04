@@ -31,7 +31,7 @@ import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.HttpRequest;
-import com.foxinmy.weixin4j.http.apache.MultipartEntity;
+import com.foxinmy.weixin4j.http.apache.mime.MultipartEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.util.StringUtil;
 
