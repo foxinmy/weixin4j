@@ -25,10 +25,11 @@
  *
  */
 
-package com.foxinmy.weixin4j.http.apache;
+package com.foxinmy.weixin4j.http.apache.mime;
 
-import com.foxinmy.weixin4j.util.NameValue;
-
+import com.foxinmy.weixin4j.http.ContentType;
+import com.foxinmy.weixin4j.http.apache.content.AbstractContentBody;
+import com.foxinmy.weixin4j.http.apache.content.ContentBody;
 
 /**
  * FormBodyPart class represents a content body that can be used as a part of multipart encoded
@@ -41,17 +42,20 @@ public class FormBodyPart {
 
     private final String name;
     private final Header header;
-
     private final ContentBody body;
 
+    FormBodyPart(final String name, final ContentBody body, final Header header) {
+        super();
+        this.name = name;
+        this.body = body;
+        this.header = header != null ? header : new Header();
+    }
+
+    /**
+     *  (4.4) use {@link com.foxinmy.weixin4j.http.apache.mime.FormBodyPartBuilder}.
+     */
     public FormBodyPart(final String name, final ContentBody body) {
         super();
-        if (name == null) {
-            throw new IllegalArgumentException("Name may not be null");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Body may not be null");
-        }
         this.name = name;
         this.body = body;
         this.header = new Header();
@@ -74,14 +78,14 @@ public class FormBodyPart {
     }
 
     public void addField(final String name, final String value) {
-        if (name == null) {
-            throw new IllegalArgumentException("Field name may not be null");
-        }
-        this.header.addField(new NameValue(name, value));
+        this.header.addField(new MinimalField(name, value));
     }
 
+    /**
+     * (4.4) use {@link com.foxinmy.weixin4j.http.apache.mime.FormBodyPartBuilder}.
+     */
     protected void generateContentDisp(final ContentBody body) {
-        StringBuilder buffer = new StringBuilder();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append("form-data; name=\"");
         buffer.append(getName());
         buffer.append("\"");
@@ -93,18 +97,33 @@ public class FormBodyPart {
         addField(MIME.CONTENT_DISPOSITION, buffer.toString());
     }
 
+    /**
+     * (4.4) use {@link com.foxinmy.weixin4j.http.apache.mime.FormBodyPartBuilder}.
+     */
     protected void generateContentType(final ContentBody body) {
-        StringBuilder buffer = new StringBuilder();
-        buffer.append(body.getMimeType()); // MimeType cannot be null
-        if (body.getCharset() != null) { // charset may legitimately be null
-            buffer.append("; charset=");
-            buffer.append(body.getCharset());
+        final ContentType contentType;
+        if (body instanceof AbstractContentBody) {
+            contentType = ((AbstractContentBody) body).getContentType();
+        } else {
+            contentType = null;
         }
-        addField(MIME.CONTENT_TYPE, buffer.toString());
+        if (contentType != null) {
+            addField(MIME.CONTENT_TYPE, contentType.toString());
+        } else {
+            final StringBuilder buffer = new StringBuilder();
+            buffer.append(body.getMimeType()); // MimeType cannot be null
+            if (body.getCharset() != null) { // charset may legitimately be null
+                buffer.append("; charset=");
+                buffer.append(body.getCharset());
+            }
+            addField(MIME.CONTENT_TYPE, buffer.toString());
+        }
     }
 
+    /**
+     * (4.4) use {@link com.foxinmy.weixin4j.http.apache.mime.FormBodyPartBuilder}.
+     */
     protected void generateTransferEncoding(final ContentBody body) {
         addField(MIME.CONTENT_TRANSFER_ENC, body.getTransferEncoding()); // TE cannot be null
     }
-
 }

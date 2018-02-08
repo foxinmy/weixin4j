@@ -25,7 +25,7 @@
  *
  */
 
-package com.foxinmy.weixin4j.http.apache;
+package com.foxinmy.weixin4j.http.apache.content;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -36,32 +36,46 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
+import com.foxinmy.weixin4j.http.ContentType;
+import com.foxinmy.weixin4j.http.apache.mime.MIME;
+import com.foxinmy.weixin4j.util.Consts;
+
 /**
+ * Text body part backed by a byte array.
+ *
+ * @see org.apache.http.entity.mime.MultipartEntityBuilder
  *
  * @since 4.0
  */
 public class StringBody extends AbstractContentBody {
 
     private final byte[] content;
-    private final Charset charset;
 
     /**
      * @since 4.1
+     *
+     * @deprecated (4.3) use {@link StringBody#StringBody(String, ContentType)}
+     *   or {@link org.apache.http.entity.mime.MultipartEntityBuilder}
      */
+    @Deprecated
     public static StringBody create(
             final String text,
             final String mimeType,
             final Charset charset) throws IllegalArgumentException {
         try {
             return new StringBody(text, mimeType, charset);
-        } catch (UnsupportedEncodingException ex) {
+        } catch (final UnsupportedEncodingException ex) {
             throw new IllegalArgumentException("Charset " + charset + " is not supported", ex);
         }
     }
 
     /**
      * @since 4.1
+     *
+     * @deprecated (4.3) use {@link StringBody#StringBody(String, ContentType)}
+     *   or {@link org.apache.http.entity.mime.MultipartEntityBuilder}
      */
+    @Deprecated
     public static StringBody create(
             final String text, final Charset charset) throws IllegalArgumentException {
         return create(text, null, charset);
@@ -69,43 +83,41 @@ public class StringBody extends AbstractContentBody {
 
     /**
      * @since 4.1
+     *
+     * @deprecated (4.3) use {@link StringBody#StringBody(String, ContentType)}
+     *   or {@link org.apache.http.entity.mime.MultipartEntityBuilder}
      */
+    @Deprecated
     public static StringBody create(final String text) throws IllegalArgumentException {
         return create(text, null, null);
     }
 
     /**
-     * Create a StringBody from the specified text, mime type and character set.
+     * Create a StringBody from the specified text, MIME type and character set.
      *
      * @param text to be used for the body, not {@code null}
-     * @param mimeType the mime type, not {@code null}
+     * @param mimeType the MIME type, not {@code null}
      * @param charset the character set, may be {@code null}, in which case the US-ASCII charset is used
      * @throws UnsupportedEncodingException
      * @throws IllegalArgumentException if the {@code text} parameter is null
+     *
      */
     public StringBody(
             final String text,
             final String mimeType,
-            Charset charset) throws UnsupportedEncodingException {
-        super(mimeType);
-        if (text == null) {
-            throw new IllegalArgumentException("Text may not be null");
-        }
-        if (charset == null) {
-            charset = Charset.forName("US-ASCII");
-        }
-        this.content = text.getBytes(charset.name());
-        this.charset = charset;
+            final Charset charset) throws UnsupportedEncodingException {
+        this(text, ContentType.create(mimeType, charset != null ? charset : Consts.UTF_8));
     }
 
     /**
      * Create a StringBody from the specified text and character set.
-     * The mime type is set to "text/plain".
+     * The MIME type is set to "text/plain".
      *
      * @param text to be used for the body, not {@code null}
      * @param charset the character set, may be {@code null}, in which case the US-ASCII charset is used
      * @throws UnsupportedEncodingException
      * @throws IllegalArgumentException if the {@code text} parameter is null
+     *
      */
     public StringBody(final String text, final Charset charset) throws UnsupportedEncodingException {
         this(text, "text/plain", charset);
@@ -113,29 +125,38 @@ public class StringBody extends AbstractContentBody {
 
     /**
      * Create a StringBody from the specified text.
-     * The mime type is set to "text/plain".
-     * The hosts default charset is used.
+     * The MIME type is set to "text/plain".
+     * The {@linkplain Consts#ASCII ASCII} charset is used.
      *
      * @param text to be used for the body, not {@code null}
      * @throws UnsupportedEncodingException
      * @throws IllegalArgumentException if the {@code text} parameter is null
+     *
      */
     public StringBody(final String text) throws UnsupportedEncodingException {
-        this(text, "text/plain", null);
+        this(text, "text/plain", Consts.UTF_8);
+    }
+
+    /**
+     * @since 4.3
+     */
+    public StringBody(final String text, final ContentType contentType) {
+        super(contentType);
+        final Charset charset = contentType.getCharset();
+        this.content = text.getBytes(charset != null ? charset : Consts.UTF_8);
     }
 
     public Reader getReader() {
+        final Charset charset = getContentType().getCharset();
         return new InputStreamReader(
                 new ByteArrayInputStream(this.content),
-                this.charset);
+                charset != null ? charset : Consts.UTF_8);
     }
 
+    @Override
     public void writeTo(final OutputStream out) throws IOException {
-        if (out == null) {
-            throw new IllegalArgumentException("Output stream may not be null");
-        }
-        InputStream in = new ByteArrayInputStream(this.content);
-        byte[] tmp = new byte[4096];
+        final InputStream in = new ByteArrayInputStream(this.content);
+        final byte[] tmp = new byte[4096];
         int l;
         while ((l = in.read(tmp)) != -1) {
             out.write(tmp, 0, l);
@@ -143,20 +164,18 @@ public class StringBody extends AbstractContentBody {
         out.flush();
     }
 
+    @Override
     public String getTransferEncoding() {
         return MIME.ENC_8BIT;
     }
 
-    public String getCharset() {
-        return this.charset.name();
-    }
-
+    @Override
     public long getContentLength() {
         return this.content.length;
     }
 
+    @Override
     public String getFilename() {
         return null;
     }
-
 }

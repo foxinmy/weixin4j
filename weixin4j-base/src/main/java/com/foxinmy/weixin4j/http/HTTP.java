@@ -25,8 +25,11 @@
  *
  */
 
-package com.foxinmy.weixin4j.http.apache;
+package com.foxinmy.weixin4j.http;
 
+import java.nio.charset.Charset;
+
+import org.apache.http.Consts;
 
 /**
  * Constants and static helpers related to the HTTP protocol.
@@ -63,11 +66,52 @@ public final class HTTP {
     public static final String CHUNK_CODING = "chunked";
     public static final String IDENTITY_CODING = "identity";
 
-    public static boolean isWhitespace(char ch) {
+    public static final Charset DEF_CONTENT_CHARSET = Consts.ISO_8859_1;
+    public static final Charset DEF_PROTOCOL_CHARSET = Consts.ASCII;
+
+    /**
+     */
+    public static final String UTF_8 = "UTF-8";
+
+    /**
+     */
+    public static final String UTF_16 = "UTF-16";
+
+    /**
+     */
+    public static final String US_ASCII = "US-ASCII";
+
+    /**
+     */
+    public static final String ASCII = "ASCII";
+    /**
+     */
+    public static final String DEFAULT_CONTENT_CHARSET = UTF_8;
+
+    /**
+     */
+    public static final String DEFAULT_PROTOCOL_CHARSET = US_ASCII;
+
+    /**
+     */
+    public final static String OCTET_STREAM_TYPE = "application/octet-stream";
+
+    /**
+     */
+    public final static String PLAIN_TEXT_TYPE = "text/plain";
+
+    /**
+     */
+    public final static String CHARSET_PARAM = "; charset=";
+
+    /**
+     */
+    public final static String DEFAULT_CONTENT_TYPE = OCTET_STREAM_TYPE;
+
+    public static boolean isWhitespace(final char ch) {
         return ch == SP || ch == HT || ch == CR || ch == LF;
     }
 
     private HTTP() {
     }
-
 }

@@ -89,7 +89,7 @@ public class QRParameter implements Serializable {
 		return new QRParameter(QRType.QR_SCENE, expireSeconds,
 				Long.toString(sceneValue), sceneContent);
 	}
-	
+
 	/**
 	 * 创建临时二维码(场景值为string)
 	 * 
@@ -103,10 +103,10 @@ public class QRParameter implements Serializable {
 			String sceneValue) {
 		JSONObject sceneContent = new JSONObject();
 		JSONObject scene = new JSONObject();
-		scene.put("scene_id", sceneValue);
+		scene.put("scene_str", sceneValue);
 		sceneContent.put("scene", scene);
-		return new QRParameter(QRType.QR_STR_SCENE, expireSeconds,
-				sceneValue, sceneContent);
+		return new QRParameter(QRType.QR_STR_SCENE, expireSeconds, sceneValue,
+				sceneContent);
 	}
 
 	/**

@@ -25,99 +25,86 @@
  *
  */
 
-package com.foxinmy.weixin4j.http.apache;
+package com.foxinmy.weixin4j.http.apache.content;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.foxinmy.weixin4j.http.ContentType;
+import com.foxinmy.weixin4j.http.apache.mime.MIME;
+
 /**
+ * Binary body part backed by an input stream.
+ *
+ * @see org.apache.http.entity.mime.MultipartEntityBuilder
  *
  * @since 4.0
  */
-public class FileBody extends AbstractContentBody {
+public class InputStreamBody extends AbstractContentBody {
 
-    private final File file;
+    private final InputStream in;
     private final String filename;
-    private final String charset;
 
     /**
      * @since 4.1
+     *
      */
-    public FileBody(final File file,
-                    final String filename,
-                    final String mimeType,
-                    final String charset) {
-        super(mimeType);
-        if (file == null) {
-            throw new IllegalArgumentException("File may not be null");
-        }
-        this.file = file;
-        if (filename != null)
-            this.filename = filename;
-        else
-            this.filename = file.getName();
-        this.charset = charset;
+    public InputStreamBody(final InputStream in, final String mimeType, final String filename) {
+        this(in, ContentType.create(mimeType), filename);
+    }
+
+    public InputStreamBody(final InputStream in, final String filename) {
+        this(in, ContentType.DEFAULT_BINARY, filename);
     }
 
     /**
-     * @since 4.1
+     * @since 4.3
      */
-    public FileBody(final File file,
-                    final String mimeType,
-                    final String charset) {
-        this(file, null, mimeType, charset);
+    public InputStreamBody(final InputStream in, final ContentType contentType, final String filename) {
+        super(contentType);
+        this.in = in;
+        this.filename = filename;
     }
 
-    public FileBody(final File file, final String mimeType) {
-        this(file, mimeType, null);
+    /**
+     * @since 4.3
+     */
+    public InputStreamBody(final InputStream in, final ContentType contentType) {
+        this(in, contentType, null);
     }
 
-    public FileBody(final File file) {
-        this(file, "application/octet-stream");
+    public InputStream getInputStream() {
+        return this.in;
     }
 
-    public InputStream getInputStream() throws IOException {
-        return new FileInputStream(this.file);
-    }
-
+    @Override
     public void writeTo(final OutputStream out) throws IOException {
-        if (out == null) {
-            throw new IllegalArgumentException("Output stream may not be null");
-        }
-        InputStream in = new FileInputStream(this.file);
         try {
-            byte[] tmp = new byte[4096];
+            final byte[] tmp = new byte[4096];
             int l;
-            while ((l = in.read(tmp)) != -1) {
+            while ((l = this.in.read(tmp)) != -1) {
                 out.write(tmp, 0, l);
             }
             out.flush();
         } finally {
-            in.close();
+            this.in.close();
         }
     }
 
+    @Override
     public String getTransferEncoding() {
         return MIME.ENC_BINARY;
     }
 
-    public String getCharset() {
-        return charset;
-    }
-
+    @Override
     public long getContentLength() {
-        return this.file.length();
+        return -1;
     }
 
+    @Override
     public String getFilename() {
-        return filename;
-    }
-
-    public File getFile() {
-        return this.file;
+        return this.filename;
     }
 
 }
