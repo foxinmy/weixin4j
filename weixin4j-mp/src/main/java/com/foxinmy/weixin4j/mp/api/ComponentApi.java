@@ -243,6 +243,27 @@ public class ComponentApi extends MpApi {
 		return token;
 	}
 
+	public void exchangeAuthorizerToken(String authAppId, String refreshToken,
+															List<Integer> privileges) throws WeixinException {
+
+	//	OauthToken authToken = refreshAuthorizationToken(authAppId, refreshToken);
+
+
+		ComponentAuthorizerToken token = new ComponentAuthorizerToken(refreshToken,
+				1 * 1000l);
+		token.setRefreshToken(refreshToken);
+		token.setPrivileges(privileges);
+		token.setAppId(authAppId);
+		// 微信授权公众号的永久刷新令牌
+		PerTicketManager perTicketManager = getRefreshTokenManager(token.getAppId());
+		// 缓存微信公众号的access_token
+		TokenCreator tokenCreator = new WeixinTokenComponentCreator(perTicketManager, tokenManager);
+		ticketManager.getCacheStorager().caching(tokenCreator.key(), token);
+		// 缓存微信公众号的永久授权码(refresh_token)
+		perTicketManager.cachingTicket(refreshToken);
+	//	return token;
+	}
+
 	/**
 	 * 获取授权方的公众号帐号基本信息:获取授权方的公众号基本信息，包括头像、昵称、帐号类型、认证类型、微信号、原始ID和二维码图片URL。
 	 * 需要特别记录授权方的帐号类型，在消息及事件推送时，对于不具备客服接口的公众号，需要在5秒内立即响应；而若有客服接口，则可以选择暂时不响应，
