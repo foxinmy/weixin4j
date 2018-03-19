@@ -31,7 +31,7 @@ public class Party implements Serializable {
 	/**
 	 * 在父部门中的次序值。order值大的排序靠前。有效的值范围是[0, 2^32)
 	 */
-	private int order;
+	private long order;
 
 	protected Party() {
 
@@ -59,7 +59,7 @@ public class Party implements Serializable {
 		return parentId;
 	}
 
-	public int getOrder() {
+	public long getOrder() {
 		return order;
 	}
 
@@ -77,7 +77,7 @@ public class Party implements Serializable {
 		this.parentId = parentId;
 	}
 
-	public void setOrder(int order) {
+	public void setOrder(long order) {
 		this.order = order;
 	}
 
