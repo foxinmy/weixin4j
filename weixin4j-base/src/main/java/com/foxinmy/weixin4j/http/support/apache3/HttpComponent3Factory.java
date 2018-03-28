@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnectionManager;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.protocol.Protocol;
 
 import com.foxinmy.weixin4j.http.HttpParams;
@@ -24,7 +25,7 @@ public class HttpComponent3Factory extends HttpClientFactory {
 	private final HttpClient httpClient;
 
 	public HttpComponent3Factory() {
-		httpClient = new HttpClient();
+		httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
 		httpClient.getParams().setHttpElementCharset(Consts.UTF_8.name());
 		httpClient.getParams().setParameter("http.protocol.uri-charset",
 				Consts.UTF_8.name());
