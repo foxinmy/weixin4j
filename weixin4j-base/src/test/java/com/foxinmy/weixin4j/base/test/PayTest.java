@@ -45,11 +45,7 @@ public class PayTest {
 	protected final static WeixinPayProxy PAY;
 
 	static {
-		ACCOUNT = new WeixinPayAccount(
-				"id",
-				"支付秘钥",
-				"商户号",
-				"加载证书的密码，默认为商户号",
+		ACCOUNT = new WeixinPayAccount("id", "支付秘钥", "商户号", "加载证书的密码，默认为商户号",
 				"证书文件路径");
 		SIGNATURE = new WeixinPaymentSignature(ACCOUNT.getPaySignKey());
 		PAY = new WeixinPayProxy(ACCOUNT);
@@ -171,7 +167,7 @@ public class PayTest {
 		double totalFee = 1d;
 		String createIp = "127.0.0.1";
 		MchPayRequest request = PAY.createMicroPayRequest(authCode, body,
-				outTradeNo, totalFee, createIp, null);
+				outTradeNo, totalFee, createIp, null, null);
 		System.err.println(request);
 	}
 }
