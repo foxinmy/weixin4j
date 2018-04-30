@@ -1,9 +1,7 @@
 package com.foxinmy.weixin4j.wxa;
 
 import java.security.AlgorithmParameters;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.Key;
-import java.security.NoSuchProviderException;
 import java.security.Security;
 
 import javax.crypto.Cipher;
@@ -23,12 +21,11 @@ final class AESUtils {
 	 * AES解密
 	 *
 	 * @param content 密文
+	 * @param keyByte key
+	 * @param ivByte 初始向量
 	 * @return 明文
-	 * @throws InvalidAlgorithmParameterException
-	 * @throws NoSuchProviderException
 	 */
-	static byte[] decrypt(byte[] content, byte[] keyByte, byte[] ivByte)
-			throws InvalidAlgorithmParameterException {
+	static byte[] decrypt(byte[] content, byte[] keyByte, byte[] ivByte) {
 		initialize();
 		try {
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
@@ -42,9 +39,11 @@ final class AESUtils {
 		}
 	}
 
-	private static void initialize() {
-		if (initialized)
+	private static synchronized void initialize() {
+		if (initialized) {
 			return;
+		}
+
 		Security.addProvider(new BouncyCastleProvider());
 		initialized = true;
 	}

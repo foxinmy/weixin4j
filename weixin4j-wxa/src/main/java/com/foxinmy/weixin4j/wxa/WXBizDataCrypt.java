@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.wxa;
 
 import java.nio.charset.Charset;
-import java.security.InvalidAlgorithmParameterException;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -36,13 +35,7 @@ public class WXBizDataCrypt {
 		final byte[] aesCipher = Base64.decodeBase64(encryptedData);
 		final byte[] aesIV = Base64.decodeBase64(iv);
 
-		final byte[] decryptedBytes;
-		try {
-			decryptedBytes = AESUtils.decrypt(aesCipher, aesKey, aesIV);
-		} catch (InvalidAlgorithmParameterException e) {
-			throw new RuntimeException(e);
-		}
-
+		final byte[] decryptedBytes = AESUtils.decrypt(aesCipher, aesKey, aesIV);
 		final String decryptedText = new String(decryptedBytes, Charset.forName("UTF-8"));
 		final JSONObject decrypted = JSON.parseObject(decryptedText);
 
