@@ -27,14 +27,14 @@ public class WXBizDataCrypt {
 		final byte[] aesCipher = Base64.decodeBase64(encryptedData);
 		final byte[] aesIV = Base64.decodeBase64(iv);
 
-		final byte[] resultByte;
+		final byte[] decryptedBytes;
 		try {
-			resultByte = AESUtils.decrypt(aesCipher, aesKey, aesIV);
+			decryptedBytes = AESUtils.decrypt(aesCipher, aesKey, aesIV);
 		} catch (InvalidAlgorithmParameterException e) {
 			throw new RuntimeException(e);
 		}
 
-		final String decryptedText = new String(resultByte, Charset.forName("UTF-8"));
+		final String decryptedText = new String(decryptedBytes, Charset.forName("UTF-8"));
 		final JSONObject decrypted = JSON.parseObject(decryptedText);
 
 		final String appId = decrypted.getJSONObject("watermark").getString("appid");
