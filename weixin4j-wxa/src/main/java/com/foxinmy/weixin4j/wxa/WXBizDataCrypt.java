@@ -9,6 +9,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
+ * 对微信小程序用户加密数据的解密.
+ *
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/signature.html#wxchecksessionobject">加密数据解密算法</a>
  */
 public class WXBizDataCrypt {
@@ -22,6 +24,13 @@ public class WXBizDataCrypt {
 		this.sessionKey = sessionKey;
 	}
 
+	/**
+	 * 解密微信小程序用户加密数据.
+	 *
+	 * @param encryptedData 加密的用户数据.
+	 * @param iv 与用户数据一同返回的初始向量.
+	 * @return 解密后的原文.
+	 */
 	public JSONObject decryptData(final String encryptedData, final String iv) {
 		final byte[] aesKey = Base64.decodeBase64(sessionKey);
 		final byte[] aesCipher = Base64.decodeBase64(encryptedData);
