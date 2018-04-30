@@ -10,6 +10,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+/**
+ * @since 1.8
+ */
 final class AESUtils {
 
 	private static boolean initialized = false;

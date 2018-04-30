@@ -19,7 +19,7 @@ weixin4j
 
   `企业号API封装`
 
-* **weixin4j-wxa[1.7.9]**
+* **weixin4j-wxa[1.8.0]**
 
   `小程序 API 封装`
 
