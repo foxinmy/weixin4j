@@ -7,10 +7,10 @@
 		<artifactId>weixin4j</artifactId>
 		<version>1.8.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>weixin4j-mp</artifactId>
-	<name>weixin4j-mp</name>
-	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-mp</url>
-	<description>微信公众平台API</description>
+	<artifactId>weixin4j-wxa</artifactId>
+	<name>weixin4j-wxa</name>
+	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-wxa</url>
+	<description>微信小程序 API 支持</description>
 	<build>
 		<plugins>
 			<plugin>
@@ -24,6 +24,16 @@
 			<groupId>com.foxinmy</groupId>
 			<artifactId>weixin4j-base</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.55</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

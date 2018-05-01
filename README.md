@@ -18,7 +18,11 @@ weixin4j
 * **weixin4j-qy[1.7.8]**
 
   `企业号API封装`
-  
+
+* **weixin4j-wxa[1.8.0]**
+
+  `小程序 API 封装`
+
 * **weixin4j-server[1.1.8]**
   
   `netty服务器&消息分发`
