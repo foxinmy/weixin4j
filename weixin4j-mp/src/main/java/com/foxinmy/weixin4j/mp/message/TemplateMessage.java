@@ -185,7 +185,11 @@ public class TemplateMessage implements Serializable {
         this.content = items;
     }
 
-    public void setMiniprogram(String appid,String pagepath) {
+    public Miniprogram getMiniprogram() {
+		return miniprogram;
+	}
+
+	public void setMiniprogram(String appid,String pagepath) {
         this.miniprogram = new Miniprogram(appid, pagepath);
     }
 
