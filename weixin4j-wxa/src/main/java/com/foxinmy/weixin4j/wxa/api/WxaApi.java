@@ -4,6 +4,9 @@ import java.util.ResourceBundle;
 
 import com.foxinmy.weixin4j.api.BaseApi;
 
+/**
+ * @since 1.8
+ */
 public abstract class WxaApi extends BaseApi {
 
 	private static final ResourceBundle WEIXIN_BUNDLE;

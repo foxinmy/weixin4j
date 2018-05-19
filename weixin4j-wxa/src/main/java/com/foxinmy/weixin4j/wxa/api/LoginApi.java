@@ -6,6 +6,9 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.wxa.model.Session;
 
+/**
+ * @since 1.8
+ */
 public class LoginApi extends WxaApi {
 
 	private final WeixinAccount weixinAccount;

@@ -2,6 +2,9 @@ package com.foxinmy.weixin4j.wxa.model;
 
 import java.io.Serializable;
 
+/**
+ * @since 1.8
+ */
 public class Session implements Serializable {
 
 	private static final long serialVersionUID = 2018051801L;
