@@ -36,13 +36,14 @@ public class QrCodeApi extends WxaApi {
 	 *   注意：通过该接口生成的小程序码，永久有效，数量限制见微信小程序文档文末说明，请谨慎使用。
 	 *   用户扫描该码进入小程序后，将直接进入 path 对应的页面。
 	 * </p>
+	 *
 	 * @param path 不能为空，最大长度 128 字节
 	 * @param width 二维码的宽度，默认值 430
 	 * @param autoColor 自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
 	 * @param lineColor <code>authColor</code> 为 false 时生效
 	 * @param hyaline 是否需要透明底色， 为true时，生成透明底色的小程序码
 	 * @return image bytes of WXA code.
-	 * @throws WeixinException indicates get access token failed or get WXA code failed.
+	 * @throws WeixinException indicates getting access token failed or getting WXA code failed.
 	 *
 	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/qrcode.html#%E8%8E%B7%E5%8F%96%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A0%81">获取小程序码</a>
 	 */
@@ -68,17 +69,18 @@ public class QrCodeApi extends WxaApi {
 	 *   用户扫描该码进入小程序后，开发者需在对应页面获取的码中 scene 字段的值，再做处理逻辑。
 	 *   使用如下代码可以获取到二维码中的 scene 字段的值。
 	 *   调试阶段可以使用开发工具的条件编译自定义参数 scene=xxxx 进行模拟，
-	 *   开发工具模拟时的 scene 的参数值需要进行 urlencode
-	 *   <code>
-	 *     // 这是首页的 js
-	 *     Page({
-	 *       onLoad: function(options) {
-	 *         // options 中的 scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
-	 *         var scene = decodeURIComponent(options.scene)
-	 *       }
-	 *      })
-	 *   </code>
-	 * </p>
+	 *   开发工具模拟时的 scene 的参数值需要进行 urlencode。
+	 * <p>
+	 * <pre>
+	 * // 这是首页的 js
+	 * Page({
+	 *   onLoad: function(options) {
+	 *     // options 中的 scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
+	 *     var scene = decodeURIComponent(options.scene)
+	 *   }
+	 * })
+	 * </pre>
+	 *
 	 * @param scene 最大32个可见字符，只支持数字，
 	 * 大小写英文以及部分特殊字符：!#$&'()*+,/:;=?@-._~，
 	 * 其它字符请自行编码为合法字符（因不支持%，中文无法使用 urlencode 处理，请使用其他编码方式）
@@ -91,7 +93,7 @@ public class QrCodeApi extends WxaApi {
 	 * @param lineColor <code>autoColor</code> 为 false 时生效，使用 rgb 设置颜色
 	 * @param hyaline 是否需要透明底色，为true时，生成透明底色的小程序码
 	 * @return image bytes of WXA code.
-	 * @throws WeixinException indicates get access token failed or get WXA code failed.
+	 * @throws WeixinException indicates getting access token failed or getting WXA code failed.
 	 *
 	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/qrcode.html#%E8%8E%B7%E5%8F%96%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A0%81">获取小程序码</a>
 	 */
@@ -117,10 +119,11 @@ public class QrCodeApi extends WxaApi {
 	 *   注意：通过该接口生成的小程序二维码，永久有效，数量限制见微信小程序文档文末说明，请谨慎使用。
 	 *   用户扫描该码进入小程序后，将直接进入 path 对应的页面。
 	 * </p>
+	 *
 	 * @param path 不能为空，最大长度 128 字节
 	 * @param width 二维码的宽度，默认值 430
 	 * @return image bytes of WXA QR code.
-	 * @throws WeixinException indicates get access token failed or get WXA QR code failed.
+	 * @throws WeixinException indicates getting access token failed or getting WXA QR code failed.
 	 *
 	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/qrcode.html#%E8%8E%B7%E5%8F%96%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BA%8C%E7%BB%B4%E7%A0%81">获取小程序二维码</a>
 	 */
