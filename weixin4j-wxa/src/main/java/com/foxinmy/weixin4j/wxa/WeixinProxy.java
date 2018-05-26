@@ -9,6 +9,8 @@ import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.wxa.api.LoginApi;
 import com.foxinmy.weixin4j.wxa.api.QrCodeApi;
+import com.foxinmy.weixin4j.wxa.api.TemplateApi;
+import com.foxinmy.weixin4j.wxa.api.TemplateMessageApi;
 
 /**
  * @since 1.8
@@ -17,6 +19,8 @@ public class WeixinProxy {
 
 	private final LoginApi loginApi;
 	private final QrCodeApi qrCodeApi;
+	private final TemplateApi templateApi;
+	private final TemplateMessageApi templateMessageApi;
 
 	public WeixinProxy(
 		WeixinAccount weixinAccount
@@ -62,6 +66,8 @@ public class WeixinProxy {
 
 		this.loginApi = new LoginApi(weixinAccount);
 		this.qrCodeApi = new QrCodeApi(tokenManager);
+		this.templateApi = new TemplateApi(tokenManager);
+		this.templateMessageApi = new TemplateMessageApi(tokenManager);
 	}
 
 	public LoginApi getLoginApi() {
@@ -70,6 +76,14 @@ public class WeixinProxy {
 
 	public QrCodeApi getQrCodeApi() {
 		return qrCodeApi;
+	}
+
+	public TemplateApi getTemplateApi() {
+		return templateApi;
+	}
+
+	public TemplateMessageApi getTemplateMessageApi() {
+		return templateMessageApi;
 	}
 
 }

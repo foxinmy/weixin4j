@@ -7,7 +7,7 @@ import com.foxinmy.weixin4j.api.BaseApi;
 /**
  * @since 1.8
  */
-public abstract class WxaApi extends BaseApi {
+abstract class WxaApi extends BaseApi {
 
 	private static final ResourceBundle WEIXIN_BUNDLE;
 
@@ -15,12 +15,13 @@ public abstract class WxaApi extends BaseApi {
 		WEIXIN_BUNDLE = ResourceBundle
 			.getBundle("com/foxinmy/weixin4j/wxa/api/weixin");
 	}
+
 	@Override
 	protected ResourceBundle weixinBundle() {
 		return WEIXIN_BUNDLE;
 	}
 
-	protected String getRequestUri(String key, Object... args) {
+	String getRequestUri(String key, Object... args) {
 		return String.format(getRequestUri(key), args);
 	}
 
