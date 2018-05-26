@@ -1,7 +1,6 @@
 package com.foxinmy.weixin4j.wxa.api;
 
 import java.awt.Color;
-import java.io.IOException;
 
 import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -139,20 +138,10 @@ public class QrCodeApi extends TokenManagerApi {
 	}
 
 	private byte[] toImageBytes(WeixinResponse response) throws WeixinException {
-		try {
-			return readImageBytes(response);
-		} catch (IOException e) {
-			throw new WeixinException(e);
-		} catch (WxaCodeError e) {
-			throw new WeixinException(Integer.toString(e.getErrcode()), e.getErrmsg());
-		}
-	}
-
-	private byte[] readImageBytes(WeixinResponse response) throws IOException, WxaCodeError {
 		final String contentType = response.getHeaders().getContentType();
 		if (contentType != null && contentType.equals(ContentType.APPLICATION_JSON.getMimeType().getType())) {
-			WxaCodeError wxaCodeError = JSON.parseObject(response.getContent(), WxaCodeError.class);
-			throw wxaCodeError;
+			final WxaApiResult r = response.getAsObject(WxaApiResult.TYPE_REFERENCE);
+			throw r.toWeixinException();
 		} else {
 			return response.getContent();
 		}
