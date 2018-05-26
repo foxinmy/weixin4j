@@ -20,12 +20,10 @@ import com.foxinmy.weixin4j.token.TokenManager;
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/qrcode.html">获取二维码</a>
  * @since 1.8
  */
-public class QrCodeApi extends WxaApi {
-
-	private final TokenManager tokenManager;
+public class QrCodeApi extends TokenManagerApi {
 
 	public QrCodeApi(TokenManager tokenManager) {
-		this.tokenManager = tokenManager;
+		super(tokenManager);
 	}
 
 	/**
@@ -54,8 +52,7 @@ public class QrCodeApi extends WxaApi {
 		Color lineColor,
 		Boolean hyaline
 	) throws WeixinException {
-		final String accessToken = tokenManager.getAccessToken();
-		final String getWxaCodeUri = this.getRequestUri("wxa_getwxacode", accessToken);
+		final String getWxaCodeUri = this.getAccessTokenRequestUri("wxa_getwxacode");
 		final WxaCodeParameter param = new WxaCodeParameter(path, width, autoColor, lineColor, hyaline);
 		return this.postAsImageBytes(getWxaCodeUri, param);
 	}
@@ -105,8 +102,7 @@ public class QrCodeApi extends WxaApi {
 		Color lineColor,
 		Boolean hyaline
 	) throws WeixinException {
-		final String accessToken = tokenManager.getAccessToken();
-		final String getWxaCodeUnlimitUri = this.getRequestUri("wxa_getwxacodeunlimit", accessToken);
+		final String getWxaCodeUnlimitUri = this.getAccessTokenRequestUri("wxa_getwxacodeunlimit");
 		final WxaCodeUnlimitParameter param = new WxaCodeUnlimitParameter(scene, page, width, autoColor, lineColor, hyaline);
 		return this.postAsImageBytes(getWxaCodeUnlimitUri, param);
 	}
@@ -131,8 +127,7 @@ public class QrCodeApi extends WxaApi {
 		String path,
 		Integer width
 	) throws WeixinException {
-		final String accessToken = tokenManager.getAccessToken();
-		final String createWxaQrCode = this.getRequestUri("wxaapp_createwxaqrcode", accessToken);
+		final String createWxaQrCode = this.getAccessTokenRequestUri("wxaapp_createwxaqrcode");
 		final WxaQrCodeParameter param = new WxaQrCodeParameter(path, width);
 		return this.postAsImageBytes(createWxaQrCode, param);
 	}

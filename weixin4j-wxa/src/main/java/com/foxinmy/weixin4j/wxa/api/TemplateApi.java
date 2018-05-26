@@ -16,7 +16,7 @@ import com.foxinmy.weixin4j.wxa.model.template.Template;
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/notice.html#%E6%A8%A1%E7%89%88%E6%B6%88%E6%81%AF%E7%AE%A1%E7%90%86">模版消息管理</a>
  * @since 1.8
  */
-public class TemplateApi extends NoticeApi {
+public class TemplateApi extends TokenManagerApi {
 
 	public TemplateApi(TokenManager tokenManager) {
 		super(tokenManager);

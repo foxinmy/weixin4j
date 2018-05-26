@@ -6,11 +6,11 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.token.TokenManager;
 
-abstract class NoticeApi extends WxaApi {
+abstract class TokenManagerApi extends WxaApi {
 
 	private final TokenManager tokenManager;
 
-	public NoticeApi(final TokenManager tokenManager) {
+	public TokenManagerApi(final TokenManager tokenManager) {
 		this.tokenManager = tokenManager;
 	}
 
