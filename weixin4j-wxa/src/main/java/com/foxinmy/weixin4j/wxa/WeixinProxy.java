@@ -13,6 +13,8 @@ import com.foxinmy.weixin4j.wxa.api.TemplateApi;
 import com.foxinmy.weixin4j.wxa.api.TemplateMessageApi;
 
 /**
+ * The facade of WXA APIs.
+ *
  * @since 1.8
  */
 public class WeixinProxy {

@@ -6,7 +6,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
- * 发送模版消息
+ * 发送模版消息。
  *
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/notice.html#%E5%8F%91%E9%80%81%E6%A8%A1%E7%89%88%E6%B6%88%E6%81%AF">发送模版消息</a>
  * @since 1.8

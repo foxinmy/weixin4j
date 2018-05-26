@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+/**
+ * 模板消息的模板里的关键词。
+ *
+ * @since 1.8
+ */
 public class Keyword implements Serializable {
 
 	private static final long serialVersionUID = 2018052601L;

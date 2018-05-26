@@ -9,7 +9,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.token.TokenManager;
 
 /**
- * 获取二维码.
+ * 获取二维码。
  *
  * <p>
  *   通过后台接口可以获取小程序任意页面的二维码，扫描该二维码可以直接进入小程序对应的页面。

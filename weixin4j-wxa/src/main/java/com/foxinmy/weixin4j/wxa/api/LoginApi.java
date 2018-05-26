@@ -7,6 +7,8 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.wxa.model.Session;
 
 /**
+ * 登录凭证校验。
+ *
  * @since 1.8
  */
 public class LoginApi extends WxaApi {

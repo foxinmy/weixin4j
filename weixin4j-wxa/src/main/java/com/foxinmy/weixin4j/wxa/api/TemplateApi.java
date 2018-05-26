@@ -11,7 +11,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.wxa.model.template.Template;
 
 /**
- * 模版消息管理
+ * 模版消息管理。
  *
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/notice.html#%E6%A8%A1%E7%89%88%E6%B6%88%E6%81%AF%E7%AE%A1%E7%90%86">模版消息管理</a>
  * @since 1.8
