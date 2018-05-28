@@ -17,14 +17,14 @@ import com.foxinmy.weixin4j.wxa.api.TemplateMessageApi;
  *
  * @since 1.8
  */
-public class WeixinProxy {
+public class WXAProxy {
 
 	private final LoginApi loginApi;
 	private final QrCodeApi qrCodeApi;
 	private final TemplateApi templateApi;
 	private final TemplateMessageApi templateMessageApi;
 
-	public WeixinProxy(
+	public WXAProxy(
 		WeixinAccount weixinAccount
 	) {
 		this(
@@ -33,7 +33,7 @@ public class WeixinProxy {
 		);
 	}
 
-	public WeixinProxy(
+	public WXAProxy(
 		WeixinAccount weixinAccount,
 		CacheStorager<Token> cacheStorager
 	) {
@@ -44,7 +44,7 @@ public class WeixinProxy {
 		);
 	}
 
-	private WeixinProxy(
+	private WXAProxy(
 		WeixinAccount weixinAccount,
 		TokenCreator tokenCreator,
 		CacheStorager<Token> cacheStorager
