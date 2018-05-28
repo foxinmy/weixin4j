@@ -459,15 +459,25 @@ public class PayApi extends MchApi {
 
 	/**
 	 * 申请退款(请求需要双向证书)
+	 *
 	 * <p>
 	 * 当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家，微信支付将在收到退款请求并且验证成功之后，
 	 * 按照退款规则将支付款按原路退到买家帐号上。
 	 * </p>
-	 * <p style="color:red">
-	 * 1.交易时间超过半年的订单无法提交退款；
-	 * 2.微信支付退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交
-	 * ，要采用原来的退款单号。总退款金额不能超过用户实际支付金额。
-	 * </p>
+	 *
+	 * <ol>
+	 *   <li>交易时间超过一年的订单无法提交退款；</li>
+	 *   <li>
+	 *     微信支付退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。
+	 *     申请退款总金额不能超过订单金额。
+	 *     <span style="color:red">一笔退款失败后重新提交，请不要更换退款单号，请使用原商户退款单号。</span>
+	 *   </li>
+	 *   <li>
+	 *     请求频率限制：150qps，即每秒钟正常的申请退款请求次数不超过150次。
+	 *     错误或无效请求频率限制：6qps，即每秒钟异常或错误的退款申请请求不超过6次。
+	 *   </li>
+	 *   <li>每个支付订单的部分退款次数不能超过50次。</li>
+	 * </ol>
 	 *
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -537,7 +547,7 @@ public class PayApi extends MchApi {
 	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
 	 * @param totalFee
 	 *            订单总金额,单位为元
-	 * @see {@link #applyRefund(IdQuery, String, double, double, CurrencyType, String, String, RefundAccountType)}
+	 * @see #applyRefund(IdQuery, String, double, double, CurrencyType, String, String, RefundAccountType)
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
 			double totalFee) throws WeixinException {
