@@ -24,6 +24,11 @@ public class WXAProxy {
 	private final TemplateApi templateApi;
 	private final TemplateMessageApi templateMessageApi;
 
+	/**
+	 * Constructs {@link WXAProxy} using {@link FileCacheStorager}.
+	 *
+	 * @param weixinAccount the {@link WeixinAccount}.
+	 */
 	public WXAProxy(
 		WeixinAccount weixinAccount
 	) {
@@ -33,6 +38,12 @@ public class WXAProxy {
 		);
 	}
 
+	/**
+	 * Constructs {@link WXAProxy} using specified {@link CacheStorager}.
+	 *
+	 * @param weixinAccount the {@link WeixinAccount}.
+	 * @param cacheStorager the {@link CacheStorager}.
+	 */
 	public WXAProxy(
 		WeixinAccount weixinAccount,
 		CacheStorager<Token> cacheStorager
