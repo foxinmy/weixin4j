@@ -7,6 +7,7 @@ import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.token.TokenCreator;
 import com.foxinmy.weixin4j.token.TokenManager;
+import com.foxinmy.weixin4j.wxa.api.CustomMessageApi;
 import com.foxinmy.weixin4j.wxa.api.LoginApi;
 import com.foxinmy.weixin4j.wxa.api.QrCodeApi;
 import com.foxinmy.weixin4j.wxa.api.TemplateApi;
@@ -23,6 +24,7 @@ public class WeixinProxy {
 	private final QrCodeApi qrCodeApi;
 	private final TemplateApi templateApi;
 	private final TemplateMessageApi templateMessageApi;
+	private final CustomMessageApi customMessageApi;
 
 	public WeixinProxy(
 		WeixinAccount weixinAccount
@@ -70,6 +72,7 @@ public class WeixinProxy {
 		this.qrCodeApi = new QrCodeApi(tokenManager);
 		this.templateApi = new TemplateApi(tokenManager);
 		this.templateMessageApi = new TemplateMessageApi(tokenManager);
+		this.customMessageApi = new CustomMessageApi(tokenManager);
 	}
 
 	public LoginApi getLoginApi() {
@@ -86,6 +89,10 @@ public class WeixinProxy {
 
 	public TemplateMessageApi getTemplateMessageApi() {
 		return templateMessageApi;
+	}
+
+	public CustomMessageApi getCustomMessageApi() {
+		return customMessageApi;
 	}
 
 }
