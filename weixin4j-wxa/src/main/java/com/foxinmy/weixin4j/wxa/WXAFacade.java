@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.wxa.api.TemplateMessageApi;
  *
  * @since 1.8
  */
-public class WXAProxy {
+public class WXAFacade {
 
 	private final LoginApi loginApi;
 	private final QrCodeApi qrCodeApi;
@@ -25,11 +25,11 @@ public class WXAProxy {
 	private final TemplateMessageApi templateMessageApi;
 
 	/**
-	 * Constructs {@link WXAProxy} using {@link FileCacheStorager}.
+	 * Constructs {@link WXAFacade} using {@link FileCacheStorager}.
 	 *
 	 * @param weixinAccount the {@link WeixinAccount}.
 	 */
-	public WXAProxy(
+	public WXAFacade(
 		WeixinAccount weixinAccount
 	) {
 		this(
@@ -39,12 +39,12 @@ public class WXAProxy {
 	}
 
 	/**
-	 * Constructs {@link WXAProxy} using specified {@link CacheStorager}.
+	 * Constructs {@link WXAFacade} using specified {@link CacheStorager}.
 	 *
 	 * @param weixinAccount the {@link WeixinAccount}.
 	 * @param cacheStorager the {@link CacheStorager}.
 	 */
-	public WXAProxy(
+	public WXAFacade(
 		WeixinAccount weixinAccount,
 		CacheStorager<Token> cacheStorager
 	) {
@@ -55,7 +55,7 @@ public class WXAProxy {
 		);
 	}
 
-	private WXAProxy(
+	private WXAFacade(
 		WeixinAccount weixinAccount,
 		TokenCreator tokenCreator,
 		CacheStorager<Token> cacheStorager
