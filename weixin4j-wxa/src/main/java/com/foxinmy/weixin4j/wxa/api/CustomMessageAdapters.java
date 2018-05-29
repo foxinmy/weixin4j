@@ -24,7 +24,7 @@ final class CustomMessageAdapters {
 		final Map<String, Object> params = new HashMap<String, Object>(3);
 		params.put("touser", customMessage.getToUser());
 		params.put("msgtype", msgType);
-		params.put(msgType, customMessage.getTuple());
+		params.put(msgType, tuple);
 
 		return params;
 	}

@@ -1,6 +1,6 @@
 package com.foxinmy.weixin4j.wxa.api;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -17,8 +17,9 @@ public class CustomMessageAdaptersTest {
 		customMessage.setTuple(new Text("Hello World"));
 
 		String json = JSON.toJSONString(CustomMessageAdapters.toMap(customMessage));
-		System.out.println(json);
-		assertEquals("{\"touser\":\"OPENID\",\"text\":{\"content\":\"Hello World\"},\"msgtype\":\"text\"}", json);
+		assertTrue(json.contains("\"touser\":\"OPENID\""));
+		assertTrue(json.contains("\"msgtype\":\"text\""));
+		assertTrue(json.contains("\"text\":{\"content\":\"Hello World\"}"));
 	}
 
 }
