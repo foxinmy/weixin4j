@@ -21,7 +21,7 @@ final class CustomMessageAdapters {
 		final NotifyTuple tuple = customMessage.getTuple();
 		final String msgType = tuple.getMessageType();
 
-		final Map<String, Object> params = new HashMap<String, Object>();
+		final Map<String, Object> params = new HashMap<String, Object>(3);
 		params.put("touser", customMessage.getToUser());
 		params.put("msgtype", msgType);
 		params.put(msgType, customMessage.getTuple());
