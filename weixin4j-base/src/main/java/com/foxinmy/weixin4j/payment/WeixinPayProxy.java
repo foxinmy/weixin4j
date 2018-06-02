@@ -433,6 +433,8 @@ public class WeixinPayProxy {
 	}
 
 	/**
+	 * 申请退款
+	 *
 	 * @see PayApi#applyRefund(IdQuery, String, double, double, CurrencyType, String, String, RefundAccountType)
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
@@ -444,6 +446,8 @@ public class WeixinPayProxy {
 	}
 
 	/**
+	 * 申请退款
+	 *
 	 * @see PayApi#applyRefund(IdQuery, String, double)
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
@@ -712,27 +716,9 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * 企业付款 实现企业向个人付款，针对部分有开发能力的商户， 提供通过API完成企业付款的功能。 比如目前的保险行业向客户退保、给付、理赔。
-	 * <p>
-	 * 接口调用规则：
-	 * <p>
-	 * <li>给同一个实名用户付款，单笔单日限额2W/2W
-	 * <li>给同一个非实名用户付款，单笔单日限额2000/2000
-	 * <li>一个商户同一日付款总额限额100W
-	 * <li>单笔最小金额默认为1元
-	 * <li>每个用户每天最多可付款10次，可以在商户平台--API安全进行设置
-	 * <li>给同一个用户付款时间间隔不得低于15秒
+	 * 企业付款
 	 *
-	 * @param payment
-	 *            付款信息
-	 * @return 付款结果
-	 * @see com.foxinmy.weixin4j.api.CashApi
-	 * @see com.foxinmy.weixin4j.payment.mch.CorpPayment
-	 * @see com.foxinmy.weixin4j.payment.mch.CorpPaymentResult
-	 * @see <a href=
-	 *      "https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_2">
-	 *      企业付款接口</a>
-	 * @throws WeixinException
+	 * @see CashApi#sendCorpPayment(CorpPayment)
 	 */
 	public CorpPaymentResult sendCorpPayment(CorpPayment payment)
 			throws WeixinException {
