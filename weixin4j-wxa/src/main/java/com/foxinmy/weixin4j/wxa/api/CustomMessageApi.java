@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.wxa.api;
 
 import java.util.Map;
+import java.util.Properties;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.token.TokenManager;
@@ -16,6 +17,10 @@ public class CustomMessageApi extends TokenManagerApi {
 
 	public CustomMessageApi(TokenManager tokenManager) {
 		super(tokenManager);
+	}
+
+	public CustomMessageApi(TokenManager tokenManager, Properties properties) {
+		super(tokenManager, properties);
 	}
 
 	/**

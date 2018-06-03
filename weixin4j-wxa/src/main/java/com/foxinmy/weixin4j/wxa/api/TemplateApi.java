@@ -3,6 +3,7 @@ package com.foxinmy.weixin4j.wxa.api;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.paging.Pageable;
@@ -19,7 +20,11 @@ import com.foxinmy.weixin4j.wxa.model.template.Template;
 public class TemplateApi extends TokenManagerApi {
 
 	public TemplateApi(TokenManager tokenManager) {
-		super(tokenManager);
+		this(tokenManager, null);
+	}
+
+	public TemplateApi(TokenManager tokenManager, Properties properties) {
+		super(tokenManager, properties);
 	}
 
 	/**

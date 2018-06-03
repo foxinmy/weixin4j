@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.wxa.api;
 
+import java.util.Properties;
+
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
@@ -16,6 +18,11 @@ public class LoginApi extends WxaApi {
 	private final WeixinAccount weixinAccount;
 
 	public LoginApi(WeixinAccount weixinAccount) {
+		this(weixinAccount, null);
+	}
+
+	public LoginApi(WeixinAccount weixinAccount, Properties properties) {
+		super(properties);
 		this.weixinAccount = weixinAccount;
 	}
 

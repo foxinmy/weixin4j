@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.wxa.api;
 
+import java.util.Properties;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -11,6 +13,11 @@ abstract class TokenManagerApi extends WxaApi {
 	private final TokenManager tokenManager;
 
 	public TokenManagerApi(final TokenManager tokenManager) {
+		this(tokenManager, null);
+	}
+
+	public TokenManagerApi(final TokenManager tokenManager, final Properties properties) {
+		super(properties);
 		this.tokenManager = tokenManager;
 	}
 
