@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.wxa.api;
 
 import java.awt.Color;
+import java.util.Properties;
 
 import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -22,7 +23,11 @@ import com.foxinmy.weixin4j.token.TokenManager;
 public class QrCodeApi extends TokenManagerApi {
 
 	public QrCodeApi(TokenManager tokenManager) {
-		super(tokenManager);
+		this(tokenManager, null);
+	}
+
+	public QrCodeApi(TokenManager tokenManager, Properties properties) {
+		super(tokenManager, properties);
 	}
 
 	/**

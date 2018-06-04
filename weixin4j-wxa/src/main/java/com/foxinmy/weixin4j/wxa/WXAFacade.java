@@ -1,5 +1,7 @@
 package com.foxinmy.weixin4j.wxa;
 
+import java.util.Properties;
+
 import com.foxinmy.weixin4j.cache.CacheStorager;
 import com.foxinmy.weixin4j.cache.FileCacheStorager;
 import com.foxinmy.weixin4j.model.Token;
@@ -52,15 +54,37 @@ public class WXAFacade {
 	) {
 		this(
 			weixinAccount,
+			cacheStorager,
+			null
+		);
+	}
+
+	/**
+	 * Constructs {@link WXAFacade} using specified {@link CacheStorager},
+	 * and overrides properties defined in {@code weixin.properties}.
+	 *
+	 * @param weixinAccount the {@link WeixinAccount}.
+	 * @param cacheStorager the {@link CacheStorager}.
+	 * @param properties properties to overrides the properties defined in {@code weixin.properties}.
+	 */
+	public WXAFacade(
+		WeixinAccount weixinAccount,
+		CacheStorager<Token> cacheStorager,
+		Properties properties
+	) {
+		this(
+			weixinAccount,
 			new WeixinTokenCreator(weixinAccount.getId(), weixinAccount.getSecret()),
-			cacheStorager
+			cacheStorager,
+			properties
 		);
 	}
 
 	private WXAFacade(
 		WeixinAccount weixinAccount,
 		TokenCreator tokenCreator,
-		CacheStorager<Token> cacheStorager
+		CacheStorager<Token> cacheStorager,
+		Properties properties
 	) {
 		if (weixinAccount == null) {
 			throw new IllegalArgumentException(
@@ -79,11 +103,11 @@ public class WXAFacade {
 
 		final TokenManager tokenManager = new TokenManager(tokenCreator, cacheStorager);
 
-		this.loginApi = new LoginApi(weixinAccount);
-		this.qrCodeApi = new QrCodeApi(tokenManager);
-		this.templateApi = new TemplateApi(tokenManager);
-		this.templateMessageApi = new TemplateMessageApi(tokenManager);
-		this.customMessageApi = new CustomMessageApi(tokenManager);
+		this.loginApi = new LoginApi(weixinAccount, properties);
+		this.qrCodeApi = new QrCodeApi(tokenManager, properties);
+		this.templateApi = new TemplateApi(tokenManager, properties);
+		this.templateMessageApi = new TemplateMessageApi(tokenManager, properties);
+		this.customMessageApi = new CustomMessageApi(tokenManager, properties);
 	}
 
 	public LoginApi getLoginApi() {
