@@ -110,22 +110,47 @@ public class WXAFacade {
 		this.customMessageApi = new CustomMessageApi(tokenManager, properties);
 	}
 
+	/**
+	 * 获取登录相关的 API。
+	 *
+	 * @return 登录相关 API。
+	 */
 	public LoginApi getLoginApi() {
 		return loginApi;
 	}
 
+	/**
+	 * 获取小程序码、小程序二维码相关的 API。
+	 *
+	 * @return 小程序码、小程序二维码相关的 API。
+	 */
 	public QrCodeApi getQrCodeApi() {
 		return qrCodeApi;
 	}
 
+	/**
+	 * 获取模版消息管理相关的 API。
+	 *
+	 * @return 模版消息管理相关的 API。
+	 */
 	public TemplateApi getTemplateApi() {
 		return templateApi;
 	}
 
+	/**
+	 * 获取模板消息相关的 API。
+	 *
+	 * @return 模板消息相关的 API。
+	 */
 	public TemplateMessageApi getTemplateMessageApi() {
 		return templateMessageApi;
 	}
 
+	/**
+	 * 获取客服消息相关的 API。
+	 *
+	 * @return 客服消息相关的 API。
+	 */
 	public CustomMessageApi getCustomMessageApi() {
 		return customMessageApi;
 	}
