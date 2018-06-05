@@ -73,6 +73,7 @@ import com.foxinmy.weixin4j.tuple.MpVideo;
 import com.foxinmy.weixin4j.tuple.Tuple;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
@@ -2202,5 +2203,5 @@ public class WeixinProxy {
 		return commentApi.deleteCommentReply(msgid, index, commentId);
 	}
 
-	public final static String VERSION = "1.7.9";
+	public final static String VERSION = Consts.VERSION;
 }
