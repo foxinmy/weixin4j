@@ -45,6 +45,7 @@ import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.TarType;
 import com.foxinmy.weixin4j.type.mch.BillType;
 import com.foxinmy.weixin4j.type.mch.RefundAccountType;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
@@ -842,5 +843,5 @@ public class WeixinPayProxy {
 		return customsApi.queryCustomsOrder(idQuery, customsCity);
 	}
 
-	public final static String VERSION = "1.7.9";
+	public final static String VERSION = Consts.VERSION;
 }

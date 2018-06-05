@@ -57,6 +57,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
@@ -1376,5 +1377,5 @@ public class WeixinProxy {
 		return chatApi.sendChatMessage(message);
 	}
 
-	public final static String VERSION = "1.7.9";
+	public final static String VERSION = Consts.VERSION;
 }
