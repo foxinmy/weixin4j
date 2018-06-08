@@ -16,11 +16,11 @@ import com.foxinmy.weixin4j.wxa.api.TemplateApi;
 import com.foxinmy.weixin4j.wxa.api.TemplateMessageApi;
 
 /**
- * The facade of WXA APIs.
+ * The facade of WeChat Mini Program APIs.
  *
  * @since 1.8
  */
-public class WXAFacade {
+public class WeixinAppFacade {
 
 	private final LoginApi loginApi;
 	private final QrCodeApi qrCodeApi;
@@ -29,11 +29,11 @@ public class WXAFacade {
 	private final CustomMessageApi customMessageApi;
 
 	/**
-	 * Constructs {@link WXAFacade} using {@link FileCacheStorager}.
+	 * Constructs {@link WeixinAppFacade} using {@link FileCacheStorager}.
 	 *
 	 * @param weixinAccount the {@link WeixinAccount}.
 	 */
-	public WXAFacade(
+	public WeixinAppFacade(
 		WeixinAccount weixinAccount
 	) {
 		this(
@@ -43,12 +43,12 @@ public class WXAFacade {
 	}
 
 	/**
-	 * Constructs {@link WXAFacade} using specified {@link CacheStorager}.
+	 * Constructs {@link WeixinAppFacade} using specified {@link CacheStorager}.
 	 *
 	 * @param weixinAccount the {@link WeixinAccount}.
 	 * @param cacheStorager the {@link CacheStorager}.
 	 */
-	public WXAFacade(
+	public WeixinAppFacade(
 		WeixinAccount weixinAccount,
 		CacheStorager<Token> cacheStorager
 	) {
@@ -60,14 +60,14 @@ public class WXAFacade {
 	}
 
 	/**
-	 * Constructs {@link WXAFacade} using specified {@link CacheStorager},
+	 * Constructs {@link WeixinAppFacade} using specified {@link CacheStorager},
 	 * and overrides properties defined in {@code weixin.properties}.
 	 *
 	 * @param weixinAccount the {@link WeixinAccount}.
 	 * @param cacheStorager the {@link CacheStorager}.
 	 * @param properties properties to overrides the properties defined in {@code weixin.properties}.
 	 */
-	public WXAFacade(
+	public WeixinAppFacade(
 		WeixinAccount weixinAccount,
 		CacheStorager<Token> cacheStorager,
 		Properties properties
@@ -80,7 +80,7 @@ public class WXAFacade {
 		);
 	}
 
-	private WXAFacade(
+	private WeixinAppFacade(
 		WeixinAccount weixinAccount,
 		TokenCreator tokenCreator,
 		CacheStorager<Token> cacheStorager,
