@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.foxinmy.weixin4j.cache.FileCacheStorager;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
-import com.foxinmy.weixin4j.wxa.WXAFacade;
+import com.foxinmy.weixin4j.wxa.WeixinAppFacade;
 
 public class WxaApiTest {
 
@@ -39,7 +39,7 @@ public class WxaApiTest {
 		properties.setProperty("api_base_url", "https://api.example.com");
 		properties.setProperty("api_cgi_url", "{api_base_url}/cgi-bin2");
 
-		WXAFacade wxaFacade = new WXAFacade(new WeixinAccount("myAppId", "mySecret"), new FileCacheStorager<Token>(), properties);
+		WeixinAppFacade wxaFacade = new WeixinAppFacade(new WeixinAccount("myAppId", "mySecret"), new FileCacheStorager<Token>(), properties);
 
 		assertEquals("https://api.example.com", wxaFacade.getLoginApi().getRequestUri("api_base_url"));
 
