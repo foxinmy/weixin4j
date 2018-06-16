@@ -9,7 +9,6 @@
 	</parent>
 	<packaging>war</packaging>
 	<artifactId>weixin4j-example</artifactId>
-	<version>1.0</version>
 	<name>weixin4j-example</name>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-example</url>
 	<description>weixin4j示例</description>
