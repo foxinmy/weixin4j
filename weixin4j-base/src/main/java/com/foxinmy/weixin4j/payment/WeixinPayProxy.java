@@ -1,6 +1,5 @@
 package com.foxinmy.weixin4j.payment;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
@@ -46,6 +45,7 @@ import com.foxinmy.weixin4j.type.IdQuery;
 import com.foxinmy.weixin4j.type.TarType;
 import com.foxinmy.weixin4j.type.mch.BillType;
 import com.foxinmy.weixin4j.type.mch.RefundAccountType;
+import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
 /**
@@ -434,42 +434,9 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * 申请退款(请求需要双向证书)</br>
-	 * <p>
-	 * 当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家，微信支付将在收到退款请求并且验证成功之后，
-	 * 按照退款规则将支付款按原路退到买家帐号上。
-	 * </p>
-	 * <p style="color:red">
-	 * 1.交易时间超过半年的订单无法提交退款；
-	 * 2.微信支付退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交
-	 * ，要采用原来的退款单号。总退款金额不能超过用户实际支付金额。
-	 * </p>
+	 * 申请退款
 	 *
-	 * @param idQuery
-	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
-	 *            transaction_id> out_trade_no
-	 * @param outRefundNo
-	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
-	 * @param totalFee
-	 *            订单总金额,单位为元
-	 * @param refundFee
-	 *            退款总金额,单位为元,可以做部分退款
-	 * @param refundFeeType
-	 *            货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
-	 * @param opUserId
-	 *            操作员帐号, 默认为商户号
-	 * @param refundDesc
-	 *            退款原因，若商户传入，会在下发给用户的退款消息中体现退款原因
-	 * @param refundAccountType
-	 *            退款资金来源,默认使用未结算资金退款：REFUND_SOURCE_UNSETTLED_FUNDS
-	 * @return 退款申请结果
-	 * @see com.foxinmy.weixin4j.payment.mch.RefundResult
-	 * @see com.foxinmy.weixin4j.api.PayApi
-	 * @see <a href=
-	 *      "http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4">
-	 *      申请退款API</a>
-	 * @since V3
-	 * @throws WeixinException
+	 * @see PayApi#applyRefund(IdQuery, String, double, double, CurrencyType, String, String, RefundAccountType)
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
 			double totalFee, double refundFee, CurrencyType refundFeeType,
@@ -480,11 +447,9 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * 退款申请(全额退款)
+	 * 申请退款
 	 *
-	 * @throws IOException
-	 *
-	 * @see {@link #applyRefund(IdQuery, String, double, double, String,CurrencyType)}
+	 * @see PayApi#applyRefund(IdQuery, String, double)
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
 			double totalFee) throws WeixinException {
@@ -752,27 +717,9 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * 企业付款 实现企业向个人付款，针对部分有开发能力的商户， 提供通过API完成企业付款的功能。 比如目前的保险行业向客户退保、给付、理赔。
-	 * <p>
-	 * 接口调用规则：
-	 * <p>
-	 * <li>给同一个实名用户付款，单笔单日限额2W/2W
-	 * <li>给同一个非实名用户付款，单笔单日限额2000/2000
-	 * <li>一个商户同一日付款总额限额100W
-	 * <li>单笔最小金额默认为1元
-	 * <li>每个用户每天最多可付款10次，可以在商户平台--API安全进行设置
-	 * <li>给同一个用户付款时间间隔不得低于15秒
+	 * 企业付款
 	 *
-	 * @param payment
-	 *            付款信息
-	 * @return 付款结果
-	 * @see com.foxinmy.weixin4j.api.CashApi
-	 * @see com.foxinmy.weixin4j.payment.mch.CorpPayment
-	 * @see com.foxinmy.weixin4j.payment.mch.CorpPaymentResult
-	 * @see <a href=
-	 *      "https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_2">
-	 *      企业付款接口</a>
-	 * @throws WeixinException
+	 * @see CashApi#sendCorpPayment(CorpPayment)
 	 */
 	public CorpPaymentResult sendCorpPayment(CorpPayment payment)
 			throws WeixinException {
@@ -896,5 +843,5 @@ public class WeixinPayProxy {
 		return customsApi.queryCustomsOrder(idQuery, customsCity);
 	}
 
-	public final static String VERSION = "1.7.9";
+	public final static String VERSION = Consts.VERSION;
 }

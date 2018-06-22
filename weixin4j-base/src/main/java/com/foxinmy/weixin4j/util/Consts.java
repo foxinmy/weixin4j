@@ -1,6 +1,9 @@
 package com.foxinmy.weixin4j.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Properties;
 
 /**
  * 常量类
@@ -12,7 +15,24 @@ import java.nio.charset.Charset;
  * @see
  */
 public final class Consts {
-	public static final String WEIXIN4J = "weixin4j";
+
+	private static Properties loadProperties() {
+		Properties properties = new Properties();
+		InputStream inputStream = Consts.class.getResourceAsStream("../weixin4j.properties");
+		try {
+			properties.load(inputStream);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			IOUtil.close(inputStream);
+		}
+		return properties;
+	}
+
+	private static final Properties PROPERTIES = loadProperties();
+
+	public static final String WEIXIN4J = PROPERTIES.getProperty("weixin4j.name");
+	public static final String VERSION = PROPERTIES.getProperty("weixin4j.version");
 	public static final Charset UTF_8 = Charset.forName("UTF-8");
 	public static final Charset GBK = Charset.forName("GBK");
 	public static final String SUCCESS = "SUCCESS";

@@ -807,3 +807,7 @@
 * 2017-11-09
 
   + version upgrade to 1.7.9
+
+* 2018-06-14
+  + version upgrade to 1.8.0
+  + 新增了微信小程序相关的支持 API 实现

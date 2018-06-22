@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.foxinmy</groupId>
 	<artifactId>weixin4j</artifactId>
-	<version>1.7.9</version>
+	<version>1.8.0</version>
 	<packaging>pom</packaging>
 	<name>weixin4j</name>
 	<url>https://github.com/foxinmy/weixin4j</url>
@@ -43,6 +43,7 @@
 		<module>weixin4j-base</module>
 		<module>weixin4j-mp</module>
 		<module>weixin4j-qy</module>
+		<module>weixin4j-wxa</module>
 		<module>weixin4j-server</module>
 		<module>weixin4j-example</module>
 		<module>weixin4j-serverX</module>
@@ -219,6 +220,17 @@
 			</resource>
 		</resources>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<additionalparam>-Xdoclint:none</additionalparam>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 	<profiles>
 		<profile>
 			<id>release</id>

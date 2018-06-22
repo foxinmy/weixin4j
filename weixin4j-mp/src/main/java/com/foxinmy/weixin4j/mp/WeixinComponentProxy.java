@@ -212,5 +212,5 @@ public class WeixinComponentProxy {
 				component(componentId).getTokenManager());
 	}
 
-	public final static String VERSION = "1.7.9";
+	public final static String VERSION = Consts.VERSION;
 }
