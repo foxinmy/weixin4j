@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j</artifactId>
-		<version>1.8.1</version>
+		<version>1.8.2</version>
 	</parent>
 	<artifactId>weixin4j-base</artifactId>
 	<name>weixin4j-base</name>
@@ -70,12 +70,6 @@
 			<artifactId>Memcached-Java-Client</artifactId>
 			<version>3.0.2</version>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.19</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

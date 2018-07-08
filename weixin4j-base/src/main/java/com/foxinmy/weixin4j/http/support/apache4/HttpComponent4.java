@@ -23,7 +23,6 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.entity.AbstractHttpEntity;
-import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.util.EntityUtils;
 
 import com.foxinmy.weixin4j.http.AbstractHttpClient;
@@ -31,7 +30,6 @@ import com.foxinmy.weixin4j.http.HttpClientException;
 import com.foxinmy.weixin4j.http.HttpHeaders;
 import com.foxinmy.weixin4j.http.HttpMethod;
 import com.foxinmy.weixin4j.http.HttpRequest;
-import com.foxinmy.weixin4j.http.apache.mime.MultipartEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.util.StringUtil;
 
@@ -119,18 +117,12 @@ public abstract class HttpComponent4 extends AbstractHttpClient {
 	protected void resolveContent(HttpEntity entity, HttpRequestBase httpRequest)
 			throws IOException {
 		if (entity != null) {
-			AbstractHttpEntity httpEntity = null;
-			if (entity instanceof MultipartEntity) {
-				ByteArrayOutputStream os = new ByteArrayOutputStream();
-				entity.writeTo(os);
-				os.flush();
-				httpEntity = new org.apache.http.entity.ByteArrayEntity(
-						os.toByteArray());
-				os.close();
-			} else {
-				httpEntity = new InputStreamEntity(entity.getContent(),
-						entity.getContentLength());
-			}
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			entity.writeTo(os);
+			os.flush();
+			AbstractHttpEntity httpEntity = new org.apache.http.entity.ByteArrayEntity(
+					os.toByteArray());
+			os.close();
 			httpEntity.setContentType(entity.getContentType().toString());
 			((HttpEntityEnclosingRequestBase) httpRequest)
 					.setEntity(httpEntity);

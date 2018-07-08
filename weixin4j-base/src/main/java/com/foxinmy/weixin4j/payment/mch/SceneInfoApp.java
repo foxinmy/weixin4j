@@ -71,7 +71,7 @@ public class SceneInfoApp {
 	 * @return
 	 */
 	public static SceneInfoApp createAndroidAPP(String appName, String packageName) {
-		SceneInfoApp app = new SceneInfoApp("IOS", appName, packageName);
+		SceneInfoApp app = new SceneInfoApp("Android", appName, packageName);
 		String sceneInfo = String
 				.format("{\"type\": \"%s\",\"app_name\": \"%s\",\"package_name\": \"%s\"}",
 						app.getType(), app.getName(), app.getPath());
