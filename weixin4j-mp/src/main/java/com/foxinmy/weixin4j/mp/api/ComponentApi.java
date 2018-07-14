@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
+import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.component.WeixinComponentPreCodeCreator;
 import com.foxinmy.weixin4j.mp.component.WeixinComponentTokenCreator;
 import com.foxinmy.weixin4j.mp.component.WeixinTokenComponentCreator;
@@ -19,6 +20,7 @@ import com.foxinmy.weixin4j.mp.model.AuthorizerOption.AuthorizerOptionName;
 import com.foxinmy.weixin4j.mp.model.ComponentAuthorizer;
 import com.foxinmy.weixin4j.mp.model.ComponentAuthorizerToken;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
+import com.foxinmy.weixin4j.mp.type.URLConsts;
 import com.foxinmy.weixin4j.token.PerTicketManager;
 import com.foxinmy.weixin4j.token.TicketManager;
 import com.foxinmy.weixin4j.token.TokenCreator;
@@ -243,25 +245,13 @@ public class ComponentApi extends MpApi {
 		return token;
 	}
 
-	public void exchangeAuthorizerToken(String authAppId, String refreshToken,
-															List<Integer> privileges) throws WeixinException {
+	public void exchangeAuthorizerToken(String componentAppid,String componentAccessToken,  String authAppId, String refreshToken) throws WeixinException {
 
-	//	OauthToken authToken = refreshAuthorizationToken(authAppId, refreshToken);
+		PerTicketManager perTicketManager = getRefreshTokenManager(authAppId);
 
-
-		ComponentAuthorizerToken token = new ComponentAuthorizerToken(refreshToken,
-				1 * 1000l);
-		token.setRefreshToken(refreshToken);
-		token.setPrivileges(privileges);
-		token.setAppId(authAppId);
-		// 微信授权公众号的永久刷新令牌
-		PerTicketManager perTicketManager = getRefreshTokenManager(token.getAppId());
-		// 缓存微信公众号的access_token
-		TokenCreator tokenCreator = new WeixinTokenComponentCreator(perTicketManager, tokenManager);
-		ticketManager.getCacheStorager().caching(tokenCreator.key(), token);
-		// 缓存微信公众号的永久授权码(refresh_token)
 		perTicketManager.cachingTicket(refreshToken);
-	//	return token;
+
+		//	return token;
 	}
 
 	/**
