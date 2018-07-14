@@ -19,6 +19,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -26,7 +27,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.sax.SAXSource;
+
+import org.xml.sax.InputSource;
 
 import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.util.Consts;
@@ -45,6 +48,16 @@ public final class XmlStream {
 	private final static String ROOT_ELEMENT_XML = "xml";
 	private final static String XML_VERSION = "1.0";
 	private final static ConcurrentHashMap<Class<?>, JAXBContext> jaxbContexts = new ConcurrentHashMap<Class<?>, JAXBContext>();
+	private final static SAXParserFactory spf = SAXParserFactory.newInstance();
+	static {
+		try {
+			spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+			spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+			spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		} catch (Exception e) {
+			;
+		}
+	}
 
 	/**
 	 * Xml2Bean
@@ -60,25 +73,17 @@ public final class XmlStream {
 		JAXBContext jaxbContext = getJaxbContext(clazz);
 		try {
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			Source source = new StreamSource(content);
-			XmlRootElement rootElement = clazz
-					.getAnnotation(XmlRootElement.class);
+			Source source = new SAXSource(spf.newSAXParser().getXMLReader(), new InputSource(content));
+			XmlRootElement rootElement = clazz.getAnnotation(XmlRootElement.class);
 			if (rootElement == null
-					|| rootElement.name().equals(
-							XmlRootElement.class.getMethod("name")
-									.getDefaultValue().toString())) {
-				JAXBElement<T> jaxbElement = unmarshaller.unmarshal(source,
-						clazz);
+					|| rootElement.name().equals(XmlRootElement.class.getMethod("name").getDefaultValue().toString())) {
+				JAXBElement<T> jaxbElement = unmarshaller.unmarshal(source, clazz);
 				return jaxbElement.getValue();
 			} else {
 				return (T) unmarshaller.unmarshal(source);
 			}
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not unmarshaller class [" + clazz
-					+ "]: " + ex.getMessage(), ex);
-		} catch (NoSuchMethodException ex) {
-			throw new RuntimeException("Could not unmarshaller class [" + clazz
-					+ "]: " + ex.getMessage(), ex);
+		} catch (Exception ex) {
+			throw new RuntimeException("Could not unmarshaller class [" + clazz + "]", ex);
 		} finally {
 			if (content != null) {
 				try {
@@ -100,8 +105,7 @@ public final class XmlStream {
 	 * @return
 	 */
 	public static <T> T fromXML(String content, Class<T> clazz) {
-		return fromXML(
-				new ByteArrayInputStream(content.getBytes(Consts.UTF_8)), clazz);
+		return fromXML(new ByteArrayInputStream(content.getBytes(Consts.UTF_8)), clazz);
 	}
 
 	/**
@@ -114,8 +118,7 @@ public final class XmlStream {
 	public static String map2xml(Map<String, String> map) {
 		StringWriter sw = new StringWriter();
 		try {
-			XMLStreamWriter xw = XMLOutputFactory.newInstance()
-					.createXMLStreamWriter(sw);
+			XMLStreamWriter xw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
 			xw.writeStartDocument(Consts.UTF_8.name(), XML_VERSION);
 			xw.writeStartElement(ROOT_ELEMENT_XML);
 			for (Entry<String, String> entry : map.entrySet()) {
@@ -151,8 +154,7 @@ public final class XmlStream {
 	public static String map2xml(JSONObject json) {
 		StringWriter sw = new StringWriter();
 		try {
-			XMLStreamWriter xw = XMLOutputFactory.newInstance()
-					.createXMLStreamWriter(sw);
+			XMLStreamWriter xw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
 			xw.writeStartDocument(Consts.UTF_8.name(), XML_VERSION);
 			xw.writeStartElement(ROOT_ELEMENT_XML);
 			for (Entry<String, Object> entry : json.entrySet()) {
@@ -189,8 +191,7 @@ public final class XmlStream {
 		Map<String, String> map = new HashMap<String, String>();
 		StringReader sr = new StringReader(content);
 		try {
-			XMLStreamReader xr = XMLInputFactory.newInstance()
-					.createXMLStreamReader(sr);
+			XMLStreamReader xr = XMLInputFactory.newInstance().createXMLStreamReader(sr);
 			while (true) {
 				int event = xr.next();
 				if (event == XMLStreamConstants.END_DOCUMENT) {
@@ -246,25 +247,16 @@ public final class XmlStream {
 		JAXBContext jaxbContext = getJaxbContext(clazz);
 		try {
 			Marshaller marshaller = jaxbContext.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_ENCODING,
-					Consts.UTF_8.name());
-			XmlRootElement rootElement = clazz
-					.getAnnotation(XmlRootElement.class);
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, Consts.UTF_8.name());
+			XmlRootElement rootElement = clazz.getAnnotation(XmlRootElement.class);
 			if (rootElement == null
-					|| rootElement.name().equals(
-							XmlRootElement.class.getMethod("name")
-									.getDefaultValue().toString())) {
-				marshaller.marshal(new JAXBElement<T>(new QName(
-						ROOT_ELEMENT_XML), clazz, t), os);
+					|| rootElement.name().equals(XmlRootElement.class.getMethod("name").getDefaultValue().toString())) {
+				marshaller.marshal(new JAXBElement<T>(new QName(ROOT_ELEMENT_XML), clazz, t), os);
 			} else {
 				marshaller.marshal(t, os);
 			}
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not marshal class [" + clazz
-					+ "]: " + ex.getMessage(), ex);
-		} catch (NoSuchMethodException ex) {
-			throw new RuntimeException("Could not marshaller class [" + clazz
-					+ "]: " + ex.getMessage(), ex);
+		} catch (Exception ex) {
+			throw new RuntimeException("Could not marshal class [" + clazz + "] ", ex);
 		} finally {
 			if (os != null) {
 				try {
@@ -283,9 +275,7 @@ public final class XmlStream {
 				jaxbContext = JAXBContext.newInstance(clazz);
 				jaxbContexts.putIfAbsent(clazz, jaxbContext);
 			} catch (JAXBException ex) {
-				throw new RuntimeException(
-						"Could not instantiate JAXBContext for class [" + clazz
-								+ "]: " + ex.getMessage(), ex);
+				throw new RuntimeException("Could not instantiate JAXBContext for class [" + clazz + "] ", ex);
 			}
 		}
 		return jaxbContext;

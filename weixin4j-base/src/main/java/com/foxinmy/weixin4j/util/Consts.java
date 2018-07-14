@@ -18,7 +18,7 @@ public final class Consts {
 
 	private static Properties loadProperties() {
 		Properties properties = new Properties();
-		InputStream inputStream = Consts.class.getResourceAsStream("../weixin4j.properties");
+		InputStream inputStream = Consts.class.getResourceAsStream("/com/foxinmy/weixin4j/weixin4j.properties");
 		try {
 			properties.load(inputStream);
 		} catch (IOException e) {
