@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.HessianCodecUtil;
 import com.foxinmy.weixin4j.util.SerializationUtils;
 
 /**
@@ -46,6 +48,7 @@ public class FileCacheStorager<T extends Cacheable> implements CacheStorager<T> 
 			if (cacheFile.exists()) {
 				T cache = SerializationUtils.deserialize(new FileInputStream(
 						cacheFile));
+
 				if (cache.getCreateTime() < 0) {
 					return cache;
 				}
