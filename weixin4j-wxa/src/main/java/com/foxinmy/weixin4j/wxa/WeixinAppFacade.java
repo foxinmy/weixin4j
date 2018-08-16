@@ -12,6 +12,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.wxa.api.CustomMessageApi;
 import com.foxinmy.weixin4j.wxa.api.LoginApi;
 import com.foxinmy.weixin4j.wxa.api.QrCodeApi;
+import com.foxinmy.weixin4j.wxa.api.SecCheckApi;
 import com.foxinmy.weixin4j.wxa.api.TemplateApi;
 import com.foxinmy.weixin4j.wxa.api.TemplateMessageApi;
 
@@ -27,6 +28,7 @@ public class WeixinAppFacade {
 	private final TemplateApi templateApi;
 	private final TemplateMessageApi templateMessageApi;
 	private final CustomMessageApi customMessageApi;
+	private final SecCheckApi secCheckApi;
 
 	/**
 	 * Constructs {@link WeixinAppFacade} using {@link FileCacheStorager}.
@@ -108,6 +110,7 @@ public class WeixinAppFacade {
 		this.templateApi = new TemplateApi(tokenManager, properties);
 		this.templateMessageApi = new TemplateMessageApi(tokenManager, properties);
 		this.customMessageApi = new CustomMessageApi(tokenManager, properties);
+		this.secCheckApi = new SecCheckApi(tokenManager, properties);
 	}
 
 	/**
@@ -153,6 +156,16 @@ public class WeixinAppFacade {
 	 */
 	public CustomMessageApi getCustomMessageApi() {
 		return customMessageApi;
+	}
+
+	/**
+	 * 获取内容安全相关的 API。
+	 *
+	 * @return 内容安全相关的 API。
+	 * @since 1.9
+	 */
+	public SecCheckApi getSecCheckApi() {
+		return secCheckApi;
 	}
 
 }
