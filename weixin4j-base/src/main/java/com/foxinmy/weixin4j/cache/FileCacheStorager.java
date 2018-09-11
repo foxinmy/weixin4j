@@ -46,7 +46,7 @@ public class FileCacheStorager<T extends Cacheable> implements CacheStorager<T> 
 			if (cacheFile.exists()) {
 				T cache = SerializationUtils.deserialize(new FileInputStream(
 						cacheFile));
-				if (cache.getCreateTime() < 0) {
+				if (cache.getExpires() < 0l) {
 					return cache;
 				}
 				if ((cache.getCreateTime() + cache.getExpires() - CUTMS) > System
