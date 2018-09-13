@@ -19,43 +19,43 @@ import com.foxinmy.weixin4j.token.TokenManager;
  */
 public class WeixinTokenComponentCreator extends TokenCreator {
 
-    private final PerTicketManager perTicketManager;
-    private final TokenManager componentTokenManager;
+	private final PerTicketManager perTicketManager;
+	private final TokenManager componentTokenManager;
 
-    /**
-     *
-     * @param perTicketManager
-     *            第三方套件永久授权码
-     * @param componentTokenManager
-     *            第三方套件凭证token
-     */
-    public WeixinTokenComponentCreator(PerTicketManager perTicketManager, TokenManager componentTokenManager) {
-        this.perTicketManager = perTicketManager;
-        this.componentTokenManager = componentTokenManager;
-    }
+	/**
+	 *
+	 * @param perTicketManager
+	 *            第三方套件永久授权码
+	 * @param componentTokenManager
+	 *            第三方套件凭证token
+	 */
+	public WeixinTokenComponentCreator(PerTicketManager perTicketManager, TokenManager componentTokenManager) {
+		this.perTicketManager = perTicketManager;
+		this.componentTokenManager = componentTokenManager;
+	}
 
-    @Override
-    public String name() {
-        return String.format("mp_token_component_%s_%s", perTicketManager.getThirdId(),
-                perTicketManager.getAuthAppId());
-    }
+	@Override
+	public String name() {
+		return String.format("mp_token_component_%s_%s", perTicketManager.getThirdId(),
+				perTicketManager.getAuthAppId());
+	}
 
-    @Override
-    public String uniqueid() {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public String uniqueid() {
+		return String.format("%s_%s", perTicketManager.getThirdId(), perTicketManager.getAuthAppId());
+	}
 
-    @Override
-    public Token create() throws WeixinException {
-        JSONObject obj = new JSONObject();
-        obj.put("component_appid", perTicketManager.getThirdId());
-        obj.put("authorizer_appid", perTicketManager.getAuthAppId());
-        obj.put("authorizer_refresh_token", perTicketManager.getAccessTicket());
-        WeixinResponse response = weixinExecutor.post(
-                String.format(URLConsts.TOKEN_COMPONENT_URL, componentTokenManager.getAccessToken()),
-                obj.toJSONString());
-        obj = response.getAsJson();
-        return new Token(obj.getString("access_token"), obj.getLongValue("expires_in") * 1000l);
-    }
-
+	@Override
+	public Token create() throws WeixinException {
+		JSONObject obj = new JSONObject();
+		obj.put("component_appid", perTicketManager.getThirdId());
+		obj.put("authorizer_appid", perTicketManager.getAuthAppId());
+		obj.put("authorizer_refresh_token", perTicketManager.getAccessTicket());
+		WeixinResponse response = weixinExecutor.post(
+				String.format(URLConsts.TOKEN_COMPONENT_URL, componentTokenManager.getAccessToken()),
+				obj.toJSONString());
+		obj = response.getAsJson();
+		perTicketManager.cachingTicket(obj.getString("authorizer_refresh_token"));
+		return new Token(obj.getString("authorizer_access_token"), obj.getLongValue("expires_in") * 1000l);
+	}
 }

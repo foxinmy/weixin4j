@@ -799,3 +799,24 @@
 * 2017-06-23
 
   + version upgrade to 1.7.7
+  
+* 2017-08-25
+
+  + version upgrade to 1.7.8
+  
+* 2017-11-09
+
+  + version upgrade to 1.7.9
+
+* 2018-06-14
+  + version upgrade to 1.8.0
+  
+  + 新增了微信小程序相关的支持 API 实现
+  
+* 2018-07-08
+
+  + [XEE](https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet)bug修复
+  
+  + 上传媒体文件content-length为-1导致503问题修复
+  
+  + release1.8.2版本

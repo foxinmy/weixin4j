@@ -17,48 +17,49 @@ import com.foxinmy.weixin4j.util.ClassUtil;
  * @see com.foxinmy.weixin4j.request.WeixinMessage
  */
 @SuppressWarnings("unchecked")
-public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements WeixinMessageHandler {
+public abstract class MessageHandlerAdapter<M extends WeixinMessage> implements
+		WeixinMessageHandler {
 
-    @Override
-    public boolean canHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames) {
-        return message != null && message.getClass() == ClassUtil.getGenericType(getClass())
-                && canHandle0(request, (M) message);
-    }
+	@Override
+	public boolean canHandle(WeixinRequest request, WeixinMessage message,
+			Set<String> nodeNames) {
+		return message != null
+				&& message.getClass() == ClassUtil.getGenericType(getClass())
+				&& canHandle0(request, (M) message);
+	}
 
-    /**
-     * 能否处理请求
-     *
-     * @param request
-     *            微信请求
-     * @param message
-     *            微信消息
-     * @return true则执行doHandler0 @
-     */
-    public boolean canHandle0(WeixinRequest request, M message) {
-        return true;
-    }
+	/**
+	 * 能否处理请求
+	 *
+	 * @param request
+	 *            微信请求
+	 * @param message
+	 *            微信消息
+	 * @return true则执行doHandler0 @
+	 */
+	protected boolean canHandle0(WeixinRequest request, M message) {
+		return true;
+	}
 
-    @Override
-    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames) {
-        return doHandle0(request, (M) message);
-    }
+	@Override
+	public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message) {
+		return doHandle0((M) message);
+	}
 
-    /**
-     * 处理请求
-     *
-     * @param request
-     *            微信请求
-     * @param message
-     *            微信消息
-     * @return
-     */
-    public abstract WeixinResponse doHandle0(WeixinRequest request, M message);
+	/**
+	 * 处理请求
+	 *
+	 * @param message
+	 *            微信消息
+	 * @return
+	 */
+	protected abstract WeixinResponse doHandle0(M message);
 
-    /**
-     * 缺省值为1,存在多个匹配到的MessageHandler则比较weight大小
-     */
-    @Override
-    public int weight() {
-        return 1;
-    }
+	/**
+	 * 缺省值为1,存在多个匹配到的MessageHandler则比较weight大小
+	 */
+	@Override
+	public int weight() {
+		return 1;
+	}
 }

@@ -28,7 +28,6 @@ public class OkHttpClient2Factory extends HttpClientFactory {
 		okClient.setHostnameVerifier(HttpClientFactory.AllowHostnameVerifier.GLOBAL);
 		okClient.setSslSocketFactory(HttpClientFactory.allowSSLContext()
 				.getSocketFactory());
-
 	}
 
 	public OkHttpClient2Factory(OkHttpClient okClient) {

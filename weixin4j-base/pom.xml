@@ -5,12 +5,20 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j</artifactId>
-		<version>1.7.7</version>
+		<version>1.9.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>weixin4j-base</artifactId>
 	<name>weixin4j-base</name>
 	<description>微信开发基础工程</description>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-base</url>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
 	<dependencies>
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -63,6 +71,7 @@
 			<version>3.0.2</version>
 			<optional>true</optional>
 		</dependency>
+<<<<<<< HEAD
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -75,5 +84,7 @@
 			<version>4.0.38</version>
 		</dependency>
 
+=======
+>>>>>>> 5dea49df5b3011a35ec072303c4ab5549e1ffb13
 	</dependencies>
 </project>

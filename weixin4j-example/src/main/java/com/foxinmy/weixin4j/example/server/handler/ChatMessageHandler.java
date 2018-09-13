@@ -17,7 +17,7 @@ public class ChatMessageHandler implements WeixinMessageHandler {
     }
 
     @Override
-    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames) {
+    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message) {
         WeixinChatMessage chatMessage = null; // 转换为实体
         return BlankResponse.global;
     }

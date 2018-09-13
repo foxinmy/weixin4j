@@ -71,6 +71,12 @@ public class MchPayPackage extends PayPackage {
 	@XmlElement(name = "sub_openid")
 	@JSONField(name = "sub_openid")
 	private String subOpenId;
+	/**
+	 * 场景信息
+	 */
+	@XmlElement(name = "scene_info")
+	@JSONField(name = "scene_info")
+	private String sceneInfo;
 
 	protected MchPayPackage() {
 		// jaxb required
@@ -200,11 +206,20 @@ public class MchPayPackage extends PayPackage {
 		this.subOpenId = subOpenId;
 	}
 
+	public String getSceneInfo() {
+		return sceneInfo;
+	}
+
+	public void setSceneInfo(String sceneInfo) {
+		this.sceneInfo = sceneInfo;
+	}
+
 	@Override
 	public String toString() {
 		return "MchPayPackage [tradeType=" + tradeType + ",feeType=" + feeType
 				+ ", openId=" + openId + ", productId=" + productId
 				+ ", authCode=" + authCode + ", limitPay=" + limitPay
-				+ ", subOpenId=" + subOpenId + ", " + super.toString() + "]";
+				+ ", subOpenId=" + subOpenId + ", sceneInfo=" + sceneInfo
+				+ ", " + super.toString() + "]";
 	}
 }

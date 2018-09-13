@@ -145,3 +145,15 @@
 * 2016-05-17
 
   + version upgrade to 1.1.8
+  
+* 2017-08-29
+
+  + 修复在可执行包下获取不到包的类bug
+  
+* 2017-11-12
+
+  + `WeixinServerBootstrap`类新增shutdown方法
+  
+  + `MessageHandlerAdapter`类`doHandle0`方法去掉WeixinRequest参数传递
+  
+  + version upgrade to 1.1.9

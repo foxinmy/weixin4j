@@ -39,7 +39,7 @@ public final class HttpParams {
 	 * connectTimeout = 15000,readTimeout=20000
 	 */
 	public HttpParams() {
-		this(15000, 20000);
+		this(5000, 15000);
 	}
 
 	public HttpParams(int connectTimeout, int readTimeout) {

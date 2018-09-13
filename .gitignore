@@ -12,9 +12,9 @@ hs_err_pid*
 *~
 
 # eclipse ignore
-*.settings/*
-/.project
-/.classpath
+.settings/
+.project
+.classpath
 /.tomcatplugin
 
 # idea ignore
@@ -22,7 +22,7 @@ hs_err_pid*
 *.iml
 
 # maven ignore
-target/*
+target/
 
 # other ignore
 *.log

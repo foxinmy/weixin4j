@@ -132,7 +132,7 @@ public class WeixinMessageDispatcher {
         Exception exception = null;
         WeixinResponse response = null;
         try {
-            response = handlerExecutor.getMessageHandler().doHandle(request, message, messageTransfer.getNodeNames());
+            response = handlerExecutor.getMessageHandler().doHandle(request, message);
             handlerExecutor.applyPostHandle(request, response, message);
             context.writeAndFlush(response);
         } catch (Exception e) {

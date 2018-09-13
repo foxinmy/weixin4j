@@ -17,9 +17,9 @@ import com.foxinmy.weixin4j.http.HttpRequest;
 import com.foxinmy.weixin4j.http.HttpResponse;
 import com.foxinmy.weixin4j.http.MimeType;
 import com.foxinmy.weixin4j.http.URLParameter;
-import com.foxinmy.weixin4j.http.apache.FormBodyPart;
-import com.foxinmy.weixin4j.http.apache.HttpMultipartMode;
-import com.foxinmy.weixin4j.http.apache.MultipartEntity;
+import com.foxinmy.weixin4j.http.apache.mime.FormBodyPart;
+import com.foxinmy.weixin4j.http.apache.mime.HttpMultipartMode;
+import com.foxinmy.weixin4j.http.apache.mime.MultipartEntityBuilder;
 import com.foxinmy.weixin4j.http.entity.FormUrlEntity;
 import com.foxinmy.weixin4j.http.entity.HttpEntity;
 import com.foxinmy.weixin4j.http.entity.StringEntity;
@@ -85,13 +85,13 @@ public class WeixinRequestExecutor {
 	 */
 	public WeixinResponse post(String url, FormBodyPart... bodyParts)
 			throws WeixinException {
-		MultipartEntity entity = new MultipartEntity(
-				HttpMultipartMode.BROWSER_COMPATIBLE, null, Consts.UTF_8);
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		for (FormBodyPart bodyPart : bodyParts) {
-			entity.addPart(bodyPart);
+			builder.addPart(bodyPart);
 		}
 		HttpRequest request = new HttpRequest(HttpMethod.POST, url);
-		request.setEntity(entity);
+		request.setEntity(builder.setMode(HttpMultipartMode.RFC6532)
+				.buildEntity());
 		return doRequest(request);
 	}
 

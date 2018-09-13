@@ -62,7 +62,7 @@ public class APPPayRequest extends AbstractPayRequest {
         StringBuilder content = new StringBuilder();
         content.append("<xml>");
         content.append(String.format("<appid><![CDATA[%s]]></appid>", payRequest.getAppId()));
-        content.append(String.format("<partnerid><![CDATA[%s]]></partnerid>", getPaymentAccount().getPartnerId()));
+        content.append(String.format("<partnerid><![CDATA[%s]]></partnerid>", payRequest.getPartnerId()));
         content.append(String.format("<prepayid><![CDATA[%s]]></prepayid>", payRequest.getPrepayId()));
         content.append(String.format("<package><![CDATA[%s]]></package>", payRequest.getPackageInfo()));
         content.append(String.format("<noncestr><![CDATA[%s]]></noncestr>", payRequest.getNonceStr()));

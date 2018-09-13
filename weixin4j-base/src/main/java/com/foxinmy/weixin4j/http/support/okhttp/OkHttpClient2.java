@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import okio.BufferedSink;
+import okio.Okio;
+import okio.Source;
 
 import com.foxinmy.weixin4j.http.AbstractHttpClient;
 import com.foxinmy.weixin4j.http.HttpClientException;
@@ -20,6 +22,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.internal.Util;
 
 /**
  * OkHttp2
@@ -130,7 +133,13 @@ public class OkHttpClient2 extends AbstractHttpClient {
 
 				@Override
 				public void writeTo(BufferedSink sink) throws IOException {
-					entity.writeTo(sink.outputStream());
+					Source source = null;
+					try {
+						source = Okio.source(entity.getContent());
+						sink.writeAll(source);
+					} finally {
+						Util.closeQuietly(source);
+					}
 				}
 
 				@Override

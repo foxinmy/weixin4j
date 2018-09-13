@@ -95,4 +95,12 @@ public class XmlstreamTest {
 				sb.toString(),
 				com.foxinmy.weixin4j.payment.mch.RefundRecord.class));
 	}
+	
+	public static void main(String[] args) throws Exception{
+		XmlstreamTest.xml2order();
+		XmlstreamTest.xml2refundRecordV2();
+		XmlstreamTest.xml2refundRecordV3();
+		XmlstreamTest.map2xml();
+		XmlstreamTest.object2xmlWithRootElement();
+	}
 }

@@ -18,7 +18,8 @@ import com.whalin.MemCached.SockIOPool;
  * @since JDK 1.6
  * @see
  */
-public class MemcacheCacheStorager<T extends Cacheable> implements CacheStorager<T> {
+public class MemcacheCacheStorager<T extends Cacheable> implements
+		CacheStorager<T> {
 
 	private final MemCachedClient mc;
 
@@ -29,13 +30,17 @@ public class MemcacheCacheStorager<T extends Cacheable> implements CacheStorager
 	public MemcacheCacheStorager(MemcachePoolConfig poolConfig) {
 		mc = new MemCachedClient();
 		poolConfig.initSocketIO();
-		init();
+		initializeKey();
 	}
 
-	private void init() {
-		if (!mc.keyExists(ALLKEY)) {
-			mc.set(ALLKEY, new HashSet<String>());
+	@SuppressWarnings("unchecked")
+	private Set<String> initializeKey() {
+		Set<String> all = (Set<String>) mc.get(ALLKEY);
+		if (all == null) {
+			all = new HashSet<String>();
+			mc.set(ALLKEY, all);
 		}
+		return all;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -44,34 +49,33 @@ public class MemcacheCacheStorager<T extends Cacheable> implements CacheStorager
 		return (T) mc.get(key);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void caching(String key, T cache) {
 		if (cache.getCreateTime() > 0l) {
-			mc.set(key, cache, new Date(cache.getCreateTime() + cache.getExpires() - CUTMS));
+			mc.set(key,
+					cache,
+					new Date(cache.getCreateTime() + cache.getExpires() - CUTMS));
 		} else {
 			mc.set(key, cache);
 		}
-		Set<String> all = (Set<String>) mc.get(ALLKEY);
+		Set<String> all = initializeKey();
 		all.add(key);
 		mc.set(ALLKEY, all);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public T evict(String key) {
 		T cache = lookup(key);
 		mc.delete(key);
-		Set<String> all = (Set<String>) mc.get(ALLKEY);
+		Set<String> all = initializeKey();
 		all.remove(key);
 		mc.set(ALLKEY, all);
 		return cache;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void clear() {
-		Set<String> all = (Set<String>) mc.get(ALLKEY);
+		Set<String> all = initializeKey();
 		for (String key : all) {
 			mc.delete(key);
 		}

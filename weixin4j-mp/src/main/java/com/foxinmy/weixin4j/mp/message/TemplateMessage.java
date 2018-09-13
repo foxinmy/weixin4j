@@ -50,16 +50,8 @@ public class TemplateMessage implements Serializable {
     /**
      * 跳小程序所需数据，不需跳小程序可不用传该数据
      */
-    private String miniprogram;
-    /**
-     * 所需跳转到的小程序appid（该小程序appid必须与发模板消息的公众号是绑定关联关系）
-     */
-    private String appid;
-    /**
-     * 所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar）
-     */
-    private String pagepath;
-
+    @JSONField(name = "miniprogram")
+    private Miniprogram miniprogram;
     /**
      * 数据项
      */
@@ -193,33 +185,45 @@ public class TemplateMessage implements Serializable {
         this.content = items;
     }
 
-    public String getMiniprogram() {
-        return miniprogram;
-    }
+    public Miniprogram getMiniprogram() {
+		return miniprogram;
+	}
 
-    public void setMiniprogram(String miniprogram) {
-        this.miniprogram = miniprogram;
-    }
-
-    public String getAppid() {
-        return appid;
-    }
-
-    public void setAppid(String appid) {
-        this.appid = appid;
-    }
-
-    public String getPagepath() {
-        return pagepath;
-    }
-
-    public void setPagepath(String pagepath) {
-        this.pagepath = pagepath;
+	public void setMiniprogram(String appid,String pagepath) {
+        this.miniprogram = new Miniprogram(appid, pagepath);
     }
 
     @Override
     public String toString() {
         return "TemplateMessage [toUser=" + toUser + ", templateId=" + templateId + ", url=" + url + ", head="
                 + getHead() + ", tail=" + getTail() + ", content=" + content + "]";
+    }
+    /**
+     * 小程序参数
+     * @className Miniprogram
+     * @author jinyu(foxinmy@gmail.com)
+     * @date 2018年5月4日
+     * @since JDK 1.7
+     * @see
+     */
+    static class Miniprogram{
+    	  /**
+         * 所需跳转到的小程序appid（该小程序appid必须与发模板消息的公众号是绑定关联关系）
+         */
+        private String appid;
+        /**
+         * 所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar）
+         */
+        private String pagepath;
+		public Miniprogram(String appid, String pagepath) {
+			this.appid = appid;
+			this.pagepath = pagepath;
+		}
+		public String getAppid() {
+			return appid;
+		}
+		public String getPagepath() {
+			return pagepath;
+		}
     }
 }

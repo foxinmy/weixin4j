@@ -283,3 +283,15 @@
 * 2017-06-23
 
   + version upgrade to 1.7.7
+  
+* 2017-08-25
+
+  + 新增字符串临时二维码
+  
+  + 第三方开放平台调整
+  
+  + version upgrade to 1.7.8
+  
+* 2017-11-09
+
+  + version upgrade to 1.7.9

@@ -32,6 +32,8 @@ import com.foxinmy.weixin4j.payment.mch.Order;
 import com.foxinmy.weixin4j.payment.mch.PrePay;
 import com.foxinmy.weixin4j.payment.mch.RefundRecord;
 import com.foxinmy.weixin4j.payment.mch.RefundResult;
+import com.foxinmy.weixin4j.payment.mch.SceneInfoApp;
+import com.foxinmy.weixin4j.payment.mch.SceneInfoStore;
 import com.foxinmy.weixin4j.payment.mch.WAPPayRequest;
 import com.foxinmy.weixin4j.type.CurrencyType;
 import com.foxinmy.weixin4j.type.IdQuery;
@@ -325,7 +327,10 @@ public class PayApi extends MchApi {
 	 *            订单生成的机器 IP
 	 * @param attach
 	 *            附加数据 非必填
+	 * @param store
+	 *            门店信息 非必填
 	 * @return APP支付对象
+	 * @see com.foxinmy.weixin4j.payment.mch.SceneInfoStore
 	 * @see com.foxinmy.weixin4j.payment.mch.APPPayRequest
 	 * @see <a href=
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1">
@@ -333,11 +338,16 @@ public class PayApi extends MchApi {
 	 * @throws WeixinException
 	 */
 	public MchPayRequest createAppPayRequest(String body, String outTradeNo,
-			double totalFee, String notifyUrl, String createIp, String attach)
-			throws WeixinException {
+			double totalFee, String notifyUrl, String createIp, String attach,
+			SceneInfoStore store) throws WeixinException {
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
 				totalFee, notifyUrl, createIp, TradeType.APP, null, null, null,
 				attach);
+		if (store != null) {
+			payPackage.setSceneInfo(String.format(
+					"{\"store_id\": \"%s\", \"store_name\":\"%s\"}",
+					store.getId(), store.getName()));
+		}
 		return createPayRequest(payPackage);
 	}
 
@@ -357,7 +367,10 @@ public class PayApi extends MchApi {
 	 *            订单生成的机器 IP
 	 * @param attach
 	 *            附加数据 非必填
+	 * @param app
+	 *            应用信息
 	 * @return WAP支付对象
+	 * @see com.foxinmy.weixin4j.payment.mch.SceneInfoApp
 	 * @see com.foxinmy.weixin4j.payment.mch.WAPPayRequest
 	 * @see <a href=
 	 *      "https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付
@@ -365,11 +378,15 @@ public class PayApi extends MchApi {
 	 * @throws WeixinException
 	 */
 	public MchPayRequest createWapPayRequest(String body, String outTradeNo,
-			double totalFee, String notifyUrl, String createIp, String attach)
-			throws WeixinException {
+			double totalFee, String notifyUrl, String createIp, String attach,
+			SceneInfoApp app) throws WeixinException {
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
 				totalFee, notifyUrl, createIp, TradeType.MWEB, null, null,
 				null, attach);
+		if (app != null) {
+			payPackage.setSceneInfo(String.format("{\"h5_info\":\"%s\"}",
+					app.getSceneInfo()));
+		}
 		return createPayRequest(payPackage);
 	}
 
@@ -388,20 +405,27 @@ public class PayApi extends MchApi {
 	 *            订单生成的机器 IP
 	 * @param attach
 	 *            附加数据 非必填
+	 * @param store
+	 *            门店信息 非必填
 	 * @return 支付的订单信息
 	 * @see com.foxinmy.weixin4j.payment.mch.MICROPayRequest
 	 * @see com.foxinmy.weixin4j.payment.mch.Order
+	 * @see com.foxinmy.weixin4j.payment.mch.SceneInfoStore
 	 * @see <a href=
 	 *      "http://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10">
 	 *      提交被扫支付API</a>
 	 * @throws WeixinException
 	 */
 	public MchPayRequest createMicroPayRequest(String authCode, String body,
-			String outTradeNo, double totalFee, String createIp, String attach)
-			throws WeixinException {
+			String outTradeNo, double totalFee, String createIp, String attach,
+			SceneInfoStore store) throws WeixinException {
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
 				totalFee, null, createIp, TradeType.MICROPAY, null, authCode,
 				null, attach);
+		if (store != null) {
+			payPackage.setSceneInfo(String.format("{\"store_info\":\"%s\"}",
+					JSON.toJSONString(store)));
+		}
 		return createPayRequest(payPackage);
 	}
 
@@ -435,15 +459,25 @@ public class PayApi extends MchApi {
 
 	/**
 	 * 申请退款(请求需要双向证书)
+	 *
 	 * <p>
 	 * 当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家，微信支付将在收到退款请求并且验证成功之后，
 	 * 按照退款规则将支付款按原路退到买家帐号上。
 	 * </p>
-	 * <p style="color:red">
-	 * 1.交易时间超过半年的订单无法提交退款；
-	 * 2.微信支付退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交
-	 * ，要采用原来的退款单号。总退款金额不能超过用户实际支付金额。
-	 * </p>
+	 *
+	 * <ol>
+	 *   <li>交易时间超过一年的订单无法提交退款；</li>
+	 *   <li>
+	 *     微信支付退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。
+	 *     申请退款总金额不能超过订单金额。
+	 *     <span style="color:red">一笔退款失败后重新提交，请不要更换退款单号，请使用原商户退款单号。</span>
+	 *   </li>
+	 *   <li>
+	 *     请求频率限制：150qps，即每秒钟正常的申请退款请求次数不超过150次。
+	 *     错误或无效请求频率限制：6qps，即每秒钟异常或错误的退款申请请求不超过6次。
+	 *   </li>
+	 *   <li>每个支付订单的部分退款次数不能超过50次。</li>
+	 * </ol>
 	 *
 	 * @param idQuery
 	 *            商户系统内部的订单号, transaction_id 、 out_trade_no 二选一,如果同时存在优先级:
@@ -458,6 +492,8 @@ public class PayApi extends MchApi {
 	 *            货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
 	 * @param opUserId
 	 *            操作员帐号, 默认为商户号
+	 * @param refundDesc
+	 *            退款原因，若商户传入，会在下发给用户的退款消息中体现退款原因
 	 * @param refundAccountType
 	 *            退款资金来源,默认使用未结算资金退款：REFUND_SOURCE_UNSETTLED_FUNDS
 	 * @return 退款申请结果
@@ -470,8 +506,8 @@ public class PayApi extends MchApi {
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
 			double totalFee, double refundFee, CurrencyType refundFeeType,
-			String opUserId, RefundAccountType refundAccountType)
-			throws WeixinException {
+			String opUserId, String refundDesc,
+			RefundAccountType refundAccountType) throws WeixinException {
 		Map<String, String> map = createBaseRequestMap(idQuery);
 		map.put("out_refund_no", outRefundNo);
 		map.put("total_fee",
@@ -487,6 +523,9 @@ public class PayApi extends MchApi {
 		}
 		if (refundAccountType == null) {
 			refundAccountType = RefundAccountType.REFUND_SOURCE_UNSETTLED_FUNDS;
+		}
+		if (StringUtil.isNotBlank(refundDesc)) {
+			map.put("refund_desc", refundDesc);
 		}
 		map.put("refund_fee_type", refundFeeType.name());
 		map.put("refund_account", refundAccountType.name());
@@ -508,12 +547,12 @@ public class PayApi extends MchApi {
 	 *            商户系统内部的退款单号,商 户系统内部唯一,同一退款单号多次请求只退一笔
 	 * @param totalFee
 	 *            订单总金额,单位为元
-	 * @see {@link #applyRefund(IdQuery, String, double, double,CurrencyType, String)}
+	 * @see #applyRefund(IdQuery, String, double, double, CurrencyType, String, String, RefundAccountType)
 	 */
 	public RefundResult applyRefund(IdQuery idQuery, String outRefundNo,
 			double totalFee) throws WeixinException {
 		return applyRefund(idQuery, outRefundNo, totalFee, totalFee, null,
-				null, null);
+				null, null, null);
 	}
 
 	/**

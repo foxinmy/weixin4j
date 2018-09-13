@@ -72,7 +72,7 @@ public class QRParameter implements Serializable {
 	}
 
 	/**
-	 * 创建临时二维码
+	 * 创建临时二维码(场景值为int)
 	 * 
 	 * @param expireSeconds
 	 *            二维码有效时间，以秒为单位。 最大不超过2592000（即30天）
@@ -88,6 +88,25 @@ public class QRParameter implements Serializable {
 		sceneContent.put("scene", scene);
 		return new QRParameter(QRType.QR_SCENE, expireSeconds,
 				Long.toString(sceneValue), sceneContent);
+	}
+
+	/**
+	 * 创建临时二维码(场景值为string)
+	 * 
+	 * @param expireSeconds
+	 *            二维码有效时间，以秒为单位。 最大不超过2592000（即30天）
+	 * @param sceneValue
+	 *            二维码的场景值
+	 * @return 二维码参数
+	 */
+	public static QRParameter createTemporaryQR(int expireSeconds,
+			String sceneValue) {
+		JSONObject sceneContent = new JSONObject();
+		JSONObject scene = new JSONObject();
+		scene.put("scene_str", sceneValue);
+		sceneContent.put("scene", scene);
+		return new QRParameter(QRType.QR_STR_SCENE, expireSeconds, sceneValue,
+				sceneContent);
 	}
 
 	/**

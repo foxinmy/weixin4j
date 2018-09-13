@@ -38,11 +38,9 @@ public interface WeixinMessageHandler {
      *            微信请求
      * @param message
      *            微信消息
-     * @param nodeNames
-     *            节点名称集合
      * @return 回复内容
      */
-    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message, Set<String> nodeNames);
+    public WeixinResponse doHandle(WeixinRequest request, WeixinMessage message);
 
     /**
      * 用于匹配到多个MessageHandler时权重降序排列,数字越大优先级越高

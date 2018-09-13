@@ -220,3 +220,13 @@
 * 2017-06-23
 
   + version upgrade to 1.7.7
+  
+* 2017-08-25
+
+  + 企业号调整为企业微信
+  
+  + version upgrade to 1.7.8
+  
+* 2017-11-09
+
+  + version upgrade to 1.7.9

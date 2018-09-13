@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.mp.test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import com.foxinmy.weixin4j.type.MediaType;
  * @see
  */
 public class MediaTest extends TokenTest {
-
+	
 	private MediaApi mediaApi;
 
 	@Before
@@ -83,6 +84,18 @@ public class MediaTest extends TokenTest {
 	}
 
 	@Test
+	public void uploadVideo() throws WeixinException, FileNotFoundException {
+		InputStream is = new FileInputStream("/Users/jy/Downloads/test.mp4");
+		String fileName = "视频文件名";
+		String title = "视频标题";
+		String description = "视频描述";
+		MpVideo mpVideo = mediaApi
+				.uploadVideo(is, fileName, title, description);
+		Assert.assertTrue(mpVideo.getMediaId() != null);
+		System.err.println(mpVideo.getMediaId());
+	}
+
+	@Test
 	public void uploadMaterialArticle() throws WeixinException {
 		List<MpArticle> articles = new ArrayList<MpArticle>();
 		articles.add(new MpArticle("8790403529", "title", "content"));
@@ -94,7 +107,8 @@ public class MediaTest extends TokenTest {
 
 	@Test
 	public void downloadArticle() throws WeixinException {
-		List<MpArticle> articles = mediaApi.downloadArticle("DVWwU0u9ommOTPgyJszpK943IWCCVAcFGNmiIBObf5E");
+		List<MpArticle> articles = mediaApi
+				.downloadArticle("DVWwU0u9ommOTPgyJszpK943IWCCVAcFGNmiIBObf5E");
 		Assert.assertTrue(articles != null && !articles.isEmpty());
 		System.err.println(articles);
 	}
@@ -137,16 +151,5 @@ public class MediaTest extends TokenTest {
 		List<MediaItem> mediaList = mediaApi
 				.listAllMaterialMedia(MediaType.image);
 		System.err.println(mediaList);
-	}
-
-	@Test
-	public void uploadVideo() throws WeixinException {
-		InputStream is = null;
-		String fileName = "视频文件名";
-		String title = "视频标题";
-		String description = "视频描述";
-		MpVideo mpVideo = mediaApi
-				.uploadVideo(is, fileName, title, description);
-		Assert.assertTrue(mpVideo.getMediaId() != null);
 	}
 }
