@@ -17,7 +17,7 @@ import com.foxinmy.weixin4j.token.TokenManager;
  *   目前微信支持两种二维码，小程序码，小程序二维码。
  * </p>
  *
- * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/qrcode.html">获取二维码</a>
+ * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/qr-code.html">获取二维码</a>
  * @since 1.8
  */
 public class QrCodeApi extends TokenManagerApi {
@@ -47,7 +47,7 @@ public class QrCodeApi extends TokenManagerApi {
 	 * @return image bytes of WXA code.
 	 * @throws WeixinException indicates getting access token failed or getting WXA code failed.
 	 *
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/qrcode.html#%E8%8E%B7%E5%8F%96%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A0%81">获取小程序码</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/qr-code/getWXACode.html">获取小程序码</a>
 	 */
 	public byte[] getWxaCode(
 		String path,
@@ -96,7 +96,7 @@ public class QrCodeApi extends TokenManagerApi {
 	 * @return image bytes of WXA code.
 	 * @throws WeixinException indicates getting access token failed or getting WXA code failed.
 	 *
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/qrcode.html#%E8%8E%B7%E5%8F%96%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A0%81">获取小程序码</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/qr-code/getWXACodeUnlimit.html">获取小程序码</a>
 	 */
 	public byte[] getWxaCodeUnlimit(
 		String scene,
@@ -125,7 +125,7 @@ public class QrCodeApi extends TokenManagerApi {
 	 * @return image bytes of WXA QR code.
 	 * @throws WeixinException indicates getting access token failed or getting WXA QR code failed.
 	 *
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/qrcode.html#%E8%8E%B7%E5%8F%96%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BA%8C%E7%BB%B4%E7%A0%81">获取小程序二维码</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/qr-code/createWXAQRCode.html">获取小程序二维码</a>
 	 */
 	public byte[] createWxaQrCode(
 		String path,

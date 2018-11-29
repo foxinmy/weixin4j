@@ -62,7 +62,7 @@ public class SecCheckApi extends TokenManagerApi {
 	 *
 	 * @param inputStream the image input stream.
 	 * @throws WeixinException indicates getting access token failed, or the content is risky.
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/imgSecCheck.html">校验一张图片是否含有违法违规内容</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/sec-check/imgSecCheck.html">校验一张图片是否含有违法违规内容</a>
 	 */
 	public void imgSecCheck(InputStream inputStream) throws WeixinException {
 		final String imgSecCheckUri = this.getAccessTokenRequestUri("wxa_img_sec_check");
@@ -86,7 +86,7 @@ public class SecCheckApi extends TokenManagerApi {
 	 *
 	 * @param content 要检测的文本内容，长度不超过 500KB，编码格式为 UTF-8。
 	 * @throws WeixinException indicates getting access token failed, or the content is risky.
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/msgSecCheck.html">检查一段文本是否含有违法违规内容</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/sec-check/msgSecCheck.html">检查一段文本是否含有违法违规内容</a>
 	 */
 	public void msgSecCheck(String content) throws WeixinException {
 		final Map<String, String> params = new HashMap<String, String>(1);
