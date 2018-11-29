@@ -35,7 +35,7 @@ public class CustomMessageApi extends TokenManagerApi {
 	 *
 	 * @param customMessage the {@link CustomMessage}.
 	 * @throws WeixinException indicates getting access token failed, or sending custom message failed.
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/custommsg/conversation.html">发送客服消息</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/customer-message/send.html">发送客服消息</a>
 	 */
 	public void sendCustomMessage(final CustomMessage customMessage)
 			throws WeixinException {
@@ -61,7 +61,7 @@ public class CustomMessageApi extends TokenManagerApi {
 	 * @param toUser 普通用户(openid)
 	 * @param command "Typing"：对用户下发“正在输入"状态；"CancelTyping"：取消对用户的”正在输入"状态
 	 * @throws WeixinException indicates getting access token failed, or sending typing status failed.
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/custommsg/typing.html">客服输入状态</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/customer-message/typing.html">客服输入状态</a>
 	 */
 	public void typingCustomMessage(String toUser, Command command)
 			throws WeixinException {

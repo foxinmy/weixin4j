@@ -74,6 +74,14 @@ public class ComponentAuthorizer implements Serializable {
 	@JSONField(name = "principal_name")
 	private String principalName;
 
+	/**
+	 * 帐号介绍
+	 *
+	 * @since 1.9.0
+	 */
+	@JSONField(name = "signature")
+	private String signature;
+
 	public String getAppId() {
 		return appId;
 	}
@@ -162,6 +170,14 @@ public class ComponentAuthorizer implements Serializable {
 		this.principalName = principalName;
 	}
 
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
 	@Override
 	public String toString() {
 		return "ComponentAuthInfo [nickName=" + nickName + ", principalName="
@@ -169,7 +185,7 @@ public class ComponentAuthorizer implements Serializable {
 				+ serviceType + ", verifyType=" + verifyType + ", userName="
 				+ userName + ", alias=" + alias + ", qrcodeUrl=" + qrcodeUrl
 				+ ", businessInfo=" + businessInfo + ", privileges="
-				+ privileges + "]";
+				+ privileges + ", signature=" + signature + "]";
 	}
 
 	public static class BusinessInfo implements Serializable {
