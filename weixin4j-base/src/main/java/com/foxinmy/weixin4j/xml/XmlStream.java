@@ -1,28 +1,44 @@
 package com.foxinmy.weixin4j.xml;
 
-import com.alibaba.fastjson.JSONObject;
-import com.foxinmy.weixin4j.util.Consts;
-import com.foxinmy.weixin4j.util.StringUtil;
-import org.xml.sax.InputSource;
-
-import javax.xml.bind.*;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.stream.*;
-import javax.xml.transform.Source;
-import javax.xml.transform.sax.SAXSource;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.Source;
+import javax.xml.transform.sax.SAXSource;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+
+import com.alibaba.fastjson.JSONObject;
+import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.StringUtil;
+
 /**
  * XML 处理
- * 
+ *
  * @className XmlStream
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月2日
@@ -34,45 +50,40 @@ public final class XmlStream {
 	private final static String XML_VERSION = "1.0";
 	private final static ConcurrentHashMap<Class<?>, JAXBContext> jaxbContexts = new ConcurrentHashMap<Class<?>, JAXBContext>();
 	private final static SAXParserFactory spf = SAXParserFactory.newInstance();
-	private final static DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
 	static {
 		try {
-			String FEATURE = null;
-
-			spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
-			spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-			spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-			spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			spf.setXIncludeAware(false);
-		//	spf.setExpandEntityReferences(false);
-
-
-			FEATURE = "http://apache.org/xml/features/disallow-doctype-decl";
-			dbf.setFeature(FEATURE, true);
-
-			// If you can't completely disable DTDs, then at least do the following:
-			// Xerces 1 - http://xerces.apache.org/xerces-j/features.html#external-general-entities
-			// Xerces 2 - http://xerces.apache.org/xerces2-j/features.html#external-general-entities
+			// This is the PRIMARY defense. If DTDs (doctypes) are disallowed,
+			// almost all XML entity attacks are prevented
+			// Xerces 2 only -
+			// http://xerces.apache.org/xerces2-j/features.html#disallow-doctype-decl
+			spf.setFeature(
+					"http://apache.org/xml/features/disallow-doctype-decl",
+					true);
+			// If you can't completely disable DTDs, then at least do the
+			// following:
+			// Xerces 1 -
+			// http://xerces.apache.org/xerces-j/features.html#external-general-entities
+			// Xerces 2 -
+			// http://xerces.apache.org/xerces2-j/features.html#external-general-entities
 			// JDK7+ - http://xml.org/sax/features/external-general-entities
-			FEATURE = "http://xml.org/sax/features/external-general-entities";
-			dbf.setFeature(FEATURE, false);
-
-			// Xerces 1 - http://xerces.apache.org/xerces-j/features.html#external-parameter-entities
-			// Xerces 2 - http://xerces.apache.org/xerces2-j/features.html#external-parameter-entities
+			spf.setFeature(
+					"http://xml.org/sax/features/external-general-entities",
+					false);
+			// Xerces 1 -
+			// http://xerces.apache.org/xerces-j/features.html#external-parameter-entities
+			// Xerces 2 -
+			// http://xerces.apache.org/xerces2-j/features.html#external-parameter-entities
 			// JDK7+ - http://xml.org/sax/features/external-parameter-entities
-			FEATURE = "http://xml.org/sax/features/external-parameter-entities";
-			dbf.setFeature(FEATURE, false);
-
+			spf.setFeature(
+					"http://xml.org/sax/features/external-parameter-entities",
+					false);
 			// Disable external DTDs as well
-			FEATURE = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
-			dbf.setFeature(FEATURE, false);
-
-			// and these as well, per Timothy Morgan's 2014 paper: "XML Schema, DTD, and Entity Attacks"
-			dbf.setXIncludeAware(false);
-			dbf.setExpandEntityReferences(false);
-
-
+			spf.setFeature(
+					"http://apache.org/xml/features/nonvalidating/load-external-dtd",
+					false);
+			// and these as well, per Timothy Morgan's 2014 paper:
+			// "XML Schema, DTD, and Entity Attacks"
+			spf.setXIncludeAware(false);
 		} catch (Exception e) {
 			;
 		}
@@ -80,7 +91,7 @@ public final class XmlStream {
 
 	/**
 	 * Xml2Bean
-	 * 
+	 *
 	 * @param content
 	 *            xml内容
 	 * @param clazz
@@ -91,20 +102,37 @@ public final class XmlStream {
 	public static <T> T fromXML(InputStream content, Class<T> clazz) {
 		JAXBContext jaxbContext = getJaxbContext(clazz);
 		try {
-			DocumentBuilder safebuilder = dbf.newDocumentBuilder();
-
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			Source source = new SAXSource(spf.newSAXParser().getXMLReader(), new InputSource(content));
-			XmlRootElement rootElement = clazz.getAnnotation(XmlRootElement.class);
+			XMLReader reader = spf.newSAXParser().getXMLReader();
+			reader.setFeature(
+					"http://apache.org/xml/features/disallow-doctype-decl",
+					true);
+			reader.setFeature(
+					"http://apache.org/xml/features/nonvalidating/load-external-dtd",
+					false); // This may not be strictly required as DTDs
+			// shouldn't be allowed at all, per previous line.
+			reader.setFeature(
+					"http://xml.org/sax/features/external-general-entities",
+					false);
+			reader.setFeature(
+					"http://xml.org/sax/features/external-parameter-entities",
+					false);
+			Source source = new SAXSource(reader, new InputSource(content));
+			XmlRootElement rootElement = clazz
+					.getAnnotation(XmlRootElement.class);
 			if (rootElement == null
-					|| rootElement.name().equals(XmlRootElement.class.getMethod("name").getDefaultValue().toString())) {
-				JAXBElement<T> jaxbElement = unmarshaller.unmarshal(source, clazz);
+					|| rootElement.name().equals(
+					XmlRootElement.class.getMethod("name")
+							.getDefaultValue().toString())) {
+				JAXBElement<T> jaxbElement = unmarshaller.unmarshal(source,
+						clazz);
 				return jaxbElement.getValue();
 			} else {
 				return (T) unmarshaller.unmarshal(source);
 			}
 		} catch (Exception ex) {
-			throw new RuntimeException("Could not unmarshaller class [" + clazz + "]", ex);
+			throw new RuntimeException("Could not unmarshaller class [" + clazz
+					+ "]", ex);
 		} finally {
 			if (content != null) {
 				try {
@@ -118,7 +146,7 @@ public final class XmlStream {
 
 	/**
 	 * Xml2Bean
-	 * 
+	 *
 	 * @param content
 	 *            xml内容
 	 * @param clazz
@@ -126,12 +154,13 @@ public final class XmlStream {
 	 * @return
 	 */
 	public static <T> T fromXML(String content, Class<T> clazz) {
-		return fromXML(new ByteArrayInputStream(content.getBytes(Consts.UTF_8)), clazz);
+		return fromXML(
+				new ByteArrayInputStream(content.getBytes(Consts.UTF_8)), clazz);
 	}
 
 	/**
 	 * map2xml
-	 * 
+	 *
 	 * @param map
 	 *            value无嵌套的map
 	 * @return xml内容
@@ -139,7 +168,8 @@ public final class XmlStream {
 	public static String map2xml(Map<String, String> map) {
 		StringWriter sw = new StringWriter();
 		try {
-			XMLStreamWriter xw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
+			XMLStreamWriter xw = XMLOutputFactory.newInstance()
+					.createXMLStreamWriter(sw);
 			xw.writeStartDocument(Consts.UTF_8.name(), XML_VERSION);
 			xw.writeStartElement(ROOT_ELEMENT_XML);
 			for (Entry<String, String> entry : map.entrySet()) {
@@ -167,7 +197,7 @@ public final class XmlStream {
 
 	/**
 	 * map2xml
-	 * 
+	 *
 	 * @param json
 	 *            value无嵌套的json
 	 * @return xml内容
@@ -175,7 +205,8 @@ public final class XmlStream {
 	public static String map2xml(JSONObject json) {
 		StringWriter sw = new StringWriter();
 		try {
-			XMLStreamWriter xw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
+			XMLStreamWriter xw = XMLOutputFactory.newInstance()
+					.createXMLStreamWriter(sw);
 			xw.writeStartDocument(Consts.UTF_8.name(), XML_VERSION);
 			xw.writeStartElement(ROOT_ELEMENT_XML);
 			for (Entry<String, Object> entry : json.entrySet()) {
@@ -203,7 +234,7 @@ public final class XmlStream {
 
 	/**
 	 * xml2map
-	 * 
+	 *
 	 * @param content
 	 *            无嵌套节点的xml内容
 	 * @return map对象
@@ -212,7 +243,8 @@ public final class XmlStream {
 		Map<String, String> map = new HashMap<String, String>();
 		StringReader sr = new StringReader(content);
 		try {
-			XMLStreamReader xr = XMLInputFactory.newInstance().createXMLStreamReader(sr);
+			XMLStreamReader xr = XMLInputFactory.newInstance()
+					.createXMLStreamReader(sr);
 			while (true) {
 				int event = xr.next();
 				if (event == XMLStreamConstants.END_DOCUMENT) {
@@ -243,7 +275,7 @@ public final class XmlStream {
 
 	/**
 	 * Bean2Xml
-	 * 
+	 *
 	 * @param object
 	 *            bean对象
 	 * @return xml内容
@@ -256,7 +288,7 @@ public final class XmlStream {
 
 	/**
 	 * Bean2Xml
-	 * 
+	 *
 	 * @param t
 	 *            bean对象
 	 * @param os
@@ -268,16 +300,22 @@ public final class XmlStream {
 		JAXBContext jaxbContext = getJaxbContext(clazz);
 		try {
 			Marshaller marshaller = jaxbContext.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_ENCODING, Consts.UTF_8.name());
-			XmlRootElement rootElement = clazz.getAnnotation(XmlRootElement.class);
+			marshaller.setProperty(Marshaller.JAXB_ENCODING,
+					Consts.UTF_8.name());
+			XmlRootElement rootElement = clazz
+					.getAnnotation(XmlRootElement.class);
 			if (rootElement == null
-					|| rootElement.name().equals(XmlRootElement.class.getMethod("name").getDefaultValue().toString())) {
-				marshaller.marshal(new JAXBElement<T>(new QName(ROOT_ELEMENT_XML), clazz, t), os);
+					|| rootElement.name().equals(
+					XmlRootElement.class.getMethod("name")
+							.getDefaultValue().toString())) {
+				marshaller.marshal(new JAXBElement<T>(new QName(
+						ROOT_ELEMENT_XML), clazz, t), os);
 			} else {
 				marshaller.marshal(t, os);
 			}
 		} catch (Exception ex) {
-			throw new RuntimeException("Could not marshal class [" + clazz + "] ", ex);
+			throw new RuntimeException("Could not marshal class [" + clazz
+					+ "] ", ex);
 		} finally {
 			if (os != null) {
 				try {
@@ -296,7 +334,9 @@ public final class XmlStream {
 				jaxbContext = JAXBContext.newInstance(clazz);
 				jaxbContexts.putIfAbsent(clazz, jaxbContext);
 			} catch (JAXBException ex) {
-				throw new RuntimeException("Could not instantiate JAXBContext for class [" + clazz + "] ", ex);
+				throw new RuntimeException(
+						"Could not instantiate JAXBContext for class [" + clazz
+								+ "] ", ex);
 			}
 		}
 		return jaxbContext;
