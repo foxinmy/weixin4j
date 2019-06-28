@@ -34,10 +34,5 @@ public enum CardType {
 	/**
 	 * 会员卡
 	 */
-	MEMBER_CARD,
-
-	/**
-	 * 通用（礼品）卡
-	 */
-	GENERAL_CARD
+	MEMBER_CARD;
 }

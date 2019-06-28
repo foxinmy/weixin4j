@@ -21,18 +21,7 @@ import com.foxinmy.weixin4j.type.card.CardColor;
  */
 public class CouponBaseInfo implements Serializable {
 
-	private static final long serialVersionUID = -5725424121330101717L;
-
-	/**
-	 * 礼品卡信息，目前只有一个价格属性，礼品卡时必填
-	 */
-	@JSONField(name = "giftcard_info")
-	private JSONObject giftcardInfo;
-	/**
-	 * 礼品卡最大可赠送次数，必填
-	 */
-	@JSONField(name = "max_give_friend_times")
-	private int maxGiveFriendTimes;
+	private static final long serialVersionUID = -5725424121330101716L;
 	/**
 	 * 卡券的商户logo，建议像素为300*300。
 	 */
@@ -82,7 +71,7 @@ public class CouponBaseInfo implements Serializable {
 	@JSONField(name = "use_custom_code")
 	private Boolean useCustomCode;
 	/**
-	 * 指定特殊用户群体，礼品卡建议填写false
+	 * 指定特殊用户群体
 	 */
 	@JSONField(name = "bind_openid")
 	private Boolean bindOpenId;
@@ -151,12 +140,12 @@ public class CouponBaseInfo implements Serializable {
 	 */
 	private String source;
 	/**
-	 * 每人可领券的数量限制,不填写默认为50。礼品卡时须填0，不限制
+	 * 每人可领券的数量限制,不填写默认为50。
 	 */
 	@JSONField(name = "get_limit")
 	private int limitNum;
 	/**
-	 * 卡券领取页面是否可分享，礼品卡建议填写false
+	 * 卡券领取页面是否可分享
 	 */
 	@JSONField(name = "can_share")
 	private boolean canShare;
@@ -168,41 +157,9 @@ public class CouponBaseInfo implements Serializable {
 
 	@JSONField(name = "need_push_on_view")
 	private Boolean needPushOnView;
-	/**
-	 * 礼品卡用属性，自定义cell对应的小程序username，格式为公众号原始id@app。如：gh_86a091e50ad4@app  选填
-	 */
-	@JSONField(name = "center_app_brand_user_name")
-	private String centerAppBrandUserName;
-	/**
-	 * 礼品卡用属性，自定义cell对应的小程序路径. 如：pages/index/index  选填
-	 */
-	@JSONField(name = "center_app_brand_pass")
-	private String centerAppBrandPass;
-	/**
-	 * 礼品卡用属性，自定义cell对应的小程序username，格式为公众号原始id@app   选填
-	 */
-	@JSONField(name = "custom_app_brand_user_name")
-	private String customAppBrandUserName;
-	/**
-	 * 礼品卡用属性，自定义cell对应的小程序路径。选填
-	 */
-	@JSONField(name = "custom_app_brand_pass")
-	private String customAppBrandPass;
-	/**
-	 * 礼品卡用属性，自定义cell对应的小程序username，格式为公众号原始id@app 选填
-	 */
-	@JSONField(name = "promotion_app_brand_user_name")
-	private String promotionAppBrandUserName;
-	/**
-	 * 礼品卡用属性，自定义cell对应的小程序路径
-	 */
-	@JSONField(name = "promotion_app_brand_pass")
-	private String promotionAppBrandPass;
 
 	private CouponBaseInfo(Builder builder) {
-		this.giftcardInfo = builder.giftcardInfo;
 		this.logoUrl = builder.logoUrl;
-		this.maxGiveFriendTimes = builder.maxGiveFriendTimes;
 		this.brandName = builder.brandName;
 		this.title = builder.title;
 		this.codeType = builder.codeType;
@@ -219,18 +176,12 @@ public class CouponBaseInfo implements Serializable {
 		this.centerTitle = builder.centerTitle;
 		this.centerUrl = builder.centerUrl;
 		this.centerSubTitle = builder.centerSubTitle;
-		this.centerAppBrandUserName = builder.centerAppBrandUserName;
-		this.centerAppBrandPass = builder.centerAppBrandPass;
 		this.customTitle = builder.customTitle;
 		this.customUrl = builder.customUrl;
 		this.customSubTitle = builder.customSubTitle;
-		this.customAppBrandUserName = builder.customAppBrandUserName;
-		this.customAppBrandPass = builder.customAppBrandPass;
 		this.promotionTitle = builder.promotionTitle;
 		this.promotionUrl = builder.promotionUrl;
 		this.promotionSubTitle = builder.promotionSubTitle;
-		this.promotionAppBrandUserName = builder.promotionAppBrandUserName;
-		this.promotionAppBrandPass = builder.promotionAppBrandPass;
 		this.source = builder.source;
 		this.limitNum = builder.limitNum;
 		this.canShare = builder.canShare;
@@ -350,86 +301,23 @@ public class CouponBaseInfo implements Serializable {
 		return needPushOnView;
 	}
 
-	public JSONObject getGiftcardInfo() {
-		return giftcardInfo;
-	}
-
-	public int getMaxGiveFriendTimes() {
-		return maxGiveFriendTimes;
-	}
-
-	public Boolean getUseCustomCode() {
-		return useCustomCode;
-	}
-
-	public Boolean getBindOpenId() {
-		return bindOpenId;
-	}
-
-	public String getCenterAppBrandUserName() {
-		return centerAppBrandUserName;
-	}
-
-	public String getCenterAppBrandPass() {
-		return centerAppBrandPass;
-	}
-
-	public String getCustomAppBrandUserName() {
-		return customAppBrandUserName;
-	}
-
-	public String getCustomAppBrandPass() {
-		return customAppBrandPass;
-	}
-
-	public String getPromotionAppBrandUserName() {
-		return promotionAppBrandUserName;
-	}
-
-	public String getPromotionAppBrandPass() {
-		return promotionAppBrandPass;
-	}
-
 	@Override
 	public String toString() {
-		return "CouponBaseInfo{" +
-				"giftcardInfo=" + giftcardInfo +
-				", maxGiveFriendTimes=" + maxGiveFriendTimes +
-				", logoUrl='" + logoUrl + '\'' +
-				", brandName='" + brandName + '\'' +
-				", title='" + title + '\'' +
-				", codeType=" + codeType +
-				", cardColor=" + cardColor +
-				", notice='" + notice + '\'' +
-				", description='" + description + '\'' +
-				", sku=" + sku +
-				", date=" + date +
-				", useCustomCode=" + useCustomCode +
-				", bindOpenId=" + bindOpenId +
-				", servicePhone='" + servicePhone + '\'' +
-				", locationIds=" + locationIds +
-				", useAllLocation=" + useAllLocation +
-				", centerTitle='" + centerTitle + '\'' +
-				", centerUrl='" + centerUrl + '\'' +
-				", centerSubTitle='" + centerSubTitle + '\'' +
-				", customTitle='" + customTitle + '\'' +
-				", customUrl='" + customUrl + '\'' +
-				", customSubTitle='" + customSubTitle + '\'' +
-				", promotionTitle='" + promotionTitle + '\'' +
-				", promotionUrl='" + promotionUrl + '\'' +
-				", promotionSubTitle='" + promotionSubTitle + '\'' +
-				", source='" + source + '\'' +
-				", limitNum=" + limitNum +
-				", canShare=" + canShare +
-				", canGiveFriend=" + canGiveFriend +
-				", needPushOnView=" + needPushOnView +
-				", centerAppBrandUserName='" + centerAppBrandUserName + '\'' +
-				", centerAppBrandPass='" + centerAppBrandPass + '\'' +
-				", customAppBrandUserName='" + customAppBrandUserName + '\'' +
-				", customAppBrandPass='" + customAppBrandPass + '\'' +
-				", promotionAppBrandUserName='" + promotionAppBrandUserName + '\'' +
-				", promotionAppBrandPass='" + promotionAppBrandPass + '\'' +
-				'}';
+		return "logoUrl=" + logoUrl + ", brandName=" + brandName + ", title="
+				+ title + ", codeType=" + codeType + ", cardColor=" + cardColor
+				+ ", notice=" + notice + ", description=" + description
+				+ ", sku=" + sku + ", date=" + date + ", useCustomCode="
+				+ useCustomCode + ", bindOpenId=" + bindOpenId
+				+ ", servicePhone=" + servicePhone + ", locationIds="
+				+ locationIds + ", useAllLocation=" + useAllLocation
+				+ ", centerTitle=" + centerTitle + ", centerUrl=" + centerUrl
+				+ ", centerSubTitle=" + centerSubTitle + ", customTitle="
+				+ customTitle + ", customUrl=" + customUrl
+				+ ", customSubTitle=" + customSubTitle + ", promotionTitle="
+				+ promotionTitle + ", promotionUrl=" + promotionUrl
+				+ ", promotionSubTitle=" + promotionSubTitle + ", source="
+				+ source + ", limitNum=" + limitNum + ", canShare=" + canShare
+				+ ", canGiveFriend=" + canGiveFriend;
 	}
 
 	public void cleanCantUpdateField() {
@@ -450,17 +338,9 @@ public class CouponBaseInfo implements Serializable {
 	 */
 	public static final class Builder {
 		/**
-		 * 礼品卡信息，目前只有一个礼品卡的价格属性，必填
-		 */
-		private JSONObject giftcardInfo;
-		/**
 		 * 卡券的商户logo，建议像素为300*300
 		 */
 		private String logoUrl;
-		/**
-		 * 礼品卡最大可赠送次数，必填
-		 */
-		private int maxGiveFriendTimes;
 		/**
 		 * 商户名字,字数上限为12个汉字，如：海底捞
 		 */
@@ -572,37 +452,11 @@ public class CouponBaseInfo implements Serializable {
 		 * 用户点击进入卡券时推送事件
 		 */
 		private boolean needPushOnView;
-		/**
-		 * 自定义cell对应的小程序username，格式为公众号原始id@app。如：gh_86a091e50ad4@app  选填
-		 */
-		private String centerAppBrandUserName;
-		/**
-		 * 自定义cell对应的小程序路径. 如：pages/index/index  选填
-		 */
-		private String centerAppBrandPass;
-		/**
-		 * 自定义cell对应的小程序username，格式为公众号原始id@app   选填
-		 */
-		private String customAppBrandUserName;
-		/**
-		 * 自定义cell对应的小程序路径。选填
-		 */
-		private String customAppBrandPass;
-		/**
-		 * 自定义cell对应的小程序username，格式为公众号原始id@app
-		 */
-		private String promotionAppBrandUserName;
-		/**
-		 * 自定义cell对应的小程序路径
-		 */
-		private String promotionAppBrandPass;
 
 		/**
 		 * 默认永久有效
 		 */
 		public Builder() {
-			this.giftcardInfo = new JSONObject();
-			this.maxGiveFriendTimes = 1;
 			this.sku = new JSONObject();
 			this.date = new JSONObject();
 			this.date.put("type",CardActiveType.DATE_TYPE_PERMANENT);
@@ -610,46 +464,6 @@ public class CouponBaseInfo implements Serializable {
 			this.canShare = true;
 			this.canGiveFriend = true;
 			this.limitNum = 50;
-		}
-
-		public Builder customAppBrandPass(String pass){
-			this.customAppBrandPass = pass;
-			return this;
-		}
-
-		public Builder centerAppBrandUserName(String name){
-			this.centerAppBrandUserName = name;
-			return this;
-		}
-
-		public Builder centerAppBrandPass(String pass){
-			this.centerAppBrandPass = pass;
-			return this;
-		}
-
-		public Builder customAppBrandUserName(String name){
-			this.customAppBrandUserName = name;
-			return this;
-		}
-
-		public Builder promotionAppBrandUserName(String userName){
-			this.promotionAppBrandUserName = userName;
-			return this;
-		}
-
-		public Builder promotionAppBrandPass(String pass){
-			this.promotionAppBrandPass = pass;
-			return this;
-		}
-
-		public Builder maxGiveFriendTimes(int times){
-			this.maxGiveFriendTimes = times;
-			return this;
-		}
-
-		public Builder price(int price){
-			this.giftcardInfo.put("price", price);
-			return this;
 		}
 
 		/**
