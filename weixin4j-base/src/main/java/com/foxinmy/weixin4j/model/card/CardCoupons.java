@@ -38,30 +38,6 @@ public final class CardCoupons {
 	public static MemberCard.Builder customMemberCard(){
 		return  new MemberCard.Builder();
 	}
-
-	/**
-	 * 礼品卡信息构造器
-	 *
-	 * @return
-	 */
-	public static GiftCard.Builder customGiftCard() {
-		return new GiftCard.Builder();
-	}
-
-	/**
-	 * 礼品卡货架主题信息构造器
-	 *
-	 * @return
-	 */
-	public static PageTheme.Builder customCardPageTheme(){ return new PageTheme.Builder(); }
-
-	/**
-	 * 礼品卡货架信息构造器
-	 *
-	 * @return
-	 */
-	public static GiftCardPage.Builder customCardPage(){ return new GiftCardPage.Builder(); }
-
 	/**
 	 * 创建代金券
 	 * 
@@ -145,33 +121,5 @@ public final class CardCoupons {
 		baseBuilder.build();
 		MemberCard memberCard = new MemberCard(baseBuilder.build(), memberCardBudiler);
 		return memberCard;
-	}
-
-	/**
-	 * 创建单品类礼品卡
-	 *
-	 * @param baseBuilder
-	 *              卡券基础信息构造器 必填
-	 * @param giftCardBuilder
-	 *              礼品卡自身参数构造器 必填
-	 * @return
-	 */
-	public static VoucherCard createVoucherCard(CouponBaseInfo.Builder baseBuilder, GiftCard.Builder giftCardBuilder){
-		baseBuilder.build();
-		VoucherCard voucherCard = new VoucherCard(baseBuilder.build(), giftCardBuilder);
-		return voucherCard;
-	}
-
-	/**
-	 * 创建储值类礼品卡
-	 *
-	 * @param baseBuilder
-	 * @param giftCardBuilder
-	 * @return
-	 */
-	public static GiftCard createGiftCard(CouponBaseInfo.Builder baseBuilder, GiftCard.Builder giftCardBuilder){
-		baseBuilder.build();
-		GiftCard giftCard = new GiftCard(baseBuilder.build(), giftCardBuilder);
-		return giftCard;
 	}
 }

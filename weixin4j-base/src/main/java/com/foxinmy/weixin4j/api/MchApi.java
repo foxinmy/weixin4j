@@ -32,8 +32,6 @@ public class MchApi extends BaseApi {
 
     private final static ResourceBundle WEIXIN_BUNDLE;
 
-    private final static String PEM_CERT_PREFIX = "-----BEGIN CERTIFICATE-----";
-
     static {
         WEIXIN_BUNDLE = ResourceBundle.getBundle("com/foxinmy/weixin4j/payment/weixin");
     }
@@ -95,28 +93,21 @@ public class MchApi extends BaseApi {
      */
 	protected WeixinRequestExecutor getWeixinSSLExecutor() throws WeixinException {
         if (weixinSSLExecutor == null) {
-            if(weixinAccount.getCertificateFile().startsWith(PEM_CERT_PREFIX)){
-                // 证书是PEM格式，直接使用PEM内容生成请求执行类
-                this.weixinSSLExecutor = weixinExecutor.createSSLRequestExecutor(weixinAccount.getMchId(),
-                        weixinAccount.getCertificateFile(), weixinAccount.getCertificateKey());
-            }else {
-                // 证书是p12格式，读取证书文件并生成请求执行类
-                try {
-                    InputStream is = null;
-                    File certificate = new File(
-                            Weixin4jConfigUtil.replaceClassPathValue(weixinAccount.getCertificateFile()));
-                    if (!certificate.exists() || !certificate.isFile()) {
-                        is = Weixin4jConfigUtil.CLASSLOADER.getResourceAsStream(certificate.getName());
-                    } else {
-                        is = new FileInputStream(certificate);
-                    }
-                    if (is == null) {
-                        throw new WeixinException("Invalid certificate file : " + certificate.toString());
-                    }
-                    this.weixinSSLExecutor = weixinExecutor.createSSLRequestExecutor(weixinAccount.getCertificateKey(), is);
-                } catch (IOException e) {
-                    throw new WeixinException("IO Error on createSSLRequestExecutor", e);
+            try {
+                InputStream is = null;
+                File certificate = new File(
+                        Weixin4jConfigUtil.replaceClassPathValue(weixinAccount.getCertificateFile()));
+                if (!certificate.exists() || !certificate.isFile()) {
+					is = Weixin4jConfigUtil.CLASSLOADER.getResourceAsStream(certificate.getName());
+                } else {
+                    is = new FileInputStream(certificate);
                 }
+                if (is == null) {
+                    throw new WeixinException("Invalid certificate file : " + certificate.toString());
+                }
+                this.weixinSSLExecutor = weixinExecutor.createSSLRequestExecutor(weixinAccount.getCertificateKey(), is);
+            } catch (IOException e) {
+                throw new WeixinException("IO Error on createSSLRequestExecutor", e);
             }
         }
         return this.weixinSSLExecutor;
