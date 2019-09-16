@@ -644,7 +644,7 @@ public class CardApi extends MpApi {
 		String card_code_get = getRequestUri("card_code_get_uri");
 		JSONObject param = new JSONObject();
 		param.put("code", code);
-		if(!StringUtils.isEmpty(cardId)){
+		if(cardId!=null && cardId.length()>0){
 			param.put("card_id", cardId);
 		}
 
