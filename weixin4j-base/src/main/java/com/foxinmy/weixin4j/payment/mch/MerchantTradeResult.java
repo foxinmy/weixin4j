@@ -13,7 +13,9 @@ import com.foxinmy.weixin4j.type.CurrencyType;
  * @date 2016年7月21日
  * @since JDK 1.7
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class MerchantTradeResult extends MerchantResult {
 
 	private static final long serialVersionUID = 4205906286092873877L;

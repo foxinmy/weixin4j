@@ -25,7 +25,9 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  * @date 2014年11月2日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Order extends MerchantTradeResult {

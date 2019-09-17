@@ -22,7 +22,9 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @date 2016年3月67日
  * @since JDK 1.6
  * @see
+ * @deprecated 商户平台API迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class CustomsApi extends MchApi {
 
 	public CustomsApi(WeixinPayAccount weixinAccount) {

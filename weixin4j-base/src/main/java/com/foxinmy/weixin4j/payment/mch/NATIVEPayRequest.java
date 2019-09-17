@@ -15,7 +15,9 @@ import com.foxinmy.weixin4j.type.TradeType;
  * @see com.foxinmy.weixin4j.payment.PayRequest
  * @see <a
  *      href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1">NATIVE扫码支付(模式二)</a>
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class NATIVEPayRequest extends AbstractPayRequest {
 
 	private final String codeUrl;

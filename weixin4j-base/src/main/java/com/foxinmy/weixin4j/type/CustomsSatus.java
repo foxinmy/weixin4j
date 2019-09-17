@@ -8,7 +8,9 @@ package com.foxinmy.weixin4j.type;
  * @date 2016年3月27日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum CustomsSatus {
 	UNDECLARED("未申报"), SUBMITTED("申报已提交"), PROCESSING("申报中"), SUCCESS("申报成功"), FAIL(
 			"申报失败"), EXCEPT("海关接口异常");

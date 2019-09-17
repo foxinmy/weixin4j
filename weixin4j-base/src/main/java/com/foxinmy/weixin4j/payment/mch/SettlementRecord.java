@@ -17,6 +17,7 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @since JDK 1.6
  * @see
  */
+@Deprecated
 public class SettlementRecord extends MerchantResult {
 
 	private static final long serialVersionUID = 7952659545609519979L;

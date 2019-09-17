@@ -7,7 +7,9 @@ package com.foxinmy.weixin4j.type.mch;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2017年1月4日
  * @since JDK 1.6
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum RedpacketSceneType {
 	/**
 	 * 商品促销

@@ -12,7 +12,9 @@ import com.foxinmy.weixin4j.util.DigestUtil;
  * @since JDK 1.6
  * @see <a
  *      href="https://pay.weixin.qq.com/wiki/doc/api/external/jsapi.php?chapter=4_3">支付签名说明</a>
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class WeixinPaymentSignature extends AbstractWeixinSignature {
 	/**
 	 * 支付密钥
