@@ -12,10 +12,7 @@ import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
-import com.foxinmy.weixin4j.model.card.CardCoupon;
-import com.foxinmy.weixin4j.model.card.CardCoupons;
-import com.foxinmy.weixin4j.model.card.CardQR;
-import com.foxinmy.weixin4j.model.card.GiftCardPage;
+import com.foxinmy.weixin4j.model.card.*;
 import com.foxinmy.weixin4j.model.media.MediaCounter;
 import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
 import com.foxinmy.weixin4j.model.media.MediaItem;
@@ -72,7 +69,6 @@ import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
-import com.foxinmy.weixin4j.tuple.Tuple;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
 import com.foxinmy.weixin4j.util.Consts;
@@ -199,7 +195,7 @@ public class WeixinProxy {
 	 * @param componentTokenManager
 	 *            第三方组件凭证token
 	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi
-	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi#getPerCodeManager(String)
+	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi#getPreCodeManager
 	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi#getTokenManager
 	 */
 	public WeixinProxy(PerTicketManager perTicketManager, TokenManager componentTokenManager) {
@@ -478,7 +474,7 @@ public class WeixinProxy {
 	 *
 	 * @return 总数对象
 	 * @throws WeixinException
-	 * @see com.com.foxinmy.weixin4j.model.media.MediaCounter
+	 * @see com.foxinmy.weixin4j.model.media.MediaCounter
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738733&token=&lang=zh_CN">
 	 *      获取素材总数</a>
@@ -571,7 +567,7 @@ public class WeixinProxy {
 	 *            查询结束时间 每次查询不能跨日查询
 	 * @param number
 	 *            最多10000条
-	 * @see com.foxinmy.weixin4j.mp.model.CustomRecord
+	 * @see com.foxinmy.weixin4j.mp.model.KfChatRecord
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
 	 * @see <a href="http://dkf.qq.com/document-1_1.html">查询客服聊天记录</a>
 	 * @see <a href=
@@ -825,7 +821,7 @@ public class WeixinProxy {
 	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
 	 * </p>
 	 *
-	 * @param MassTuple
+	 * @param tuple
 	 *            消息元件
 	 * @param isToAll
 	 *            用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，
@@ -859,7 +855,7 @@ public class WeixinProxy {
 	 * @param groupId
 	 *            分组ID
 	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现,可以用于在图文分析数据接口中
-	 * @see {@link #massByGroupId(Tuple,int)}
+	 * @see {@link #massByGroupId(MassTuple,boolean,int)}
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">
 	 *      根据分组群发</a>
@@ -919,7 +915,7 @@ public class WeixinProxy {
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">
 	 *      根据标签群发</a>
-	 * @see {@link #massByTagId(Tuple,int)}
+	 * @see {@link #massByTagId(MassTuple,int)}
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @throws WeixinException
@@ -961,7 +957,7 @@ public class WeixinProxy {
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">
 	 *      根据openid群发</a>
-	 * @see {@link #massByOpenIds(Tuple,String...)}
+	 * @see {@link #massByOpenIds(MassTuple,String...)}
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @throws WeixinException
@@ -1001,8 +997,8 @@ public class WeixinProxy {
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">
 	 *      删除群发</a>
-	 * @see {@link #massByTagId(Tuple, int)}
-	 * @see {@link #massByOpenIds(Tuple, String...)
+	 * @see {@link #massByTagId(MassTuple, int)}
+	 * @see {@link #massByOpenIds(MassTuple, String...)
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 */
 	public ApiResult deleteMassNews(String msgid, int articleIndex) throws WeixinException {
