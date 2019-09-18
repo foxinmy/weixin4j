@@ -6,6 +6,7 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.pay.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfo;
 import com.foxinmy.weixin4j.pay.payment.mch.*;
 import com.foxinmy.weixin4j.pay.type.mch.BillType;
 import com.foxinmy.weixin4j.pay.type.mch.RefundAccountType;
@@ -771,5 +772,9 @@ public class PayApi extends MchApi {
 				getRequestUri("authcode_openid_uri"), param);
 		return response.getAsObject(new TypeReference<OpenIdResult>() {
 		});
+	}
+
+	public PayfaceAuthinfo getWxPayfaceAuthinfo(String rawdata){
+
 	}
 }
