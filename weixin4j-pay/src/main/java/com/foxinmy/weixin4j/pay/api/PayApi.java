@@ -774,7 +774,18 @@ public class PayApi extends MchApi {
 		});
 	}
 
-	public PayfaceAuthinfo getWxPayfaceAuthinfo(String rawdata){
-
+	/**
+	 * 微信刷脸支付，获取调用凭证
+	 *
+	 * @param request
+	 * @return
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/wxfacepay/develop/sdk-android.html#获取调用凭证-get-wxpayface-authinfo">
+	 *      获取调用凭证-get-wxpayface-authinfo</a>
+	 */
+	public PayfaceAuthinfo getWxPayfaceAuthinfo(PayfaceAuthinfoRequest request) throws WeixinException {
+		WeixinResponse response = weixinExecutor.post(
+				getRequestUri("get_wxpayface_authinfo_uri"), request.toRequestString());
+		return response.getAsObject(new TypeReference<PayfaceAuthinfo>() {});
 	}
 }

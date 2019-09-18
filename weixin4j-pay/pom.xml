@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <name>weixin4j-pay</name>
     <artifactId>weixin4j-pay</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-pay</url>
     <description>微信支付商户平台API</description>
     <developers>
@@ -36,7 +37,7 @@
         <dependency>
             <groupId>com.foxinmy</groupId>
             <artifactId>weixin4j-base</artifactId>
-            <version>${project.version}</version>
+            <version>1.9.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

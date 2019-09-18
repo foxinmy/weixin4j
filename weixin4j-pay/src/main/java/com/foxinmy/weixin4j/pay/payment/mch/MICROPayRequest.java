@@ -3,7 +3,7 @@ package com.foxinmy.weixin4j.pay.payment.mch;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.pay.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.pay.payment.PayRequest;
-import com.foxinmy.weixin4j.type.TradeType;
+import com.foxinmy.weixin4j.pay.type.TradeType;
 
 import javax.xml.bind.annotation.XmlTransient;
 
