@@ -7,6 +7,8 @@ import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.pay.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.model.paging.Pageable;
 import com.foxinmy.weixin4j.pay.payment.coupon.*;
+import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfo;
+import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfoRequest;
 import com.foxinmy.weixin4j.pay.payment.mch.*;
 import com.foxinmy.weixin4j.pay.sign.WeixinSignature;
 import com.foxinmy.weixin4j.pay.type.*;
@@ -813,6 +815,34 @@ public class WeixinPayProxy {
 	public CustomsOrderRecord queryCustomsOrder(IdQuery idQuery,
                                                 CustomsCity customsCity) throws WeixinException {
 		return customsApi.queryCustomsOrder(idQuery, customsCity);
+	}
+
+	/**
+	 * 微信刷脸支付，获取调用凭证
+	 *
+	 * @param storeId
+	 * 			门店编号， 由商户定义， 各门店唯一。
+	 * @param storeName
+	 * 			门店名称，由商户定义。（可用于展示）
+	 * @param deviceId
+	 * 			终端设备编号，由商户定义。
+	 * @param rawdata
+	 * 			初始化数据。由微信人脸SDK的接口返回。
+	 * @return SDK调用凭证
+	 * @throws WeixinException
+	 * @see <a href=
+	 * 		"https://pay.weixin.qq.com/wiki/doc/wxfacepay/develop/sdk-android.html#获取数据-getwxpayfacerawdata">
+	 *      获取数据-getwxpayfacerawdata</a>
+	 * @see <a href=
+	 *      "https://pay.weixin.qq.com/wiki/doc/wxfacepay/develop/sdk-android.html#获取调用凭证-get-wxpayface-authinfo">
+	 *      获取调用凭证-get-wxpayface-authinfo</a>
+	 * @see PayfaceAuthinfo
+	 */
+	public PayfaceAuthinfo getWxPayfaceAuthinfo(String storeId, String storeName, String deviceId,
+												String rawdata) throws WeixinException {
+		PayfaceAuthinfoRequest request = new PayfaceAuthinfoRequest(this.weixinPayAccount, storeId, storeName, deviceId,
+				rawdata);
+		return payApi.getWxPayfaceAuthinfo(request);
 	}
 
 	public final static String VERSION = Consts.VERSION;

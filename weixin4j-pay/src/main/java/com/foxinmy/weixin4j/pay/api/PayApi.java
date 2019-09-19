@@ -7,6 +7,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
 import com.foxinmy.weixin4j.pay.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfo;
+import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfoRequest;
 import com.foxinmy.weixin4j.pay.payment.mch.*;
 import com.foxinmy.weixin4j.pay.type.mch.BillType;
 import com.foxinmy.weixin4j.pay.type.mch.RefundAccountType;

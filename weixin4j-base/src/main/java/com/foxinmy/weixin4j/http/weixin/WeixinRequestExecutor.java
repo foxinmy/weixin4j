@@ -39,6 +39,7 @@ import com.foxinmy.weixin4j.logging.InternalLogLevel;
 import com.foxinmy.weixin4j.logging.InternalLogger;
 import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.StringUtil;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
@@ -218,10 +219,13 @@ public class WeixinRequestExecutor {
 			try {
 				XmlResult xmlResult = XmlMessageConverter.GLOBAL.convert(
 						XmlResult.class, response);
-				if (!SUCCESS_CODE.contains(String.format(",%s,", xmlResult
-						.getResultCode().toLowerCase()))) {
-					throw new WeixinException(xmlResult.getErrCode(),
-							xmlResult.getErrCodeDes());
+				// 微信最新的刷脸支付API中已没有返回resultCode，需做非空判断，否则抛异常
+				if(StringUtil.isNotBlank(xmlResult.getResultCode())) {
+					if (!SUCCESS_CODE.contains(String.format(",%s,", xmlResult
+							.getResultCode().toLowerCase()))) {
+						throw new WeixinException(xmlResult.getErrCode(),
+								xmlResult.getErrCodeDes());
+					}
 				}
 			} catch (IOException e) {
 				;

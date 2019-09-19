@@ -1,6 +1,7 @@
-package com.foxinmy.weixin4j.pay.payment.mch;
+package com.foxinmy.weixin4j.pay.payment.face;
 
 import com.foxinmy.weixin4j.pay.model.WeixinPayAccount;
+import com.foxinmy.weixin4j.pay.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.pay.type.SignType;
 import com.foxinmy.weixin4j.util.*;
 
@@ -47,6 +48,8 @@ public class PayfaceAuthinfoRequest {
      */
     private String rawdata;
 
+    private WeixinPaymentSignature paymentSignature;
+
     public PayfaceAuthinfoRequest(WeixinPayAccount account, String storeId, String storeName, String deviceId,
                                   String rawdata){
         this.payAccount = account;
@@ -54,6 +57,7 @@ public class PayfaceAuthinfoRequest {
         this.rawdata = rawdata;
         this.storeId = storeId;
         this.storeName = storeName;
+        this.paymentSignature = new WeixinPaymentSignature(account.getPaySignKey());
     }
 
     public void setAttach(String attach) {
@@ -108,8 +112,6 @@ public class PayfaceAuthinfoRequest {
         if(StringUtil.isNotBlank(attach)) {
             map.put("attach", attach);
         }
-        return DigestUtil.MD5(
-                String.format("%s&key=%s", MapUtil.toJoinString(map, false, true),
-                        payAccount.getPaySignKey())).toUpperCase();
+        return paymentSignature.sign(map);
     }
 }

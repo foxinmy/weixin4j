@@ -33,4 +33,12 @@ public class PayfaceAuthinfo extends MerchantResult {
      *     人脸支付凭证(getWxpayfaceCode)</a>
      */
     private String authinfo;
+
+    @Override
+    public String toString() {
+        return "PayfaceAuthinfo{" +
+                "expiresIn=" + expiresIn +
+                ", authinfo='" + authinfo + '\'' +
+                '}';
+    }
 }
