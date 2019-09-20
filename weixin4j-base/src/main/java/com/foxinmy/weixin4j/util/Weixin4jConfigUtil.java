@@ -2,6 +2,7 @@ package com.foxinmy.weixin4j.util;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 import com.alibaba.fastjson.JSON;
 import com.foxinmy.weixin4j.model.WeixinAccount;
@@ -111,5 +112,14 @@ public class Weixin4jConfigUtil {
             System.err.println("'weixin4j.account' key not found in weixin4j.properties.");
         }
         return account;
+    }
+
+    public static Level getJdkLoggerLevel(){
+        try {
+            Level level = Level.parse(getValue("jdkLogger.level", "OFF"));
+            return level;
+        }catch (IllegalArgumentException ex){
+            return Level.OFF;
+        }
     }
 }
