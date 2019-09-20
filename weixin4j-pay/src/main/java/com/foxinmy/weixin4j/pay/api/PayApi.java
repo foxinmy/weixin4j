@@ -80,19 +80,21 @@ public class PayApi extends MchApi {
 			throw new WeixinException("tradeType not be empty");
 		}
 		String tradeType = payPackage.getTradeType().toUpperCase();
-		if (TradeType.MICROPAY.name().equals(tradeType)) {
+		if (TradeType.MICROPAY.name().equals(tradeType) || TradeType.FACEPAY.name().equals(tradeType)) {
 			MchPayPackage _payPackage = new MchPayPackage(payPackage.getBody(),
-					payPackage.getDetail(), payPackage.getOutTradeNo(),
-					DateUtil.formatFee2Yuan(payPackage.getTotalFee()), null,
-					null, payPackage.getCreateIp(), null, null,
-					payPackage.getAuthCode(), null, payPackage.getAttach(),
-					null, null, payPackage.getGoodsTag(),
-					payPackage.getLimitPay(), payPackage.getSubAppId());
+						payPackage.getDetail(), payPackage.getOutTradeNo(),
+						DateUtil.formatFee2Yuan(payPackage.getTotalFee()), null,
+						null, payPackage.getCreateIp(), null, payPackage.getOpenId(),
+						payPackage.getAuthCode(), null, payPackage.getAttach(),
+						null, null, payPackage.getGoodsTag(),
+						payPackage.getLimitPay(), payPackage.getSubAppId(), payPackage.getFaceCode());
+
 			super.declareMerchant(_payPackage);
 			_payPackage.setSign(weixinSignature.sign(_payPackage));
 			String para = XmlStream.toXML(_payPackage);
-			WeixinResponse response = weixinExecutor.post(
-					getRequestUri("micropay_uri"), para);
+			String url = TradeType.MICROPAY.name().equals(tradeType) ? getRequestUri("micropay_uri") :
+					getRequestUri("facepay_url");
+			WeixinResponse response = weixinExecutor.post(url, para);
 			MICROPayRequest microPayRequest = response
 					.getAsObject(new TypeReference<MICROPayRequest>() {
 					});
@@ -788,5 +790,28 @@ public class PayApi extends MchApi {
 		WeixinResponse response = weixinExecutor.post(
 				getRequestUri("get_wxpayface_authinfo_uri"), request.toRequestString());
 		return response.getAsObject(new TypeReference<PayfaceAuthinfo>() {});
+	}
+
+	/**
+	 * 微信旧版刷脸支付
+	 *
+	 * @param faceCode
+	 * @param body
+	 * @param outTradeNo
+	 * @param totalFee
+	 * @param createIp
+	 * @param openId
+	 * @param attach
+	 * @return
+	 * @throws WeixinException
+	 */
+	public MchPayRequest createFacePayRequest(String faceCode, String body,
+											   String outTradeNo, double totalFee, String createIp, String openId,
+											  String attach) throws WeixinException {
+		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
+				totalFee, null, createIp, TradeType.FACEPAY, openId, null,
+				null, attach);
+		payPackage.setFaceCode(faceCode);
+		return createPayRequest(payPackage);
 	}
 }

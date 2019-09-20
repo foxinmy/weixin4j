@@ -4,6 +4,7 @@ import com.foxinmy.weixin4j.pay.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.pay.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.pay.type.SignType;
 import com.foxinmy.weixin4j.util.*;
+import com.foxinmy.weixin4j.xml.XmlStream;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class PayfaceAuthinfoRequest {
     }
 
     public String toRequestString(){
-        StringBuilder content = new StringBuilder();
+        /*StringBuilder content = new StringBuilder();
         content.append("<xml>");
         content.append(String.format("<appid>%s</appid>", payAccount.getId()));
         content.append(String.format("<mch_id>%s</mch_id>", payAccount.getMchId()));
@@ -87,11 +88,12 @@ public class PayfaceAuthinfoRequest {
         if(StringUtil.isNotBlank(attach)){
             content.append(String.format("<attach><![CDATA[%s]]></attach>", attach));
         }
-        content.append("</xml>");
-        return content.toString();
+        content.append("</xml>");*/
+        Map paramsMap = getRequestParam();
+        return XmlStream.map2xml(paramsMap);
     }
 
-    private String getRequestSign(){
+    private Map<String, String> getRequestParam(){
         Map<String, String> map = new HashMap<String, String>();
         map.put("appid", payAccount.getId());
         map.put("mch_id", payAccount.getMchId());
@@ -112,6 +114,9 @@ public class PayfaceAuthinfoRequest {
         if(StringUtil.isNotBlank(attach)) {
             map.put("attach", attach);
         }
-        return paymentSignature.sign(map);
+        String sign = paymentSignature.sign(map);
+        map.put("sign", sign);
+
+        return map;
     }
 }

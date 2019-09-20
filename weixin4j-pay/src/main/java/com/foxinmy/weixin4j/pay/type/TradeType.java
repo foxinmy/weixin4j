@@ -29,5 +29,9 @@ public enum TradeType {
     /**
      * WAP支付
      */
-    MWEB;
+    MWEB,
+    /**
+     * 刷脸支付
+     */
+    FACEPAY;
 }

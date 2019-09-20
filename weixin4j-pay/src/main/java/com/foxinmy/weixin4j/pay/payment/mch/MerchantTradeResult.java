@@ -44,7 +44,7 @@ public class MerchantTradeResult extends MerchantResult {
 	/**
 	 * 货币类型,符合 ISO 4217 标准的三位字母代码,默认人民币:CNY
 	 * 
-	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
+	 * @see com.foxinmy.weixin4j.pay.type.CurrencyType
 	 */
 	@XmlElement(name = "fee_type")
 	@JSONField(name = "fee_type")

@@ -77,6 +77,10 @@ public class MchPayPackage extends PayPackage {
 	@JSONField(name = "scene_info")
 	private String sceneInfo;
 
+	@XmlElement(name = "face_code")
+	@JSONField(name = "face_code")
+	private String faceCode;
+
 	protected MchPayPackage() {
 		// jaxb required
 	}
@@ -110,7 +114,7 @@ public class MchPayPackage extends PayPackage {
 			String openId, String authCode, String productId, String attach) {
 		this(body, null, outTradeNo, totalFee, CurrencyType.CNY, notifyUrl,
 				createIp, tradeType, openId, authCode, productId, attach, null,
-				null, null, null, null);
+				null, null, null, null, null);
 	}
 
 	/**
@@ -151,12 +155,14 @@ public class MchPayPackage extends PayPackage {
 	 * @param subOpenId
 	 *            用户在子商户appid下的唯一标识 非必填
 	 *            openid和sub_openid可以选传其中之一，如果选择传sub_openid ,则必须传sub_appid
+	 * @param faceCode
+	 * 			  人脸凭证，用于旧版刷脸支付。
 	 */
 	public MchPayPackage(String body, String detial, String outTradeNo,
 			double totalFee, CurrencyType feeType, String notifyUrl,
 			String createIp, TradeType tradeType, String openId,
 			String authCode, String productId, String attach, Date timeStart,
-			Date timeExpire, String goodsTag, String limitPay, String subOpenId) {
+			Date timeExpire, String goodsTag, String limitPay, String subOpenId, String faceCode) {
 		super(body, detial, outTradeNo, totalFee, notifyUrl, createIp, attach,
 				timeStart, timeExpire, goodsTag);
 		this.tradeType = tradeType != null ? tradeType.name() : null;
@@ -167,6 +173,7 @@ public class MchPayPackage extends PayPackage {
 		this.productId = productId;
 		this.limitPay = limitPay;
 		this.subOpenId = subOpenId;
+		this.faceCode = faceCode;
 	}
 
 	public String getTradeType() {
@@ -211,6 +218,14 @@ public class MchPayPackage extends PayPackage {
 
 	public void setSceneInfo(String sceneInfo) {
 		this.sceneInfo = sceneInfo;
+	}
+
+	public String getFaceCode() {
+		return faceCode;
+	}
+
+	public void setFaceCode(String faceCode) {
+		this.faceCode = faceCode;
 	}
 
 	@Override

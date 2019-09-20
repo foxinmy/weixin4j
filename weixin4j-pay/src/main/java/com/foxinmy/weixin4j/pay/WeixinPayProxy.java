@@ -385,6 +385,39 @@ public class WeixinPayProxy {
 	}
 
 	/**
+	 * 旧版刷脸支付接口
+	 *
+	 * @param faceCode
+	 * 			人脸凭证
+	 * @param body
+	 * 			商品或支付单简要描述，格式要求：门店品牌名-城市分店名-实际商品名称
+	 * @param outTradeNo
+	 * 			商户系统内部的订单号,32个字符内、可包含字母；更换授权码必须要换新的商户订单号
+	 * @param totalFee
+	 * 			订单总金额，单位为分，只能为整数
+	 * @param createIp
+	 * 			调用微信支付API的机器IP
+	 * @param openId
+	 * 			用户在商户appid 下的唯一标识
+	 * @param attach
+	 * 			附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
+	 * @return
+	 * @throws WeixinException
+	 * @see <a href=
+	 * 		"https://pay.weixin.qq.com/wiki/doc/wxfacepay/develop/backend.html#刷脸支付后端接口">
+	 * 		刷脸支付后端接口</a>
+	 * @see <a href=
+	 * 		"https://pay.weixin.qq.com/wiki/doc/wxfacepay/develop/sdk-android.html#人脸支付凭证-getwxpayfacecode"
+	 * 		获取人脸支付凭证</a>
+	 */
+	public MchPayRequest createFacePayRequest(String faceCode, String body,
+											  String outTradeNo, double totalFee, String createIp, String openId,
+											  String attach) throws WeixinException {
+		return payApi.createFacePayRequest(faceCode, body, outTradeNo,
+				totalFee, createIp, openId, attach);
+	}
+
+	/**
 	 * 订单查询
 	 * <p>
 	 * 当商户后台、网络、服务器等出现异常，商户系统最终未接收到支付通知；</br> 调用支付接口后，返回系统错误或未知交易状态情况；</br>
