@@ -47,7 +47,7 @@ public class QrCodeApi extends TokenManagerApi {
 	 * @return image bytes of WXA code.
 	 * @throws WeixinException indicates getting access token failed or getting WXA code failed.
 	 *
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/qr-code/getWXACode.html">获取小程序码</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.get.html">获取小程序码</a>
 	 */
 	public byte[] getWxaCode(
 		String path,
@@ -96,7 +96,7 @@ public class QrCodeApi extends TokenManagerApi {
 	 * @return image bytes of WXA code.
 	 * @throws WeixinException indicates getting access token failed or getting WXA code failed.
 	 *
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/qr-code/getWXACodeUnlimit.html">获取小程序码</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html">获取小程序码</a>
 	 */
 	public byte[] getWxaCodeUnlimit(
 		String scene,
@@ -125,7 +125,7 @@ public class QrCodeApi extends TokenManagerApi {
 	 * @return image bytes of WXA QR code.
 	 * @throws WeixinException indicates getting access token failed or getting WXA QR code failed.
 	 *
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/qr-code/createWXAQRCode.html">获取小程序二维码</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.createQRCode.html">获取小程序二维码</a>
 	 */
 	public byte[] createWxaQrCode(
 		String path,
