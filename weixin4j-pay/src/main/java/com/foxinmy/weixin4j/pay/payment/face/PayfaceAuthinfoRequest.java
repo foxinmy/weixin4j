@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @className PayfaceAuthinfoRequest
  * @author kit(kit_21cn@21cn.com)
- * @date 2015年12月25日
+ * @date 2019年9月18日
  * @since JDK 1.6
  * @see <a href="https://pay.weixin.qq.com/wiki/doc/wxfacepay/develop/sdk-android.html#获取调用凭证-get-wxpayface-authinfo">
  *     获取调用凭证-get-wxpayface-authinfo</a>

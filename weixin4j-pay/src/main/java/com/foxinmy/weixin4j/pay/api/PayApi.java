@@ -10,6 +10,7 @@ import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfo;
 import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfoRequest;
 import com.foxinmy.weixin4j.pay.payment.mch.*;
 import com.foxinmy.weixin4j.pay.type.mch.BillType;
+import com.foxinmy.weixin4j.pay.type.mch.DepositType;
 import com.foxinmy.weixin4j.pay.type.mch.RefundAccountType;
 import com.foxinmy.weixin4j.pay.type.*;
 import com.foxinmy.weixin4j.util.*;
@@ -87,17 +88,28 @@ public class PayApi extends MchApi {
 						null, payPackage.getCreateIp(), null, payPackage.getOpenId(),
 						payPackage.getAuthCode(), null, payPackage.getAttach(),
 						null, null, payPackage.getGoodsTag(),
-						payPackage.getLimitPay(), payPackage.getSubAppId(), payPackage.getFaceCode());
-
+						payPackage.getLimitPay(), payPackage.getSubAppId(), payPackage.getFaceCode(),
+						payPackage.getDeposit());
+			// 默认为MD5签名
+			SignType signType= SignType.MD5;
 			super.declareMerchant(_payPackage);
-			_payPackage.setSign(weixinSignature.sign(_payPackage));
+			// 默认为刷卡支付（付款码支付）的API地址
+			String url = getRequestUri("micropay_uri");
+			if(payPackage.getDeposit()==DepositType.Y){
+				// 押金支付只支持HMAC-SHA256签名
+				signType = SignType.HMAC$SHA256;
+				_payPackage.setSignType("HMAC-SHA256");
+				// 如果是押金支付，改为押金支付的API地址
+				url = TradeType.MICROPAY.name().equals(tradeType) ? getRequestUri("deposit_micropay_uri") :
+						getRequestUri("deposit_facepay_uri");
+			}else if(TradeType.FACEPAY.name().equals(tradeType)){
+				url = getRequestUri("facepay_url");
+			}
+			_payPackage.setSign(weixinSignature.sign(_payPackage, signType));
 			String para = XmlStream.toXML(_payPackage);
-			String url = TradeType.MICROPAY.name().equals(tradeType) ? getRequestUri("micropay_uri") :
-					getRequestUri("facepay_url");
+
 			WeixinResponse response = weixinExecutor.post(url, para);
-			MICROPayRequest microPayRequest = response
-					.getAsObject(new TypeReference<MICROPayRequest>() {
-					});
+			MICROPayRequest microPayRequest = response.getAsObject(new TypeReference<MICROPayRequest>() {});
 			microPayRequest.setPaymentAccount(weixinAccount);
 			return microPayRequest;
 		}
@@ -145,42 +157,6 @@ public class PayApi extends MchApi {
 				totalFee, notifyUrl, createIp, TradeType.JSAPI, openId, null,
 				null, attach);
 		return createPayRequest(payPackage);
-	}
-
-	/**
-	 * <p>
-	 * 生成编辑地址请求
-	 * </p>
-	 *
-	 * err_msg edit_address:ok获取编辑收货地址成功</br> edit_address:fail获取编辑收货地址失败</br>
-	 * userName 收货人姓名</br> telNumber 收货人电话</br> addressPostalCode 邮编</br>
-	 * proviceFirstStageName 国标收货地址第一级地址</br> addressCitySecondStageName
-	 * 国标收货地址第二级地址</br> addressCountiesThirdStageName 国标收货地址第三级地址</br>
-	 * addressDetailInfo 详细收货地址信息</br> nationalCode 收货地址国家码</br>
-	 *
-	 * @param url
-	 *            当前访问页的URL
-	 * @param oauthToken
-	 *            oauth授权时产生的token
-	 * @see <a href=
-	 *      "https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_8&index=7">
-	 *      收货地址共享</a>
-	 * @return 编辑地址请求JSON串
-	 */
-	public String createAddressRequestJSON(String url, String oauthToken) {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("appId", weixinAccount.getId());
-		map.put("timeStamp", DateUtil.timestamp2string());
-		map.put("nonceStr", RandomUtil.generateString(16));
-		map.put("url", url);
-		map.put("accessToken", oauthToken);
-		String sign = DigestUtil.SHA1(MapUtil.toJoinString(map, false, true));
-		map.remove("url");
-		map.remove("accessToken");
-		map.put("scope", "jsapi_address");
-		map.put("signType", SignType.SHA1.name().toLowerCase());
-		map.put("addrSign", sign);
-		return JSON.toJSONString(map);
 	}
 
 	/**
@@ -813,5 +789,27 @@ public class PayApi extends MchApi {
 				null, attach);
 		payPackage.setFaceCode(faceCode);
 		return createPayRequest(payPackage);
+	}
+
+	public MchPayRequest createDepositPayRequest(String code, String body, String outTradeNo, double totalFee,
+												 String createIp, String openId, String attach, SceneInfoStore store,
+												 boolean isFacePay) throws WeixinException {
+		MchPayPackage payPackage;
+		if(isFacePay) {
+			payPackage = new MchPayPackage(body, outTradeNo, totalFee, null, createIp, TradeType.FACEPAY,
+					openId, null, null, attach);
+			payPackage.setFaceCode(code);
+			payPackage.setDeposit(DepositType.Y);
+			return createPayRequest(payPackage);
+		}else{
+			payPackage = new MchPayPackage(body, outTradeNo, totalFee, null, createIp, TradeType.MICROPAY,
+					openId, code, null, attach);
+			payPackage.setDeposit(DepositType.Y);
+			if (store != null) {
+				payPackage.setSceneInfo(String.format("{\"store_info\":\"%s\"}",
+						JSON.toJSONString(store)));
+			}
+			return createPayRequest(payPackage);
+		}
 	}
 }

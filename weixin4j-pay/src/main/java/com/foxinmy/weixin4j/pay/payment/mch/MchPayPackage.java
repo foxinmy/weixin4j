@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.pay.payment.PayPackage;
 import com.foxinmy.weixin4j.pay.type.CurrencyType;
 import com.foxinmy.weixin4j.pay.type.TradeType;
+import com.foxinmy.weixin4j.pay.type.mch.DepositType;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -76,10 +77,18 @@ public class MchPayPackage extends PayPackage {
 	@XmlElement(name = "scene_info")
 	@JSONField(name = "scene_info")
 	private String sceneInfo;
-
+	/**
+	 * 人脸凭证，用于旧版人脸支付。
+	 */
 	@XmlElement(name = "face_code")
 	@JSONField(name = "face_code")
 	private String faceCode;
+	/**
+	 * 是否押金人脸支付，Y-是,N-普通人脸支付
+	 */
+	@XmlElement(name = "deposit")
+	@JSONField(name = "deposit")
+	private DepositType deposit;
 
 	protected MchPayPackage() {
 		// jaxb required
@@ -114,7 +123,7 @@ public class MchPayPackage extends PayPackage {
 			String openId, String authCode, String productId, String attach) {
 		this(body, null, outTradeNo, totalFee, CurrencyType.CNY, notifyUrl,
 				createIp, tradeType, openId, authCode, productId, attach, null,
-				null, null, null, null, null);
+				null, null, null, null, null, null);
 	}
 
 	/**
@@ -157,12 +166,15 @@ public class MchPayPackage extends PayPackage {
 	 *            openid和sub_openid可以选传其中之一，如果选择传sub_openid ,则必须传sub_appid
 	 * @param faceCode
 	 * 			  人脸凭证，用于旧版刷脸支付。
+	 * @param depositType
+	 * 			  是否押金支付
 	 */
 	public MchPayPackage(String body, String detial, String outTradeNo,
 			double totalFee, CurrencyType feeType, String notifyUrl,
 			String createIp, TradeType tradeType, String openId,
 			String authCode, String productId, String attach, Date timeStart,
-			Date timeExpire, String goodsTag, String limitPay, String subOpenId, String faceCode) {
+			Date timeExpire, String goodsTag, String limitPay, String subOpenId, String faceCode,
+			DepositType depositType) {
 		super(body, detial, outTradeNo, totalFee, notifyUrl, createIp, attach,
 				timeStart, timeExpire, goodsTag);
 		this.tradeType = tradeType != null ? tradeType.name() : null;
@@ -174,6 +186,7 @@ public class MchPayPackage extends PayPackage {
 		this.limitPay = limitPay;
 		this.subOpenId = subOpenId;
 		this.faceCode = faceCode;
+		this.deposit = depositType;
 	}
 
 	public String getTradeType() {
@@ -228,12 +241,27 @@ public class MchPayPackage extends PayPackage {
 		this.faceCode = faceCode;
 	}
 
+	public DepositType getDeposit() {
+		return deposit;
+	}
+
+	public void setDeposit(DepositType deposit) {
+		this.deposit = deposit;
+	}
+
 	@Override
 	public String toString() {
-		return "MchPayPackage [tradeType=" + tradeType + ",feeType=" + feeType
-				+ ", openId=" + openId + ", productId=" + productId
-				+ ", authCode=" + authCode + ", limitPay=" + limitPay
-				+ ", subOpenId=" + subOpenId + ", sceneInfo=" + sceneInfo
-				+ ", " + super.toString() + "]";
+		return "MchPayPackage{" +
+				"tradeType='" + tradeType + '\'' +
+				", feeType='" + feeType + '\'' +
+				", openId='" + openId + '\'' +
+				", productId='" + productId + '\'' +
+				", authCode='" + authCode + '\'' +
+				", limitPay='" + limitPay + '\'' +
+				", subOpenId='" + subOpenId + '\'' +
+				", sceneInfo='" + sceneInfo + '\'' +
+				", faceCode='" + faceCode + '\'' +
+				", deposit=" + deposit +
+				'}';
 	}
 }

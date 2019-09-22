@@ -1,7 +1,10 @@
 package com.foxinmy.weixin4j.pay.sign;
 
+import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.pay.type.SignType;
 import com.foxinmy.weixin4j.util.DigestUtil;
+
+import java.security.InvalidKeyException;
 
 /**
  * 微信支付签名实现
@@ -24,13 +27,26 @@ public class WeixinPaymentSignature extends AbstractWeixinSignature {
 	}
 
 	@Override
-	public SignType getSignType() {
-		return SignType.MD5;
-	}
-
-	@Override
 	public String sign(Object obj) {
 		StringBuilder sb = join(obj).append("&key=").append(paySignKey);
 		return DigestUtil.MD5(sb.toString()).toUpperCase();
+	}
+
+	@Override
+	public String sign(Object obj, SignType signType) {
+		if(signType==null){
+			return sign(obj);
+		}
+		switch (signType){
+			case HMAC$SHA256:
+				StringBuilder sb = join(obj).append("&key=").append(paySignKey);
+				try {
+					return DigestUtil.HMACSHA256(sb.toString(), paySignKey).toUpperCase();
+				}catch (InvalidKeyException e){
+					throw new RuntimeException("商户支付密钥有误", e);
+				}
+			default:
+				return sign(obj);
+		}
 	}
 }

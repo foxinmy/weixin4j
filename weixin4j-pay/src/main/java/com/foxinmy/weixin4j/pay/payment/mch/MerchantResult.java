@@ -2,7 +2,7 @@ package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.foxinmy.weixin4j.type.SignType;
+import com.foxinmy.weixin4j.pay.type.SignType;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -133,12 +133,6 @@ public class MerchantResult extends XmlResult {
 
 	public String getSignType() {
 		return signType;
-	}
-
-	@JSONField(serialize = false)
-	public SignType getFormatSignType() {
-		return signType != null ? SignType.valueOf(signType.toUpperCase())
-				: null;
 	}
 
 	public void setSignType(String signType) {

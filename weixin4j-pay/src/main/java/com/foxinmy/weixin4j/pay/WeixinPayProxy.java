@@ -168,31 +168,6 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * <p>
-	 * 生成编辑地址请求
-	 * </p>
-	 *
-	 * err_msg edit_address:ok获取编辑收货地址成功</br> edit_address:fail获取编辑收货地址失败</br>
-	 * userName 收货人姓名</br> telNumber 收货人电话</br> addressPostalCode 邮编</br>
-	 * proviceFirstStageName 国标收货地址第一级地址</br> addressCitySecondStageName
-	 * 国标收货地址第二级地址</br> addressCountiesThirdStageName 国标收货地址第三级地址</br>
-	 * addressDetailInfo 详细收货地址信息</br> nationalCode 收货地址国家码</br>
-	 *
-	 * @param url
-	 *            当前访问页的URL
-	 * @param oauthToken
-	 *            oauth授权时产生的token
-	 * @see PayApi
-	 * @see <a href=
-	 *      "https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_8&index=7">
-	 *      收货地址共享</a>
-	 * @return 编辑地址请求JSON串
-	 */
-	public String createAddressRequestJSON(String url, String oauthToken) {
-		return payApi.createAddressRequestJSON(url, oauthToken);
-	}
-
-	/**
 	 * 创建Native支付(扫码支付)链接【模式一】
 	 *
 	 * @param productId
@@ -394,7 +369,7 @@ public class WeixinPayProxy {
 	 * @param outTradeNo
 	 * 			商户系统内部的订单号,32个字符内、可包含字母；更换授权码必须要换新的商户订单号
 	 * @param totalFee
-	 * 			订单总金额，单位为分，只能为整数
+	 * 			订单总金额，单位元
 	 * @param createIp
 	 * 			调用微信支付API的机器IP
 	 * @param openId
@@ -415,6 +390,37 @@ public class WeixinPayProxy {
 											  String attach) throws WeixinException {
 		return payApi.createFacePayRequest(faceCode, body, outTradeNo,
 				totalFee, createIp, openId, attach);
+	}
+
+	/**
+	 * 押金支付请求
+	 *
+	 * @param code
+	 * 			授权码/人脸凭证
+	 * @param body
+	 * 			商品或支付单简要描述，格式要求：门店品牌名-城市分店名-实际商品名称
+	 * @param outTradeNo
+	 * 			商户系统内部的订单号,32个字符内、可包含字母；更换授权码必须要换新的商户订单号
+	 * @param totalFee
+	 * 			订单总金额，单位元
+	 * @param createIp
+	 * 			调用微信支付API的机器IP
+	 * @param openId
+	 * 			用户在商户appid 下的唯一标识，人脸支付押金时提供
+	 * @param attach
+	 * 			附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据，非必填
+	 * @param store
+	 * 			门店信息，仅在付款码支付押金时提供，非必填
+	 * @param isFacePay
+	 * 			是否人脸押金支付，否则是付款码押金支付
+	 * @return
+	 * @throws WeixinException
+	 */
+	public MchPayRequest createDepositPayRequest(String code, String body,
+												 String outTradeNo, double totalFee, String createIp, String openId,
+												 String attach, SceneInfoStore store, boolean isFacePay) throws WeixinException{
+
+		return payApi.createDepositPayRequest(code, body, outTradeNo, totalFee, createIp, openId, attach, store, isFacePay);
 	}
 
 	/**

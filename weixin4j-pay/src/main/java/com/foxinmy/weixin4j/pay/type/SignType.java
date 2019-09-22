@@ -10,5 +10,5 @@ package com.foxinmy.weixin4j.pay.type;
  * @see
  */
 public enum SignType {
-	SHA1, MD5, HMAC$SHA256
+	MD5, HMAC$SHA256
 }

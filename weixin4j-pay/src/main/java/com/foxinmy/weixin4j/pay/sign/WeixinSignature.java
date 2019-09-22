@@ -17,27 +17,29 @@ public interface WeixinSignature {
 	 *
 	 * @return
 	 */
-	public boolean encoder();
+	boolean encoder();
 
 	/**
 	 * 是否转换小写
 	 *
 	 * @return
 	 */
-	public boolean lowerCase();
+	boolean lowerCase();
 
 	/**
-	 * 签名类型
-	 *
-	 * @return
-	 */
-	public SignType getSignType();
-
-	/**
-	 * 签名
+	 * 签名（默认的MD5签名）
 	 *
 	 * @param obj
 	 * @return
 	 */
-	public String sign(Object obj);
+	String sign(Object obj);
+
+	/**
+	 * 签名（指定签名算法）
+	 *
+	 * @param obj
+	 * @param signType
+	 * @return
+	 */
+	String sign(Object obj, SignType signType);
 }
