@@ -32,7 +32,7 @@ public class TemplateMessageApi extends TokenManagerApi {
 	 * @param data 模板内容，不填则下发空模板。
 	 * @param emphasisKeyword 模板需要放大的关键词，不填则默认无放大。
 	 * @throws WeixinException indicates getting access token failed, or sending template message failed.
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/template-message/sendTemplateMessage.html">发送模板消息</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/template-message/templateMessage.send.html">发送模板消息</a>
 	 */
 	public void sendTemplateMessage(
 		final String toUser,

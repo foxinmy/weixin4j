@@ -33,7 +33,7 @@ public class TemplateApi extends TokenManagerApi {
 	 * @param pageable the pagination information.
 	 * @return templates in library.
 	 * @throws WeixinException indicates getting access token failed or getting templates failed.
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/template-message/getTemplateLibraryList.html">获取小程序模板库标题列表</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/template-message/templateMessage.getTemplateLibraryList.html">获取小程序模板库标题列表</a>
 	 */
 	public Pagedata<Template> getTemplatesInLibrary(final Pageable pageable) throws WeixinException {
 		final TemplateListResult r = post(
@@ -50,7 +50,7 @@ public class TemplateApi extends TokenManagerApi {
 	 * @param id 模板标题id，可通过接口获取，也可登录小程序后台查看获取
 	 * @return the template in library with specified ID.
 	 * @throws WeixinException indicates getting access token failed or getting template failed.
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/template-message/getTemplateLibraryById.html">获取模板库某个模板标题下关键词库</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/template-message/templateMessage.getTemplateLibraryById.html">获取模板库某个模板标题下关键词库</a>
 	 */
 	public Template getTemplateInLibrary(String id) throws WeixinException {
 		final Map<String, String> params = new HashMap<String, String>(1);
@@ -70,7 +70,7 @@ public class TemplateApi extends TokenManagerApi {
 	 * @param keywordIds 开发者自行组合好的模板关键词列表，关键词顺序可以自由搭配（例如[3,5,4]或[4,5,3]），最多支持10个关键词组合
 	 * @return the added template ID.
 	 * @throws WeixinException indicates getting access token failed or adding template failed.
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/template-message/addTemplate.html">组合模板并添加至帐号下的个人模板库</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/template-message/templateMessage.addTemplate.html">组合模板并添加至帐号下的个人模板库</a>
 	 */
 	public String addTemplate(String id, int[] keywordIds) throws WeixinException {
 		final AddTemplateParameter params = new AddTemplateParameter(id, keywordIds);
@@ -88,7 +88,7 @@ public class TemplateApi extends TokenManagerApi {
 	 * @param pageable the pagination information.
 	 * @return the templates.
 	 * @throws WeixinException indicates getting access token failed or getting template failed.
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/template-message/getTemplateList.html">获取帐号下已存在的模板列表</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/template-message/templateMessage.getTemplateList.html">获取帐号下已存在的模板列表</a>
 	 */
 	public List<Template> getTemplates(final Pageable pageable) throws WeixinException {
 		final TemplateListResult r = post(
@@ -104,7 +104,7 @@ public class TemplateApi extends TokenManagerApi {
 	 *
 	 * @param id 要删除的模板id
 	 * @throws WeixinException indicates getting access token failed or deleting template failed.
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/template-message/deleteTemplate.html">删除帐号下的某个模板</a>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/template-message/templateMessage.deleteTemplate.html">删除帐号下的某个模板</a>
 	 */
 	public void deleteTemplate(String id) throws WeixinException {
 		final Map<String, String> params = new HashMap<String, String>(1);
