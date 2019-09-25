@@ -52,43 +52,17 @@ public class PayfaceAuthinfoRequest {
     private WeixinPaymentSignature paymentSignature;
 
     public PayfaceAuthinfoRequest(WeixinPayAccount account, String storeId, String storeName, String deviceId,
-                                  String rawdata){
+                                  String attach, String rawdata){
         this.payAccount = account;
         this.deviceId = deviceId;
         this.rawdata = rawdata;
         this.storeId = storeId;
         this.storeName = storeName;
+        this.attach = attach;
         this.paymentSignature = new WeixinPaymentSignature(account.getPaySignKey());
     }
 
-    public void setAttach(String attach) {
-        this.attach = attach;
-    }
-
     public String toRequestString(){
-        /*StringBuilder content = new StringBuilder();
-        content.append("<xml>");
-        content.append(String.format("<appid>%s</appid>", payAccount.getId()));
-        content.append(String.format("<mch_id>%s</mch_id>", payAccount.getMchId()));
-        if(StringUtil.isNotBlank(payAccount.getSubId())){
-            content.append(String.format("<sub_appid>%s</sub_appid>", payAccount.getSubId()));
-        }
-        if(StringUtil.isNotBlank(payAccount.getSubMchId())){
-            content.append(String.format("<sub_mch_id>%s</sub_mch_id>", payAccount.getSubMchId()));
-        }
-        content.append(String.format("<now>%s</now>", now));
-        content.append("<version>1</version>");
-        content.append(String.format("<sign_type>%s</sign_type>", SignType.MD5.name()));
-        content.append(String.format("<nonce_str>%s</nonce_str>", nonceStr));
-        content.append(String.format("<sign>%s</sign>", getRequestSign()));
-        content.append(String.format("<store_id>%s</store_id>", storeId));
-        content.append(String.format("<store_name>%s</store_name>", storeName));
-        content.append(String.format("<device_id>%s</device_id>", deviceId));
-        content.append(String.format("<rawdata>%s</rawdata>", rawdata));
-        if(StringUtil.isNotBlank(attach)){
-            content.append(String.format("<attach><![CDATA[%s]]></attach>", attach));
-        }
-        content.append("</xml>");*/
         Map paramsMap = getRequestParam();
         return XmlStream.map2xml(paramsMap);
     }

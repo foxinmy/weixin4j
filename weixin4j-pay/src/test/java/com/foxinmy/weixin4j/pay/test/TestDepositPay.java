@@ -1,31 +1,26 @@
 package com.foxinmy.weixin4j.pay.test;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.pay.WeixinPayProxy;
 import com.foxinmy.weixin4j.pay.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.pay.payment.mch.MchPayRequest;
-import com.foxinmy.weixin4j.pay.type.mch.DepositType;
 import org.junit.Test;
 
-public class TestFacePay {
+public class TestDepositPay {
     @Test
     public void test() throws WeixinException {
         String appid = "";
         String mchid = "";
         String paySignKey = "";
+        String code = "";
+        boolean isFacePay = false; //true - 人脸押金支付，false - 付款码押金支付
+
         WeixinPayAccount payAccount = new WeixinPayAccount(appid, paySignKey, mchid);
+        payAccount.setSubMchId(mchid);
         WeixinPayProxy proxy = new WeixinPayProxy(payAccount);
 
-        String orderNo = "TESTORDER2019092001";
-        String openId = "oguJRswolIOGg7Vd1VaqGJuDBFAE";
-        String faceCode = "0f879a6c-5fff-421c-a233-5fac0f4aad12";
-
-        MchPayRequest rsp = proxy.createFacePayRequest(faceCode, "测试的人脸支付",
-                orderNo, 1,
-                "127.0.0.1", openId, null);
-
-        JSONObject obj = (JSONObject) JSON.toJSON(rsp);
+        MchPayRequest payRequest = proxy.createDepositPayRequest(code, "测试押金支付", "TESTORDER20190921001", 0.01,
+                "127.0.0.1", null, null, null, isFacePay);
+        System.out.println(payRequest.toRequestString());
     }
 }

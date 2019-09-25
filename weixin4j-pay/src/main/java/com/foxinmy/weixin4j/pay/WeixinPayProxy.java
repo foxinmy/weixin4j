@@ -865,6 +865,8 @@ public class WeixinPayProxy {
 	 * 			门店名称，由商户定义。（可用于展示）
 	 * @param deviceId
 	 * 			终端设备编号，由商户定义。
+	 * @param attach
+	 * 			附加字段。字段格式使用Json, 非必填
 	 * @param rawdata
 	 * 			初始化数据。由微信人脸SDK的接口返回。
 	 * @return SDK调用凭证
@@ -878,9 +880,9 @@ public class WeixinPayProxy {
 	 * @see PayfaceAuthinfo
 	 */
 	public PayfaceAuthinfo getWxPayfaceAuthinfo(String storeId, String storeName, String deviceId,
-												String rawdata) throws WeixinException {
+												String attach, String rawdata) throws WeixinException {
 		PayfaceAuthinfoRequest request = new PayfaceAuthinfoRequest(this.weixinPayAccount, storeId, storeName, deviceId,
-				rawdata);
+				attach,  rawdata);
 		return payApi.getWxPayfaceAuthinfo(request);
 	}
 
