@@ -15,7 +15,9 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  * @date 2016年3月27日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class CustomsOrderRecord extends MerchantResult {
 
 	private static final long serialVersionUID = -1675090110657154049L;

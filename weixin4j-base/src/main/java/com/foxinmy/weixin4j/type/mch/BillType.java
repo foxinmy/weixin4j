@@ -8,7 +8,9 @@ package com.foxinmy.weixin4j.type.mch;
  * @date 2014年10月31日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum BillType {
 	/**
 	 * 全部

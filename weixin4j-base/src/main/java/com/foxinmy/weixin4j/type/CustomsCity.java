@@ -8,7 +8,9 @@ package com.foxinmy.weixin4j.type;
  * @date 2016年3月27日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum CustomsCity {
 	NO("无需上报海关"), GUANGZHOU("广州"), HANGZHOU("杭州"), NINGBO("宁波"), ZHENGZHOU_BS(
 			"郑州（保税物流中心）"), CHONGQING("重庆"), XIAN("西安"), SHANGHAI("上海"), ZHENGZHOU_ZH(

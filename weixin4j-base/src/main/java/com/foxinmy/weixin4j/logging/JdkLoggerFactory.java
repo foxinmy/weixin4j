@@ -16,6 +16,10 @@
 package com.foxinmy.weixin4j.logging;
 
 
+import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
+
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -27,6 +31,15 @@ public class JdkLoggerFactory extends InternalLoggerFactory {
 
     @Override
     public InternalLogger newInstance(String name) {
-        return new JdkLogger(Logger.getLogger(name));
+        Logger logger = Logger.getLogger(name);
+        Level level = Weixin4jConfigUtil.getJdkLoggerLevel();
+        logger.setLevel(level);
+        if(logger.getHandlers().length==0) {
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(level);
+            logger.addHandler(consoleHandler);
+        }
+
+        return new JdkLogger(logger);
     }
 }

@@ -27,7 +27,9 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @date 2016年3月26日
  * @since JDK 1.6
  * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/index.html">商户支付平台</a>
+ * @deprecated 商户平台API迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class MchApi extends BaseApi {
 
     private final static ResourceBundle WEIXIN_BUNDLE;

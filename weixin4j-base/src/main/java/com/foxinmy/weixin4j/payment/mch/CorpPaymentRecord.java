@@ -19,7 +19,9 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @date 2015年6月23日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CorpPaymentRecord extends MerchantResult {

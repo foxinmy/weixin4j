@@ -18,7 +18,9 @@ import com.foxinmy.weixin4j.type.mch.CouponType;
  * @date 2015年3月24日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OrderCouponInfo implements Serializable {

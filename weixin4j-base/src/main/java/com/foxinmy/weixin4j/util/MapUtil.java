@@ -29,8 +29,6 @@ public class MapUtil {
 	 *            是否编码
 	 * @param lowerCase
 	 *            是否转换小写
-	 * @param extra
-	 *            附加对象
 	 * @return
 	 */
 	public static String toJoinString(Object object, boolean encoder,

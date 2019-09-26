@@ -8,7 +8,9 @@ package com.foxinmy.weixin4j.type.mch;
  * @date 2015年3月27日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum CouponStockStatus {
 	/**
 	 * 未激活

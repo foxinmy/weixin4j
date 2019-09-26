@@ -8,7 +8,9 @@ package com.foxinmy.weixin4j.type;
  * @date 2014年11月2日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum TradeState {
 	/**
 	 * 支付成功

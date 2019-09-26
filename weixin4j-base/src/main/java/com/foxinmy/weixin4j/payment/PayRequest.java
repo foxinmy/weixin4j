@@ -10,6 +10,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.util.RandomUtil;
 
+@Deprecated
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PayRequest extends PayBaseInfo {

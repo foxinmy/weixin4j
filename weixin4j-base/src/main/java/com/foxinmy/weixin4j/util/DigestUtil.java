@@ -1,5 +1,8 @@
 package com.foxinmy.weixin4j.util;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -56,5 +59,27 @@ public final class DigestUtil {
 	public static String MD5(String content) {
 		byte[] data = StringUtil.getBytesUtf8(content);
 		return HexUtil.encodeHexString(getDigest(Consts.MD5).digest(data));
+	}
+
+	/**
+	 * HMAC-SHA256签名
+	 *
+	 * @param content
+	 * 			待签名字符串
+	 * @param key
+	 * 			支付密钥
+	 * @return
+	 * @throws InvalidKeyException
+	 */
+	public static String HMACSHA256(String content, String key) throws InvalidKeyException{
+		try {
+			Mac mac = Mac.getInstance("HmacSHA256");
+			SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
+			mac.init(secret_key);
+			byte[] bytes = mac.doFinal(content.getBytes());
+			return HexUtil.encodeHexString(bytes);
+		} catch (NoSuchAlgorithmException e) {
+		}
+		return null;
 	}
 }

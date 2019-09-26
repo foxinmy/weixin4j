@@ -21,7 +21,9 @@ import com.foxinmy.weixin4j.util.MapUtil;
  * @see com.foxinmy.weixin4j.payment.PayRequest
  * @see <a href=
  *      "https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1">APP支付</a>
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class APPPayRequest extends AbstractPayRequest {
     public APPPayRequest(String prePayId, WeixinPayAccount payAccount) {
         super(prePayId, payAccount);
