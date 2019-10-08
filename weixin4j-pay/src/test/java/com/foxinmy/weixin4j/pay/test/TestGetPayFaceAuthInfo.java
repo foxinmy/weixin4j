@@ -17,7 +17,7 @@ public class TestGetPayFaceAuthInfo {
 
         WeixinPayAccount payAccount = new WeixinPayAccount(appid, paySignKey, mchid);
         WeixinPayProxy proxy = new WeixinPayProxy(payAccount);
-        PayfaceAuthinfo info = proxy.getWxPayfaceAuthinfo("TEST01", "甘坑客家小镇", "TESTDEVICE01", rawData);
+        PayfaceAuthinfo info = proxy.getWxPayfaceAuthinfo("TEST01", "甘坑客家小镇", "TESTDEVICE01", null, rawData);
         System.out.print(info);
         Assert.assertEquals("SUCCESS", info.getReturnCode());
     }
