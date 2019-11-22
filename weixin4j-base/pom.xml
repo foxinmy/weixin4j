@@ -76,5 +76,12 @@
 			<artifactId>bcprov-jdk16</artifactId>
 			<version>1.46</version>
 		</dependency>
+		<!-- 兼容 JDK 9+ 后的maven环境编译 -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2.11</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>
