@@ -25,7 +25,7 @@ public class SubscribeMessageApi extends TokenManagerApi {
 	 * @throws WeixinException indicates getting access token failed, or sending template message failed.
 	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html">发送订阅消息</a>
 	 */
-	public void sendSubscribeMessageMessage(
+	public void sendSubscribeMessage(
 		String toUser,
 		String templateId,
 		String page,
