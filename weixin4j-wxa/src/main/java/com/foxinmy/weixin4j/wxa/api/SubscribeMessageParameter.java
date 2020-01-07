@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SubscribeMessageParameter {
+class SubscribeMessageParameter {
 
 	private static final long serialVersionUID = 2018052601L;
 
