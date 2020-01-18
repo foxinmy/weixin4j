@@ -15,23 +15,41 @@ package com.foxinmy.weixin4j.jssdk;
  *      企业号JSSDK</a>
  */
 public enum JSSDKAPI {
+	/**
+	 * <a href=
+	 * "https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html#111">
+	 * 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）</a>
+	 */
+	updateAppMessageShareData,
+	/**
+	 * <a href=
+	 * "https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html#112">
+	 * 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）</a>
+	 */
+	updateTimelineShareData,
 	/***
 	 * <a href=
 	 * "http://mp.weixin.qq.com/wiki/11/74ad127cc054f6b80759c40f77ec03db.html#.E8.8E.B7.E5.8F.96.E2.80.9C.E5.88.86.E4.BA.AB.E5.88.B0.E6.9C.8B.E5.8F.8B.E5.9C.88.E2.80.9D.E6.8C.89.E9.92.AE.E7.82.B9.E5.87.BB.E7.8A.B6.E6.80.81.E5.8F.8A.E8.87.AA.E5.AE.9A.E4.B9.89.E5.88.86.E4.BA.AB.E5.86.85.E5.AE.B9.E6.8E.A5.E5.8F.A3"
-	 * >分享接口-获取“分享到朋友圈”按钮点击状态及自定义分享内容接口</a>
+	 * >分享接口-获取“分享到朋友圈”按钮点击状态及自定义分享内容接口（即将废弃）</a>
+	 * @deprecated
 	 */
+	@Deprecated
 	onMenuShareTimeline,
 	/***
 	 * <a href=
 	 * "http://mp.weixin.qq.com/wiki/11/74ad127cc054f6b80759c40f77ec03db.html#.E8.8E.B7.E5.8F.96.E2.80.9C.E5.88.86.E4.BA.AB.E7.BB.99.E6.9C.8B.E5.8F.8B.E2.80.9D.E6.8C.89.E9.92.AE.E7.82.B9.E5.87.BB.E7.8A.B6.E6.80.81.E5.8F.8A.E8.87.AA.E5.AE.9A.E4.B9.89.E5.88.86.E4.BA.AB.E5.86.85.E5.AE.B9.E6.8E.A5.E5.8F.A3"
-	 * >分享接口-获取“分享给朋友”按钮点击状态及自定义分享内容接口</a>
+	 * >分享接口-获取“分享给朋友”按钮点击状态及自定义分享内容接口（即将废弃）</a>
+	 * @deprecated
 	 */
+	@Deprecated
 	onMenuShareAppMessage,
 	/***
 	 * <a href=
 	 * "http://mp.weixin.qq.com/wiki/11/74ad127cc054f6b80759c40f77ec03db.html#.E8.8E.B7.E5.8F.96.E2.80.9C.E5.88.86.E4.BA.AB.E5.88.B0QQ.E2.80.9D.E6.8C.89.E9.92.AE.E7.82.B9.E5.87.BB.E7.8A.B6.E6.80.81.E5.8F.8A.E8.87.AA.E5.AE.9A.E4.B9.89.E5.88.86.E4.BA.AB.E5.86.85.E5.AE.B9.E6.8E.A5.E5.8F.A3"
-	 * >分享接口-获取“分享到QQ”按钮点击状态及自定义分享内容接口</a>
+	 * >分享接口-获取“分享到QQ”按钮点击状态及自定义分享内容接口（即将废弃）</a>
+	 * @deprecated
 	 */
+	@Deprecated
 	onMenuShareQQ,
 	/***
 	 * <a href=
@@ -270,7 +288,11 @@ public enum JSSDKAPI {
 	/**
 	 * 分享接口集合
 	 */
+	@Deprecated
 	public final static JSSDKAPI[] SHARE_APIS = { onMenuShareTimeline, onMenuShareAppMessage, onMenuShareQQ,
+			onMenuShareWeibo, onMenuShareQZone };
+
+	public final static JSSDKAPI[] ALL_SHARE_APIS = { updateAppMessageShareData, updateTimelineShareData,
 			onMenuShareWeibo, onMenuShareQZone };
 	/**
 	 * 图像接口集合
