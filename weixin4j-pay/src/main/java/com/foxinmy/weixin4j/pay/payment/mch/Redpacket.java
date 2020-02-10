@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.mch.RedpacketSceneType;
+import com.foxinmy.weixin4j.pay.type.mch.RedpacketSceneType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 import javax.xml.bind.annotation.XmlAccessType;
