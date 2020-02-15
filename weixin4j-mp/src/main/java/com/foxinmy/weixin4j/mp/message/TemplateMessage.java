@@ -214,6 +214,7 @@ public class TemplateMessage implements Serializable {
         /**
          * 所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar）
          */
+	@JSONField(name = "page")
         private String pagepath;
 		public Miniprogram(String appid, String pagepath) {
 			this.appid = appid;
