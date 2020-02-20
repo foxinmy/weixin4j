@@ -49,6 +49,12 @@
 			<artifactId>weixin4j-mp</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<!-- 微信支付商户平台 -->
+		<dependency>
+			<groupId>com.foxinmy</groupId>
+			<artifactId>weixin4j-pay</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<!-- 微信企业号 -->
 		<dependency>
 			<groupId>com.foxinmy</groupId>

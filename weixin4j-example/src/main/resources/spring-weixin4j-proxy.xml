@@ -38,7 +38,7 @@
 	<!-- 微信接口代理～end -->
 
 	<!-- 微信支付接口代理～start -->
-	<bean id="weixinPayProxy" class="com.foxinmy.weixin4j.payment.WeixinPayProxy">
+	<bean id="weixinPayProxy" class="com.foxinmy.weixin4j.pay.WeixinPayProxy">
 		<constructor-arg>
 			<!-- 商户信息:不声明则默认使用weixin4j.properties配置的weixin4j.account字段 -->
 			<bean class="com.foxinmy.weixin4j.model.WeixinPayAccount">
