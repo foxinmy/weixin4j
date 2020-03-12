@@ -56,7 +56,9 @@ import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
  * @date 2015年1月3日
  * @since JDK 1.6
  * @see <a href="http://pay.weixin.qq.com/wiki/doc/api/index.html">商户平台支付API</a>
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class WeixinPayProxy {
 
 	/**

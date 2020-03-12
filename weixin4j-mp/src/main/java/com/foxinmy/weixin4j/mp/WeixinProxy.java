@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.cache.CacheStorager;
 import com.foxinmy.weixin4j.cache.FileCacheStorager;
 import com.foxinmy.weixin4j.exception.WeixinException;
@@ -11,9 +12,7 @@ import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.model.Button;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.model.WeixinAccount;
-import com.foxinmy.weixin4j.model.card.CardCoupon;
-import com.foxinmy.weixin4j.model.card.CardCoupons;
-import com.foxinmy.weixin4j.model.card.CardQR;
+import com.foxinmy.weixin4j.model.card.*;
 import com.foxinmy.weixin4j.model.media.MediaCounter;
 import com.foxinmy.weixin4j.model.media.MediaDownloadResult;
 import com.foxinmy.weixin4j.model.media.MediaItem;
@@ -70,7 +69,6 @@ import com.foxinmy.weixin4j.token.TokenManager;
 import com.foxinmy.weixin4j.tuple.MassTuple;
 import com.foxinmy.weixin4j.tuple.MpArticle;
 import com.foxinmy.weixin4j.tuple.MpVideo;
-import com.foxinmy.weixin4j.tuple.Tuple;
 import com.foxinmy.weixin4j.type.MediaType;
 import com.foxinmy.weixin4j.type.TicketType;
 import com.foxinmy.weixin4j.util.Consts;
@@ -197,7 +195,7 @@ public class WeixinProxy {
 	 * @param componentTokenManager
 	 *            第三方组件凭证token
 	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi
-	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi#getPerCodeManager(String)
+	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi#getPreCodeManager
 	 * @see com.foxinmy.weixin4j.mp.api.ComponentApi#getTokenManager
 	 */
 	public WeixinProxy(PerTicketManager perTicketManager, TokenManager componentTokenManager) {
@@ -476,7 +474,7 @@ public class WeixinProxy {
 	 *
 	 * @return 总数对象
 	 * @throws WeixinException
-	 * @see com.com.foxinmy.weixin4j.model.media.MediaCounter
+	 * @see com.foxinmy.weixin4j.model.media.MediaCounter
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738733&token=&lang=zh_CN">
 	 *      获取素材总数</a>
@@ -569,7 +567,7 @@ public class WeixinProxy {
 	 *            查询结束时间 每次查询不能跨日查询
 	 * @param number
 	 *            最多10000条
-	 * @see com.foxinmy.weixin4j.mp.model.CustomRecord
+	 * @see com.foxinmy.weixin4j.mp.model.KfChatRecord
 	 * @see com.foxinmy.weixin4j.mp.api.CustomApi
 	 * @see <a href="http://dkf.qq.com/document-1_1.html">查询客服聊天记录</a>
 	 * @see <a href=
@@ -823,7 +821,7 @@ public class WeixinProxy {
 	 * 如消息有时会进行审核、服务器不稳定等,此外,群发任务一般需要较长的时间才能全部发送完毕
 	 * </p>
 	 *
-	 * @param MassTuple
+	 * @param tuple
 	 *            消息元件
 	 * @param isToAll
 	 *            用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，
@@ -857,7 +855,7 @@ public class WeixinProxy {
 	 * @param groupId
 	 *            分组ID
 	 * @return 第一个元素为消息发送任务的ID,第二个元素为消息的数据ID，该字段只有在群发图文消息时，才会出现,可以用于在图文分析数据接口中
-	 * @see {@link #massByGroupId(Tuple,int)}
+	 * @see {@link #massByGroupId(MassTuple,boolean,int)}
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">
 	 *      根据分组群发</a>
@@ -917,7 +915,7 @@ public class WeixinProxy {
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">
 	 *      根据标签群发</a>
-	 * @see {@link #massByTagId(Tuple,int)}
+	 * @see {@link #massByTagId(MassTuple,int)}
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @throws WeixinException
@@ -959,7 +957,7 @@ public class WeixinProxy {
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">
 	 *      根据openid群发</a>
-	 * @see {@link #massByOpenIds(Tuple,String...)}
+	 * @see {@link #massByOpenIds(MassTuple,String...)}
 	 * @see com.foxinmy.weixin4j.tuple.MpArticle
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 * @throws WeixinException
@@ -999,8 +997,8 @@ public class WeixinProxy {
 	 * @see <a href=
 	 *      "https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140549&token=&lang=zh_CN">
 	 *      删除群发</a>
-	 * @see {@link #massByTagId(Tuple, int)}
-	 * @see {@link #massByOpenIds(Tuple, String...)
+	 * @see {@link #massByTagId(MassTuple, int)}
+	 * @see {@link #massByOpenIds(MassTuple, String...)
 	 * @see com.foxinmy.weixin4j.mp.api.MassApi
 	 */
 	public ApiResult deleteMassNews(String msgid, int articleIndex) throws WeixinException {
@@ -2011,6 +2009,17 @@ public class WeixinProxy {
 	}
 
 	/**
+	 * 查询某个card_id的创建信息、审核状态以及库存数量。
+	 *
+	 * @param cardId
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject getCardInfo(String cardId) throws WeixinException {
+		return cardApi.getCardInfo(cardId);
+	}
+
+	/**
 	 * 设置卡券买单：创建卡券之后，开发者可以通过设置微信买单接口设置该card_id支持微信买单功能。值得开发者注意的是，
 	 * 设置买单的card_id必须已经配置了门店，否则会报错。
 	 *
@@ -2062,6 +2071,200 @@ public class WeixinProxy {
 	 */
 	public QRResult createCardQR(Integer expireSeconds, CardQR... cardQRs) throws WeixinException {
 		return cardApi.createCardQR(expireSeconds, cardQRs);
+	}
+
+	/**
+	 * 微信礼品卡货架创建接口，开发者可以通过该接口创建一个礼品卡货架并且用于公众号、门店的礼品卡售卖。
+	 *
+	 * @param page
+	 * 			货架对象
+	 * @return 货架ID
+	 * @throws WeixinException
+	 * @see <a href="https://mp.weixin.qq.com/wiki?action=doc&id=215143440770UT7Y&t=0.7237731395289302">微信礼品卡</a>
+	 */
+	public String addGiftCardPage(GiftCardPage page) throws WeixinException {
+		return cardApi.addGiftCardPage(page);
+	}
+
+	/**
+	 * 查询礼品卡货架信息接口
+	 *
+	 * @param pageId
+	 * 			货架ID
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject getGiftCardPage(String pageId) throws WeixinException {
+		return cardApi.getGiftCardPage(pageId);
+	}
+
+	/**
+	 * 下架一个礼品卡货架
+	 *
+	 * @param pageId
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult maintainGiftCardPage(String pageId) throws WeixinException {
+		return cardApi.maintainGiftCardPage(pageId);
+	}
+
+	/**
+	 * 下架所有礼品卡货架
+	 *
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult maintainAllGiftCardPage() throws WeixinException {
+		return cardApi.maintainAllGiftCardPage();
+	}
+
+	/**
+	 * 查询当前商户下所有的礼品卡货架id
+	 *
+	 * @return
+	 * @throws WeixinException
+	 */
+	public String[] getGiftCardPageIdList() throws WeixinException {
+		return cardApi.getGiftCardPageIdList();
+	}
+
+	/**
+	 * 修改礼品卡货架信息接口
+	 *
+	 * @param page
+	 * 			货架对象
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult updateGiftCardPage(GiftCardPage page) throws WeixinException {
+		return cardApi.updateGiftCardPage(page);
+	}
+
+	/**
+	 * 申请礼品卡的微信支付权限
+	 * @param subMchId
+	 * 			子商户号
+	 * @return	微信支付商户平台确认地址
+	 * @throws WeixinException
+	 */
+	public String addGiftCardPayWhitelist(String subMchId) throws WeixinException {
+		return cardApi.addGiftCardPayWhitelist(subMchId);
+	}
+
+	/**
+	 * 绑定商户号到礼品卡小程序
+	 *
+	 * @param wxaAppid
+	 * 			微信小程序ID
+	 * @param subMchId
+	 * 			微信支付商户号
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult bindGiftCardPaySubMch(String wxaAppid, String subMchId) throws WeixinException {
+		return cardApi.bindGiftCardPaySubMch(wxaAppid, subMchId);
+	}
+
+	/**
+	 * 上传礼品卡小程序代码
+	 *（提供小程序APPID及货架ID，由微信平台为你小程序帐号上传一套现成的礼品卡小程序，直接用于礼品卡售卖）
+	 *
+	 * @param wxaAppid
+	 * 			微信小程序APPID
+	 * @param pageId
+	 * 			礼品卡货架ID
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult setGiftCardWxaCode(String wxaAppid, String pageId) throws WeixinException {
+		return cardApi.setGiftCardWxaCode(wxaAppid, pageId);
+	}
+
+	/**
+	 * 当礼品卡被使用完毕或者发生转存、绑定等操作后，开发者可以通过该接口核销用户的礼品卡，使礼品卡在列表中沉底并不再被使用。
+	 * 注意：需在礼品卡核销前调用，否则会报40099 已核销的错误
+	 *
+	 * @param code
+	 *          卡券Code码。
+	 * @param cardId
+	 *          卡券ID,自定义code卡券必填，否则非必填。
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult consumeGiftCard(String code, String cardId) throws WeixinException {
+		return cardApi.consumeGiftCard(code, cardId);
+	}
+
+	/**
+	 * 开发者可以通过该接口查询到code对应的信息，如余额、有效期、订单号等，主要用于防止在交易完成后丢单的情况下，用于核销/余额变动时兜底处理。
+	 *
+	 * @param code
+	 * 			卡券Code码
+	 * @param cardId
+	 * 			卡券ID,自定义code卡券必填，否则非必填。
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject getGiftCardInfo(String code, String cardId) throws WeixinException {
+		return cardApi.getGiftCardInfo(code, cardId);
+	}
+
+	/**
+	 * 查询某个订单号对应的订单详情
+	 *
+	 * @param orderId
+	 *          礼品卡订单号，商户可以通过购买成功的事件推送或者批量查询订单接口获得
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject getGiftCardOrderInfo(String orderId) throws WeixinException {
+		return cardApi.getOrderInfo(orderId);
+	}
+
+	/**
+	 * 批量查询礼品卡订单信息接口
+	 *
+	 * @param beginTime
+	 * 			查询的时间起点，十位时间戳（utc+8）
+	 * @param endTime
+	 * 			查询的时间终点，十位时间戳（utc+8）
+	 * @param sortType
+	 * 			填"ASC" / "DESC"，表示对订单创建时间进行“升 / 降”排序
+	 * @param offset
+	 * 			查询的订单偏移量，如填写100则表示从第100个订单开始拉取
+	 * @param limit
+	 * 			查询订单的数量，如offset填写100，count填写10，则表示查询第100个到第110个订单
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject getGiftCardOrders(long beginTime, long endTime, String sortType, int offset, int limit) throws WeixinException
+	{
+		return cardApi.getOrders(beginTime, endTime, sortType, offset, limit);
+	}
+
+	/**
+	 * 更新用户礼品卡信息
+	 * 当礼品卡被使用后，可以通过该接口变更某个礼品卡的余额信息。
+	 *
+	 * @param cardInfo
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject updateGiftCardUserBalance(CardInfo cardInfo) throws WeixinException {
+		return cardApi.updateGiftCardUserBalance(cardInfo);
+	}
+
+	/**
+	 * 对一笔礼品卡订单操作退款
+	 *
+	 * @param orderId
+	 * 			订单ID
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult giftCardOrderRefund(String orderId) throws WeixinException {
+		return cardApi.orderRefund(orderId);
 	}
 
 	/**

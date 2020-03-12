@@ -60,7 +60,9 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年10月28日
  * @since JDK 1.6
+ * @deprecated 商户平台API迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class PayApi extends MchApi {
 
 	public PayApi(WeixinPayAccount weixinAccount) {

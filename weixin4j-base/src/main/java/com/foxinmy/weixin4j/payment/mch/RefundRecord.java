@@ -17,7 +17,9 @@ import com.foxinmy.weixin4j.xml.ListsuffixResult;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年11月1日
  * @since JDK 1.6
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RefundRecord extends MerchantTradeResult {

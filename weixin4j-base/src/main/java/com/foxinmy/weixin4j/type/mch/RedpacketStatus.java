@@ -7,7 +7,9 @@ package com.foxinmy.weixin4j.type.mch;
  * @date 2015年6月4日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum RedpacketStatus {
 	/**
 	 * 发放中

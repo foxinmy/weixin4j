@@ -16,6 +16,7 @@ import com.foxinmy.weixin4j.type.TradeType;
  * @see <a
  *      href="https://pay.weixin.qq.com/wiki/doc/api/wap.php?chapter=15_1">WAP支付</a>
  */
+@Deprecated
 public class WAPPayRequest extends AbstractPayRequest {
 	/**
 	 * 微信支付URL

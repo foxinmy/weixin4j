@@ -21,7 +21,9 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @since JDK 1.6
  * @see <a href=
  *      "https://pay.weixin.qq.com/wiki/doc/api/tools/sp_coupon.php?chapter=12_1">代金券</a>
+ * @deprecated 商户平台API迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class CouponApi extends MchApi {
 
 	public CouponApi(WeixinPayAccount weixinAccount) {

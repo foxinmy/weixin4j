@@ -12,7 +12,9 @@ import com.foxinmy.weixin4j.util.StringUtil;
  * @date 2015年6月26日
  * @since JDK 1.6
  * @see
+ * @deprecated 支付相关的类现已迁移到weixin4j-pay子模块
  */
+@Deprecated
 public class WeixinPayAccount extends WeixinAccount {
 
     private static final long serialVersionUID = -2791256176906048632L;

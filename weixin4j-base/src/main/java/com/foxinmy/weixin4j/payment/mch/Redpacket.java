@@ -20,7 +20,9 @@ import com.foxinmy.weixin4j.util.DateUtil;
  *      href="https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_1">普通红包</a>
  * @see <a
  *      href="https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=16_1">裂变红包</a>
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Redpacket extends MerchantResult {

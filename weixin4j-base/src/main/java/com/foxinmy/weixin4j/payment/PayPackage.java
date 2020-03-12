@@ -18,7 +18,9 @@ import com.foxinmy.weixin4j.util.DateUtil;
  * @author jinyu(foxinmy@gmail.com)
  * @date 2014年12月18日
  * @since JDK 1.6
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PayPackage extends MerchantResult {

@@ -4,19 +4,14 @@ import java.io.IOException;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
-import com.foxinmy.weixin4j.model.card.CardCoupon;
-import com.foxinmy.weixin4j.model.card.CardCoupons;
-import com.foxinmy.weixin4j.model.card.CardQR;
-import com.foxinmy.weixin4j.model.card.MemberInitInfo;
-import com.foxinmy.weixin4j.model.card.MemberUpdateInfo;
-import com.foxinmy.weixin4j.model.card.MemberUserForm;
-import com.foxinmy.weixin4j.model.card.MemberUserInfo;
+import com.foxinmy.weixin4j.model.card.*;
 import com.foxinmy.weixin4j.model.qr.QRParameter;
 import com.foxinmy.weixin4j.model.qr.QRResult;
 import com.foxinmy.weixin4j.token.TokenManager;
@@ -224,6 +219,25 @@ public class CardApi extends MpApi {
 	}
 
 	/**
+	 * 查询某个card_id的创建信息、审核状态以及库存数量。
+	 *
+	 * @param cardId
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject getCardInfo(String cardId) throws WeixinException {
+		JSONObject requestObj = new JSONObject();
+		requestObj.put("card_id", cardId);
+		String card_get_uri = getRequestUri("card_get_uri");
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_get_uri, token.getAccessToken()),
+				requestObj.toJSONString());
+		JSONObject responseJson = response.getAsJson();
+		return responseJson.getJSONObject("card");
+	}
+
+	/**
 	 * 支持更新所有卡券类型的部分通用字段及特殊卡券（会员卡、飞机票、电影票、会议门票）中特定字段的信息。
 	 *
 	 * @param cardId
@@ -329,5 +343,337 @@ public class CardApi extends MpApi {
 				String.format(card_member_card_update_user_uri,
 						token.getAccessToken()), JSON.toJSONString(updateInfo));
 		return response.getAsJson();
+	}
+
+	/**
+	 * 创建一个礼品卡货架
+	 *
+	 * @param page
+	 * @return 货架ID
+	 * @throws WeixinException
+	 */
+	public String addGiftCardPage(GiftCardPage page) throws WeixinException {
+		String card_gift_card_page_add = getRequestUri("card_gift_card_page_add_uri");
+		JSONObject pageJson = new JSONObject();
+		pageJson.put("page", page);
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_page_add,
+						token.getAccessToken()), JSON.toJSONString(pageJson));
+		JSONObject jsonObject = response.getAsJson();
+		return jsonObject.getString("page_id");
+	}
+
+	/**
+	 * 查询礼品卡货架信息
+	 *
+	 * @param pageId
+	 * 			货架ID
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject getGiftCardPage(String pageId) throws WeixinException {
+		String card_gift_card_page_get = getRequestUri("card_gift_card_page_get_uri");
+		JSONObject param = new JSONObject();
+		param.put("page_id", pageId);
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_page_get,
+						token.getAccessToken()), JSON.toJSONString(param));
+		JSONObject jsonObject = response.getAsJson();
+
+		return jsonObject.getJSONObject("page");
+	}
+
+	/**
+	 * 查询当前商户下所有的礼品卡货架id
+	 *
+	 * @return
+	 * @throws WeixinException
+	 */
+	public String[] getGiftCardPageIdList() throws WeixinException {
+		String card_gift_card_page_batchget = getRequestUri("card_gift_card_page_batchget_uri");
+		JSONObject param = new JSONObject();
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_page_batchget,
+						token.getAccessToken()), JSON.toJSONString(param));
+		JSONObject jsonObject = response.getAsJson();
+		JSONArray idList = jsonObject.getJSONArray("page_id_list");
+		if(idList==null || idList.size()==0){
+			return new String[0];
+		}
+
+		return idList.toArray(new String[idList.size()]);
+	}
+
+	/**
+	 * 下架礼品卡货架
+	 *
+	 * @param pageId
+	 * 			礼品卡货架ID
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult maintainGiftCardPage(String pageId) throws WeixinException {
+		String card_gift_card_maintain_set = getRequestUri("card_gift_card_maintain_set_uri");
+		JSONObject param = new JSONObject();
+		param.put("page_id", pageId);
+		param.put("maintain", true);
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_maintain_set,
+						token.getAccessToken()), JSON.toJSONString(param));
+		return response.getAsResult();
+	}
+
+	/**
+	 * 下架所有礼品卡货架
+	 *
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult maintainAllGiftCardPage() throws WeixinException {
+		String card_gift_card_maintain_set = getRequestUri("card_gift_card_maintain_set_uri");
+		JSONObject param = new JSONObject();
+		param.put("all", true);
+		param.put("maintain", true);
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_maintain_set,
+						token.getAccessToken()), JSON.toJSONString(param));
+		return response.getAsResult();
+	}
+
+	/**
+	 * 查询某个订单号对应的订单详情
+	 *
+	 * @param orderId
+	 * 			礼品卡订单号，商户可以通过购买成功的事件推送或者批量查询订单接口获得
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject getOrderInfo(String orderId) throws WeixinException {
+		String card_gift_card_order_get = getRequestUri("card_gift_card_order_get_uri");
+		JSONObject param = new JSONObject();
+		param.put("order_id", orderId);
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_order_get,
+						token.getAccessToken()), JSON.toJSONString(param));
+
+		return response.getAsJson();
+	}
+
+	/**
+	 * 批量查询礼品卡订单信息接口
+	 *
+	 * @param beginTime
+	 * 			查询的时间起点，十位时间戳（utc+8）
+	 * @param endTime
+	 * 			查询的时间终点，十位时间戳（utc+8）
+	 * @param sortType
+	 * 			填"ASC" / "DESC"，表示对订单创建时间进行“升 / 降”排序
+	 * @param offset
+	 * 			查询的订单偏移量，如填写100则表示从第100个订单开始拉取
+	 * @param limit
+	 * 			查询订单的数量，如offset填写100，count填写10，则表示查询第100个到第110个订单
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject getOrders(long beginTime, long endTime, String sortType, int offset, int limit) throws WeixinException {
+		String card_gift_card_order_batchget_uri = getRequestUri("card_gift_card_order_batchget_uri");
+		JSONObject param = new JSONObject();
+		param.put("begin_time", beginTime);
+		param.put("end_time", endTime);
+		param.put("sort_type", sortType);
+		param.put("offset", offset);
+		param.put("count", limit);
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_order_batchget_uri,
+						token.getAccessToken()), JSON.toJSONString(param));
+
+		return response.getAsJson();
+	}
+
+	/**
+	 * 更新礼品卡货架
+	 *
+	 * @param page
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult updateGiftCardPage(GiftCardPage page) throws WeixinException {
+		String card_gift_card_page_update_uri = getRequestUri("card_gift_card_page_update_uri");
+		JSONObject pageJson = new JSONObject();
+		pageJson.put("page", page);
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_page_update_uri,
+						token.getAccessToken()), JSON.toJSONString(pageJson));
+		return response.getAsResult();
+	}
+
+	/**
+	 * 申请礼品卡的微信支付权限
+	 *
+	 * @param subMchId
+	 * 			微信支付子商户号，须为普通服务商模式或者直连商户号，建议为礼品卡专用商户号；商户号必须为公众号申请的商户号
+	 * 			公众号须与商户号同主体，非同主体情况须和对接人联系申请
+	 * @return 商户平台确认地址，请获得后点击打开登录商户平台后台并点击确认
+	 * @throws WeixinException
+	 */
+	public String addGiftCardPayWhitelist(String subMchId) throws WeixinException{
+		String card_gift_card_pay_whitelist_add = getRequestUri("card_gift_card_pay_whitelist_add_uri");
+		JSONObject param = new JSONObject();
+		param.put("sub_mch_id", subMchId);
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_pay_whitelist_add,
+						token.getAccessToken()), JSON.toJSONString(param));
+		JSONObject jsonObject = response.getAsJson();
+		return jsonObject.getString("url");
+	}
+
+	/**
+	 * 绑定商户号到礼品卡小程序
+	 *
+	 * @param wxaAppid
+	 * 			礼品卡小程序APPID
+	 * @param subMchId
+	 * 			微信支付商户号
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult bindGiftCardPaySubMch(String wxaAppid, String subMchId) throws WeixinException {
+		String card_gift_card_pay_submch_bind = getRequestUri("card_gift_card_pay_submch_bind_uri");
+		JSONObject param = new JSONObject();
+		param.put("sub_mch_id", subMchId);
+		param.put("wxa_appid", wxaAppid);
+
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_pay_submch_bind,
+						token.getAccessToken()), JSON.toJSONString(param));
+
+		return response.getAsResult();
+	}
+
+	/**
+	 * 上传礼品卡小程序代码
+	 * （提供小程序APPID及货架ID，由微信平台为你小程序帐号上传一套现成的礼品卡小程序，直接用于礼品卡售卖）
+	 *
+	 * @param wxaAppid
+	 * 			微信小程序APPID
+	 * @param pageId
+	 * 			礼品卡货架ID
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult setGiftCardWxaCode(String wxaAppid, String pageId) throws WeixinException {
+		String card_gift_card_wxa_set = getRequestUri("card_gift_card_wxa_set_uri");
+		JSONObject param = new JSONObject();
+		param.put("wxa_appid", wxaAppid);
+		param.put("page_id", pageId);
+
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_wxa_set,
+						token.getAccessToken()), JSON.toJSONString(param));
+
+		return response.getAsResult();
+	}
+
+	/**
+	 * 更新用户礼品卡信息
+	 * 当礼品卡被使用后，可以通过该接口变更某个礼品卡的余额信息。
+	 *
+	 * @param cardInfo
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject updateGiftCardUserBalance(CardInfo cardInfo) throws WeixinException {
+		String card_gift_card_wxa_set = getRequestUri("card_general_card_update_user_uri");
+
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_wxa_set,
+						token.getAccessToken()), JSON.toJSONString(cardInfo));
+		return response.getAsJson();
+	}
+
+	/**
+	 * 当礼品卡被使用完毕或者发生转存、绑定等操作后，开发者可以通过该接口核销用户的礼品卡，使礼品卡在列表中沉底并不再被使用。
+	 *
+	 * @param code
+	 * 			卡券Code码。
+	 * @param cardId
+	 * 			卡券ID,自定义code卡券必填，否则非必填。
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult consumeGiftCard(String code, String cardId) throws WeixinException {
+		String card_code_consume = getRequestUri("card_code_consume_uri");
+		JSONObject param = new JSONObject();
+		param.put("code", code);
+		if(cardId!=null && cardId.length()>0){
+			param.put("card_id", cardId);
+		}
+
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_code_consume,
+						token.getAccessToken()), JSON.toJSONString(param));
+
+		return response.getAsResult();
+	}
+
+	/**
+	 * 开发者可以通过该接口查询到code对应的信息，如余额、有效期、订单号等，主要用于防止在交易完成后丢单的情况下，用于核销/余额变动时兜底处理。
+	 * 注意：需在礼品卡核销前调用，否则会报40099 已核销的错误
+	 *
+	 * @param code
+	 * 			卡券Code码
+	 * @param cardId
+	 * 			卡券ID,自定义code卡券必填，否则非必填。
+	 * @return
+	 * @throws WeixinException
+	 */
+	public JSONObject getGiftCardInfo(String code, String cardId) throws WeixinException {
+		String card_code_get = getRequestUri("card_code_get_uri");
+		JSONObject param = new JSONObject();
+		param.put("code", code);
+		if(cardId!=null && cardId.length()>0){
+			param.put("card_id", cardId);
+		}
+
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_code_get,
+						token.getAccessToken()), JSON.toJSONString(param));
+
+		return response.getAsJson();
+	}
+
+	/**
+	 * 对一笔礼品卡订单操作退款
+	 *
+	 * @param orderId
+	 * 			订单ID
+	 * @return
+	 * @throws WeixinException
+	 */
+	public ApiResult orderRefund(String orderId) throws WeixinException {
+		String card_gift_card_order_refund_uri = getRequestUri("card_gift_card_order_refund_uri");
+		JSONObject param = new JSONObject();
+		param.put("order_id", orderId);
+
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(
+				String.format(card_gift_card_order_refund_uri,
+						token.getAccessToken()), JSON.toJSONString(param));
+
+		return response.getAsResult();
 	}
 }

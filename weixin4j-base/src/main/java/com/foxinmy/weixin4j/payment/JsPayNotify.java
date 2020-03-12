@@ -15,7 +15,9 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @date 2014年8月19日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class JsPayNotify extends PayBaseInfo {

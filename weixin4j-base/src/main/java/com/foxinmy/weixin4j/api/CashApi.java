@@ -45,7 +45,9 @@ import com.foxinmy.weixin4j.xml.XmlStream;
  * @see <a href=
  *      "https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_1">
  *      企业付款</a>
+ * @deprecated 商户平台API迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class CashApi extends MchApi {
 
 	public CashApi(WeixinPayAccount weixinAccount) {
@@ -92,7 +94,7 @@ public class CashApi extends MchApi {
 	/**
 	 * 批量发放红包 企业向微信用户个人发现金红包
 	 *
-	 * @param redpacket
+	 * @param redpackets
 	 *            多个红包信息
 	 * @return 发放结果
 	 * @see #sendRedpacks(Redpacket...)

@@ -4,6 +4,7 @@ import com.foxinmy.weixin4j.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.sign.WeixinPaymentSignature;
 import com.foxinmy.weixin4j.sign.WeixinSignature;
 
+@Deprecated
 public abstract class AbstractPayRequest implements MchPayRequest {
 
 	private final String prePayId;

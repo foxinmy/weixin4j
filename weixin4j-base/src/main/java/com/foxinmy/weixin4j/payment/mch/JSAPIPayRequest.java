@@ -22,7 +22,9 @@ import com.foxinmy.weixin4j.type.TradeType;
  * @see com.foxinmy.weixin4j.payment.PayRequest
  * @see <a
  *      href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_1">网页端调起支付API</a>
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class JSAPIPayRequest extends AbstractPayRequest {
 
 	public JSAPIPayRequest(String prePayId, WeixinPayAccount payAccount) {

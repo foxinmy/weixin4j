@@ -8,7 +8,9 @@ package com.foxinmy.weixin4j.type.mch;
  * @date 2014年12月31日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum RefundType {
 	/**
 	 * 1:商户号余额退款;

@@ -10,7 +10,9 @@ import com.foxinmy.weixin4j.type.SignType;
  * @date 2016年3月26日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public interface WeixinSignature {
 	/**
 	 * 是否编码
