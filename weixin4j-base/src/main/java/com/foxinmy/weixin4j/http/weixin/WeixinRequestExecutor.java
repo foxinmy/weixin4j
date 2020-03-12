@@ -1,12 +1,22 @@
 package com.foxinmy.weixin4j.http.weixin;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.KeyStore;
+import java.security.*;
+import java.security.cert.CertificateFactory;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.xml.bind.DatatypeConverter;
 
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.HttpClient;
@@ -29,6 +39,9 @@ import com.foxinmy.weixin4j.logging.InternalLogLevel;
 import com.foxinmy.weixin4j.logging.InternalLogger;
 import com.foxinmy.weixin4j.logging.InternalLoggerFactory;
 import com.foxinmy.weixin4j.util.Consts;
+import com.foxinmy.weixin4j.util.StringUtil;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 /**
  * 负责微信请求的执行
@@ -55,6 +68,18 @@ public class WeixinRequestExecutor {
 	public WeixinRequestExecutor(HttpParams params) {
 		this.httpClient = HttpClientFactory.getInstance(params);
 	}
+
+	private static final Pattern CERT_PATTERN = Pattern.compile(
+			"-+BEGIN\\s+.*CERTIFICATE[^-]*-+(?:\\s|\\r|\\n)+" + // Header
+					"([a-z0-9+/=\\r\\n]+)" +                    // Base64 text
+					"-+END\\s+.*CERTIFICATE[^-]*-+",            // Footer
+			CASE_INSENSITIVE);
+
+	private static final Pattern KEY_PATTERN = Pattern.compile(
+			"-+BEGIN\\s+.*PRIVATE\\s+KEY[^-]*-+(?:\\s|\\r|\\n)+" + // Header
+					"([a-z0-9+/=\\r\\n]+)" +                       // Base64 text
+					"-+END\\s+.*PRIVATE\\s+KEY[^-]*-+",            // Footer
+			CASE_INSENSITIVE);
 
 	/**
 	 * Post方法执行微信请求
@@ -194,10 +219,13 @@ public class WeixinRequestExecutor {
 			try {
 				XmlResult xmlResult = XmlMessageConverter.GLOBAL.convert(
 						XmlResult.class, response);
-				if (!SUCCESS_CODE.contains(String.format(",%s,", xmlResult
-						.getResultCode().toLowerCase()))) {
-					throw new WeixinException(xmlResult.getErrCode(),
-							xmlResult.getErrCodeDes());
+				// 微信最新的刷脸支付API中已没有返回resultCode，需做非空判断，否则抛异常
+				if(StringUtil.isNotBlank(xmlResult.getResultCode())) {
+					if (!SUCCESS_CODE.contains(String.format(",%s,", xmlResult
+							.getResultCode().toLowerCase()))) {
+						throw new WeixinException(xmlResult.getErrCode(),
+								xmlResult.getErrCodeDes());
+					}
 				}
 			} catch (IOException e) {
 				;
@@ -249,5 +277,70 @@ public class WeixinRequestExecutor {
 		HttpParams params = new HttpParams();
 		params.setSSLContext(sslContext);
 		return new WeixinRequestExecutor(params);
+	}
+
+	/**
+	 * 使用PEM格式证书创建SSL微信请求对象
+	 *
+	 * @param pemCertificate
+	 * 			PEM格式证书内容
+	 * @param pemPrivateKey
+	 * 			PEM格式证书私钥
+	 * @return
+	 */
+	public WeixinRequestExecutor createSSLRequestExecutor(String password, String pemCertificate, String pemPrivateKey) throws WeixinException{
+		Security.addProvider(new BouncyCastleProvider());
+
+		try {
+			byte[] certBytes = parseDERFromPEM(pemCertificate);
+			byte[] keyBytes = parseDERFromPEM(pemPrivateKey);
+
+			char[] passwordChars = password.toCharArray();
+			X509Certificate cert = generateCertificateFromDER(certBytes);
+			RSAPrivateKey key  = generatePrivateKeyFromDER(keyBytes);
+
+			KeyStore keystore = KeyStore.getInstance("JKS");
+			keystore.load(null);
+			keystore.setCertificateEntry("cert-alias", cert);
+			keystore.setKeyEntry("key-alias", key, passwordChars, new X509Certificate[] {cert});
+
+			KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+			kmf.init(keystore, passwordChars);
+
+			SSLContext context = SSLContext.getInstance("TLS");
+			context.init(kmf.getKeyManagers(), null, new java.security.SecureRandom());
+
+			return createSSLRequestExecutor(context);
+		} catch (Exception e) {
+			throw new WeixinException("Certificate load error", e);
+		}
+
+	}
+
+	private static byte[] parseDERFromPEM(String data) throws KeyStoreException {
+		Matcher matcher = CERT_PATTERN.matcher(data);
+		String content = "";
+		if(!matcher.find()){
+			matcher = KEY_PATTERN.matcher(data);
+			if(!matcher.find()){
+				throw new KeyStoreException("found no private key or certificate from content:"+ data);
+			}
+		}
+		content = matcher.group(1);
+		return DatatypeConverter.parseBase64Binary(content);
+	}
+
+	private static RSAPrivateKey generatePrivateKeyFromDER(byte[] keyBytes) throws InvalidKeySpecException, NoSuchAlgorithmException {
+		PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+
+		KeyFactory factory = KeyFactory.getInstance("RSA");
+
+		return (RSAPrivateKey)factory.generatePrivate(spec);
+	}
+
+	protected static X509Certificate generateCertificateFromDER(byte[] certBytes) throws CertificateException {
+		CertificateFactory factory = CertificateFactory.getInstance("X.509");
+
+		return (X509Certificate)factory.generateCertificate(new ByteArrayInputStream(certBytes));
 	}
 }

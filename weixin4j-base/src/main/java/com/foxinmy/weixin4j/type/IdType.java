@@ -8,7 +8,9 @@ package com.foxinmy.weixin4j.type;
  * @date 2014年11月1日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum IdType {
 	/**
 	 * 微信退款单号

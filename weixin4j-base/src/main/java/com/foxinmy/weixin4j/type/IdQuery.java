@@ -10,7 +10,9 @@ import java.io.Serializable;
  * @date 2014年11月1日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class IdQuery implements Serializable {
 
 	private static final long serialVersionUID = -5273675987521807370L;

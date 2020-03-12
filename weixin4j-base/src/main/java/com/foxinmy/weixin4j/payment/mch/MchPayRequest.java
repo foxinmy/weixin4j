@@ -16,7 +16,9 @@ import com.foxinmy.weixin4j.type.TradeType;
  * @see MICROPayRequest 刷卡支付
  * @see APPPayRequest APP支付
  * @see WAPPayRequest WAP支付
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public interface MchPayRequest {
 	/**
 	 * 预支付交易ID

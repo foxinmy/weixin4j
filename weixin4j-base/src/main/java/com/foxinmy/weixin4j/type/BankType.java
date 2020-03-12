@@ -9,7 +9,9 @@ package com.foxinmy.weixin4j.type;
  * @date 2015年8月19日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum BankType {
 	/**
 	 * 工商银行（借记卡）

@@ -18,7 +18,9 @@ import com.foxinmy.weixin4j.type.TradeType;
  * @see com.foxinmy.weixin4j.payment.PayRequest
  * @see <a
  *      href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=5_1">刷卡支付</a>
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public class MICROPayRequest extends Order implements MchPayRequest {
 
 	private static final long serialVersionUID = 6147576305404111278L;

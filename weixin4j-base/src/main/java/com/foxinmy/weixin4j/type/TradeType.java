@@ -8,7 +8,9 @@ package com.foxinmy.weixin4j.type;
  * @date 2014年10月21日
  * @since JDK 1.6
  * @see
+ * @deprecated 迁移到weixin4j-pay子模块
  */
+@Deprecated
 public enum TradeType {
     /**
      * JS支付

@@ -5,7 +5,9 @@ package com.foxinmy.weixin4j.type.mch;
  * @className RefundAccountType
  * @author jinyu(foxinmy@gmail.com)
  * @date 2016年12月12日
+ * @deprecated 迁移到子模块weixin4j-pay
  */
+@Deprecated
 public enum RefundAccountType {
 	/**
 	 * ---未结算资金退款（默认使用未结算资金退款）

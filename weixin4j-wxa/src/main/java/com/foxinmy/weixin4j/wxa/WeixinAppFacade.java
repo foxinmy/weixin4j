@@ -15,6 +15,7 @@ import com.foxinmy.weixin4j.wxa.api.QrCodeApi;
 import com.foxinmy.weixin4j.wxa.api.SecCheckApi;
 import com.foxinmy.weixin4j.wxa.api.TemplateApi;
 import com.foxinmy.weixin4j.wxa.api.TemplateMessageApi;
+import com.foxinmy.weixin4j.wxa.api.SubscribeMessageApi;
 
 /**
  * The facade of WeChat Mini Program APIs.
@@ -29,6 +30,7 @@ public class WeixinAppFacade {
 	private final TemplateMessageApi templateMessageApi;
 	private final CustomMessageApi customMessageApi;
 	private final SecCheckApi secCheckApi;
+	private final SubscribeMessageApi subscribeMessageApi;
 
 	/**
 	 * Constructs {@link WeixinAppFacade} using {@link FileCacheStorager}.
@@ -111,6 +113,7 @@ public class WeixinAppFacade {
 		this.templateMessageApi = new TemplateMessageApi(tokenManager, properties);
 		this.customMessageApi = new CustomMessageApi(tokenManager, properties);
 		this.secCheckApi = new SecCheckApi(tokenManager, properties);
+		this.subscribeMessageApi = new SubscribeMessageApi(tokenManager, properties);
 	}
 
 	/**
@@ -147,6 +150,15 @@ public class WeixinAppFacade {
 	 */
 	public TemplateMessageApi getTemplateMessageApi() {
 		return templateMessageApi;
+	}
+
+	/**
+	 * 获取订阅消息相关的 API。
+	 *
+	 * @return 模板消息相关的 API。
+	 */
+	public SubscribeMessageApi getSubscribeMessageApi() {
+		return subscribeMessageApi;
 	}
 
 	/**

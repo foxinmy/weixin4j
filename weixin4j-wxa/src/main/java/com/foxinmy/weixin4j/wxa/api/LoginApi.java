@@ -37,7 +37,7 @@ public class LoginApi extends WxaApi {
 	 * @param grantType 填写为 authorization_code
 	 * @return the session.
 	 * @throws WeixinException 发生错误时。比如 <code>js_code</code> 无效。
-	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html">登录凭证校验<a/>
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">登录凭证校验<a/>
 	 */
 	public Session jscode2session(String jsCode, String grantType) throws WeixinException {
 		String jscode2sessionUri = getRequestUri("sns_jscode2session",
