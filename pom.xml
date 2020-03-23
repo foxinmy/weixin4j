@@ -40,19 +40,7 @@
 		</developer>
 	</developers>
 
-	<distributionManagement>
-		<repository>
-			<id>corp58-release</id>
-			<name>Release Repository</name>
-			<url>http://118.89.141.151:8081/repository/corp58-release/</url>
-		</repository>
 
-		<snapshotRepository>
-			<id>corp58-snapshot</id>
-			<name>Snapshot Repository</name>
-			<url>http://118.89.141.151:8081/repository/corp58-snapshot/</url>
-		</snapshotRepository>
-	</distributionManagement>
 
 	<modules>
 		<module>weixin4j-base</module>
@@ -241,17 +229,7 @@
 			</resource>
 		</resources>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<additionalparam>-Xdoclint:none</additionalparam>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
+
 	<profiles>
 		<profile>
 			<id>release</id>
@@ -288,14 +266,19 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 	<distributionManagement>
-		<snapshotRepository>
-			<id>oss-snapshot</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</snapshotRepository>
 		<repository>
-			<id>oss-release</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<id>corp58-release</id>
+			<name>Release Repository</name>
+			<url>http://118.89.141.151:8081/repository/corp58-release/</url>
 		</repository>
+
+		<snapshotRepository>
+			<id>corp58-snapshot</id>
+			<name>Snapshot Repository</name>
+			<url>http://118.89.141.151:8081/repository/corp58-snapshot/</url>
+		</snapshotRepository>
 	</distributionManagement>
+
 </project>
