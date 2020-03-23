@@ -39,6 +39,21 @@
 			</roles>
 		</developer>
 	</developers>
+
+	<distributionManagement>
+		<repository>
+			<id>corp58-release</id>
+			<name>Release Repository</name>
+			<url>http://118.89.141.151:8081/repository/corp58-release/</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>corp58-snapshot</id>
+			<name>Snapshot Repository</name>
+			<url>http://118.89.141.151:8081/repository/corp58-snapshot/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<modules>
 		<module>weixin4j-base</module>
 		<module>weixin4j-mp</module>
