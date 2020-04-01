@@ -68,6 +68,10 @@ public class XmlResult implements Serializable {
 		return resultCode;
 	}
 
+	public void setReturnCode(String returnCode) {
+		this.returnCode = returnCode;
+	}
+
 	public String getErrCode() {
 		return errCode;
 	}
@@ -82,6 +86,10 @@ public class XmlResult implements Serializable {
 
 	public String getReturnMsg() {
 		return returnMsg;
+	}
+
+	public void setReturnMsg(String returnMsg) {
+		this.returnMsg = returnMsg;
 	}
 
 	public void setResultCode(String resultCode) {
