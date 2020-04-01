@@ -43,7 +43,7 @@ public class CorpPaymentResult extends MerchantResult {
 	@XmlElement(name = "payment_time")
 	private String paymentTime;
 
-	public CorpPaymentResult() {
+	protected CorpPaymentResult() {
 		// jaxb required
 	}
 
@@ -51,12 +51,24 @@ public class CorpPaymentResult extends MerchantResult {
 		return transactionId;
 	}
 
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
 	public String getOutTradeNo() {
 		return outTradeNo;
 	}
 
+	public void setOutTradeNo(String outTradeNo) {
+		this.outTradeNo = outTradeNo;
+	}
+
 	public String getPaymentTime() {
 		return paymentTime;
+	}
+
+	public void setPaymentTime(String paymentTime) {
+		this.paymentTime = paymentTime;
 	}
 
 	@JSONField(serialize = false)

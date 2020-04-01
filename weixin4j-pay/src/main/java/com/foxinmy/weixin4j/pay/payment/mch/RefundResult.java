@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.mch.RefundChannel;
+import com.foxinmy.weixin4j.pay.type.mch.RefundChannel;
 import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -63,7 +63,7 @@ public class RefundResult extends MerchantTradeResult {
 	@ListsuffixResult({ ".*(_\\d)$" })
 	private List<RefundDetail> refundList;
 
-	public RefundResult() {
+	protected RefundResult() {
 		// jaxb required
 	}
 
@@ -71,12 +71,24 @@ public class RefundResult extends MerchantTradeResult {
 		return outRefundNo;
 	}
 
+	public void setOutRefundNo(String outRefundNo) {
+		this.outRefundNo = outRefundNo;
+	}
+
 	public String getRefundId() {
 		return refundId;
 	}
 
+	public void setRefundId(String refundId) {
+		this.refundId = refundId;
+	}
+
 	public String getRefundChannel() {
 		return refundChannel;
+	}
+
+	public void setRefundChannel(String refundChannel) {
+		this.refundChannel = refundChannel;
 	}
 
 	@JSONField(serialize = false)
@@ -87,6 +99,10 @@ public class RefundResult extends MerchantTradeResult {
 
 	public int getRefundFee() {
 		return refundFee;
+	}
+
+	public void setRefundFee(int refundFee) {
+		this.refundFee = refundFee;
 	}
 
 	/**
@@ -103,6 +119,10 @@ public class RefundResult extends MerchantTradeResult {
 		return cashRefundFee;
 	}
 
+	public void setCashRefundFee(Integer cashRefundFee) {
+		this.cashRefundFee = cashRefundFee;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
@@ -115,6 +135,10 @@ public class RefundResult extends MerchantTradeResult {
 
 	public List<RefundDetail> getRefundList() {
 		return refundList;
+	}
+
+	public void setRefundList(List<RefundDetail> refundList) {
+		this.refundList = refundList;
 	}
 
 	@Override

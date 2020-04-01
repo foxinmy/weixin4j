@@ -75,7 +75,7 @@ public class MerchantResult extends XmlResult {
 	 */
 	private String recall;
 
-	public MerchantResult() {
+	protected MerchantResult() {
 		// jaxb required
 	}
 

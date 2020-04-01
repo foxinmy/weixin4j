@@ -2,10 +2,10 @@ package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.pay.payment.coupon.OrderCouponInfo;
-import com.foxinmy.weixin4j.type.BankType;
-import com.foxinmy.weixin4j.type.CurrencyType;
-import com.foxinmy.weixin4j.type.TradeState;
-import com.foxinmy.weixin4j.type.TradeType;
+import com.foxinmy.weixin4j.pay.type.BankType;
+import com.foxinmy.weixin4j.pay.type.CurrencyType;
+import com.foxinmy.weixin4j.pay.type.TradeState;
+import com.foxinmy.weixin4j.pay.type.TradeType;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
@@ -120,7 +120,7 @@ public class Order extends MerchantTradeResult {
 	@JSONField(name = "sub_is_subscribe")
 	private String subIsSubscribe;
 
-	public Order() {
+	protected Order() {
 		// jaxb required
 	}
 
@@ -134,8 +134,16 @@ public class Order extends MerchantTradeResult {
 		return openId;
 	}
 
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
 	public String getIsSubscribe() {
 		return isSubscribe;
+	}
+
+	public void setIsSubscribe(String isSubscribe) {
+		this.isSubscribe = isSubscribe;
 	}
 
 	@JSONField(serialize = false)
@@ -153,6 +161,10 @@ public class Order extends MerchantTradeResult {
 		return bankType;
 	}
 
+	public void setBankType(String bankType) {
+		this.bankType = bankType;
+	}
+
 	@JSONField(serialize = false)
 	public BankType getFormatBankType() {
 		return bankType != null ? BankType.valueOf(bankType.toUpperCase())
@@ -161,6 +173,10 @@ public class Order extends MerchantTradeResult {
 
 	public Integer getCouponFee() {
 		return couponFee;
+	}
+
+	public void setCouponFee(Integer couponFee) {
+		this.couponFee = couponFee;
 	}
 
 	/**
@@ -177,20 +193,40 @@ public class Order extends MerchantTradeResult {
 		return couponCount;
 	}
 
+	public void setCouponCount(Integer couponCount) {
+		this.couponCount = couponCount;
+	}
+
 	public String getTradeState() {
 		return tradeState;
+	}
+
+	public void setTradeState(String tradeState) {
+		this.tradeState = tradeState;
 	}
 
 	public String getTradeType() {
 		return tradeType;
 	}
 
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
+	}
+
 	public String getAttach() {
 		return attach;
 	}
 
+	public void setAttach(String attach) {
+		this.attach = attach;
+	}
+
 	public String getTimeEnd() {
 		return timeEnd;
+	}
+
+	public void setTimeEnd(String timeEnd) {
+		this.timeEnd = timeEnd;
 	}
 
 	@JSONField(serialize = false)
@@ -200,6 +236,10 @@ public class Order extends MerchantTradeResult {
 
 	public String getTradeStateDesc() {
 		return tradeStateDesc;
+	}
+
+	public void setTradeStateDesc(String tradeStateDesc) {
+		this.tradeStateDesc = tradeStateDesc;
 	}
 
 	public List<OrderCouponInfo> getCouponList() {
@@ -214,8 +254,16 @@ public class Order extends MerchantTradeResult {
 		return subOpenId;
 	}
 
+	public void setSubOpenId(String subOpenId) {
+		this.subOpenId = subOpenId;
+	}
+
 	public String getSubIsSubscribe() {
 		return subIsSubscribe;
+	}
+
+	public void setSubIsSubscribe(String subIsSubscribe) {
+		this.subIsSubscribe = subIsSubscribe;
 	}
 
 	@JSONField(serialize = false)
@@ -225,6 +273,10 @@ public class Order extends MerchantTradeResult {
 
 	public String getCashFeeType() {
 		return cashFeeType;
+	}
+
+	public void setCashFeeType(String cashFeeType) {
+		this.cashFeeType = cashFeeType;
 	}
 
 	@JSONField(serialize = false)

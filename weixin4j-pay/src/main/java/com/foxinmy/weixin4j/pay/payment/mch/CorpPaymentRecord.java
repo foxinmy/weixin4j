@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.mch.CorpPaymentCheckNameType;
+import com.foxinmy.weixin4j.pay.type.mch.CorpPaymentCheckNameType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -76,7 +76,7 @@ public class CorpPaymentRecord extends MerchantResult {
 	/**
 	 * 校验用户姓名选项
 	 * 
-	 * @see CorpPaymentCheckNameType.type.MPPaymentCheckNameType
+	 * @see CorpPaymentCheckNameType
 	 */
 	@XmlElement(name = "check_name")
 	@JSONField(name = "check_name")
@@ -93,7 +93,7 @@ public class CorpPaymentRecord extends MerchantResult {
 	@XmlElement(name = "check_name_result")
 	private String checkNameResult;
 
-	public CorpPaymentRecord() {
+	protected CorpPaymentRecord() {
 		// jaxb required
 	}
 
@@ -101,12 +101,24 @@ public class CorpPaymentRecord extends MerchantResult {
 		return transactionId;
 	}
 
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
 	public String getOutTradeNo() {
 		return outTradeNo;
 	}
 
+	public void setOutTradeNo(String outTradeNo) {
+		this.outTradeNo = outTradeNo;
+	}
+
 	public String getTransactionStatus() {
 		return transactionStatus;
+	}
+
+	public void setTransactionStatus(String transactionStatus) {
+		this.transactionStatus = transactionStatus;
 	}
 
 	/**
@@ -123,16 +135,32 @@ public class CorpPaymentRecord extends MerchantResult {
 		return failureReason;
 	}
 
+	public void setFailureReason(String failureReason) {
+		this.failureReason = failureReason;
+	}
+
 	public String getOpenId() {
 		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
 	public String getTransferName() {
 		return transferName;
 	}
 
+	public void setTransferName(String transferName) {
+		this.transferName = transferName;
+	}
+
 	public int getPaymentAmount() {
 		return paymentAmount;
+	}
+
+	public void setPaymentAmount(int paymentAmount) {
+		this.paymentAmount = paymentAmount;
 	}
 
 	/**
@@ -147,6 +175,10 @@ public class CorpPaymentRecord extends MerchantResult {
 
 	public String getTransferTime() {
 		return transferTime;
+	}
+
+	public void setTransferTime(String transferTime) {
+		this.transferTime = transferTime;
 	}
 
 	/**
@@ -164,6 +196,10 @@ public class CorpPaymentRecord extends MerchantResult {
 		return checkNameType;
 	}
 
+	public void setCheckNameType(String checkNameType) {
+		this.checkNameType = checkNameType;
+	}
+
 	@JSONField(serialize = false)
 	public CorpPaymentCheckNameType getFormatCheckNameType() {
 		return checkNameType != null ? CorpPaymentCheckNameType
@@ -174,8 +210,16 @@ public class CorpPaymentRecord extends MerchantResult {
 		return desc;
 	}
 
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
 	public String getCheckNameResult() {
 		return checkNameResult;
+	}
+
+	public void setCheckNameResult(String checkNameResult) {
+		this.checkNameResult = checkNameResult;
 	}
 
 	/**

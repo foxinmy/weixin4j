@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.mch.RedpacketSceneType;
+import com.foxinmy.weixin4j.pay.type.mch.RedpacketSceneType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -110,7 +110,7 @@ public class Redpacket extends MerchantResult {
 	@JSONField(name = "risk_info")
 	private String risk;
 
-	public Redpacket() {
+	protected Redpacket() {
 		// jaxb required
 	}
 
@@ -174,16 +174,32 @@ public class Redpacket extends MerchantResult {
 		return outTradeNo;
 	}
 
+	public void setOutTradeNo(String outTradeNo) {
+		this.outTradeNo = outTradeNo;
+	}
+
 	public String getOpenId() {
 		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
 	public String getSendName() {
 		return sendName;
 	}
 
+	public void setSendName(String sendName) {
+		this.sendName = sendName;
+	}
+
 	public int getTotalAmount() {
 		return totalAmount;
+	}
+
+	public void setTotalAmount(int totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 	/**
@@ -200,24 +216,48 @@ public class Redpacket extends MerchantResult {
 		return totalNum;
 	}
 
+	public void setTotalNum(int totalNum) {
+		this.totalNum = totalNum;
+	}
+
 	public String getWishing() {
 		return wishing;
+	}
+
+	public void setWishing(String wishing) {
+		this.wishing = wishing;
 	}
 
 	public String getAmtType() {
 		return amtType;
 	}
 
+	public void setAmtType(String amtType) {
+		this.amtType = amtType;
+	}
+
 	public String getClientIp() {
 		return clientIp;
+	}
+
+	public void setClientIp(String clientIp) {
+		this.clientIp = clientIp;
 	}
 
 	public String getActName() {
 		return actName;
 	}
 
+	public void setActName(String actName) {
+		this.actName = actName;
+	}
+
 	public String getRemark() {
 		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public String getMsgAppId() {

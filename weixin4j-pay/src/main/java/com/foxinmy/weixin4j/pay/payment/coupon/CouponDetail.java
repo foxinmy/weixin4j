@@ -178,8 +178,16 @@ public class CouponDetail extends MerchantResult {
 		return couponStockId;
 	}
 
+	public void setCouponStockId(String couponStockId) {
+		this.couponStockId = couponStockId;
+	}
+
 	public int getCouponStockType() {
 		return couponStockType;
+	}
+
+	public void setCouponStockType(int couponStockType) {
+		this.couponStockType = couponStockType;
 	}
 
 	@JSONField(serialize = false)
@@ -196,8 +204,16 @@ public class CouponDetail extends MerchantResult {
 		return couponId;
 	}
 
+	public void setCouponId(String couponId) {
+		this.couponId = couponId;
+	}
+
 	public int getCouponValue() {
 		return couponValue;
+	}
+
+	public void setCouponValue(int couponValue) {
+		this.couponValue = couponValue;
 	}
 
 	/**
@@ -214,6 +230,10 @@ public class CouponDetail extends MerchantResult {
 		return couponMininum;
 	}
 
+	public void setCouponMininum(int couponMininum) {
+		this.couponMininum = couponMininum;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
@@ -228,8 +248,16 @@ public class CouponDetail extends MerchantResult {
 		return couponName;
 	}
 
+	public void setCouponName(String couponName) {
+		this.couponName = couponName;
+	}
+
 	public int getCouponStatus() {
 		return couponStatus;
+	}
+
+	public void setCouponStatus(int couponStatus) {
+		this.couponStatus = couponStatus;
 	}
 
 	@JSONField(serialize = false)
@@ -246,6 +274,10 @@ public class CouponDetail extends MerchantResult {
 		return couponType;
 	}
 
+	public void setCouponType(int couponType) {
+		this.couponType = couponType;
+	}
+
 	@JSONField(deserialize = false, serialize = false)
 	public CouponType getFormatCouponType() {
 		for (CouponType couponType : CouponType.values()) {
@@ -260,8 +292,16 @@ public class CouponDetail extends MerchantResult {
 		return couponDesc;
 	}
 
+	public void setCouponDesc(String couponDesc) {
+		this.couponDesc = couponDesc;
+	}
+
 	public int getCouponUseValue() {
 		return couponUseValue;
+	}
+
+	public void setCouponUseValue(int couponUseValue) {
+		this.couponUseValue = couponUseValue;
 	}
 
 	/**
@@ -288,8 +328,16 @@ public class CouponDetail extends MerchantResult {
 		return couponRemainValue / 100d;
 	}
 
+	public void setCouponRemainValue(int couponRemainValue) {
+		this.couponRemainValue = couponRemainValue;
+	}
+
 	public String getBeginTime() {
 		return beginTime;
+	}
+
+	public void setBeginTime(String beginTime) {
+		this.beginTime = beginTime;
 	}
 
 	@JSONField(serialize = false)
@@ -302,6 +350,10 @@ public class CouponDetail extends MerchantResult {
 		return endTime;
 	}
 
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
 	@JSONField(serialize = false)
 	public Date getFormatEndTime() {
 		return endTime != null ? DateUtil.parse2yyyyMMddHHmmss(endTime) : null;
@@ -309,6 +361,10 @@ public class CouponDetail extends MerchantResult {
 
 	public String getSendTime() {
 		return sendTime;
+	}
+
+	public void setSendTime(String sendTime) {
+		this.sendTime = sendTime;
 	}
 
 	@JSONField(serialize = false)
@@ -326,24 +382,48 @@ public class CouponDetail extends MerchantResult {
 		return useTime != null ? DateUtil.parse2yyyyMMddHHmmss(useTime) : null;
 	}
 
+	public void setUseTime(String useTime) {
+		this.useTime = useTime;
+	}
+
 	public String getTradeNo() {
 		return tradeNo;
+	}
+
+	public void setTradeNo(String tradeNo) {
+		this.tradeNo = tradeNo;
 	}
 
 	public String getConsumerMchId() {
 		return consumerMchId;
 	}
 
+	public void setConsumerMchId(String consumerMchId) {
+		this.consumerMchId = consumerMchId;
+	}
+
 	public String getConsumerMchName() {
 		return consumerMchName;
+	}
+
+	public void setConsumerMchName(String consumerMchName) {
+		this.consumerMchName = consumerMchName;
 	}
 
 	public String getConsumerMchAppid() {
 		return consumerMchAppid;
 	}
 
+	public void setConsumerMchAppid(String consumerMchAppid) {
+		this.consumerMchAppid = consumerMchAppid;
+	}
+
 	public String getSendSource() {
 		return sendSource;
+	}
+
+	public void setSendSource(String sendSource) {
+		this.sendSource = sendSource;
 	}
 
 	public int getIsPartialUse() {
@@ -353,6 +433,10 @@ public class CouponDetail extends MerchantResult {
 	@JSONField(serialize = false)
 	public boolean getFormatIsPartialUse() {
 		return isPartialUse == 1;
+	}
+
+	public void setIsPartialUse(int isPartialUse) {
+		this.isPartialUse = isPartialUse;
 	}
 
 	@Override

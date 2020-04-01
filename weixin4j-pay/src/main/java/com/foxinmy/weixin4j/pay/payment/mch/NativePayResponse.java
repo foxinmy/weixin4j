@@ -30,7 +30,7 @@ public class NativePayResponse extends MerchantResult {
 	@JSONField(name = "prepay_id")
 	private String prepayId;
 
-	public NativePayResponse() {
+	protected NativePayResponse() {
 		// jaxb required
 	}
 
@@ -69,6 +69,10 @@ public class NativePayResponse extends MerchantResult {
 
 	public String getPrepayId() {
 		return prepayId;
+	}
+
+	public void setPrepayId(String prepayId) {
+		this.prepayId = prepayId;
 	}
 
 	@Override

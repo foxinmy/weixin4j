@@ -43,8 +43,16 @@ public class JsPayNotify extends PayBaseInfo {
 		return openId;
 	}
 
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
 	public int getIsSubscribe() {
 		return isSubscribe;
+	}
+
+	public void setIsSubscribe(int isSubscribe) {
+		this.isSubscribe = isSubscribe;
 	}
 
 	@JSONField(serialize = false)

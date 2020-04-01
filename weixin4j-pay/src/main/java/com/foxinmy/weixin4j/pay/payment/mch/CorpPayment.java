@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.mch.CorpPaymentCheckNameType;
+import com.foxinmy.weixin4j.pay.type.mch.CorpPaymentCheckNameType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -38,7 +38,7 @@ public class CorpPayment extends MerchantResult {
 	/**
 	 * 校验用户姓名选项
 	 * 
-	 * @see CorpPaymentCheckNameType.type.MPPaymentCheckNameType
+	 * @see CorpPaymentCheckNameType
 	 */
 	@XmlElement(name = "check_name")
 	@JSONField(name = "check_name")
@@ -64,7 +64,7 @@ public class CorpPayment extends MerchantResult {
 	@JSONField(name = "spbill_create_ip")
 	private String clientIp;
 
-	public CorpPayment() {
+	protected CorpPayment() {
 		// jaxb required
 	}
 
@@ -99,24 +99,48 @@ public class CorpPayment extends MerchantResult {
 		return outTradeNo;
 	}
 
+	public void setOutTradeNo(String outTradeNo) {
+		this.outTradeNo = outTradeNo;
+	}
+
 	public String getOpenId() {
 		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
 	public CorpPaymentCheckNameType getCheckNameType() {
 		return checkNameType;
 	}
 
+	public void setCheckNameType(CorpPaymentCheckNameType checkNameType) {
+		this.checkNameType = checkNameType;
+	}
+
 	public String getUserName() {
 		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getDesc() {
 		return desc;
 	}
 
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
 	public int getAmount() {
 		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 	
 	/**
@@ -133,8 +157,8 @@ public class CorpPayment extends MerchantResult {
 		return clientIp;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setClientIp(String clientIp) {
+		this.clientIp = clientIp;
 	}
 
 	@Override

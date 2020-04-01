@@ -126,12 +126,24 @@ public class CouponStock extends MerchantResult {
 		return couponStockId;
 	}
 
+	public void setCouponStockId(String couponStockId) {
+		this.couponStockId = couponStockId;
+	}
+
 	public String getCouponName() {
 		return couponName;
 	}
 
+	public void setCouponName(String couponName) {
+		this.couponName = couponName;
+	}
+
 	public int getCouponValue() {
 		return couponValue;
+	}
+
+	public void setCouponValue(int couponValue) {
+		this.couponValue = couponValue;
 	}
 
 	/**
@@ -146,6 +158,10 @@ public class CouponStock extends MerchantResult {
 
 	public Integer getCouponMininumn() {
 		return couponMininumn;
+	}
+
+	public void setCouponMininumn(Integer couponMininumn) {
+		this.couponMininumn = couponMininumn;
 	}
 
 	/**
@@ -172,6 +188,10 @@ public class CouponStock extends MerchantResult {
 		return null;
 	}
 
+	public void setCouponType(int couponType) {
+		this.couponType = couponType;
+	}
+
 	public int getCouponStockStatus() {
 		return couponStockStatus;
 	}
@@ -186,12 +206,24 @@ public class CouponStock extends MerchantResult {
 		return null;
 	}
 
+	public void setCouponStockStatus(int couponStockStatus) {
+		this.couponStockStatus = couponStockStatus;
+	}
+
 	public int getCouponTotal() {
 		return couponTotal;
 	}
 
+	public void setCouponTotal(int couponTotal) {
+		this.couponTotal = couponTotal;
+	}
+
 	public Integer getMaxQuota() {
 		return maxQuota;
+	}
+
+	public void setMaxQuota(Integer maxQuota) {
+		this.maxQuota = maxQuota;
 	}
 
 	/**
@@ -208,6 +240,10 @@ public class CouponStock extends MerchantResult {
 		return lockedNum;
 	}
 
+	public void setLockedNum(Integer lockedNum) {
+		this.lockedNum = lockedNum;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
@@ -220,6 +256,10 @@ public class CouponStock extends MerchantResult {
 
 	public Integer getUsedNum() {
 		return usedNum;
+	}
+
+	public void setUsedNum(Integer usedNum) {
+		this.usedNum = usedNum;
 	}
 
 	/**
@@ -236,6 +276,10 @@ public class CouponStock extends MerchantResult {
 		return sendNum;
 	}
 
+	public void setSendNum(Integer sendNum) {
+		this.sendNum = sendNum;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
@@ -250,6 +294,10 @@ public class CouponStock extends MerchantResult {
 		return beginTime;
 	}
 
+	public void setBeginTime(String beginTime) {
+		this.beginTime = beginTime;
+	}
+
 	@JSONField(serialize = false)
 	public Date getFormatBeginTime() {
 		return beginTime != null ? DateUtil.parse2yyyyMMddHHmmss(beginTime)
@@ -258,6 +306,10 @@ public class CouponStock extends MerchantResult {
 
 	public String getEndTime() {
 		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
 	@JSONField(serialize = false)
@@ -269,6 +321,10 @@ public class CouponStock extends MerchantResult {
 		return createTime;
 	}
 
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+
 	@JSONField(serialize = false)
 	public Date getFormatCreateTime() {
 		return createTime != null ? DateUtil.parse2yyyyMMddHHmmss(createTime)
@@ -277,6 +333,10 @@ public class CouponStock extends MerchantResult {
 
 	public Integer getCouponBudget() {
 		return couponBudget;
+	}
+
+	public void setCouponBudget(Integer couponBudget) {
+		this.couponBudget = couponBudget;
 	}
 
 	/**

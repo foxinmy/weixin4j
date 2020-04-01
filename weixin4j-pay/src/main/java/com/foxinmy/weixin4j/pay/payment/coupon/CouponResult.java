@@ -80,16 +80,36 @@ public class CouponResult extends MerchantResult {
 		return couponStockId;
 	}
 
+	public void setCouponStockId(String couponStockId) {
+		this.couponStockId = couponStockId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
 	public int getResponseCount() {
 		return responseCount;
+	}
+
+	public void setResponseCount(int responseCount) {
+		this.responseCount = responseCount;
 	}
 
 	public int getSuccessCount() {
 		return successCount;
 	}
 
+	public void setSuccessCount(int successCount) {
+		this.successCount = successCount;
+	}
+
 	public int getFailedCount() {
 		return failedCount;
+	}
+
+	public void setFailedCount(int failedCount) {
+		this.failedCount = failedCount;
 	}
 
 	public String getOpenId() {
@@ -100,12 +120,24 @@ public class CouponResult extends MerchantResult {
 		return retCode;
 	}
 
+	public void setRetCode(String retCode) {
+		this.retCode = retCode;
+	}
+
 	public String getCouponId() {
 		return couponId;
 	}
 
+	public void setCouponId(String couponId) {
+		this.couponId = couponId;
+	}
+
 	public String getRetMsg() {
 		return retMsg;
+	}
+
+	public void setRetMsg(String retMsg) {
+		this.retMsg = retMsg;
 	}
 
 	@Override

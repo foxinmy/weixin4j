@@ -27,7 +27,7 @@ public class MICROPayRequest extends Order implements MchPayRequest {
 	@JSONField(serialize = false)
 	private WeixinPayAccount paymentAccount;
 
-	public MICROPayRequest() {
+	protected MICROPayRequest() {
 		// jaxb required
 	}
 

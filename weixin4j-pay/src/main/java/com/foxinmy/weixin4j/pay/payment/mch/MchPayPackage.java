@@ -90,7 +90,7 @@ public class MchPayPackage extends PayPackage {
 	@JSONField(name = "deposit")
 	private DepositType deposit;
 
-	public MchPayPackage() {
+	protected MchPayPackage() {
 		// jaxb required
 	}
 
@@ -193,20 +193,40 @@ public class MchPayPackage extends PayPackage {
 		return tradeType;
 	}
 
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
+	}
+
 	public String getFeeType() {
 		return feeType;
+	}
+
+	public void setFeeType(String feeType) {
+		this.feeType = feeType;
 	}
 
 	public String getOpenId() {
 		return openId;
 	}
 
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
 	public String getAuthCode() {
 		return authCode;
 	}
 
+	public void setAuthCode(String authCode) {
+		this.authCode = authCode;
+	}
+
 	public String getProductId() {
 		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}
 
 	public String getLimitPay() {

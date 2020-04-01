@@ -81,7 +81,7 @@ public class PayPackage extends MerchantResult {
 	@JSONField(name = "goods_tag")
 	private String goodsTag;
 
-	public PayPackage() {
+	protected PayPackage() {
 		// jaxb required
 	}
 
@@ -193,6 +193,10 @@ public class PayPackage extends MerchantResult {
 
 	public int getTotalFee() {
 		return totalFee;
+	}
+
+	public void setTotalFee(int totalFee) {
+		this.totalFee = totalFee;
 	}
 	
 	/**

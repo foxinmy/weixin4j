@@ -42,7 +42,7 @@ public class RefundCouponInfo implements Serializable {
 	@JSONField(name = "coupon_refund_fee")
 	private Integer couponFee;
 
-	public RefundCouponInfo() {
+	protected RefundCouponInfo() {
 		// jaxb requried
 	}
 
@@ -50,12 +50,24 @@ public class RefundCouponInfo implements Serializable {
 		return couponBatchId;
 	}
 
+	public void setCouponBatchId(String couponBatchId) {
+		this.couponBatchId = couponBatchId;
+	}
+
 	public String getCouponId() {
 		return couponId;
 	}
 
+	public void setCouponId(String couponId) {
+		this.couponId = couponId;
+	}
+
 	public Integer getCouponFee() {
 		return couponFee;
+	}
+
+	public void setCouponFee(Integer couponFee) {
+		this.couponFee = couponFee;
 	}
 
 	/**

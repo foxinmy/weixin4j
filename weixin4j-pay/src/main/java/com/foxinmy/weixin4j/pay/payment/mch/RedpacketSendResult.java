@@ -54,7 +54,7 @@ public class RedpacketSendResult extends MerchantResult {
 	@JSONField(name = "send_listid")
 	private String sendListid;
 
-	public RedpacketSendResult() {
+	protected RedpacketSendResult() {
 		// jaxb required
 	}
 
@@ -62,12 +62,24 @@ public class RedpacketSendResult extends MerchantResult {
 		return outTradeNo;
 	}
 
+	public void setOutTradeNo(String outTradeNo) {
+		this.outTradeNo = outTradeNo;
+	}
+
 	public String getOpenId() {
 		return openId;
 	}
 
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
 	public int getTotalAmount() {
 		return totalAmount;
+	}
+
+	public void setTotalAmount(int totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 	/**
@@ -84,6 +96,10 @@ public class RedpacketSendResult extends MerchantResult {
 		return sendTime;
 	}
 
+	public void setSendTime(String sendTime) {
+		this.sendTime = sendTime;
+	}
+
 	@JSONField(serialize = false)
 	public Date getFormatSendTime() {
 		return DateUtil.parse2yyyyMMddHHmmss(sendTime);
@@ -91,6 +107,10 @@ public class RedpacketSendResult extends MerchantResult {
 
 	public String getSendListid() {
 		return sendListid;
+	}
+
+	public void setSendListid(String sendListid) {
+		this.sendListid = sendListid;
 	}
 
 	@Override
