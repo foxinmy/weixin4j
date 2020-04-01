@@ -29,7 +29,7 @@ import java.util.List;
 public class RefundDetail implements Serializable {
 	private static final long serialVersionUID = 1402738803019986864L;
 
-	protected RefundDetail() {
+	public RefundDetail() {
 		// jaxb required
 	}
 

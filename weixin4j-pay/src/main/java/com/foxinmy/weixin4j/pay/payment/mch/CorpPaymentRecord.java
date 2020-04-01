@@ -93,7 +93,7 @@ public class CorpPaymentRecord extends MerchantResult {
 	@XmlElement(name = "check_name_result")
 	private String checkNameResult;
 
-	protected CorpPaymentRecord() {
+	public CorpPaymentRecord() {
 		// jaxb required
 	}
 

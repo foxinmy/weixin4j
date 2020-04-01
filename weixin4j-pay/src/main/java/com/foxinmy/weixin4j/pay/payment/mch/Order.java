@@ -120,7 +120,7 @@ public class Order extends MerchantTradeResult {
 	@JSONField(name = "sub_is_subscribe")
 	private String subIsSubscribe;
 
-	protected Order() {
+	public Order() {
 		// jaxb required
 	}
 

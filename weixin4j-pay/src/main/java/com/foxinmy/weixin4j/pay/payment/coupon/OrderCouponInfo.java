@@ -51,7 +51,7 @@ public class OrderCouponInfo implements Serializable {
 	@JSONField(name = "coupon_fee")
 	private Integer couponFee;
 
-	protected OrderCouponInfo() {
+	public OrderCouponInfo() {
 		// jaxb requried
 	}
 

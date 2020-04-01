@@ -43,7 +43,7 @@ public class CorpPaymentResult extends MerchantResult {
 	@XmlElement(name = "payment_time")
 	private String paymentTime;
 
-	protected CorpPaymentResult() {
+	public CorpPaymentResult() {
 		// jaxb required
 	}
 

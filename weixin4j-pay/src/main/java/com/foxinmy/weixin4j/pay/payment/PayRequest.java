@@ -33,7 +33,7 @@ public class PayRequest extends PayBaseInfo {
 	private String partnerId;
 
 
-	protected PayRequest() {
+	public PayRequest() {
 		// jaxb required
 	}
 

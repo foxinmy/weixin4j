@@ -64,7 +64,7 @@ public class CorpPayment extends MerchantResult {
 	@JSONField(name = "spbill_create_ip")
 	private String clientIp;
 
-	protected CorpPayment() {
+	public CorpPayment() {
 		// jaxb required
 	}
 

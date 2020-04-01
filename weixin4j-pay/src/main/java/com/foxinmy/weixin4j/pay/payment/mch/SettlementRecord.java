@@ -87,7 +87,7 @@ public class SettlementRecord extends MerchantResult {
 	@JSONField(name = "poundage_fee")
 	private int poundageFee;
 
-	protected SettlementRecord() {
+	public SettlementRecord() {
 		// jaxb required
 	}
 

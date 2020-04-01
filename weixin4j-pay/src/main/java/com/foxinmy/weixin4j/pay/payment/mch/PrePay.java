@@ -39,7 +39,7 @@ public class PrePay extends MerchantResult {
 			@XmlElement(name = "mweb_url") })
 	private String payUrl;
 
-	protected PrePay() {
+	public PrePay() {
 		// jaxb required
 	}
 

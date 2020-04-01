@@ -63,7 +63,7 @@ public class RefundResult extends MerchantTradeResult {
 	@ListsuffixResult({ ".*(_\\d)$" })
 	private List<RefundDetail> refundList;
 
-	protected RefundResult() {
+	public RefundResult() {
 		// jaxb required
 	}
 

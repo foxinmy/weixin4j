@@ -42,7 +42,7 @@ public class RefundCouponInfo implements Serializable {
 	@JSONField(name = "coupon_refund_fee")
 	private Integer couponFee;
 
-	protected RefundCouponInfo() {
+	public RefundCouponInfo() {
 		// jaxb requried
 	}
 

@@ -34,7 +34,7 @@ public class NativePayNotify extends OpenIdResult {
 	@JSONField(name = "product_id")
 	private String productId;
 
-	protected NativePayNotify() {
+	public NativePayNotify() {
 		// jaxb required
 	}
 

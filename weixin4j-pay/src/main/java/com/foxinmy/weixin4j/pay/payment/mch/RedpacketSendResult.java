@@ -54,7 +54,7 @@ public class RedpacketSendResult extends MerchantResult {
 	@JSONField(name = "send_listid")
 	private String sendListid;
 
-	protected RedpacketSendResult() {
+	public RedpacketSendResult() {
 		// jaxb required
 	}
 

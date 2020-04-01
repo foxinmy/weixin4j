@@ -110,7 +110,7 @@ public class Redpacket extends MerchantResult {
 	@JSONField(name = "risk_info")
 	private String risk;
 
-	protected Redpacket() {
+	public Redpacket() {
 		// jaxb required
 	}
 

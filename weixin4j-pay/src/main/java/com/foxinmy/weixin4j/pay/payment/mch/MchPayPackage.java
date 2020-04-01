@@ -90,7 +90,7 @@ public class MchPayPackage extends PayPackage {
 	@JSONField(name = "deposit")
 	private DepositType deposit;
 
-	protected MchPayPackage() {
+	public MchPayPackage() {
 		// jaxb required
 	}
 
