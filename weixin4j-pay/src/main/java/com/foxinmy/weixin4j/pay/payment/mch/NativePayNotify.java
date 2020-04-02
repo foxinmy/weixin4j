@@ -42,8 +42,16 @@ public class NativePayNotify extends OpenIdResult {
 		return productId;
 	}
 
+	public void setIsSubscribe(String isSubscribe) {
+		this.isSubscribe = isSubscribe;
+	}
+
 	public String getIsSubscribe() {
 		return isSubscribe;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}
 
 	@Override

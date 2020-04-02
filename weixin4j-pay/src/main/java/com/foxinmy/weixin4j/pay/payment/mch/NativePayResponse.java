@@ -71,6 +71,10 @@ public class NativePayResponse extends MerchantResult {
 		return prepayId;
 	}
 
+	public void setPrepayId(String prepayId) {
+		this.prepayId = prepayId;
+	}
+
 	@Override
 	public String toString() {
 		return "NativePayResponse [prepayId=" + prepayId + ", "

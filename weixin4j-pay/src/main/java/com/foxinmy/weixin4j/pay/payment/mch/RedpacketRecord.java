@@ -2,9 +2,9 @@ package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.http.weixin.XmlResult;
-import com.foxinmy.weixin4j.type.mch.RedpacketSendType;
-import com.foxinmy.weixin4j.type.mch.RedpacketStatus;
-import com.foxinmy.weixin4j.type.mch.RedpacketType;
+import com.foxinmy.weixin4j.pay.type.mch.RedpacketSendType;
+import com.foxinmy.weixin4j.pay.type.mch.RedpacketStatus;
+import com.foxinmy.weixin4j.pay.type.mch.RedpacketType;
 import com.foxinmy.weixin4j.util.DateUtil;
 
 import javax.xml.bind.annotation.*;

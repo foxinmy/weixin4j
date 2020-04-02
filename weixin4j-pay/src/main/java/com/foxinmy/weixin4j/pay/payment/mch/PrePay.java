@@ -1,6 +1,6 @@
 package com.foxinmy.weixin4j.pay.payment.mch;
 
-import com.foxinmy.weixin4j.type.TradeType;
+import com.foxinmy.weixin4j.pay.type.TradeType;
 
 import javax.xml.bind.annotation.*;
 
@@ -22,7 +22,7 @@ public class PrePay extends MerchantResult {
 	/**
 	 * 调用接口提交的交易类型，取值如下：JSAPI，NATIVE，APP，
 	 * 
-	 * @see com.foxinmy.weixin4j.mp.type.TradeType
+	 * @see com.foxinmy.weixin4j.pay.type.TradeType
 	 */
 	@XmlElement(name = "trade_type")
 	private TradeType tradeType;
