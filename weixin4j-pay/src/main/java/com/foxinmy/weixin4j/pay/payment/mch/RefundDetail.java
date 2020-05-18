@@ -2,9 +2,9 @@ package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.pay.payment.coupon.RefundCouponInfo;
-import com.foxinmy.weixin4j.type.mch.CouponType;
-import com.foxinmy.weixin4j.type.mch.RefundChannel;
-import com.foxinmy.weixin4j.type.mch.RefundStatus;
+import com.foxinmy.weixin4j.pay.type.mch.CouponType;
+import com.foxinmy.weixin4j.pay.type.mch.RefundChannel;
+import com.foxinmy.weixin4j.pay.type.mch.RefundStatus;
 import com.foxinmy.weixin4j.util.DateUtil;
 import com.foxinmy.weixin4j.xml.ListsuffixResult;
 
@@ -113,12 +113,24 @@ public class RefundDetail implements Serializable {
 		return outRefundNo;
 	}
 
+	public void setOutRefundNo(String outRefundNo) {
+		this.outRefundNo = outRefundNo;
+	}
+
 	public String getRefundId() {
 		return refundId;
 	}
 
+	public void setRefundId(String refundId) {
+		this.refundId = refundId;
+	}
+
 	public String getRefundChannel() {
 		return refundChannel;
+	}
+
+	public void setRefundChannel(String refundChannel) {
+		this.refundChannel = refundChannel;
 	}
 
 	@JSONField(serialize = false)
@@ -131,8 +143,16 @@ public class RefundDetail implements Serializable {
 		return refundFee;
 	}
 
+	public void setRefundFee(int refundFee) {
+		this.refundFee = refundFee;
+	}
+
 	public String getRefundStatus() {
 		return refundStatus;
+	}
+
+	public void setRefundStatus(String refundStatus) {
+		this.refundStatus = refundStatus;
 	}
 
 	@JSONField(serialize = false)
@@ -153,6 +173,10 @@ public class RefundDetail implements Serializable {
 		return settlementRefundFee;
 	}
 
+	public void setSettlementRefundFee(Integer settlementRefundFee) {
+		this.settlementRefundFee = settlementRefundFee;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
@@ -165,6 +189,10 @@ public class RefundDetail implements Serializable {
 
 	public Integer getCouponRefundFee() {
 		return couponRefundFee;
+	}
+
+	public void setCouponRefundFee(Integer couponRefundFee) {
+		this.couponRefundFee = couponRefundFee;
 	}
 
 	/**
@@ -181,8 +209,16 @@ public class RefundDetail implements Serializable {
 		return couponRefundCount;
 	}
 
+	public void setCouponRefundCount(Integer couponRefundCount) {
+		this.couponRefundCount = couponRefundCount;
+	}
+
 	public String getCouponType() {
 		return couponType;
+	}
+
+	public void setCouponType(String couponType) {
+		this.couponType = couponType;
 	}
 
 	@JSONField(serialize = false)
@@ -195,8 +231,16 @@ public class RefundDetail implements Serializable {
 		return refundRecvAccout;
 	}
 
+	public void setRefundRecvAccout(String refundRecvAccout) {
+		this.refundRecvAccout = refundRecvAccout;
+	}
+
 	public String getRefundSuccessTime() {
 		return refundSuccessTime;
+	}
+
+	public void setRefundSuccessTime(String refundSuccessTime) {
+		this.refundSuccessTime = refundSuccessTime;
 	}
 	
 	@JSONField(serialize = false)

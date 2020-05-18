@@ -194,6 +194,10 @@ public class PayPackage extends MerchantResult {
 	public int getTotalFee() {
 		return totalFee;
 	}
+
+	public void setTotalFee(int totalFee) {
+		this.totalFee = totalFee;
+	}
 	
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>

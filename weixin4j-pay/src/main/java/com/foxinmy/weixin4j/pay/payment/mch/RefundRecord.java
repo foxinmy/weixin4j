@@ -50,8 +50,16 @@ public class RefundRecord extends MerchantTradeResult {
 		return refundCount;
 	}
 
+	public void setRefundCount(int refundCount) {
+		this.refundCount = refundCount;
+	}
+
 	public int getRefundFee() {
 		return refundFee;
+	}
+
+	public void setRefundFee(int refundFee) {
+		this.refundFee = refundFee;
 	}
 
 	/**

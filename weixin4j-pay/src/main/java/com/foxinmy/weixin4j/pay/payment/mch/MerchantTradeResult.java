@@ -1,7 +1,7 @@
 package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.CurrencyType;
+import com.foxinmy.weixin4j.pay.type.CurrencyType;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -60,6 +60,10 @@ public class MerchantTradeResult extends MerchantResult {
 		return cashFee;
 	}
 
+	public void setCashFee(Integer cashFee) {
+		this.cashFee = cashFee;
+	}
+
 	/**
 	 * <font color="red">调用接口获取单位为分,get方法转换为元方便使用</font>
 	 * 
@@ -72,6 +76,10 @@ public class MerchantTradeResult extends MerchantResult {
 
 	public Integer getTotalFee() {
 		return totalFee;
+	}
+
+	public void setTotalFee(Integer totalFee) {
+		this.totalFee = totalFee;
 	}
 
 	/**
@@ -94,16 +102,32 @@ public class MerchantTradeResult extends MerchantResult {
 		return feeType;
 	}
 
+	public void setFeeType(String feeType) {
+		this.feeType = feeType;
+	}
+
 	public String getTransactionId() {
 		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 	}
 
 	public String getOutTradeNo() {
 		return outTradeNo;
 	}
 
+	public void setOutTradeNo(String outTradeNo) {
+		this.outTradeNo = outTradeNo;
+	}
+
 	public Integer getSettlementTotalFee() {
 		return settlementTotalFee;
+	}
+
+	public void setSettlementTotalFee(Integer settlementTotalFee) {
+		this.settlementTotalFee = settlementTotalFee;
 	}
 
 	/**

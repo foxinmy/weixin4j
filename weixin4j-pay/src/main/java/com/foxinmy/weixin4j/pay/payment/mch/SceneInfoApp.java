@@ -21,6 +21,10 @@ public class SceneInfoApp {
 	private String path;
 	private String sceneInfo;
 
+	protected SceneInfoApp(){
+
+	}
+
 	private SceneInfoApp(String type, String name, String path) {
 		this.type = type;
 		this.name = name;
@@ -31,12 +35,24 @@ public class SceneInfoApp {
 		return type;
 	}
 
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public String getName() {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getPath() {
 		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public String getSceneInfo() {

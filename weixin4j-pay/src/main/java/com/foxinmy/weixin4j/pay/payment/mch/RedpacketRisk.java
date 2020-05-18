@@ -72,6 +72,10 @@ public class RedpacketRisk {
 		return risk;
 	}
 
+	public void setRisk(Map<String, String> risk) {
+		this.risk = risk;
+	}
+
 	public String toContent() {
 		if (risk.isEmpty())
 			return null;
