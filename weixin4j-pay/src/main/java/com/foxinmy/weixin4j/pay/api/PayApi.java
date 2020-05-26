@@ -10,7 +10,6 @@ import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfo;
 import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfoRequest;
 import com.foxinmy.weixin4j.pay.payment.mch.*;
 import com.foxinmy.weixin4j.pay.type.mch.BillType;
-import com.foxinmy.weixin4j.pay.type.mch.DepositType;
 import com.foxinmy.weixin4j.pay.type.mch.RefundAccountType;
 import com.foxinmy.weixin4j.pay.type.*;
 import com.foxinmy.weixin4j.util.*;
@@ -89,13 +88,13 @@ public class PayApi extends MchApi {
 						payPackage.getAuthCode(), null, payPackage.getAttach(),
 						null, null, payPackage.getGoodsTag(),
 						payPackage.getLimitPay(), payPackage.getSubAppId(), payPackage.getFaceCode(),
-						payPackage.getDeposit());
+						payPackage.getDeposit(), payPackage.getProfitSharing());
 			// 默认为MD5签名
 			SignType signType= SignType.MD5;
 			super.declareMerchant(_payPackage);
 			// 默认为刷卡支付（付款码支付）的API地址
 			String url = getRequestUri("micropay_uri");
-			if(payPackage.getDeposit()==DepositType.Y){
+			if(payPackage.getDeposit()==YesNoType.Y){
 				// 押金支付只支持HMAC-SHA256签名
 				signType = SignType.HMAC$SHA256;
 				_payPackage.setSignType("HMAC-SHA256");
@@ -791,6 +790,23 @@ public class PayApi extends MchApi {
 		return createPayRequest(payPackage);
 	}
 
+	/**
+	 * 创建押金支付
+	 *
+	 * @param code
+	 * @param body
+	 * @param outTradeNo
+	 * @param totalFee
+	 * @param createIp
+	 * @param openId
+	 * @param attach
+	 * @param store
+	 * @param isFacePay
+	 * @return
+	 * @throws WeixinException
+	 * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/deposit_sl.php?chapter=27_1&index=2">支付押金（付款码支付）</a>
+	 * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/deposit_sl.php?chapter=27_0&index=1">支付押金（人脸支付）</a>
+	 */
 	public MchPayRequest createDepositPayRequest(String code, String body, String outTradeNo, double totalFee,
 												 String createIp, String openId, String attach, SceneInfoStore store,
 												 boolean isFacePay) throws WeixinException {
@@ -799,12 +815,12 @@ public class PayApi extends MchApi {
 			payPackage = new MchPayPackage(body, outTradeNo, totalFee, null, createIp, TradeType.FACEPAY,
 					openId, null, null, attach);
 			payPackage.setFaceCode(code);
-			payPackage.setDeposit(DepositType.Y);
+			payPackage.setDeposit(YesNoType.Y);
 			return createPayRequest(payPackage);
 		}else{
 			payPackage = new MchPayPackage(body, outTradeNo, totalFee, null, createIp, TradeType.MICROPAY,
 					openId, code, null, attach);
-			payPackage.setDeposit(DepositType.Y);
+			payPackage.setDeposit(YesNoType.Y);
 			if (store != null) {
 				payPackage.setSceneInfo(String.format("{\"store_info\":\"%s\"}",
 						JSON.toJSONString(store)));

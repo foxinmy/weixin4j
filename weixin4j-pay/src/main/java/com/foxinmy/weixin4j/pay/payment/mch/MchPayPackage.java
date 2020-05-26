@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.pay.payment.PayPackage;
 import com.foxinmy.weixin4j.pay.type.CurrencyType;
 import com.foxinmy.weixin4j.pay.type.TradeType;
-import com.foxinmy.weixin4j.pay.type.mch.DepositType;
+import com.foxinmy.weixin4j.pay.type.YesNoType;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -88,7 +88,13 @@ public class MchPayPackage extends PayPackage {
 	 */
 	@XmlElement(name = "deposit")
 	@JSONField(name = "deposit")
-	private DepositType deposit;
+	private YesNoType deposit;
+
+	/**
+	 * 是否需要分帐，非必传，默认为不分帐
+	 * Y-是，需要分账，N-否，不分账
+	 */
+	private YesNoType profitSharing;
 
 	protected MchPayPackage() {
 		// jaxb required
@@ -123,7 +129,7 @@ public class MchPayPackage extends PayPackage {
 			String openId, String authCode, String productId, String attach) {
 		this(body, null, outTradeNo, totalFee, CurrencyType.CNY, notifyUrl,
 				createIp, tradeType, openId, authCode, productId, attach, null,
-				null, null, null, null, null, null);
+				null, null, null, null, null, null, null);
 	}
 
 	/**
@@ -168,13 +174,15 @@ public class MchPayPackage extends PayPackage {
 	 * 			  人脸凭证，用于旧版刷脸支付。
 	 * @param depositType
 	 * 			  是否押金支付
+	 * @param profitSharing
+	 * 			  是否需要分账
 	 */
 	public MchPayPackage(String body, String detial, String outTradeNo,
 			double totalFee, CurrencyType feeType, String notifyUrl,
 			String createIp, TradeType tradeType, String openId,
 			String authCode, String productId, String attach, Date timeStart,
 			Date timeExpire, String goodsTag, String limitPay, String subOpenId, String faceCode,
-			DepositType depositType) {
+			YesNoType depositType, YesNoType profitSharing) {
 		super(body, detial, outTradeNo, totalFee, notifyUrl, createIp, attach,
 				timeStart, timeExpire, goodsTag);
 		this.tradeType = tradeType != null ? tradeType.name() : null;
@@ -261,12 +269,20 @@ public class MchPayPackage extends PayPackage {
 		this.faceCode = faceCode;
 	}
 
-	public DepositType getDeposit() {
+	public YesNoType getDeposit() {
 		return deposit;
 	}
 
-	public void setDeposit(DepositType deposit) {
+	public void setDeposit(YesNoType deposit) {
 		this.deposit = deposit;
+	}
+
+	public YesNoType getProfitSharing() {
+		return profitSharing;
+	}
+
+	public void setProfitSharing(YesNoType profitSharing) {
+		this.profitSharing = profitSharing;
 	}
 
 	@Override
@@ -282,6 +298,7 @@ public class MchPayPackage extends PayPackage {
 				", sceneInfo='" + sceneInfo + '\'' +
 				", faceCode='" + faceCode + '\'' +
 				", deposit=" + deposit +
+				", profitSharing=" + profitSharing +
 				'}';
 	}
 }

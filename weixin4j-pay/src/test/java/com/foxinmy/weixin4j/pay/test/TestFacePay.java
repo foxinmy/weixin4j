@@ -6,7 +6,6 @@ import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.pay.WeixinPayProxy;
 import com.foxinmy.weixin4j.pay.model.WeixinPayAccount;
 import com.foxinmy.weixin4j.pay.payment.mch.MchPayRequest;
-import com.foxinmy.weixin4j.pay.type.mch.DepositType;
 import org.junit.Test;
 
 public class TestFacePay {
