@@ -1008,9 +1008,10 @@ public class WeixinPayProxy {
 	 */
 	public ProfitSharingReturnResult profitSharingReturn(ProfitId id, String outReturnNo,
 												   ReturnAccountType returnAccountType, String returnAccount,
-												   String description)
+												   int returnAmount, String description)
 			throws WeixinException{
-		return profitSharingApi.profitSharingReturn(id, outReturnNo, returnAccountType, returnAccount, description);
+		return profitSharingApi.profitSharingReturn(id, outReturnNo, returnAccountType, returnAccount, returnAmount,
+				description);
 	}
 
 	/**

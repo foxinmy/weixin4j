@@ -14,6 +14,8 @@ import com.foxinmy.weixin4j.pay.type.profitsharing.RelationType;
  */
 public class Receiver {
 
+    public Receiver(){}
+
     public Receiver(ReceiverType type, String account, RelationType relationType) {
         this.type = type;
         this.account = account;

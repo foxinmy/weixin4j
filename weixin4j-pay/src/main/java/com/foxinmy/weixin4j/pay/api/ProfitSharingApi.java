@@ -156,6 +156,8 @@ public class ProfitSharingApi extends MchApi {
      *          回退方类型
      * @param returnAccount
      *          回退方账号
+     * @param returnAmount
+     *          回退金额
      * @param description
      *          回退描述
      * @return
@@ -165,14 +167,14 @@ public class ProfitSharingApi extends MchApi {
      */
     public ProfitSharingReturnResult profitSharingReturn(ProfitId id, String outReturnNo,
                                                          ReturnAccountType returnAccountType, String returnAccount,
-                                                         String description) throws WeixinException{
+                                                         int returnAmount, String description) throws WeixinException{
         ProfitSharingReturnRequest request;
         if(id.getIdType()== ProfitIdType.ORDER_ID){
             request = new ProfitSharingReturnRequest(id.getId(), null, outReturnNo, returnAccountType,
-                    returnAccount, description);
+                    returnAccount, returnAmount, description);
         }else{
             request = new ProfitSharingReturnRequest(null, id.getId(), outReturnNo, returnAccountType,
-                    returnAccount, description);
+                    returnAccount, returnAmount, description);
         }
         super.declareMerchant(request);
         String url = getRequestUri("profit_sharing_return_uri");

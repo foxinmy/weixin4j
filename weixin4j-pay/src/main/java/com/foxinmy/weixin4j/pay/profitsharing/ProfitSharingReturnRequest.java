@@ -52,6 +52,12 @@ public class ProfitSharingReturnRequest extends MerchantResult {
     @JSONField(name = "return_account")
     private String returnAccount;
     /**
+     * 回退金额
+     */
+    @XmlElement(name = "return_amount")
+    @JSONField(name = "return_amount")
+    private int returnAmount;
+    /**
      * 回退描述
      */
     private String description;
@@ -89,12 +95,14 @@ public class ProfitSharingReturnRequest extends MerchantResult {
      *          回退描述
      */
     public ProfitSharingReturnRequest(String orderId, String outOrderNo, String outReturnNo,
-                                      ReturnAccountType returnAccountType, String returnAccount, String description) {
+                                      ReturnAccountType returnAccountType, String returnAccount,
+                                      int returnAmount, String description) {
         this.orderId = orderId;
         this.outOrderNo = outOrderNo;
         this.outReturnNo = outReturnNo;
         this.returnAccountType = returnAccountType;
         this.returnAccount = returnAccount;
+        this.returnAmount = returnAmount;
         this.description = description;
     }
 
@@ -141,6 +149,14 @@ public class ProfitSharingReturnRequest extends MerchantResult {
 
     public void setReturnAccount(String returnAccount) {
         this.returnAccount = returnAccount;
+    }
+
+    public int getReturnAmount() {
+        return returnAmount;
+    }
+
+    public void setReturnAmount(int returnAmount) {
+        this.returnAmount = returnAmount;
     }
 
     public String getDescription() {
