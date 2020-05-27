@@ -14,7 +14,7 @@ public class ReceiverProfit extends Receiver {
     private String description;
 
     public ReceiverProfit(ReceiverType type, String account, int amount, String description){
-        super(type, account);
+        super(type, account, null);
         this.amount = amount;
         this.description = description;
     }

@@ -39,7 +39,7 @@ public class TestProfitSharingApi {
      */
     //@Test
     public void testRemoveReceiver() throws WeixinException {
-        Receiver receiver = new Receiver(ReceiverType.PERSONAL_OPENID, OPENID);
+        Receiver receiver = new Receiver(ReceiverType.PERSONAL_OPENID, OPENID, null);
         WeixinPayAccount account = new WeixinPayAccount(APPID, PAY_SIGN_KEY, MCHID);
         WeixinPayProxy proxy = new WeixinPayProxy(account);
         ReceiverResult result = proxy.removeProfitSharingReceiver(receiver);
