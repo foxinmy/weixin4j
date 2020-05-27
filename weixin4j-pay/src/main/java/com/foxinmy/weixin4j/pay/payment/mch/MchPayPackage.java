@@ -94,6 +94,8 @@ public class MchPayPackage extends PayPackage {
 	 * 是否需要分帐，非必传，默认为不分帐
 	 * Y-是，需要分账，N-否，不分账
 	 */
+	@XmlElement(name = "profit_sharing")
+	@JSONField(name = "profit_sharing")
 	private YesNoType profitSharing;
 
 	protected MchPayPackage() {
