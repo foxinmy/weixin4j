@@ -1,6 +1,7 @@
 package com.foxinmy.weixin4j.pay.profitsharing;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.pay.payment.mch.MerchantResult;
 
 /**
@@ -15,6 +16,7 @@ public class ReceiverResult extends MerchantResult {
     /**
      * 分账接收方对象，json格式字符串
      */
+    @JSONField(serialize = false)
     private String receiver;
 
     public String getReceiver() {
@@ -28,6 +30,7 @@ public class ReceiverResult extends MerchantResult {
     /**
      * 返回接收方java对象
      */
+    @JSONField(name = "receiver")
     public Receiver getReceiverObject(){
         try {
             return JSON.parseObject(receiver, Receiver.class);

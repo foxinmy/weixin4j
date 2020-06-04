@@ -33,6 +33,8 @@ import java.util.Map;
  */
 public class PayApi extends MchApi {
 
+	private final static String Y = "Y";
+
 	public PayApi(WeixinPayAccount weixinAccount) {
 		super(weixinAccount);
 	}
@@ -87,14 +89,14 @@ public class PayApi extends MchApi {
 						null, payPackage.getCreateIp(), null, payPackage.getOpenId(),
 						payPackage.getAuthCode(), null, payPackage.getAttach(),
 						null, null, payPackage.getGoodsTag(),
-						payPackage.getLimitPay(), payPackage.getSubAppId(), payPackage.getFaceCode(),
+						payPackage.getLimitPay(), payPackage.getSubAppId(), payPackage.getReceipt(),
 						payPackage.getDeposit(), payPackage.getProfitSharing());
 			// 默认为MD5签名
 			SignType signType= SignType.MD5;
 			super.declareMerchant(_payPackage);
 			// 默认为刷卡支付（付款码支付）的API地址
 			String url = getRequestUri("micropay_uri");
-			if(payPackage.getDeposit()==YesNoType.Y){
+			if(Y.equals(payPackage.getDeposit())){
 				// 押金支付只支持HMAC-SHA256签名
 				signType = SignType.HMAC$SHA256;
 				_payPackage.setSignType("HMAC-SHA256");
@@ -275,7 +277,7 @@ public class PayApi extends MchApi {
 	 * @param attach
 	 *            附加数据 非必填
 	 * @param store
-	 *            门店信息 非必填
+	 *            APP支付已无门店信息，不需要再传
 	 * @return APP支付对象
 	 * @see SceneInfoStore
 	 * @see APPPayRequest
@@ -290,11 +292,6 @@ public class PayApi extends MchApi {
 		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
 				totalFee, notifyUrl, createIp, TradeType.APP, null, null, null,
 				attach);
-		if (store != null) {
-			payPackage.setSceneInfo(String.format(
-					"{\"store_id\": \"%s\", \"store_name\":\"%s\"}",
-					store.getId(), store.getName()));
-		}
 		return createPayRequest(payPackage);
 	}
 
@@ -331,8 +328,7 @@ public class PayApi extends MchApi {
 				totalFee, notifyUrl, createIp, TradeType.MWEB, null, null,
 				null, attach);
 		if (app != null) {
-			payPackage.setSceneInfo(String.format("{\"h5_info\":\"%s\"}",
-					app.getSceneInfo()));
+			payPackage.setSceneInfo(app.toJson());
 		}
 		return createPayRequest(payPackage);
 	}
@@ -370,8 +366,7 @@ public class PayApi extends MchApi {
 				totalFee, null, createIp, TradeType.MICROPAY, null, authCode,
 				null, attach);
 		if (store != null) {
-			payPackage.setSceneInfo(String.format("{\"store_info\":\"%s\"}",
-					JSON.toJSONString(store)));
+			payPackage.setSceneInfo(store.toJson());
 		}
 		return createPayRequest(payPackage);
 	}
@@ -768,29 +763,6 @@ public class PayApi extends MchApi {
 	}
 
 	/**
-	 * 微信旧版刷脸支付
-	 *
-	 * @param faceCode
-	 * @param body
-	 * @param outTradeNo
-	 * @param totalFee
-	 * @param createIp
-	 * @param openId
-	 * @param attach
-	 * @return
-	 * @throws WeixinException
-	 */
-	public MchPayRequest createFacePayRequest(String faceCode, String body,
-											   String outTradeNo, double totalFee, String createIp, String openId,
-											  String attach) throws WeixinException {
-		MchPayPackage payPackage = new MchPayPackage(body, outTradeNo,
-				totalFee, null, createIp, TradeType.FACEPAY, openId, null,
-				null, attach);
-		payPackage.setFaceCode(faceCode);
-		return createPayRequest(payPackage);
-	}
-
-	/**
 	 * 创建押金支付
 	 *
 	 * @param code
@@ -814,16 +786,15 @@ public class PayApi extends MchApi {
 		if(isFacePay) {
 			payPackage = new MchPayPackage(body, outTradeNo, totalFee, null, createIp, TradeType.FACEPAY,
 					openId, null, null, attach);
-			payPackage.setFaceCode(code);
-			payPackage.setDeposit(YesNoType.Y);
+			payPackage.setAuthCode(code);
+			payPackage.setDeposit(Y);
 			return createPayRequest(payPackage);
 		}else{
 			payPackage = new MchPayPackage(body, outTradeNo, totalFee, null, createIp, TradeType.MICROPAY,
 					openId, code, null, attach);
-			payPackage.setDeposit(YesNoType.Y);
+			payPackage.setDeposit(Y);
 			if (store != null) {
-				payPackage.setSceneInfo(String.format("{\"store_info\":\"%s\"}",
-						JSON.toJSONString(store)));
+				payPackage.setSceneInfo(store.toJson());
 			}
 			return createPayRequest(payPackage);
 		}

@@ -13,6 +13,13 @@ public class ReceiverProfit extends Receiver {
     private int amount;
     private String description;
 
+    /**
+     * json deserialize need
+     */
+    public ReceiverProfit(){
+        super();
+    }
+
     public ReceiverProfit(ReceiverType type, String account, int amount, String description){
         super(type, account, null);
         this.amount = amount;

@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.pay.profitsharing;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.pay.payment.mch.MerchantResult;
 
@@ -49,7 +50,8 @@ public class ProfitSharingResult extends MerchantResult {
     /**
      * 分账接收方列表（分帐查询）
      */
-    private List<ReceiverProfitResult> receivers;
+    @JSONField(serialize = false)
+    private String receivers;
     /**
      * 分账金额（分帐查询）
      * 分账完结的分账金额，单位为分， 仅当查询分账完结的执行结果时，存在本字段
@@ -101,11 +103,11 @@ public class ProfitSharingResult extends MerchantResult {
         this.closeReason = closeReason;
     }
 
-    public List<ReceiverProfitResult> getReceivers() {
+    public String getReceivers() {
         return receivers;
     }
 
-    public void setReceivers(List<ReceiverProfitResult> receivers) {
+    public void setReceivers(String receivers) {
         this.receivers = receivers;
     }
 
@@ -123,5 +125,10 @@ public class ProfitSharingResult extends MerchantResult {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @JSONField(name = "receivers")
+    public List<ReceiverProfitResult> getProfitResult(){
+        return JSON.parseArray(this.receivers, ReceiverProfitResult.class);
     }
 }

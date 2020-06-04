@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.pay.profitsharing;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.pay.payment.mch.MerchantResult;
 
@@ -29,13 +30,13 @@ public class ProfitSharingRequest extends MerchantResult {
     /**
      * 商户订单号
      */
-    @XmlElement(name = "out_trade_no")
-    @JSONField(name = "out_trade_no")
+    @XmlElement(name = "out_order_no")
+    @JSONField(name = "out_order_no")
     private String outOrderNo;
     /**
      * 分账接收方列表，不超过50个
      */
-    private List<ReceiverProfit> receivers;
+    private String receivers;
     /**
      * 分账完结描述
      */
@@ -44,7 +45,7 @@ public class ProfitSharingRequest extends MerchantResult {
     public ProfitSharingRequest(String transactionId, String outOrderNo, List<ReceiverProfit> receivers){
         this.transactionId = transactionId;
         this.outOrderNo = outOrderNo;
-        this.receivers = receivers;
+        this.receivers = receivers!=null && receivers.size()>0 ? JSON.toJSONString(receivers) : null;
     }
 
     public String getTransactionId() {
@@ -63,11 +64,11 @@ public class ProfitSharingRequest extends MerchantResult {
         this.outOrderNo = outOrderNo;
     }
 
-    public List<ReceiverProfit> getReceivers() {
+    public String getReceivers() {
         return receivers;
     }
 
-    public void setReceivers(List<ReceiverProfit> receivers) {
+    public void setReceivers(String receivers) {
         this.receivers = receivers;
     }
 

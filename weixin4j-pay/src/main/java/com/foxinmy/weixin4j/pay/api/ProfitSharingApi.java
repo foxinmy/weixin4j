@@ -8,6 +8,7 @@ import com.foxinmy.weixin4j.pay.profitsharing.*;
 import com.foxinmy.weixin4j.pay.type.ProfitIdType;
 import com.foxinmy.weixin4j.pay.type.SignType;
 import com.foxinmy.weixin4j.pay.type.profitsharing.ReturnAccountType;
+import com.foxinmy.weixin4j.util.RandomUtil;
 import com.foxinmy.weixin4j.xml.XmlStream;
 
 import java.util.List;
@@ -109,7 +110,9 @@ public class ProfitSharingApi extends MchApi {
      */
     public ProfitSharingResult profitSharingQuery(String transactionId, String outOrderNo) throws WeixinException {
         ProfitSharingRequest request = new ProfitSharingRequest(transactionId, outOrderNo, null);
-        super.declareMerchant(request);
+        request.setMchId(weixinAccount.getMchId());
+        request.setNonceStr(RandomUtil.generateString(16));
+        request.setSubMchId(weixinAccount.getSubMchId());
         String url = getRequestUri("profit_sharing_query_uri");
         request.setSign(weixinSignature.sign(request, SignType.HMAC$SHA256));
         String para = XmlStream.toXML(request);
