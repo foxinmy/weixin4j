@@ -35,7 +35,7 @@ public class MchApi extends BaseApi {
     private final static String PEM_CERT_PREFIX = "-----BEGIN CERTIFICATE-----";
 
     static {
-        WEIXIN_BUNDLE = ResourceBundle.getBundle("com/foxinmy/weixin4j/payment/weixin");
+        WEIXIN_BUNDLE = ResourceBundle.getBundle("com/foxinmy/weixin4j/pay/weixin");
     }
 
     protected final WeixinPayAccount weixinAccount;

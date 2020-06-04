@@ -4,7 +4,6 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.foxinmy.weixin4j.pay.payment.PayPackage;
 import com.foxinmy.weixin4j.pay.type.CurrencyType;
 import com.foxinmy.weixin4j.pay.type.TradeType;
-import com.foxinmy.weixin4j.pay.type.mch.DepositType;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -77,18 +76,23 @@ public class MchPayPackage extends PayPackage {
 	@XmlElement(name = "scene_info")
 	@JSONField(name = "scene_info")
 	private String sceneInfo;
+
 	/**
-	 * 人脸凭证，用于旧版人脸支付。
+	 * 电子发票入口开放标识
 	 */
-	@XmlElement(name = "face_code")
-	@JSONField(name = "face_code")
-	private String faceCode;
+	private String receipt;
 	/**
 	 * 是否押金人脸支付，Y-是,N-普通人脸支付
 	 */
-	@XmlElement(name = "deposit")
-	@JSONField(name = "deposit")
-	private DepositType deposit;
+	private String deposit;
+
+	/**
+	 * 是否需要分帐，非必传，默认为不分帐
+	 * Y-是，需要分账，N-否，不分账
+	 */
+	@XmlElement(name = "profit_sharing")
+	@JSONField(name = "profit_sharing")
+	private String profitSharing;
 
 	protected MchPayPackage() {
 		// jaxb required
@@ -123,7 +127,7 @@ public class MchPayPackage extends PayPackage {
 			String openId, String authCode, String productId, String attach) {
 		this(body, null, outTradeNo, totalFee, CurrencyType.CNY, notifyUrl,
 				createIp, tradeType, openId, authCode, productId, attach, null,
-				null, null, null, null, null, null);
+				null, null, null, null, null, null, null);
 	}
 
 	/**
@@ -164,29 +168,31 @@ public class MchPayPackage extends PayPackage {
 	 * @param subOpenId
 	 *            用户在子商户appid下的唯一标识 非必填
 	 *            openid和sub_openid可以选传其中之一，如果选择传sub_openid ,则必须传sub_appid
-	 * @param faceCode
-	 * 			  人脸凭证，用于旧版刷脸支付。
-	 * @param depositType
+	 * @param receipt
+	 * 			  电子发票入口开放标识
+	 * @param deposit
 	 * 			  是否押金支付
+	 * @param profitSharing
+	 * 			  是否需要分账
 	 */
 	public MchPayPackage(String body, String detial, String outTradeNo,
 			double totalFee, CurrencyType feeType, String notifyUrl,
 			String createIp, TradeType tradeType, String openId,
 			String authCode, String productId, String attach, Date timeStart,
-			Date timeExpire, String goodsTag, String limitPay, String subOpenId, String faceCode,
-			DepositType depositType) {
+			Date timeExpire, String goodsTag, String limitPay, String subOpenId, String receipt,
+			String deposit, String profitSharing) {
 		super(body, detial, outTradeNo, totalFee, notifyUrl, createIp, attach,
 				timeStart, timeExpire, goodsTag);
 		this.tradeType = tradeType != null ? tradeType.name() : null;
-		this.feeType = feeType == null ? CurrencyType.CNY.name() : feeType
-				.name();
+		this.feeType = feeType == null ? CurrencyType.CNY.name() : feeType.name();
 		this.openId = openId;
 		this.authCode = authCode;
 		this.productId = productId;
 		this.limitPay = limitPay;
 		this.subOpenId = subOpenId;
-		this.faceCode = faceCode;
-		this.deposit = depositType;
+		this.receipt = receipt;
+		this.deposit = deposit;
+		this.profitSharing = profitSharing;
 	}
 
 	public String getTradeType() {
@@ -253,20 +259,28 @@ public class MchPayPackage extends PayPackage {
 		this.sceneInfo = sceneInfo;
 	}
 
-	public String getFaceCode() {
-		return faceCode;
+	public String getReceipt() {
+		return receipt;
 	}
 
-	public void setFaceCode(String faceCode) {
-		this.faceCode = faceCode;
+	public void setReceipt(String receipt) {
+		this.receipt = receipt;
 	}
 
-	public DepositType getDeposit() {
+	public String getDeposit() {
 		return deposit;
 	}
 
-	public void setDeposit(DepositType deposit) {
+	public void setDeposit(String deposit) {
 		this.deposit = deposit;
+	}
+
+	public String getProfitSharing() {
+		return profitSharing;
+	}
+
+	public void setProfitSharing(String profitSharing) {
+		this.profitSharing = profitSharing;
 	}
 
 	@Override
@@ -280,8 +294,9 @@ public class MchPayPackage extends PayPackage {
 				", limitPay='" + limitPay + '\'' +
 				", subOpenId='" + subOpenId + '\'' +
 				", sceneInfo='" + sceneInfo + '\'' +
-				", faceCode='" + faceCode + '\'' +
+				", receipt='" + receipt + '\'' +
 				", deposit=" + deposit +
+				", profitSharing=" + profitSharing +
 				'}';
 	}
 }

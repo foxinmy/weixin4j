@@ -10,10 +10,12 @@ import com.foxinmy.weixin4j.pay.payment.coupon.*;
 import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfo;
 import com.foxinmy.weixin4j.pay.payment.face.PayfaceAuthinfoRequest;
 import com.foxinmy.weixin4j.pay.payment.mch.*;
+import com.foxinmy.weixin4j.pay.profitsharing.*;
 import com.foxinmy.weixin4j.pay.sign.WeixinSignature;
 import com.foxinmy.weixin4j.pay.type.*;
 import com.foxinmy.weixin4j.pay.type.mch.BillType;
 import com.foxinmy.weixin4j.pay.type.mch.RefundAccountType;
+import com.foxinmy.weixin4j.pay.type.profitsharing.ReturnAccountType;
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.Weixin4jConfigUtil;
 
@@ -53,6 +55,10 @@ public class WeixinPayProxy {
 	 * 商户信息
 	 */
 	private final WeixinPayAccount weixinPayAccount;
+	/**
+	 * 分帐接口
+	 */
+	private final ProfitSharingApi profitSharingApi;
 
 	/**
 	 * 微信支付接口实现(使用weixin4j.properties配置的account商户信息)
@@ -78,6 +84,7 @@ public class WeixinPayProxy {
 		this.couponApi = new CouponApi(weixinPayAccount);
 		this.cashApi = new CashApi(weixinPayAccount);
 		this.customsApi = new CustomsApi(weixinPayAccount);
+		this.profitSharingApi = new ProfitSharingApi(weixinPayAccount);
 	}
 
 	/**
@@ -272,7 +279,7 @@ public class WeixinPayProxy {
 	 * @param attach
 	 *            附加数据 非必填
 	 * @param store
-	 *            门店信息 非必填
+	 *            APP支付已无门店信息，不需要再传
 	 * @return APP支付对象
 	 * @see PayApi
 	 * @see SceneInfoStore
@@ -360,40 +367,8 @@ public class WeixinPayProxy {
 	}
 
 	/**
-	 * 旧版刷脸支付接口
-	 *
-	 * @param faceCode
-	 * 			人脸凭证
-	 * @param body
-	 * 			商品或支付单简要描述，格式要求：门店品牌名-城市分店名-实际商品名称
-	 * @param outTradeNo
-	 * 			商户系统内部的订单号,32个字符内、可包含字母；更换授权码必须要换新的商户订单号
-	 * @param totalFee
-	 * 			订单总金额，单位元
-	 * @param createIp
-	 * 			调用微信支付API的机器IP
-	 * @param openId
-	 * 			用户在商户appid 下的唯一标识
-	 * @param attach
-	 * 			附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
-	 * @return
-	 * @throws WeixinException
-	 * @see <a href=
-	 * 		"https://pay.weixin.qq.com/wiki/doc/wxfacepay/develop/backend.html#刷脸支付后端接口">
-	 * 		刷脸支付后端接口</a>
-	 * @see <a href=
-	 * 		"https://pay.weixin.qq.com/wiki/doc/wxfacepay/develop/sdk-android.html#人脸支付凭证-getwxpayfacecode"
-	 * 		获取人脸支付凭证</a>
-	 */
-	public MchPayRequest createFacePayRequest(String faceCode, String body,
-											  String outTradeNo, double totalFee, String createIp, String openId,
-											  String attach) throws WeixinException {
-		return payApi.createFacePayRequest(faceCode, body, outTradeNo,
-				totalFee, createIp, openId, attach);
-	}
-
-	/**
 	 * 押金支付请求
+	 * 注意：（此功能微信已下架，改为邀请开通，因此暂未使用）
 	 *
 	 * @param code
 	 * 			授权码/人脸凭证
@@ -884,6 +859,143 @@ public class WeixinPayProxy {
 		PayfaceAuthinfoRequest request = new PayfaceAuthinfoRequest(this.weixinPayAccount, storeId, storeName, deviceId,
 				attach,  rawdata);
 		return payApi.getWxPayfaceAuthinfo(request);
+	}
+
+	/**
+	 * 添加分账接收方
+	 * 服务商代子商户发起添加分账接收方请求，后续可通过发起分账请求将结算后的钱分到该分账接收方。
+	 *
+	 * @param receiver
+	 * 			分帐接收方
+	 * @return
+	 * @throws WeixinException
+	 * @see Receiver
+	 * @see ReceiverResult
+	 * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/allocation_sl.php?chapter=25_3&index=4">添加分账接收方</a>
+	 * @since weixin4j-pay 1.1.0
+	 *
+	 */
+	public ReceiverResult addProfitSharingReceiver(Receiver receiver) throws WeixinException {
+		return profitSharingApi.addReceiver(receiver);
+	}
+
+	/**
+	 * 删除分账接收方
+	 * 商户发起删除分账接收方请求，删除后不支持将结算后的钱分到该分账接收方。
+	 *
+	 * @param receiver
+	 * 			分帐接收方
+	 * @return
+	 * @throws WeixinException
+	 * @see Receiver
+	 * @see ReceiverResult
+	 * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/allocation.php?chapter=27_4&index=5">删除分账接收方</a>
+	 * @since weixin4j-pay 1.1.0
+	 */
+	public ReceiverResult removeProfitSharingReceiver(Receiver receiver) throws WeixinException {
+		return profitSharingApi.removeReceiver(receiver);
+	}
+
+	/**
+	 * 请求分帐
+	 *
+	 * @param transactionId
+	 * 			微信订单号
+	 * @param outOrderNo
+	 * 			商户分帐单号
+	 * @param receivers
+	 * 			分帐接收方列表
+	 * @param multi
+	 * 			是否多次分帐，默认为单次分帐，即调用分帐成功后马上解冻剩余金额给商户，不需要完结分帐。多次分帐可多次调用分帐API，需调完结分帐结束分帐
+	 * @return
+	 * @throws WeixinException
+	 * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/allocation.php?chapter=27_1&index=1">请求单次分帐</a>
+	 * @since weixin4j-pay 1.1.0
+	 */
+	public ProfitSharingResult profitSharing(String transactionId, String outOrderNo, List<ReceiverProfit> receivers,
+											 Boolean multi) throws WeixinException{
+		return profitSharingApi.profitSharing(transactionId, outOrderNo, receivers, multi);
+	}
+
+	/**
+	 * 分帐查询
+	 *
+	 * @param transactionId
+	 * 			微信订单号
+	 * @param outOrderNo
+	 * 			商户分帐单号
+	 * @return
+	 * @throws WeixinException
+	 * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/allocation.php?chapter=27_2&index=3">分帐查询</a>
+	 * @since weixin4j-pay 1.1.0
+	 */
+	public ProfitSharingResult profitSharingQuery(String transactionId, String outOrderNo) throws WeixinException{
+		return profitSharingApi.profitSharingQuery(transactionId, outOrderNo);
+	}
+
+	/**
+	 * 完结分账
+	 * 1、不需要进行分账的订单，可直接调用本接口将订单的金额全部解冻给本商户
+	 * 2、调用多次分账接口后，需要解冻剩余资金时，调用本接口将剩余的分账金额全部解冻给特约商户
+	 * 3、已调用请求单次分账后，剩余待分账金额为零，不需要再调用此接口。
+	 *
+	 * @param transactionId
+	 * 			微信订单号
+	 * @param outOrderNo
+	 * 			商户分帐单号
+	 * @param description
+	 * 			分帐完结描述
+	 * @return
+	 * @throws WeixinException
+	 * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/allocation.php?chapter=27_5&index=6">完结分账</a>
+	 * @since weixin4j-pay 1.1.0
+	 */
+	public ProfitSharingResult profitSharingFinish(String transactionId, String outOrderNo, String description)
+		throws WeixinException{
+		return profitSharingApi.profitSharingFinish(transactionId, outOrderNo, description);
+	}
+
+	/**
+	 * 分账回退
+	 *
+	 * @param id
+	 *          分帐单号
+	 * @param outReturnNo
+	 *          商户回退单号
+	 * @param returnAccountType
+	 *          回退方类型
+	 * @param returnAccount
+	 *          回退方账号
+	 * @param description
+	 *          回退描述
+	 * @return
+	 * @throws WeixinException
+	 * @see ProfitSharingReturnRequest
+	 * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/allocation.php?chapter=27_7&index=7">分账回退</a>
+	 * @since weixin4j-pay 1.1.0
+	 */
+	public ProfitSharingReturnResult profitSharingReturn(ProfitId id, String outReturnNo,
+												   ReturnAccountType returnAccountType, String returnAccount,
+												   int returnAmount, String description)
+			throws WeixinException{
+		return profitSharingApi.profitSharingReturn(id, outReturnNo, returnAccountType, returnAccount, returnAmount,
+				description);
+	}
+
+	/**
+	 * 回退结果查询
+	 *
+	 * @param id
+	 *          分帐单号
+	 * @param outReturnNo
+	 *          商户回退单号
+	 * @return
+	 * @throws WeixinException
+	 * @see ProfitSharingReturnRequest
+	 * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/allocation.php?chapter=27_8&index=8">回退结果查询</a>
+	 */
+	public ProfitSharingReturnResult profitSharingReturnQuery(ProfitId id, String outReturnNo) throws WeixinException{
+		return profitSharingApi.profitSharingReturnQuery(id, outReturnNo);
 	}
 
 	public final static String VERSION = Consts.VERSION;
