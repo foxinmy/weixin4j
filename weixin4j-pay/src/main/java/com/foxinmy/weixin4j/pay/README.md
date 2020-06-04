@@ -1,47 +1,30 @@
 支付模块【JSAPI】【NATIVE】【MICROPAY】
 
-微信公众平台[V2版本支付](https://mp.weixin.qq.com/paymch/readtemplate?t=mp/business/course2_tmpl&lang=zh_CN)文档
+目前只支持商户平台v2版本的支付API
 
-微信公众平台[V3版本支付](https://mp.weixin.qq.com/paymch/readtemplate?t=mp/business/course3_tmpl&lang=zh_CN)文档
-
-**在`2014年10月9号`之前申请并审核通过的支付接口应该属于`V2版本`支付,而之后申请的接口则为`V3版本(商户平台)`支付**
+**V3版在计划中，但目前因V3版针对的电商平台、微信支付分两类商户目前都是邀请制的，所以具体什么时候开展还未知。有能力的朋友可以帮忙贡献代码**
 
 
-[WeixinPayProxy](WeixinPayProxy.java)
+[WeixinPayProxy](https://github.com/foxinmy/weixin4j/blob/master/weixin4j-pay/src/main/java/com/foxinmy/weixin4j/pay/WeixinPayProxy.java)
 -------------------------
-
-* createPayJsRequestJson: 创建V3版本(商户平台)的JSAPI支付串
-
-* createNativePayRequestURL: 创建V3版本(商户平台)的扫码支付链接
-
-* createPrePay: 调用V3版本(商户平台)的统一订单接口生成预订单数据
-
-* createMicroPay: 创建刷卡支付(商户平台)请求
-
-* orderQuery: 订单查询接口
-
-* refundOrder: 退款申请接口
-
-* reverseOrder: 冲正订单接口
-
-* closeOrder: 关闭订单接口
-
-* downloadBill: 下载对账单接口
-
-* refundQuery: 退款查询接口
+这是所有支付平台所有API的代理类，入参是一个WeixinPayAccount，建议调用API都通过代理类去调用，会相对简单些。
 
 
-[Pay2Api](https://github.com/foxinmy/weixin4j/blob/master/weixin4j-mp/src/main/java/com/foxinmy/weixin4j/mp/api/Pay2Api.java)
+
+[PayApi](https://github.com/foxinmy/weixin4j/blob/master/weixin4j-pay/src/main/java/com/foxinmy/weixin4j/pay/api/PayApi.java)
 -------------------------
+微信支付API
 
-* createPayJsRequestJson: 创建V2版本的JSAPI支付串
+[CashApi](https://github.com/foxinmy/weixin4j/blob/master/weixin4j-pay/src/main/java/com/foxinmy/weixin4j/pay/api/CashApi.java)
+-------------------------
+微信现金红包API
 
-* createNativePayRequestURL: 创建V2版本的扫码支付链接
+[CouponApi](https://github.com/foxinmy/weixin4j/blob/master/weixin4j-pay/src/main/java/com/foxinmy/weixin4j/pay/api/CouponApi.java)
+-------------------------
+微信代金券API
 
-* orderQuery: 订单查询接口
+[ProfitSharingApi](https://github.com/foxinmy/weixin4j/blob/master/weixin4j-pay/src/main/java/com/foxinmy/weixin4j/pay/api/ProfitSharingApi.java)
+-------------------------
+微信分帐API
 
-* refundOrder: 退款申请接口
 
-* downloadBill: 下载对账单接口
-
-* refundQuery: 退款查询接口
