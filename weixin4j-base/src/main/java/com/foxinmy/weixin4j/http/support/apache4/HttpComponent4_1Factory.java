@@ -40,14 +40,9 @@ public class HttpComponent4_1Factory extends HttpClientFactory {
 	 * 
 	 * @see <a
 	 *      href="https://issues.apache.org/jira/browse/HTTPCLIENT-1193">HTTPCLIENT-1193</a>
-	 * @param clientConnectionManager
 	 */
 	public HttpComponent4_1Factory() {
-		PoolingClientConnectionManager clientConnectionManager = new PoolingClientConnectionManager();
-		clientConnectionManager.setMaxTotal(30);
-		clientConnectionManager.setDefaultMaxPerRoute(clientConnectionManager
-				.getMaxTotal());
-		httpClient = new DefaultHttpClient(clientConnectionManager);
+		httpClient = new DefaultHttpClient(new PoolingClientConnectionManager());
 		httpClient.getParams().setParameter(
 				CoreProtocolPNames.HTTP_CONTENT_CHARSET, Consts.UTF_8);
 		httpClient.getParams().setParameter(
@@ -109,6 +104,11 @@ public class HttpComponent4_1Factory extends HttpClientFactory {
 				Scheme scheme = new Scheme("https", socketFactory, 443);
 				httpClient.getConnectionManager().getSchemeRegistry()
 						.register(scheme);
+			}
+			ClientConnectionManager connectionManager = httpClient.getConnectionManager();
+			if(connectionManager instanceof PoolingClientConnectionManager){
+				((PoolingClientConnectionManager) connectionManager).setMaxTotal(params.getMaxConnections());
+				((PoolingClientConnectionManager) connectionManager).setDefaultMaxPerRoute(params.getMaxConnectionsPerHost());
 			}
 		}
 	}

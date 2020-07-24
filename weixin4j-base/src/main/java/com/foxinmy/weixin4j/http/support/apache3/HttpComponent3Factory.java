@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnectionManager;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.protocol.Protocol;
 
 import com.foxinmy.weixin4j.http.HttpParams;
@@ -62,8 +63,10 @@ public class HttpComponent3Factory extends HttpClientFactory {
 						new SSLProtocolSocketFactory(params.getSSLContext()),
 						443));
 			}
-			httpClient.getHttpConnectionManager().getParams()
-					.setConnectionTimeout(params.getConnectTimeout());
+			HttpConnectionManagerParams params_ = httpClient.getHttpConnectionManager().getParams();
+			params_.setMaxTotalConnections(params.getMaxConnections());
+			params_.setDefaultMaxConnectionsPerHost(params.getMaxConnectionsPerHost());
+			params_.setConnectionTimeout(params.getConnectTimeout());
 		}
 	}
 

@@ -60,6 +60,10 @@ public class OkHttpClient3Factory extends HttpClientFactory {
 			if (params.getHostnameVerifier() != null) {
 				clientBuilder.hostnameVerifier(params.getHostnameVerifier());
 			}
+			Dispatcher dispatcher = new Dispatcher();
+			dispatcher.setMaxRequests(params.getMaxConnections());
+			dispatcher.setMaxRequestsPerHost(params.getMaxConnectionsPerHost());
+			clientBuilder.dispatcher(dispatcher);
 		}
 	}
 

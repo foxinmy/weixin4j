@@ -17,11 +17,19 @@ public final class HttpParams {
 	/**
 	 * 连接超时时间(单位毫秒)
 	 */
-	private int connectTimeout;
+	private final int connectTimeout;
 	/**
 	 * 读取超时时间(单位毫秒)
 	 */
-	private int readTimeout;
+	private final int readTimeout;
+	/**
+	 * 最大连接数
+	 */
+	private final int maxConnections;
+	/**
+	 * 每个host最大连接数
+	 */
+	private final int maxConnectionsPerHost;
 	/**
 	 * 代理对象
 	 */
@@ -36,15 +44,17 @@ public final class HttpParams {
 	private HostnameVerifier hostnameVerifier;
 
 	/**
-	 * connectTimeout = 15000,readTimeout=20000
+	 * connectTimeout = 15000,readTimeout=20000,maxConnection=100,maxConnectionPerHost=32
 	 */
 	public HttpParams() {
-		this(5000, 15000);
+		this(5000, 15000,100,32);
 	}
 
-	public HttpParams(int connectTimeout, int readTimeout) {
+	public HttpParams(int connectTimeout, int readTimeout,int maxConnections,int maxConnectionsPerHost) {
 		this.connectTimeout = connectTimeout;
 		this.readTimeout = readTimeout;
+		this.maxConnections = maxConnections;
+		this.maxConnectionsPerHost = maxConnectionsPerHost;
 	}
 
 	public int getConnectTimeout() {
@@ -53,6 +63,14 @@ public final class HttpParams {
 
 	public int getReadTimeout() {
 		return readTimeout;
+	}
+
+	public int getMaxConnections() {
+		return maxConnections;
+	}
+
+	public int getMaxConnectionsPerHost() {
+		return maxConnectionsPerHost;
 	}
 
 	public Proxy getProxy() {
@@ -84,7 +102,7 @@ public final class HttpParams {
 
 	public static HttpParams copy(final HttpParams params) {
 		return new HttpParams(params.getConnectTimeout(),
-				params.getReadTimeout()).setProxy(params.getProxy())
+				params.getReadTimeout(),params.getMaxConnections(),params.getMaxConnectionsPerHost()).setProxy(params.getProxy())
 				.setHostnameVerifier(params.getHostnameVerifier())
 				.setSSLContext(params.getSSLContext());
 	}

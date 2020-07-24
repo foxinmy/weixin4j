@@ -61,7 +61,7 @@ public final class ClassUtil {
 			}
 		}
 		if (clazz == null || clazz.isEmpty()) {
-			clazz = new ArrayList<>();
+			clazz = new ArrayList<Class<?>>();
 			try {
 				for (URL url : ((URLClassLoader) ClassLoader.getSystemClassLoader()).getURLs()) {
 					File file = new File(url.getFile());

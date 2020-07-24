@@ -50,6 +50,8 @@ public class OkHttpClient2Factory extends HttpClientFactory {
 			if (params.getHostnameVerifier() != null) {
 				okClient.setHostnameVerifier(params.getHostnameVerifier());
 			}
+			okClient.getDispatcher().setMaxRequests(params.getMaxConnections());
+			okClient.getDispatcher().setMaxRequestsPerHost(params.getMaxConnectionsPerHost());
 		}
 	}
 
