@@ -1,5 +1,6 @@
 package com.foxinmy.weixin4j.pay.payment.mch;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -9,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SceneInfoStore {
+public class SceneInfoStore implements SceneInfo {
 	/**
 	 * SZTX001 门店唯一标识
 	 */
@@ -67,9 +68,22 @@ public class SceneInfoStore {
 		this.name = name;
 	}
 
+	public SceneInfoStore(String id, String name, String areaCode, String address) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.areaCode = areaCode;
+		this.address = address;
+	}
+
 	@Override
 	public String toString() {
 		return "SceneInfoStore [id=" + id + ", name=" + name + ", areaCode="
 				+ areaCode + ", address=" + address + "]";
+	}
+
+	@Override
+	public String toJson() {
+		return String.format("{\"store_info\": %s}", JSON.toJSONString(this));
 	}
 }

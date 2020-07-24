@@ -1,9 +1,9 @@
 package com.foxinmy.weixin4j.pay.payment.mch;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.foxinmy.weixin4j.type.CredentialType;
-import com.foxinmy.weixin4j.type.CurrencyType;
-import com.foxinmy.weixin4j.type.CustomsCity;
+import com.foxinmy.weixin4j.pay.type.CredentialType;
+import com.foxinmy.weixin4j.pay.type.CurrencyType;
+import com.foxinmy.weixin4j.pay.type.CustomsCity;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -40,7 +40,7 @@ public class CustomsOrder extends MerchantResult {
 	/**
 	 * 货币类型,符合 ISO 4217 标准的三位字母代码,默认人民币:CNY
 	 * 
-	 * @see com.foxinmy.weixin4j.mp.type.CurrencyType
+	 * @see com.foxinmy.weixin4j.pay.type.CurrencyType
 	 */
 	@XmlElement(name = "fee_type")
 	@JSONField(name = "fee_type")

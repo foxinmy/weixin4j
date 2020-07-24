@@ -95,4 +95,22 @@ public class SecCheckApi extends TokenManagerApi {
 		r.checkErrCode();
 	}
 
+	/**
+	 * 异步校验图片/音频是否含有违法违规内容。
+	 *
+	 * @param mediaUrl 要检测的多媒体 URL
+	 * @param mediaType {@code 1}: 音频; {@code 2}: 图片
+	 * @return 任务 ID，用于匹配异步推送结果
+	 * @throws WeixinException indicates getting access token failed.
+	 * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/sec-check/security.mediaCheckAsync.html">security.mediaCheckAsync</a>
+	 */
+	public String mediaCheckAsync(String mediaUrl, int mediaType) throws WeixinException {
+		final Map<String, Object> params = new HashMap<String, Object>(2);
+		params.put("media_url", mediaUrl);
+		params.put("media_type", mediaType);
+		final WxaApiAsyncResult r = this.post("wxa_media_check_async", params, WxaApiAsyncResult.TYPE_REFERENCE);
+		r.checkErrCode();
+		return r.getTraceId();
+	}
+
 }

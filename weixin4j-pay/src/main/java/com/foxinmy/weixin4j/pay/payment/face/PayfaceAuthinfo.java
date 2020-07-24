@@ -34,6 +34,22 @@ public class PayfaceAuthinfo extends MerchantResult {
      */
     private String authinfo;
 
+    public int getExpiresIn() {
+        return expiresIn;
+    }
+
+    public void setExpiresIn(int expiresIn) {
+        this.expiresIn = expiresIn;
+    }
+
+    public String getAuthinfo() {
+        return authinfo;
+    }
+
+    public void setAuthinfo(String authinfo) {
+        this.authinfo = authinfo;
+    }
+
     @Override
     public String toString() {
         return "PayfaceAuthinfo{" +

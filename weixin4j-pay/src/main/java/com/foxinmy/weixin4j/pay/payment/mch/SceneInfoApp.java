@@ -1,25 +1,39 @@
 package com.foxinmy.weixin4j.pay.payment.mch;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SceneInfoApp {
+public class SceneInfoApp implements SceneInfo {
 	/**
 	 * 终端类型
 	 */
 	private String type;
 	/**
-	 * 应用名称
+	 * WAP 网站名
 	 */
+	@XmlElement(name = "wap_name")
+	@JSONField(name = "wap_name")
 	private String name;
 	/**
-	 * 应用路径
+	 * WAP网站URL地址
 	 */
+	@XmlElement(name = "wap_url")
+	@JSONField(name = "wap_url")
 	private String path;
+
+	@JSONField(serialize = false)
 	private String sceneInfo;
+
+	protected SceneInfoApp(){
+
+	}
 
 	private SceneInfoApp(String type, String name, String path) {
 		this.type = type;
@@ -31,29 +45,45 @@ public class SceneInfoApp {
 		return type;
 	}
 
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPath() {
 		return path;
 	}
 
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	@Deprecated
 	public String getSceneInfo() {
 		return sceneInfo;
 	}
-
+	@Deprecated
 	public void setSceneInfo(String sceneInfo) {
 		this.sceneInfo = sceneInfo;
 	}
 
 	/**
 	 * IOS应用
+	 * APP环境直接使用APP支付，此方法将作废
 	 * 
 	 * @param appName 应用名
 	 * @param bundleId 模块ID
 	 * @return
+	 * @deprecated
 	 */
+	@Deprecated
 	public static SceneInfoApp createIOSAPP(String appName, String bundleId) {
 		SceneInfoApp app = new SceneInfoApp("IOS", appName, bundleId);
 		String sceneInfo = String
@@ -65,11 +95,14 @@ public class SceneInfoApp {
 
 	/**
 	 * Android应用
+	 * APP环境直接使用APP支付，此方法将作废
 	 * 
 	 * @param appName 应用名
 	 * @param packageName 包名
 	 * @return
+	 * @deprecated
 	 */
+	@Deprecated
 	public static SceneInfoApp createAndroidAPP(String appName, String packageName) {
 		SceneInfoApp app = new SceneInfoApp("Android", appName, packageName);
 		String sceneInfo = String
@@ -95,5 +128,10 @@ public class SceneInfoApp {
 				app.getType(), app.getName(), app.getPath());
 		app.setSceneInfo(sceneInfo);
 		return app;
+	}
+
+	@Override
+	public String toJson() {
+		return String.format("{\"h5_info\": %s}", JSON.toJSONString(this));
 	}
 }

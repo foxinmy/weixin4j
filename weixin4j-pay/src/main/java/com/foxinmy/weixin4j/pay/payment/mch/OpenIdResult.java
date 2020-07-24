@@ -40,8 +40,16 @@ public class OpenIdResult extends MerchantResult {
 		return openId;
 	}
 
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
 	public String getSubOpenId() {
 		return subOpenId;
+	}
+
+	public void setSubOpenId(String subOpenId) {
+		this.subOpenId = subOpenId;
 	}
 
 	@Override
