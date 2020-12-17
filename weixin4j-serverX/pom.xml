@@ -9,7 +9,6 @@
 		<version>1.9.0</version>
 	</parent>
 	<artifactId>weixin4j-serverX</artifactId>
-	<version>0.0.1</version>
 	<name>weixin4j-serverX</name>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-serverX</url>
 	<description>微信消息接入服务(spring mvc实现)</description>
