@@ -45,9 +45,9 @@
 		<module>weixin4j-qy</module>
 		<module>weixin4j-wxa</module>
 		<module>weixin4j-server</module>
-		<module>weixin4j-example</module>
 		<module>weixin4j-serverX</module>
 		<module>weixin4j-pay</module>
+		<module>weixin4j-example</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
