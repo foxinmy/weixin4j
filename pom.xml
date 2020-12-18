@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.foxinmy</groupId>
 	<artifactId>weixin4j</artifactId>
-	<version>1.9.0-SNAPSHOT</version>
+	<version>1.9.0</version>
 	<packaging>pom</packaging>
 	<name>weixin4j</name>
 	<url>https://github.com/foxinmy/weixin4j</url>
@@ -109,6 +109,10 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>com.amashchenko.maven.plugin</groupId>
+				<artifactId>gitflow-maven-plugin</artifactId>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -203,6 +207,11 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<groupId>com.amashchenko.maven.plugin</groupId>
+					<artifactId>gitflow-maven-plugin</artifactId>
+					<version>1.15.0</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<resources>
@@ -265,12 +274,34 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
 					</plugin>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
 				</plugins>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.sonatype.plugins</groupId>
+							<artifactId>nexus-staging-maven-plugin</artifactId>
+							<version>1.6.8</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
 			</build>
 		</profile>
 	</profiles>
