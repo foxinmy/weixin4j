@@ -99,6 +99,8 @@ public class HttpComponent4_2Factory extends HttpClientFactory {
 				clientBuilder.setHostnameVerifier(new CustomHostnameVerifier(
 						params.getHostnameVerifier()));
 			}
+			clientBuilder.setMaxConnTotal(params.getMaxConnections());
+			clientBuilder.setMaxConnPerRoute(params.getMaxConnectionsPerHost());
 		}
 	}
 

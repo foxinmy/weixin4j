@@ -1,11 +1,17 @@
 package com.foxinmy.weixin4j.wxa.api;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
-import com.foxinmy.weixin4j.token.TokenManager;
-
 import java.util.Map;
 import java.util.Properties;
 
+import com.foxinmy.weixin4j.exception.WeixinException;
+import com.foxinmy.weixin4j.token.TokenManager;
+
+/**
+ * 发送订阅消息。
+ *
+ * <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html">发送订阅消息</a>
+ * @since 1.9
+ */
 public class SubscribeMessageApi extends TokenManagerApi {
 
 	public SubscribeMessageApi(TokenManager tokenManager) {

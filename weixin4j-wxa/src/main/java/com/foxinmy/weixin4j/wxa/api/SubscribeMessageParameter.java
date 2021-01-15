@@ -1,12 +1,12 @@
 package com.foxinmy.weixin4j.wxa.api;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-class SubscribeMessageParameter {
+import com.alibaba.fastjson.annotation.JSONField;
+
+class SubscribeMessageParameter implements Serializable {
 
 	private static final long serialVersionUID = 2018052601L;
 

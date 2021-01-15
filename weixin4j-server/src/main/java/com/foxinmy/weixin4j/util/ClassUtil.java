@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -39,27 +40,45 @@ public final class ClassUtil {
 	 * @return
 	 */
 	public static List<Class<?>> getClasses(String packageName) {
-		String packageFileName = packageName.replace(POINT, File.separator);
-		URL fullPath = getDefaultClassLoader().getResource(packageFileName);
+		URL fullPath = getDefaultClassLoader().getResource(packageName.replace(POINT, File.separator));
 		if (fullPath == null) {
 			fullPath = ClassUtil.class.getProtectionDomain().getCodeSource().getLocation();
 		}
+		List<Class<?>> clazz = null;
 		String protocol = fullPath.getProtocol();
 		if (protocol.equals(ServerToolkits.PROTOCOL_FILE)) {
 			try {
 				File dir = new File(fullPath.toURI());
-				return findClassesByFile(dir, packageName);
+				clazz = findClassesByFile(dir, packageName);
 			} catch (URISyntaxException e) {
 				throw new RuntimeException(e);
 			}
 		} else if (protocol.equals(ServerToolkits.PROTOCOL_JAR)) {
 			try {
-				return findClassesByJar(((JarURLConnection) fullPath.openConnection()).getJarFile(), packageName);
+				clazz = findClassesByJar(((JarURLConnection) fullPath.openConnection()).getJarFile(), packageName);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
-		throw new RuntimeException("the " + packageName + " not found classes.");
+		if (clazz == null || clazz.isEmpty()) {
+			clazz = new ArrayList<Class<?>>();
+			try {
+				for (URL url : ((URLClassLoader) ClassLoader.getSystemClassLoader()).getURLs()) {
+					File file = new File(url.getFile());
+					if (file.getName().toLowerCase().endsWith("." + ServerToolkits.PROTOCOL_JAR)) {
+						clazz.addAll(findClassesByJar(new JarFile(file), packageName));
+					} else {
+						clazz.addAll(findClassesByFile(file, packageName));
+					}
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		if (clazz == null || clazz.isEmpty()) {
+			throw new RuntimeException("the " + packageName + " not found classes.");
+		}
+		return clazz;
 	}
 
 	/**
@@ -107,19 +126,30 @@ public final class ClassUtil {
 	private static List<Class<?>> findClassesByJar(JarFile jar, String packageName) {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		Enumeration<JarEntry> jarEntries = jar.entries();
+		String packageFileName = packageName.replace(POINT, File.separator);
 		while (jarEntries.hasMoreElements()) {
 			JarEntry jarEntry = jarEntries.nextElement();
 			if (jarEntry.isDirectory()) {
 				continue;
 			}
-			String className = jarEntry.getName().replace(File.separator, POINT);
-			if (!className.startsWith(packageName) || !className.endsWith(CLASS)) {
+			if (!jarEntry.getName().endsWith(CLASS)) {
 				continue;
 			}
-			try {
-				classes.add(Class.forName(className.replace(CLASS, "")));
-			} catch (ClassNotFoundException e) {
-				;
+			String className = jarEntry.getName().replace("/", File.separator);
+			if (className.startsWith(packageFileName)) {
+				try {
+					classes.add(Class.forName(className.replace(File.separator, POINT).replace(CLASS, "")));
+				} catch (ClassNotFoundException e) {
+					;
+				}
+			}
+			className = jarEntry.getName().replace(File.separator, POINT);
+			if (className.startsWith(packageFileName)) {
+				try {
+					classes.add(Class.forName(className.replace(CLASS, "")));
+				} catch (ClassNotFoundException e) {
+					;
+				}
 			}
 		}
 		return classes;
@@ -205,6 +235,7 @@ public final class ClassUtil {
 	}
 
 	public static void main(String[] args) {
-		System.err.println(getClasses("com.foxinmy.weixin4j.qy.event"));
+		String pkg = args.length > 0 ? args[0] : "com.foxinmy.weixin4j.qy.event";
+		System.err.println(getClasses(pkg));
 	}
 }

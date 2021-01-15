@@ -1,6 +1,9 @@
 weixin4j
 ========
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.foxinmy/weixin4j/badge.svg?subject=Maven%20Central)](https://maven-badges.herokuapp.com/maven-central/com.foxinmy/weixin4j/)
+[![License](https://img.shields.io/badge/License-Apache%20License%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+
 微信开发工具包
 -------------
  > `weixin4j`是一个用Java编写针对微信开发的工具包,包含[weixin4j-mp](./weixin4j-mp)(微信公众平台API)、[weixin4j-qy](./weixin4j-qy)(微信企业号API)以及[weixin4j-server](./weixin4j-server)(微信回调消息服务器)三个工程.
