@@ -1,13 +1,13 @@
 package com.foxinmy.weixin4j.cache;
+import java.util.Set;
 
 import com.foxinmy.weixin4j.util.Consts;
 import com.foxinmy.weixin4j.util.SerializationUtils;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.util.Pool;
-
-import java.util.Set;
 
 /**
  * 用Redis保存缓存对象(推荐使用)

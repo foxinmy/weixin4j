@@ -38,7 +38,7 @@ import com.foxinmy.weixin4j.util.StringUtil;
 
 /**
  * XML 处理
- * 
+ *
  * @className XmlStream
  * @author jinyu(foxinmy@gmail.com)
  * @date 2015年6月2日
@@ -91,7 +91,7 @@ public final class XmlStream {
 
 	/**
 	 * Xml2Bean
-	 * 
+	 *
 	 * @param content
 	 *            xml内容
 	 * @param clazz
@@ -110,7 +110,7 @@ public final class XmlStream {
 			reader.setFeature(
 					"http://apache.org/xml/features/nonvalidating/load-external-dtd",
 					false); // This may not be strictly required as DTDs
-							// shouldn't be allowed at all, per previous line.
+			// shouldn't be allowed at all, per previous line.
 			reader.setFeature(
 					"http://xml.org/sax/features/external-general-entities",
 					false);
@@ -122,8 +122,8 @@ public final class XmlStream {
 					.getAnnotation(XmlRootElement.class);
 			if (rootElement == null
 					|| rootElement.name().equals(
-							XmlRootElement.class.getMethod("name")
-									.getDefaultValue().toString())) {
+					XmlRootElement.class.getMethod("name")
+							.getDefaultValue().toString())) {
 				JAXBElement<T> jaxbElement = unmarshaller.unmarshal(source,
 						clazz);
 				return jaxbElement.getValue();
@@ -146,7 +146,7 @@ public final class XmlStream {
 
 	/**
 	 * Xml2Bean
-	 * 
+	 *
 	 * @param content
 	 *            xml内容
 	 * @param clazz
@@ -160,7 +160,7 @@ public final class XmlStream {
 
 	/**
 	 * map2xml
-	 * 
+	 *
 	 * @param map
 	 *            value无嵌套的map
 	 * @return xml内容
@@ -197,7 +197,7 @@ public final class XmlStream {
 
 	/**
 	 * map2xml
-	 * 
+	 *
 	 * @param json
 	 *            value无嵌套的json
 	 * @return xml内容
@@ -234,7 +234,7 @@ public final class XmlStream {
 
 	/**
 	 * xml2map
-	 * 
+	 *
 	 * @param content
 	 *            无嵌套节点的xml内容
 	 * @return map对象
@@ -275,7 +275,7 @@ public final class XmlStream {
 
 	/**
 	 * Bean2Xml
-	 * 
+	 *
 	 * @param object
 	 *            bean对象
 	 * @return xml内容
@@ -288,7 +288,7 @@ public final class XmlStream {
 
 	/**
 	 * Bean2Xml
-	 * 
+	 *
 	 * @param t
 	 *            bean对象
 	 * @param os
@@ -306,8 +306,8 @@ public final class XmlStream {
 					.getAnnotation(XmlRootElement.class);
 			if (rootElement == null
 					|| rootElement.name().equals(
-							XmlRootElement.class.getMethod("name")
-									.getDefaultValue().toString())) {
+					XmlRootElement.class.getMethod("name")
+							.getDefaultValue().toString())) {
 				marshaller.marshal(new JAXBElement<T>(new QName(
 						ROOT_ELEMENT_XML), clazz, t), os);
 			} else {

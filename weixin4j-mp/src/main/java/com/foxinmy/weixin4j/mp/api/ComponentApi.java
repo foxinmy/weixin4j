@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.http.weixin.ApiResult;
 import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
+import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.component.WeixinComponentPreCodeCreator;
 import com.foxinmy.weixin4j.mp.component.WeixinComponentTokenCreator;
 import com.foxinmy.weixin4j.mp.component.WeixinTokenComponentCreator;
@@ -19,6 +20,7 @@ import com.foxinmy.weixin4j.mp.model.AuthorizerOption.AuthorizerOptionName;
 import com.foxinmy.weixin4j.mp.model.ComponentAuthorizer;
 import com.foxinmy.weixin4j.mp.model.ComponentAuthorizerToken;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
+import com.foxinmy.weixin4j.mp.type.URLConsts;
 import com.foxinmy.weixin4j.token.PerTicketManager;
 import com.foxinmy.weixin4j.token.TicketManager;
 import com.foxinmy.weixin4j.token.TokenCreator;
@@ -241,6 +243,15 @@ public class ComponentApi extends MpApi {
 		// 缓存微信公众号的永久授权码(refresh_token)
 		perTicketManager.cachingTicket(token.getRefreshToken());
 		return token;
+	}
+
+	public void exchangeAuthorizerToken(String componentAppid,String componentAccessToken,  String authAppId, String refreshToken) throws WeixinException {
+
+		PerTicketManager perTicketManager = getRefreshTokenManager(authAppId);
+
+		perTicketManager.cachingTicket(refreshToken);
+
+		//	return token;
 	}
 
 	/**

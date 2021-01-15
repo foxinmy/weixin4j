@@ -1,19 +1,11 @@
 package com.foxinmy.weixin4j.cache;
 
+import com.foxinmy.weixin4j.util.SerializationUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import com.foxinmy.weixin4j.util.Consts;
-import com.foxinmy.weixin4j.util.HessianCodecUtil;
-import com.foxinmy.weixin4j.util.SerializationUtils;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import com.foxinmy.weixin4j.util.SerializationUtils;
 
 /**
  * 用File保存缓存对象
@@ -54,7 +46,8 @@ public class FileCacheStorager<T extends Cacheable> implements CacheStorager<T> 
 			if (cacheFile.exists()) {
 				T cache = SerializationUtils.deserialize(new FileInputStream(
 						cacheFile));
-				if (cache.getExpires() < 0l) {
+
+				if (cache.getCreateTime() < 0) {
 					return cache;
 				}
 				if ((cache.getCreateTime() + cache.getExpires() - CUTMS) > System
