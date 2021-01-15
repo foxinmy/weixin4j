@@ -1,13 +1,12 @@
 package com.foxinmy.weixin4j.request;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.foxinmy.weixin4j.type.MessageType;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
-
-import com.foxinmy.weixin4j.type.MessageType;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 微信消息基类

@@ -1,5 +1,4 @@
 package com.foxinmy.weixin4j.cache;
-
 import java.util.Set;
 
 import com.foxinmy.weixin4j.util.Consts;

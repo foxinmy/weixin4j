@@ -16,6 +16,7 @@ hs_err_pid*
 .project
 .classpath
 /.tomcatplugin
+.gradle/
 
 # idea ignore
 /.idea
