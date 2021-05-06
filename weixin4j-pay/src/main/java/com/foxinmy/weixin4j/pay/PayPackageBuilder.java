@@ -158,7 +158,7 @@ public class PayPackageBuilder {
     public static PayPackageBuilder h5Pay(String body, String outTradeNo, double totalFee, String createIp,
                                           String notifyUrl, String wapUrl, String wapName){
         PayPackageBuilder instance = new PayPackageBuilder();
-        instance.mchPayPackage = new MchPayPackage(body, outTradeNo, totalFee, notifyUrl, createIp, TradeType.APP,
+        instance.mchPayPackage = new MchPayPackage(body, outTradeNo, totalFee, notifyUrl, createIp, TradeType.MWEB,
                 null, null, null, null);
         SceneInfoApp app = SceneInfoApp.createWapAPP(wapName, wapUrl);
         instance.mchPayPackage.setSceneInfo(String.format("{\"h5_info\":\"%s\"}", app.getSceneInfo()));
