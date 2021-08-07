@@ -11,6 +11,9 @@
 	<name>weixin4j-qy</name>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-qy</url>
 	<description>微信企业号API</description>
+	<properties>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>

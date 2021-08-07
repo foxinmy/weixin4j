@@ -11,6 +11,9 @@
 	<name>weixin4j-base</name>
 	<description>微信开发基础工程</description>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-base</url>
+	<properties>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
 	<build>
 		<resources>
 			<resource>

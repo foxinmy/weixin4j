@@ -57,7 +57,6 @@
 	<properties>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
-		<maven.test.skip>true</maven.test.skip>
 		<locales>zh_CN</locales>
 		<fastjson.version>1.2.31</fastjson.version>
 	</properties>
