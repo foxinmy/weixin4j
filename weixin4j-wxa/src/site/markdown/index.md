@@ -20,7 +20,9 @@ var session = wxa.getLoginApi().jscode2session(jsCode);
 [`wx.getUserProfile(Object object)`](https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/wx.getUserProfile.html)
 等请求后得到的加密数据，可以通过下面的方法来解密。
 
-客户端将获得的加密数据发往业务服务器，业务服务器收到加密数据后，使用登录 API 获得的 `sessionKey` 解密并进行后续操作：
+客户端将获得的加密数据发往业务服务器，业务服务器收到加密数据后，
+使用[登录凭证校验 API](apidocs/index.html?com/foxinmy/weixin4j/wxa/api/LoginApi.html)
+获得的 `sessionKey` 解密并进行后续操作：
 
 ```java
 var encryptedData = request.getParameter("encryptedData");
