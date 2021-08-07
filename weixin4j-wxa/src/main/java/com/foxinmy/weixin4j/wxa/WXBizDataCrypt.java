@@ -15,12 +15,12 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class WXBizDataCrypt {
 
-	private final String appid;
+	private final String appId;
 
 	private final String sessionKey;
 
-	public WXBizDataCrypt(String appid, String sessionKey) {
-		this.appid = appid;
+	public WXBizDataCrypt(String appId, String sessionKey) {
+		this.appId = appId;
 		this.sessionKey = sessionKey;
 	}
 
@@ -40,8 +40,8 @@ public class WXBizDataCrypt {
 		final String decryptedText = new String(decryptedBytes, Charset.forName("UTF-8"));
 		final JSONObject decrypted = JSON.parseObject(decryptedText);
 
-		final String appId = decrypted.getJSONObject("watermark").getString("appid");
-		if (!appId.equals(this.appid)) {
+		final String watermarkAppId = decrypted.getJSONObject("watermark").getString("appid");
+		if (!watermarkAppId.equals(this.appId)) {
 			throw new IllegalArgumentException("Invalid Buffer");
 		}
 
