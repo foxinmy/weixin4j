@@ -15,6 +15,33 @@
 		<maven.test.skip>true</maven.test.skip>
 	</properties>
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classesDirectory>target/classes</classesDirectory>
+							<excludes>
+								<exclude>*.properties</exclude>
+								<exclude>*.xml</exclude>
+								<exclude>*.txt</exclude>
+								<exclude>**/*.md</exclude>
+							</excludes>
+							<archive>
+								<addMavenDescriptor>true</addMavenDescriptor>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
