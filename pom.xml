@@ -53,6 +53,7 @@
 		<module>weixin4j-serverX</module>
 		<module>weixin4j-pay</module>
 		<module>weixin4j-example</module>
+		<module>weixin4j-coverage</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>1.6</maven.compiler.source>
@@ -81,6 +82,24 @@
 				<configuration>
 					<rulesUri>file:///${session.executionRootDirectory}/maven-version-rules.xml</rulesUri>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -159,6 +178,11 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>findbugs-maven-plugin</artifactId>
 					<version>3.0.5</version>
+				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.8.7</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
