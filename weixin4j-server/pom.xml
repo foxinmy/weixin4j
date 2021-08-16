@@ -6,12 +6,15 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j</artifactId>
-		<version>1.9.1</version>
+		<version>1.10.0</version>
 	</parent>
 	<artifactId>weixin4j-server</artifactId>
 	<name>weixin4j-server</name>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-server</url>
 	<description>微信消息netty服务器</description>
+	<properties>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>io.netty</groupId>
@@ -27,13 +30,11 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>${fastjson.version}</version>
 		</dependency>
 		<!-- 兼容 JDK 9+ 后的maven环境编译 -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.2.11</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -43,13 +44,11 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.3.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>4.2.0.RELEASE</version>
 			<optional>true</optional>
 			<exclusions>
 				<exclusion>

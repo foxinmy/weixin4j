@@ -5,17 +5,45 @@
 	<parent>
 		<groupId>com.foxinmy</groupId>
 		<artifactId>weixin4j</artifactId>
-		<version>1.9.1</version>
+		<version>1.10.0</version>
 	</parent>
 	<artifactId>weixin4j-mp</artifactId>
 	<name>weixin4j-mp</name>
 	<url>https://github.com/foxinmy/weixin4j/tree/master/weixin4j-mp</url>
 	<description>微信公众平台API</description>
+	<properties>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classesDirectory>target/classes</classesDirectory>
+							<excludes>
+								<exclude>*.properties</exclude>
+								<exclude>*.xml</exclude>
+								<exclude>*.txt</exclude>
+								<exclude>**/*.md</exclude>
+							</excludes>
+							<archive>
+								<addMavenDescriptor>true</addMavenDescriptor>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -29,7 +57,6 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.2.11</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

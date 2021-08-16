@@ -1,0 +1,23 @@
+<ruleset comparisonMethod="maven"
+	xmlns="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0
+		http://mojo.codehaus.org/versions-maven-plugin/xsd/rule-2.0.0.xsd">
+	<ignoreVersions>
+		<ignoreVersion type="regex">.*(-|\.)(alpha|Alpha|ALPHA|beta|Beta|BETA|rc|RC).*</ignoreVersion>
+	</ignoreVersions>
+	<rules>
+		<rule groupId="javax.servlet" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion type="regex">.*-alpha[\.\-].*</ignoreVersion>
+				<ignoreVersion type="regex">.*-b[0-9]+</ignoreVersion>
+			</ignoreVersions>
+		</rule>
+		<rule groupId="javax.xml" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion type="regex">.*-b.*</ignoreVersion>
+			</ignoreVersions>
+		</rule>
+	</rules>
+</ruleset>
