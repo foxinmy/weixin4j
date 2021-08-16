@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>weixin4j</artifactId>
 		<groupId>com.foxinmy</groupId>
-		<version>1.9.2-SNAPSHOT</version>
+		<version>1.10.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<name>weixin4j-pay</name>
