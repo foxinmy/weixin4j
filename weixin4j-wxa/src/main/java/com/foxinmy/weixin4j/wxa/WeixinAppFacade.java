@@ -155,7 +155,8 @@ public class WeixinAppFacade {
 	/**
 	 * 获取订阅消息相关的 API。
 	 *
-	 * @return 模板消息相关的 API。
+	 * @return 订阅消息相关的 API。
+	 * @since 1.9
 	 */
 	public SubscribeMessageApi getSubscribeMessageApi() {
 		return subscribeMessageApi;
