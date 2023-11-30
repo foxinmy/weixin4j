@@ -293,7 +293,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
-				<version>6.0.7</version>
+				<version>6.0.14</version>
 			</dependency>
 			<dependency>
 				<groupId>com.alibaba</groupId>
