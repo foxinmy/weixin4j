@@ -58,6 +58,7 @@ import com.foxinmy.weixin4j.mp.model.SemResult;
 import com.foxinmy.weixin4j.mp.model.Tag;
 import com.foxinmy.weixin4j.mp.model.TemplateMessageInfo;
 import com.foxinmy.weixin4j.mp.model.User;
+import com.foxinmy.weixin4j.mp.model.ChangeOpenidResult;
 import com.foxinmy.weixin4j.mp.token.WeixinTicketCreator;
 import com.foxinmy.weixin4j.mp.token.WeixinTokenCreator;
 import com.foxinmy.weixin4j.mp.type.DatacubeType;
@@ -1219,6 +1220,35 @@ public class WeixinProxy {
 	 */
 	public ApiResult remarkUserName(String openId, String remark) throws WeixinException {
 		return userApi.remarkUserName(openId, remark);
+	}
+
+	/**
+	 * 公众号迁移批量转换openid
+	 *
+	 * @param fromAppid 原账号ID
+	 * @param openIds 原账号openid列表，最多不能超过100个
+	 * @return 转换后的openid
+	 * @throws WeixinException
+	 * @see <a href="https://kf.qq.com/faq/1901177NrqMr190117nqYJze.html">openid转换</a>
+	 * @see com.foxinmy.weixin4j.mp.model.ChangeOpenidResult
+	 * @see com.foxinmy.weixin4j.mp.api.UserApi
+	 */
+	public List<ChangeOpenidResult> batchChangeOpenid(String fromAppid, List<String> openIds) throws WeixinException {
+		return userApi.batchChangeOpenid(fromAppid,openIds);
+	}
+
+	/**
+	 * 公众号迁移转换所有openid
+	 *
+	 * @param fromAppid 新appid
+	 * @return 转换后的openid
+	 * @throws WeixinException
+	 * @see <a href="https://kf.qq.com/faq/1901177NrqMr190117nqYJze.html">openid转换</a>
+	 * @see com.foxinmy.weixin4j.mp.model.ChangeOpenidResult
+	 * @see com.foxinmy.weixin4j.mp.api.UserApi
+	 */
+	public List<ChangeOpenidResult> changeAllOpenid(String fromAppid) throws WeixinException {
+		return userApi.changeAllOpenid(fromAppid);
 	}
 
 	/**

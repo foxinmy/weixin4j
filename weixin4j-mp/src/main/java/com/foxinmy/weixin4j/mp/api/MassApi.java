@@ -177,9 +177,9 @@ public class MassApi extends MpApi {
         obj.putAll(filter);
         obj.put(msgtype, JSON.toJSON(tuple));
         obj.put("msgtype", msgtype);
-        String mass_group_uri = getRequestUri("mass_group_uri");
+        String mass_uri = filter.containsKey("touser") ? getRequestUri("mass_openid_uri") : getRequestUri("mass_group_uri");
         Token token = tokenManager.getCache();
-        WeixinResponse response = weixinExecutor.post(String.format(mass_group_uri, token.getAccessToken()),
+        WeixinResponse response = weixinExecutor.post(String.format(mass_uri, token.getAccessToken()),
                 obj.toJSONString());
 
         obj = response.getAsJson();
@@ -354,8 +354,12 @@ public class MassApi extends MpApi {
     public ApiResult previewMassNews(String toUser, String toWxName, MassTuple tuple) throws WeixinException {
         String msgtype = tuple.getMessageType();
         JSONObject obj = new JSONObject();
-        obj.put("touser", toUser);
-        obj.put("towxname", toWxName);
+        if(toUser != null){
+            obj.put("touser", toUser);
+        }
+        if(toWxName != null){
+            obj.put("towxname", toWxName);
+        }
         obj.put(msgtype, JSON.toJSON(tuple));
         obj.put("msgtype", msgtype);
         String mass_preview_uri = getRequestUri("mass_preview_uri");

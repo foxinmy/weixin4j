@@ -92,7 +92,7 @@ public class SemResult extends ApiResult {
 
 	@Override
 	public String toString() {
-		return "SemResult [" + super.toString() + ", query=" + query + ", type=" + type + ", semantic=" + semantic
+		return "SemResult [query=" + query + ", type=" + type + ", semantic=" + semantic
 				+ ", result=" + result + ", answer=" + answer + ", " + super.toString() + "]";
 	}
 }

@@ -12,6 +12,7 @@ import com.foxinmy.weixin4j.http.weixin.WeixinResponse;
 import com.foxinmy.weixin4j.model.Token;
 import com.foxinmy.weixin4j.mp.model.Following;
 import com.foxinmy.weixin4j.mp.model.User;
+import com.foxinmy.weixin4j.mp.model.ChangeOpenidResult;
 import com.foxinmy.weixin4j.mp.type.Lang;
 import com.foxinmy.weixin4j.token.TokenManager;
 
@@ -266,5 +267,65 @@ public class UserApi extends MpApi {
 				obj.toJSONString());
 
 		return response.getAsResult();
+	}
+
+
+	/**
+	 * 批量转换openid
+	 *
+	 * @param fromAppid 原账号ID
+	 * @param openIds 原账号openid列表，最多不能超过100个
+	 * @return 转换后的openid
+	 * @throws WeixinException
+	 * @see <a href="https://kf.qq.com/faq/1901177NrqMr190117nqYJze.html">openid转换</a>
+	 * @see com.foxinmy.weixin4j.mp.model.ChangeOpenidResult
+	 */
+	public List<ChangeOpenidResult> batchChangeOpenid(String fromAppid, List<String> openIds) throws WeixinException {
+		String change_openid_uri = getRequestUri("change_openid_uri");
+		StringBuilder parameter = new StringBuilder();
+		parameter.append("{\"from_appid\":\"").append(fromAppid).append("\"");
+		parameter.append(",\"openid_list\": [");
+		for (String openId : openIds) {
+			parameter.append("\"").append(openId).append("\",");
+		}
+		parameter.delete(parameter.length() - 1, parameter.length());
+		parameter.append("]}");
+		Token token = tokenManager.getCache();
+		WeixinResponse response = weixinExecutor.post(String.format(change_openid_uri, token.getAccessToken()),
+				parameter.toString());
+
+		return JSON.parseArray(response.getAsJson().getString("result_list"), ChangeOpenidResult.class);
+	}
+
+	/**
+	 * 转换所有openid
+	 *
+	 * @param fromAppid 原账号ID
+	 * @return 转换后的openid
+	 * @throws WeixinException
+	 * @see <a href="https://kf.qq.com/faq/1901177NrqMr190117nqYJze.html">openid转换</a>
+	 * @see com.foxinmy.weixin4j.mp.model.ChangeOpenidResult
+	 */
+	public List<ChangeOpenidResult> changeAllOpenid(String fromAppid) throws WeixinException {
+		List<String> openIds = null;
+		String nextOpenId = null;
+		Following following = null;
+		int batchSize = 100;
+		List<ChangeOpenidResult> results = new ArrayList<ChangeOpenidResult>();
+		for (;;) {
+			following = getFollowingOpenIds(nextOpenId);
+			if (following.hasContent()) {
+				openIds = following.getOpenIds();
+				int split = (int) Math.ceil(1.0 * openIds.size() / batchSize);
+            	for (int i = 0; i < split; i++) {
+                	List<String> batch = openIds.subList((i * batchSize), Math.min(openIds.size(), (i + 1) * batchSize));
+                	results.addAll(batchChangeOpenid(fromAppid,batch));
+            	}
+				nextOpenId = following.getNextOpenId();
+				continue;
+			}
+			break;
+		}
+		return results;
 	}
 }
