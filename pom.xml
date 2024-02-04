@@ -287,7 +287,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>5.3.9</version>
+				<version>5.3.19</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
