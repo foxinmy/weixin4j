@@ -306,7 +306,15 @@ public final class CharArrayBuffer implements CharSequence, Serializable {
         }
         final int available = this.buffer.length - this.len;
         if (required > available) {
-            expand(this.len + required);
+          // Use long arithmetic to prevent integer overflow
+          final long newCapacity = (long)this.len + required;
+          
+          // Check against maximum capacity
+          if (newCapacity > MAXIMUM_CAPACITY) {
+            throw new IllegalStateException("Required capacity exceeds maximum: " + 
+                newCapacity + " > " + MAXIMUM_CAPACITY);
+        }  
+          expand(this.len + required);
         }
     }
 
