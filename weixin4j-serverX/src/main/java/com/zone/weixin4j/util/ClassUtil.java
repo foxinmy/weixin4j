@@ -8,6 +8,8 @@ import java.lang.reflect.Type;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -184,11 +186,20 @@ public final class ClassUtil {
 
 	public static ClassLoader getDefaultClassLoader() {
 		ClassLoader cl = null;
-		try {
-			cl = Thread.currentThread().getContextClassLoader();
-		} catch (Throwable ex) {
-			// Cannot access thread context ClassLoader - falling back...
-		}
+		
+    // Direct access to thread context ClassLoader
+    // Modern Java applications typically don't rely on SecurityManager
+    try {
+        cl = Thread.currentThread().getContextClassLoader();
+    } catch (SecurityException ex) {
+        // Cannot access thread context ClassLoader due to security restrictions
+        // Log this at debug level as it's not typically an error condition
+        logger.debug("Cannot access thread context ClassLoader", ex);
+    } catch (Throwable ex) {
+        // Unexpected error accessing ClassLoader
+        logger.debug("Unexpected error accessing thread context ClassLoader", ex);
+    }
+
 		if (cl == null) {
 			// No thread context class loader -> use class loader of this class.
 			cl = ClassUtil.class.getClassLoader();
